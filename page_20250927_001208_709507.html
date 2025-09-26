@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --surface: #141a26;
+      --surface-2: #1e2430;
+      --text: #e8edff;
+      --muted: #a5b4fc;
+      --accent: #7c3aed;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: #0b0f14;
+      overflow-x: hidden;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .background-shapes {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .shape {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.8), rgba(124,58,237,.0) 40%),
+                  radial-gradient(circle at 70% 70%, rgba(124,58,237,.6), rgba(124,58,237,.0) 60%);
+      filter: blur(0.5px);
+      opacity: 0.6;
+      animation: float 12s ease-in-out infinite;
+    }
+    .shape.shape1 { left: -40px; top: 20%; width: 220px; height: 220px; animation-delay: 0s; }
+    .shape.shape2 { right: -60px; bottom: 10%; width: 260px; height: 260px; animation-delay: -4s; }
+    .shape.shape3 { left: 35%; bottom: -80px; width: 180px; height: 180px; animation-delay: -2s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+      15% { opacity: 1; }
+      50% { transform: translateY(-40px) translateX(40px) rotate(180deg); }
+      100% { transform: translateY(-20px) translateX(-20px) rotate(360deg); opacity: 0.75; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .shape { animation: none; }
+      .fade-in { animation: none; opacity: 1; transform: none; }
+    }
+
+    .header {
+      position: relative;
+      z-index: 1;
+      padding: 28px 20px;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: clamp(28px, 5vw, 52px);
+      letter-spacing: .5px;
+      margin: 0;
+      background: linear-gradient(90deg, #a5b4fc, #7c3aed, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      color: #cbd5e1;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .main {
+      flex: 1;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      padding: 40px 20px 60px;
+    }
+
+    .card {
+      width: min(920px, 92vw);
+      background: rgba(20,26,38,0.92);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.4);
+      backdrop-filter: blur(6px);
+      text-align: center;
+      animation: fadeInUp 0.8s ease-out forwards;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    @media (max-width: 700px) {
+      .card { padding: 28px; border-radius: 14px; }
+    }
+
+    .hero-copy {
+      margin: 6px 0 18px;
+      color: #e2e8f0;
+      font-size: clamp(16px, 2.4vw, 20px);
+    }
+
+    .creation-time {
+      display: inline-block;
+      padding: 6px 12px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      font-size: 12px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #c7d2fe;
+      border: 1px solid rgba(99,102,241,.35);
+      margin-top: 12px;
+    }
+
+    .footer {
+      z-index: 1;
+      display:flex;
+      align-items:center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px 16px;
+      color: #93a3bd;
+      font-size: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .github-link {
+      display:inline-flex; align-items:center; justify-content:center;
+      width: 28px; height: 28px; border-radius: 6px;
+      color: #fff;
+      background: #24272d;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    .github-link:hover { transform: translateY(-1px); }
+
+    .icon { width: 20px; height: 20px; display:block; }
+
+    @media (max-width: 900px) {
+      .card { width: 90vw; }
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root { --bg: #f7f7fb; --surface: #fff; --text: #0b1020; --muted: #4b5563; }
+      body { background: #f7f7fb; color: var(--text); }
+      .card { background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,.08); }
+      .creation-time { background: rgba(14, 31, 68, 0.08); color: #0b1b36; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="background-shapes" aria-hidden="true">
+      <span class="shape shape1"></span>
+      <span class="shape shape2"></span>
+      <span class="shape shape3"></span>
+    </div>
+
+    <header class="header" aria-label="site header">
+      <h1 class="brand" style="animation: fadeInUp 0.8s ease-out forwards; animation-delay: 0.05s; opacity:1;">amirabolfazle</h1>
+      <p class="subtitle" style="opacity:.9; animation: fadeInUp 0.8s ease-out forwards; animation-delay: 0.15s;">A fully responsive, dark-mode, animated HTML page.</p>
+    </header>
+
+    <main class="main" role="main">
+      <section class="card fade-in" style="animation-delay:0.25s; opacity:0;">
+        <div class="hero-copy" style="animation: fadeInUp 0.6s ease-out forwards; animation-delay:0.25s; opacity:0;">
+          Welcome to a sleek, responsive experience with subtle fade-in effects and a dark aesthetic.
+        </div>
+        <div class="creation-time" aria-label="creation time badge" style="animation: fadeInUp 0.6s ease-out forwards; animation-delay:0.4s; opacity:0;">
+          Creation time: 2025-09-27 00:11:29
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="site footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 2C6.477 2 2 6.523 2 12a9.99 9.99 0 0 0 6.838 9.488c.5.092.682-.214.682-.478
+            0-.237-.009-.868-.013-1.704-2.782.603-3.369-1.342-3.369-1.342-.455-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.004.07 1.532 1.033 1.532 1.033.892 1.53 2.341 1.088 2.91.833.091-.647.35-1.088.635-1.339-2.221-.252-4.555-1.11-4.555-4.943 0-1.09.39-1.98 1.029-2.678-.103-.253-.447-1.272.098-2.65 0 0 .84-.269 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.853.004 1.71.115 2.514.338 1.909-1.295 2.748-1.026 2.748-1.026.547 1.379.203 2.397.1 2.65.64.698 1.028 1.587 1.028 2.677 0 3.842-2.337 4.687-4.565 4.934.359.31.681.923.681 1.868 0 1.349-.012 2.435-.012 2.767 0 .266.18.575.688.477A10 10 0 0 0 22 12c0-5.477-4.423-10-10-10z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Simple stagger to ensure elements become visible after load
+    document.addEventListener('DOMContentLoaded', function () {
+      const sections = document.querySelectorAll('.card, .brand, .subtitle, .hero-copy, .creation-time');
+      sections.forEach((el, idx) => {
+        const delay = (idx * 60) + 100;
+        el.style.animation = `fadeInUp 0.6s ease-out forwards`;
+        el.style.animationDelay = (delay / 1000) + 's';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    });
+  </script>
+</body>
+</html>
