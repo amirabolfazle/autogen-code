@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#0b1220;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: #6ee7b7;
+      --accent-2: #7c5cff;
+      --muted: rgba(255,255,255,0.75);
+      --card-w: min(920px,92%);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 12%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(110,231,183,0.08), transparent 10%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:white;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+    }
+
+    /* Rotating decorative shapes */
+    .orb, .orb-2, .orb-3{
+      position:fixed;
+      filter:blur(28px) saturate(120%);
+      opacity:0.9;
+      z-index:0;
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .orb{
+      width:420px;height:420px;border-radius:50%;
+      left:-120px;top:-80px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,92,255,0.45), rgba(124,92,255,0.18) 30%, transparent 60%);
+      animation:spin 24s linear infinite;
+      transform-origin:center;
+    }
+    .orb-2{
+      width:340px;height:340px;border-radius:50%;
+      right:-90px;bottom:-60px;
+      background: radial-gradient(circle at 70% 70%, rgba(110,231,183,0.42), rgba(110,231,183,0.12) 30%, transparent 60%);
+      animation:spin-rev 32s linear infinite;
+      transform-origin:center;
+    }
+    .orb-3{
+      width:260px;height:260px;border-radius:40% 60% 50% 50%/60% 40% 60% 40%;
+      left:10%;bottom:10%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.06), rgba(124,92,255,0.06));
+      animation:floaty 10s ease-in-out infinite;
+    }
+
+    @keyframes spin{
+      from{transform:rotate(0deg) scale(1)}
+      to{transform:rotate(360deg) scale(1)}
+    }
+    @keyframes spin-rev{
+      from{transform:rotate(0deg) scale(1)}
+      to{transform:rotate(-360deg) scale(1)}
+    }
+    @keyframes floaty{
+      0%{transform:translateY(0) rotate(-2deg)}
+      50%{transform:translateY(-16px) rotate(2deg)}
+      100%{transform:translateY(0) rotate(-2deg)}
+    }
+
+    /* Main card */
+    .stage{
+      width:100%;
+      max-width:var(--card-w);
+      z-index:2;
+      position:relative;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      justify-content:space-between;
+      transform-style:preserve-3d;
+      perspective:1200px;
+    }
+
+    .glass{
+      backdrop-filter: blur(12px) saturate(120%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      padding:36px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      gap:24px;
+      width:100%;
+      transform:rotate(-2.5deg) translateY(-6px);
+      transition:transform .6s cubic-bezier(.2,.9,.2,1);
+    }
+    .glass:hover{transform:rotate(0deg) translateY(-10px) scale(1.01)}
+
+    .left{
+      flex:1 1 480px;
+      min-width:240px;
+    }
+    .right{
+      width:360px;
+      min-width:240px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    h1.title{
+      margin:0 0 8px 0;
+      font-weight:800;
+      letter-spacing:-0.02em;
+      font-size:44px;
+      line-height:1;
+      color:linear-gradient(90deg,#fff,#e6fdf0);
+      background: linear-gradient(90deg, #ffffff, #d9fbe9 30%, #e9deff 70%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 6px 40px rgba(124,92,255,0.12);
+    }
+    p.lead{
+      margin:8px 0 18px 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.45;
+      max-width:60ch;
+    }
+
+    .badges{
+      display:flex;
+      gap:10px;
+      margin-top:18px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+      box-shadow: 0 6px 22px rgba(12,16,28,0.5);
+    }
+
+    .cta{
+      margin-top:22px;
+      display:inline-flex;
+      gap:12px;
+      align-items:center;
+    }
+    .button{
+      padding:12px 18px;
+      border-radius:12px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#06121c;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(124,92,255,0.18), 0 2px 8px rgba(0,0,0,0.3);
+      transform:translateZ(50px);
+      transition:transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s;
+    }
+    .button:active{transform:translateY(1px) scale(.997)}
+    .ghost{
+      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);
+      background:transparent;color:var(--muted);font-weight:600;
+    }
+
+    /* Right panel card mock */
+    .device{
+      width:320px;height:480px;border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.06);
+      display:flex;flex-direction:column;overflow:hidden;
+      transform:rotate(6deg);
+      box-shadow: 0 18px 50px rgba(2,6,23,0.6);
+    }
+    .device .screen{
+      padding:18px;flex:1;display:flex;flex-direction:column;gap:12px;
+      backdrop-filter:blur(6px);
+    }
+    .mock-bar{height:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);border-radius:6px}
+    .mock-card{
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(124,92,255,0.02));
+      border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:column;gap:8px;align-items:flex-start;
+      transform:translateZ(60px);
+    }
+    .mock-title{font-weight:700;font-size:14px}
+    .mock-sub{font-size:12px;color:var(--muted)}
+
+    /* creation time small label */
+    .meta{
+      margin-top:16px;
+      font-size:13px;color:rgba(255,255,255,0.7);
+      display:flex;gap:12px;align-items:center;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 18px rgba(124,92,255,0.14);
+    }
+
+    /* footer */
+    footer{
+      position:fixed;left:50%;transform:translateX(-50%);bottom:20px;
+      z-index:4;display:flex;align-items:center;gap:12px;
+      color:rgba(255,255,255,0.82);font-size:13px;background:transparent;padding:6px 12px;border-radius:999px;
+      backdrop-filter:blur(6px);
+    }
+    .gh{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.06);
+      text-decoration:none;color:inherit;
+      transition:transform .12s;
+    }
+    .gh:hover{transform:translateY(-3px) scale(1.02)}
+    .footer-text{opacity:0.95;font-weight:600}
+
+    /* responsive */
+    @media (max-width:880px){
+      .stage{flex-direction:column;align-items:stretch}
+      .glass{flex-direction:column;transform:rotate(0deg)}
+      .right{order:-1;display:flex;justify-content:center}
+      .device{transform:rotate(0deg);width:100%;max-width:340px}
+    }
+  </style>
+</head>
+<body>
+  <div class="orb" aria-hidden="true"></div>
+  <div class="orb-2" aria-hidden="true"></div>
+  <div class="orb-3" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="site-title">
+    <section class="glass" aria-label="Welcome panel">
+      <div class="left">
+        <h1 id="site-title" class="title">amirabolfazle</h1>
+        <p class="lead">A sleek, modern landing concept blending glassmorphism with subtle motion and rotated accents — precision-crafted for clarity and impact.</p>
+
+        <div class="badges" role="list" aria-label="Highlights">
+          <div class="badge" role="listitem">Glassmorphism</div>
+          <div class="badge" role="listitem">Rotating Accents</div>
+          <div class="badge" role="listitem">Responsive</div>
+        </div>
+
+        <div class="cta">
+          <button class="button" aria-label="Get started">Get started</button>
+          <button class="ghost" aria-label="Learn more">Learn more</button>
+        </div>
+
+        <div class="meta" aria-hidden="false">
+          <div class="dot" aria-hidden="true"></div>
+          <div>Creation time: <strong>2025-09-26 20:49:06</strong></div>
+        </div>
+      </div>
+
+      <aside class="right" aria-label="Visual preview">
+        <div class="device" aria-hidden="true">
+          <div class="screen">
+            <div class="mock-bar"></div>
+            <div class="mock-card" style="width:100%">
+              <div class="mock-title">Project Snapshot</div>
+              <div class="mock-sub">A minimal preview of the interface with layered glass and depth.</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:auto">
+              <div class="mock-card" style="width:48%"><div class="mock-title">Metrics</div><div class="mock-sub">Fast • Smooth</div></div>
+              <div class="mock-card" style="width:48%"><div class="mock-title">Status</div><div class="mock-sub">Live</div></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .297a12 12 0 00-3.793 23.4c.6.11.82-.257.82-.577v-2.03c-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.758-1.333-1.758-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.807 1.304 3.492.997.108-.775.42-1.305.763-1.606-2.665-.305-5.466-1.335-5.466-5.933 0-1.31.468-2.38 1.236-3.222-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 016 0c2.292-1.552 3.298-1.23 3.298-1.23.655 1.652.243 2.873.119 3.176.77.842 1.235 1.913 1.235 3.222 0 4.61-2.803 5.625-5.475 5.922.431.37.815 1.1.815 2.222v3.293c0 .322.218.695.825.577A12.003 12.003 0 0012 .297z" fill="currentColor"/>
+      </svg>
+    </a>
+    <div class="footer-text">Created by amirabolfazle</div>
+  </footer>
+</body>
+</html>
