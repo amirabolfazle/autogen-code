@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="theme-color" content="#f7f3ff"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#fffafc;
+      --bg-2:#f7fbff;
+      --accent-1:#ffd6e0;
+      --accent-2:#dbeafe;
+      --accent-3:#e8f7e7;
+      --muted:#6b7280;
+      --card:#ffffffcc;
+      --glass:rgba(255,255,255,0.6);
+      --radius:14px;
+      --shadow: 0 6px 18px rgba(16,24,40,0.06);
+      --pastel-1: #ffd6e0;
+      --pastel-2: #cfeafe;
+      --pastel-3: #e6f7df;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color-scheme: light;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(600px 400px at 10% 10%, var(--pastel-1) 0%, transparent 25%),
+        radial-gradient(500px 350px at 90% 80%, var(--pastel-2) 0%, transparent 25%),
+        radial-gradient(400px 300px at 70% 20%, var(--pastel-3) 0%, transparent 18%),
+        linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:48px 24px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      gap:24px;
+    }
+
+    .layout{
+      width:100%;
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:28px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:16px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.12));
+      box-shadow: var(--shadow);
+      display:grid;
+      place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .logo::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: conic-gradient(from 200deg at 50% 50%, rgba(255,255,255,0.08), transparent 20%, rgba(0,0,0,0.02));
+      mix-blend-mode:overlay;
+    }
+
+    .logo svg{width:44px;height:44px;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.06))}
+
+    h1{
+      margin:0;
+      font-size:1.6rem;
+      line-height:1;
+      letter-spacing:-0.02em;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:0.95rem;
+      margin-top:4px;
+    }
+
+    .meta{
+      color:var(--muted);
+      font-size:0.9rem;
+      background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+      padding:8px 12px;
+      border-radius:999px;
+      box-shadow: var(--shadow);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    main{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:24px;
+      align-items:start;
+    }
+
+    @media (max-width:980px){
+      main{grid-template-columns: 1fr}
+    }
+
+    .hero-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(6px) saturate(120%);
+      display:grid;
+      gap:14px;
+      overflow:hidden;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+      margin-top:12px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      border-radius:12px;
+      padding:14px;
+      box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+      transition:transform 400ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
+      transform-origin:center;
+    }
+
+    .card:hover{transform:translateY(-6px); box-shadow:0 14px 30px rgba(16,24,40,0.08)}
+
+    .small{
+      font-size:0.85rem;
+      color:var(--muted);
+    }
+
+    .big{
+      font-size:1.15rem;
+      font-weight:600;
+      margin-top:6px;
+    }
+
+    .side{
+      position:relative;
+      top:0;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .profile{
+      background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.62));
+      border-radius:12px;
+      padding:16px;
+      box-shadow:var(--shadow);
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .avatar{
+      width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--pastel-1),var(--pastel-2));
+      display:grid;place-items:center;font-weight:700;color:#3b3056;font-size:1.1rem;
+      box-shadow:inset 0 -6px 12px rgba(0,0,0,0.02);
+    }
+
+    .pro-info{display:flex;flex-direction:column}
+    .pro-name{font-weight:600}
+    .pro-role{font-size:0.9rem;color:var(--muted)}
+
+    footer{
+      margin-top:38px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .footer-left{color:var(--muted);font-size:0.95rem}
+    .footer-right{display:flex;align-items:center;gap:12px}
+
+    .gh-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:transparent;
+      color:inherit;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:999px;
+    }
+
+    .gh-icon{
+      width:22px;height:22px;display:inline-block;
+      filter:drop-shadow(0 2px 6px rgba(0,0,0,0.06));
+    }
+
+    /* Slide-up animation states */
+    .slide-up{
+      transform:translateY(22px);
+      opacity:0;
+      transition: transform 600ms cubic-bezier(.2,.9,.2,1), opacity 600ms ease;
+      will-change:transform,opacity;
+    }
+
+    .in-view{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    /* Floating decorative shapes */
+    .float-shape{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(26px);
+      opacity:0.85;
+      pointer-events:none;
+      mix-blend-mode:normal;
+      animation: float 9s ease-in-out infinite;
+      transform-origin:center;
+    }
+    .fs-1{width:220px;height:220px;background:linear-gradient(45deg,var(--pastel-1),var(--pastel-2)); top:-40px; left:-60px; animation-duration:12s}
+    .fs-2{width:160px;height:160px;background:linear-gradient(45deg,var(--pastel-3),#fff6ea); right:-40px; bottom:-40px; animation-duration:10s}
+    @keyframes float{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-18px) rotate(8deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    /* small helper */
+    .muted{color:var(--muted)}
+    .tag{background:rgba(0,0,0,0.03);padding:6px 8px;border-radius:8px;font-size:0.85rem}
+
+    /* accessibility focus */
+    a:focus, button:focus {outline:2px dashed rgba(59,48,86,0.16); outline-offset:3px; border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header>
+      <div class="brand slide-up" data-delay="0">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="amirabolfazle logo">
+            <rect x="4" y="4" width="56" height="56" rx="12" fill="white" opacity="0.06"/>
+            <path d="M20 44c6-6 20-16 28-24" stroke="#7C3AED" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="18" cy="20" r="6" fill="#F472B6" opacity="0.95"/>
+            <circle cx="46" cy="40" r="8" fill="#60A5FA" opacity="0.95"/>
+          </svg>
+        </div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="subtitle">pastel interface • responsive • animated</div>
+        </div>
+      </div>
+
+      <div class="meta slide-up" data-delay="100" aria-hidden="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.9">
+          <path d="M12 7v5l3 3" stroke="#6b7280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="9" stroke="#6b7280" stroke-width="1.2" opacity="0.85"/>
+        </svg>
+        <span>Created: 2025-09-26 18:50:05</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-card slide-up" data-delay="200" aria-labelledby="hero-title">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+          <div>
+            <div id="hero-title" class="small muted">Welcome to</div>
+            <div class="big">amirabolfazle — a soft pastel playground</div>
+          </div>
+          <div class="tag">Fully responsive • Slide-up effects</div>
+        </div>
+
+        <p class="small muted" style="margin:0">
+          This page demonstrates subtle motion, pastel tones and a layout that adapts across devices. Sections will slide up into view as you scroll.
+        </p>
+
+        <div class="grid" style="margin-top:12px">
+          <div class="card slide-up" data-delay="300">
+            <div class="small muted">Design</div>
+            <div class="big">Pastel gradients & soft shadows</div>
+          </div>
+          <div class="card slide-up" data-delay="350">
+            <div class="small muted">Animation</div>
+            <div class="big">Intersection-driven slide-up</div>
+          </div>
+          <div class="card slide-up" data-delay="400">
+            <div class="small muted">Responsiveness</div>
+            <div class="big">Grid + flexible components</div>
+          </div>
+          <div class="card slide-up" data-delay="450">
+            <div class="small muted">Accessibility</div>
+            <div class="big">Keyboard focus & readable text</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div class="profile slide-up" data-delay="250">
+          <div class="avatar" aria-hidden="true">AB</div>
+          <div class="pro-info">
+            <div class="pro-name">amirabolfazle</div>
+            <div class="pro-role">Creator & designer</div>
+            <div style="margin-top:8px"><span class="tag">Updated: 2025-09-26</span></div>
+          </div>
+        </div>
+
+        <div class="hero-card slide-up" data-delay="320" aria-labelledby="about-title">
+          <div id="about-title" class="small muted">About this page</div>
+          <div class="big" style="margin-top:6px">Lightweight, animated UI</div>
+          <p class="small muted" style="margin:10px 0 0">
+            Sections gracefully slide into view. The pastel palette aims for calm and clarity while maintaining contrast for readability.
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="footer-left slide-up" data-delay="380">Created on 2025-09-26 18:50:05</div>
+      <div class="footer-right slide-up" data-delay="400">
+        <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="gh-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GitHub">
+            <path d="M12 .5C5.73.5.98 5.26.98 11.53c0 4.7 3.04 8.69 7.26 10.1.53.1.72-.23.72-.5 0-.25-.01-.92-.01-1.8-2.95.64-3.57-1.42-3.57-1.42-.48-1.22-1.17-1.55-1.17-1.55-.96-.66.07-.64.07-.64 1.06.08 1.62 1.09 1.62 1.09.94 1.61 2.47 1.15 3.07.88.1-.69.37-1.15.67-1.41-2.36-.27-4.84-1.18-4.84-5.24 0-1.16.41-2.11 1.09-2.86-.11-.27-.48-1.36.1-2.85 0 0 .89-.29 2.9 1.09A10.05 10.05 0 0112 6.77c.9.01 1.81.12 2.66.35 2.01-1.38 2.9-1.09 2.9-1.09.58 1.49.21 2.58.1 2.85.68.75 1.09 1.7 1.09 2.86 0 4.07-2.49 4.97-4.86 5.24.38.33.72.98.72 1.99 0 1.44-.01 2.6-.01 2.96 0 .27.19.6.73.5 4.22-1.41 7.26-5.4 7.26-10.1C23.02 5.26 18.27.5 12 .5z" fill="#111827"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Decorative floating shapes -->
+  <div class="float-shape fs-1" aria-hidden="true" style="position:fixed;z-index:0"></div>
+  <div class="float-shape fs-2" aria-hidden="true" style="position:fixed;z-index:0"></div>
+
+  <script>
+    // Reveal slide-up elements when they enter the viewport
+    (function(){
+      const items = Array.from(document.querySelectorAll('.slide-up'));
+      if(!items.length) return;
+
+      // set staggered inline transition delays from data-delay attributes
+      items.forEach(el=>{
+        const d = parseInt(el.dataset.delay||0,10);
+        el.style.transitionDelay = (d? d/1000 : 0) + 's';
+      });
+
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+            // once visible, unobserve to avoid future toggles
+            io.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.12});
+
+      items.forEach(el => io.observe(el));
+
+      // Small reduce-motion handling
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        items.forEach(el=>{ el.style.transition = 'none'; el.classList.add('in-view')});
+      }
+    })();
+  </script>
+</body>
+</html>
