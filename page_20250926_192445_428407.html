@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#050017;
+      --bg2:#001122;
+      --neon-pink:#ff2d95;
+      --neon-cyan:#00f0ff;
+      --neon-blue:#6be0ff;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(0,255,210,0.03), transparent 8%),
+                  radial-gradient(900px 400px at 90% 80%, rgba(255,45,149,0.03), transparent 6%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      font-family: Inter, ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #e6f7ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      overflow:hidden;
+    }
+
+    /* subtle rotating background sheen */
+    .bg-sheen{
+      position:fixed;
+      inset:-30%;
+      pointer-events:none;
+      background: conic-gradient(from 0deg at 50% 50%, rgba(0,255,210,0.06), rgba(255,45,149,0.06), rgba(107,224,255,0.04), rgba(0,255,210,0.06));
+      filter: blur(60px) saturate(120%);
+      animation: spin 30s linear infinite;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes spin{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+    .stage{
+      width: min(88vw,980px);
+      padding: clamp(24px,4vw,40px);
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,255,210,0.03) inset;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:20px;
+      position:relative;
+    }
+
+    /* rotating neon rings */
+    .rings{
+      position:absolute;
+      inset: -20% -10%;
+      z-index:0;
+      pointer-events:none;
+    }
+    .ring{
+      position:absolute;
+      border-radius:50%;
+      border: 1.6px solid transparent;
+      mix-blend-mode: screen;
+      filter: blur(6px);
+      opacity:0.85;
+    }
+    .ring.r1{
+      width:650px;height:650px;left:-120px;top:-120px;
+      background: conic-gradient(from 120deg, rgba(0,240,255,0.12), rgba(255,45,149,0.12), rgba(107,224,255,0.06));
+      animation: rotateCW 28s linear infinite;
+    }
+    .ring.r2{
+      width:460px;height:460px;right:-80px;bottom:-180px;
+      background: conic-gradient(from 320deg, rgba(255,45,149,0.12), rgba(0,240,255,0.08));
+      animation: rotateCCW 20s linear infinite;
+    }
+    .ring.r3{
+      width:320px;height:320px;left:50%;top:-60px;transform:translateX(-50%);
+      background: radial-gradient(circle at 30% 30%, rgba(107,224,255,0.12), transparent 20%), linear-gradient(90deg, rgba(0,240,255,0.06), rgba(255,45,149,0.06));
+      animation: floaty 12s ease-in-out infinite;
+    }
+
+    @keyframes rotateCW{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes rotateCCW{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+    @keyframes floaty{0%{transform:translateX(-50%) translateY(0) rotate(0deg)}50%{transform:translateX(-50%) translateY(6%) rotate(6deg)}100%{transform:translateX(-50%) translateY(0) rotate(0deg)}}
+
+    .content{
+      z-index:2;
+      width:100%;
+      text-align:center;
+      padding:40px 16px;
+    }
+
+    h1{
+      font-size: clamp(34px,8vw,84px);
+      letter-spacing: 0.06em;
+      margin-bottom:6px;
+      color:var(--neon-cyan);
+      text-transform:lowercase;
+      position:relative;
+      display:inline-block;
+      padding:8px 18px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+      transform-style:preserve-3d;
+      animation: rotateY 8s ease-in-out infinite, glow 2.2s ease-in-out infinite;
+      -webkit-text-stroke: 0.6px rgba(0,0,0,0.25);
+    }
+
+    @keyframes rotateY{
+      0%{transform: perspective(900px) rotateY(-14deg) translateZ(0)}
+      50%{transform: perspective(900px) rotateY(14deg) translateZ(8px)}
+      100%{transform: perspective(900px) rotateY(-14deg) translateZ(0)}
+    }
+
+    @keyframes glow{
+      0%,100%{text-shadow: 0 0 8px rgba(0,240,255,0.8), 0 0 30px rgba(107,224,255,0.12)}
+      50%{text-shadow: 0 0 18px rgba(255,45,149,0.95), 0 0 46px rgba(255,45,149,0.12)}
+    }
+
+    .subtitle{
+      margin-top:6px;
+      color:#bfefff;
+      opacity:0.9;
+      font-size:clamp(12px,2.4vw,18px);
+    }
+
+    .time{
+      display:inline-block;
+      margin-top:12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;
+      border-radius:10px;
+      color: #dffbff;
+      font-weight:600;
+      letter-spacing:0.02em;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45), 0 0 12px rgba(0,255,210,0.04) inset;
+      border: 1px solid rgba(0,255,210,0.06);
+      font-size:14px;
+    }
+
+    footer{
+      z-index:3;
+      margin-top:18px;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      color: #aeeeff;
+      font-size:14px;
+      opacity:0.95;
+      padding-top:8px;
+    }
+
+    .gh-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:inherit;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border: 1px solid rgba(107,224,255,0.04);
+      transition: transform 220ms ease, box-shadow 220ms ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    }
+
+    .gh-link:hover{
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.55), 0 0 26px rgba(0,240,255,0.06);
+    }
+
+    .gh-icon{
+      width:20px;height:20px;
+      display:inline-block;
+      filter: drop-shadow(0 0 6px rgba(0,240,255,0.35));
+      transition: transform 380ms cubic-bezier(.2,.8,.2,1);
+      transform-origin:center;
+    }
+    .gh-link:hover .gh-icon{ transform: rotate(-14deg) scale(1.06) }
+
+    /* responsive footer spacing for small screens */
+    @media (max-width:420px){
+      .stage{padding:18px}
+      h1{font-size:30px}
+    }
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .bg-sheen,.ring,.ring.r1,.ring.r2,.ring.r3,
+      h1{animation:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-sheen" aria-hidden="true"></div>
+
+  <div class="stage" role="main">
+    <div class="rings" aria-hidden="true">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+    </div>
+
+    <div class="content">
+      <h1>amirabolfazle</h1>
+      <div class="subtitle">creation time</div>
+      <div class="time">2025-09-26 19:24:06</div>
+    </div>
+
+    <footer>
+      <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+          <path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.78 3.09 8.83 7.37 10.26.54.1.73-.24.73-.53 0-.26-.01-.95-.02-1.87-2.99.65-3.62-1.44-3.62-1.44-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.64 2.52 1.17 3.13.9.1-.7.38-1.17.69-1.44-2.39-.27-4.9-1.2-4.9-5.33 0-1.18.42-2.15 1.11-2.91-.11-.28-.48-1.38.11-2.87 0 0 .9-.29 2.95 1.1a10.2 10.2 0 012.69-.36c.91 0 1.82.12 2.69.36 2.05-1.39 2.95-1.1 2.95-1.1.59 1.49.22 2.59.11 2.87.69.76 1.11 1.73 1.11 2.91 0 4.14-2.52 5.06-4.92 5.33.39.34.73 1.01.73 2.04 0 1.47-.01 2.65-.01 3.01 0 .29.19.64.74.53 4.28-1.43 7.37-5.48 7.37-10.26C23.1 5.33 18.27.5 12 .5z" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#00f0ff"/>
+              <stop offset="1" stop-color="#ff2d95"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
