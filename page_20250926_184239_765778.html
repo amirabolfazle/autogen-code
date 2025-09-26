@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f2027;
+      --bg2:#203a43;
+      --bg3:#2c5364;
+      --accent1:#ff7e5f;
+      --accent2:#feb47b;
+      --glass: rgba(255,255,255,0.06);
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.75);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg3));
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* animated gradient overlay */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background: linear-gradient(60deg, rgba(255,126,95,0.08), rgba(254,180,123,0.06) 30%, rgba(255,255,255,0.02));
+      pointer-events:none;
+      mix-blend-mode:overlay;
+      animation: sweep 8s ease-in-out infinite alternate;
+      opacity:0.9;
+      z-index:0;
+    }
+    @keyframes sweep{
+      from{transform:translateY(-10%);filter:blur(8px)}
+      to{transform:translateY(10%);filter:blur(18px)}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      width:min(720px,94vw);
+      padding:48px;
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px) saturate(120%);
+      text-align:center;
+      overflow:hidden;
+    }
+
+    h1{
+      margin:0 0 12px 0;
+      font-size:clamp(28px,5vw,44px);
+      letter-spacing:-0.02em;
+      font-weight:700;
+      color:var(--text);
+      transform:translateY(18px);
+      opacity:0;
+      animation: slideUp .7s cubic-bezier(.2,.9,.28,1) .2s forwards;
+    }
+
+    p.lead{
+      margin:0 0 20px 0;
+      color:var(--muted);
+      font-size:clamp(13px,2.2vw,16px);
+      transform:translateY(18px);
+      opacity:0;
+      animation: slideUp .7s cubic-bezier(.2,.9,.28,1) .45s forwards;
+    }
+
+    .time{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0.01em;
+      transform:translateY(18px);
+      opacity:0;
+      animation: slideUp .7s cubic-bezier(.2,.9,.28,1) .7s forwards;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+    }
+
+    @keyframes slideUp{
+      to{transform:none;opacity:1}
+    }
+
+    /* subtle floating accent circles */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(36px);
+      opacity:0.16;
+      mix-blend-mode:screen;
+      z-index:0;
+    }
+    .blob.a{width:260px;height:260px;background:linear-gradient(135deg,var(--accent1),var(--accent2));left:-60px;top:-60px;animation: floatA 6s ease-in-out infinite;}
+    .blob.b{width:200px;height:200px;background:linear-gradient(135deg,#2dd4bf,#60a5fa);right:-50px;bottom:-60px;animation: floatB 7s ease-in-out infinite;}
+    @keyframes floatA{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(12px) rotate(8deg)}100%{transform:translateY(0) rotate(0)}}
+    @keyframes floatB{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(-6deg)}100%{transform:translateY(0) rotate(0)}}
+
+    footer{
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+      transform:translateY(12px);
+      opacity:0;
+      animation: slideUp .7s cubic-bezier(.2,.9,.28,1) .95s forwards;
+    }
+    a.icon{
+      display:inline-flex;
+      width:36px;height:36px;
+      align-items:center;justify-content:center;
+      border-radius:10px;
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--text);
+      text-decoration:none;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    a.icon:hover{transform:translateY(-4px) scale(1.03); box-shadow: 0 10px 30px rgba(2,6,23,0.45)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    /* respect user preference */
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+      body::before{display:none}
+    }
+
+    @media (max-width:420px){
+      .wrap{padding:28px;border-radius:12px}
+      footer{flex-direction:column;gap:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="title">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+
+    <h1 id="title">amirabolfazle</h1>
+    <p class="lead">minimal • animated • gradient</p>
+
+    <div style="display:flex;gap:12px;align-items:center;justify-content:center;">
+      <div class="time" aria-label="creation time">2025-09-26 18:42:09</div>
+    </div>
+
+    <footer aria-label="site footer">
+      <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:block">
+          <path d="M12 .5a12 12 0 00-3.8 23.4c.6.1.8-.2.8-.5v-1.9c-3.3.7-4-1.6-4-1.6-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.8 1.6.8 1.6.9 1.5 2.6 1.1 3.2.8.1-.7.4-1.1.8-1.4-2.7-.3-5.5-1.3-5.5-5.8 0-1.3.5-2.4 1.3-3.3-.1-.3-.6-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.6 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.1.8.9 1.3 2 1.3 3.3 0 4.5-2.8 5.5-5.5 5.8.4.3.8.9.8 1.9v2.8c0 .3.2.6.8.5A12 12 0 0012 .5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // small accessibility enhancement: focus first meaningful element on load for keyboard users
+    (function(){
+      try{
+        var prefers = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if(!prefers){
+          var el = document.getElementById('title');
+          if(el) el.setAttribute('tabindex','-1');
+        }
+      }catch(e){}
+    })();
+  </script>
+</body>
+</html>
