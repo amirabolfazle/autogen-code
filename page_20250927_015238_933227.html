@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #0b1020;
+      --bg2: #1a1140;
+      --bg3: #0e1a2b;
+      --card: rgba(255,255,255,0.08);
+      --text: #fff;
+      --shadow: 0 20px 50px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, rgba(255,122,164,.25), rgba(0,206,255,.25), rgba(122,255,199,.25));
+      background-size: 300% 300%;
+      animation: gradientShift 14s ease infinite;
+      display: grid;
+      place-items: center;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .page {
+      width: min(1100px, 92vw);
+      padding: 28px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* decorative orbit behind content */
+    .orb-orbit {
+      position: absolute;
+      width: 560px;
+      height: 560px;
+      border-radius: 50%;
+      right: -150px;
+      top: -150px;
+      background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.25), transparent 40%),
+                  radial-gradient(circle at 70% 70%, rgba(255,255,255,.15), transparent 50%);
+      filter: blur(2px);
+      animation: orbitSpin 24s linear infinite;
+      opacity: .6;
+    }
+    @keyframes orbitSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    header.header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.18);
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: conic-gradient(from 180deg at 50% 50%, #ff6b6b, #feca57, #5ac8fa, #6bffb8, #ff6b6b);
+      display: grid;
+      place-items: center;
+      animation: rotLogo 9s linear infinite;
+      box-shadow: 0 6px 16px rgba(0,0,0,.25);
+    }
+    @keyframes rotLogo {
+      from { transform: rotate(0deg); } to { transform: rotate(360deg); }
+    }
+
+    .brand-name {
+      font-size: clamp(28px, 5vw, 48px);
+      margin: 0;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffb86c, #7dd3fc, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: .5px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      opacity: .9;
+    }
+
+    main.content {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 22px;
+      align-items: center;
+      padding-top: 14px;
+    }
+
+    @media (max-width: 900px) {
+      main.content { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      padding: 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.22);
+      backdrop-filter: blur(6px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left {
+      display: grid;
+      gap: 12px;
+    }
+
+    .title {
+      font-size: clamp(22px, 4vw, 28px);
+      margin: 0;
+    }
+
+    .tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(0,0,0,.15);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    .intro {
+      color: #f8f8f8;
+      opacity: .95;
+      margin: 0;
+    }
+
+    .cta {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #03121e;
+      background: linear-gradient(135deg, #6ee7b7, #3b82f6);
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 6px 14px rgba(0,0,0,.25);
+    }
+    .btn.secondary {
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.3);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.3); }
+
+    .orb {
+      width: 180px; height: 180px; border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #ff9a9e, #fad0c4, #f6d365, #f79fbd, #a1c4fd, #c8b6ff, #fbc2eb);
+      animation: spinOrb 20s linear infinite;
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: inset 0 0 30px rgba(255,255,255,.6);
+      display: grid; place-items: center;
+    }
+    @keyframes spinOrb { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .orb-dot {
+      width: 12px; height: 12px; border-radius: 50%; background: #fff;
+      box-shadow: 0 0 14px rgba(255,255,255,.9);
+      animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+      0% { transform: scale(1); opacity: .95; }
+      50% { transform: scale(1.5); opacity: .5; }
+      100% { transform: scale(1); opacity: .95; }
+    }
+
+    .creation {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.22);
+      margin-top: 6px;
+    }
+
+    .clock {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    footer.footer {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.18);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    .icon {
+      width: 20px; height: 20px;
+      fill: currentColor;
+    }
+
+    .credit {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .logo, .orb, .orb-dot { animation: none; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="page" aria-label="Fancy animated personal page for amirabolfazle">
+    <div class="orb-orbit" aria-hidden="true"></div>
+
+    <header class="header" role="banner">
+      <div class="brand" aria-label="brand">
+        <div class="logo" aria-label="logo"></div>
+        <div>
+          <h1 class="brand-name" style="margin:0;">amirabolfazle</h1>
+          <div class="brand-sub" aria-label="tagline" style="opacity:.9">A fancy animated personal page</div>
+        </div>
+      </div>
+      <div aria-label="status" class="pulse" style="width:12px;height:12px;border-radius:50%; background:#0f0; box-shadow:0 0 12px #0f0;"></div>
+    </header>
+
+    <main class="content" role="main" aria-label="Main content">
+      <section class="card left" aria-label="intro">
+        <h2 class="title" style="margin:0 0 6px 0;">Hello, I’m amirabolfazle</h2>
+        <div class="tags" aria-label="topics">
+          <span class="tag">Web</span>
+          <span class="tag">Creative</span>
+          <span class="tag">Animated</span>
+        </div>
+        <p class="intro" style="margin:6px 0 0 0;">
+          A compact showcase with gradients, rotating visuals and smooth motion.
+        </p>
+        <div class="cta" aria-label="actions">
+          <button class="btn" onclick="alert('Scroll or explore to learn more!')">Explore</button>
+          <button class="btn secondary" onclick="document.getElementById('creation').scrollIntoView({behavior:'smooth'})">
+            See creation time
+          </button>
+        </div>
+      </section>
+
+      <section class="card" aria-label="visual" style="display:grid; place-items:center;">
+        <div class="orb" aria-label="rotating visual">
+          <div class="orb-dot" aria-label="dot"></div>
+        </div>
+      </section>
+    </main>
+
+    <section id="creation" class="creation" aria-label="creation time bar" style="margin-top:14px;">
+      <div class="clock" aria-label="clock icon and label" style="gap:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="icon" aria-label="clock icon" role="img">
+          <path d="M12 6v6l4 2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="9" stroke="white" stroke-width="2" fill="none"/>
+        </svg>
+        <span>Creation time</span>
+      </div>
+      <div style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">
+        2025-09-27 01:52:01
+      </div>
+    </section>
+
+    <footer class="footer" role="contentinfo" aria-label="footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository link">
+        <svg class="icon" viewBox="0 0 24 24" aria-label="GitHub icon" role="img">
+          <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.44-4.04-1.44-.54-1.38-1.32-1.75-1.32-1.75-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.06 1.82 2.78 1.3 3.46.99.11-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.17 0 0 1 .32 3.3 1.3a11.5 11.5 0 016 0c2.3-.98 3.3-1.3 3.3-1.3.66 1.65.24 2.87.12 3.17.76.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.69.83.57A12 12 0 0012 .5z" fill="currentColor"/>
+        </svg>
+        <span style="margin-left:8px; color:#fff;">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
