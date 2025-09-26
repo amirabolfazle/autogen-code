@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --card-radius: 20px;
+      --bg-start: rgba(255, 255, 255, 0.15);
+      --bg-end: rgba(255, 255, 255, 0.08);
+      --shadow: 0 8px 30px rgba(0,0,0,.25);
+      --text: #eaf5ff;
+      --accent: #8ab6ff;
+    }
+
+    /* Animated gradient background for depth */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #eaf5ff;
+      background: linear-gradient(135deg, rgba(15,23,42,1) 0%, rgba(9,12,22,1) 60%), 
+                  radial-gradient(circle at 20% 10%, rgba(100,149,237,0.25), transparent 40%),
+                  radial-gradient(circle at 80% 80%, rgba(128, 0, 128, 0.25), transparent 40%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+    /* Subtle animated sheen on the background for glassy feel */
+    body::before {
+      content: "";
+      position: fixed;
+      left: -10%;
+      top: -10%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle at 20% 20%, rgba(140,190,255,0.25), transparent 40%),
+                  radial-gradient(circle at 70% 70%, rgba(180,120,255,0.25), transparent 40%);
+      filter: blur(40px);
+      animation: drift 20s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+    }
+    @keyframes drift {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-10px, 8px) scale(1.05); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    .wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    /* Glass header */
+    .glass-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 22px 26px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      backdrop-filter: saturate(180%) blur(12px);
+      box-shadow: var(--shadow);
+      width: 100%;
+      overflow: hidden;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+    }
+    .glass-header.in-view {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: clamp(28px, 5vw, 48px);
+      letter-spacing: .5px;
+      margin: 0;
+    }
+    .tagline {
+      font-size: clamp(14px, 2.5vw, 18px);
+      opacity: .9;
+      margin: 0;
+    }
+
+    .creation-time {
+      margin-top: 10px;
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      color: #dbeaff;
+      opacity: .9;
+    }
+
+    /* Grid of glass cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      padding: 28px 0 0;
+    }
+
+    .card {
+      border-radius: var(--card-radius);
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: linear-gradient(135deg, rgba(255,255,255,.20), rgba(255,255,255,.08));
+      backdrop-filter: blur(8px) saturate(120%);
+      box-shadow: var(--shadow);
+      color: #f8fbff;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+    }
+    .card.in-view {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+    }
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #e6f0ff;
+    }
+
+    /* Footer with GitHub icon and text */
+    footer {
+      display: flex;
+      justify-content: center;
+      padding: 22px;
+    }
+    .footer-content {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      text-decoration: none;
+      color: #eaf5ff;
+      transition: transform .2s ease;
+    }
+    .footer-content:hover { transform: translateY(-1px); }
+    .footer-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      color: #eaf5ff;
+    }
+    .footer-text {
+      font-size: 14px;
+    }
+
+    /* Responsive fine-tuning */
+    @media (max-width: 600px) {
+      .brand { font-size: 42px; }
+      .creation-time { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper" aria-label="Main wrapper">
+    <header class="glass-header" id="header" aria-label="Site header">
+      <h1 class="brand">amirabolfazle</h1>
+      <p class="tagline">Fully responsive, animated glassmorphism page</p>
+      <div class="creation-time" aria-label="creation-time">
+        Creation time: 2025-09-27 03:18:11
+      </div>
+    </header>
+
+    <main class="grid" aria-label="Content sections">
+      <section class="card" data-delay="0.0" aria-label="About card">
+        <h3>About</h3>
+        <p>This page showcases glassmorphism with slide-up animations and a responsive grid layout. It demonstrates a clean, tactile interface that adapts to any device.</p>
+      </section>
+
+      <section class="card" data-delay="0.12" aria-label="Projects card">
+        <h3>Projects</h3>
+        <p>Reactive UI components, smooth transitions, and accessible structure. Cards reveal themselves as you scroll for an engaging experience.</p>
+      </section>
+
+      <section class="card" data-delay="0.24" aria-label="Skills card">
+        <h3>Skills</h3>
+        <p>HTML, CSS, JavaScript, UI/UX design, and a knack for creating delightful micro-interactions.</p>
+      </section>
+
+      <section class="card" data-delay="0.36" aria-label="Contact card">
+        <h3>Contact</h3>
+        <p>Reach out through repositories or public channels to collaborate on future ideas and experiments.</p>
+      </section>
+
+    </main>
+
+    <footer aria-label="Footer">
+      <a class="footer-content" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <span class="footer-icon" aria-hidden="true">
+          <!-- GitHub inline SVG icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GitHub icon">
+            <path d="M12 0C5.37 0 0 5.373 0 12a12 12 0 0 0 8.207 11.446c.6.111.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.346.726-4.042-1.61-4.042-1.61-.546-1.387-1.335-1.756-1.335-1.756-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.809 1.304 3.495.996.108-.775.419-1.304.762-1.604-2.665-.303-5.466-1.334-5.466-5.93 0-1.309.468-2.381 1.235-3.221-.124-.304-.536-1.533.117-3.196 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.01-.403c1.02.005 2.045.138 3.01.403 2.29-1.552 3.298-1.23 3.298-1.23.653 1.663.241 2.893.118 3.196.77.84 1.234 1.911 1.234 3.221 0 4.609-2.804 5.624-5.476 5.921.43.37.815 1.102.815 2.222 0 1.606-.014 2.899-.014 3.293 0 .322.218.694.825.576C20.565 21.795 24 17.299 24 12c0-6.627-5.373-12-12-12z"/>
+          </svg>
+        </span>
+        <span class="footer-text">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Reveal cards with slide-up animation as they come into view
+    document.addEventListener('DOMContentLoaded', function() {
+      const header = document.getElementById('header');
+      const cards = document.querySelectorAll('.card');
+      
+      // Animate header once on load
+      if (header) {
+        // small timeout to ensure it's visible after layout
+        setTimeout(() => header.classList.add('in-view'), 100);
+      }
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      cards.forEach((card, idx) => {
+        // Staggered delays via CSS custom property
+        const delay = parseFloat(card.getAttribute('data-delay') || (idx * 0.12)).toFixed(2);
+        card.style.setProperty('--delay', delay + 's');
+        observer.observe(card);
+      });
+    });
+  </script>
+</body>
+</html>
