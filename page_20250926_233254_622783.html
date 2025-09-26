@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#1a1f2a;
+      --glass: rgba(255,255,255,0.14);
+      --border: rgba(255,255,255,0.25);
+      --text: #e9eefc;
+      --muted: #cbd5e1;
+      --accent: #8be0ff;
+      --radius: 16px;
+    }
+
+    /* Page reset-ish */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color:var(--text);
+      background: radial-gradient(1200px circle at 20% -10%, rgba(139,92,246,0.25), transparent 40%),
+                  radial-gradient(900px circle at 100% 0%, rgba(56,189,248,0.25), transparent 40%),
+                  linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+      background-attachment: fixed;
+      overflow-x:hidden;
+    }
+
+    /* Decorative floating blobs for glassy feel */
+    .decor-blobs{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .blob{
+      position: absolute;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: rgba(128, 180, 255, 0.25);
+      filter: blur(40px);
+      mix-blend-mode: screen;
+      animation: floatBlob 16s ease-in-out infinite;
+    }
+    .blob.b2{ width: 180px; height: 180px; left: 60%; top: 20%; animation-duration: 20s; }
+    .blob.b3{ width: 240px; height: 240px; left: 10%; bottom: 15%; animation-duration: 18s; }
+
+    @keyframes floatBlob {
+      0% { transform: translate(0,0) translateZ(0); }
+      50% { transform: translate(20px,-20px) translateZ(0); }
+      100% { transform: translate(0,0) translateZ(0); }
+    }
+
+    /* Layout */
+    .wrap{ display:flex; flex-direction:column; align-items:center; min-height:100%; position:relative; z-index:1; padding-bottom:40px; }
+
+    header.header{
+      width:min(1100px, 92%);
+      margin-top:48px;
+      padding:28px 34px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.08));
+      border:1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      backdrop-filter: saturate(1.2) blur(12px);
+      -webkit-backdrop-filter: saturate(1.2) blur(12px);
+      text-align:center;
+      transition: transform 0.2s ease;
+      transform-style: preserve-3d;
+    }
+
+    header.header h1{
+      margin:0 0 6px;
+      font-size: clamp(40px, 8vw, 68px);
+      line-height:1.05;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #a3e4ff 0%, #a78bfa 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    header.header p.sub{ margin:6px 0 12px; color: var(--muted); font-size: 14px; }
+
+    .creation-time{
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size:12px;
+      color:#dbe8ff;
+      opacity:.95;
+      padding:6px 10px;
+      border-radius:999px;
+      display:inline-block;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      margin-top:6px;
+    }
+
+    nav.quicknav{ margin-top:12px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+
+    nav.quicknav a{
+      text-decoration:none;
+      color:#eaffff;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.12);
+      transition: transform .2s ease;
+      font-size:14px;
+    }
+    nav.quicknav a:hover{ transform: translateY(-1px) scale(1.02); }
+
+    section.section{ width:min(1100px, 92%); margin:42px auto; padding:0; }
+
+    section.section h2{ font-size:28px; margin:0 0 14px; color:#eaf2ff; }
+
+    .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:18px; align-items:stretch; }
+
+    .card{
+      display:flex; flex-direction:column; justify-content:space-between;
+      padding:18px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0.08));
+      border:1px solid rgba(255,255,255,0.28);
+      min-height:170px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      opacity:0;
+      transform: translateY(20px);
+    }
+    .card.visible{ animation: bounceIn 0.65s ease forwards; }
+
+    .card h3{ margin:0 0 6px; font-size:18px; }
+    .card p{ margin:0 0 9px; color: #dbe7ff; font-size: 13.5px; line-height: 1.4; }
+    .card a{ align-self:flex-start; font-size:13px; text-decoration:none; padding:6px 10px; border-radius:999px;
+      color:#052f2e; background:#b8f4ff; border:1px solid #9be1ff; }
+    .card a:hover{ filter: brightness(1.03); }
+
+    @keyframes bounceIn {
+      0%{ opacity:0; transform: translateY(18px) scale(.96); }
+      60%{ opacity:1; transform: translateY(-4px) scale(1.01); }
+      100%{ opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    /* About and contact sections for vibes */
+    .panel{ padding:18px; border-radius:14px; background: rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25);
+      line-height:1.6; color:#eaf2ff; }
+
+    footer.footer{ width:min(1100px, 92%); margin:40px auto 20px; padding:18px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-radius:12px; background: rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      gap:12px;
+    }
+
+    footer .credit{ display:flex; align-items:center; gap:10px; color:#eaf2ff; font-size:14px; }
+    footer a.icon{ display:inline-flex; width:28px; height:28px; align-items:center; justify-content:center;
+      border-radius:8px; background: rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);
+      color:#fff; text-decoration:none;
+    }
+    footer a.icon svg{ display:block; width:18px; height:18px; }
+
+    /* Responsive niceties */
+    @media (max-width: 700px){
+      header.header{ padding:22px 18px; }
+      .blob{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="decor-blobs" aria-hidden="true">
+    <span class="blob" style="left:10%; top:20%;"></span>
+    <span class="blob b2" ></span>
+    <span class="blob b3" ></span>
+  </div>
+
+  <div class="wrap">
+    <header class="header" id="top">
+      <h1>amirabolfazle</h1>
+      <p class="sub">Glassmorphism animated portfolio • Bounce effects</p>
+      <div class="creation-time" aria-label="creation time">Creation time: 2025-09-26 23:32:20</div>
+      <nav class="quicknav" aria-label="Page sections">
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <div class="grid" role="list">
+        <article class="card glass" aria-label="Project One">
+          <div>
+            <h3>Project One</h3>
+            <p>A sleek UI component library with glassy aesthetics and subtle motion.</p>
+          </div>
+          <a href="#" class="link" target="_blank" rel="noopener">View</a>
+        </article>
+
+        <article class="card glass" aria-label="Project Two">
+          <div>
+            <h3>Project Two</h3>
+            <p>Interactive dashboard widgets with smooth transitions and responsive design.</p>
+          </div>
+          <a href="#" class="link" target="_blank" rel="noopener">View</a>
+        </article>
+
+        <article class="card glass" aria-label="Project Three">
+          <div>
+            <h3>Project Three</h3>
+            <p>Animated portfolio components showcasing micro-interactions and bounce effects.</p>
+          </div>
+          <a href="#" class="link" target="_blank" rel="noopener">View</a>
+        </article>
+
+        <article class="card glass" aria-label="Project Four">
+          <div>
+            <h3>Project Four</h3>
+            <p>Prototype of a creative agency landing page with glass cards and motion.</p>
+          </div>
+          <a href="#" class="link" target="_blank" rel="noopener">View</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <div class="panel" style="max-width:860px;">
+        <p>Hi, I’m Amir Abolfazle — a frontend developer focused on accessible, animated UI with a touch of glass aesthetics. I enjoy turning ideas into interactive, delightful experiences. This one-file portfolio demonstrates glassmorphism, bounce effects, and clean, compact code that can be dropped into a project quickly.</p>
+        <p>Tech notes: HTML, CSS, vanilla JS. No heavy frameworks required. If you like this style, imagine it applied to dashboards, marketing sites, or creative apps with a touch of whimsy and polish.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <div class="panel" style="max-width:860px;">
+        <p>Want to discuss a project or collaboration? Reach out via email or social.</p>
+        <ul style="margin:0 0 8px 18px;">
+          <li>Email: amir@example.com</li>
+          <li>Twitter: @amirabolfazle</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+        <!-- inline GitHub icon -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="18" height="18">
+          <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.22-3.37-1.22-.46-1.22-1.12-1.55-1.12-1.55-.92-.63.07-.62.07-.62 1.02.07 1.56 1.08 1.56 1.08.9 1.57 2.36 1.12 2.94.86.09-.65.35-1.12.63-1.38-2.22-.26-4.56-1.15-4.56-5.12 0-1.13.4-2.05 1.07-2.77-.11-.27-.46-1.38.1-2.88 0 0 .87-.29 2.85 1.07a9.7 9.7 0 012.6-.37c.88 0 1.77.12 2.6.37 1.98-1.37 2.85-1.07 2.85-1.07.56 1.5.21 2.61.1 2.88.67.72 1.07 1.64 1.07 2.77 0 4.0-2.34 4.86-4.57 5.1.36.32.69.95.69 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49A10.26 10.26 0 0022 12.26C22 6.58 17.52 2 12 2z"/>
+        </svg>
+      </a>
+      <span class="credit" aria-label="Created by text">
+        Created by amirabolfazle
+      </span>
+    </footer>
+  </div>
+
+  <script>
+    // Reveal cards with a bounce-in when they enter viewport
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      cards.forEach(card => observer.observe(card));
+
+      // Subtle header tilt on mouse for glassy feel
+      const header = document.getElementById('top');
+      if (header) {
+        document.addEventListener('mousemove', (e) => {
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          const dx = (e.clientX - w/2) / (w/2);
+          const dy = (e.clientY - h/2) / (h/2);
+          header.style.transform = `perspective(1000px) rotateX(${(-dy)*2}deg) rotateY(${dx*2}deg)`;
+        });
+        document.addEventListener('mouseleave', () => {
+          header.style.transform = 'none';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
