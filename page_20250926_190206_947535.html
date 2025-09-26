@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#050306;
+      --neon-mag:#ff00c8;
+      --neon-cyan:#00e6ff;
+      --neon-yellow:#fff04d;
+      --glass: rgba(255,255,255,0.03);
+      --accent-gradient: linear-gradient(90deg,var(--neon-mag),var(--neon-cyan),var(--neon-yellow));
+    }
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;}
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,230,255,0.06), transparent),
+                  radial-gradient(800px 400px at 90% 90%, rgba(255,0,200,0.05), transparent),
+                  var(--bg);
+      color:#e9f5ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Neon rotating shapes */
+    .orbit-container{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:visible;
+    }
+    .ring{
+      position:absolute;
+      border-radius:50%;
+      mix-blend-mode:screen;
+      filter:drop-shadow(0 0 18px rgba(0,230,255,0.12));
+      opacity:0.9;
+      animation:spin linear infinite;
+      transform-origin:center;
+    }
+    .ring.r1{width:1200px;height:1200px;left:50%;top:50%;transform:translate(-50%,-50%);background:conic-gradient(from 40deg,var(--neon-cyan), transparent 20%, rgba(0,230,255,0.06)); animation-duration:34s;}
+    .ring.r2{width:900px;height:900px;left:20%;top:60%;transform:translate(-50%,-50%);background:conic-gradient(from 200deg,var(--neon-mag), transparent 30%, rgba(255,0,200,0.05)); animation-duration:46s; animation-direction:reverse;}
+    .ring.r3{width:650px;height:650px;left:80%;top:40%;transform:translate(-50%,-50%);background:conic-gradient(from 120deg,var(--neon-yellow), transparent 25%, rgba(255,240,77,0.04)); animation-duration:58s;}
+    @keyframes spin{from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+    /* Main card */
+    .card{
+      position:relative;
+      width:min(1100px,92vw);
+      max-width:1100px;
+      border-radius:18px;
+      padding:40px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.5), 0 0 40px rgba(0,230,255,0.04);
+      backdrop-filter: blur(8px) saturate(1.1);
+      border:1px solid rgba(255,255,255,0.04);
+      overflow:hidden;
+      display:flex;
+      gap:28px;
+      align-items:center;
+    }
+
+    /* Left content */
+    .left{
+      flex:1 1 55%;
+      padding:18px;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(34px,6vw,56px);
+      letter-spacing:0.6px;
+      color:transparent;
+      background:var(--accent-gradient);
+      -webkit-background-clip:text;
+      background-clip:text;
+      text-shadow: 0 0 12px rgba(255,0,200,0.14), 0 0 28px rgba(0,230,255,0.08);
+      line-height:1;
+    }
+    .subtitle{
+      margin-top:12px;
+      color:rgba(233,245,255,0.9);
+      opacity:0.9;
+      font-size:clamp(14px,2.3vw,18px);
+    }
+
+    /* Rotating neon logo */
+    .logo-wrap{
+      width:210px;
+      height:210px;
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 40px rgba(255,0,200,0.05);
+      border:1px solid rgba(255,255,255,0.03);
+      transform-style:preserve-3d;
+      perspective:800px;
+      animation:tilt 10s ease-in-out infinite;
+      transition:transform 300ms;
+    }
+    @keyframes tilt{
+      0%{transform:rotateY(0deg) rotateX(0deg)}
+      25%{transform:rotateY(18deg) rotateX(-6deg)}
+      50%{transform:rotateY(0deg) rotateX(0deg)}
+      75%{transform:rotateY(-18deg) rotateX(6deg)}
+      100%{transform:rotateY(0deg) rotateX(0deg)}
+    }
+
+    .logo{
+      width:150px;height:150px;border-radius:12px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(255,0,200,0.08), rgba(0,230,255,0.06));
+      box-shadow: 0 0 24px rgba(255,0,200,0.08), inset 0 0 18px rgba(0,230,255,0.03);
+      position:relative;
+      overflow:visible;
+      transform:translateZ(30px);
+    }
+    .logo svg{filter:drop-shadow(0 6px 18px rgba(0,230,255,0.12));}
+    .logo .neon{
+      stroke: url(#g1);
+      stroke-width:2.6;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      filter:drop-shadow(0 0 10px var(--neon-mag)) drop-shadow(0 0 26px rgba(0,230,255,0.06));
+      stroke-dasharray:320;
+      stroke-dashoffset:320;
+      animation:draw 2.8s ease-out forwards 0.5s;
+    }
+    @keyframes draw{to{stroke-dashoffset:0}}
+
+    /* Right CTA */
+    .right{
+      flex:0 0 360px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:flex-start;
+    }
+    .card-panel{
+      width:100%;
+      border-radius:12px;
+      padding:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .cta-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 18px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--neon-mag),var(--neon-cyan));
+      color:#050306;
+      font-weight:600;
+      text-decoration:none;
+      box-shadow:0 8px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,0,200,0.12);
+      transform:translateZ(0);
+      transition:transform 220ms ease, box-shadow 220ms;
+    }
+    .cta-btn:hover{transform:translateY(-4px) scale(1.01); box-shadow: 0 18px 48px rgba(0,0,0,0.6), 0 0 60px rgba(0,230,255,0.12);}
+    .small-meta{font-size:13px;color:rgba(233,245,255,0.7)}
+
+    /* Creation time badge */
+    .timestamp{
+      margin-top:14px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(0,230,255,0.04), rgba(255,0,200,0.03));
+      border:1px solid rgba(255,255,255,0.03);
+      color:rgba(233,245,255,0.9);
+      font-weight:600;
+      letter-spacing:0.4px;
+      display:inline-block;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+      font-size:13px;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:rgba(233,245,255,0.75);
+      font-size:13px;
+      opacity:0.95;
+    }
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 10px;
+      border-radius:9px;
+      transition:background 180ms, transform 180ms;
+      background:transparent;
+    }
+    .github-link:hover{background:rgba(255,255,255,0.02); transform:translateY(-3px)}
+    .github-icon{width:18px;height:18px;display:inline-block;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6))}
+    /* Responsive tweaks */
+    @media (max-width:880px){
+      .card{flex-direction:column;align-items:stretch;padding:22px}
+      .right{flex:unset}
+      .logo-wrap{margin:0 auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="orbit-container" aria-hidden="true">
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+    <div class="ring r3"></div>
+  </div>
+
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="left">
+      <h1 id="title">amirabolfazle</h1>
+      <p class="subtitle">Neon-driven visual identity — rotating accents, vivid glow, and motion that breathes. Crafted for presence, made to pop.</p>
+
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a class="cta-btn" href="#" role="button" aria-label="Primary action">
+          Explore
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12h14" stroke="#04040A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 5l7 7-7 7" stroke="#04040A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <div class="small-meta">Interactive demo • Micro-animations • Retina-ready</div>
+      </div>
+
+      <div class="timestamp" title="creation time">Created: 2025-09-26 19:01:09</div>
+
+      <footer>
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <span class="github-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.24 3.32.95.1-.74.4-1.24.72-1.53-2.56-.29-5.25-1.28-5.25-5.71 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .96-.31 3.15 1.18a11 11 0 0 1 5.73 0C17.8 3.15 18.76 3.46 18.76 3.46c.62 1.59.23 2.77.11 3.06.74.81 1.18 1.84 1.18 3.1 0 4.44-2.69 5.42-5.26 5.7.41.36.77 1.08.77 2.18 0 1.57-.01 2.83-.01 3.22 0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" fill="url(#g)"/>
+              <defs>
+                <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="#00e6ff"/>
+                  <stop offset="1" stop-color="#ff00c8"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </div>
+
+    <div class="right">
+      <div class="logo-wrap" aria-hidden="false">
+        <div class="logo" role="img" aria-label="Neon logo for amirabolfazle">
+          <svg width="110" height="110" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#ff00c8"/>
+                <stop offset="0.5" stop-color="#00e6ff"/>
+                <stop offset="1" stop-color="#fff04d"/>
+              </linearGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.6" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- stylized "a" monogram with neon stroke -->
+            <path class="neon" d="M30 90 L30 40 Q30 20 50 20 L70 20 Q90 20 90 40 L90 70 Q90 80 78 85 L60 95 Q56 97 52 95 L34 85 Q30 83 30 78 Z
+                                  M52 30 L68 30" stroke-linecap="round" filter="url(#glow)"/>
+            <!-- accent orbit -->
+            <path d="M60 12 A48 48 0 0 1 108 60" stroke="rgba(0,230,255,0.06)" stroke-width="2" fill="none"/>
+            <circle cx="60" cy="60" r="28" fill="rgba(255,255,255,0.01)" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="card-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:700;font-size:16px;color:var(--neon-cyan)">Realtime Motion</div>
+            <div class="small-meta" style="margin-top:6px">Smooth rotations, GPU-accelerated glows, and subtle parallax.</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:700;color:var(--neon-mag)">Neon UI</div>
+            <div class="small-meta" style="margin-top:6px">Adaptive to light/dark screens</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;width:100%;flex-direction:column">
+        <a class="cta-btn" href="#" style="justify-content:center;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-mag))">
+          Get the Look
+        </a>
+
+        <div class="card-panel" style="padding:12px">
+          <div class="small-meta" style="margin-bottom:8px;font-weight:600;color:rgba(233,245,255,0.9)">Status</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3cff7a;box-shadow:0 0 10px rgba(60,255,122,0.12)"></span>
+            <span class="small-meta">Live • Animations enabled</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
