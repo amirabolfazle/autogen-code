@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#FFF7FB;
+    --bg2:#F6FFF9;
+    --accent1:#FFDDE6;
+    --accent2:#DDEBFF;
+    --accent3:#E9F9E9;
+    --text:#333;
+    --muted:#6B6B6B;
+    --glass: rgba(255,255,255,0.6);
+    --shadow: 0 8px 30px rgba(25,25,25,0.08);
+    --radius:16px;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:var(--text);
+    background: linear-gradient(135deg,var(--bg1) 0%, var(--bg2) 100%);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  .canvas{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 36px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* soft floating blobs */
+  .blob{
+    position:absolute;
+    filter: blur(40px);
+    opacity:0.7;
+    border-radius:50%;
+    transform: translate3d(0,0,0);
+    will-change: transform;
+    animation: floaty 12s ease-in-out infinite;
+  }
+  .blob.a{ width:420px; height:420px; left:-80px; top:-120px; background: radial-gradient(circle at 30% 30%, var(--accent1), transparent 40%);}
+  .blob.b{ width:360px; height:360px; right:-100px; top:-40px; background: radial-gradient(circle at 70% 70%, var(--accent2), transparent 40%); animation-duration:14s; animation-direction:reverse;}
+  .blob.c{ width:260px; height:260px; left:30%; bottom:-80px; background: radial-gradient(circle at 50% 50%, var(--accent3), transparent 40%); animation-duration:10s; opacity:0.9;}
+
+  @keyframes floaty{
+    0%{ transform: translateY(0) rotate(0deg); }
+    50%{ transform: translateY(-18px) rotate(6deg); }
+    100%{ transform: translateY(0) rotate(0deg); }
+  }
+
+  .card{
+    width:100%;
+    max-width:1100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.65));
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:34px;
+    backdrop-filter: blur(8px) saturate(120%);
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:28px;
+    align-items:stretch;
+    position:relative;
+    overflow:visible;
+  }
+
+  header.hero{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  h1{
+    margin:0;
+    font-size: clamp(28px,4.5vw,44px);
+    letter-spacing:-0.02em;
+    line-height:1.02;
+    color: #1f1f2b;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:15px;
+  }
+
+  .meta{
+    margin-top:14px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .pill{
+    background:rgba(255,255,255,0.55);
+    padding:8px 12px;
+    border-radius:999px;
+    box-shadow: 0 6px 18px rgba(30,30,40,0.04);
+    font-size:13px;
+    color:var(--muted);
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  .cta{
+    margin-top:22px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .button{
+    background: linear-gradient(90deg,#FEC5D0 0%, #E1F0FF 100%);
+    border:none;
+    padding:12px 16px;
+    font-weight:600;
+    border-radius:12px;
+    cursor:pointer;
+    box-shadow: 0 8px 24px rgba(140,120,160,0.08);
+    transition:transform .22s ease, box-shadow .22s ease;
+  }
+  .button:hover{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(120,100,140,0.12); }
+
+  /* right column profile */
+  .profile{
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+    border-radius:12px;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:center;
+    justify-content:flex-start;
+  }
+  .avatar{
+    width:112px;height:112px;border-radius:20px;background:linear-gradient(135deg,#FFF1F6,#EAF8FF);display:flex;align-items:center;justify-content:center;font-weight:700;color:#555;font-size:28px;box-shadow: 0 10px 30px rgba(20,20,30,0.06);
+  }
+  .tags{ display:flex;gap:8px;flex-wrap:wrap; justify-content:center; margin-top:6px;}
+  .tag{ background: rgba(255,255,255,0.7); padding:8px 10px; border-radius:10px; font-size:13px; color:var(--muted); }
+
+  /* sections below */
+  .sections{
+    margin-top:26px;
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:18px;
+  }
+  .panel{
+    background: rgba(255,255,255,0.6);
+    border-radius:12px;
+    padding:16px;
+    box-shadow: 0 6px 20px rgba(20,20,30,0.04);
+    min-height:96px;
+  }
+  .panel h3{ margin:0 0 8px 0; font-size:15px; }
+  .panel p{ margin:0; color:var(--muted); font-size:13px; line-height:1.4; }
+
+  footer.site-footer{
+    margin-top:24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding-top:18px;
+    border-top: 1px dashed rgba(50,50,60,0.04);
+  }
+  .footer-left{ color:var(--muted); font-size:13px; display:flex;gap:10px; align-items:center;}
+  .github-link{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--muted);
+    font-weight:600;
+  }
+  .github-link svg{ width:20px;height:20px; display:block; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.04)); }
+
+  /* slide-up animations */
+  .slide-up{ transform: translateY(22px); opacity:0; transition: transform .7s cubic-bezier(.16,.84,.44,1), opacity .7s ease; will-change: transform, opacity;}
+  .slide-up.in{ transform: translateY(0); opacity:1; }
+
+  /* responsive */
+  @media (max-width:980px){
+    .card{ grid-template-columns: 1fr; }
+    .sections{ grid-template-columns: repeat(2,1fr); }
+    .profile{ order: -1; align-items:flex-start; flex-direction:row; gap:14px; padding:12px; }
+    .avatar{ width:86px;height:86px;border-radius:14px;font-size:22px; }
+  }
+  @media (max-width:640px){
+    .sections{ grid-template-columns: 1fr; }
+    .card{ padding:20px; gap:18px;}
+    .canvas{ padding:28px 18px; }
+  }
+
+  /* small flourish for name */
+  .name-accent{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    background: linear-gradient(90deg,#FFF2F7 0%, #F2FAFF 100%);
+    box-shadow: inset 0 -2px 6px rgba(0,0,0,0.02);
+    font-weight:700;
+    color:#222;
+    margin-right:6px;
+  }
+
+  .timestamp{ font-size:13px; color:var(--muted); }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+    <div class="blob c" aria-hidden="true"></div>
+
+    <main class="card" role="main" aria-labelledby="page-title">
+      <section class="hero" style="padding-right:6px;">
+        <div class="slide-up" id="intro">
+          <h1 id="page-title"><span class="name-accent">amirabolfazle</span></h1>
+          <div class="subtitle">designer, developer, and playful tinkerer of delightful interfaces</div>
+        </div>
+
+        <div class="meta">
+          <div class="pill slide-up" data-delay="80">Location: Remote-friendly</div>
+          <div class="pill slide-up" data-delay="140">Focus: Web & UI</div>
+          <div class="pill slide-up" data-delay="200 timestamp-pill">Creation time: <strong style="margin-left:8px;">2025-09-26 20:12:53</strong></div>
+        </div>
+
+        <div class="cta">
+          <button class="button slide-up" data-delay="260" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">See projects</button>
+          <a class="pill slide-up" data-delay="320" href="#contact">Contact</a>
+        </div>
+
+        <div class="sections" style="margin-top:18px;">
+          <div class="panel slide-up" data-delay="360">
+            <h3>About</h3>
+            <p>Curious builder blending clean code with soft visuals. Loves small experiments that feel delightful to use.</p>
+          </div>
+          <div class="panel slide-up" data-delay="420">
+            <h3>Tools</h3>
+            <p>HTML · CSS · JavaScript · React · Figma · Node</p>
+          </div>
+          <div class="panel slide-up" data-delay="480">
+            <h3>Interests</h3>
+            <p>Micro-interactions, accessibility, and gentle animations that spark a tiny smile.</p>
+          </div>
+        </div>
+
+        <div id="projects" style="margin-top:18px;">
+          <div class="slide-up" data-delay="520">
+            <h3 style="margin-bottom:10px">Featured</h3>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px;">
+            <article class="panel slide-up" data-delay="580">
+              <h3>Autogen Code</h3>
+              <p>Snippet-driven automation for code scaffolding — neat, reusable, and designed for speed.</p>
+            </article>
+            <article class="panel slide-up" data-delay="640">
+              <h3>Pastel UI Kit</h3>
+              <p>A collection of soft components and micro-interactions for building warm interfaces.</p>
+            </article>
+          </div>
+        </div>
+
+        <footer class="site-footer slide-up" data-delay="720" style="grid-column: 1 / -1;">
+          <div class="footer-left">
+            <span class="timestamp">Made with pastel vibes • 2025</span>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;">
+            <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 .5a12 12 0 00-3.8 23.4c.6.1.8-.2.8-.5v-1.9c-3.3.7-4-1.4-4-1.4-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.8 1.7.8 1.7.9 1.6 2.4 1.1 3 .8.1-.7.3-1.1.6-1.4-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.1-3.1-.1-.3-.5-1.6.1-3.3 0 0 .9-.3 3 .1a10.4 10.4 0 015.5 0c2.1-.4 3-.1 3-.1.6 1.7.2 3 .1 3.3.7.8 1.1 1.9 1.1 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.7 1 .7 2v3c0 .3.2.6.8.5A12 12 0 0012 .5z" fill="#333"/>
+              </svg>
+              <span>Created by amirabolfazle</span>
+            </a>
+          </div>
+        </footer>
+      </section>
+
+      <aside class="profile slide-up" style="align-self:start; justify-self:end;" aria-label="Profile">
+        <div class="avatar" aria-hidden="true">AB</div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;">
+          <div style="font-weight:700;">amirabolfazle</div>
+          <div style="color:var(--muted); font-size:13px;">maker • front-end</div>
+          <div class="tags" aria-hidden="true">
+            <div class="tag">UI</div>
+            <div class="tag">UX</div>
+            <div class="tag">Animation</div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+<script>
+  // slide-up on load and on scroll via IntersectionObserver
+  (function(){
+    const nodes = Array.from(document.querySelectorAll('.slide-up'));
+    nodes.forEach(n => {
+      n.style.transitionDelay = (n.dataset.delay ? (n.dataset.delay+'ms') : '0ms');
+    });
+
+    function activate(el){ el.classList.add('in'); }
+
+    // initial reveal with stagger
+    let i = 0;
+    const initial = nodes.filter(n => n.closest('main'));
+    initial.forEach((el, idx) => {
+      const delay = parseInt(el.dataset.delay || (idx * 60));
+      setTimeout(()=> activate(el), delay + 120);
+    });
+
+    // observer for elements that appear later (if any)
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          activate(entry.target);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.12});
+
+    nodes.forEach(n=>{
+      if(!n.classList.contains('in')){
+        obs.observe(n);
+      }
+    });
+
+    // gentle parallax for blobs based on pointer movement
+    const blobs = document.querySelectorAll('.blob');
+    let mouse = {x:0,y:0};
+    window.addEventListener('pointermove', e=>{
+      const cx = window.innerWidth/2;
+      const cy = window.innerHeight/2;
+      const dx = (e.clientX - cx)/cx;
+      const dy = (e.clientY - cy)/cy;
+      blobs.forEach((b, idx)=>{
+        const depth = (idx+1) * 8;
+        b.style.transform = `translate3d(${dx * depth}px, ${dy * depth}px, 0)`;
+      });
+    });
+
+    // subtle tilt on card hover for depth
+    const card = document.querySelector('.card');
+    card.addEventListener('pointermove', e=>{
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left)/rect.width - 0.5;
+      const py = (e.clientY - rect.top)/rect.height - 0.5;
+      const rotX = (py * 4).toFixed(2);
+      const rotY = (px * -8).toFixed(2);
+      card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    });
+    card.addEventListener('pointerleave', ()=> card.style.transform = 'none');
+
+    // small prefers-reduced-motion respect
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq.matches){
+      nodes.forEach(n => n.style.transition = 'none');
+      blobs.forEach(b => b.style.animation = 'none');
+    }
+  })();
+</script>
+</body>
+</html>
