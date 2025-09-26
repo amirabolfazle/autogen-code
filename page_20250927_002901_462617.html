@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0f1d;
+      --card: rgba(255,255,255,0.15);
+      --card-border: rgba(255,255,255,0.4);
+      --text: #e9e9f5;
+      --muted: #cbd5e1;
+      --gradient1: rgba(99,102,241,0.95);
+      --gradient2: rgba(59,130,246,0.95);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 0%, rgba(99,102,241,0.25), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(14,165,233,0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #1a1020 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Glassy surfaces */
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+
+    .layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    header.site-header {
+      padding: 1.25rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(to bottom, rgba(10,16,30,0.9), rgba(10,16,30,0.6) 60%, transparent);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0;
+      background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 60%, #34d399 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: .5px;
+      user-select: none;
+    }
+
+    .creation-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #06101a;
+      background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55));
+      border: 1px solid rgba(255,255,255,0.75);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    main { padding: 2rem 0 3rem; }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 0 2rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 1.05rem;
+      letter-spacing: .3px;
+    }
+
+    .brand-name {
+      font-weight: 900;
+      font-size: clamp(3rem, 7vw, 7rem);
+      line-height: 1.04;
+      margin: 0;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #93c5fd 0%, #a5b4fc 40%, #f472b6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 40px rgba(99,102,241,0.3);
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      padding: 0.95rem 1.4rem;
+      border-radius: 999px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #0b1020;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--gradient1), var(--gradient2));
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(99,102,241,0.5); }
+
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #0a1020;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(0,0,0,0.06);
+      align-self: center;
+      margin-top: 8px;
+    }
+
+    section.section {
+      padding: 3rem 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .card {
+      padding: 1.25rem;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .card h3 { margin: 0 0 .5rem; font-size: 1.2rem; }
+    .card p { margin: 0; color: #e5e7eb; }
+
+    footer.site-footer {
+      padding: 1.75rem 0;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: #e2e8f0;
+    }
+
+    .footer-content a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 8px; }
+    .footer-content a:hover { background: rgba(255,255,255,0.15); }
+
+    /* Slide-up animation */
+    .slide-up {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+      will-change: transform, opacity;
+    }
+    .slide-up.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .brand-name { font-size: 4rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header layout" aria-label="Site header">
+    <nav class="nav glass" style="padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span aria-label="Site logo" style="font-size:0; padding:0;">
+          <svg width="0" height="0" style="max-width:0; max-height:0;">
+            <defs></defs>
+          </svg>
+        </span>
+        <h2 class="brand" style="margin:0; font-size: clamp(1.4rem, 4vw, 2.4rem);">amirabolfazle</h2>
+      </div>
+      <div class="creation-tag" aria-label="Creation time badge" style="font-weight:600; background: rgba(255,255,255,0.9); color:#0b1020;">
+        Creation time: 2025-09-27 00:28:28
+      </div>
+    </nav>
+  </header>
+
+  <main class="layout" id="top">
+    <section class="hero glass slide-up" data-delay="0s" aria-label="Intro">
+      <div class="creation-time" style="background: rgba(255,255,255,0.9); color:#0b1020;">
+        Creation time: 2025-09-27 00:28:28
+      </div>
+
+      <h1 class="brand-name" style="margin:0; padding-top:6px;">amirabolfazle</h1>
+
+      <p class="tagline" style="margin-top:8px; font-size:1.05rem; opacity:.95;">
+        A stunning landing page crafted with glassmorphism and smooth slide-up transitions.
+      </p>
+
+      <div class="cta-row" style="margin-top:14px;">
+        <a href="#features" class="btn" aria-label="See features">
+          Explore Features
+        </a>
+        <a href="#contact" class="btn" style="background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5)); color:#0b1020; border:1px solid rgba(0,0,0,0.08);" aria-label="Contact">
+          Get in touch
+        </a>
+      </div>
+    </section>
+
+    <section id="features" class="section layout" aria-label="Features">
+      <div class="grid">
+        <article class="card glass slide-up" data-delay="0.05s" aria-label="Feature Performance">
+          <h3>Performance</h3>
+          <p>Optimized rendering, swift interactions, and accessible UI.</p>
+        </article>
+        <article class="card glass slide-up" data-delay="0.15s" aria-label="Feature Accessibility">
+          <h3>Accessibility</h3>
+          <p>Keyboard navigable, semantic markup, and color-contrast aware.</p>
+        </article>
+        <article class="card glass slide-up" data-delay="0.25s" aria-label="Feature Responsiveness">
+          <h3>Responsiveness</h3>
+          <p>Beautiful on mobile, tablet, and desktop with fluid glass panels.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section layout" aria-label="Contact">
+      <div class="card glass slide-up" data-delay="0.2s" style="padding:1.5rem; text-align:center;">
+        <h3 style="margin:0 0 0.5rem;">Questions or collaboration?</h3>
+        <p style="margin:0 0 1rem; color:#e5e7eb;">Reach out or check the repository for more details.</p>
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="btn" aria-label="Open repository">
+          View the GitHub Repository
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="layout footer-content">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository" style="color:inherit;">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+          <path d="M12 .5A12 12 0 0 0 0 12.5a12.02 12.02 0 0 0 8.21 11.43c.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.45-4.04-1.45-.55-1.4-1.34-1.78-1.34-1.78-1.09-.75.08-.74.08-.74 1.21.09 1.85 1.25 1.85 1.25 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 .99-.32 3.25 1.23a11.3 11.3 0 0 1 3-.4c.99.02 1.99.14 2.93.41 2.26-1.56 3.24-1.23 3.24-1.23.66 1.66.24 2.87.12 3.17.77.83 1.24 1.92 1.24 3.23 0 4.61-2.79 5.63-5.45 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .33.22.72.83.57A12 12 0 0 0 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+      <span style="opacity:.9; font-size: 0.9rem;">Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize slide-up delays and intersection observers
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.slide-up').forEach(function(el){
+        const delay = el.getAttribute('data-delay') || '0s';
+        el.style.transitionDelay = delay;
+      });
+
+      const observer = new IntersectionObserver(function(entries, obs){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.slide-up').forEach(function(el){
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
