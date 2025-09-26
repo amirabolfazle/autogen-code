@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#05060a;
+      --bg2:#08121a;
+      --neon-cyan:#00f0ff;
+      --neon-pink:#ff3fa3;
+      --neon-blue:#6ae2ff;
+      --glass: rgba(255,255,255,0.02);
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:
+        radial-gradient(1200px 600px at 5% 10%, rgba(0,240,255,0.04), transparent 6%),
+        radial-gradient(900px 500px at 95% 90%, rgba(255,63,163,0.03), transparent 6%),
+        linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#e6f7ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* container */
+    .wrap{
+      width:min(920px,92vw);
+      padding:48px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:
+        0 6px 30px rgba(2,8,23,0.6),
+        0 0 50px rgba(0,240,255,0.02),
+        inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px) saturate(120%);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      text-align:center;
+      position:relative;
+      overflow:visible;
+    }
+
+    /* neon title */
+    h1{
+      margin:0;
+      font-size:clamp(28px,6vw,68px);
+      letter-spacing:0.02em;
+      color:var(--neon-cyan);
+      text-transform:lowercase;
+      text-shadow:
+        0 0 6px rgba(0,240,255,0.6),
+        0 0 20px rgba(0,240,255,0.12),
+        0 10px 30px rgba(0,10,20,0.6);
+      transform-origin:50% 50%;
+      filter:drop-shadow(0 8px 30px rgba(0,240,255,0.06));
+      margin-bottom:6px;
+    }
+
+    /* subtle neon accent line */
+    .accent{
+      height:4px;
+      width:120px;
+      border-radius:3px;
+      background:linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+      box-shadow:0 0 18px rgba(255,63,163,0.18), 0 0 30px rgba(0,240,255,0.08);
+      opacity:0.95;
+    }
+
+    /* timestamp */
+    .meta{
+      color:rgba(230,247,255,0.8);
+      font-size:14px;
+      letter-spacing:0.02em;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+      border-radius:10px;
+      padding:8px 14px;
+      margin-top:6px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      display:inline-block;
+      transform:translateY(20px);
+      opacity:0;
+    }
+
+    /* footer */
+    footer{
+      margin-top:22px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--neon-blue);
+      font-size:13px;
+      opacity:0.95;
+    }
+    .gh-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--neon-blue);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.015), transparent);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 18px rgba(106,226,255,0.03);
+      transition:transform .28s ease, box-shadow .28s ease;
+      transform:translateY(20px);
+      opacity:0;
+    }
+    .gh-link:focus, .gh-link:hover{
+      transform:translateY(0) scale(1.02);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 28px rgba(0,240,255,0.08);
+    }
+
+    /* github icon */
+    .gh-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      filter: drop-shadow(0 6px 16px rgba(0,240,255,0.04));
+      transition:transform .28s ease;
+    }
+
+    /* animated scanline */
+    .scanline{
+      position:absolute;
+      left:-30%;
+      top:0;
+      width:160%;
+      height:140%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.00) 0%, rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.00) 52%);
+      transform:skewY(-12deg);
+      pointer-events:none;
+      mix-blend-mode:overlay;
+      animation: sweep 6s linear infinite;
+      opacity:0.06;
+      border-radius:16px;
+    }
+
+    @keyframes sweep{
+      0% { transform: translateX(-120%) skewY(-12deg); }
+      50% { transform: translateX(20%) skewY(-12deg); }
+      100% { transform: translateX(120%) skewY(-12deg); }
+    }
+
+    /* slide-up staggered */
+    .wrap > * {
+      will-change:transform,opacity;
+      animation: slideUp .75s cubic-bezier(.22,.9,.28,1) forwards;
+    }
+    .wrap > :nth-child(1){ animation-delay: 0.10s; } /* h1 */
+    .wrap > :nth-child(2){ animation-delay: 0.22s; } /* accent */
+    .wrap > :nth-child(3){ animation-delay: 0.34s; } /* meta */
+    footer .gh-link{ animation: slideUp .75s cubic-bezier(.22,.9,.28,1) forwards; animation-delay: 0.46s; }
+    @keyframes slideUp{
+      from { opacity:0; transform: translateY(26px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* small neon flicker for title */
+    @keyframes neonFlicker{
+      0%,18%,20%,50%,70%,100% { text-shadow: 0 0 6px rgba(0,240,255,0.6), 0 0 20px rgba(0,240,255,0.12); }
+      19% { text-shadow: 0 0 2px rgba(0,240,255,0.18); }
+      51% { text-shadow: 0 0 10px rgba(0,240,255,0.9); }
+    }
+    h1 { animation: neonFlicker 3.6s infinite; }
+
+    /* responsiveness */
+    @media (max-width:520px){
+      .wrap{ padding:28px; gap:12px; }
+      footer{ font-size:12px; gap:8px; flex-direction:column; align-items:center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-label="amirabolfazle landing">
+    <div class="scanline" aria-hidden="true"></div>
+
+    <h1>amirabolfazle</h1>
+    <div class="accent" aria-hidden="true"></div>
+    <div class="meta">2025-09-26 20:41:06</div>
+
+    <footer>
+      <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub — amirabolfazle repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.11.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.75.4-1.25.73-1.54-2.56-.29-5.26-1.28-5.26-5.72 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.08 11.08 0 012.9-.39c.98.01 1.98.13 2.9.39 2.21-1.49 3.18-1.18 3.18-1.18.62 1.59.23 2.76.11 3.05.73.81 1.18 1.84 1.18 3.1 0 4.45-2.71 5.43-5.29 5.71.41.35.77 1.03.77 2.07 0 1.49-.01 2.69-.01 3.05 0 .3.21.67.79.56C20.72 21.39 24 17.09 24 12 24 5.65 18.35.5 12 .5z" fill="currentColor"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // tiny visual polish: slightly nod the card on mouse move
+    (function(){
+      const card = document.querySelector('.wrap');
+      let rect;
+      function updateRect(){ rect = card.getBoundingClientRect(); }
+      updateRect();
+      window.addEventListener('resize', updateRect);
+      let raf;
+      document.addEventListener('mousemove', (e)=>{
+        if(raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(()=>{
+          const cx = rect.left + rect.width/2;
+          const cy = rect.top + rect.height/2;
+          const dx = (e.clientX - cx) / rect.width;
+          const dy = (e.clientY - cy) / rect.height;
+          card.style.transform = `perspective(800px) rotateX(${(-dy*6).toFixed(2)}deg) rotateY(${(dx*6).toFixed(2)}deg)`;
+        });
+      });
+      document.addEventListener('mouseleave', ()=>{ card.style.transform=''; });
+    })();
+  </script>
+</body>
+</html>
