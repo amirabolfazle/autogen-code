@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0e14;
+      --panel: #141a25;
+      --panel-2: #0f1320;
+      --text: #e8e8f0;
+      --muted: #a6a6b3;
+      --accent: #7c5cff;
+      --glow: rgba(124,92,255,.65);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color:var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(124,92,255,.25), transparent 40%),
+                  radial-gradient(circle at 90% 10%, rgba(0,255,180,.15), transparent 40%),
+                  #0b0f14;
+      overflow-x:hidden;
+    }
+
+    /* stage and tilt container */
+    .stage{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:40px 20px;
+      perspective:1000px;
+    }
+
+    /* decorative rotating rings */
+    .ring, .ring2{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:420px;
+      height:420px;
+      transform:translate(-50%, -50%);
+      border-radius:50%;
+      border:1px dashed rgba(180,190,255,.45);
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .ring{ animation: spin 28s linear infinite; opacity:.65 }
+    .ring2{ width:520px; height:520px; animation: spin2 42s linear infinite; opacity:.5; border-color: rgba(0,255,200,.25) }
+
+    @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg) } to { transform: translate(-50%, -50%) rotate(360deg) } }
+    @keyframes spin2{ from { transform: translate(-50%, -50%) rotate(0deg) } to { transform: translate(-50%, -50%) rotate(-360deg) } }
+
+    /* card (the fancy animated personal page) */
+    #card{
+      position:relative;
+      width:min(860px, 92vw);
+      padding:48px;
+      border-radius:22px;
+      background: linear-gradient(145deg, rgba(20,24,40,.97), rgba(10,12,20,.97));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: 0 30px 90px rgba(0,0,0,.6);
+      transform-style: preserve-3d;
+      transition: transform .15s ease;
+      overflow:hidden;
+    }
+    /* decorative glow layer around card */
+    #card:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:24px;
+      padding:1px;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(124,92,255,.0), rgba(124,92,255,.25), rgba(0,255,255,.2), rgba(124,92,255,.0));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: exclude;
+      pointer-events:none;
+      z-index:0;
+    }
+    .background-glow{
+      position:absolute;
+      width:300px; height:300px;
+      border-radius:50%;
+      left:-60px; top:-60px;
+      background: radial-gradient(circle, rgba(124,92,255,.6), transparent 60%);
+      filter: blur(40px);
+      pointer-events:none;
+      animation: float 6s ease-in-out infinite;
+      opacity:.6;
+    }
+    @keyframes float{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-10px) } }
+
+    .brand{
+      margin:0;
+      font-family: ui-sans-serif, system-ui;
+      font-size: clamp(2.2rem, 4vw + 1rem, 4rem);
+      line-height:1.05;
+      letter-spacing:.5px;
+      background: linear-gradient(135deg, #fff, #a6f, #6ff);
+      -webkit-background-clip: text;
+      background-clip:text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(124,92,255,.6);
+      transform: translateZ(20px);
+      display:inline-block;
+      margin-bottom:6px;
+      user-select:none;
+      animation: glowText 3s ease-in-out infinite alternate;
+    }
+    @keyframes glowText{
+      from{ text-shadow: 0 0 12px rgba(124,92,255,.4) }
+      to{ text-shadow: 0 0 28px rgba(124,92,255,.95) }
+    }
+
+    .creation-time{
+      display:block;
+      font-size:0.95rem;
+      color:#b8b8c4;
+      margin:6px 0 14px 0;
+      opacity:.95;
+    }
+
+    .card .content p{
+      margin:12px 0;
+      font-size:1.15rem;
+      line-height:1.6;
+      color:#e8e8f0;
+    }
+
+    /* subtle tilt effect on hover/move */
+    .stage:hover #card{ transform: rotateX(2deg) rotateY(-2deg); }
+    #card{ transform: rotateX(0deg) rotateY(0deg) translateZ(0); }
+
+    /* CTA styling (optional flourish) */
+    .cta{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.25);
+      color:#e8e8ff; text-decoration:none;
+      background: rgba(124,92,255,.15);
+      transition: transform .2s ease;
+    }
+    .cta:hover{ transform: translateY(-1px) scale(1.02); }
+
+    /* footer */
+    .footer{
+      text-align:center;
+      color:#8a8a8a;
+      padding:28px 12px 60px;
+      font-size:0.95rem;
+    }
+    .github-link{ display:inline-flex; align-items:center; gap:8px; color:#cbd5e1; text-decoration:none; margin-right:8px; }
+    .github-link svg{ width:20px; height:20px; fill:currentColor; vertical-align:middle; }
+
+    @media (max-width: 720px){
+      #card{ padding:28px; }
+      .ring, .ring2{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" aria-label="Amir Abolfazle animated page">
+    <div class="ring" aria-hidden="true"></div>
+    <div class="ring2" aria-hidden="true"></div>
+
+    <section id="card" role="region" aria-label="Personal page card">
+      <div class="background-glow" aria-hidden="true"></div>
+
+      <div class="content" style="position:relative; z-index:1;">
+        <h1 class="brand">amirabolfazle</h1>
+        <span class="creation-time" aria-label="Creation time">Creation time: 2025-09-26 22:52:23</span>
+
+        <p>Welcome to my fancy animated personal page. This dark-mode page features rotating rings, subtle glow, and a 3D tilt that responds to your cursor.</p>
+        <p>Move your mouse around to feel the depth and motion as elements gently rotate and glow.</p>
+
+        <!-- Optional gentle call-to-action to demonstrate interactivity -->
+        <a class="cta" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+          View my GitHub autogen-code
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .5C5.73.5 0 5.73 0 12a12 12 0 008.21 11.43c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.55-1.38-1.34-1.75-1.34-1.75-1.09-.75.08-.74.08-.74 1.21.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.77.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.47 5.92.43.37.81 1.1.81 2.23v3.31c0 .32.21.69.83.58A12 12 0 0012 .5z" />
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Basic mouse tilt interaction for depth feel
+    (function(){
+      const stage = document.querySelector('.stage');
+      const card = document.getElementById('card');
+      if(!stage || !card) return;
+
+      function tilt(e){
+        const rect = stage.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = e.clientX - cx;
+        const dy = e.clientY - cy;
+        const maxTiltX = 12;
+        const maxTiltY = 12;
+        const rotX = (-dy / (rect.height/2)) * maxTiltX;
+        const rotY = (dx / (rect.width/2)) * maxTiltY;
+        card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(20px)`;
+      }
+
+      function resetTilt(){
+        card.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+      }
+
+      stage.addEventListener('mousemove', tilt);
+      stage.addEventListener('mouseleave', resetTilt);
+    })();
+  </script>
+</body>
+</html>
