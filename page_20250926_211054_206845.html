@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1:#071020;
+      --bg-2:#0d1b2a;
+      --accent:#7ee7c9;
+      --accent-2:#7a9cff;
+      --muted:#9aa6b2;
+      --card:#0f1b26;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(122,156,255,0.06), transparent),
+                  radial-gradient(900px 400px at 90% 90%, rgba(126,231,201,0.04), transparent),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color: #e6f0f6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* Floating animated blobs */
+    .blob{
+      position: absolute;
+      filter: blur(40px) saturate(120%);
+      opacity:0.7;
+      mix-blend-mode: screen;
+      transform-origin:center;
+      will-change: transform, opacity;
+      pointer-events:none;
+    }
+    .blob.one{
+      width:520px;height:520px;
+      left:-120px;top:-80px;
+      background: radial-gradient(circle at 30% 30%, rgba(122,156,255,0.45), transparent 30%),
+                  radial-gradient(circle at 70% 70%, rgba(126,231,201,0.25), transparent 40%);
+      animation: float1 14s ease-in-out infinite;
+    }
+    .blob.two{
+      width:420px;height:420px;
+      right:-140px;bottom:-120px;
+      background: radial-gradient(circle at 40% 60%, rgba(255,255,255,0.06), transparent 30%),
+                  radial-gradient(circle at 70% 30%, rgba(126,231,201,0.18), transparent 50%);
+      animation: float2 18s ease-in-out infinite;
+    }
+    @keyframes float1{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(30px) rotate(8deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+    @keyframes float2{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-40px) rotate(-6deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    /* Layout */
+    .container{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 28px;
+      box-sizing:border-box;
+      position:relative;
+      z-index:1;
+    }
+    .card{
+      width:100%;
+      max-width:1100px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius:16px;
+      padding:36px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:hidden;
+    }
+
+    /* Left column */
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      justify-content:center;
+    }
+    h1{
+      margin:0;
+      font-size:46px;
+      letter-spacing:-0.02em;
+      line-height:1;
+      color:linear-gradient(90deg,var(--accent),var(--accent-2));
+      display:inline-block;
+      position:relative;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 60%, rgba(255,255,255,0.6) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.2,1) 0.2s both;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:15px;
+      margin-top:6px;
+      max-width:70ch;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.2,1) 0.4s both;
+    }
+
+    /* Type ripple for role */
+    .role{
+      margin-top:6px;
+      font-weight:600;
+      color:#cfeff1;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.2,1) 0.6s both;
+    }
+    .role .ticker{
+      overflow:hidden;
+      white-space:nowrap;
+      display:inline-block;
+      vertical-align:bottom;
+      border-right:2px solid rgba(255,255,255,0.12);
+      padding-right:6px;
+      animation: typing 6s steps(40,end) infinite, blink 1s step-end infinite;
+      max-width:360px;
+    }
+    @keyframes typing{
+      0%{width:0}
+      10%{width:120px}
+      30%{width:220px}
+      50%{width:280px}
+      70%{width:200px}
+      90%{width:320px}
+      100%{width:360px}
+    }
+    @keyframes blink{
+      50%{border-color: transparent}
+    }
+
+    /* Right column - profile panel */
+    .profile{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:flex-start;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.55);
+      animation: fadeUp .9s cubic-bezier(.2,.9,.2,1) 0.8s both;
+    }
+    .avatar{
+      width:96px;height:96px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:#05121a;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.45);
+      flex-shrink:0;
+    }
+    .meta{
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .meta .name{font-weight:700;font-size:18px;}
+    .meta .time{font-size:13px;color:var(--muted);}
+
+    /* Stats / quick links */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:12px;
+      margin-top:18px;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.2,1) 1.0s both;
+    }
+    .tile{
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:column;gap:6px;
+      min-height:68px;
+    }
+    .tile .label{font-size:12px;color:var(--muted)}
+    .tile .value{font-weight:700;font-size:16px}
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.2,1) 1.2s both;
+    }
+    .github{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      transition: color .18s ease, transform .18s ease;
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    }
+    .github:hover{ color:var(--accent); transform:translateY(-4px);}
+    .github svg{filter:drop-shadow(0 6px 18px rgba(0,0,0,0.5));}
+
+    /* Fade up */
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(10px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    /* Responsive */
+    @media (max-width:920px){
+      .card{grid-template-columns:1fr; padding:24px;}
+      .grid{grid-template-columns: repeat(2,1fr)}
+    }
+    @media (max-width:540px){
+      h1{font-size:34px}
+      .grid{grid-template-columns: repeat(1,1fr)}
+      .role .ticker{max-width:220px}
+    }
+
+    /* small floating dots accent */
+    .dots{
+      position:absolute;inset:0;pointer-events:none;z-index:0;
+      background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.02) 0 1px, transparent 1px),
+                        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.01) 0 1px, transparent 1px);
+      background-size: 30px 30px, 80px 80px;
+      opacity:0.6;
+      mix-blend-mode: overlay;
+    }
+  </style>
+</head>
+<body>
+  <div class="blob one" aria-hidden="true"></div>
+  <div class="blob two" aria-hidden="true"></div>
+  <div class="dots" aria-hidden="true"></div>
+
+  <main class="container" role="main">
+    <section class="card" aria-labelledby="name-heading">
+      <div class="hero">
+        <h1 id="name-heading" aria-label="amirabolfazle">amirabolfazle</h1>
+        <div class="subtitle">Design-driven tinkerer, code craftsman, and lifelong learner. I build elegant tools and playful interfaces that solve real problems.</div>
+
+        <div class="role" aria-hidden="false">
+          <span style="opacity:.72">Role:</span>
+          <span class="ticker">Full-stack developer • Open-source contributor • Creative coder • DevOps-minded</span>
+        </div>
+
+        <div class="grid" role="list">
+          <div class="tile" role="listitem">
+            <div class="label">Location</div>
+            <div class="value">Remote / Global</div>
+          </div>
+          <div class="tile" role="listitem">
+            <div class="label">Focus</div>
+            <div class="value">Web apps & automation</div>
+          </div>
+          <div class="tile" role="listitem">
+            <div class="label">Stack</div>
+            <div class="value">JS · Node · Python · Rust</div>
+          </div>
+        </div>
+
+        <footer>
+          <div>Creation time: <strong>2025-09-26 21:09:59</strong></div>
+          <div style="opacity:.9">Want to chat? <span style="color:var(--accent)">Say hi.</span></div>
+        </footer>
+      </div>
+
+      <aside class="profile" aria-label="profile card">
+        <div class="avatar" aria-hidden="true">AM</div>
+        <div class="meta">
+          <div class="name">amirabolfazle</div>
+          <div class="time">Last updated: 2025-09-26 21:09:59</div>
+          <div style="color:var(--muted);font-size:13px;margin-top:8px;max-width:220px">
+            Building small things with big attention. Open to collaborations and ideas — my GitHub holds the map.
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div style="max-width:1100px;margin:18px auto 36px;padding:0 28px;box-sizing:border-box;">
+    <footer style="display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font-size:13px;">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.49 2.87 8.3 6.84 9.64.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.38-3.37-1.38-.45-1.17-1.11-1.48-1.11-1.48-.91-.64.07-.63.07-.63 1.01.07 1.54 1.06 1.54 1.06.9 1.58 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.08 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.28 9.28 0 0 1 2.5-.35c.85.01 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.95-2.35 4.81-4.59 5.07.36.33.68.97.68 1.96 0 1.41-.01 2.55-.01 2.9 0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12.26C22 6.58 17.52 2 12 2z" fill="currentColor"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+      <div style="opacity:.7">© 2025 · amirabolfazle</div>
+    </footer>
+  </div>
+
+  <script>
+    // Subtle parallax on mouse move
+    (function(){
+      const container = document.querySelector('.container');
+      const blobs = document.querySelectorAll('.blob');
+      document.addEventListener('pointermove', (e) => {
+        const x = (e.clientX / window.innerWidth) - 0.5;
+        const y = (e.clientY / window.innerHeight) - 0.5;
+        blobs.forEach((b, i) => {
+          const depth = (i === 0) ? 14 : -18;
+          b.style.transform = `translate3d(${x * depth}px, ${y * depth}px, 0) rotate(${(x+y)*10}deg)`;
+        });
+      });
+
+      // tiny shimmer for header
+      const h = document.querySelector('h1');
+      setInterval(()=> {
+        h.style.filter = "brightness(1.04) saturate(1.06)";
+        setTimeout(()=> h.style.filter = "", 220);
+      }, 4200);
+    })();
+  </script>
+</body>
+</html>
