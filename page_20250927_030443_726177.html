@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --size1: 360px;
+      --size2: 240px;
+      --size3: 140px;
+    }
+
+    /* Gentle gradient background that shifts over time */
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans", "Liberation Sans";
+      color: #f8fafc;
+      background: linear-gradient(135deg, #1e3a8a 0%, #6d28d9 40%, #f472b6 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 16s ease infinite;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Stage with rotating orbits behind content */
+    .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .orbit {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--size);
+      height: var(--size);
+      transform: translate(-50%, -50%) rotate(0deg);
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      opacity: 0.7;
+      animation: spin linear infinite;
+      /* make faint glow */
+      box-shadow: 0 0 48px rgba(255, 255, 255, 0.25);
+    }
+
+    /* Each orbit can have its own duration via CSS variables */
+    .o1 { --size: var(--size1); animation-duration: 28s; }
+    .o2 { --size: var(--size2); animation-duration: 20s; }
+    .o3 { --size: var(--size3); animation-duration: 12s; }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .orbit .planet {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 14px;
+      height: 14px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Foreground content centered on the page */
+    .center-content {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .brand {
+      font-size: clamp(2.5rem, 6vw, 6rem);
+      font-weight: 900;
+      letter-spacing: .04em;
+      margin: 0;
+      line-height: 1.02;
+      background: linear-gradient(135deg, #a78bfa 0%, #f472b6 40%, #34d399 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 4px 24px rgba(0,0,0,.15);
+      user-select: none;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      margin: 0.75rem 0 0;
+      color: rgba(255, 255, 255, 0.92);
+      text-shadow: 0 1px 2px rgba(0,0,0,.25);
+    }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.92);
+      margin-top: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(0,0,0,.18);
+      display: inline-block;
+    }
+
+    /* Footer with GitHub icon + text */
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .github-link {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #fff;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(4px);
+      transition: transform .25s ease, background .25s ease;
+    }
+
+    .github-link:hover {
+      transform: translateY(-2px);
+      background: rgba(0,0,0,.38);
+    }
+
+    .github-icon {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      color: #fff;
+    }
+
+    .footer .credit {
+      font-size: 0.95rem;
+      color: #fff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    /* Accessibility for prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .orbit { animation: none; }
+      @keyframes gradientBG { from { } to { } }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated gradient stage with rotating orbits -->
+  <div class="stage" aria-label="Decorative rotating orbits with gradient theme">
+    <div class="orbit o1" aria-hidden="true">
+      <span class="planet" style="background: conic-gradient(from 0deg, #60a5fa, #f472b6, #f59e0b, #60a5fa);"></span>
+    </div>
+    <div class="orbit o2" aria-hidden="true">
+      <span class="planet" style="background: conic-gradient(from 0deg, #34d399, #22d3ee, #a78bfa, #34d399);"></span>
+    </div>
+    <div class="orbit o3" aria-hidden="true">
+      <span class="planet" style="background: conic-gradient(from 0deg, #f472b6, #8b5cf6, #22d3ee, #f472b6);"></span>
+    </div>
+  </div>
+
+  <!-- Centered content -->
+  <main class="center-content" aria-label="Main content">
+    <section class="hero" style="max-width: 900px; padding: 1rem;">
+      <h1 class="brand" aria-label="Site title">amirabolfazle</h1>
+      <p class="subtitle">Fully responsive animated HTML with a gradient theme and rotate effects</p>
+      <p class="creation" aria-label="Creation timestamp">Creation time: 2025-09-27 03:03:55</p>
+    </section>
+  </main>
+
+  <!-- Footer with GitHub icon and link -->
+  <footer class="footer" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="github-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.53-.49-.36-.92-.88-1.17-.88-1.17-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.21 1.87.86 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.97 0-.88.31-1.6.82-2.16-.08-.2-.36-1.01.08-2.1 0 0 .67-.21 2.2.82a7.7 7.7 0 012.01-.26 7.7 7.7 0 012.01.26c1.53-1.03 2.2-.82 2.2-.82.44 1.09.16 1.9.08 2.1.51.56.82 1.28.82 2.16 0 3.08-1.87 3.77-3.65 3.97.25.22.47.65.47 1.31 0 0 .01.69-.01 1.04-.01.21.13.46.55.38A8 8 0 018 0z" clip-rule="evenodd"/>
+      </svg>
+      <span class="github-text" style="white-space: nowrap;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
