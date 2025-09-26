@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --neon-cyan: #00e5ff;
+      --neon-pink: #ff2de6;
+      --bg: #0a0a0a;
+      --card: rgba(8,8,14,0.6);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #0a0a0a;
+      color: #e8f3ff;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    }
+
+    body {
+      background-image: radial-gradient(circle at 20% 0%, rgba(0, 230, 255, 0.15), transparent 40%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 0, 230, 0.15), transparent 40%),
+                        radial-gradient(circle at 60% 60%, rgba(0, 255, 180, 0.15), transparent 40%);
+      background-size: 100% 100%, 100% 100%, 100% 100%;
+      overflow-x: hidden;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: start;
+      justify-items: center;
+      position: relative;
+    }
+
+    .hero {
+      position: relative;
+      padding: 4rem 1rem;
+      text-align: center;
+      min-height: 70vh;
+      width: 100%;
+      overflow: hidden;
+      perspective: 1000px;
+    }
+
+    .hero__bg {
+      position: absolute;
+      width: 140vmax;
+      height: 140vmax;
+      background: radial-gradient(circle at 20% 20%, rgba(0,255,255,.25), transparent 40%),
+                  radial-gradient(circle at 60% 60%, rgba(255,0,230,.25), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(0,170,255,.25), transparent 40%);
+      filter: blur(60px);
+      transform: rotate(0deg);
+      animation: drift 18s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes drift {
+      0% { transform: rotate(0deg) translateZ(0) scale(1); }
+      50% { transform: rotate(180deg) translateZ(0) scale(1.05); }
+      100% { transform: rotate(360deg) translateZ(0) scale(1); }
+    }
+
+    .brand-gradient {
+      background: linear-gradient(92deg, #00e5ff, #7a00ff, #ff2de6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero__title {
+      font-size: clamp(2.6rem, 5vw, 6rem);
+      line-height: 1.05;
+      margin: 0;
+      padding: 0;
+      z-index: 1;
+      position: relative;
+      transform: translateZ(0);
+      text-shadow: 0 0 24px rgba(0, 255, 255, 0.75);
+      animation: zoomIn 1.2s ease-out forwards;
+      color: #dffaff;
+    }
+
+    @keyframes zoomIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      60% { transform: scale(1.04); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .hero__subtitle {
+      margin-top: .5rem;
+      font-size: 1.1rem;
+      color: #a7e4ff;
+      opacity: 0.95;
+      z-index: 1;
+      position: relative;
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: .25rem .6rem;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: .8rem;
+      color: #051d1d;
+      background: linear-gradient(135deg, rgba(0,255,200,.15), rgba(255,0,230,.15));
+      border: 1px solid rgba(0,255,200,.5);
+      box-shadow: 0 0 20px rgba(0,255,200,.5);
+      backdrop-filter: blur(2px);
+      z-index: 1;
+    }
+
+    .card {
+      margin-top: 2rem;
+      padding: 1.25rem;
+      width: min(860px, 92%);
+      border-radius: 20px;
+      border: 1px solid rgba(0,255,255,.5);
+      background: var(--card);
+      box-shadow: inset 0 0 40px rgba(0,255,200,.15), 0 0 40px rgba(0,255,255,.3);
+      backdrop-filter: blur(2px);
+      transform: scale(0.98);
+      animation: pop 0.8s ease-out forwards;
+      z-index: 1;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .card__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .tile {
+      padding: 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      background: linear-gradient(135deg, rgba(0,0,0,.25), rgba(0,0,0,.5));
+      color: #eaffff;
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tile:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(0,255,255,0.5);
+    }
+
+    .tile::before {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(0,255,255,.9), transparent 60%);
+      top: -40px;
+      right: -40px;
+      filter: blur(4px);
+      opacity: 0.5;
+    }
+
+    .tile h4 { margin: 0 0 .5rem; font-size: 1.05rem; }
+    .tile p { margin: 0; color: #cfefff; font-size: .95rem; }
+
+    .footer {
+      width: 100%;
+      padding: 1.25rem 0;
+      text-align: center;
+      color: #8deaff;
+      font-size: .95rem;
+      border-top: 1px solid rgba(0,255,255,0.25);
+      margin-top: 2rem;
+      background: rgba(0,0,0,.4);
+      backdrop-filter: blur(2px);
+      z-index: 1;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #a1f0ff;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.6);
+      background: linear-gradient(135deg, rgba(0,255,255,.15), rgba(0,0,0,.15));
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 0 12px rgba(0,255,255,.4);
+    }
+
+    .github-link:hover {
+      transform: translateY(-1px) scale(1.04);
+      box-shadow: 0 0 20px rgba(0,255,255,.6);
+    }
+
+    .icon {
+      width: 20px; height: 20px; display: inline-block; fill: currentColor;
+    }
+
+    @media (max-width: 700px) {
+      .hero { padding: 2rem 1rem; min-height: 60vh; }
+      .hero__title { font-size: 2.6rem; }
+    }
+
+    /* Soft glow for neon vibe on small elements */
+    @keyframes glow {
+      0% { box-shadow: 0 0 0 rgba(0,255,255,0); }
+      100% { box-shadow: 0 0 20px rgba(0,255,255,.6); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" aria-label="Personal page">
+    <header class="hero" aria-label="Intro">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <h1 class="hero__title brand-gradient" style="text-shadow: 0 0 24px rgba(0,255,255,.9);">amirabolfazle</h1>
+      <div class="hero__subtitle">Personal neon showcase</div>
+      <div class="creation-time" aria-label="Creation time">Creation time: 2025-09-27 00:18:22</div>
+    </header>
+
+    <section class="card" aria-label="Overview">
+      <div class="hero__bio" style="text-align:center;">
+        Welcome to my neon-styled personal page. This demo uses neon gradients and zoom effects to create a vibrant, futuristic vibe.
+      </div>
+
+      <div class="card__grid" style="margin-top:1rem;">
+        <div class="tile" style="animation: glow 2s infinite alternate;">
+          <h4>Projects</h4>
+          <p>Autogenerated code snippets and demos</p>
+        </div>
+        <div class="tile">
+          <h4>Skills</h4>
+          <p>HTML, CSS, JavaScript, UI/UX</p>
+        </div>
+        <div class="tile">
+          <h4>Contact</h4>
+          <p>Open to collaboration</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg class="icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.55-1.41-1.34-1.79-1.34-1.79-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.84 2.81 1.31 3.49 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1 .32 3.3 1.23a11.5 11.5 0 0 1 6 0C15.5 4.37 16.5 4 16.5 4c.66 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.6-2.8 5.61-5.47 5.9.43.37.82 1.1.82 2.22v3.29c0 .32.21.69.83.58A12 12 0 0 0 12 .5z"/>
+        </svg>
+      </a>
+      <div style="margin-top:.5rem; color:#d7feff;">Created by amirabolfazle</div>
+    </footer>
+  </div>
+</body>
+</html>
