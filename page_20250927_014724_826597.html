@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: rgba(255,255,255,0.15);
+      --bg2: rgba(255,255,255,0.25);
+      --fg: #eaf2ff;
+      --stroke: rgba(255,255,255,0.4);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--fg);
+      background:
+        radial-gradient(circle at 20% -10%, rgba(80,120,255,0.25), transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(0,200,180,0.25), transparent 40%),
+        linear-gradient(135deg, #0b1020 0%, #0b1020 60%, #0b1020 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+      animation: bgShift 12s linear infinite;
+    }
+    @keyframes bgShift { 
+      0% { filter: hue-rotate(0deg); } 
+      100% { filter: hue-rotate(360deg); } 
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .brand {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(8px) saturate(1.2);
+      font-weight: 800;
+      letter-spacing: .4px;
+      font-size: 1.7rem;
+      transform: rotate(-2deg);
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: rotate(-2deg) translateY(0); }
+      50% { transform: rotate(-2deg) translateY(-6px); }
+    }
+
+    .creation {
+      margin-top: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas;
+      color: #eaefff;
+      opacity: 0.95;
+      font-size: .92rem;
+    }
+    .creation .time {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(6px);
+      display: inline-block;
+      margin-left: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas;
+      color: #0b1020;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      width: min(1100px, 92vw);
+      perspective: 1000px;
+      margin-top: 8px;
+    }
+
+    .card {
+      position: relative;
+      padding: 18px;
+      height: 170px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.45);
+      backdrop-filter: blur(12px) saturate(1.2);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: rotateX(6deg) rotateY(-6deg);
+    }
+
+    .title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: .2px;
+    }
+    .desc {
+      font-size: .92rem;
+      color: #eaf2ff;
+      opacity: .92;
+    }
+    .tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .75rem;
+      color: #05101a;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(0,0,0,0.15);
+    }
+    .cta {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+    }
+    .btn {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.5);
+      color: #0b1020;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.75);
+    }
+
+    .orb {
+      position: fixed;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.6;
+      animation: orbit 20s linear infinite;
+    }
+    .orb.o1 { top: -60px; left: -60px; background: radial-gradient(circle at 30% 30%, rgba(70,180,255,0.8), transparent 40%), radial-gradient(circle at 70% 70%, rgba(180,100,255,0.5), transparent 40%); }
+    .orb.o2 { bottom: -80px; right: -40px; background: radial-gradient(circle at 40% 60%, rgba(0,255,200,0.6), transparent 40%), radial-gradient(circle at 60% 40%, rgba(255,140,200,0.5), transparent 40%); }
+
+    @keyframes orbit {
+      from { transform: rotate(0deg) translateZ(0) rotate(0deg); }
+      to   { transform: rotate(360deg) translateZ(0) rotate(-360deg); }
+    }
+
+    .footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 0 40px;
+      color: #d8e8ff;
+      font-size: .95rem;
+      width: 100%;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      color: currentColor;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .card { height: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+
+  <main class="app" aria-label="Portfolio Amir Abolfazle">
+    <header class="header">
+      <div class="brand" aria-label="amirabolfazle">amirabolfazle</div>
+      <div class="creation" aria-live="polite">
+        Creation time:<span class="time"> 2025-09-27 01:46:51</span>
+      </div>
+    </header>
+
+    <section class="grid" aria-label="Projects">
+      <article class="card" style="--i:0;">
+        <span class="tag" style="background:#ffd9d9;">UI/UX</span>
+        <div class="title">Glass Morph Portfolio</div>
+        <div class="desc">A single-file animated portfolio with glassmorphism and rotate effects.</div>
+        <div class="cta">
+          <a class="btn" href="#" aria-label="View project">View</a>
+        </div>
+      </article>
+
+      <article class="card" style="--i:1;">
+        <span class="tag" style="background:#e9ffd9;">UI</span>
+        <div class="title">Animated Hero Section</div>
+        <div class="desc">Dynamic gradients, blurs, and 3D tilt interactions.</div>
+        <div class="cta">
+          <a class="btn" href="#" aria-label="View project">View</a>
+        </div>
+      </article>
+
+      <article class="card" style="--i:2;">
+        <span class="tag" style="background:#d9e5ff;">WebGL</span>
+        <div class="title">Rotating Elements</div>
+        <div class="desc">Subtle orbiting visuals to elevate the interface.</div>
+        <div class="cta">
+          <a class="btn" href="#" aria-label="View project">View</a>
+        </div>
+      </article>
+
+      <article class="card" style="--i:3;">
+        <span class="tag" style="background:#ffd6f0;">Glass</span>
+        <div class="title">Single-file Build</div>
+        <div class="desc">No frameworks. Pure CSS + HTML + tiny JS for interactions.</div>
+        <div class="cta">
+          <a class="btn" href="#" aria-label="View project">View</a>
+        </div>
+      </article>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+          <path d="M12 0.297C5.37 0.297 0 5.666 0 12.297c0 5.292 3.438 9.8 8.205 11.387.6.113.82-.26.82-.578 0-.286-.01-1.04-.015-2.04-3.338.726-4.042-1.613-4.042-1.613-.546-1.387-1.335-1.757-1.335-1.757-1.089-.745.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.775.42-1.305.764-1.605-2.665-.303-5.466-1.333-5.466-5.932 0-1.31.467-2.382 1.235-3.222-.125-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 013-.404c1.02.005 2.045.137 3 .404 2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.244 2.873.12 3.176.77.84 1.234 1.912 1.234 3.222 0 4.609-2.805 5.625-5.475 5.921.431.372.815 1.102.815 2.222 0 1.606-.015 2.898-.015 3.293 0 .32.216.697.825.579C20.565 22.093 24 17.585 24 12.297 24 5.666 18.627 0.297 12 0.297z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </main>
+
+  <script>
+    // Simple 3D tilt on pointer for each card
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rx = (y / rect.height - 0.5) * -12;
+        const ry = (x / rect.width - 0.5) * 12;
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `rotateX(0) rotateY(0)`;
+      });
+    });
+  </script>
+</body>
+</html>
