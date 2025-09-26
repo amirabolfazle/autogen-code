@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg2: #0a0f15;
+      --surface: #111621;
+      --card: #141a24;
+      --text: #e8f0f7;
+      --muted: #a6b6c8;
+      --primary: #7df9ff;
+      --accent: #8a5fff;
+      --glow: 0 0 16px rgba(0, 239, 255, 0.65);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0, 180, 255, .12), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(150, 0, 255, .12), transparent 40%),
+                  linear-gradient(#0b0f14, #0b0f14 60%, #0b0f14);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    header.header {
+      text-align: center;
+      padding: 48px 20px 24px;
+      position: relative;
+    }
+
+    .brand {
+      font-size: 64px;
+      font-weight: 900;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      color: #e7fbff;
+      text-shadow: 0 0 14px rgba(0, 230, 255, .9);
+      margin: 0;
+    }
+
+    .tagline {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: .4px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 6px 20px 40px;
+    }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: left; }
+      .brand { font-size: 46px; }
+    }
+
+    .panel {
+      background: rgba(12,14,22,.85);
+      border: 1px solid rgba(80,160,255,.25);
+      border-radius: 14px;
+      padding: 20px;
+      min-height: 140px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 12px 28px rgba(0,0,0,.4);
+    }
+
+    .neon {
+      color: #e9fbff;
+      text-shadow: 0 0 14px rgba(0, 230, 255, .9);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: .4px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: rgba(20,26,38,.9);
+      border: 1px solid rgba(60,140,200,.35);
+      border-radius: 12px;
+      padding: 14px 14px 46px;
+      min-height: 120px;
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover {
+      transform: scale(1.04);
+      z-index: 2;
+      box-shadow: 0 20px 40px rgba(0, 170, 255, .4);
+    }
+
+    .card h3 {
+      margin: 6px 0 6px;
+      font-size: 16px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid rgba(0,180,255,.6);
+      color: #aaf6ff;
+      background: rgba(0,180,255,.12);
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .footer {
+      padding: 18px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: var(--muted);
+      font-size: 13px;
+      background: rgba(0,0,0,.6);
+      position: relative;
+      margin-top: 12px;
+      backdrop-filter: blur(2px);
+    }
+
+    .footer a {
+      color: #aee8ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .creation {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      color: #d2f6ff;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    /* Floating decorative frames for motion/zoom feel */
+    .frame {
+      position: absolute;
+      border-radius: 50%;
+      width: 240px;
+      height: 240px;
+      border: 2px dashed rgba(0,200,255,.4);
+      animation: float 8s ease-in-out infinite;
+      left: 8%;
+      top: 6%;
+      opacity: .55;
+      pointer-events: none;
+    }
+    .frame2 {
+      width: 340px;
+      height: 340px;
+      right: 6%;
+      top: 12%;
+      border-color: rgba(128,0,255,.4);
+      animation-duration: 10s;
+      animation-delay: -2s;
+      opacity: .45;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px) translateX(0); }
+      50% { transform: translateY(-8px) translateX(4px); }
+      100% { transform: translateY(0px) translateX(0); }
+    }
+
+    @keyframes pop-in { 
+      from { transform: scale(0.92); opacity: 0; } 
+      to { transform: scale(1); opacity: 1; } 
+    }
+  </style>
+</head>
+<body>
+  <header class="header" aria-label="Intro header">
+    <h1 class="brand" aria-label="Portfolio brand">amirabolfazle</h1>
+    <div class="tagline">Dark mode animated one-file portfolio</div>
+
+    <div class="hero" aria-label="Intro deck">
+      <section class="panel" aria-labelledby="about">
+        <div class="section-title" id="about" style="font-weight:700;">About</div>
+        <p class="subtle" style="margin:0 0 6px; line-height:1.6;">
+          Hi, I’m amirabolfazle — a curious builder who explores code, design and interaction. This single-file portfolio showcases some projects with a dark theme and subtle zoom effects.
+        </p>
+        <div class="creation" aria-label="Creation time">Creation time: 2025-09-27 02:43:15</div>
+      </section>
+
+      <section class="panel" aria-label="Header summary" style="display:flex; align-items:center; justify-content:center;">
+        <div style="text-align:center;">
+          <div style="font-size:28px; font-weight:800; color:#d9fbff; text-shadow:0 0 12px rgba(0,255,255,.8);">amirabolfazle</div>
+          <div class="subtle" style="margin-top:6px;">Portfolio</div>
+        </div>
+      </section>
+
+      <div class="frame" aria-hidden="true"></div>
+      <div class="frame frame2" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <main style="padding: 0 20px 20px;">
+    <section class="panel" aria-labelledby="projects" style="margin: 20px 0 12px;">
+      <div class="section-title" id="projects" style="font-size:18px; font-weight:700;">Projects</div>
+      <div class="grid" id="grid">
+        <article class="card" style="animation: pop-in .5s ease forwards;">
+          <span class="badge">Web</span>
+          <h3>Project Nebula</h3>
+          <p>A sleek UI kit demo with responsive layouts and micro-interactions.</p>
+        </article>
+        <article class="card" style="animation: pop-in .6s ease forwards;">
+          <span class="badge" style="background: rgba(0,180,255,.25); border-color: rgba(0,180,255,.6);">Animation</span>
+          <h3>Pulse Studio</h3>
+          <p>Animation experiments with scroll-linked effects and depth.</p>
+        </article>
+        <article class="card" style="animation: pop-in .7s ease forwards;">
+          <span class="badge" style="background: rgba(0,180,255,.25); border-color: rgba(0,180,255,.6);">Tooling</span>
+          <h3>AutoGen Code Snips</h3>
+          <p>Sample code generation snippets for rapid prototyping.</p>
+        </article>
+        <article class="card" style="animation: pop-in .8s ease forwards;">
+          <span class="badge" style="background: rgba(0,180,255,.25); border-color: rgba(0,180,255,.6);">Design</span>
+          <h3>Lumina Dash</h3>
+          <p>Minimal dashboard UI with dark-mode polish.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="contact" style="margin: 12px 0 0;">
+      <div class="section-title" id="contact" style="font-size:18px; font-weight:700;">Contact</div>
+      <p class="subtle" style="margin:0 0 8px; line-height:1.6;">
+        Interested in collaborating? Reach out or fork the project.
+      </p>
+      <div style="display:flex; align-items: center; gap: 12px;">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener"
+           style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:8px; border:1px solid rgba(70,170,255,.6); color:#aee8ff;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+            <path d="M12 .5A12 12 0 0 0 0 12.5a12 12 0 0 0 8.21 11.42c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.55-1.41-1.34-1.79-1.34-1.79-1.09-.74.08-.72.08-.72 1.04.07 1.59 1.07 1.59 1.07.93 1.59 2.44 1.13 3.04.86.09-.69.36-1.13.65-1.39-2.31-.26-4.74-1.16-4.74-5.17 0-1.14.41-2.07 1.08-2.8-.11-.27-.47-1.37.1-2.85 0 0 .87-.28 2.85 1.07A9.93 9.93 0 0 1 12 6.8c.88-.41 1.83-.61 2.78-.62.99 0 1.99.14 2.93.41 1.98-1.35 2.85-1.07 2.85-1.07.58 1.48.22 2.58.11 2.85.68.73 1.08 1.66 1.08 2.8 0 3.99-2.44 4.9-4.77 5.16.37.32.7.95.7 1.92 0 1.39-.01 2.51-.01 2.85 0 .28.19.61.72.51C19.02 20.42 22 16.56 22 12 22 5.73 16.27.5 12 .5z"/>
+          </svg>
+          GitHub
+        </a>
+        <span class="creation" aria-label="Creation time">Creation time: 2025-09-27 02:43:15</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg class="icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-label="GitHub icon" style="vertical-align:middle;">
+        <path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.88 10.93c.58.11.79-.25.79-.56V21c-3.2.69-3.87-1.45-3.87-1.45-.5-1.28-1.22-1.62-1.22-1.62-1-.68.08-.66.08-.66 1.1.08 1.68 1.13 1.68 1.13 0 .83.59 1.42 1.29 1.66.34-.27.63-.41.97-.51-2.56-.29-5.25-1.28-5.25-5.69 0-1.25.45-2.28 1.2-3.08-.12-.3-.52-1.5.11-3.12 0 0 .98-.31 3.21 1.17a11.4 11.4 0 0 1 2.93-.39c.99 0 2 .14 2.93.41 2.23-1.48 3.21-1.17 3.21-1.17.63 1.62.23 2.82.11 3.12.75.8 1.2 1.83 1.2 3.08 0 4.41-2.69 5.4-5.25 5.69.65.56 1.23 1.58 1.23 3.19v3.05c0 .31.21.67.79.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/>
+      </svg>
+      GitHub
+    </a>
+    <div class="creation" style="margin-top:6px;">Created by amirabolfazle</div>
+  </footer>
+
+  <script>
+    // Gentle entrance animation for cards
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, idx) => {
+        card.style.animation = 'pop-in .4s ease forwards';
+        card.style.animationDelay = (idx * 40) + 'ms';
+      });
+
+      // Define the pop-in keyframes dynamically if not present
+      const s = document.createElement('style');
+      s.textContent = '@keyframes pop-in { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }';
+      document.head.appendChild(s);
+    })();
+  </script>
+</body>
+</html>
