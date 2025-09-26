@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#050007;
+    --neon-cyan: #00f5ff;
+    --neon-pink: #ff2d95;
+    --neon-purple: #8a2be2;
+    --glass: rgba(255,255,255,0.03);
+    --accent: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    --shadow: 0 0 8px rgba(0,245,255,0.08), 0 0 30px rgba(255,45,149,0.04);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  /* Background animation */
+  html,body{height:100%}
+  body{
+    margin:0;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,245,255,0.03), transparent 8%),
+                radial-gradient(900px 500px at 90% 90%, rgba(255,45,149,0.03), transparent 10%),
+                var(--bg);
+    color:#e6f7ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:auto;
+    scroll-behavior:smooth;
+  }
+
+  /* Subtle animated noise/glow */
+  .aurora{
+    position:fixed; inset:0; pointer-events:none; mix-blend-mode:screen; z-index:0;
+    background:
+      radial-gradient(600px 300px at 20% 15%, rgba(0,245,255,0.04), transparent 10%),
+      radial-gradient(500px 300px at 80% 80%, rgba(255,45,149,0.04), transparent 12%);
+    animation: drift 12s linear infinite alternate;
+    filter: blur(30px);
+  }
+  @keyframes drift{
+    from{transform:translate3d(-10px,-6px,0)}
+    to{transform:translate3d(14px,8px,0)}
+  }
+
+  .container{
+    position:relative;
+    z-index:2;
+    max-width:980px;
+    margin:48px auto;
+    padding:40px;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:30px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .logo{
+    width:64px;height:64px;border-radius:12px;
+    background: linear-gradient(135deg,var(--neon-pink), var(--neon-cyan));
+    box-shadow: 0 6px 30px rgba(0,245,255,0.08), 0 2px 8px rgba(255,45,149,0.06);
+    display:grid; place-items:center;
+    color:#050007; font-weight:700; font-size:20px;
+    text-transform:lowercase;
+    letter-spacing:1px;
+  }
+
+  nav a{
+    color:#9bdcff;
+    text-decoration:none;
+    margin-left:18px;
+    font-weight:600;
+    opacity:0.9;
+    transition:color .18s ease, transform .18s ease;
+  }
+  nav a:hover{ color:var(--neon-cyan); transform:translateY(-2px); }
+
+  .hero{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    padding:36px;
+    border-radius:14px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .hero-title{
+    font-size:42px;
+    line-height:1;
+    margin:0 0 8px 0;
+    letter-spacing:1px;
+    color:var(--neon-cyan);
+    text-shadow:
+      0 0 6px rgba(0,245,255,0.35),
+      0 0 20px rgba(0,245,255,0.12);
+  }
+  .glow{
+    display:inline-block;
+    background: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    filter:drop-shadow(0 6px 20px rgba(0,245,255,0.06));
+  }
+
+  .hero-sub{
+    margin:6px 0 16px 0;
+    color:#cfefff;
+    opacity:0.9;
+  }
+
+  .meta-row{display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+  .chip{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.03);
+    color:#dff8ff;
+    font-weight:600;
+    font-size:13px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+  }
+
+  .creative-tag{
+    font-family: "Courier New", Courier, monospace;
+    font-size:12px;
+    letter-spacing:0.6px;
+    color: #bfefff;
+  }
+
+  main{margin-top:26px; display:grid; gap:18px}
+
+  section.card{
+    padding:22px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.008));
+    box-shadow: 0 8px 40px rgba(8,6,22,0.6);
+    transform:translateY(36px);
+    opacity:0;
+    transition: all 650ms cubic-bezier(.2,.9,.25,1);
+  }
+  section.card.inview{
+    transform:translateY(0);
+    opacity:1;
+  }
+
+  .card h3{
+    margin:0 0 8px 0;
+    color:var(--neon-pink);
+    text-shadow: 0 0 8px rgba(255,45,149,0.12);
+  }
+  .card p{margin:0;color:#d6f7ff;opacity:0.95}
+
+  .projects{
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap:12px;
+    margin-top:12px;
+  }
+
+  .proj{
+    padding:14px;
+    border-radius:10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.007), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .proj:hover{
+    transform:translateY(-6px) scale(1.005);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.6);
+  }
+  .proj-title{font-weight:700;color:#eafcff;margin-bottom:6px}
+  .proj-desc{font-size:13px;color:#bfefff;opacity:0.9}
+
+  .cta-row{display:flex; gap:12px; margin-top:14px; flex-wrap:wrap}
+  .btn{
+    padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);
+    background:transparent;color:var(--neon-cyan);font-weight:700;text-decoration:none;
+    box-shadow: 0 6px 18px rgba(0,245,255,0.04);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{ transform:translateY(-4px); box-shadow: 0 20px 50px rgba(0,245,255,0.08); }
+
+  footer{
+    margin-top:28px;
+    padding:18px 24px;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    color:#bfefff;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+    border:1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  }
+
+  .github{
+    display:inline-flex; align-items:center; gap:10px; color:#dff8ff; text-decoration:none;
+  }
+  .github svg{fill:var(--neon-cyan); filter:drop-shadow(0 4px 18px rgba(0,245,255,0.06));}
+
+  .creation-time{
+    font-family: "Courier New", Courier, monospace;
+    font-size:13px; opacity:0.95; color:#bfefff;
+    display:inline-block;
+    padding:6px 10px; border-radius:8px;
+    background: rgba(0,0,0,0.22); border:1px solid rgba(255,255,255,0.02);
+  }
+
+  /* small screens */
+  @media (max-width:640px){
+    .brand .logo{width:52px;height:52px;font-size:18px}
+    .container{padding:18px}
+    header{flex-direction:column;align-items:flex-start; gap:12px}
+    footer{flex-direction:column;align-items:flex-start}
+  }
+
+  /* Neon flicker for the name */
+  @keyframes flicker{
+    0%{filter:brightness(1) drop-shadow(0 0 10px rgba(0,245,255,0.3))}
+    7%{filter:brightness(0.85) drop-shadow(0 0 6px rgba(0,245,255,0.18))}
+    10%{filter:brightness(1) drop-shadow(0 0 18px rgba(255,45,149,0.28))}
+    100%{filter:brightness(1) drop-shadow(0 0 10px rgba(0,245,255,0.28))}
+  }
+  .hero-title .flick{
+    display:inline-block;
+    animation: flicker 3.6s linear infinite;
+  }
+
+  /* tiny hover sparkle on links */
+  a::after{
+    content:'';
+    display:inline-block;
+    width:6px;height:6px;border-radius:50%;
+    margin-left:8px;
+    background:linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+    opacity:0; transform:translateY(6px);
+    transition:all .22s ease;
+  }
+  nav a:hover::after{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+
+<div class="container">
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">am</div>
+      <div>
+        <div style="font-size:15px;font-weight:800;letter-spacing:0.8px;color:var(--neon-pink)">amirabolfazle</div>
+        <div class="creative-tag" style="margin-top:4px">neon portfolio — front-end alchemy</div>
+      </div>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero card" role="region" aria-labelledby="hero-heading">
+    <h1 id="hero-heading" class="hero-title"><span class="flick">amira</span><span class="glow">bolfazle</span></h1>
+    <p class="hero-sub">Interactive one-file portfolio with neon vibes and smooth slide-up animations.</p>
+
+    <div class="meta-row" style="margin-top:14px">
+      <div class="chip">Full‑stack curiosity</div>
+      <div class="chip">Design + Code</div>
+      <div class="chip">Motion UI</div>
+      <div class="creation-time" title="Creation time">2025-09-26 21:06:39</div>
+    </div>
+
+    <div class="cta-row" style="margin-top:18px">
+      <a class="btn" href="#projects">See projects</a>
+      <a class="btn" href="#contact">Get in touch</a>
+    </div>
+  </section>
+
+  <main>
+    <section id="about" class="card" aria-labelledby="about-h">
+      <h3 id="about-h">About</h3>
+      <p>I'm amirabolfazle — I craft luminous interfaces and playful interactions. I like compact, single-file demos that tell a story and do their job with style.</p>
+    </section>
+
+    <section id="projects" class="card" aria-labelledby="proj-h">
+      <h3 id="proj-h">Selected Projects</h3>
+      <div class="projects" style="margin-top:12px">
+        <div class="proj">
+          <div class="proj-title">Autogen Code</div>
+          <div class="proj-desc">A toolkit for generating compact code artifacts and portfolio-ready demos.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-title">Neon UI Kit</div>
+          <div class="proj-desc">Design system components with neon-style tokens, glows and motion presets.</div>
+        </div>
+        <div class="proj">
+          <div class="proj-title">Motion Playground</div>
+          <div class="proj-desc">Small experiments in scroll-based reveal, micro-interactions and SVG fun.</div>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View code</a>
+      </div>
+    </section>
+
+    <section id="contact" class="card" aria-labelledby="contact-h">
+      <h3 id="contact-h">Contact</h3>
+      <p>Open to collaborations, side projects and caffeine-powered problem solving. Reach me via GitHub or drop a line wherever we cross paths online.</p>
+    </section>
+  </main>
+
+  <footer>
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.6 3 8.5 7.2 9.9.5.1.7-.2.7-.5 0-.2 0-.9 0-1.6-2.9.6-3.6-1.4-3.6-1.4-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.6 1.1 1.6 1.1 1 .1 1.7.9 2.2 1.3.2-1 .4-1.6.7-2-2.4-.3-4.9-1.2-4.9-5.3 0-1.2.4-2.2 1-3-.1-.3-.4-1.5.1-3.1 0 0 .8-.3 2.8 1 1-.3 2-.5 3-.5s2 .2 3 .5c2-1.3 2.8-1 2.8-1 .5 1.6.2 2.8.1 3.1.6.8 1 1.8 1 3 0 4.1-2.6 5-5 5.3.4.3.8 1 .8 2.1 0 1.6 0 3 0 3.4 0 .3.2.6.8.5 4.2-1.4 7.2-5.3 7.2-9.9C23.1 5.3 18.3.5 12 .5z"></path>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+
+    <div style="opacity:0.95">
+      <small style="font-family:monospace;color:#cfefff;">2025-09-26 21:06:39</small>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Slide-up on scroll using IntersectionObserver
+  (function(){
+    const observer = new IntersectionObserver((entries)=> {
+      entries.forEach(e=>{
+        if(e.isIntersecting) {
+          e.target.classList.add('inview');
+        }
+      });
+    }, {threshold:0.12});
+    document.querySelectorAll('section.card').forEach(el => observer.observe(el));
+
+    // small keyboard accessibility: nav links scroll nicely and focus the section
+    document.querySelectorAll('nav a').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href');
+        const target = document.querySelector(id);
+        if(target){
+          e.preventDefault();
+          target.scrollIntoView({behavior:'smooth', block:'start'});
+          target.tabIndex = -1;
+          setTimeout(()=> target.focus({preventScroll:true}), 600);
+        }
+      });
+    });
+
+    // subtle hover sparkle: randomize flicker duration a little
+    const flick = document.querySelector('.flick');
+    flick.style.animationDuration = (3 + Math.random()*1.6) + 's';
+  })();
+</script>
+</body>
+</html>
