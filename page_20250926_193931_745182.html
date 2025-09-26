@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --accent1: rgba(123, 97, 255, 0.12);
+      --accent2: rgba(0, 210, 255, 0.08);
+      --glass: rgba(255,255,255,0.06);
+      --glass-strong: rgba(255,255,255,0.09);
+      --glass-border: rgba(255,255,255,0.14);
+      --txt: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.65);
+      --shadow: 0 10px 30px rgba(2,6,23,0.7);
+      --radius: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.12), transparent 10%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(0,210,255,0.06), transparent 12%),
+                  linear-gradient(180deg,#071029 0%, #071425 60%, #061018 100%);
+      color:var(--txt);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 24px;
+      box-sizing:border-box;
+      overflow-y:auto;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+    }
+
+    @media (max-width:980px){
+      .container{ grid-template-columns: 1fr; padding-bottom:40px; }
+    }
+
+    /* Animated floating blobs */
+    .blob{
+      position:absolute;
+      width:520px;height:520px;
+      border-radius:50%;
+      filter:blur(60px);
+      opacity:0.12;
+      transform-origin:center;
+      z-index:0;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation: float 12s linear infinite;
+    }
+    .blob.a{ background:linear-gradient(135deg,#7b61ff,#00d2ff); top:-120px; left:-140px; animation-duration:14s; }
+    .blob.b{ background:linear-gradient(135deg,#ff7ab6,#00d2ff); bottom:-160px; right:-180px; animation-duration:18s; opacity:0.1; }
+
+    @keyframes float{
+      0%{ transform: translateY(0) rotate(0deg) }
+      50%{ transform: translateY(18px) rotate(12deg) }
+      100%{ transform: translateY(0) rotate(0deg) }
+    }
+
+    /* Glass card left */
+    .hero{
+      position:relative;
+      padding:38px;
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%);
+      border: 1px solid var(--glass-border);
+      z-index:1;
+      overflow:hidden;
+    }
+
+    .hero h1{
+      margin:0 0 8px 0;
+      font-size:34px;
+      letter-spacing:-0.6px;
+      color:var(--txt);
+    }
+
+    .sub{
+      color:var(--muted);
+      margin:0 0 18px 0;
+      font-size:15px;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:22px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      font-size:13px;
+      color:var(--muted);
+    }
+    .time{
+      font-weight:600;
+      color:var(--txt);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:13px;
+      padding:8px 12px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.08), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .description{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+      margin-bottom:22px;
+      max-width:60ch;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      color:var(--txt);
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.05);
+      transition: transform .24s ease, box-shadow .24s ease;
+      text-decoration:none;
+    }
+    .btn:hover{ transform: translateY(-6px) rotate(-1deg); box-shadow: 0 18px 40px rgba(2,6,23,0.6); }
+
+    .outline{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--txt);
+    }
+
+    /* Right column rotating card stack */
+    .stack{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      justify-content:center;
+      perspective:1200px;
+      z-index:1;
+    }
+
+    .card{
+      width:100%;
+      max-width:420px;
+      height:180px;
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 12px 30px rgba(3,8,20,0.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--txt);
+      position:relative;
+      overflow:hidden;
+      transition: transform 0.45s cubic-bezier(.2,.9,.25,1), box-shadow .45s ease;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transform-origin:center;
+    }
+
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(120deg, rgba(123,97,255,0.06), rgba(0,210,255,0.03));
+      mix-blend-mode:overlay;
+      pointer-events:none;
+    }
+
+    .card h3{
+      margin:0;
+      font-size:20px;
+      letter-spacing:-0.3px;
+    }
+    .card p{ margin:6px 0 0 0; color:var(--muted); font-size:13px; }
+
+    .card.tilt{
+      transform: rotateY(-8deg) rotateX(4deg) translateZ(-10px);
+      animation: slow-rotate 8s linear infinite;
+    }
+    .card.tilt.alt{
+      transform: rotateY(6deg) rotateX(-6deg) translateZ(-6px);
+      animation-direction: reverse;
+      animation-duration:10s;
+    }
+
+    @keyframes slow-rotate{
+      0%{ transform: rotateY(-6deg) rotateX(4deg) translateZ(0) }
+      50%{ transform: rotateY(6deg) rotateX(-6deg) translateZ(14px) }
+      100%{ transform: rotateY(-6deg) rotateX(4deg) translateZ(0) }
+    }
+
+    .card:hover{
+      transform: rotateY(0deg) rotateX(0deg) scale(1.03) translateZ(18px);
+      box-shadow: 0 28px 70px rgba(2,6,23,0.7);
+    }
+
+    /* small rotating accent inside card */
+    .orbit{
+      position:absolute;
+      width:140px;height:140px;
+      border-radius:50%;
+      right:-40px;top:-40px;
+      background:conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
+      filter:blur(12px);
+      transform-origin:center;
+      animation: spin 9s linear infinite;
+      opacity:0.9;
+      pointer-events:none;
+    }
+    @keyframes spin{
+      to{ transform: rotate(360deg); }
+    }
+
+    /* footer */
+    footer{
+      margin-top:22px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-start;
+      width:100%;
+      color:var(--muted);
+      font-size:13px;
+      z-index:1;
+    }
+    .github{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      text-decoration:none;
+      color:var(--txt);
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      transition: transform .18s ease;
+    }
+    .github:hover{ transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 30px rgba(2,6,23,0.55); }
+
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:13px; color:var(--muted); }
+
+    /* subtle glass separator */
+    .separator{
+      height:1px;
+      width:100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      margin:18px 0 8px 0;
+      border-radius:2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+
+  <main class="container" role="main" aria-labelledby="title">
+    <section class="hero" aria-labelledby="title">
+      <h1 id="title">amirabolfazle</h1>
+      <p class="sub">A luminous landing crafted with glassmorphism and dynamic rotate effects — subtle, interactive and modern.</p>
+
+      <div class="meta" role="status" aria-live="polite">
+        <div class="badge" title="Style">Glassmorphism · Motion</div>
+        <div class="badge" title="Theme">Gradient · Frost</div>
+        <div class="time" aria-label="Creation time">2025-09-26 19:38:41</div>
+      </div>
+
+      <p class="description">This page showcases translucent panels, soft blurs and slow rotational animation to bring depth. Hover cards to experience tilt and rotation, and enjoy refined micro-interactions designed for clarity and elegance.</p>
+
+      <div class="actions" role="navigation">
+        <a class="btn" href="#explore" title="Explore more">Explore</a>
+        <a class="btn outline" href="#contact" title="Get in touch">Get in touch</a>
+      </div>
+
+      <div class="separator" aria-hidden="true"></div>
+
+      <footer>
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View repository on GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.648.5.5 5.648.5 12c0 5.093 3.292 9.418 7.86 10.945.575.106.785-.249.785-.553 0-.273-.01-1.185-.015-2.146-3.197.695-3.873-1.54-3.873-1.54-.523-1.328-1.277-1.682-1.277-1.682-1.043-.713.079-.699.079-.699 1.154.081 1.761 1.185 1.761 1.185 1.025 1.755 2.689 1.249 3.344.955.104-.743.401-1.249.729-1.536-2.553-.29-5.236-1.276-5.236-5.677 0-1.254.448-2.279 1.184-3.083-.119-.29-.513-1.455.113-3.033 0 0 .965-.309 3.16 1.176a11.02 11.02 0 012.876-.387c.976.004 1.96.132 2.877.388 2.193-1.486 3.156-1.176 3.156-1.176.629 1.578.236 2.743.116 3.033.739.804 1.182 1.83 1.182 3.083 0 4.412-2.687 5.383-5.25 5.667.412.353.779 1.049.779 2.116 0 1.528-.014 2.757-.014 3.134 0 .307.207.666.792.553C20.708 21.413 24 17.087 24 12 24 5.648 18.352.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <div class="mono">Created by amirabolfazle</div>
+      </footer>
+    </section>
+
+    <aside class="stack" aria-label="Interactive previews">
+      <div class="card tilt" role="article" aria-label="Preview card 1">
+        <div>
+          <h3>Interactive Panel</h3>
+          <p>Hover to tilt and rotate — smooth and responsive.</p>
+        </div>
+        <div class="orbit" aria-hidden="true"></div>
+      </div>
+
+      <div class="card tilt alt" role="article" aria-label="Preview card 2" style="height:220px;">
+        <div>
+          <h3>Frosted Surface</h3>
+          <p>Backdrop blur creates a frosted glass illusion.</p>
+        </div>
+        <div class="orbit" aria-hidden="true" style="width:180px;height:180px;right:-60px;top:-60px;"></div>
+      </div>
+
+      <div class="card" role="article" aria-label="Preview card 3">
+        <div>
+          <h3>Subtle Motion</h3>
+          <p>Animated gradients and slow rotation add depth.</p>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+</body>
+</html>
