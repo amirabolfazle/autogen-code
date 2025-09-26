@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --text-color: #ffffff;
+      --bg-start: #1e3a8a;
+      --bg-mid: #2563eb;
+      --bg-end: #8b5cf6;
+      --card: rgba(255,255,255,0.10);
+      --card-border: rgba(255,255,255,0.25);
+      --glow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    /* Animated gradient background */
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Subtle gradient text for the title */
+    @keyframes gradientTextShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* Bounce animation for elements */
+    @keyframes bounce {
+      0% { transform: translateY(12px); opacity: 0; }
+      60% { transform: translateY(-4px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Floating decorative orbs */
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0) scale(1); opacity: .65; }
+      50% { transform: translateY(-14px) translateX(8px) scale(1.02); opacity: .9; }
+      100% { transform: translateY(0) translateX(0) scale(1); opacity: .65; }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--text-color);
+      background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 18s ease infinite;
+      overflow-x: hidden;
+    }
+
+    /* Layout container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Hero / header section with gradient text and bouncing title tips */
+    .hero {
+      position: relative;
+      padding: 6rem 0 3rem;
+      text-align: center;
+      overflow: hidden;
+      min-height: 60vh;
+      display: grid;
+      place-items: center;
+    }
+
+    .brand {
+      font-size: clamp(2.4rem, 6vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin: 0;
+      padding: 0;
+      /* gradient text */
+      background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 50%, #a5b4fc 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientTextShift 8s linear infinite;
+      text-shadow: 0 4px 22px rgba(0,0,0,.25);
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    .tagline {
+      margin-top: .75rem;
+      font-size: 1.05rem;
+      opacity: .95;
+      text-transform: uppercase;
+      letter-spacing: .28em;
+      color: rgba(255,255,255,.9);
+      mix-blend-mode: overlay;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.2));
+    }
+
+    .creation-time {
+      margin-top: 1rem;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: .82rem;
+      padding: .35rem .6rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.35);
+      display: inline-block;
+      animation: bounce 1.3s ease forwards;
+    }
+
+    /* Floating decorative orbs for gradient vibe */
+    .orb {
+      position: absolute;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      filter: blur(14px);
+      opacity: .6;
+      mix-blend-mode: screen;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb.one { left: -40px; top: 10%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,0) 60%), rgba(99,102,241,.6); animation-delay: -2s; }
+    .orb.two { right: -60px; top: 40%; width: 200px; height: 200px; background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.75), rgba(255,255,255,0) 60%), rgba(236,72,153,.5); animation-delay: -4s; }
+    .orb.three { left: 35%; bottom: -60px; width: 180px; height: 180px; background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.85), rgba(255,255,255,0) 60%), rgba(16,185,129,.5); animation-delay: -1s; }
+
+    /* Projects grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.1rem;
+      padding: 2rem 0 4rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 140px;
+      box-shadow: var(--glow);
+      backdrop-filter: blur(3px);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: bounce 0.9s ease forwards;
+      opacity: 0;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      transition: transform 0.25s ease;
+      box-shadow: 0 12px 28px rgba(0,0,0,.3);
+    }
+
+    .card h3 {
+      margin: 0 0 .5rem 0;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: .92rem;
+      opacity: .95;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.5);
+      color: #fff;
+      text-decoration: none;
+      width: max-content;
+      background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.04));
+      transition: transform .2s ease;
+    }
+    .button:hover { transform: translateY(-1px); }
+
+    /* Footer with GitHub icon and creator text */
+    .site-footer {
+      padding: 1.75rem;
+      text-align: center;
+      color: rgba(255,255,255,.9);
+      font-size: .95rem;
+      border-top: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.05);
+    }
+    .footer-inner {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .github-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+      color: #fff; text-decoration: none;
+      border-radius: 6px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.35);
+      transition: transform .2s ease;
+    }
+    .github-link:hover { transform: scale(1.05); }
+    .credit-text {
+      color: rgba(255,255,255,.9);
+    }
+
+    /* Accessibility helpers (visually hidden) */
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    /* Responsive niceties for smaller screens */
+    @media (max-width: 640px) {
+      .brand { font-size: 54px; }
+      .creation-time { font-size: .75rem; }
+    }
+
+    /* Individual card delays for a staggered entrance */
+    .grid .card:nth-child(1) { animation-delay: .15s; }
+    .grid .card:nth-child(2) { animation-delay: .30s; }
+    .grid .card:nth-child(3) { animation-delay: .45s; }
+    .grid .card:nth-child(4) { animation-delay: .60s; }
+
+  </style>
+</head>
+<body>
+  <!-- Decorative gradient backdrop shapes -->
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+  <div class="orb three" aria-hidden="true"></div>
+
+  <main class="container">
+    <section class="hero" aria-label="Intro">
+      <h1 class="brand">amirabolfazle</h1>
+      <div class="tagline" aria-label="Portfolio tagline">Animated Gradient Portfolio</div>
+      <div class="creation-time" title="Creation timestamp">Creation time: 2025-09-27 02:15:26</div>
+    </section>
+
+    <section class="grid" aria-label="Projects">
+      <article class="card" style="--t:0">
+        <div>
+          <h3>Aurora UI</h3>
+          <p>Dynamic UI components with smooth gradient transitions and micro-interactions.</p>
+        </div>
+        <a class="button" href="#" aria-label="View Aurora UI project">View</a>
+      </article>
+
+      <article class="card" style="--t:0">
+        <div>
+          <h3>Nebula API Explorer</h3>
+          <p>Explore endpoints with delightful motion and gradients that guide the eye.</p>
+        </div>
+        <a class="button" href="#" aria-label="View Nebula API Explorer">View</a>
+      </article>
+
+      <article class="card" style="--t:0">
+        <div>
+          <h3>Pixel Playground</h3>
+          <p>Playful canvas experiments and gradient choreography for creative coding.</p>
+        </div>
+        <a class="button" href="#" aria-label="View Pixel Playground">View</a>
+      </article>
+
+      <article class="card" style="--t:0">
+        <div>
+          <h3>Gradient Kit</h3>
+          <p>A toolkit of reusable gradient components and motion presets.</p>
+        </div>
+        <a class="button" href="#" aria-label="View Gradient Kit">View</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container footer-inner" style="justify-content:center;">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" style="display:block;">
+          <path d="M12 .5C5.73.5 0 6.23 0 12.01c0 5.09 3.29 9.39 7.86 10.92.58.11.79-.25.79-.56 0-.28-.01-1.01-.02-1.99-3.2.69-3.88-1.39-3.88-1.39-.53-1.35-1.3-1.71-1.3-1.71-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.74 1.28 3.41.98.11-.77.41-1.28.74-1.58-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29.12-3.1 0 0 .97-.31 3.18 1.18a11.06 11.06 0 012.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.37.79.12 1.84.06 2.08.04.1.04.21.04.32 0 4.42-2.7 5.41-5.28 5.69.42.37.8 1.1.8 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.69.82.57A12 12 0 0024 12.01C24 6.23 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span class="credit-text" style="margin-left:.5rem;">Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <!-- No external scripts needed; all animations are CSS-driven -->
+</body>
+</html>
