@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0b1020;
+      --bg2: #0a1830;
+      --bg3: #0b0f1d;
+      --fg: #e8eaf6;
+      --muted: #b8c0d9;
+      --grad1: #ff6b6b;
+      --grad2: #feca57;
+      --grad3: #4dabf7;
+      --grad4: #7c3aed;
+      --card: rgba(255,255,255,0.08);
+      --blur: 12px;
+    }
+
+    /* Animated gradient background for the page */
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: linear-gradient(135deg, rgba(14,18,40,.95), rgba(9,10,20,.95) 60%), 
+                  radial-gradient(circle at 20% 0%, rgba(255,107,107,.15), transparent 40%),
+                  radial-gradient(circle at 90% 20%, rgba(76, 175, 80,.15), transparent 40%),
+                  #0b1020;
+      background-size: 200% 200%;
+      animation: gradientBG 16s ease infinite;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
+      50% { background-position: 100% 50%, 50% 50%, 50% 50%, 100% 50%; }
+      100% { background-position: 0% 50%, 0% 50%, 0% 50%, 0% 50%; }
+    }
+
+    /* Decorative rotating shapes (no JS needed) */
+    .bg-shapes {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .shape {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 22px;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(255,107,107,.9), rgba(254,202,87,.9), rgba(75, 189, 234,.9), rgba(124,58,237,.9), rgba(255,107,107,.9));
+      filter: blur(0.2px);
+      opacity: .28;
+      animation: spin 18s linear infinite;
+    }
+    .shape.s1 { top: -40px; left: -40px; transform: rotate(20deg); width: 220px; height: 220px; }
+    .shape.s2 { bottom: -60px; right: -60px; transform: rotate(-15deg); width: 260px; height: 260px; animation-duration: 25s; }
+    .shape.s3 { top: 40%; left: 60%; width: 180px; height: 180px; animation-duration: 22s; opacity: .18; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Layout container */
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 72px 20px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Fancy header with gradient text */
+    .brand {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 0.95;
+      font-weight: 900;
+      letter-spacing: .04em;
+      margin: 0;
+      text-transform: lowercase;
+      background: linear-gradient(90deg, #ff7a18, #f72585, #4cc9f0, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: textShift 8s ease-in-out infinite;
+      text-rendering: optimizeLegibility;
+    }
+
+    @keyframes textShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .tag {
+      color: var(--muted);
+      margin: 8px 0 26px;
+      font-size: 1.05rem;
+    }
+
+    /* Hero card with rotating avatar ring */
+    .hero {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 28px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      backdrop-filter: blur(var(--blur));
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .avatar-wrap {
+      display: grid;
+      place-items: center;
+    }
+
+    .avatar {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      padding: 8px;
+      background: conic-gradient(from 140deg, #ff6b6b, #feca57, #4dabf7, #7c3aed, #ff6b6b);
+      display: grid; place-items: center;
+      animation: rotateRing 12s linear infinite;
+      box-shadow: 0 6px 24px rgba(0,0,0,.25);
+    }
+    @keyframes rotateRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .avatar-core {
+      width: 78%;
+      height: 78%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 30%, rgba(255,255,255,.95), rgba(255,255,255,.25) 40%),
+                  linear-gradient(135deg, rgba(0,0,0,.25), rgba(255,255,255,.05));
+      display: grid; place-items: center;
+      color: #1b1b1b;
+      font-weight: 800;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      border: 2px solid rgba(255,255,255,.7);
+      box-shadow: inset 0 2px 6px rgba(255,255,255,.6);
+    }
+
+    .content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .content p {
+      margin: 0;
+      color: var(--fg);
+      line-height: 1.6;
+    }
+
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Roboto Mono", monospace;
+      font-size: .92em;
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.25);
+    }
+
+    /* Creation time badge */
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.25);
+      font-size: .9rem;
+      color: #eef1ff;
+      user-select: none;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    /* Section divider look on small screens */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .avatar { margin: 0 auto; }
+    }
+
+    /* Footer with GitHub icon and credit text */
+    footer {
+      margin-top: 48px;
+      padding: 20px 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.25);
+      transition: transform .2s ease;
+    }
+    .github:hover { transform: translateY(-1px) scale(1.02); background: rgba(0,0,0,.35); }
+    .github svg { display: block; width: 20px; height: 20px; }
+
+    .credit {
+      display: inline-block;
+      margin-left: 8px;
+    }
+
+    /* Subtle separators for content blocks */
+    .sep {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,.25), transparent);
+      margin: 28px 0;
+      opacity: .6;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+    <div class="shape s3"></div>
+  </div>
+
+  <main class="wrap" role="main" aria-label="Personal page of amirabolfazle">
+    <header class="hero" aria-label="Hero section">
+      <div class="avatar-wrap" aria-label="Profile avatar">
+        <div class="avatar" title="avatar">
+          <div class="avatar-core">A</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h1 class="brand" aria-label="Site title amirabolfazle">amirabolfazle</h1>
+        <div class="tag" aria-label="Subtitle">
+          Fancy animated personal page • gradient theme • rotate effects
+        </div>
+
+        <div class="creation" role="note" aria-label="Creation time badge">
+          Creation time: 2025-09-27 02:33:58
+        </div>
+
+        <div class="sep" aria-hidden="true"></div>
+
+        <p>
+          Hello! This is a stylized, animated personal page designed with a gradient theme and rotating accents.
+          Built to feel dynamic and alive while keeping the content concise and readable.
+        </p>
+        <p>
+          Feel free to explore the visuals: a rotating avatar ring, shifting gradients, and subtle glow effects.
+        </p>
+      </div>
+    </header>
+
+    <!-- Minimal extra flair section -->
+    <section aria-labelledby="about" style="margin-top:28px;">
+      <h2 id="about" style="font-size:1.25rem; margin:0 0 8px; color:#fff; opacity:.92;">About</h2>
+      <p style="margin:0; color:var(--muted);">
+        This page demonstrates a fancy animated layout using pure CSS techniques: gradient backgrounds,
+        rotate animations, and tasteful glow. It serves as a personal landing or a simple showcase.
+      </p>
+    </section>
+
+    <section aria-labelledby="projects" style="margin-top:28px;">
+      <h2 id="projects" style="font-size:1.25rem; margin:0 0 8px; color:#fff; opacity:.92;">Projects</h2>
+      <p style="margin:0; color:var(--muted);">
+        Projects can be added here as cards with hover rotate effects, keeping the vibe cohesive with the page theme.
+      </p>
+    </section>
+
+    <footer aria-label="Footer">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <!-- GitHub inline SVG icon -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" role="img">
+          <path d="M12 .5C5.73.5 0 6.21 0 12.01c0 5.09 3.29 9.4 7.85 10.93.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.13-3.19.69-3.87-1.37-3.87-1.37-.52-1.32-1.28-1.67-1.28-1.67-1.05-.72.08-.71.08-.71 1.16.08 1.76 1.2 1.76 1.2 1.03 1.76 2.7 1.25 3.36.96.1-.75.41-1.25.74-1.54-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18a10.98 10.98 0 012.9-.39c.99 0 1.99.13 2.92.39 2.2-1.49 3.16-1.18 3.16-1.18.64 1.58.24 2.75.12 3.04.75.8 1.18 1.83 1.18 3.09 0 4.44-2.68 5.41-5.24 5.7.42.36.8 1.07.8 2.16 0 1.56-.01 2.82-.01 3.21 0 .3.2.66.79.55C20.71 21.4 24 17.09 24 12.01 24 6.21 18.27.5 12 .5z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <span class="credit" aria-label="Created by text">
+        Created by amirabolfazle
+      </span>
+    </footer>
+  </main>
+</body>
+</html>
