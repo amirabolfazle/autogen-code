@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-dark: #0a0b12;
+      --bg-dk: #070814;
+      --neon-cyan: #00e6ff;
+      --neon-magenta: #ff3bd4;
+      --neon-purple: #7b5cff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #eaffff;
+      background: radial-gradient(circle at 20% -10%, rgba(0, 230, 255, 0.08), transparent 40%),
+                  radial-gradient(circle at 85% 15%, rgba(255, 0, 180, 0.08), transparent 40%),
+                  linear-gradient(#0a0a0f, #0a0a0f 60%, #0a0a0f);
+      overflow-x: hidden;
+    }
+
+    /* Neon halo behind content */
+    .neon-ring {
+      position: absolute;
+      width: 640px;
+      height: 640px;
+      top: -120px;
+      right: -180px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 230, 255, 0.8);
+      filter: drop-shadow(0 0 22px rgba(0, 230, 255, 0.8));
+      animation: spin 28s linear infinite;
+      opacity: 0.42;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Subtle moving neon lines for depth */
+    .neon-sweep {
+      position: absolute;
+      height: 2px;
+      width: 120%;
+      left: -10%;
+      top: 38%;
+      background: linear-gradient(90deg, transparent, rgba(0, 230, 255, 0.9), transparent);
+      transform: rotate(0deg);
+      animation: sweep 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes sweep {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(10%); }
+      100% { transform: translateX(-0%); }
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 6rem 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .content {
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .neon-title {
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(48px, 12vw, 160px);
+      line-height: 0.9;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+      /* neon gradient text */
+      background: linear-gradient(90deg, #00f5ff, #8a2be2, #ff3bd4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 6px rgba(0, 245, 255, 0.8),
+        0 0 14px rgba(0, 245, 255, 0.6),
+        0 0 28px rgba(127, 0, 255, 0.8),
+        0 0 48px rgba(255, 59, 212, 0.7);
+      filter: drop-shadow(0 0 8px rgba(0, 248, 255, 0.75));
+    }
+
+    .sub {
+      margin-top: 16px;
+      font-size: clamp(14px, 2.6vw, 22px);
+      color: #d7ffff;
+      text-shadow: 0 0 10px rgba(0, 230, 255, 0.6);
+      opacity: 0.92;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: none;
+      color: #04101a;
+      font-weight: 800;
+      text-decoration: none;
+      background: linear-gradient(90deg, #00eaff, #7f00ff, #ff3bd4);
+      box-shadow: 0 0 14px rgba(0, 234, 255, 0.75), inset 0 0 12px rgba(255,255,255,.4);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .cta:hover { transform: translateY(-1px) scale(1.02); }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: 12px;
+      color: #00e6ff;
+      background: rgba(0, 230, 255, 0.08);
+      border: 1px solid rgba(0, 230, 255, 0.25);
+      box-shadow: 0 0 12px rgba(0, 230, 255, 0.25);
+    }
+
+    /* decorative glow behind title for a layered neon look */
+    .glow-back {
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: blur(4px);
+      background: radial-gradient(circle at 40% 40%, rgba(0,255,255,.25), transparent 40%),
+                  radial-gradient(circle at 60% 60%, rgba(124,0,255,.25), transparent 40%);
+      opacity: .6;
+      z-index: 0;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .6; }
+      50% { transform: translate(-50%, -50%) scale(1.05); opacity: .9; }
+    }
+
+    /* footer with GitHub icon and credit text */
+    .site-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(2, 5, 20, 0.7);
+      border-top: 1px solid rgba(0,0,0,.4);
+      color: #e8feff;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto;
+      z-index: 5;
+      backdrop-filter: blur(6px);
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.15);
+      color: #fff;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+
+    .github-link:hover { transform: scale(1.05); }
+
+    .credit {
+      font-size: 14px;
+      color: #e9feff;
+      opacity: .95;
+    }
+
+    /* Ensure content scales nicely on small screens */
+    @media (max-width: 520px) {
+      .neon-ring { display: none; }
+      .glow-back { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="neon-ring" aria-hidden="true"></div>
+  <div class="glow-back" aria-hidden="true"></div>
+  <div class="page">
+    <div class="content">
+      <h1 class="neon-title" aria-label="amirabolfazle">amirabolfazle</h1>
+      <div class="sub">Neon-inspired landing experience with rotating glow</div>
+      <a class="cta" href="#" role="button" aria-label="Enter site">Enter</a>
+      <div class="creation-time" aria-label="Creation time">
+        Creation time: 2025-09-27 02:43:24
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="github-link" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="display:block">
+        <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.68.5.1.68-.22.68-.48 0-.24-.01-.87-.02-1.71-2.78.61-3.37-1.32-3.37-1.32-.46-1.18-1.12-1.5-1.12-1.5-.92-.63.07-.62.07-.62 1.02.07 1.56 1.06 1.56 1.06 .9 1.58 2.36 1.12 2.94.86.09-.66.35-1.12.64-1.38-2.22-.26-4.56-1.15-4.56-5.13 0-1.13.39-2.05 1.03-2.77-.1-.26-.45-1.29.1-2.69 0 0 .84-.28 2.75 1.05A9.21 9.21 0 0112 6.8c.85.04 1.71.12 2.51.36 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.21 2.43.1 2.69.64.72 1.03 1.64 1.03 2.77 0 4.0-2.34 4.87-4.57 5.12.36.32.69.95.69 1.92 0 1.39-.01 2.51-.01 2.85 0 .25.18.58.69.48A10.03 10.03 0 0022 12.26C22 6.58 17.52 2 12 2z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
