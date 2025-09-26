@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-start: #0b1020;
+      --bg-end: #1a1f3a;
+      --glass: rgba(255, 255, 255, 0.14);
+      --glass-border: rgba(255, 255, 255, 0.25);
+      --text: #e9f0ff;
+      --muted: #cbd7ff;
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system;
+      color: var(--text);
+      background: radial-gradient( circle at 20% -10%, rgba(120,170,255,.15), transparent 40% ),
+                  radial-gradient( circle at 100% 0%, rgba(255,180,200,.15), transparent 40% ),
+                  linear-gradient(135deg, var(--bg-start), var(--bg-end) 60%);
+      overflow-x: hidden;
+    }
+
+    /* animated soft gradient backdrop */
+    .bg-orbit {
+      position: fixed;
+      inset: -10vmax;
+      background: conic-gradient(from 180deg at 50% 50%, #7afcff 0deg, #b28cff 90deg, #7affc0 180deg, #ffa2e5 270deg, #7afcff 360deg);
+      filter: blur(60px);
+      opacity: .25;
+      z-index: -2;
+      animation: rotate 60s linear infinite;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* page layout */
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 4vmin;
+    }
+
+    .card {
+      width: min(860px, 92vw);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      backdrop-filter: saturate(1.1) blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      animation: bounceIn 0.95s cubic-bezier(.25,.8,.25,1) both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(18px) scale(.98); opacity: 0; }
+      60% { transform: translateY(-4px) scale(1.02); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    header {
+      text-align: center;
+      padding: 6px 6px 14px;
+    }
+
+    h1.brand {
+      font-size: clamp(40px, 9vw, 88px);
+      margin: 6px 0 8px;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #b1f0ff 0%, #e5d5ff 50%, #9cffce 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 30px rgba(0,0,0,.15);
+      filter: drop-shadow(0 8px 22px rgba(0,0,0,.15));
+      animation: textPop 1.2s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes textPop {
+      to { opacity: 1; }
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: clamp(14px, 2.5vw, 18px);
+      margin-top: -6px;
+      letter-spacing: .3px;
+      opacity: .95;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: .5em;
+      padding: .5em 1em;
+      margin: 14px auto 6px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.92em;
+      color: #eaf4ff;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.35);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      animation: bounceIn 1s ease-out;
+    }
+
+    .creation:before {
+      content: "";
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #8df;
+      box-shadow: 0 0 12px #6cf;
+      display: inline-block;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.25); opacity: 0.6; }
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .panel {
+      padding: 18px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.28);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      animation: bounceIn 0.9s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .panel h3 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+      color: #f0f6ff;
+    }
+
+    .panel p {
+      margin: 0;
+      color: #dbe6ff;
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+
+    /* subtle hover bounce on cards */
+    .panel:hover {
+      transform: translateY(-2px);
+      transition: transform .25s ease;
+      cursor: default;
+    }
+
+    .footer {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px;
+      border-top: 1px solid rgba(255,255,255,.28);
+      color: #e6f0ff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,.08);
+      border-radius: 0 0 22px 22px;
+    }
+
+    .gh {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #eaf5ff;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.14);
+      transition: transform .25s ease;
+    }
+
+    .gh:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.22);
+    }
+
+    .sr {
+      height: 0;
+      width: 0;
+      overflow: hidden;
+      position: absolute;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    /* tiny decorative floating orbs to evoke bounce/glow */
+    .orb {
+      position: absolute;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.0) 40%);
+      filter: blur(0.5px);
+      animation: float 8s ease-in-out infinite;
+      opacity: .65;
+    }
+    .orb.o1 { top: 6%; left: 8%; animation-delay: 0s; }
+    .orb.o2 { bottom: 8%; right: 10%; animation-delay: 2s; }
+    .orb.o3 { top: 50%; right: 5%; width: 60px; height: 60px; animation-delay: 4s; }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-16px); }
+      100% { transform: translateY(0px); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg-orbit" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <main class="card" role="main" aria-label="Amir Abolfazle personal page">
+      <div class="orb o1" aria-hidden="true"></div>
+      <div class="orb o2" aria-hidden="true"></div>
+      <div class="orb o3" aria-hidden="true"></div>
+
+      <header>
+        <h1 class="brand">amirabolfazle</h1>
+        <div class="tagline">A fancy animated personal page with glassmorphism and bounce effects</div>
+        <div class="creation">Creation time: 2025-09-27 02:01:59</div>
+      </header>
+
+      <section class="section grid" aria-label="Intro sections">
+        <article class="panel" aria-label="About">
+          <h3>About</h3>
+          <p>Welcome to a glassy, animated personal page crafted with a modern, frosted aesthetic. The design emphasizes clarity, motion, and a touch of whimsy through bounce effects.</p>
+        </article>
+
+        <article class="panel" aria-label="Highlights">
+          <h3>Highlights</h3>
+          <p>Glassmorphism UI, subtle gradients, and responsive layout. Elements gently bounce into view and breathe with the page as you explore.</p>
+        </article>
+      </section>
+
+      <footer class="footer" aria-label="Footer">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <!-- GitHub icon (inline SVG) -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.205 11.387.6.111.82-.262.82-.58 0-.287-.01-1.04-.016-2.045-3.338.726-4.042-1.613-4.042-1.613-.546-1.387-1.333-1.757-1.333-1.757-1.088-.745.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.809 1.304 3.495.997.108-.775.419-1.304.762-1.604-2.665-.303-5.466-1.333-5.466-5.93 0-1.31.468-2.382 1.235-3.222-.124-.304-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 0 1 3.003-.404c1.019.003 2.043.138 3.003.404 2.293-1.552 3.301-1.23 3.301-1.23.653 1.654.241 2.873.118 3.176.77.84 1.235 1.912 1.235 3.222 0 4.609-2.807 5.624-5.482 5.921.431.372.815 1.103.815 2.224 0 1.606-.015 2.901-.015 3.293 0 .322.216.696.824.576C20.565 21.795 24 17.297 24 12 24 5.373 18.627 0 12 0z"/>
+          </svg>
+          <span style="font-weight:600;">GitHub</span>
+        </a>
+        <span>Created by amirabolfazle</span>
+      </footer>
+    </main>
+  </div>
+
+</body>
+</html>
