@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --cyan: #00f5ff;
+      --pink: #ff4dce;
+      --purple: #9b6cff;
+      --bg-dark: #030306;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #eaffff;
+      background: #05050a;
+      /* neon colorful background */
+      background-image:
+        radial-gradient(circle at 20% 0%, rgba(0, 255, 255, 0.15), transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(255, 0, 180, 0.15), transparent 40%),
+        linear-gradient(135deg, #04040a 0%, #0b0f2b 60%, #03030a 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    .arena {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Neon glow card for the header/title */
+    .brand {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    .glow-wrap {
+      display: inline-block;
+      padding: 20px 28px;
+      border-radius: 18px;
+      border: 2px solid rgba(0, 255, 255, 0.6);
+      background: rgba(0, 0, 0, 0.25);
+      box-shadow:
+        inset 0 0 12px rgba(0, 255, 255, 0.25),
+        0 0 24px rgba(0, 255, 255, 0.6),
+        0 0 60px rgba(0, 255, 255, 0.25);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .title {
+      font-size: clamp(2.5rem, 4vw + 1rem, 5rem);
+      margin: 0;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow:
+        0 0 6px rgba(0, 255, 255, 0.9),
+        0 0 14px rgba(0, 255, 255, 0.8),
+        0 0 28px rgba(255, 0, 200, 0.8);
+      animation: bounce 2.2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .tagline {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      color: #d7f7ff;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
+
+    .creation {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.92rem;
+      color: #e8fbff;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 255, 255, 0.6);
+      background: rgba(0, 0, 0, 0.25);
+      box-shadow: 0 0 14px rgba(0, 255, 255, 0.6);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+      padding: 24px 20px 40px;
+      width: min(1100px, 94%);
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      border-radius: 16px;
+      padding: 20px;
+      min-height: 140px;
+      box-shadow:
+        inset 0 0 12px rgba(0, 255, 255, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.25);
+      animation: bounce 2s infinite;
+    }
+
+    .card h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.15rem;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+    }
+
+    .card p {
+      color: #cfefff;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 700px) {
+      .creation { display: block; }
+    }
+
+    .footer {
+      margin-top: auto;
+      padding: 22px 12px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.28);
+      border-top: 1px solid rgba(0, 255, 255, 0.4);
+    }
+
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #eaffff;
+      border: 1px solid rgba(0, 255, 255, 0.6);
+      background: linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.4));
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+    }
+
+    .footer a:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.9);
+    }
+
+    .footer svg {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      fill: currentColor;
+    }
+
+    /* Subtle neon glow on focus for accessibility */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid #00f5ff;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <main class="arena" aria-label="Personal page of amirabolfazle">
+    <section class="brand" aria-label="Brand section">
+      <div class="glow-wrap" role="img" aria-label="Site title">
+        <h1 class="title" style="margin:0; padding:0;">amirabolfazle</h1>
+      </div>
+      <div class="creation" aria-label="Creation time">
+        Creation time: 2025-09-27 00:23:18
+      </div>
+      <div class="tagline" style="height:0; overflow:hidden;"></div>
+    </section>
+
+    <section class="content" aria-label="Content sections with neon styling">
+      <article class="card" aria-label="Intro">
+        <h3>About</h3>
+        <p>Welcome to a fancy neon-styled personal page. This page features bounce effects and a vibrant glow to mirror a modern digital vibe.</p>
+      </article>
+      <article class="card" aria-label="Projects">
+        <h3>Projects</h3>
+        <p>Showcases of autogenerated code ideas, experiments, and dynamic demos rendered with neon flair.</p>
+      </article>
+      <article class="card" aria-label="Contact">
+        <h3>Contact</h3>
+        <p>Reach out via GitHub or other channels. The page uses lively animations to keep things engaging.</p>
+      </article>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-label="GitHub icon" role="img" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.58 2 12.28c0 4.5 2.87 8.31 6.84 9.66.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.23-3.37-1.23-.45-1.18-1.11-1.5-1.11-1.5-.91-.63.07-.62.07-.62 1.01.07 1.54 1.04 1.54 1.04.9 1.56 2.36 1.11 2.94.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.15-4.56-5.12 0-1.13.4-2.05 1.05-2.77-.11-.26-.46-1.31.1-2.72 0 0 .86-.28 2.83 1.05a9.32 9.32 0 012.57-.36c.88.01 1.77.12 2.6.36 1.97-1.33 2.83-1.05 2.83-1.05.56 1.41.21 2.46.1 2.72.66.72 1.04 1.64 1.04 2.77 0 3.99-2.35 4.85-4.59 5.11.36.31.69.92.69 1.86 0 1.35-.01 2.44-.01 2.77 0 .27.18.59.69.49A10.01 10.01 0 0022 12.28C22 6.58 17.52 2 12 2z"/>
+        </svg>
+      </a>
+      <span style="margin-left:12px; display:inline-block; vertical-align:middle;">Created by amirabolfazle</span>
+    </footer>
+  </main>
+</body>
+</html>
