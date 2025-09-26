@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle – Neon Portfolio</title>
+  <style>
+    :root{
+      --bg: #05060a;
+      --bg2: #0a0a15;
+      --fg: #e9f2ff;
+      --neon1: #00e5ff;
+      --neon2: #ff00f6;
+      --neon3: #ffd100;
+      --card: rgba(255,255,255,.08);
+      --glass: rgba(255,255,255,.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% 0%, rgba(0, 214, 255, .08), transparent 40%),
+                  radial-gradient(circle at 90% 20%, rgba(255, 0, 240, .08), transparent 40%),
+                  linear-gradient(180deg, #04050c 0%, #050611 100%);
+      overflow-x: hidden;
+    }
+
+    /* Neon glow text */
+    .neon {
+      font-weight: 900;
+      font-size: clamp(2.6rem, 5vw + 1rem, 6.5rem);
+      line-height: 1.05;
+      letter-spacing: .04em;
+      text-align: center;
+      margin: 0;
+      background: linear-gradient(92deg, var(--neon1), var(--neon2), var(--neon3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 6px rgba(0, 229, 255, .6),
+        0 0 14px rgba(255, 0, 255, .5),
+        0 0 40px rgba(0, 229, 255, .35);
+      filter: drop-shadow(0 0 6px rgba(0, 230, 255, .6));
+      letter-spacing: .02em;
+      user-select: none;
+    }
+
+    /* Subheading + creation time */
+    .subtitle {
+      text-align: center;
+      font-size: clamp(1rem, 2vw + .8rem, 1.25rem);
+      color: #dbeaff;
+      opacity: .92;
+      margin-top: .5rem;
+      letter-spacing: .02em;
+      text-shadow: 0 0 6px rgba(0,0,0,.2);
+    }
+    .creation {
+      text-align: center;
+      margin-top: .25rem;
+      font-family: ui-monospace; 
+      font-size: .85rem;
+      color: #b9caff;
+      opacity: .9;
+      letter-spacing: .08em;
+    }
+
+    /* Orbiting neon rings */
+    .orbit {
+      position: absolute;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 229, 255, .6);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin 18s linear infinite;
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 18px rgba(0, 229, 255, .6));
+      pointer-events: none;
+    }
+    .orbit.two {
+      width: 240px; height: 240px;
+      border-color: rgba(255,0,240,.6);
+      animation-duration: 24s;
+      top: 42%; left: 60%;
+      transform: translate(-50%, -50%);
+    }
+    .orb-dot {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #00e5ff;
+      box-shadow: 0 0 12px #00e5ff;
+      top: -6px; left: 50%;
+      transform: translateX(-50%);
+      animation: pulse 2.5s infinite ease-in-out;
+    }
+    .orb-dot.b {
+      background: #ff00f6;
+      box-shadow: 0 0 12px #ff00f6;
+      animation: pulse 2.3s infinite ease-in-out;
+    }
+    @keyframes spin { to { transform: rotate(1turn); } }
+    @keyframes pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: .9; }
+      50% { transform: translateX(-50%) scale(1.25); opacity: 1; }
+    }
+
+    /* Layout sections */
+    .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem 3rem; position: relative; z-index: 1; }
+
+    .intro {
+      padding-top: 6rem;
+      padding-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      min-height: 60vh;
+      display: grid;
+      place-items: center;
+    }
+
+    .section {
+      padding: 2rem 0 3rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .card {
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 14px;
+      padding: 1rem;
+      height: 180px;
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
+      transform-style: preserve-3d;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: inset 0 0 18px rgba(0,0,0,.08), 0 6px 20px rgba(0,0,0,.25);
+      background-image: radial-gradient(circle at 20% 0%, rgba(0,255,255,.08), transparent 40%), radial-gradient(circle at 0% 100%, rgba(255,255,255,.06), transparent 40%);
+    }
+
+    .card:hover .card-inner {
+      transform: rotateY(12deg) rotateX(-6deg);
+    }
+
+    .card h3 {
+      margin: 0 0 .35rem;
+      font-size: 1.05rem;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0,255,255,.9);
+    }
+    .card p {
+      margin: 0;
+      color: #d9e8ff;
+      font-size: .92rem;
+      opacity: .95;
+    }
+    .badge {
+      display: inline-block;
+      margin-top: .6rem;
+      padding: .15rem .5rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      color: #071018;
+      background: linear-gradient(135deg, #00f5ff, #ff00f6);
+      box-shadow: 0 0 8px rgba(0,0,0,.2);
+    }
+
+    /* Footer with GitHub icon and creator text */
+    footer {
+      padding: 1.5rem;
+      text-align: center;
+      color: #b9c6ff;
+      border-top: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.04);
+    }
+    .footer-row {
+      display: inline-flex; align-items: center; gap: .6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .gh-link {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .25rem .6rem;
+      border-radius: 999px;
+      color: inherit;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    .gh-link:hover { transform: translateY(-1px); }
+    .github-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; }
+
+    @media (max-width: 720px){
+      .neon { font-size: 2.8rem; }
+      .orbit { width: 240px; height: 240px; }
+      .orbit.two { width: 180px; height: 180px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="intro" aria-label="Intro section">
+    <div class="orbit" aria-hidden="true"></div>
+    <div class="orbit two" aria-hidden="true"></div>
+
+    <h1 class="neon" style="margin-bottom:.25rem;">amirabolfazle</h1>
+
+    <p class="subtitle">Neon-themed, one-file portfolio with rotate effects</p>
+    <div class="creation" aria-label="Creation time">
+      Creation time: 2025-09-27 00:56:53
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <section class="section" aria-label="Projects">
+      <div class="grid">
+        <article class="card" aria-label="Project Aurora">
+          <div class="card-inner">
+            <h3>Project Aurora</h3>
+            <p>A neon landing page with CSS-powered glow and subtle 3D tilt effects.</p>
+            <span class="badge">HTML · CSS · JS</span>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Project Pulse">
+          <div class="card-inner">
+            <h3>NeonPulse UI</h3>
+            <p>Interactive UI components with glowing transitions and micro-animations.</p>
+            <span class="badge">UI/UX</span>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Project Orbit">
+          <div class="card-inner">
+            <h3>Orbit Gallery</h3>
+            <p>A compact gallery showcasing rotating thumbnails and neon borders.</p>
+            <span class="badge">Frontend</span>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Project Flux">
+          <div class="card-inner">
+            <h3>Flux Animations</h3>
+            <p>A collection of lightweight animations using pure CSS and minimal JavaScript.</p>
+            <span class="badge">Animation</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <div class="footer-row">
+      <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <!-- GitHub SVG Icon -->
+        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 2C6.48 2 2 6.58 2 12.29c0 4.52 2.87 8.35 6.84 9.67.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.2-3.37-1.2-.45-1.15-1.11-1.46-1.11-1.46-.92-.63.07-.62.07-.62 1.01.07 1.54 1.05 1.54 1.05.9 1.62 2.36 1.15 2.94.88.09-.69.36-1.15.65-1.42-2.22-.26-4.56-1.16-4.56-5.16 0-1.14.4-2.07 1.04-2.8-.11-.26-.46-1.3.1-2.71 0 0 .85-.28 2.78 1.06a9.44 9.44 0 012.53-.36c.86.01 1.73.11 2.54.32 1.93-1.34 2.77-1.06 2.77-1.06.57 1.41.22 2.45.11 2.71.65.73 1.04 1.66 1.04 2.8 0 4.01-2.34 4.89-4.57 5.14.37.32.7.95.7 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.59.69.47A10.01 10.01 0 0012 2z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
