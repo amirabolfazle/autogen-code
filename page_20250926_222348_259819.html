@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --neon-c1:#00e5ff;
+      --neon-c2:#ff00f5;
+      --bg1:#03040f;
+      --bg2:#0b0420;
+      --text:#eaffff;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color:var(--text);
+      background: linear-gradient(135deg, rgba(2,0,20,0.95) 0%, rgba(2,0,20,0.95) 60%, rgba(5,0,15,0.95) 100%);
+      overflow-x:hidden;
+      display:flex;
+      min-height:100vh;
+    }
+
+    /* animated ambient neon backdrop */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background: radial-gradient(circle at 20% 20%, rgba(0,229,255,0.14), transparent 30%),
+                  radial-gradient(circle at 80% 60%, rgba(255,0,205,0.14), transparent 30%),
+                  linear-gradient(135deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15));
+      background-size: 100% 100%;
+      z-index:-3;
+      pointer-events:none;
+      filter: saturate(120%);
+      animation: ambientPulse 14s ease-in-out infinite;
+    }
+
+    @keyframes ambientPulse{
+      0%,100%{ transform: translateZ(0) scale(1); opacity:.95; }
+      50%{ transform: translateZ(0) scale(1.02); opacity:1; }
+    }
+
+    /* neon grid overlay */
+    body::after{
+      content:"";
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background-image: linear-gradient(rgba(0,229,255,0.25) 1px, transparent 1px),
+                        linear-gradient(rgba(255,0,205,0.25) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px;
+      background-position: 0 0, 0 0;
+      mix-blend-mode: screen;
+      opacity:.25;
+      z-index:-2;
+      animation:gridShift 60s linear infinite;
+      pointer-events:none;
+    }
+
+    @keyframes gridShift{
+      0%{ background-position:0 0, 0 0; }
+      50%{ background-position:20px 20px, -20px -20px; }
+      100%{ background-position:0 0, 0 0; }
+    }
+
+    /* layout */
+    .wrap{
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 4vh 0 6vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+
+    /* neon title */
+    .neon-title{
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      line-height:1.04;
+      margin: 0.5rem 0 1.25rem;
+      letter-spacing: .04em;
+      color: #a6fffb;
+      text-shadow:
+        0 0 6px rgba(0, 229, 255, 0.9),
+        0 0 14px rgba(0, 229, 255, 0.7),
+        0 0 28px rgba(255, 0, 231, 0.8);
+      font-weight: 800;
+      text-transform: lowercase;
+    }
+
+    /* glow underline / cap glow */
+    .neon-title::after{
+      content:"";
+      display:block;
+      height:6px;
+      width: 60%;
+      margin: 12px auto 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(0,229,255,.0) 0%, rgba(0,229,255,.8) 40%, rgba(255,0,231,.8) 60%, rgba(0,229,255,.0) 100%);
+      filter: drop-shadow(0 0 8px rgba(0,229,255,.9));
+      animation: underlineShift 4s ease-in-out infinite;
+    }
+
+    @keyframes underlineShift{
+      0% { transform: translateX(-10%); opacity:.9; }
+      50% { transform: translateX(5%); opacity:1; }
+      100% { transform: translateX(-10%); opacity:.9; }
+    }
+
+    /* stage with rotating neon orb */
+    .stage{
+      position: relative;
+      width: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 2rem 0 1.25rem;
+    }
+
+    .orb{
+      width: clamp(180px, 40vw, 320px);
+      height: clamp(180px, 40vw, 320px);
+      border-radius: 50%;
+      border: 2px solid rgba(0, 229, 255, 0.95);
+      box-shadow: 0 0 28px 6px rgba(0, 229, 255, 0.65),
+                  inset 0 0 18px rgba(0, 255, 255, 0.75);
+      transform-style: preserve-3d;
+      animation: spin 12s linear infinite;
+      position: relative;
+    }
+
+    /* subtle inner glow spokes using pseudo elements */
+    .orb::before, .orb::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:50%;
+      border: 1px solid rgba(0, 255, 255, 0.5);
+      filter: blur(0.5px);
+      mix-blend-mode: screen;
+      animation: spin 8s linear infinite reverse;
+    }
+    .orb::before{ box-shadow: inset 0 0 20px rgba(0,255,255,.6); }
+    .orb::after{ width:90%; height:90%; top:5%; left:5%; border:1px solid rgba(255,0,235,.6); }
+
+    @keyframes spin{
+      from{ transform: rotate(0deg); }
+      to{ transform: rotate(360deg); }
+    }
+
+    /* creation time text */
+    .creation-time{
+      margin-top: 1.25rem;
+      font-size: clamp(1rem, 3.5vw, 1.25rem);
+      color: #d6f7ff;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.9);
+      opacity:.92;
+    }
+
+    /* footer with GitHub icon */
+    footer{
+      margin-top:auto;
+      width:100%;
+      padding: 1.25rem 0 2rem;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:.65rem;
+      color:#e9feff;
+      text-decoration:none;
+      font-weight:600;
+      padding:.5rem .9rem;
+      border-radius:999px;
+      border:1px solid rgba(0,255,255,.35);
+      background: linear-gradient(135deg, rgba(0,255,255,0.15), rgba(255,0,231,0.15));
+      box-shadow: 0 0 12px rgba(0,255,255,.25);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .github-link:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0,255,255,.35);
+    }
+
+    .github-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:22px; height:22px;
+      color:#fff;
+      filter: drop-shadow(0 0 6px rgba(0,255,255,.9));
+    }
+
+    /* small screens adjustments */
+    @media (max-width: 600px){
+      .neon-title{ font-size: clamp(2rem, 14vw, 4rem); }
+      .orb{ width: 70vw; height: 70vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-label="amirabolfazle neon page">
+    <h1 class="neon-title" aria-label="amirabolfazle">amirabolfazle</h1>
+
+    <section class="stage" aria-label="neon rotating stage">
+      <div class="orb" aria-label="neon rotating orb"></div>
+    </section>
+
+    <p class="creation-time" aria-label="creation time">
+      Creation time: 2025-09-26 22:22:57
+    </p>
+  </div>
+
+  <footer aria-label="footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <span class="github-icon" aria-label="GitHub icon">
+        <!-- GitHub inline SVG icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 .5C5.73.5 0 5.99 0 12.01c0 5.04 3.29 9.29 7.86 10.79.57.11.78-.25.78-.56 0-.28-.01-1.02-.02-2.01-3.2.69-3.87-1.46-3.87-1.46-.52-1.34-1.27-1.7-1.27-1.7-1.04-.7.08-.69.08-.69 1.15.08 1.76 1.19 1.76 1.19 1.02 1.75 2.67 1.25 3.31.95.11-.75.41-1.26.75-1.55-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.28 1.19-3.08-.12-.3-.52-1.52.11-3.17 0 0 .97-.31 3.18 1.14a11.7 11.7 0 012.91-.39c1.01.01 2.04.14 2.98.39 2.22-1.45 3.18-1.14 3.18-1.14.66 1.65.24 2.87.12 3.18.77.8 1.23 1.82 1.23 3.09 0 4.43-2.68 5.41-5.24 5.69.41.36.78 1.08.78 2.18 0 1.57-.01 2.83-.01 3.21 0 .31.21.66.79.55C20.74 21.3 24 16.04 24 12.01 24 5.99 18.27.5 12 .5z"/>
+        </svg>
+      </span>
+      Created by amirabolfazle
+    </a>
+  </footer>
+</body>
+</html>
