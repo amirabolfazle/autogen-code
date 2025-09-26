@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0a0f;
+      --panel: rgba(0,0,0,.28);
+      --neon-c1: #00f5ff;
+      --neon-c2: #ff00f6;
+      --glow: 0 0 16px rgba(0,255,255,.8), 0 0 40px rgba(0,255,255,.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #e8fbff;
+      background: radial-gradient(circle at 15% 0%, rgba(0,255,255,.08), transparent 20%),
+                  radial-gradient(circle at 85% 10%, rgba(255,0,199,.08), transparent 25%),
+                  linear-gradient(#050510 0%, #0a0a0f 100%);
+      overflow-x: hidden;
+    }
+
+    /* Neon glow background elements */
+    .glow-orb {
+      position: fixed;
+      left: 50%;
+      top: 12%;
+      width: 420px;
+      height: 420px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, rgba(0,255,255,.9), transparent 40%),
+                  radial-gradient(circle at 60% 60%, rgba(255,0,255,.8), transparent 40%);
+      filter: blur(40px);
+      opacity: .65;
+      z-index: 0;
+      animation: orbPulse 12s ease-in-out infinite;
+    }
+    @keyframes orbPulse {
+      0%,100% { transform: translateX(-50%) scale(1); opacity:.65; }
+      50% { transform: translateX(-50%) scale(1.08); opacity:.9; }
+    }
+
+    .ring {
+      position: fixed;
+      left: 50%;
+      top: 52%;
+      width: 320px;
+      height: 320px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      border: 2px solid rgba(0,255,255,.9);
+      box-shadow: 0 0 40px rgba(0,255,255,.9);
+      animation: spin 28s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes spin {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    header.site-header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 64px 20px 20px;
+      user-select: none;
+    }
+
+    .brand {
+      font-size: clamp(28px, 8vw, 84px);
+      margin: 0;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: #0ff;
+      text-shadow: 0 0 6px #0ff, 0 0 18px #0ff, 0 0 40px #0ff;
+      filter: drop-shadow(0 0 12px rgba(0,255,255,.8));
+      transform: translateZ(0);
+    }
+
+    .brand.sub {
+      font-size: clamp(12px, 2.5vw, 18px);
+      color: #9af;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-top: 6px;
+      text-shadow: 0 0 6px rgba(138,239,255,.9);
+    }
+
+    .creation-badge {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: 12px;
+      color: #0ff;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(0,255,255,.6);
+      text-shadow: 0 0 6px rgba(0,255,255,.9);
+      box-shadow: 0 0 12px rgba(0,255,255,.4);
+      z-index: 3;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    section.section-title {
+      text-align: center;
+      margin: 40px 0 20px;
+      position: relative;
+    }
+
+    .section-title h2 {
+      font-size: 28px;
+      margin: 0;
+      color: #e7fbff;
+      text-shadow: 0 0 12px rgba(0,255,255,.9);
+    }
+
+    .lead {
+      text-align: center;
+      color: #a6eaff;
+      opacity: .9;
+      margin-top: 6px;
+      text-shadow: 0 0 10px rgba(0,255,255,.6);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+
+    .card {
+      position: relative;
+      padding: 18px;
+      border-radius: 14px;
+      background: linear-gradient(#0a0a0f, #0b0b12);
+      border: 1px solid rgba(0, 255, 255, .55);
+      color: #eaffff;
+      box-shadow: inset 0 0 12px rgba(0,255,255,.15), 0 0 20px rgba(0,255,255,.25);
+      transition: transform .25s ease, box-shadow .25s ease;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: inset 0 0 12px rgba(0,255,255,.25), 0 0 40px rgba(0,255,255,.5);
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      letter-spacing: .04em;
+      text-shadow: 0 0 8px #0ff;
+    }
+
+    .card p {
+      margin: 0;
+      color: #cdefff;
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+
+    /* Neon accent lines inside cards */
+    .card:before, .card:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      pointer-events: none;
+    }
+    .card:before {
+      border: 1px solid rgba(0,255,255,.6);
+      box-shadow: 0 0 12px rgba(0,255,255,.4);
+      filter: blur(0.5px);
+      mix-blend-mode: screen;
+    }
+    .card:after {
+      border: 1px solid rgba(255,0,255,.6);
+      transform: rotate(0.0001deg);
+      animation: glowShift 6s ease-in-out infinite;
+      opacity: .4;
+    }
+    @keyframes glowShift {
+      0%,100% { transform: rotate(0deg); opacity:.4; }
+      50% { transform: rotate(6deg); opacity:.8; }
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 22px;
+      margin-top: 40px;
+      border-top: 1px solid rgba(0,255,255,.25);
+      color: #8ff;
+      background: rgba(0,0,0,.15);
+    }
+    .github-link {
+      color: inherit;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 6px;
+      transition: transform .2s ease;
+    }
+    .github-link:hover { transform: translateY(-1px); }
+
+    .credit {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: 12px;
+      color: #9ff;
+      opacity: .95;
+    }
+
+    /* Responsive niceties */
+    @media (max-width: 600px) {
+      .ring { display: none; }
+      .glow-orb { display: none; }
+      .creation-badge { display: none; }
+      .brand { font-size: 64px; }
+    }
+
+    /* Small helper for neon glow on headings */
+    .neon {
+      color: #baffff;
+      text-shadow: 0 0 8px rgba(0,255,255,.9), 0 0 20px rgba(0,255,255,.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-orb" aria-hidden="true"></div>
+  <div class="ring" aria-hidden="true"></div>
+
+  <div class="creation-badge" aria-label="Creation time">
+    2025-09-27 01:23:38
+  </div>
+
+  <header class="site-header" role="banner" aria-label="Site header">
+    <h1 class="brand neon" style="letter-spacing:.6em; font-weight:700;">am ironic neon</h1>
+    <div class="brand" style="font-size:0; line-height:0;"></div>
+    <h1 class="brand" style="position:relative; top:-74px; left:0; font-size: clamp(40px, 10vw, 110px); margin:0; color:#0ff; text-shadow:0 0 10px #0ff, 0 0 28px #0ff;">amirabolfazle</h1>
+    <div class="creation-sub" style="font-size:12px; color:#7fffff; opacity:.8; margin-top:6px;"> neon portfolio — rotate & glow </div>
+  </header>
+
+  <main role="main">
+    <section class="container" aria-label="Intro">
+      <div class="section-title">
+        <h2 class="neon" style="margin-bottom:6px;">Amir Abolfazle — Neon Portfolio</h2>
+        <p class="lead">A condensed, one-file showcase with neon glow and rotating motion</p>
+      </div>
+
+      <div class="grid" style="margin-top:8px;">
+        <article class="card" aria-label="Project 1: Autogen Code Playground">
+          <h3>Autogen Code Playground</h3>
+          <p>Interactive snippets and code autogeneration demonstrations in a neon-lit UI.</p>
+        </article>
+
+        <article class="card" aria-label="Project 2: Neon UI Kit">
+          <h3>Neon UI Kit</h3>
+          <p>A minimal, glow-inspired component library with smooth motion and accessibility in mind.</p>
+        </article>
+
+        <article class="card" aria-label="Project 3: Open Source Snippets">
+          <h3>Open Source Snippets</h3>
+          <p>A curated collection of small, reusable code blocks for rapid prototyping.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:#9affff;">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5 0 5.73 0 12.5 0 18.1 4.58 22.9 10.75 23.84c.78.15 1.07-.34 1.07-.75 0-.37-.01-1.62-.02-3.01-4.38.95-5.3-1.87-5.3-1.87-.71-1.8-1.74-2.28-1.74-2.28-1.42-.97.11-.95.11-.95 1.57.11 2.4 1.62 2.4 1.62 1.4 2.4 3.68 1.71 4.58 1.31.14-1.02.55-1.71 1-2.11-3.5-.4-7.18-1.75-7.18-7.79 0-1.72.62-3.12 1.63-4.22-.16-.4-.71-2.02.15-4.21 0 0 1.32-.42 4.33 1.59A15 15 0 0 1 12 6.8c1.34-.02 2.69-.18 3.95-.53 3.01-2.01 4.33-1.59 4.33-1.59.87 2.19.32 3.81.16 4.21 1.02 1.1 1.63 2.5 1.63 4.22 0 6.07-3.69 7.38-7.2 7.76.56.48 1.07 1.42 1.07 2.87 0 2.08-.02 3.76-.02 4.28 0 .42.28.92 1.08.76C19.42 21.9 24 17.1 24 12.5 24 5.73 18.27.5 12 .5z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+
+  <!-- No external scripts; all interactions are CSS-driven in this single file -->
+</body>
+</html>
