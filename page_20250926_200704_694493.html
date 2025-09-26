@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --accent1:#7b2ff7;
+      --accent2:#f107a3;
+      --accent3:#00d2ff;
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.7);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(135deg, rgba(14,21,47,1) 0%, rgba(17,24,39,1) 50%, rgba(10,12,25,1) 100%);
+      overflow-x:hidden;
+      color:#e6eef8;
+    }
+
+    /* Animated gradient overlay */
+    .bg-gradient {
+      position:fixed;
+      inset:0;
+      z-index:0;
+      background: linear-gradient(120deg, rgba(123,47,247,0.15), rgba(241,7,163,0.12), rgba(0,210,255,0.08));
+      background-size: 600% 600%;
+      animation: shift 12s linear infinite;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    @keyframes shift{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    /* Subtle moving shapes */
+    .orb{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(36px);
+      opacity:0.28;
+      pointer-events:none;
+      z-index:0;
+      transform:translate3d(0,0,0);
+    }
+    .orb.one{width:420px;height:420px;background:linear-gradient(45deg,var(--accent1),var(--accent2)); left:-60px; top:10%;}
+    .orb.two{width:340px;height:340px;background:linear-gradient(45deg,var(--accent3),var(--accent1)); right:-80px; bottom:5%;}
+    .orb.three{width:220px;height:220px;background:linear-gradient(45deg,var(--accent2),var(--accent3)); left:10%; bottom:20%;}
+
+    .wrap{
+      position:relative;
+      z-index:2;
+      max-width:1100px;
+      margin:48px auto;
+      padding:36px;
+      box-sizing:border-box;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:28px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:14px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      box-shadow: 0 8px 30px rgba(123,47,247,0.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:20px;
+      color:white;
+      transform:translateY(0);
+    }
+
+    h1.title{
+      margin:0;
+      font-size:clamp(28px,5.2vw,48px);
+      line-height:1;
+      letter-spacing:-0.02em;
+      font-weight:800;
+      color:linear-gradient(90deg,#fff,#eee);
+      background: linear-gradient(90deg, #ffffff, #dfefff);
+      -webkit-background-clip:text;
+      background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .subtitle{
+      margin:6px 0 0 0;
+      color:rgba(230,238,248,0.85);
+      font-weight:300;
+      font-size:15px;
+    }
+
+    .card-row{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:28px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:20px;
+      border-radius:14px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.5);
+      transform:translateY(28px);
+      opacity:0;
+      transition:transform .7s cubic-bezier(.2,.9,.2,1), opacity .7s ease;
+      backdrop-filter: blur(6px);
+      min-height:140px;
+    }
+
+    .card.show{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    .card h3{
+      margin:0 0 8px 0;
+      font-size:18px;
+      font-weight:700;
+    }
+
+    .card p{
+      margin:0;
+      color:rgba(230,238,248,0.8);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .hero{
+      display:flex;
+      gap:28px;
+      align-items:center;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+
+    .intro{
+      flex:1 1 420px;
+      padding:22px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.45);
+      transform:translateY(28px);
+      opacity:0;
+      transition:transform .8s cubic-bezier(.2,.9,.2,1), opacity .8s ease;
+    }
+    .intro.show{transform:translateY(0);opacity:1;}
+
+    .meta{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+    .badge{
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      font-weight:600;
+      font-size:13px;
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .right-column{
+      width:320px;
+      min-width:220px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .profile{
+      background:linear-gradient(135deg,var(--accent3),var(--accent1));
+      border-radius:12px;
+      padding:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.36);
+      transform:translateY(28px);
+      opacity:0;
+      transition:transform .9s cubic-bezier(.2,.9,.2,1), opacity .9s ease;
+    }
+    .profile.show{transform:translateY(0);opacity:1;}
+    .avatar{
+      width:64px;height:64px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.06));display:flex;align-items:center;justify-content:center;font-weight:700;color:#051025;font-size:20px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+    }
+    .profile .who{font-weight:700;color:#011026;}
+    .profile .small{font-size:13px;color:rgba(1,10,26,0.75);font-weight:600;opacity:0.9;}
+
+    footer{
+      margin-top:40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:rgba(230,238,248,0.8);
+      font-size:14px;
+      opacity:0.95;
+    }
+
+    a.gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 12px;
+      border-radius:10px;
+      transition:transform .18s ease, box-shadow .18s ease;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    a.gh:hover{transform:translateY(-4px); box-shadow:0 10px 30px rgba(2,6,23,0.5);}
+
+    .small-muted{font-size:13px;color:rgba(230,238,248,0.6);}
+
+    /* responsive */
+    @media (max-width:980px){
+      .card-row{grid-template-columns:repeat(2,1fr);}
+      .right-column{width:100%;}
+    }
+    @media (max-width:700px){
+      header{flex-direction:column;align-items:flex-start;}
+      .hero{flex-direction:column;}
+      .card-row{grid-template-columns:1fr;}
+    }
+
+    /* slide-up reveal for other elements */
+    .reveal{
+      transform:translateY(36px);
+      opacity:0;
+      transition:transform .8s cubic-bezier(.2,.9,.2,1), opacity .8s ease;
+    }
+    .reveal.show{transform:translateY(0);opacity:1;}
+  </style>
+</head>
+<body>
+  <div class="bg-gradient" aria-hidden="true"></div>
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+  <div class="orb three" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">a</div>
+        <div>
+          <h1 class="title">amirabolfazle</h1>
+          <div class="subtitle">Designer • Builder • Curious mind</div>
+        </div>
+      </div>
+
+      <div style="text-align:right;">
+        <div class="badge" title="Creation time">Created: 2025-09-26 20:06:14</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="intro reveal" id="intro">
+          <h2 style="margin:0 0 8px 0;font-size:20px;">Hello — I'm amirabolfazle</h2>
+          <p style="margin:0 0 12px 0;color:rgba(230,238,248,0.9);line-height:1.5;">
+            I design and build delightful experiences on the web. I mix clean UI with thoughtful animations to make interactions feel alive.
+          </p>
+
+          <div class="meta">
+            <div class="badge">Frontend • UI</div>
+            <div class="badge">Animations • JS</div>
+            <div class="badge">Open Source</div>
+          </div>
+        </div>
+
+        <aside class="right-column">
+          <div class="profile" id="profile">
+            <div class="avatar">AB</div>
+            <div>
+              <div class="who">amirabolfazle</div>
+              <div class="small">Crafting beautiful code and interfaces</div>
+            </div>
+          </div>
+
+          <div class="card reveal" id="contact">
+            <h3>Get in touch</h3>
+            <p>If you'd like to collaborate or say hi, check out the GitHub link below or drop a message on any public profile.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section style="margin-top:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3 style="margin:0;font-size:18px;">Selected projects</h3>
+          <div class="small-muted">Slide-up reveals on scroll</div>
+        </div>
+
+        <div class="card-row" style="margin-top:12px;">
+          <div class="card reveal">
+            <h3>Autogen Code</h3>
+            <p>Generative tooling and templates for faster prototyping. Includes CLI utilities and lightweight scaffolds.</p>
+          </div>
+          <div class="card reveal">
+            <h3>Nova UI Kit</h3>
+            <p>A component library focused on motion-driven interfaces with accessibility-first patterns.</p>
+          </div>
+          <div class="card reveal">
+            <h3>Personal Experiments</h3>
+            <p>Micro-projects exploring shaders, SVG motion, and micro-interactions for delightful UX details.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.77 3.09 8.82 7.36 10.25.54.1.74-.24.74-.52 0-.26-.01-1.12-.02-2.03-2.99.65-3.62-1.44-3.62-1.44-.49-1.25-1.2-1.58-1.2-1.58-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.64 2.52 1.17 3.13.9.1-.7.38-1.17.69-1.44-2.39-.27-4.9-1.2-4.9-5.33 0-1.18.42-2.14 1.11-2.9-.11-.27-.48-1.36.11-2.84 0 0 .9-.29 2.95 1.11a10.2 10.2 0 0 1 2.68-.36c.91.01 1.83.12 2.68.36 2.05-1.4 2.95-1.11 2.95-1.11.59 1.48.22 2.57.11 2.84.69.76 1.11 1.72 1.11 2.9 0 4.14-2.51 5.06-4.9 5.33.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.05 0 .29.19.63.75.52 4.27-1.44 7.36-5.49 7.36-10.25C23.1 5.33 18.27.5 12 .5z" fill="currentColor"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+
+      <div class="small-muted">Created by amirabolfazle</div>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up reveal using IntersectionObserver
+    (function(){
+      const opts = { threshold: 0.12 };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, opts);
+
+      document.querySelectorAll('.reveal, .card, .intro, .profile').forEach((el, i) => {
+        // Stagger cards slightly for nicer effect
+        if(el.classList.contains('card')){
+          // apply small delay via style
+          el.style.transitionDelay = (i * 80) + 'ms';
+        } else {
+          el.style.transitionDelay = (i * 40) + 'ms';
+        }
+        observer.observe(el);
+      });
+
+      // Also reveal header logo and title quickly
+      window.addEventListener('load', () => {
+        document.querySelectorAll('.logo, .title, .subtitle').forEach((el, idx) => {
+          el.style.opacity = 0;
+          el.style.transform = 'translateY(6px)';
+          setTimeout(()=> {
+            el.style.transition = 'all .6s cubic-bezier(.2,.9,.2,1)';
+            el.style.opacity = 1;
+            el.style.transform = 'translateY(0)';
+          }, 120 + idx*80);
+        });
+      });
+
+      // Micro-parallax for orbs based on pointer
+      const orbs = document.querySelectorAll('.orb');
+      document.addEventListener('pointermove', (e) => {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const dx = (e.clientX - cx) / cx;
+        const dy = (e.clientY - cy) / cy;
+        orbs.forEach((orb, i) => {
+          const movement = (i+1) * 6;
+          orb.style.transform = `translate3d(${dx * movement}px, ${dy * movement}px, 0)`;
+        });
+      }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
