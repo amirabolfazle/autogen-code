@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1:#0b0f14;
+      --bg-2:#081018;
+      --accent:#7c5cff;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.03);
+      --card: rgba(255,255,255,0.02);
+      --neon: rgba(124,92,255,0.18);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.06), transparent),
+                  radial-gradient(900px 400px at 90% 90%, rgba(0,210,255,0.03), transparent),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      overflow:hidden;
+    }
+
+    /* Scene for subtle parallax */
+    .scene{
+      width:100%;
+      max-width:1100px;
+      margin:0 auto;
+      position:relative;
+      padding:48px;
+      border-radius:20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:visible;
+      transform:translateZ(0);
+      animation: popIn 700ms cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    @keyframes popIn{
+      from{opacity:0; transform: translateY(18px) scale(.995)}
+      to{opacity:1; transform: translateY(0) scale(1)}
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:stretch;
+    }
+
+    /* Left content */
+    .hero{
+      padding:28px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      justify-content:center;
+    }
+    .eyebrow{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .logoDot{
+      width:8px;height:8px;border-radius:50%;
+      background: linear-gradient(135deg,var(--accent), #2fd7ff);
+      box-shadow: 0 6px 20px var(--neon);
+    }
+    h1{
+      margin:0;
+      font-size:44px;
+      letter-spacing:-0.02em;
+      line-height:1.02;
+      background: linear-gradient(90deg, #fff, rgba(255,255,255,0.7));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 6px 30px rgba(124,92,255,0.12);
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:62ch;
+    }
+
+    .ctaRow{
+      display:flex;
+      gap:12px;
+      margin-top:8px;
+      align-items:center;
+    }
+    .btn{
+      border:0;
+      padding:12px 16px;
+      font-weight:600;
+      border-radius:12px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition: transform 180ms cubic-bezier(.2,.9,.3,1), box-shadow 180ms;
+    }
+    .btn-primary{
+      background: linear-gradient(90deg, var(--accent), #2fd7ff 140%);
+      color:#061017;
+      box-shadow: 0 8px 30px rgba(124,92,255,0.18);
+      transform: translateZ(0);
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .btn:hover{transform:translateY(-4px) scale(1.01)}
+
+    /* Right panel - cards */
+    .right{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:stretch;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.55);
+      transform-origin:center;
+      transition: transform 250ms cubic-bezier(.2,.9,.3,1), box-shadow 250ms;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .card:hover{ transform: scale(1.035); box-shadow: 0 18px 40px rgba(2,6,23,0.6); }
+
+    .iconCircle{
+      width:56px;height:56px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(135deg, rgba(124,92,255,0.16), rgba(47,215,255,0.06));
+      box-shadow: inset 0 -6px 30px rgba(0,0,0,0.35);
+      flex-shrink:0;
+    }
+    .card h4{margin:0;font-size:15px}
+    .card p{margin:0;color:var(--muted);font-size:13px}
+
+    /* subtle zoom effect on background shapes */
+    .float{
+      position:absolute;
+      pointer-events:none;
+      filter: blur(30px) saturate(120%);
+      opacity:0.9;
+      transition: transform 300ms linear;
+    }
+
+    .float.one{ width:380px; height:380px; right:-80px; top:-120px; background: radial-gradient(circle at 30% 30%, rgba(124,92,255,0.42), transparent 40%); transform:translateZ(0) scale(1.02);}
+    .float.two{ width:300px; height:300px; left:-100px; bottom:-140px; background: radial-gradient(circle at 70% 70%, rgba(47,215,255,0.24), transparent 40%); transform:translateZ(0) scale(1.03); }
+
+    footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:12px 18px;
+      color:var(--muted);
+      font-size:13px;
+      border-top:1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border-radius:12px;
+    }
+
+    .footer-left{display:flex;gap:10px;align-items:center}
+    .github{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:8px;
+      transition: background 140ms, transform 140ms;
+    }
+    .github:hover{ background: rgba(255,255,255,0.02); transform: translateY(-3px) }
+
+    .createdTime{ font-variant-numeric: tabular-nums; color:var(--muted); font-size:12px; opacity:0.95 }
+
+    /* responsive */
+    @media (max-width:980px){
+      .grid{ grid-template-columns: 1fr; }
+      body{ padding:24px }
+      .scene{ padding:22px }
+      h1{ font-size:36px }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" id="scene">
+    <div class="float one" aria-hidden="true"></div>
+    <div class="float two" aria-hidden="true"></div>
+
+    <div class="grid">
+      <div class="hero">
+        <div class="eyebrow">
+          <span class="logoDot" aria-hidden="true"></span>
+          <span>amirabolfazle — signature landing</span>
+        </div>
+
+        <h1>amirabolfazle</h1>
+
+        <p class="lead">A sleek, dark-mode showcase with smooth zoom interactions and subtle motion. Built to highlight craft, clarity and personality — minimal, vibrant and responsive.</p>
+
+        <div class="ctaRow">
+          <button class="btn btn-primary" onclick="handlePrimary()">Explore</button>
+          <button class="btn btn-ghost" onclick="handleSecondary()">Learn more</button>
+        </div>
+
+        <div style="height:18px"></div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+          <div class="card" style="padding:12px;">
+            <div class="iconCircle" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#g1)"/>
+                <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#7C5CFF"/><stop offset="1" stop-color="#2FD7FF"/></linearGradient></defs>
+              </svg>
+            </div>
+            <div>
+              <h4>Instant polish</h4>
+              <p>Smooth entry and hover zooms that mix elegance with motion.</p>
+            </div>
+          </div>
+
+          <div class="card" style="padding:12px;">
+            <div class="iconCircle" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="3" stroke="url(#g2)" stroke-width="1.5"/>
+                <path d="M7 12h10" stroke="url(#g2)" stroke-width="1.5" stroke-linecap="round"/>
+                <defs><linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#2FD7FF"/><stop offset="1" stop-color="#7C5CFF"/></linearGradient></defs>
+              </svg>
+            </div>
+            <div>
+              <h4>Dark native</h4>
+              <p>Designed from the dark up — contrast, color and calm in balance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card" style="align-items:flex-start;">
+          <div style="flex:1;">
+            <h4>Fluid motion</h4>
+            <p>Accelerated hover scaling with depth for interactive emphasis.</p>
+            <div style="height:10px"></div>
+            <div style="display:flex;gap:8px;">
+              <div style="height:8px;background:linear-gradient(90deg,var(--accent),#2fd7ff);border-radius:6px;flex:1"></div>
+              <div style="height:8px;background:rgba(255,255,255,0.04);border-radius:6px;flex:2"></div>
+            </div>
+          </div>
+          <div style="width:90px;text-align:right;color:var(--muted);font-size:13px">Zoom ✓</div>
+        </div>
+
+        <div class="card" style="align-items:flex-start;">
+          <div style="flex:1;">
+            <h4>Polished typography</h4>
+            <p>Legible scale, subtle gradients, and numeric rhythm for clarity.</p>
+            <div style="height:10px"></div>
+            <div style="display:flex;gap:8px;">
+              <div style="height:8px;background:rgba(255,255,255,0.04);border-radius:6px;flex:1"></div>
+              <div style="height:8px;background:linear-gradient(90deg,#2fd7ff, #7c5cff);border-radius:6px;flex:1"></div>
+            </div>
+          </div>
+          <div style="width:90px;text-align:right;color:var(--muted);font-size:13px">Typography ✓</div>
+        </div>
+
+        <div class="card" style="justify-content:space-between;">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#111827, #0b1220);display:flex;align-items:center;justify-content:center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2v20M2 12h20" stroke="#7C5CFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h4 style="margin-bottom:4px">Immersive canvas</h4>
+              <p style="margin:0;color:var(--muted);font-size:13px">Background layers react lightly to pointer to create depth.</p>
+            </div>
+          </div>
+          <div style="text-align:right;color:var(--muted);font-size:13px">Motion ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-left">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6))">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.75 5.4.75 11.8c0 4.88 3.17 9.02 7.57 10.48.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.08.67-3.73-1.49-3.73-1.49-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.1.08 1.68 1.12 1.68 1.12.98 1.67 2.56 1.19 3.18.91.1-.7.38-1.19.7-1.46-2.46-.28-5.05-1.23-5.05-5.5 0-1.21.43-2.2 1.13-2.98-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.12.88-.24 1.83-.36 2.77-.36.94 0 1.89.12 2.77.36 2.1-1.42 3.02-1.12 3.02-1.12.6 1.52.22 2.64.11 2.92.7.78 1.13 1.77 1.13 2.98 0 4.28-2.6 5.21-5.07 5.48.39.34.74 1.02.74 2.06 0 1.49-.01 2.69-.01 3.05 0 .29.2.64.76.53C19.08 20.8 22.25 16.68 22.25 11.8 22.25 5.4 17.35.5 12 .5z" fill="url(#ghg)"/>
+            <defs><linearGradient id="ghg" x1="0" x2="1"><stop offset="0" stop-color="#7C5CFF"/><stop offset="1" stop-color="#2FD7FF"/></linearGradient></defs>
+          </svg>
+          <span>View on GitHub</span>
+        </a>
+        <div style="opacity:0.98">Created by amirabolfazle</div>
+      </div>
+
+      <div style="text-align:right">
+        <div class="createdTime">Creation time: 2025-09-26 22:11:36</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // small interactions
+    function handlePrimary(){
+      const btn = event?.target;
+      if(btn) btn.animate([{ transform: 'scale(1.02)' }, { transform: 'scale(0.98)' }, { transform: 'scale(1)' }], { duration: 260, easing: 'cubic-bezier(.2,.9,.3,1)' });
+      alert('Welcome — amirabolfazle');
+    }
+    function handleSecondary(){
+      alert('More details coming soon.');
+    }
+
+    // Parallax-like subtle movement for background floats on pointer move
+    (function(){
+      const scene = document.getElementById('scene');
+      const floats = Array.from(scene.querySelectorAll('.float'));
+      let cx = window.innerWidth/2, cy = window.innerHeight/2;
+
+      function onMove(e){
+        const x = (e.clientX || (e.touches && e.touches[0].clientX)) || cx;
+        const y = (e.clientY || (e.touches && e.touches[0].clientY)) || cy;
+        const rx = (x - cx) / cx;
+        const ry = (y - cy) / cy;
+        floats.forEach((el, i)=>{
+          const depth = (i+1) * 6;
+          const tx = rx * depth;
+          const ty = ry * depth;
+          el.style.transform = 'translate3d(' + (tx) + 'px,' + (ty) + 'px,0) scale(' + (1 + i*0.01) + ')';
+        });
+      }
+
+      window.addEventListener('mousemove', onMove, {passive:true});
+      window.addEventListener('touchmove', onMove, {passive:true});
+      window.addEventListener('resize', ()=>{cx = window.innerWidth/2; cy = window.innerHeight/2});
+    })();
+  </script>
+</body>
+</html>
