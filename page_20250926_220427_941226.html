@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1:#05060a;
+      --bg-2:#0b1020;
+      --accent:#7cf2ff;
+      --accent-2:#9b7cff;
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.03);
+      --card:#0f1724;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,242,255,0.04), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(155,124,255,0.03), transparent),
+                  linear-gradient(180deg,var(--bg-1), var(--bg-2));
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      position:relative;
+      isolation:isolate;
+    }
+
+    /* Floating background blobs */
+    .blob{
+      position:absolute;
+      width:680px;
+      height:680px;
+      filter:blur(90px);
+      opacity:0.25;
+      transform:translate3d(0,0,0);
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .blob.a{right:-180px; top:-120px; background:linear-gradient(135deg, rgba(124,242,255,0.28), rgba(155,124,255,0.18)); animation: floatA 12s ease-in-out infinite;}
+    .blob.b{left:-200px; bottom:-140px; background:linear-gradient(225deg, rgba(155,124,255,0.22), rgba(124,242,255,0.12)); animation: floatB 14s ease-in-out infinite;}
+
+    @keyframes floatA{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(24px) rotate(6deg)}100%{transform:translateY(0) rotate(0deg)}}
+    @keyframes floatB{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-28px) rotate(-6deg)}100%{transform:translateY(0) rotate(0deg)}}
+
+    .hero{
+      width:100%;
+      max-width:1200px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      align-items:center;
+      z-index:2;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:36px;
+      border-radius:16px;
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    .title{
+      font-size:clamp(36px,6.5vw,68px);
+      font-weight:700;
+      letter-spacing: -1px;
+      margin:0 0 12px 0;
+      line-height:0.95;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .title .tag{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      font-weight:800;
+      font-size:0.45em;
+      padding:6px 10px;
+      border-radius:8px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      box-shadow: 0 4px 20px rgba(124,242,255,0.06);
+    }
+
+    .subtitle{
+      color:var(--muted);
+      margin:10px 0 22px 0;
+      font-size:16px;
+      line-height:1.6;
+      max-width:60ch;
+    }
+
+    .cta-row{display:flex;gap:14px;align-items:center;}
+    .btn{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#051025;
+      font-weight:700;
+      padding:12px 18px;
+      border-radius:12px;
+      text-decoration:none;
+      box-shadow: 0 8px 30px rgba(124,242,255,0.12);
+      transform:translateZ(0);
+      transition:transform .18s cubic-bezier(.2,.8,.2,1), box-shadow .18s;
+    }
+    .btn:active{transform:translateY(1px) scale(.995)}
+    .ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      padding:10px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      transition:transform .18s, border-color .18s, color .18s;
+    }
+    .ghost:hover{transform:scale(1.03); color:var(--accent)}
+
+    /* right column: zoom canvas */
+    .visual{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:420px;
+    }
+    .visual .viewport{
+      width:100%;
+      height:420px;
+      border-radius:16px;
+      overflow:hidden;
+      position:relative;
+      border:1px solid rgba(255,255,255,0.04);
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      box-shadow: 0 12px 48px rgba(2,6,23,0.6);
+      transform-origin:center;
+      transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s;
+    }
+    .viewport:hover{box-shadow:0 30px 90px rgba(0,0,0,0.7); transform:scale(1.02)}
+
+    /* animated hero composition inside viewport */
+    .scene{
+      position:absolute;
+      inset:0;
+      overflow:visible;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      padding:28px;
+      transform-origin:center center;
+      transition:transform .12s linear;
+    }
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      transform-origin:center;
+      transition:transform .25s cubic-bezier(.2,.8,.2,1);
+    }
+    .panel h4{margin:0; font-size:16px; color:var(--accent); letter-spacing:0.6px}
+    .panel p{margin:0; color:var(--muted); font-size:13px; line-height:1.4}
+
+    .panel.large{
+      grid-column:1 / -1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:20px;
+      letter-spacing:0.6px;
+    }
+
+    .cards{
+      display:flex;
+      gap:12px;
+      margin-top:26px;
+      flex-wrap:wrap;
+    }
+    .mini{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,0.03);
+      min-width:120px;
+      flex:1;
+      transition:transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s;
+    }
+    .mini:hover{transform:translateY(-8px) scale(1.03); box-shadow: 0 20px 50px rgba(2,6,23,0.6)}
+
+    footer{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    footer a{color:var(--muted); text-decoration:none; display:inline-flex; gap:8px; align-items:center}
+    footer a svg{filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
+
+    /* small screens */
+    @media (max-width:960px){
+      .hero{grid-template-columns: 1fr; gap:20px}
+      .visual{order:-1}
+      .scene{padding:18px}
+      .viewport{height:360px}
+    }
+    @media (max-width:520px){
+      .viewport{height:300px}
+      .title{font-size:28px}
+      .card{padding:20px}
+    }
+
+    /* subtle zoom-in on load */
+    .loaded .viewport{animation: popIn .9s cubic-bezier(.2,.8,.2,1) both}
+    @keyframes popIn{
+      0%{transform:scale(.96); opacity:0}
+      60%{transform:scale(1.02); opacity:1}
+      100%{transform:scale(1)}
+    }
+
+    /* small timestamp chip */
+    .timestamp{
+      margin-top:16px;
+      color:rgba(255,255,255,0.38);
+      font-size:12px;
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.01);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="page">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+
+    <div class="hero card" role="main" aria-labelledby="site-title">
+      <div>
+        <h1 id="site-title" class="title">
+          <span class="tag">amirabolfazle</span>
+          <span style="display:inline-block; margin-left:6px;">Crafting elegant code & playful experiences</span>
+        </h1>
+        <p class="subtitle">A dark-mode showcase with smooth zoom interactions, subtle motion and a modern glass aesthetic. Explore responsive micro-animations, hover zoom, and parallax effects that react to your cursor and scroll.</p>
+
+        <div class="cta-row">
+          <a class="btn" href="#visual" title="Explore visual">Explore Visual</a>
+          <a class="ghost" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View Repo</a>
+        </div>
+
+        <div class="cards" aria-hidden="true">
+          <div class="mini">Interactive Zoom</div>
+          <div class="mini">Parallax Motion</div>
+          <div class="mini">Neon Accents</div>
+        </div>
+
+        <div class="timestamp" aria-label="creation time">Creation time: 2025-09-26 22:03:34</div>
+
+        <footer>
+          <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .297a12 12 0 00-3.794 23.4c.6.111.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.494.997.108-.775.42-1.304.762-1.603-2.665-.303-5.467-1.332-5.467-5.93 0-1.31.47-2.38 1.235-3.22-.124-.303-.535-1.523.117-3.176 0 0 1.008-.323 3.301 1.23a11.5 11.5 0 016.003 0c2.29-1.553 3.296-1.23 3.296-1.23.653 1.653.243 2.873.12 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.807 5.624-5.48 5.92.431.372.815 1.103.815 2.224 0 1.604-.015 2.896-.015 3.289 0 .32.216.694.825.576A12.003 12.003 0 0012 .297z" fill="url(#g)"/>
+              <defs>
+                <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="#7cf2ff"/>
+                  <stop offset="1" stop-color="#9b7cff"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            Created by amirabolfazle
+          </a>
+        </footer>
+      </div>
+
+      <div class="visual" id="visual" aria-hidden="false">
+        <div class="viewport" role="img" aria-label="interactive zoom viewport">
+          <div class="scene" id="scene">
+            <div class="panel" data-depth="0.08" style="transform:translateZ(0)">
+              <h4>Neon Grid</h4>
+              <p>Responsive layout elements that react to cursor motion and scale elegantly on hover.</p>
+            </div>
+            <div class="panel" data-depth="0.12" style="transform:translateZ(0)">
+              <h4>Code Snippet</h4>
+              <p>Minimal, focused components for building delightful interactions.</p>
+            </div>
+            <div class="panel large" data-depth="0.02" style="transform:translateZ(0)">
+              LIVE PREVIEW — move your mouse or scroll to zoom
+            </div>
+            <div class="panel" data-depth="0.10">
+              <h4>Motion</h4>
+              <p>Subtle floating shapes and layer parallax add depth without distraction.</p>
+            </div>
+            <div class="panel" data-depth="0.06">
+              <h4>Performance</h4>
+              <p>GPU-accelerated transforms keep animations buttery smooth.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const page = document.getElementById('page');
+      setTimeout(()=> page.classList.add('loaded'), 50);
+
+      const scene = document.getElementById('scene');
+      const viewport = document.querySelector('.viewport');
+      const panels = Array.from(scene.querySelectorAll('.panel'));
+      let vw = viewport.clientWidth, vh = viewport.clientHeight;
+
+      // Mousemove parallax: adjust transform of scene and panels
+      function onMove(e){
+        const rect = viewport.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const mx = (e.clientX - cx) / rect.width; // -0.5 .. 0.5
+        const my = (e.clientY - cy) / rect.height;
+
+        // rotate scene slightly
+        const rx = my * -6;
+        const ry = mx * 10;
+        scene.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+
+        // panels parallax based on data-depth
+        panels.forEach(p=>{
+          const depth = parseFloat(p.dataset.depth||0.06);
+          const tx = mx * depth * 120;
+          const ty = my * depth * 120;
+          const scale = 1 + Math.abs(depth) * 0.03;
+          p.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${scale})`;
+        });
+      }
+
+      // touch / fallback: subtle idle float
+      let idleTick = 0;
+      function idleAnimate(){
+        idleTick += 0.004;
+        const tx = Math.sin(idleTick)*6;
+        const ty = Math.cos(idleTick/1.2)*6;
+        scene.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+        panels.forEach((p,i)=>{
+          const d = parseFloat(p.dataset.depth||0.06);
+          const s = 1 + Math.sin(idleTick + i)*0.01*d*20;
+          p.style.transform = `translate3d(${Math.sin(idleTick+i)*d*6}px, ${Math.cos(idleTick+i)*d*6}px, 0) scale(${s})`;
+        });
+        requestAnimationFrame(idleAnimate);
+      }
+      idleAnimate();
+
+      // Scroll zoom effect: scale viewport slightly based on scroll position in page
+      function onScroll(){
+        const top = window.scrollY || window.pageYOffset;
+        const max = Math.max(document.body.scrollHeight - window.innerHeight, 1);
+        const t = Math.min(1, top / max);
+        const scale = 1 + t*0.06; // up to 6% zoom
+        viewport.style.transform = `scale(${scale})`;
+        // subtle brightness with scroll
+        viewport.style.boxShadow = `0 ${12 + t*18}px ${40 + t*100}px rgba(2,6,23,${0.55 + t*0.1})`;
+      }
+      onScroll();
+
+      // Attach events
+      viewport.addEventListener('mousemove', onMove, {passive:true});
+      viewport.addEventListener('touchmove', (e)=> {
+        if(e.touches && e.touches[0]) onMove(e.touches[0]);
+      }, {passive:true});
+
+      window.addEventListener('resize', ()=> {
+        vw = viewport.clientWidth; vh = viewport.clientHeight;
+      }, {passive:true});
+      window.addEventListener('scroll', onScroll, {passive:true});
+
+      // Accessibility: allow keyboard focus to slightly scale when focused
+      viewport.addEventListener('focusin', ()=> viewport.style.transform = 'scale(1.02)');
+      viewport.addEventListener('focusout', ()=> viewport.style.transform = '');
+
+      // small performance guard: remove heavy mouse handlers on low-power devices
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        viewport.removeEventListener('mousemove', onMove);
+      }
+    })();
+  </script>
+</body>
+</html>
