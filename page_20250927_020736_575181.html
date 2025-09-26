@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --glass: rgba(255, 255, 255, 0.14);
+      --glass-border: rgba(255,255,255,0.35);
+      --text: #eaf2ff;
+      --muted: rgba(234,242,255,0.75);
+      --bg1: #0b1020;
+      --bg2: #1a1f3a;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(9,12,30,.9), rgba(12,18,40,.95) 60%), #0b1020;
+      overflow-x: hidden;
+    }
+
+    /* Glassy background layers for depth */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 20%, rgba(120, 200, 255, .18), transparent 40%),
+                  radial-gradient(circle at 80% 60%, rgba(255, 170, 120, .15), transparent 40%);
+      filter: saturate(115%);
+      animation: drift 24s ease-in-out infinite;
+    }
+    @keyframes drift {
+      0% { transform: translate3d(0,0,0); }
+      50% { transform: translate3d(-20px, 10px, 0); }
+      100% { transform: translate3d(0,0,0); }
+    }
+
+    header.site-header {
+      padding: 28px 20px 12px;
+      text-align: center;
+    }
+
+    .brand {
+      font-size: clamp(28px, 6vw, 72px);
+      font-weight: 800;
+      letter-spacing: .5px;
+      margin: 0;
+      background: linear-gradient(135deg, #e6f0ff 0%, #a9c9ff 60%, #d6e7ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(255,255,255,.08);
+      user-select: none;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .creation-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      color: #dfeaff;
+      margin-top: 14px;
+      backdrop-filter: blur(6px);
+    }
+
+    .creation-chip b { color: #e7f0ff; }
+
+    nav.main-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #e9f0ff;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.08);
+      transition: transform .5s ease, background .5s ease;
+    }
+    nav a:hover { transform: translateY(-2px); background: rgba(255,255,255,.14); }
+
+    main.container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 20px 0 40px;
+    }
+
+    /* Glass cards grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      padding: 8px 0 12px;
+    }
+
+    .card {
+      position: relative;
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: bounceIn 0.9s cubic-bezier(.25,.8,.25,1) forwards;
+    }
+
+    .card .title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+
+    .card .desc {
+      font-size: 13.5px;
+      color: #e8eeff;
+      line-height: 1.4;
+      margin: 6px 0 10px;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.35);
+      color: #eaf2ff;
+      background: rgba(255,255,255,.08);
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(30px); opacity: 0; }
+      60% { transform: translateY(-8px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Staggered delays for a nicer reveal */
+    .card[data-delay="0"] { animation-delay: 0.0s; }
+    .card[data-delay="1"] { animation-delay: 0.08s; }
+    .card[data-delay="2"] { animation-delay: 0.16s; }
+    .card[data-delay="3"] { animation-delay: 0.24s; }
+    .card[data-delay="4"] { animation-delay: 0.32s; }
+    .card[data-delay="5"] { animation-delay: 0.40s; }
+
+    /* About and simple sections */
+    section.glass-section {
+      margin-top: 28px;
+      padding: 20px;
+      border-radius: 16px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px);
+    }
+
+    section.glass-section h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    section.glass-section p { margin: 6px 0; color: #e8eeff; }
+
+    footer.site-footer {
+      margin: 40px auto 20px;
+      text-align: center;
+      padding: 14px 16px;
+      border-top: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.04);
+      border-radius: 12px;
+      width: min(960px, 90%);
+    }
+
+    footer.site-footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      margin-right: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.28);
+      transition: transform .3s ease;
+    }
+    footer.site-footer a:hover { transform: translateY(-1px) scale(1.05); }
+    footer.site-footer svg { width: 18px; height: 18px; fill: currentColor; }
+
+    .credit-text {
+      font-size: 13px;
+      color: #dfeaff;
+      vertical-align: middle;
+    }
+
+    /* Responsive tweak for small screens */
+    @media (max-width: 640px) {
+      .brand { font-size: 40px; }
+      nav.main-nav { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Header">
+    <h1 class="brand">amirabolfazle</h1>
+    <div class="tagline">A glassy, animated one-file portfolio</div>
+    <div class="creation-chip" aria-label="Creation time">
+      Creation time: <b>2025-09-27 02:07:13</b>
+    </div>
+    <nav class="main-nav" aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#contact" style="pointer-events:none;opacity:.6;cursor:not-allowed">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container" id="projects" aria-label="Projects grid">
+    <section class="grid" aria-label="Project cards">
+      <article class="card" data-delay="0" style="--delay:0s">
+        <div class="title">Aurora UI Kit</div>
+        <div class="desc">A lightweight, accessible design system with glassmorphism aesthetics and a modular component library.</div>
+        <div class="chip-list">
+          <span class="chip">UI</span><span class="chip">Design</span><span class="chip">System</span>
+        </div>
+      </article>
+
+      <article class="card" data-delay="1" style="--delay:0s">
+        <div class="title">Nebula Analytics</div>
+        <div class="desc">A sleek data viz dashboard with live charts and subtle motion for readability.</div>
+        <div class="chip-list">
+          <span class="chip">Data</span><span class="chip">Dashboard</span><span class="chip">Viz</span>
+        </div>
+      </article>
+
+      <article class="card" data-delay="2" style="--delay:0s">
+        <div class="title">Pulse Playground</div>
+        <div class="desc">Interactive playground for experimenting with motion and micro-interactions.</div>
+        <div class="chip-list">
+          <span class="chip">Motion</span><span class="chip">Interaction</span><span class="chip">Play</span>
+        </div>
+      </article>
+
+      <article class="card" data-delay="3" style="--delay:0s">
+        <div class="title">Drift Notes</div>
+        <div class="desc">Minimal note-taking app concept with a glassy UI and fast search.</div>
+        <div class="chip-list">
+          <span class="chip">App</span><span class="chip">Notes</span><span class="chip">Web</span>
+        </div>
+      </article>
+
+      <article class="card" data-delay="4" style="--delay:0s">
+        <div class="title">Lyra Portfolio Template</div>
+        <div class="desc">A starter template for fast, responsive personal portfolios with motion emphasis.</div>
+        <div class="chip-list">
+          <span class="chip">Template</span><span class="chip">Portfolio</span><span class="chip">Template</span>
+        </div>
+      </article>
+
+      <article class="card" data-delay="5" style="--delay:0s">
+        <div class="title">Glass Motion Kit</div>
+        <div class="desc">A collection of reusable glassy motion components with bounce effects.</div>
+        <div class="chip-list">
+          <span class="chip">Components</span><span class="chip">Animation</span><span class="chip">Kit</span>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <section id="about" class="container glass-section" aria-label="About">
+    <h2>About</h2>
+    <p>Hi, I’m amirabolfazle — a front-end enthusiast crafting glassy, animated experiences. This single-file portfolio demonstrates a compact approach to a modern, tactile web presence with smooth motion and subtle depth.</p>
+  </section>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.43-4.04-1.43-.55-1.39-1.34-1.77-1.34-1.77-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.66-.3-5.46-1.34-5.46-5.95 0-1.32.47-2.4 1.24-3.25-.13-.31-.54-1.56.12-3.25 0 0 1.01-.32 3.31 1.24a11.6 11.6 0 0 1 6.02 0c2.3-1.56 3.31-1.24 3.31-1.24.66 1.69.25 2.94.12 3.25.77.85 1.23 1.93 1.23 3.25 0 4.62-2.8 5.64-5.47 5.94.43.37.81 1.1.81 2.22v3.29c0 .32.21.69.83.58A12 12 0 0 0 12 .5z" />
+      </svg>
+    </a>
+    <span class="credit-text">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Optional: add a little bounce on initial load for the header as a subtle touch
+    document.addEventListener('DOMContentLoaded', () => {
+      // Fade in header elements with staggered timing if desired
+      const cards = document.querySelectorAll('.card');
+      // Cards already have CSS animation delays; nothing else required here
+    });
+  </script>
+</body>
+</html>
