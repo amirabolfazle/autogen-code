@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #e8f2ff;
+      --cyan: #00f5ff;
+      --magenta: #ff00d4;
+      --glow: 0 0 8px rgba(0,255,255,.9), 0 0 22px rgba(0,255,255,.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
+      color: #e7f6ff;
+      background: #080b14;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated background glow for neon aesthetic */
+    body::before {
+      content: "";
+      position: fixed;
+      left: -25%;
+      top: -25%;
+      width: 150%;
+      height: 150%;
+      background: radial-gradient(circle at 20% 20%, rgba(0,255,255,.15), transparent 40%),
+                  radial-gradient(circle at 70% 30%, rgba(255,0,200,.15), transparent 40%),
+                  linear-gradient(135deg, rgba(0,0,0,.0), rgba(0,0,0,.4));
+      background-blend-mode: screen;
+      filter: blur(40px);
+      z-index: -1;
+      animation: bgMove 20s linear infinite;
+    }
+    @keyframes bgMove {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-20px, 10px) scale(1.02); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    .app {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    /* Neon header styling */
+    .header {
+      padding: 40px 20px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .brand {
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: transparent;
+      background: linear-gradient(90deg, #0ff, #f0f, #9f0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-transform: lowercase;
+      margin: 0;
+      text-shadow: 0 0 6px rgba(0,255,255,.7), 0 0 14px rgba(0,255,255,.5);
+    }
+    .tag {
+      margin-top: 8px;
+      color: #aaf7ff;
+      text-shadow: 0 0 8px rgba(0,255,255,.8);
+    }
+    .neon {
+      text-shadow: 0 0 6px rgba(0,255,255,.9),
+                   0 0 16px rgba(0,255,255,.6),
+                   0 0 32px rgba(0,255,255,.4);
+      color: #ccffff;
+    }
+
+    .hero {
+      padding: 20px;
+      display: grid;
+      justify-items: center;
+    }
+    .subtitle {
+      font-size: 1rem;
+      color: #b6faff;
+      opacity: .95;
+      letter-spacing: .5px;
+      text-shadow: 0 0 14px rgba(0,255,255,.6);
+      text-align: center;
+    }
+
+    .creation-time {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.6);
+      color: #a0ffff;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      background: rgba(0,255,255,.08);
+      box-shadow: inset 0 0 8px rgba(0,255,255,.25);
+      margin-top: 8px;
+      font-size: .9rem;
+    }
+
+    .grid {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(0, 255, 255, 0.25);
+      border-radius: 16px;
+      padding: 18px;
+      min-height: 120px;
+      color: #e7fbff;
+      backdrop-filter: blur(2px);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(0,255,255,.0), rgba(255,0,200,.25), rgba(0,255,255,.0));
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      color: #eaffff;
+    }
+    .card p {
+      margin: 0;
+      color: #d6fbff;
+      font-size: .95rem;
+    }
+    .dot {
+      display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
+      margin-right: 6px;
+      background: #0ff;
+      box-shadow: 0 0 6px #0ff;
+    }
+
+    .footer {
+      padding: 20px;
+      text-align: center;
+      color: #a9f5ff;
+      border-top: 1px solid rgba(0,255,255,.25);
+      background: rgba(2,6,23,.6);
+    }
+    .footer a {
+      color: #7ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.5);
+      background: rgba(0,255,255,.08);
+    }
+    .footer a:hover {
+      background: rgba(0,255,255,.14);
+    }
+
+    .icon {
+      width: 20px; height: 20px;
+      display: inline-block;
+    }
+
+    @media (max-width: 600px) {
+      .brand { font-size: 3rem; }
+    }
+
+    /* Simple fade-in animation for elements with class "fade-in" or its descendants */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header fade-in" style="animation-delay:0.1s;">
+      <h1 class="brand neon" aria-label="amirabolfazle title" style="animation-delay:0s;">amirabolfazle</h1>
+      <div class="tag neon" style="animation-delay:0.2s;">Neon Animated Page</div>
+    </header>
+
+    <section class="hero fade-in" style="animation-delay:0.3s;">
+      <div class="creation-time" aria-label="creation time">2025-09-27 03:26:26</div>
+      <p class="subtitle" style="margin-top:8px; font-size:1rem; color:#b6fbff; text-shadow:0 0 14px rgba(0,255,255,.6);">
+        A fully responsive neon-themed demo with fade-in effects
+      </p>
+    </section>
+
+    <section class="grid" aria-label="content grid" style="animation-delay:0.6s;">
+      <article class="card fade-in" style="animation-delay:0s;">
+        <span class="dot" aria-hidden="true"></span>
+        <h3>Intro</h3>
+        <p>Welcome to the neon world. This panel demonstrates responsive layout and smooth fade-in on load.</p>
+      </article>
+      <article class="card fade-in" style="animation-delay:0.2s;">
+        <span class="dot" aria-hidden="true" style="background:#ff00c8; box-shadow:0 0 6px #ff00c8;"></span>
+        <h3>Design</h3>
+        <p>Neon glow, bold typography, and subtle motion create a futuristic vibe.</p>
+      </article>
+      <article class="card fade-in" style="animation-delay:0.4s;">
+        <span class="dot" aria-hidden="true" style="background:#ffd400; box-shadow:0 0 6px #ffd400;"></span>
+        <h3>Tech</h3>
+        <p>Responsive grid, lightweight CSS, and no external libraries required.</p>
+      </article>
+    </section>
+
+    <footer class="footer fade-in" style="animation-delay:1s;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <!-- GitHub icon inline SVG -->
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" role="img">
+          <path d="M12 .5C5.73.5 0 5.95 0 12.5c0 4.43 2.87 8.17 6.84 9.5.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.22-3.37-1.22-.46-1.16-1.12-1.47-1.12-1.47-.92-.62.07-.61.07-.61 1.04.07 1.56 1.05 1.56 1.05.9 1.57 2.36 1.12 2.93.86.09-.66.35-1.12.64-1.37-2.22-.25-4.56-1.13-4.56-5.04 0-1.12.39-2.04 1.04-2.76-.11-.25-.46-1.29.1-2.69 0 0 .87-.28 2.85 1.04a9.4 9.4 0 012.59-.35c.88 0 1.77.12 2.6.36 1.98-1.32 2.85-1.04 2.85-1.04.56 1.4.21 2.44.1 2.69.66.72 1.05 1.64 1.05 2.76 0 3.92-2.34 4.78-4.57 5.02.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49A10.03 10.03 0 0012 2z"/>
+        </svg>
+        GitHub
+      </a>
+      <div style="margin-top:8px;">Created by amirabolfazle</div>
+    </footer>
+  </div>
+
+  <script>
+    // Optional: slight enhancement to ensure a cohesive stagger if multiple elements are present
+    document.addEventListener('DOMContentLoaded', function () {
+      // No additional logic required; CSS handles the stagger via animation delays.
+    });
+  </script>
+</body>
+</html>
