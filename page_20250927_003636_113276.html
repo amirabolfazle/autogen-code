@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle - portfolio</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #14172a;
+      --glass: rgba(255,255,255,0.14);
+      --glass-strong: rgba(255,255,255,0.22);
+      --text: #e8eaf6;
+      --muted: rgba(232,234,246,0.75);
+      --shadow: 0 20px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --glow: 0 0 0 rgba(0,0,0,0);
+    }
+    * {box-sizing: border-box;}
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(1200px circle at 20% -10%, rgba(120,180,255,.25), transparent 40%),
+                  radial-gradient(900px circle at 100% 0%, rgba(150,255,212,.15), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #14172a 60%, #0b1020 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(to bottom, rgba(20,24,40,0.75), rgba(20,24,40,0.25) 70%, transparent);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: inset 0 0 20px rgba(255,255,255,.15);
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: .2px;
+      color: #f0f4ff;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin: 0 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      transition: all .25s ease;
+    }
+    nav a:hover {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+    .container {
+      width: min(1100px, 92%);
+      margin: 28px auto;
+    }
+
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .85rem;
+      color: #dbe7ff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(6px);
+      margin-left: 8px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: center;
+      padding: 22px;
+      border-radius: calc(var(--radius) + 6px);
+      background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(12px) saturate(1.2);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .hero h2 {
+      margin: 6px 0 8px;
+      font-size: 2rem;
+      line-height: 1.15;
+      letter-spacing: .2px;
+    }
+    .hero p {
+      margin: 0;
+      color: #e8eaff;
+      opacity: .92;
+    }
+    .summary {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(6px);
+    }
+    .avatar-lg {
+      width: 100%;
+      min-height: 260px;
+      border-radius: 14px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(120, 200, 255, .25), rgba(180, 255, 210, .25));
+      border: 1px solid rgba(255,255,255,.35);
+      box-shadow: inset 0 0 40px rgba(255,255,255,.15);
+    }
+    .avatar-lg .circle {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background: radial-gradient(circle at 30% 30%, #fff, #cde5ff 40%, #8fbaff 60%, #6aa8ff 100%);
+      box-shadow: 0 8px 40px rgba(0,0,0,.25);
+      font-size: 40px; font-weight: 700;
+      color: #0b1020;
+    }
+
+    section {
+      margin: 42px 0;
+    }
+    .section-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .section-title h3 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    .section-sub {
+      font-size: .92rem;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,.34);
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 130px;
+      backdrop-filter: blur(8px) saturate(1.2);
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      transform: translateY(28px);
+      opacity: 0;
+    }
+    .card:hover {
+      transform: translateY(0) scale(1.01);
+      transition: transform .3s ease;
+    }
+    .card h4 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+    .card p {
+      margin: 0;
+      color: #e7eaff;
+      opacity: .92;
+      font-size: .95rem;
+    }
+    .card .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: .75rem;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.5);
+      margin-top: 8px;
+      color: #0b1020;
+    }
+
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      margin-top: 28px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.28);
+      backdrop-filter: blur(8px);
+    }
+    .foot .left {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .footer-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #eaf0ff; text-decoration: none;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,.22);
+      border: 1px solid rgba(255,255,255,.5);
+    }
+    .footer-link svg { width: 20px; height: 20px; fill: currentColor; }
+    .footer-note {
+      font-size: .92rem; color: #dfe7ff;
+    }
+
+    @media (max-width: 900px){
+      .hero { grid-template-columns: 1fr; }
+      .avatar-lg { min-height: 200px; }
+    }
+
+    /* reveal animation hook-up */
+    .card.visible {
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="avatar" aria-label="Initials">AA</div>
+      <h1>amirabolfazle</h1>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="creation-time" title="Creation timestamp">
+      Creation time: 2025-09-27 00:36:11
+    </div>
+
+    <section id="about" class="hero" aria-label="Intro">
+      <div>
+        <div class="summary" style="margin-bottom:14px;">
+          <p style="margin:0; font-weight:600;">Hi, I’m amirabolfazle — a curious frontend developer passionate about glassmorphism UI, micro-interactions, and thoughtful design.</p>
+        </div>
+        <h2 style="margin:6px 0 6px;">Crafting modern, accessible interfaces</h2>
+        <p style="margin:0; color:#e8eaff; opacity:.9;">
+          I enjoy turning ideas into delightful user experiences with clean code, performance-minded approaches, and a dash of playful animation.
+        </p>
+      </div>
+      <div class="avatar-lg" aria-label="Profile preview">
+        <div class="circle">AA</div>
+      </div>
+    </section>
+
+    <section id="projects" aria-label="Projects">
+      <div class="section-title">
+        <h3>Projects</h3>
+        <span class="section-sub">Selected works and experiments</span>
+      </div>
+
+      <div class="grid" id="project-grid">
+        <article class="card" aria-label="Project Autogen Code">
+          <h4>Autogen Code Studio</h4>
+          <p>A lightweight code generator with a glassy UI and real-time previews.</p>
+          <span class="badge">JavaScript • UI</span>
+        </article>
+
+        <article class="card" aria-label="Project Glass Snapshots">
+          <h4>Glass Snapshots</h4>
+          <p>Portfolio gallery showcasing glassmorphism with subtle motion on scroll.</p>
+          <span class="badge">CSS • UX</span>
+        </article>
+
+        <article class="card" aria-label="Project Neon Forms">
+          <h4>Neon Forms</h4>
+          <p>Accessible form components with focus rings and smooth transitions.</p>
+          <span class="badge">Accessibility</span>
+        </article>
+
+        <article class="card" aria-label="Project Typography Lab">
+          <h4>Typography Lab</h4>
+          <p>Showcases typographic scales, rhythm, and responsive typography rules.</p>
+          <span class="badge">Typography</span>
+        </article>
+
+        <article class="card" aria-label="Project Micro Interactions">
+          <h4>Micro Interactions</h4>
+          <p>A collection of tiny, delightful UI motions to enhance feedback.</p>
+          <span class="badge">Motion • UX</span>
+        </article>
+
+        <article class="card" aria-label="Project Portfolio Engine">
+          <h4>Portfolio Engine</h4>
+          <p>One-file portfolio templates with glass look and slide-up effects.</p>
+          <span class="badge">Generative</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" aria-label="Skills">
+      <div class="section-title">
+        <h3>Skills</h3>
+        <span class="section-sub">What I work with</span>
+      </div>
+      <div class="grid" id="skill-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+        <div class="card" aria-label="Skill HTML/CSS">
+          <h4>HTML & CSS</h4>
+          <p>Semantic markup, responsive design, and modern CSS features.</p>
+          <span class="badge">Web Standards</span>
+        </div>
+
+        <div class="card" aria-label="Skill JavaScript">
+          <h4>JavaScript</h4>
+          <p>ESNext, modular code, and approachable animations.</p>
+          <span class="badge">Frontend</span>
+        </div>
+
+        <div class="card" aria-label="Skill UX">
+          <h4>User Experience</h4>
+          <p>Design thinking, usability testing, and accessibility basics.</p>
+          <span class="badge">UX</span>
+        </div>
+
+        <div class="card" aria-label="Skill Tools">
+          <h4>Tools</h4>
+          <p>Figma, Git, and a sprinkle of automation.</p>
+          <span class="badge">Workflow</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" aria-label="Contact">
+      <div class="section-title">
+        <h3>Contact</h3>
+        <span class="section-sub">Let’s build something</span>
+      </div>
+      <div class="card" style="max-width: 720px;">
+        <h4>Get in touch</h4>
+        <p>You can reach me at the project level or collaborate on new ideas. I’m open to freelance work, open-source, and creative challenges.</p>
+        <div style="margin-top:12px;">
+          <a class="footer-link" href="mailto:amira@example.com" aria-label="Email">
+            <span>✉️</span> Email
+          </a>
+          <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+            <span>🐙</span> GitHub Repo
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot" aria-label="Footer">
+      <div class="left">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="footer-link" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" role="img" aria-label="GitHub icon" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.86 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.15-3.37-1.15-.46-1.22-1.12-1.54-1.12-1.54-.92-.63.07-.62.07-.62 1.02.07 1.56 1.05 1.56 1.05.9 1.57 2.36 1.12 2.93.86.09-.69.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.04 0-1.11.39-2.01 1.03-2.72-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.04A9.29 9.29 0 0 1 12 6.8c.85.04 1.7.12 2.5.35 1.9-1.31 2.74-1.04 2.74-1.04.56 1.42.21 2.47.1 2.73.64.71 1.03 1.61 1.03 2.72 0 3.91-2.34 4.77-4.57 5.01.36.32.69.95.69 1.92 0 1.39-.01 2.51-.01 2.85 0 .28.18.61.69.5C19.14 20.57 22 16.75 22 12.26 22 6.58 17.52 2 12 2z" fill="currentColor"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+      <div class="footer-note">Created by amirabolfazle</div>
+    </footer>
+  </div>
+
+  <script>
+    // Reveal on scroll with stagger
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = Array.from(document.querySelectorAll('.card'));
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      cards.forEach((c, idx) => {
+        // stagger by index
+        c.style.transitionDelay = (idx * 0.04) + 's';
+        observer.observe(c);
+      });
+    });
+  </script>
+</body>
+</html>
