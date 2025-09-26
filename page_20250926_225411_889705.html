@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="description" content="A sleek dark-mode, animated one-file portfolio for amirabolfazle." />
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg-soft: #11161c;
+      --card: #141b22;
+      --text: #e8eefc;
+      --muted: #aab6cc;
+      --accent: #5eead4;
+      --accent-2:#7dd3fc;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;height:100%}
+    html{scroll-behavior:smooth}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      background: radial-gradient(1200px circle at 10% -10%, rgba(94,234,212,.08), transparent 40%),
+                  radial-gradient(900px circle at 100% 0%, rgba(125,211,252,.08), transparent 40%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    a{color:var(--accent-2); text-decoration:none}
+    a.button, .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px; border-radius:999px; border:1px solid rgba(125,211,252,.4);
+      background: linear-gradient(135deg, rgba(94,234,212,.15), rgba(125,211,252,.15));
+      color:var(--text); text-decoration:none; font-weight:600;
+      transition: transform .2s ease, background .3s ease;
+    }
+    a.button:hover, .btn:hover{ transform: translateY(-1px); background: rgba(125,211,252,.25); }
+    header.hero{
+      padding: 64px 20px 36px;
+      max-width: 1100px; margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .glow{
+      position:absolute; width: 420px; height:420px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(94,234,212,.9), transparent 40%);
+      filter: blur(40px); opacity:.6; pointer-events:none;
+      right:-120px; top: -120px;
+      transform: rotate(15deg);
+    }
+    h1{
+      font-size: clamp(2.4rem, 5vw, 5rem);
+      margin: 0 0 8px; letter-spacing:.5px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #e8f0ff 0%, #9ae6b4 60%, #93c5fd 100%);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 24px rgba(110,231,183,.25);
+    }
+    .subtitle{ font-size: 1.05rem; color: var(--muted); margin-bottom: 18px; }
+    .creation-time{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem; color:#b4c6d9; padding:6px 10px; border-radius:8px;
+      border:1px solid rgba(110,231,183,.25); display:inline-block; background: rgba(2,6,23,.25);
+      margin-top:6px;
+    }
+    nav.primary{ margin-top:14px; display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .section{ padding: 64px 20px; max-width:1100px; margin:0 auto; }
+    .section h2{ font-size: 2rem; margin:0 0 14px; letter-spacing:.3px}
+    .muted{ color: var(--muted) }
+    .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+    .card{ background: linear-gradient(180deg, rgba(20,27,34,.95), rgba(20,27,34,.85));
+            border:1px solid rgba(125,211,252,.25); border-radius:14px; padding:14px;
+            box-shadow: var(--shadow);
+            display:flex; flex-direction:column; min-height: 190px;
+            overflow:hidden;
+    }
+    .card:hover{ transform: translateY(-2px); transition: transform .2s ease; }
+    .card-media{ height:120px; border-radius:10px; overflow:hidden; background:#0b0f14; display:flex; align-items:center; justify-content:center; }
+    .card-media img{ width:100%; height:100%; object-fit:cover; filter: saturate(1.1) contrast(1.05); }
+    .card-content{ display:flex; flex-direction:column; gap:6px; padding:8px 6px 0; }
+    .card h3{ margin:6px 0 0; font-size:1.05rem; }
+    .card p{ margin:0; color:var(--muted); font-size:.92rem; }
+    .tag{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px;
+           background: rgba(110,231,183,.15); color:#c8ffea; font-weight:600; font-size:.78rem;
+           border:1px solid rgba(110,231,183,.4);
+    }
+    footer.footer{ padding:28px 20px; border-top:1px solid rgba(255,255,255,.08);
+                   display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
+                   background: rgba(2,6,23,.5); position: relative;
+    }
+    .gh-icon{ width:22px; height:22px; display:inline-block; vertical-align:middle; margin-right:6px; color:#fff; }
+    .credit{ color:#cfe7ff; font-weight:600; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas; }
+    /* Slide-up animation */
+    [data-animate="slide-up"]{
+      opacity:0; transform: translateY(20px);
+      transition: opacity .6s ease-out, transform .6s ease-out;
+    }
+    .in-view{ opacity:1; transform: none; }
+    @media (max-width: 720px){
+      header.hero{ padding: 40px 14px 20px; }
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" aria-label="Intro">
+    <div class="glow" aria-hidden="true"></div>
+    <h1>amirabolfazle</h1>
+    <p class="subtitle">Crafting thoughtful interfaces, delightful interactions, and robust code.</p>
+    <span class="creation-time" title="Creation timestamp">Creation time: 2025-09-26 22:53:37</span>
+    <nav class="primary" aria-label="Navigation">
+      <a class="button" href="#projects">Projects</a>
+      <a class="button" href="#about" style="border-color: rgba(125,211,252,.5);">About</a>
+      <a class="button" href="#contact" style="border-color: rgba(110,231,183,.5);">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" aria-label="Content">
+    <section id="projects" class="section" data-animate="slide-up" aria-label="Projects">
+      <h2>Projects</h2>
+      <p class="muted" style="margin-top:0 0 8px;">A small selection of work and experiments.</p>
+      <div class="grid">
+        <article class="card" aria-label="Autogen Code project">
+          <div class="card-media" aria-label="Autogen Code screenshot">
+            <img src="https://dummyimage.com/600x360/0b1220/3b82f6.png&text=Autogen+Code" alt="Autogen Code project preview" />
+          </div>
+          <div class="card-content">
+            <span class="tag" aria-label="project type">Automation</span>
+            <h3>Autogen Code</h3>
+            <p>Automated code generation tooling to accelerate prototyping and iteration.</p>
+            <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Portfolio sample project">
+          <div class="card-media" aria-label="Sample project image">
+            <img src="https://dummyimage.com/600x360/0b1220/34d399.png&text=Sample+Project" alt="Sample project preview" />
+          </div>
+          <div class="card-content">
+            <span class="tag" aria-label="project type">UI/UX</span>
+            <h3>Pixel Pulse</h3>
+            <p>Design system components with accessible color palettes and motion guidelines.</p>
+            <a class="btn" href="#" onclick="return false;">Live demo</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section" data-animate="slide-up" aria-label="About">
+      <h2>About</h2>
+      <p class="muted" style="max-width: 700px;">
+        I'm amirabolfazle, a frontend-focused developer who loves crafting fast, accessible, and delightful
+        user experiences. I enjoy turning ideas into clean, maintainable code and exploring new tools
+        that make development more enjoyable.
+      </p>
+      <div class="grid" style="margin-top:12px;">
+        <span class="tag" aria-label="skill">JavaScript / TypeScript</span>
+        <span class="tag" aria-label="skill">React / Next.js</span>
+        <span class="tag" aria-label="skill">CSS / Animations</span>
+        <span class="tag" aria-label="skill">Accessibility</span>
+      </div>
+    </section>
+
+    <section id="contact" class="section" data-animate="slide-up" aria-label="Contact">
+      <h2>Contact</h2>
+      <p class="muted" style="max-width:720px;">
+        Have a project in mind? I’d love to hear about it. Reach out and say hello.
+      </p>
+      <a class="button" href="mailto:amir@example.com" aria-label="Email amir">Email me</a>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="gh-link" aria-label="GitHub repository">
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub logo" role="img" focusable="false" width="22" height="22" style="color:#fff;">
+        <path d="M12 .5C5.73.5.96 5.27.96 11.96c0 5.04 3.29 9.31 7.86 10.83.57.11.78-.25.78-.56 0-.28-.01-1.02-.02-2-3.2.71-3.87-1.41-3.87-1.41-.52-1.33-1.27-1.69-1.27-1.69-1.04-.72.08-.71.08-.71 1.15.08 1.75 1.18 1.75 1.18 1.02 1.74 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.08 11.08 0 0 1 2.9-.39c1.04 0 2.08.14 3.05.41 2.21-1.49 3.18-1.18 3.18-1.18.64 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .31.21.67.79.55A12 12 0 0 0 23.04 12C23.04 5.27 18.27.5 12 .5z"/>
+      </svg>
+    </a>
+    <span class="credit" aria-label="Created by text">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Slide-up on scroll
+    document.addEventListener('DOMContentLoaded', () => {
+      const options = { rootMargin: '0px 0px -8% 0px', threshold: 0.05 };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+
+      document.querySelectorAll('[data-animate="slide-up"]').forEach(el => {
+        // initial state set by CSS, just observe
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
