@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #0a0b13;
+      --glass: rgba(255,255,255,0.12);
+      --glass-dark: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.28);
+      --text: #e9f0ff;
+      --muted: #c8d4e8;
+      --shadow: 0 8px 30px rgba(0,0,0,.25);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% -10%, rgba(124, 58, 237, 0.35), transparent 40%),
+        radial-gradient(circle at 100% 0%, rgba(34, 197, 94, 0.25), transparent 40%),
+        linear-gradient(135deg, #0b1020 0%, #0a0b13 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Page container with zoom-in on load */
+    .stage {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      transform: scale(0.98);
+      opacity: 0;
+      animation: zoomIn 0.8s ease-out 0.15s forwards;
+      perspective: 1000px;
+    }
+    @keyframes zoomIn {
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Glass card base */
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: saturate(1.2) blur(12px);
+      -webkit-backdrop-filter: saturate(1.2) blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    header.header {
+      padding: 28px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    header .title {
+      font-size: 2.6rem;
+      line-height: 1.05;
+      letter-spacing: .5px;
+      margin: 0;
+      background: linear-gradient(92deg, #a5b4fc, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .9rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #eaf2ff;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,.35);
+      white-space: nowrap;
+    }
+
+    /* Portfolio grid */
+    .portfolio {
+      padding: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+      cursor: default;
+      transition: transform .25s ease, box-shadow .25s ease;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 14px;
+    }
+
+    .card:hover {
+      transform: translateZ(0) scale(1.03);
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    .thumb {
+      height: 140px;
+      width: 100%;
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+      background: #555;
+      filter: saturate(1.1);
+    }
+
+    .card-content {
+      padding: 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: .2px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.4;
+    }
+
+    /* tilt on hover for depth */
+    .tilt {
+      transform-style: preserve-3d;
+      will-change: transform;
+      perspective: 1000px;
+    }
+    .tilt:hover {
+      transform: rotateX(6deg) rotateY(-6deg) scale(1.02);
+      transition: transform .25s ease;
+    }
+
+    /* Subtle entrance for each card */
+    .card {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: enterCard .6s ease forwards;
+    }
+    .card:nth-child(1) { animation-delay: .05s; }
+    .card:nth-child(2) { animation-delay: .10s; }
+    .card:nth-child(3) { animation-delay: .15s; }
+    .card:nth-child(4) { animation-delay: .20s; }
+    .card:nth-child(5) { animation-delay: .25s; }
+    .card:nth-child(6) { animation-delay: .30s; }
+    @keyframes enterCard {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer with GitHub icon and credit */
+    footer {
+      margin-top: 28px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    footer a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #eaf2ff;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: transform .2s ease, background .2s ease;
+    }
+    footer a:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.22);
+    }
+    .credit {
+      color: #e8f0ff;
+      opacity: .9;
+    }
+
+    /* inline SVG sizing */
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 640px) {
+      header.header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .creation-time { align-self: flex-end; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Amir Abolfazle portfolio stage">
+    <header class="glass header" role="banner" aria-label="Site header">
+      <h1 class="title" style="margin:0; font-size: clamp(2rem, 4vw, 3.5rem);">amirabolfazle</h1>
+      <div class="creation-time" aria-label="Creation time">
+        Created: 2025-09-27 01:44:39
+      </div>
+    </header>
+
+    <section class="portfolio glass" aria-label="Projects and works">
+      <article class="card tilt" tabindex="0" aria-label="Project 1: AutoGen Code Snippets" >
+        <div class="thumb" style="background: linear-gradient(135deg, #6ee7f0 0%, #3b82f6 60%, #8b5cf6 100%);"></div>
+        <div class="card-content">
+          <h3>AutoGen Code Snippets</h3>
+          <p>Curated snippets and templates to jumpstart coding sessions with instant reuse.</p>
+        </div>
+      </article>
+
+      <article class="card tilt" tabindex="0" aria-label="Project 2: AI Autocomplete Engine">
+        <div class="thumb" style="background: linear-gradient(135deg, #f472b6 0%, #f59e0b 60%, #34d399 100%);"></div>
+        <div class="card-content">
+          <h3>AI Autocomplete Engine</h3>
+          <p>Responsive AI-assisted coding suggestions designed for speed and accuracy.</p>
+        </div>
+      </article>
+
+      <article class="card tilt" tabindex="0" aria-label="Project 3: Glass UI Components">
+        <div class="thumb" style="background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 60%, #34d399 100%);"></div>
+        <div class="card-content">
+          <h3>Glass UI Components</h3>
+          <p>Reusable glassmorphic UI blocks with accessible states and polished motion.</p>
+        </div>
+      </article>
+
+      <article class="card tilt" tabindex="0" aria-label="Project 4: Real-time Timeline">
+        <div class="thumb" style="background: linear-gradient(135deg, #34d399 0%, #22d3ee 60%, #8b5cf6 100%);"></div>
+        <div class="card-content">
+          <h3>Realtime Timeline</h3>
+          <p>Lightweight live timeline with smooth animations and responsive layout.</p>
+        </div>
+      </article>
+
+      <article class="card tilt" tabindex="0" aria-label="Project 5: Animation Toolkit">
+        <div class="thumb" style="background: linear-gradient(135deg, #f472b6 0%, #f97316 60%, #22c55e 100%);"></div>
+        <div class="card-content">
+          <h3>Animation Toolkit</h3>
+          <p>Host of micro-interactions and motion presets for delightful UX.</p>
+        </div>
+      </article>
+
+      <article class="card tilt" tabindex="0" aria-label="Project 6: Portfolio Theme Playground">
+        <div class="thumb" style="background: linear-gradient(135deg, #93c5fd 0%, #c4b5fd 60%, #f472b6 100%);"></div>
+        <div class="card-content">
+          <h3>Portfolio Theme Playground</h3>
+          <p>Experimentation hub for glassmorphic aesthetics and zoom transitions.</p>
+        </div>
+      </article>
+    </section>
+
+    <footer class="glass" role="contentinfo" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.5 2.87 8.31 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.25-3.37-1.25-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1.01.07 1.54 1.05 1.54 1.05.9 1.54 2.36 1.1 2.94.84.09-.66.35-1.1.63-1.35-2.22-.26-4.56-1.16-4.56-5.17 0-1.14.39-2.07 1.03-2.8-.1-.26-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.07A9.32 9.32 0 0 1 12 6.8c.85-.01 1.7-.11 2.5-.33 1.9-1.35 2.74-1.07 2.74-1.07.56 1.43.21 2.49.1 2.75.64.73 1.03 1.66 1.03 2.8 0 4.01-2.34 4.91-4.57 5.18.36.31.69.92.69 1.86 0 1.34-.01 2.42-.01 2.75 0 .27.18.6.69.49A10.01 10.01 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/>
+        </svg>
+        GitHub
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </main>
+  <script>
+    // Optional: subtle parallax tilt on mouse move for cards
+    (function(){
+      const stage = document.querySelector('.stage');
+      if (!stage) return;
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const rx = ((y / rect.height) - 0.5) * -6;
+          const ry = ((x / rect.width) - 0.5) * 6;
+          card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
