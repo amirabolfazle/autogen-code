@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-start: #0b1020;
+      --bg-end: #151a2b;
+      --glass: rgba(255, 255, 255, 0.14);
+      --glass-stroke: rgba(255, 255, 255, 0.28);
+      --text: #e8f2ff;
+      --muted: rgba(232, 242, 255, 0.8);
+      --shadow: rgba(0, 0, 0, 0.25);
+      --accent: #7bdfff;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 20%, rgba(123, 223, 255, 0.15), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(125, 92, 182, 0.15), transparent 40%),
+                  linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      overflow-x: hidden;
+    }
+
+    /* soft ambient blobs for glassy vibe */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      filter: blur(60px);
+      z-index: 0;
+      pointer-events: none;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0,180,255,0.6), rgba(0,0,0,0) 40%, rgba(0,180,255,0.6) 60%, rgba(0,0,0,0) 100%);
+      opacity: 0.25;
+    }
+    body::before { top: -80px; left: -60px; }
+    body::after { bottom: -120px; right: -60px; }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 22px;
+      width: min(1000px, 92vw);
+      margin: 60px auto;
+    }
+
+    /* Glassy card base */
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--glass-stroke);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 40px var(--shadow);
+      color: var(--text);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* decorative glass border glow */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(123, 223, 255, 0.25), rgba(123, 223, 255, 0) 40%);
+      filter: blur(0.5px);
+      pointer-events: none;
+      -webkit-mask: linear-gradient(#000 0 0);
+      mask: linear-gradient(#000 0 0);
+    }
+
+    .title {
+      text-align: center;
+      margin: 0 0 6px;
+      font-weight: 700;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      letter-spacing: .5px;
+      color: #eaffff;
+      text-shadow: 0 4px 18px rgba(0, 120, 255, 0.35);
+    }
+
+    .subtitle {
+      text-align: center;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: .4px;
+    }
+
+    /* Sections content */
+    .section-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 8px;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .section-content ul {
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .section-content a {
+      color: #d6f0ff;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(214,240,255,0.6);
+    }
+    .section-content a:hover {
+      color: #ffffff;
+      border-bottom-color: rgba(255,255,255,0.9);
+    }
+
+    /* Slide-up animation */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(60px);
+      animation: slideUp 0.9s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(60px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* responsive tweaks */
+    @media (min-width: 720px) {
+      .section-content { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* footer styling */
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #e8f3ff;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.08);
+    }
+    .github:hover {
+      background: rgba(255,255,255,0.14);
+      color: #ffffff;
+    }
+
+    .github svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" aria-label="Amir Abolfazle personal page">
+    <header class="card slide-up" style="animation-delay:0s;">
+      <h1 class="title">amirabolfazle</h1>
+      <p class="subtitle">A glassy, animated personal page with slide-up effects</p>
+    </header>
+
+    <section class="card slide-up" style="animation-delay:0.15s;">
+      <div class="section-content">
+        <div>
+          <strong>About</strong>
+          <p>Hi, I’m Amir Abolfazle. I enjoy crafting elegant interfaces, exploring automation, and building playful, useful software experiences.</p>
+        </div>
+        <div>
+          <strong>Creation Time</strong>
+          <p>Creation time: 2025-09-27 00:53:45</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card slide-up" style="animation-delay:0.30s;">
+      <div class="section-content">
+        <div>
+          <strong>Projects</strong>
+          <ul>
+            <li>Auto-generated code playgrounds</li>
+            <li>Glassmorphism UI experiments</li>
+            <li>Animated micro-interactions</li>
+          </ul>
+        </div>
+        <div>
+          <strong>Skills</strong>
+          <ul>
+            <li>Frontend development</li>
+            <li>UX animation</li>
+            <li>Code generation tooling</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card slide-up" style="animation-delay:0.45s;">
+      <div class="section-content">
+        <div>
+          <strong>Contact</strong>
+          <p>Feel free to reach out or fork the project on GitHub to explore the autogen code library.</p>
+        </div>
+        <div>
+          <strong>Links</strong>
+          <p><a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">GitHub repository</a></p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer slide-up" style="animation-delay:0.60s;">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+        <!-- GitHub icon (inline SVG) -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.73.5 0 6.23 0 12a12 12 0 008.21 11.43c.6.11.82-.26.82-.58v-2.02c-3.34.72-4.04-1.44-4.04-1.44-.55-1.41-1.34-1.79-1.34-1.79-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.49.99.11-.76.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1 .32 3.3 1.23a11.42 11.42 0 013-.4 11.4 11.4 0 013 .4c2.29-.91 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.47 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.57A12 12 0 0024 12C24 6.23 18.27.5 12 .5z" />
+        </svg>
+        GitHub
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+  <!-- Optional tiny script to ensure animation runs on page load even if CSS caching occurs -->
+  <script>
+    // If animations don't trigger due to cache, force reflow
+    window.addEventListener('load', function() {
+      document.querySelectorAll('.slide-up').forEach(function(el) {
+        // reflow to ensure animation restarts
+        void el.offsetWidth;
+      });
+    });
+  </script>
+</body>
+</html>
