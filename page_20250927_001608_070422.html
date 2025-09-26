@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle — Neon Portfolio</title>
+  <style>
+    :root{
+      --bg: #0a0b14;
+      --surface: rgba(2,6,23,0.65);
+      --neon-a: #00f5ff;
+      --neon-b: #9d00ff;
+      --fg: #e6eaff;
+      --sub: #cbd8ff;
+      --card: rgba(0,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #e9f0ff;
+      background: radial-gradient(circle at 20% -10%, rgba(0,255,170,0.15), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(0,140,255,0.15), transparent 40%),
+                  linear-gradient(135deg, #05060e 0%, #0a0b1a 60%, #0b0b14 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Neon header/navigation */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; z-index: 10;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff;
+      font-weight: 700; letter-spacing: .5px;
+    }
+    .brand .dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #0ff; box-shadow: 0 0 14px #0ff, 0 0 28px #0ff;
+    }
+    nav a {
+      color: #d8d8ff; text-decoration: none; margin: 0 8px;
+      font-size: 14px; padding: 6px 10px; border-radius: 6px;
+      transition: transform .25s ease, background .25s ease;
+    }
+    nav a:hover { transform: scale(1.05); background: rgba(255,255,255,0.08); }
+
+    main { padding-top: 100px; min-height: calc(100vh - 100px); }
+
+    /* Hero / Neon intro */
+    .hero {
+      height: 62vh; min-height: 420px; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 20px;
+    }
+    .hero-inner {
+      padding: 40px; border-radius: 18px;
+      border: 1px solid rgba(0,255,255,0.25);
+      background: rgba(2,6,23,0.6);
+      box-shadow: 0 0 60px rgba(0,255,255,0.25);
+      text-align: center;
+      max-width: 900px;
+    }
+    h1 {
+      font-family: Orbitron, 'Montserrat', sans-serif;
+      font-size: clamp(48px, 8vw, 120px);
+      line-height: 0.9; margin: 0;
+      background: linear-gradient(90deg, #00f5ff, #8a2be2, #ff2d95, #00f5ff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 0 8px rgba(0,255,255,0.8), 0 0 20px rgba(0,255,255,0.6);
+      letter-spacing: 6px;
+    }
+    .subtitle { font-size: clamp(16px, 2.5vw, 24px); color: #cbd8ff; margin-top: 8px; }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px; color: #9ed0ff; display: block; margin-top: 12px;
+      letter-spacing: .5px;
+    }
+
+    /* Sections */
+    .section { padding: 72px 24px; max-width: 1100px; margin: 0 auto; }
+    .section h2 {
+      font-family: 'Montserrat', sans-serif; font-size: 28px; margin-bottom: 14px;
+      color: #dff8ff; letter-spacing: 1px;
+    }
+
+    /* Projects grid / cards with zoom on hover */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+    .card {
+      position: relative; border-radius: 16px; padding: 16px;
+      background: rgba(0,0,0,0.25); border: 1px solid rgba(0,255,255,0.35);
+      box-shadow: 0 0 18px rgba(0,255,255,0.25);
+      overflow: hidden; transform: scale(0.95); opacity: 0;
+      transition: transform 0.6s cubic-bezier(.22,.61,.36,1), opacity 0.6s;
+    }
+    .card.visible { transform: scale(1); opacity: 1; }
+    .card:hover { transform: scale(1.03); box-shadow: 0 0 40px rgba(0,255,255,0.65); }
+    .thumb {
+      height: 140px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(0,255,204,0.8), rgba(0,0,0,0.2));
+      display:flex; align-items:center; justify-content:center;
+      color: #041016; font-weight: 700; margin-bottom: 12px;
+      font-family: monospace;
+    }
+    .card h3 { margin: 0 0 6px; font-size: 18px; color:#e8faff; }
+    .card p { margin: 0; color:#cbd8ff; font-size: 14px; min-height: 40px; }
+    .tag {
+      display: inline-block; font-size: 11px; padding: 4px 8px; border-radius: 999px;
+      background: rgba(0,255,255,0.25); color:#eaffff; border: 1px solid rgba(0,255,255,0.6);
+      margin-top: 8px;
+    }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 10px 14px; margin-top: 12px;
+      border-radius: 999px; border:1px solid rgba(0,255,255,0.8);
+      color:#eaffff; text-decoration:none;
+      background: linear-gradient(135deg, rgba(0,255,255,0.15), rgba(0,0,0,0.3));
+      cursor: pointer; transition: transform .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px) scale(1.05); box-shadow: 0 6px 18px rgba(0,255,255,0.5); }
+
+    /* Contact form */
+    #contact p { color: #d8e0ff; }
+
+    footer {
+      padding: 20px; text-align: center;
+      color: #a0a0ff; border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.25);
+    }
+    .footer-content { display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; }
+
+    /* Icon */
+    svg { width: 20px; height: 20px; display:inline-block; vertical-align: middle; }
+
+    @media (max-width: 700px){
+      nav { height: 58px; padding: 0 12px; }
+      h1 { font-size: 64px; }
+    }
+
+    /* Tiny reveal animation if user prefers reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .card { transition: none; opacity: 1; transform: none; }
+      .hero { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav aria-label="Main navigation">
+    <a class="brand" href="#top" aria-label="Brand">
+      <span class="dot" aria-hidden="true"></span>
+      <span style="font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">amirabolfazle</span>
+    </a>
+    <div class="links" aria-label="sections">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top" aria-label="Intro">
+    <div class="hero-inner" aria-label="Intro card">
+      <h1 class="neon" style="margin:0;">amirabolfazle</h1>
+      <div class="subtitle" style="margin-top:8px;">A neon-inspired one-file portfolio</div>
+      <span class="creation" aria-label="Creation time">Creation time: 2025-09-27 00:15:20</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="about" aria-label="About">
+      <h2>About</h2>
+      <p style="max-width: 720px; color: #d8e0ff; line-height: 1.6;">
+        Welcome to a neon-drenched, single-file portfolio. This page showcases a handful of projects with zoomed cards, glow, and motion—all packed into one HTML file. No external dependencies required.
+      </p>
+    </section>
+
+    <section class="section" id="projects" aria-label="Projects">
+      <h2>Projects</h2>
+      <div class="grid" id="grid">
+        <article class="card" aria-label="Project 1">
+          <div class="thumb" style="background: linear-gradient(135deg, rgba(0,255,205,0.9), rgba(0,0,0,0.25));">P1</div>
+          <h3>Neon Gallery</h3>
+          <p>Interactive neon gallery with dynamic lighting and subtle parallax.</p>
+          <span class="tag">UI</span>
+          <a class="btn" href="#" onclick="return false;">View</a>
+        </article>
+
+        <article class="card" aria-label="Project 2">
+          <div class="thumb" style="background: linear-gradient(135deg, rgba(255,0,199,0.9), rgba(0,0,0,0.25));">P2</div>
+          <h3>Pulse Timeline</h3>
+          <p>Animated timeline with zoom and neon markers that pulse on hover.</p>
+          <span class="tag">UX</span>
+          <a class="btn" href="#" onclick="return false;">View</a>
+        </article>
+
+        <article class="card" aria-label="Project 3">
+          <div class="thumb" style="background: linear-gradient(135deg, rgba(0,255,255,0.9), rgba(0,0,0,0.25));">P3</div>
+          <h3>Hyperdrive</h3>
+          <p>High-contrast dashboard with glow accents and fast transitions.</p>
+          <span class="tag">Dashboard</span>
+          <a class="btn" href="#" onclick="return false;">View</a>
+        </article>
+
+        <article class="card" aria-label="Project 4">
+          <div class="thumb" style="background: linear-gradient(135deg, rgba(0,180,255,0.9), rgba(0,0,0,0.25));">P4</div>
+          <h3>Connector</h3>
+          <p>Minimalist data visualizer with neon connectors and polished micro-interactions.</p>
+          <span class="tag">Data Viz</span>
+          <a class="btn" href="#" onclick="return false;">View</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="contact" aria-label="Contact">
+      <h2>Contact</h2>
+      <p style="max-width:720px; color:#d8e0ff;">Want to collaborate? Reach out and we can brainstorm neon ideas.</p>
+      <form onsubmit="return false;" style="max-width:720px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <input aria-label="Name" placeholder="Your name" style="flex:1; min-width:200px; padding:12px; border-radius:8px; border:1px solid rgba(0,255,255,0.6); background: rgba(255,255,255,0.04); color:#eaffff;">
+          <input aria-label="Email" placeholder="Email" type="email" style="flex:1; min-width:200px; padding:12px; border-radius:8px; border:1px solid rgba(0,255,255,0.6); background: rgba(255,255,255,0.04); color:#eaffff;">
+        </div>
+        <textarea aria-label="Message" placeholder="Your message" rows="4" style="width:100%; margin-top:8px; padding:12px; border-radius:8px; border:1px solid rgba(0,255,255,0.6); background: rgba(255,255,255,0.04); color:#eaffff;"></textarea>
+        <button class="btn" style="margin-top:8px;" type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <!-- GitHub icon -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+          <path d="M12 0.297C5.373 0.297 0 5.67 0 12.297c0 5.29 3.438 9.794 8.205 11.387.6.113.82-.262.82-.58 0-.286-.01-1.04-.015-2.042-3.342.726-4.042-1.61-4.042-1.61-.546-1.387-1.335-1.757-1.335-1.757-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.235 1.84 1.235 1.07 1.83 2.809 1.305 3.495.998.108-.776.42-1.306.764-1.606-2.665-.303-5.466-1.335-5.466-5.93 0-1.31.468-2.382 1.235-3.222-.125-.304-.535-1.524.118-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 013.004-.404c1.02.005 2.045.138 3.003.404 2.29-1.552 3.295-1.23 3.295-1.23.655 1.653.245 2.873.12 3.176.77.84 1.233 1.912 1.233 3.222 0 4.61-2.807 5.624-5.478 5.921.431.373.815 1.104.815 2.227 0 1.606-.015 2.899-.015 3.294 0 .324.216.698.825.58C20.565 22.086 24 17.59 24 12.297 24 5.668 18.627 0.297 12 0.297z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal cards on scroll with a zoom-in effect
+    const cards = document.querySelectorAll('.card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    cards.forEach(card => observer.observe(card));
+
+    // Optional lightweight parallax hint (no heavy assets)
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      document.addEventListener('mousemove', (e) => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const x = (e.clientX / w) - 0.5;
+        const y = (e.clientY / h) - 0.5;
+        const glowX = 50 + x * 20;
+        const glowY = 50 + y * 20;
+        // gentle parallax-like effect by shifting a soft gradient via background-position if extended
+        hero.style.backgroundPosition = glowX + "% " + glowY + "%";
+      });
+    }
+  </script>
+</body>
+</html>
