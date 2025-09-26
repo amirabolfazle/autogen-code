@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-a: #0f172a;
+      --bg-b: #021124;
+      --accent1: #7b2ff7;
+      --accent2: #2f8fff;
+      --accent3: #00d4ff;
+      --card-bg: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.03);
+      --muted: rgba(255,255,255,0.65);
+      --radius: 14px;
+      --max-w: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg,var(--bg-a), var(--bg-b));
+      color: #eaf2ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      overflow-x:hidden;
+      position:relative;
+    }
+
+    /* Animated gradient overlay */
+    .gradient-shift{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background: radial-gradient(600px 400px at 10% 20%, rgba(123,47,247,0.12), transparent 10%),
+                  radial-gradient(500px 300px at 90% 80%, rgba(47,143,255,0.08), transparent 12%),
+                  conic-gradient(from 120deg at 50% 50%, rgba(0,212,255,0.02), rgba(123,47,247,0.02));
+      mix-blend-mode:screen;
+      animation: drift 18s linear infinite;
+      z-index:0;
+    }
+    @keyframes drift{
+      0%{transform:translate3d(0,0,0) rotate(0deg)}
+      50%{transform:translate3d(3%, -2%, 0) rotate(10deg)}
+      100%{transform:translate3d(0,0,0) rotate(0deg)}
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-w);
+      margin:0 auto;
+      z-index:1;
+      display:flex;
+      gap:28px;
+      align-items:stretch;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      border-radius:var(--radius);
+      padding:28px;
+      min-width:260px;
+      flex:1 1 420px;
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    .hero{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .avatar{
+      width:112px;
+      height:112px;
+      border-radius:22px;
+      background:linear-gradient(135deg,var(--accent1), var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:36px;
+      color:white;
+      flex:0 0 112px;
+      box-shadow: 0 8px 30px rgba(46, 55, 80, 0.45), inset 0 -6px 18px rgba(255,255,255,0.03);
+      transform:translateZ(0);
+      overflow:hidden;
+    }
+
+    .avatar svg{filter:drop-shadow(0 6px 24px rgba(47,143,255,0.12))}
+
+    .title{
+      flex:1 1 auto;
+      min-width:150px;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(20px, 3.2vw, 36px);
+      letter-spacing:-0.02em;
+      line-height:1;
+      color: #fff;
+    }
+
+    p.lead{
+      margin-top:8px;
+      margin-bottom:0;
+      color:var(--muted);
+      font-size:clamp(13px, 1.8vw, 15px);
+    }
+
+    .meta{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      font-size:13px;
+      color:#e9f5ff;
+      background: linear-gradient(90deg, rgba(123,47,247,0.14), rgba(47,143,255,0.06));
+      padding:8px 12px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .time{
+      color:var(--muted);
+      font-size:13px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* floaty decorative elements */
+    .floaties{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+
+    .floaty{
+      position:absolute;
+      border-radius:50%;
+      opacity:0.09;
+      filter:blur(20px);
+      animation: floaty 11s ease-in-out infinite;
+      transform-origin:center;
+    }
+
+    .floaty.f1{width:380px;height:380px;background:linear-gradient(60deg,var(--accent2),var(--accent3));left:-8%;top:-10%; animation-duration:20s}
+    .floaty.f2{width:180px;height:180px;background:linear-gradient(60deg,var(--accent1),var(--accent2));right:-6%;bottom:-6%; animation-duration:14s}
+    .floaty.f3{width:120px;height:120px;background:linear-gradient(60deg,var(--accent3),var(--accent1));left:20%;bottom:-12%; animation-duration:16s; opacity:0.06}
+
+    @keyframes floaty{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-12%) scale(1.04)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    /* Content area */
+    .content{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .big{
+      font-size:16px;
+      color:#fff;
+      font-weight:600;
+    }
+
+    /* Footer */
+    footer.site-footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      font-size:14px;
+      padding:8px 12px;
+      border-radius:10px;
+      transition: all 220ms ease;
+      border:1px solid transparent;
+      background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    }
+
+    .github-link:hover{
+      color:#fff;
+      transform:translateY(-4px);
+      box-shadow: 0 12px 30px rgba(2,6,23,0.45);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .github-icon{
+      width:18px;height:18px;display:inline-block;
+      color:inherit; fill:currentColor;
+    }
+
+    /* Animations - fade in with delays */
+    .fade-in{
+      opacity:0;
+      transform: translateY(10px) scale(0.995);
+      animation: fadeUp 900ms ease forwards;
+    }
+    .fade-in.delay-1{animation-delay:120ms}
+    .fade-in.delay-2{animation-delay:240ms}
+    .fade-in.delay-3{animation-delay:360ms}
+    .fade-in.delay-4{animation-delay:480ms}
+    @keyframes fadeUp{
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    /* responsive tweaks */
+    @media (max-width:880px){
+      .container{padding:0 8px}
+      .card{padding:18px}
+      .avatar{width:92px;height:92px;border-radius:16px;flex:0 0 92px}
+    }
+    @media (max-width:520px){
+      .meta{flex-direction:column;align-items:flex-start}
+      .row{flex-direction:column;align-items:flex-start;gap:8px}
+      footer.site-footer{justify-content:flex-start}
+    }
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .gradient-shift, .floaty, .fade-in {animation:none}
+      .fade-in{opacity:1; transform:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-shift" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="card fade-in delay-1" role="region" aria-labelledby="hero-title">
+      <div class="floaties" aria-hidden="true">
+        <div class="floaty f1"></div>
+        <div class="floaty f2"></div>
+        <div class="floaty f3"></div>
+      </div>
+
+      <div class="hero">
+        <div class="avatar fade-in delay-2" aria-hidden="true">
+          <!-- Monogram / icon -->
+          <svg width="64" height="64" viewBox="0 0 24 24" class="monogram" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity="0.95"/>
+                <stop offset="1" stop-color="#fff" stop-opacity="0.7"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="24" height="24" rx="6" fill="url(#g1)" opacity="0.06"/>
+            <path d="M6 7.5c0-1.66 2.24-3 5-3s5 1.34 5 3V16c0 1.66-2.24 3-5 3s-5-1.34-5-3V7.5z" fill="white" opacity="0.95"/>
+          </svg>
+        </div>
+
+        <div class="title">
+          <h1 id="hero-title" class="fade-in delay-2">amirabolfazle</h1>
+          <p class="lead fade-in delay-3">A responsive animated page with a gradient theme and soft fade effects.</p>
+
+          <div class="meta">
+            <div class="badge fade-in delay-3" aria-hidden="true">
+              Animated • Gradient • Responsive
+            </div>
+
+            <div class="time fade-in delay-4" title="Creation timestamp">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 12A9 9 0 1 1 3 12A9 9 0 0 1 21 12Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <time datetime="2025-09-26T21:00:34">2025-09-26 21:00:34</time>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content fade-in delay-3" aria-live="polite">
+        <div class="panel row">
+          <div>
+            <div class="big">Overview</div>
+            <div style="color:var(--muted); margin-top:6px;">Clean layout, animated accents and accessibility-friendly structure.</div>
+          </div>
+          <div style="text-align:right; color:var(--muted); font-size:13px;">Flexible • Lightweight</div>
+        </div>
+
+        <div class="panel">
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+            <div style="min-width:42px; height:42px; border-radius:10px; background:linear-gradient(90deg,var(--accent1),var(--accent2)); display:flex;align-items:center;justify-content:center; color:#fff; font-weight:600; box-shadow:0 8px 20px rgba(47,143,255,0.08)">FX</div>
+            <div>
+              <div style="font-weight:600;color:#fff;">Subtle animations</div>
+              <div style="color:var(--muted); font-size:13px; margin-top:6px;">Fade-in sequencing and organic background motion to keep the page lively without distraction.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="site-footer fade-in delay-4" aria-label="Page footer">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.371 0 0 5.371 0 12C0 17.303 3.438 21.8 8.205 23.385C8.805 23.482 9.025 23.136 9.025 22.838C9.025 22.574 9.015 21.774 9.01 20.72C5.672 21.437 4.968 19.26 4.968 19.26C4.422 17.907 3.633 17.553 3.633 17.553C2.545 16.846 3.72 16.86 3.72 16.86C4.927 16.944 5.56 18.089 5.56 18.089C6.64 19.935 8.366 19.428 9.052 19.132C9.148 18.363 9.457 17.86 9.8 17.566C7.129 17.275 4.344 16.232 4.344 11.548C4.344 10.22 4.817 9.12 5.578 8.26C5.458 7.964 5.05 6.676 5.678 5.005C5.678 5.005 6.675 4.689 8.996 6.254C9.94 6.013 10.948 5.898 11.955 5.894C12.962 5.898 13.97 6.013 14.916 6.254C17.235 4.688 18.232 5.005 18.232 5.005C18.86 6.676 18.452 7.964 18.332 8.26C19.095 9.12 19.566 10.22 19.566 11.548C19.566 16.244 16.775 17.27 14.096 17.558C14.544 17.953 14.944 18.737 14.944 19.922C14.944 21.583 14.932 22.706 14.932 22.838C14.932 23.136 15.148 23.484 15.76 23.385C20.529 21.8 24 17.303 24 12C24 5.371 18.627 0 12 0Z" fill="currentColor"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+
+        <div style="color:var(--muted); font-size:13px;">Creation time: <strong style="color:#fff; margin-left:6px;">2025-09-26 21:00:34</strong></div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
