@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f1020;
+      --bg2: #1a1b2e;
+      --glass: rgba(255,255,255,0.15);
+      --glass-border: rgba(255,255,255,0.35);
+      --text: #e8ecf8;
+      --muted: #cbd5e1;
+      --accent: #7dd3fc;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color:var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(125,211,252,.25), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(99,102,241,.25), transparent 40%),
+                  linear-gradient(135deg, #0a0c1a 0%, #0a102a 60%, #0b1020 100%);
+      min-height:100%;
+      overflow-x:hidden;
+    }
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+    }
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    header.header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 0;
+      background: linear-gradient(to bottom, rgba(10,12,30,.9), rgba(10,12,30,.6) 60%, rgba(10,12,30,0));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .brand {
+      font-weight: 700;
+      font-size: clamp(28px, 6vw, 48px);
+      letter-spacing: .5px;
+      margin: 6px 0;
+      background: linear-gradient(135deg, #a5b4fc, #93c5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    nav {
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:flex-end;
+      font-size:14px;
+    }
+    nav a {
+      color: #e2e8f0;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: all .25s ease;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.08);
+    }
+    nav a:hover { transform: translateY(-1px); background: rgba(255,255,255,.14); }
+
+    .hero {
+      padding: 64px 0 40px;
+      display:flex;
+      align-items:center;
+      justify-content: center;
+    }
+    .hero-inner {
+      display:flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: flex-start;
+      padding: 26px;
+      min-width: min(960px, 92%);
+    }
+    .tagline {
+      font-size: 16px;
+      color: var(--muted);
+    }
+    .name {
+      font-size: clamp(40px, 8vw, 88px);
+      line-height: 0.95;
+      margin: 0;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #e9d5ff, #93c5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .subtitle {
+      font-size: 18px;
+      color: #e2e8f0;
+      max-width: 60ch;
+    }
+    .cta {
+      display:flex;
+      gap:12px;
+      margin-top:6px;
+    }
+    .btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.6);
+      color: #0b1020;
+      text-decoration: none;
+      background: #fff;
+      font-weight: 600;
+      transition: transform .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+
+    section.section {
+      padding: 40px 0 60px;
+    }
+    .section-header {
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-size: 28px;
+      margin:0;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      padding: 16px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12);
+      min-height: 140px;
+      display:flex;
+      flex-direction:column;
+      justify-content: space-between;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.25); }
+    .card-title { font-weight:600; margin:0 0 6px; }
+    .card-desc { color: var(--muted); font-size: 13px; }
+    .card-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background: rgba(125,211,252,.25);
+      margin-right:8px;
+    }
+
+    .section-footer {
+      display:flex; align-items:center; justify-content: center;
+      padding: 6px 0 20px;
+      color: var(--muted); font-size:12px;
+    }
+
+    .footer {
+      padding: 20px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* Glass-like footer content alignment */
+    .footer-content {
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      flex-wrap: wrap;
+      padding: 6px 0;
+    }
+
+    /* Glass panels spacing aesthetic on wide screens */
+    @media (min-width: 900px){
+      .hero-inner { gap: 28px; }
+    }
+
+    /* Slide-up animation setup */
+    .slide-up {
+      transform: translateY(20px);
+      opacity: 0;
+      will-change: transform, opacity;
+      /* allow per-element delay via --delay */
+      transition: transform 0.6s cubic-bezier(.22,.61,.36,1), opacity 0.6s cubic-bezier(.22,.61,.36,1);
+    }
+    .slide-up.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Small utility for creation time badge in hero */
+    .creation-time {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 12px; border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.5);
+      background: rgba(2,6,23,.5);
+      color:#e8eaff;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="header glass" aria-label="Site header">
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div aria-label="logo" style="width:40px;height:40px;border-radius:10px;background: linear-gradient(135deg, #34d399, #3b82f6); display:inline-block;"></div>
+        <div class="brand" style="margin:0;">amirabolfazle</div>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home" aria-label="Hero section" style="padding-top: 28px;">
+      <div class="container glass" style="padding:22px 22px 26px; display:flex; width: min(1100px, 92%); align-items: center; gap: 20px;">
+        <div class="creation-time" style="flex:0 0 auto;">
+          Creation time: 2025-09-27 01:19:46
+        </div>
+        <div class="hero-inner" style="flex:1;">
+          <div class="tagline" style="opacity:.9;">Hello, I'm Amira</div>
+          <h1 class="name" style="margin:0; font-weight:800;">amirabolfazle</h1>
+          <p class="subtitle" style="margin:0;">
+            A maker of thoughtful interfaces, playful visuals, and fast experiences. This is a single-file, glassmorphic portfolio with slide-up animations.
+          </p>
+          <div class="cta" aria-label="Call to actions">
+            <a class="btn" href="#projects">View Projects</a>
+            <a class="btn" href="#contact" style="background:#1e3a8a; color:white;">Hire Me</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section" aria-label="About me" style="padding-top:0;">
+      <div class="container glass" style="padding:20px 22px;">
+        <div class="section-header">
+          <h2 class="section-title slide-up" style="--delay:0ms">About</h2>
+          <p class="section-sub slide-up" style="--delay:0ms; max-width: 60ch;">I design and build accessible, polished web experiences. I enjoy blending UI aesthetics with performant code.</p>
+        </div>
+        <div class="grid" style="margin-top:6px;">
+          <div class="card slide-up" style="--delay:60ms;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="card-icon" aria-label="coding icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b1020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="8 17 3 12 8 7"></polyline>
+                  <polyline points="21 17 16 12 21 7"></polyline>
+                  <path d="M14 19l-4 0"></path>
+                </svg>
+              </div>
+              <strong>Frontend Craft</strong>
+            </div>
+            <p class="card-desc" style="margin:6px 0 0;">React, animations, and glass morphism with a focus on performance.</p>
+          </div>
+          <div class="card slide-up" style="--delay:120ms;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="card-icon" aria-label="time icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b1020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M12 2v3"></path>
+                  <path d="M12 19v3"></path>
+                  <path d="M4.22 4.22l2.12 2.12"></path>
+                  <path d="M17.66 17.66l2.12 2.12"></path>
+                  <path d="M2 12h3"></path>
+                  <path d="M19 12h3"></path>
+                </svg>
+              </div>
+              <strong>Performance</strong>
+            </div>
+            <p class="card-desc" style="margin:6px 0 0;">Optimized assets, fast load times, smooth interactions.</p>
+          </div>
+          <div class="card slide-up" style="--delay:180ms;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="card-icon" aria-label="ux icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0b1020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M12 2v3"></path>
+                  <path d="M12 19v3"></path>
+                  <path d="M4.22 4.22l2.12 2.12"></path>
+                  <path d="M17.66 17.66l2.12 2.12"></path>
+                </svg>
+              </div>
+              <strong>UX First</strong>
+            </div>
+            <p class="card-desc" style="margin:6px 0 0;">Clear, approachable interfaces with intuitive flows.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section" aria-label="Projects" style="padding-top:0;">
+      <div class="container glass" style="padding:20px 22px;">
+        <div class="section-header">
+          <h2 class="section-title slide-up" style="--delay:0ms">Projects</h2>
+          <p class="section-sub slide-up" style="--delay:0ms">Selected works showcasing glass-inspired UI and animations.</p>
+        </div>
+        <div class="grid" aria-label="Projects grid">
+          <!-- Project Card 1 -->
+          <article class="card slide-up" style="--delay:0ms;">
+            <div style="display:flex; align-items: center; gap:8px;">
+              <div class="card-icon" aria-label="project icon">
+                <!-- inline SVG icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b1020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 7h6v10H3z"></path>
+                  <path d="M15 7h6v10h-6z"></path>
+                </svg>
+              </div>
+              <strong>Autogen UI Kit</strong>
+            </div>
+            <p class="card-desc" style="margin:6px 0 0;">A compact, auto-generated UI library with glass panels and subtle motion.</p>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card slide-up" style="--delay:60ms;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="card-icon" aria-label="project icon 2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b1020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l9 4-9 4-9-4 9-4z"></path>
+                  <path d="M3 11l9 4 9-4"></path>
+                  <path d="M3 11v6"></path>
+                  <path d="M21 11v6"></path>
+                </svg>
+              </div>
+              <strong>Glass Gallery</strong>
+            </div>
+            <p class="card-desc" style="margin:6px 0 0;">A responsive gallery with glassmorphism cards and hover glow.</p>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card slide-up" style="--delay:120ms;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="card-icon" aria-label="project icon 3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b1020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l9 4-9 4-9-4 9-4z"></path>
+                  <path d="M3 11l9 4 9-4"></path>
+                  <path d="M3 11v6"></path>
+                  <path d="M21 11v6"></path>
+                </svg>
+              </div>
+              <strong>Motion Experiments</strong>
+            </div>
+            <p class="card-desc" style="margin:6px 0 0;">Micro-interactions and slide-up reveals that feel deliberate.</p>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="card slide-up" style="--delay:180ms;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="card-icon" aria-label="project icon 4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b1020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l9 4-9 4-9-4 9-4z"></path>
+                  <path d="M3 11l9 4 9-4"></path>
+                  <path d="M3 11v6"></path>
+                </svg>
+              </div>
+              <strong>Adaptive Components</strong>
+            </div>
+            <p class="card-desc" style="margin:6px 0 0;">Accessible, theme-aware components with graceful fallbacks.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section" aria-label="Contact" style="padding-top:0;">
+      <div class="container glass" style="padding:20px 22px;">
+        <div class="section-header">
+          <h2 class="section-title slide-up" style="--delay:0ms">Contact</h2>
+          <p class="section-sub slide-up" style="--delay:0ms">Reach out for collaborations, freelance work, or just say hi.</p>
+        </div>
+        <form class="slide-up" style="--delay:0ms; display:flex; flex-direction:column; gap:12px; max-width: 720px;">
+          <input aria-label="Your name" placeholder="Your name" required style="padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.85);"/>
+          <input aria-label="Email" placeholder="Email" type="email" required style="padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.85);"/>
+          <textarea aria-label="Message" placeholder="Your message" rows="5" style="padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.85);"></textarea>
+          <button class="btn" type="submit" style="width:180px; align-self:flex-start; background:#10b981; color:white;">Send</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <div class="container footer-content" style="gap:14px;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#e2e8f0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub logo" style="color:#e2e8f0;">
+          <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.34-1.78-1.34-1.78-1.1-.75.08-.74.08-.74 1.21.09 1.85 1.25 1.85 1.25 1.08 1.85 2.84 1.32 3.53 1.01.11-.79.42-1.32.76-1.62-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.25-3.22-.13-.3-.54-1.52.12-3.17 0 0 1.02-.33 3.35 1.23a11.6 11.6 0 016.1 0c2.33-1.56 3.35-1.23 3.35-1.23.66 1.65.25 2.87.12 3.17.78.84 1.25 1.91 1.25 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Simple reveal-on-scroll for elements with .slide-up
+    document.addEventListener('DOMContentLoaded', function(){
+      const revealEls = document.querySelectorAll('.slide-up');
+      const options = { threshold: 0.15 };
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, options);
+      revealEls.forEach(el => observer.observe(el));
+
+      // Apply per-element delay if provided via CSS var --delay
+      revealEls.forEach(el => {
+        const d = getComputedStyle(el).getPropertyValue('--delay');
+        if (d) {
+          el.style.transitionDelay = d;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
