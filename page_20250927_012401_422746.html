@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --glass: rgba(255, 255, 255, 0.14);
+      --glass-2: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.25);
+      --text: #eaf2ff;
+      --muted: rgba(234, 246, 255, 0.75);
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+      --rx: 0deg;
+      --ry: 0deg;
+      --rotate-speed: 12deg;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, #0b1020 0%, #12192e 50%, #0b1020 100%);
+      background-size: 400% 400%;
+      animation: backgroundPan 20s ease infinite;
+      overflow-x: hidden;
+    }
+    @keyframes backgroundPan {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* decorative glow shapes */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 40vmin;
+      height: 40vmin;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: .6;
+    }
+    body::before {
+      left: -10vmin; top: -10vmin;
+      background: radial-gradient(circle at 30% 30%, rgba(0,180,255,.9), transparent 40%);
+      animation: float 16s ease-in-out infinite;
+    }
+    body::after {
+      right: -10vmin; bottom: -10vmin;
+      background: radial-gradient(circle at 70% 70%, rgba(120,0,255,.9), transparent 40%);
+      animation: float2 22s ease-in-out infinite;
+    }
+    @keyframes float { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(8px,-6px) scale(1.05); } 100% { transform: translate(0,0) scale(1); } }
+    @keyframes float2 { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(-12px,6px) scale(1.04); } 100% { transform: translate(0,0) scale(1); } }
+
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem 1rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    header.hero {
+      width: min(1100px, 92vw);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .75rem;
+      align-items: center;
+      justify-items: center;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05) 60%);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header.hero .glow {
+      position: absolute;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(0,170,255,.6), transparent 60%);
+      filter: blur(20px);
+      z-index: 0;
+      animation: floatGlow 8s ease-in-out infinite;
+      top: -40px; right: -40px;
+   }
+    @keyframes floatGlow { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(6px,-6px) scale(1.05); } 100% { transform: translate(0,0) scale(1); } }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 4vw + 1rem, 4rem);
+      letter-spacing: .12em;
+      text-transform: lowercase;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ffffff, #cfe8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 40px rgba(120,180,255,.25);
+      user-select: none;
+    }
+    header .subtitle {
+      color: var(--muted);
+      font-size: 0.98rem;
+      letter-spacing: .04em;
+      margin: 0;
+    }
+    header .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .85rem;
+      color: #dbeaff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.25);
+      padding: .25rem .6rem;
+      border-radius: 999px;
+      display: inline-block;
+      margin-top: .25rem;
+      backdrop-filter: blur(4px);
+    }
+
+    main {
+      width: min(1100px, 92vw);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      z-index: 1;
+    }
+
+    section h2 {
+      font-size: 1.4rem;
+      color: #eaf2ff;
+      letter-spacing: .04em;
+      margin: .4rem 0 0.25rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      margin-top: .25rem;
+    }
+
+    .card {
+      position: relative;
+      padding: 1rem;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.05));
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 28px rgba(0,0,0,.25);
+      min-height: 180px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform .2s ease;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+    }
+
+    .card:focus { outline: 2px solid rgba(150,180,255,.8); outline-offset: 2px; }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card .tag {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .25rem .6rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      color: #e7f3ff;
+      background: rgba(0, 128, 255, .25);
+      border: 1px solid rgba(0, 128, 255, .5);
+      margin-bottom: .5rem;
+    }
+
+    .card h3 {
+      margin: .2rem 0 .4rem;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0 0 .6rem;
+      color: #dbeaff;
+      font-size: .95rem;
+      line-height: 1.4;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: .5rem 0.9rem;
+      border-radius: 999px;
+      font-size: .92rem;
+      font-weight: 600;
+      color: #04122a;
+      background: linear-gradient(135deg, #7bd3ff, #3bb7ff);
+      text-decoration: none;
+      border: none;
+      box-shadow: inset 0 0 0 rgba(0,0,0,0);
+      transition: transform .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    /* tilt effect via CSS vars set by JS */
+    .tilt-card {
+      transform: rotateX(var(--rx)) rotateY(var(--ry));
+      will-change: transform;
+    }
+
+    footer.footer {
+      width: 100%;
+      margin-top: 2rem;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
+      background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.05));
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+      border-radius: 8px;
+      max-width: 900px;
+    }
+
+    .footer a {
+      display: inline-flex; align-items: center; gap: .5rem;
+      color: #eaf2ff; text-decoration: none;
+    }
+
+    .footer svg { width: 1.25em; height: 1.25em; fill: currentColor; }
+
+    .created-by {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      color: #dbeaff;
+      font-size: .92rem;
+    }
+
+    @media (max-width: 720px) {
+      header.hero { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero" aria-label="Portfolio header">
+      <div class="glow" aria-hidden="true"></div>
+      <h1>amirabolfazle</h1>
+      <p class="subtitle">A cool, animated one-file portfolio demonstrating glassmorphism and rotate effects</p>
+      <div class="creation" aria-label="Creation time">Creation time: 2025-09-27 01:23:29</div>
+    </header>
+
+    <main aria-label="Projects">
+      <section class="section" id="projects" aria-labelledby="projects-title" style="width:100%;">
+        <h2 id="projects-title">Projects</h2>
+        <div class="grid" role="list">
+          <article class="card tilt-card" tabindex="0" aria-label="Project One">
+            <div class="card-inner">
+              <span class="tag" aria-label="Tag">Web • UI</span>
+              <h3>Project One</h3>
+              <p>Responsive landing page with glassmorphism and subtle 3D tilt on hover.</p>
+              <a class="btn" href="#" aria-label="View Project One">View</a>
+            </div>
+          </article>
+
+          <article class="card tilt-card" tabindex="0" aria-label="Project Two">
+            <div class="card-inner">
+              <span class="tag" aria-label="Tag">Dashboard</span>
+              <h3>Project Two</h3>
+              <p>Analytical dashboard with translucent panels and animated transitions.</p>
+              <a class="btn" href="#" aria-label="View Project Two">View</a>
+            </div>
+          </article>
+
+          <article class="card tilt-card" tabindex="0" aria-label="Project Three">
+            <div class="card-inner">
+              <span class="tag" aria-label="Tag">Prototype</span>
+              <h3>Project Three</h3>
+              <p>Prototype showcasing card tilt and glass blur for immersive UI.</p>
+              <a class="btn" href="#" aria-label="View Project Three">View</a>
+            </div>
+          </article>
+
+          <article class="card tilt-card" tabindex="0" aria-label="Project Four">
+            <div class="card-inner">
+              <span class="tag" aria-label="Tag">Animation</span>
+              <h3>Project Four</h3>
+              <p>Animated gallery with rotating elements and soft glow effects.</p>
+              <a class="btn" href="#" aria-label="View Project Four">View</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noreferrer" aria-label="GitHub Repository">
+        <svg viewBox="0 0 24 24" aria-label="GitHub icon" role="img" focusable="false">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5 0 5.93 0 12.02c0 5.04 3.28 9.32 7.84 10.83.57.11.78-.24.78-.54 0-.27-.01-1.03-.02-2.03-3.19.69-3.87-1.37-3.87-1.37-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.19 1.76 1.19 1.02 1.74 2.68 1.23 3.33.94.1-.74.4-1.23.72-1.51-2.54-.29-5.21-1.28-5.21-5.69 0-1.25.45-2.27 1.19-3.07-.12-.3-.52-1.52.12-3.17 0 0 .97-.31 3.18 1.17a11.08 11.08 0 012.9-.39c1.04.01 2.11.14 2.93.41 2.2-1.49 3.16-1.17 3.16-1.17.66 1.65.24 2.86.12 3.17.74.8 1.18 1.82 1.18 3.07 0 4.42-2.68 5.38-5.23 5.67.41.36.77 1.08.77 2.18 0 1.58-.01 2.85-.01 3.24 0 .3.2.65.82.54A12.01 12.01 0 0024 12.02C24 5.93 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span class="created-by">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Tilt effect for each card
+    const cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(card => {
+      // initialize CSS vars
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+
+      const reset = () => {
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      };
+
+      const onMove = (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;  // 0..1
+        const y = (e.clientY - rect.top) / rect.height; // 0..1
+        const rx = (y - 0.5) * -12; // tilt up/down
+        const ry = (x - 0.5) * 12;  // tilt left/right
+        card.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+        card.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+      };
+
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', reset);
+      card.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+          const touch = e.touches[0];
+          onMove({ clientX: touch.clientX, clientY: touch.clientY });
+        }
+      }, {passive: true});
+      card.addEventListener('touchend', reset);
+    });
+  </script>
+</body>
+</html>
