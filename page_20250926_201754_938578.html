@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#040014;
+      --bg2:#0f0520;
+      --neon-cyan: #33f6ff;
+      --neon-magenta: #ff3dd1;
+      --neon-purple: #9b6cff;
+      --glass: rgba(255,255,255,0.04);
+      --fade-duration: 900ms;
+      --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    }
+
+    * {box-sizing: border-box}
+    html,body{height:100%;margin:0;font-family:var(--font-sans);background: radial-gradient(1200px 600px at 10% 10%, rgba(51,246,255,0.04), transparent), radial-gradient(1000px 500px at 90% 90%, rgba(255,61,209,0.03), transparent), linear-gradient(180deg,var(--bg1),var(--bg2)); color:#e8e8f0; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+
+    /* moving slanted neon streaks */
+    .streaks {
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:0;
+      mix-blend-mode:screen;
+    }
+    .streak {
+      position:absolute;
+      width:200%;
+      height:8px;
+      left:-50%;
+      top:0;
+      transform:rotate(-12deg) translateY(-40vh);
+      background:linear-gradient(90deg, transparent, rgba(51,246,255,0.12), rgba(255,61,209,0.06), transparent);
+      filter: blur(8px);
+      animation: streakMove 9s linear infinite;
+      opacity:.9;
+    }
+    .streak.b { top:30%; animation-duration:12s; background:linear-gradient(90deg, transparent, rgba(155,108,255,0.14), rgba(51,246,255,0.05), transparent); }
+    .streak.c { top:60%; animation-duration:13s; background:linear-gradient(90deg, transparent, rgba(255,61,209,0.11), rgba(155,108,255,0.05), transparent); }
+
+    @keyframes streakMove{
+      0%{ transform:rotate(-12deg) translateY(-40vh) translateX(-10%); opacity:.6}
+      50%{ transform:rotate(-12deg) translateY(40vh) translateX(10%); opacity:.95}
+      100%{ transform:rotate(-12deg) translateY(-40vh) translateX(-10%); opacity:.6}
+    }
+
+    .container{
+      position:relative;
+      z-index:2;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+    }
+
+    .card{
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:16px;
+      padding:36px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(51,246,255,0.02);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:hidden;
+    }
+
+    /* neon title */
+    .title {
+      font-size: clamp(28px, 6vw, 56px);
+      font-weight:700;
+      letter-spacing:1px;
+      margin:0;
+      line-height:1;
+      color: #fff;
+      text-transform:none;
+      text-shadow:
+        0 0 6px rgba(51,246,255,0.14),
+        0 0 20px rgba(51,246,255,0.08),
+        0 0 28px rgba(155,108,255,0.06),
+        0 12px 36px rgba(0,0,0,0.6);
+      display:inline-block;
+      position:relative;
+      padding:8px 12px;
+      border-radius:8px;
+    }
+    .title::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:8px;
+      box-shadow: 0 0 30px rgba(51,246,255,0.12), 0 0 80px rgba(155,108,255,0.06);
+      mix-blend-mode:screen;
+      opacity:.6;
+      pointer-events:none;
+    }
+
+    .subtitle{
+      margin:12px 0 18px 0;
+      color: #dfe7ff;
+      opacity:.9;
+      font-size:16px;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:6px;
+      align-items:center;
+      color:rgba(230,230,255,0.85);
+      font-size:13px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--neon-cyan);
+      box-shadow: 0 4px 20px rgba(51,246,255,0.04);
+      font-weight:600;
+      font-size:13px;
+    }
+
+    /* content area */
+    .content{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:20px;
+    }
+    @media (max-width:880px){ .content{ grid-template-columns: 1fr; } }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+    }
+
+    .about h3{
+      margin:0 0 8px 0;
+      color:var(--neon-magenta);
+      text-shadow: 0 0 10px rgba(255,61,209,0.12);
+      font-size:16px;
+    }
+    .about p{
+      margin:0;
+      color: #e6e9ff;
+      line-height:1.6;
+      opacity:.95;
+    }
+
+    .links{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+    }
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:10px;
+      color:#05050a;
+      text-decoration:none;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+      box-shadow: 0 6px 22px rgba(51,246,255,0.08), 0 0 28px rgba(255,61,209,0.06);
+      font-weight:700;
+      font-size:13px;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .btn.ghost{
+      background:transparent;
+      color:var(--neon-cyan);
+      border:1px solid rgba(51,246,255,0.12);
+      box-shadow:none;
+      font-weight:600;
+    }
+    .btn:hover{ transform:translateY(-3px); box-shadow: 0 12px 36px rgba(51,246,255,0.12); }
+
+    /* right column widgets */
+    .card-stats{
+      display:flex;
+      gap:10px;
+      flex-direction:column;
+    }
+    .stat{
+      padding:12px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .stat strong{ color:var(--neon-purple); font-size:18px;}
+    .stat span{ color:rgba(230,230,255,0.9); font-size:13px;}
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:rgba(230,230,255,0.8);
+      font-size:13px;
+      padding-top:14px;
+      border-top:1px dashed rgba(255,255,255,0.03);
+    }
+    .github {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--neon-cyan);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      transition: transform .12s ease, box-shadow .12s ease;
+      border:1px solid rgba(51,246,255,0.06);
+      background:linear-gradient(90deg, rgba(51,246,255,0.06), rgba(155,108,255,0.02));
+    }
+    .github:hover{ transform:translateY(-3px); box-shadow:0 8px 32px rgba(51,246,255,0.06); }
+    .github svg{ filter: drop-shadow(0 4px 12px rgba(51,246,255,0.06)); }
+
+    /* glow and fancy lines */
+    .glow {
+      position:absolute;
+      inset:auto -10% -10% auto;
+      width:420px;
+      height:420px;
+      background: radial-gradient(circle at 20% 20%, rgba(51,246,255,0.08), transparent 20%), radial-gradient(circle at 80% 80%, rgba(255,61,209,0.06), transparent 20%);
+      filter: blur(60px);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    /* animations - sequential fade-ins */
+    .fade {
+      opacity:0;
+      transform:translateY(6px) scale(.995);
+      animation: fadeInUp var(--fade-duration) forwards;
+    }
+    .fade.delay-1{ animation-delay:160ms; }
+    .fade.delay-2{ animation-delay:320ms; }
+    .fade.delay-3{ animation-delay:480ms; }
+    .fade.delay-4{ animation-delay:640ms; }
+    .fade.delay-5{ animation-delay:800ms; }
+
+    @keyframes fadeInUp {
+      to { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    /* neon flicker for title */
+    @keyframes flicker {
+      0% { text-shadow: 0 0 4px rgba(51,246,255,0.12), 0 0 18px rgba(155,108,255,0.06); opacity:1; }
+      7% { text-shadow: none; opacity:.85; }
+      10% { text-shadow: 0 0 20px rgba(51,246,255,0.22), 0 0 40px rgba(155,108,255,0.12); opacity:1;}
+      100% { text-shadow: 0 0 6px rgba(51,246,255,0.14), 0 0 20px rgba(51,246,255,0.08), 0 0 28px rgba(155,108,255,0.06); opacity:1; }
+    }
+    .title { animation: flicker 3.6s linear infinite; }
+
+    /* small helper */
+    .muted { color:rgba(230,230,255,0.6); font-size:13px; }
+
+  </style>
+</head>
+<body>
+  <div class="streaks" aria-hidden="true">
+    <div class="streak"></div>
+    <div class="streak b"></div>
+    <div class="streak c"></div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="glow" aria-hidden="true"></div>
+
+      <header class="fade delay-1">
+        <h1 class="title">amirabolfazle</h1>
+        <div class="subtitle">Neon-tinged personal space — crafted with motion, glow and a little attitude.</div>
+        <div class="meta">
+          <div class="tag">Neon UI</div>
+          <div class="muted">Creation time: <strong style="color:var(--neon-magenta); margin-left:8px;">2025-09-26 20:17:01</strong></div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="panel about fade delay-2">
+          <h3>Hey — welcome.</h3>
+          <p>I'm amirabolfazle. This page is a compact, animated showcase with a neon theme and smooth fade-in effects. Use it as a hub, a business card, or a tiny stage for ideas. Everything here basks in subtle glow and motion so the vibe never goes flat.</p>
+
+          <div class="links" style="margin-top:14px;">
+            <a class="btn" href="#connect" role="button">Get in touch</a>
+            <a class="btn ghost" href="#projects" role="button">Projects</a>
+          </div>
+
+          <div style="margin-top:18px; display:flex; gap:12px; flex-wrap:wrap;">
+            <div class="tag" title="Location">🌐 Global</div>
+            <div class="tag" title="Interests">💡 Design + Code</div>
+            <div class="tag" title="Status">⚡ Active</div>
+          </div>
+        </section>
+
+        <aside class="panel fade delay-3">
+          <div class="card-stats">
+            <div class="stat">
+              <div>
+                <div class="muted">Projects</div>
+                <strong>42</strong>
+              </div>
+              <div style="font-size:12px; color:rgba(230,230,255,0.75);">+ ongoing</div>
+            </div>
+
+            <div class="stat">
+              <div>
+                <div class="muted">Followers</div>
+                <strong>1.2k</strong>
+              </div>
+              <div style="font-size:12px; color:rgba(230,230,255,0.75);">grow</div>
+            </div>
+
+            <div class="stat">
+              <div>
+                <div class="muted">Uptime</div>
+                <strong>99.99%</strong>
+              </div>
+              <div style="font-size:12px; color:rgba(230,230,255,0.75);">stable</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <div class="muted" style="margin-bottom:8px;">Quick bio</div>
+            <div style="font-size:13px; color:rgba(230,230,255,0.95); line-height:1.5;">Designer-developer hybrid. I craft interfaces and automate the boring stuff. Lover of gradients, tiny animations, and clear copy.</div>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="fade delay-4" role="contentinfo">
+        <div class="muted">Made with code and neon light.</div>
+
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View repository on GitHub">
+          <!-- GitHub SVG icon (neon-tinted) -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#33f6ff"/>
+                <stop offset="1" stop-color="#ff3dd1"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.009-.866-.014-1.699-2.782.604-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.607.069-.607 1.003.07 1.53 1.032 1.53 1.032.892 1.528 2.341 1.087 2.91.832.091-.647.35-1.087.636-1.338-2.22-.253-4.554-1.11-4.554-4.944 0-1.091.39-1.984 1.03-2.683-.103-.254-.447-1.279.098-2.665 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.852.004 1.71.115 2.51.338 1.909-1.294 2.748-1.025 2.748-1.025.546 1.386.202 2.411.099 2.665.64.699 1.028 1.592 1.028 2.683 0 3.842-2.337 4.688-4.565 4.935.359.31.679.923.679 1.862 0 1.344-.012 2.427-.012 2.757 0 .269.18.579.688.481A10.013 10.013 0 0022 12c0-5.523-4.477-10-10-10z" fill="url(#g1)"/>
+          </svg>
+
+          <span style="font-weight:700; color: #eafcff;">Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // micro-interaction: reveal elements when page loads (ensures CSS animations apply)
+    document.addEventListener('DOMContentLoaded', function(){
+      // nothing needed; CSS handles staged fade-ins by classes
+      // small polite focus on first interactive element
+      var btn = document.querySelector('.btn');
+      if(btn) btn.setAttribute('tabindex','0');
+    });
+
+    // gentle parallax for background streaks based on mouse movement
+    (function(){
+      const container = document.querySelector('.streaks');
+      if(!container) return;
+      window.addEventListener('mousemove', e => {
+        const w = window.innerWidth, h = window.innerHeight;
+        const nx = (e.clientX/w - 0.5) * 18;
+        const ny = (e.clientY/h - 0.5) * 18;
+        container.style.transform = `translate3d(${nx}px, ${ny}px, 0)`;
+      }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
