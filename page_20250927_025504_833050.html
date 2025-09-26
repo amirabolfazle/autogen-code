@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0a0a14;
+      --neon: #00e5ff;
+      --neon2: #39ff14;
+      --text: #e8f3ff;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: #070712;
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      overflow: hidden;
+    }
+    /* subtle neon background accents */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      left: -80px; top: -60px;
+      background: radial-gradient(circle at 30% 30%, rgba(0, 255, 195, .5), transparent 40%);
+      animation: drift 12s linear infinite;
+    }
+    body::after {
+      right: -60px; bottom: -60px;
+      background: radial-gradient(circle at 60% 60%, rgba(0, 180, 255, .5), transparent 40%);
+      animation: drift2 16s linear infinite;
+    }
+    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(20px, -20px);} }
+    @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-20px, 20px);} }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* Neon title with gradient fill and glow */
+    .title {
+      font-size: clamp(3rem, 10vw, 12rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 0.92;
+      letter-spacing: .3rem;
+      color: transparent;
+      background: linear-gradient(90deg, #39ff14, #00e5ff, #ff6bd6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow:
+        0 0 8px rgba(0,255,255,.6),
+        0 0 20px rgba(0,255,255,.4),
+        0 0 40px rgba(0,255,255,.25);
+      position: relative;
+      padding: 0.25rem 1rem;
+      user-select: none;
+    }
+
+    /* Neon glow halo around the title using pseudo-element */
+    .title::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 0.8rem;
+      filter: blur(12px);
+      background: radial-gradient(circle at 50% 50%, rgba(0, 229, 255, .55), transparent 60%);
+      z-index: -1;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: .6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+      100% { opacity: .6; transform: scale(1); }
+    }
+
+    /* Rotating rings around the title */
+    .ring-stack {
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      z-index: 0;
+      animation: rotateGlobal 20s linear infinite;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 255, 255, 0.6);
+      box-shadow: 0 0 14px rgba(0, 255, 255, 0.8);
+      width: 100%;
+      height: 100%;
+      transform-origin: 50% 50%;
+    }
+
+    .ring1 { width: 70%; height: 70%; border-color: rgba(0,255,214,.8); animation: spin 18s linear infinite; }
+    .ring2 { width: 85%; height: 85%; border-color: rgba(0,255,140,.8); animation: spin 22s linear infinite reverse; }
+    .ring3 { width: 55%; height: 55%; border-color: rgba(0,255,255,.7); animation: spin 26s linear infinite; }
+
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes rotateGlobal { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .creation {
+      position: absolute;
+      bottom: 6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: .5rem 1rem;
+      border-radius: .5rem;
+      color: #d2fff7;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: 0.95rem;
+      letter-spacing: .08rem;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(0, 255, 255, .5);
+      text-shadow: 0 0 6px rgba(0,255,255,.7);
+      box-shadow: 0 0 16px rgba(0, 255, 255, .4);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #a1f5ff;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(0, 255, 255, .5);
+      backdrop-filter: blur(2px);
+      text-decoration: none;
+    }
+    footer a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    footer svg { width: 1.2em; height: 1.2em; fill: currentColor; }
+
+    @media (max-width: 700px) {
+      .ring-stack { width: 420px; height: 420px; }
+      .title { font-size: clamp(2.5rem, 12vw, 9rem); }
+      .creation { bottom: 4rem; }
+      footer { bottom: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" aria-label="amirabolfazle">
+    <div class="ring-stack" aria-hidden="true">
+      <div class="ring ring1"></div>
+      <div class="ring ring2"></div>
+      <div class="ring ring3"></div>
+    </div>
+
+    <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+
+    <div class="creation" aria-label="creation time">
+      Creation time: 2025-09-27 02:54:33
+    </div>
+  </div>
+
+  <footer aria-label="footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <!-- GitHub Mark SVG inline -->
+      <svg viewBox="0 0 24 24" aria-label="GitHub" role="img" width="24" height="24">
+        <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.34-1.77-1.34-1.77-1.09-.75.08-.74.08-.74 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.4 1.23-3.25-.12-.3-.53-1.52.12-3.17 0 0 1 .32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-.91 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.17.77.85 1.23 1.93 1.23 3.25 0 4.63-2.8 5.65-5.47 5.95.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.57A12 12 0 0 0 12 .5" fill="currentColor"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
