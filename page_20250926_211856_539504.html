@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-color-1:#0f1724;
+      --bg-color-2:#0b2a59;
+      --accent1:#7b2ff7;
+      --accent2:#00d4ff;
+      --card-bg: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.03);
+      --text: #e6eef8;
+      --muted: rgba(230,238,248,0.7);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(120deg,var(--bg-color-1), var(--bg-color-2));
+      color:var(--text);
+    }
+
+    /* Animated gradient overlay */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:0;
+      background: radial-gradient(800px 400px at 10% 20%, rgba(123,47,247,0.18), transparent 12%),
+                  radial-gradient(700px 350px at 90% 80%, rgba(0,212,255,0.16), transparent 12%);
+      mix-blend-mode: screen;
+      animation: floatBG 12s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+
+    @keyframes floatBG{
+      0%{transform:translateY(-8%) scale(1);}
+      100%{transform:translateY(8%) scale(1.03);}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:2;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      box-sizing:border-box;
+      flex-direction:column;
+      gap:28px;
+    }
+
+    .hero{
+      width:min(980px,96%);
+      display:flex;
+      gap:24px;
+      align-items:center;
+      justify-content:space-between;
+      padding:34px;
+      border-radius:20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      backdrop-filter: blur(8px) saturate(120%);
+      transform-origin:center;
+      animation: zoomIn 900ms cubic-bezier(.18,.9,.29,1) both;
+    }
+
+    @keyframes zoomIn{
+      from{transform:scale(.96); opacity:0;}
+      to{transform:scale(1); opacity:1;}
+    }
+
+    .left{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      min-width:0;
+      flex:1 1 60%;
+    }
+
+    .avatar{
+      width:110px;
+      height:110px;
+      border-radius:18px;
+      background: linear-gradient(135deg,var(--accent1), var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:26px;
+      box-shadow: 0 8px 30px rgba(11,34,65,0.45), inset 0 -8px 20px rgba(255,255,255,0.03);
+      flex-shrink:0;
+      transition:transform 360ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .avatar:hover{ transform:scale(1.06) rotate(-3deg); }
+
+    .meta{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:0.6px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--text);
+      line-height:1.05;
+      word-break:break-word;
+    }
+
+    .title-animate{
+      position:relative;
+      display:inline-block;
+      overflow:hidden;
+    }
+
+    .title-animate::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+      transform:translateX(-100%);
+      animation: shimmer 3s linear infinite;
+      mix-blend-mode: overlay;
+      pointer-events:none;
+    }
+
+    @keyframes shimmer{
+      to{transform:translateX(120%);}
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:14px;
+      margin:0;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:13px;
+      color:var(--muted);
+      box-shadow: 0 4px 12px rgba(2,6,23,0.45);
+    }
+
+    .right{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:12px;
+      flex: 0 0 240px;
+    }
+
+    .card-zoom{
+      width:100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      align-items:center;
+      justify-content:center;
+      transition:transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms;
+      transform-origin:center;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.45);
+      cursor:default;
+    }
+
+    .card-zoom:hover{
+      transform:translateY(-6px) scale(1.02);
+      box-shadow: 0 14px 40px rgba(2,6,23,0.6);
+    }
+
+    .big-value{
+      font-size:20px;
+      font-weight:700;
+      color:var(--text);
+    }
+
+    .small-note{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .creation{
+      width:100%;
+      margin-top:8px;
+      padding:12px 14px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(123,47,247,0.06), rgba(0,212,255,0.03));
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-start;
+      color:var(--text);
+      font-size:13px;
+      box-shadow: inset 0 -8px 20px rgba(0,0,0,0.12);
+    }
+
+    .time{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:13px;
+      color:#eaf8ff;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      padding:6px 10px;
+      border-radius:8px;
+    }
+
+    /* Decorative floating blobs */
+    .blob{
+      position:absolute;
+      z-index:1;
+      filter: blur(40px);
+      opacity:0.18;
+      mix-blend-mode: overlay;
+      pointer-events:none;
+    }
+
+    .blob.a{ width:280px; height:280px; left:6%; top:6%; background: radial-gradient(circle at 30% 30%, var(--accent1), transparent 35%); animation: driftA 16s ease-in-out infinite alternate;}
+    .blob.b{ width:200px; height:200px; right:8%; bottom:10%; background: radial-gradient(circle at 70% 70%, var(--accent2), transparent 40%); animation: driftB 14s ease-in-out infinite alternate;}
+    .blob.c{ width:160px; height:160px; left:50%; top:72%; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 40%); animation: driftC 18s ease-in-out infinite alternate;}
+
+    @keyframes driftA{ from{transform:translateY(-6%) rotate(0);} to{transform:translateY(6%) rotate(8deg);} }
+    @keyframes driftB{ from{transform:translateY(0) rotate(-6deg);} to{transform:translateY(6%) rotate(6deg);} }
+    @keyframes driftC{ from{transform:translateX(-6%) rotate(0);} to{transform:translateX(6%) rotate(-6deg);} }
+
+    /* Footer */
+    footer{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      z-index:3;
+      pointer-events:auto;
+    }
+
+    .footer-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--muted);
+      font-size:13px;
+      background: var(--glass);
+      padding:8px 12px;
+      border-radius:999px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+      transition:transform 200ms, box-shadow 200ms, color 200ms;
+    }
+
+    .footer-link:hover{
+      transform:translateY(-6px);
+      color:var(--text);
+      box-shadow: 0 16px 40px rgba(2,6,23,0.6);
+    }
+
+    .gh-icon{ width:18px; height:18px; display:inline-block; flex-shrink:0; filter: drop-shadow(0 4px 10px rgba(2,6,23,0.5)); }
+
+    /* Responsive tweaks */
+    @media (max-width:880px){
+      .hero{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .right{ align-items:stretch; flex:1 1 auto; }
+      .left{ flex-direction:row; gap:14px; align-items:center; }
+      .avatar{ width:86px; height:86px; font-size:20px; border-radius:14px; }
+      h1{ font-size:22px; }
+      .wrap{ padding:28px 18px; gap:18px; }
+    }
+
+    @media (max-width:420px){
+      .creation{ font-size:12px; padding:10px; }
+      .footer-link{ padding:8px 10px; gap:8px; font-size:12px; }
+      .right{ flex-direction:row; gap:10px; align-items:center; justify-content:space-between; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+  <div class="blob c" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <section class="hero" role="region" aria-label="amirabolfazle hero">
+      <div class="left">
+        <div class="avatar" aria-hidden="true">AB</div>
+        <div class="meta">
+          <h1><span class="title-animate">amirabolfazle</span></h1>
+          <p class="subtitle">
+            <span class="badge">Gradient • Animated • Responsive</span>
+            <span style="display:inline-block;color:var(--muted);font-size:13px;">Creative web showcase</span>
+          </p>
+
+          <div class="creation" aria-label="creation time">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.9;margin-right:8px" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 7V12L15 14" stroke="rgba(234,248,255,0.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="rgba(234,248,255,0.5)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <div style="font-size:12px;color:var(--muted);">Creation time</div>
+              <div class="time">2025-09-26 21:18:04</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="right" aria-label="stats">
+        <div class="card-zoom" title="Animated zoom card">
+          <div class="big-value">Dynamic Theme</div>
+          <div class="small-note">Gradient & motion system</div>
+        </div>
+
+        <div class="card-zoom" title="Responsive ready">
+          <div class="big-value">Responsive</div>
+          <div class="small-note">Adapts to any viewport</div>
+        </div>
+      </aside>
+    </section>
+
+    <div style="max-width:980px;width:96%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <p style="margin:0;color:var(--muted);font-size:13px;">A tiny animated presentation page with zoom effects and soft motion — built for viewing and sharing.</p>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <a href="#top" style="text-decoration:none;color:var(--accent2);font-weight:600;font-size:13px;">Explore</a>
+        <a href="#top" style="text-decoration:none;color:var(--accent1);font-weight:600;font-size:13px;">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg class="gh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 .198a8 8 0 00-2.53 15.59c.4.074.547-.174.547-.386 0-.19-.007-.693-.01-1.36-2.226.484-2.695-1.073-2.695-1.073-.364-.924-.89-1.171-.89-1.171-.727-.497.055-.487.055-.487.803.057 1.226.825 1.226.825.714 1.223 1.873.87 2.33.665.072-.517.28-.87.508-1.07-1.777-.202-3.644-.888-3.644-3.953 0-.873.312-1.588.823-2.148-.083-.203-.357-1.02.078-2.127 0 0 .672-.215 2.2.82a7.62 7.62 0 012.003-.269c.68.003 1.366.092 2.003.269 1.526-1.035 2.197-.82 2.197-.82.436 1.107.162 1.924.08 2.127.513.56.822 1.275.822 2.148 0 3.073-1.87 3.748-3.653 3.947.288.248.544.737.544 1.486 0 1.073-.01 1.937-.01 2.2 0 .214.144.463.55.385A8.001 8.001 0 008 .197z" fill="currentColor"/>
+      </svg>
+      <span style="font-weight:600;color:inherit;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
