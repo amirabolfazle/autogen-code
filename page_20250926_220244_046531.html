@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#0b1020;
+      --accent1: rgba(123, 97, 255, 0.35);
+      --accent2: rgba(0, 212, 255, 0.18);
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+      --glass-outline: rgba(255,255,255,0.06);
+      --text: #eaf0ff;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: radial-gradient(600px 400px at 10% 20%, rgba(123,97,255,0.12), transparent 8%),
+                  radial-gradient(500px 360px at 90% 80%, rgba(0,212,255,0.07), transparent 10%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+    }
+
+    /* animated subtle background shift */
+    @keyframes bgShift {
+      0%{background-position:0% 0%,100% 100%;}
+      50%{background-position:5% 10%,95% 90%;}
+      100%{background-position:0% 0%,100% 100%;}
+    }
+    body{ animation: bgShift 12s ease-in-out infinite alternate; }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      width: min(780px,92vw);
+      padding: clamp(20px, 4vw, 40px);
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid transparent;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      justify-content:center;
+      align-items:flex-start;
+      animation: fadeInUp 700ms cubic-bezier(.2,.9,.28,1) both 200ms;
+    }
+
+    /* glass border accent */
+    .card::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      padding:1px;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(123,97,255,0.25), transparent 40%, rgba(0,212,255,0.16));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events:none;
+      opacity:0.9;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(20px, 4.4vw, 36px);
+      letter-spacing: -0.02em;
+      line-height:1;
+      font-weight:600;
+      color:var(--text);
+      animation: fadeIn 900ms ease both 300ms;
+    }
+
+    p.lead{
+      margin:0;
+      color: rgba(234,240,255,0.85);
+      opacity:0.9;
+      font-size: clamp(12px, 2.8vw, 15px);
+      animation: fadeIn 900ms ease both 400ms;
+    }
+
+    .meta{
+      margin-top:8px;
+      font-size:12px;
+      color:rgba(234,240,255,0.65);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      animation: fadeIn 900ms ease both 500ms;
+    }
+
+    .chip{
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:rgba(234,240,255,0.78);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 2px 10px rgba(2,6,23,0.45);
+    }
+
+    .time{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:12px;
+      color:rgba(234,240,255,0.72);
+      background: rgba(255,255,255,0.02);
+      padding:6px 10px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    footer.site-footer{
+      margin-top:20px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      font-size:13px;
+      color:rgba(234,240,255,0.75);
+      width:100%;
+      justify-content:space-between;
+      animation: fadeIn 900ms ease both 700ms;
+    }
+
+    .left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    a.github{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:6px 10px;
+      border-radius:10px;
+      transition:transform .16s ease, background .16s ease;
+      background: rgba(255,255,255,0.01);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    a.github:hover{ transform: translateY(-3px); background: rgba(255,255,255,0.02); }
+
+    .gh-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      filter: drop-shadow(0 2px 6px rgba(2,6,23,0.45));
+      opacity:0.95;
+    }
+
+    @keyframes fadeIn {
+      from {opacity:0; transform:translateY(6px);}
+      to {opacity:1; transform:none;}
+    }
+    @keyframes fadeInUp {
+      from {opacity:0; transform:translateY(18px) scale(.995);}
+      to {opacity:1; transform:none;}
+    }
+
+    /* small responsive tweak */
+    @media (max-width:520px){
+      .card{ padding:18px; border-radius:14px; }
+      footer.site-footer{ flex-direction:column; align-items:flex-start; gap:8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card" role="main" aria-labelledby="site-title">
+      <h1 id="site-title">amirabolfazle</h1>
+      <p class="lead">A minimal glassmorphism page with gentle motion & fade-in effects.</p>
+
+      <div class="meta" aria-hidden="false">
+        <div class="chip">Theme: Glassmorphism</div>
+        <div class="time" title="Creation time">Created: 2025-09-26 22:02:06</div>
+      </div>
+
+      <footer class="site-footer" aria-label="Footer">
+        <div class="left">
+          <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+            <svg class="gh-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.92 3.17 9.1 7.57 10.57.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.08.67-3.73-1.48-3.73-1.48-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.07-.67.07-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.56 1.18 3.19.9.1-.7.38-1.18.69-1.45-2.46-.28-5.05-1.23-5.05-5.48 0-1.21.43-2.2 1.13-2.98-.11-.28-.49-1.42.11-2.96 0 0 .92-.29 3.02 1.13a10.5 10.5 0 012.75-.37c.93 0 1.87.13 2.75.37 2.09-1.42 3.01-1.13 3.01-1.13.61 1.54.23 2.68.12 2.96.71.78 1.13 1.77 1.13 2.98 0 4.26-2.6 5.19-5.07 5.47.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.64.76.53C19.09 20.85 22.25 16.67 22.25 11.75 22.25 5.48 17.27.5 12 .5z" fill="currentColor"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </div>
+
+        <div class="right" style="opacity:.86; font-size:12px;">
+          <span style="display:inline-block; padding:6px 10px; border-radius:8px; background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.02);">static • animated</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
