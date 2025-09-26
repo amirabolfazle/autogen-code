@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(106, 17, 203, 0.25);
+      --bg2: rgba(37, 117, 252, 0.25);
+      --bg3: rgba(0, 200, 255, 0.25);
+      --text: #eaf2ff;
+      --card: rgba(255,255,255,0.08);
+      --cardBorder: rgba(255,255,255,0.15);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    html {
+      background: #0b1020;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      min-height: 100%;
+      /* Gradient layers with animated shift */
+      background: 
+        linear-gradient(135deg, var(--bg1), var(--bg2) 60%, transparent 60%) ,
+        radial-gradient(circle at 20% 0%, rgba(255,0,150,.25), transparent 40%),
+        radial-gradient(circle at 80% 60%, rgba(0,200,255,.25), transparent 40%);
+      background-size: 180% 180%, 180% 180%, 180% 180%;
+      animation: gradientShift 20s ease infinite;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%, 50% 50%, 100% 50%; }
+      50% { background-position: 100% 50%, 0% 50%, 50% 50%; }
+      100% { background-position: 0% 50%, 100% 50%, 50% 50%; }
+    }
+
+    /* Subtle decorative orbs that rotate softly */
+    .orb {
+      position: absolute;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.6;
+      z-index: 0;
+      mix-blend-mode: screen;
+      animation: spin 40s linear infinite;
+    }
+    .orb1 {
+      top: -120px; left: -140px;
+      background: conic-gradient(from 180deg at 50% 50%, #ff7eb3, #b38aff, #57fbd4, #ff7eb3);
+    }
+    .orb2 {
+      bottom: -160px; right: -180px;
+      background: conic-gradient(from 0deg, #6a11cb, #2575fc, #1cd8d8, #6a11cb);
+      animation-duration: 52s;
+    }
+    .orb3 {
+      top: 40%; left: 60%;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), transparent 40%),
+                  linear-gradient(135deg, rgba(0,255,170,.25), rgba(255,255,255,.0));
+      animation-duration: 70s;
+      opacity: .25;
+    }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* Layout */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header.site-header {
+      text-align: center;
+      padding: 72px 0 28px;
+    }
+
+    /* Gradient title text */
+    .title {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      line-height: 1.05;
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: .5px;
+      background: linear-gradient(92deg, #e8f0ff 0%, #a78bfa 40%, #f472b6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 14px rgba(0,0,0,.15);
+    }
+
+    .tagline {
+      margin: 8px 0 14px;
+      font-size: 0.95rem;
+      color: rgba(235, 245, 255, 0.9);
+      opacity: .95;
+    }
+
+    .creation-time {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(2px);
+      margin-top: 6px;
+    }
+
+    nav.main-nav {
+      margin-top: 14px;
+    }
+
+    nav.main-nav a {
+      color: #f0f3ff;
+      text-decoration: none;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12);
+      margin: 0 6px;
+      transition: transform .25s ease, background .25s ease;
+      display: inline-block;
+      box-shadow: 0 6px 14px rgba(0,0,0,.15);
+    }
+    nav.main-nav a:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.22);
+    }
+
+    main { padding: 28px 0 60px; }
+
+    section.section {
+      margin: 54px 0;
+    }
+
+    section .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    h2.section-title {
+      font-size: 1.6rem;
+      margin: 0;
+      letter-spacing: .4px;
+    }
+
+    p.lead {
+      color: rgba(235,245,255,.95);
+      max-width: 780px;
+      margin: 0;
+    }
+
+    /* Projects grid / cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+      perspective: 1000px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 14px;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.25);
+      min-height: 210px;
+      transition: transform .6s cubic-bezier(.22,.61,.36,1);
+      transform-style: preserve-3d;
+      box-shadow: 0 8px 22px rgba(0,0,0,.25);
+    }
+
+    .card:hover {
+      transform: rotateY(-6deg) rotateX(2deg);
+    }
+
+    .card-media {
+      height: 120px;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    }
+
+    .card-content {
+      padding: 14px 14px 16px;
+    }
+
+    .card-title {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .card-desc {
+      margin: 0;
+      color: rgba(255,255,255,.9);
+      font-size: 0.92rem;
+    }
+
+    /* Footer with GitHub icon */
+    footer.site-footer {
+      padding: 40px 20px;
+      text-align: center;
+      color: rgba(235,245,255,.95);
+      border-top: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.08);
+      backdrop-filter: blur(2px);
+    }
+
+    .gh-link {
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12);
+      transition: transform .25s ease, background .25s ease;
+    }
+    .gh-link:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.22);
+    }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); border: 0;
+    }
+
+    @media (max-width: 640px) {
+      header.site-header { padding: 48px 0 20px; }
+      .title { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb1" aria-hidden="true"></div>
+  <div class="orb orb2" aria-hidden="true"></div>
+  <div class="orb orb3" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="site-header" role="banner">
+      <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+      <p class="tagline" aria-label="portfolio tagline">Animated gradient portfolio • rotate interactions • one-file HTML</p>
+      <div class="creation-time" aria-label="creation time">
+        Creation time: 2025-09-26 22:31:40
+      </div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#about" aria-label="Go to about">About</a>
+        <a href="#projects" aria-label="Go to projects">Projects</a>
+        <a href="#contact" aria-label="Go to contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="about" class="section" aria-labelledby="about-title">
+        <div class="section-header">
+          <h2 id="about-title" class="section-title">About</h2>
+        </div>
+        <p class="lead">
+          I’m a creator who enjoys crafting delightful, performant interfaces. This single-file portfolio showcases a gradient-driven aesthetic with subtle motion and interactive touches. It’s designed to be simple to host anywhere while looking polished and modern.
+        </p>
+      </section>
+
+      <section id="projects" class="section" aria-labelledby="projects-title">
+        <div class="section-header">
+          <h2 id="projects-title" class="section-title">Projects</h2>
+        </div>
+        <div class="grid" role="list">
+          <article class="card" role="listitem" aria-label="Project 1">
+            <div class="card-media" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);"></div>
+            <div class="card-content">
+              <h3 class="card-title">Aurora UI Kit</h3>
+              <p class="card-desc">A tiny component library with delightful motion and accessible semantics.</p>
+            </div>
+          </article>
+
+          <article class="card" role="listitem" aria-label="Project 2">
+            <div class="card-media" style="background: linear-gradient(135deg, #00f5a0 0%, #1cc8d8 100%);"></div>
+            <div class="card-content">
+              <h3 class="card-title">Luma Dashboard</h3>
+              <p class="card-desc">A data-focused dashboard with gentle gradients and responsive cards.</p>
+            </div>
+          </article>
+
+          <article class="card" role="listitem" aria-label="Project 3">
+            <div class="card-media" style="background: linear-gradient(135deg, #ff8a00 0%, #e52e71 100%);"></div>
+            <div class="card-content">
+              <h3 class="card-title">Pulse Animations</h3>
+              <p class="card-desc">A collection of micro-interactions built with CSS transforms.</p>
+            </div>
+          </article>
+
+          <article class="card" role="listitem" aria-label="Project 4">
+            <div class="card-media" style="background: linear-gradient(135deg, #6b7af7 0%, #00d4ff 100%);"></div>
+            <div class="card-content">
+              <h3 class="card-title">Vertex Playground</h3>
+              <p class="card-desc">Experimenting with gradients, perspective, and shader-like visuals.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="section" aria-labelledby="contact-title">
+        <div class="section-header">
+          <h2 id="contact-title" class="section-title">Contact</h2>
+        </div>
+        <p class="lead" style="max-width:720px;">
+          Want to work together? Reach out and say hi. This file is self-contained, so you can drop it into any static hosting and go.
+        </p>
+        <form aria-label="contact form" onsubmit="return false" style="max-width:720px;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <input type="text" placeholder="Your name" required style="padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.12); color:#fff;">
+            <input type="email" placeholder="Email" required style="padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.12); color:#fff;">
+          </div>
+          <textarea placeholder="Message" rows="4" style="width:100%; margin-top:12px; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.12); color:#fff;"></textarea>
+          <button type="submit" style="margin-top:10px; padding:12px 16px; border-radius:8px; border:none; background: linear-gradient(135deg, #4f46e5, #06b6d4); color:white; cursor:pointer;">Send</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub" role="img" style="display:inline-block; vertical-align: middle;">
+          <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.54-1.38-1.31-1.75-1.31-1.75-1.07-.73.08-.72.08-.72 1.18.08 1.8 1.21 1.8 1.21 1.05 1.8 2.75 1.28 3.42.98.11-.76.41-1.28.74-1.57-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1 .32 3.28 1.23a11.4 11.4 0 016 0C14.47 2.63 15.47 2.3 15.47 2.3c.65 1.65.25 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.47 5.92.42.36.81 1.07.81 2.15v3.18c0 .32.22.69.83.57A12 12 0 0012 .5z"/>
+        </svg>
+        <span style="font-weight:600;">GitHub</span>
+      </a>
+      <div style="margin-top:8px;">
+        Created by amirabolfazle
+      </div>
+      <span class="sr-only" aria-live="polite">Portfolio created on 2025-09-26 22:31:40</span>
+    </footer>
+  </div>
+</body>
+</html>
