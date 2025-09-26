@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#07070a;
+    --bg2:#0d0012;
+    --neon-cyan:#0ff6ff;
+    --neon-pink:#ff2dd9;
+    --glass: rgba(255,255,255,0.03);
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(15,0,40,0.35), transparent),
+                radial-gradient(1000px 500px at 90% 90%, rgba(0,20,40,0.35), transparent),
+                linear-gradient(120deg,var(--bg1),var(--bg2));
+    overflow:hidden;
+    color:#e6f7fb;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* subtle animated gradient overlay */
+  .gradientAnimation{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    mix-blend-mode:screen;
+    opacity:0.18;
+    background: conic-gradient(from 180deg at 50% 50%, #001f3f, #2d0036, #001f3f);
+    animation: spin 30s linear infinite;
+    filter: blur(80px);
+  }
+  @keyframes spin{
+    to{ transform: rotate(360deg); }
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:36px;
+    box-sizing:border-box;
+    flex-direction:column;
+    gap:28px;
+  }
+
+  .card{
+    width:min(920px,94%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    border-radius:14px;
+    padding:48px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 60px rgba(0,0,0,0.4) inset;
+    backdrop-filter: blur(6px) saturate(120%);
+    transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 420ms;
+    transform-origin:center;
+  }
+  .card:hover{
+    transform: scale(1.03);
+    box-shadow: 0 20px 80px rgba(0,0,0,0.7), 0 0 120px rgba(2,50,70,0.15), 0 0 40px rgba(255,45,217,0.06) inset;
+  }
+
+  h1{
+    margin:0;
+    font-weight:700;
+    letter-spacing:0.02em;
+    font-size:clamp(36px,8vw,88px);
+    line-height:0.95;
+    color: #cfffff;
+    text-transform:none;
+    text-align:center;
+    padding:8px 14px;
+    border-radius:10px;
+    position:relative;
+    z-index:2;
+    filter: drop-shadow(0 0 16px rgba(15,246,255,0.14));
+    animation: neonPulse 2.6s ease-in-out infinite alternate;
+  }
+
+  @keyframes neonPulse{
+    from{
+      text-shadow:
+        0 0 6px rgba(255,45,217,0.08),
+        0 0 18px rgba(15,246,255,0.14),
+        0 0 36px rgba(15,246,255,0.06);
+      transform: scale(1);
+      color:#d9ffff;
+    }
+    to{
+      text-shadow:
+        0 0 18px rgba(255,45,217,0.14),
+        0 0 40px rgba(15,246,255,0.22),
+        0 0 80px rgba(255,45,217,0.06);
+      transform: scale(1.06);
+      color:#ffffff;
+    }
+  }
+
+  .subtitle{
+    font-size:14px;
+    color:#98f6ff;
+    opacity:0.88;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    background: linear-gradient(90deg, rgba(15,246,255,0.03), rgba(255,45,217,0.02));
+    padding:10px 14px;
+    border-radius:10px;
+    box-shadow: 0 6px 20px rgba(2,20,30,0.35);
+    transform-origin:center;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float{
+    0%{ transform: translateY(0px) }
+    50%{ transform: translateY(-6px) }
+    100%{ transform: translateY(0px) }
+  }
+
+  .time{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-weight:600;
+    background: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    font-size:13px;
+    padding:2px 6px;
+    border-radius:6px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  .desc{
+    width:100%;
+    text-align:center;
+    max-width:780px;
+    color:rgba(230,247,251,0.9);
+    opacity:0.95;
+    margin-top:6px;
+    font-size:15px;
+    line-height:1.5;
+  }
+
+  footer{
+    margin-top:28px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    padding:16px;
+    color:rgba(255,255,255,0.85);
+    font-size:13px;
+    opacity:0.95;
+  }
+
+  .gh{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    text-decoration:none;
+    color:inherit;
+    padding:8px 12px;
+    border-radius:10px;
+    transition: all 220ms cubic-bezier(.2,.9,.2,1);
+    background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+  }
+  .gh:hover{
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(2,30,50,0.6), 0 0 36px rgba(15,246,255,0.06);
+  }
+
+  .gh svg{
+    width:20px;
+    height:20px;
+    display:block;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+    transition: filter 200ms, transform 200ms;
+  }
+  .gh:hover svg{
+    transform: scale(1.08);
+    filter: drop-shadow(0 4px 18px rgba(15,246,255,0.12));
+  }
+
+  .created{
+    opacity:0.9;
+    font-weight:600;
+  }
+
+  @media (max-width:520px){
+    .card{ padding:28px; border-radius:12px; }
+    footer{ padding:12px; flex-direction:column; gap:8px; }
+  }
+</style>
+</head>
+<body>
+  <div class="gradientAnimation" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="title">
+      <h1 id="title" role="heading" aria-level="1">amirabolfazle</h1>
+      <div class="subtitle" aria-hidden="false">
+        <span style="display:inline-flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="filter:drop-shadow(0 2px 8px rgba(15,246,255,0.08));">
+            <path d="M12 2v4" stroke="#0ff6ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 18v4" stroke="#ff2dd9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 12h4" stroke="#0ff6ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 12h4" stroke="#ff2dd9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span style="opacity:0.9">Neon · Minimal · Animated</span>
+        </span>
+        <span class="time" aria-label="creation time">2025-09-26 21:29:56</span>
+      </div>
+
+      <p class="desc">A small neon-styled landing page with subtle zoom motion and glow. Light on content, heavy on vibe — created for a sleek and minimal presence.</p>
+
+      <footer>
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.7 3 8.7 7.2 10.1.5.1.7-.2.7-.5v-1.9c-2.9.6-3.6-1.2-3.6-1.2-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.6-.8 1.6-.8.9-1.5 2.4-1.1 3-.9.1-.7.4-1.2.7-1.5-2.4-.3-4.9-1.2-4.9-5.4 0-1.2.4-2.1 1.1-2.8-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1.9-.3 1.9-.5 2.9-.5 1 0 2 .2 2.9.5 2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.6 1.1 2.8 0 4.2-2.6 5-5 5.2.4.4.7 1 .7 2v3c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10.1C23.1 5.3 18.3.5 12 .5z" fill="#cfffff"/>
+          </svg>
+          <span class="created">Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>
