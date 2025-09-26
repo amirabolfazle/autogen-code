@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#2b2d42;
+      --accent1:#7c3aed;
+      --accent2:#06b6d4;
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.65);
+      --white: #ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--white);
+      background: linear-gradient(135deg, var(--bg1) 0%, #0b1220 25%, #121827 50%, var(--bg2) 100%);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* floating gradient blobs */
+    .blob{
+      position: absolute;
+      filter: blur(40px);
+      opacity: 0.18;
+      transform-origin: center;
+      animation: float 8s ease-in-out infinite;
+      mix-blend-mode: screen;
+      border-radius: 50%;
+    }
+    .blob.b1{width:420px;height:420px;left:-80px;top:-40px;background:linear-gradient(120deg,var(--accent1),#ff6584);animation-duration:10s;}
+    .blob.b2{width:320px;height:320px;right:-60px;bottom:30px;background:linear-gradient(120deg,var(--accent2),#00ffd5);animation-duration:12s;opacity:0.16;}
+    .blob.b3{width:180px;height:180px;left:20%;top:60%;background:linear-gradient(120deg,#ffb86b,#7c3aed);animation-duration:9s;opacity:0.12;}
+
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-30px) scale(1.05)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .container{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:20px;
+      padding:48px;
+      backdrop-filter: blur(8px) saturate(120%);
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .logo{
+      width:78px;
+      height:78px;
+      border-radius:16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 18px rgba(7,10,24,0.6);
+      border: 1px solid rgba(255,255,255,0.03);
+      transform-origin:center;
+      animation: bounceIn 900ms cubic-bezier(.2,.85,.32,1) both;
+    }
+
+    .logo svg{width:44px;height:44px;filter:drop-shadow(0 6px 20px rgba(124,58,237,0.18));}
+
+    @keyframes bounceIn{
+      0%{transform: translateY(-28px) scale(.9); opacity:0}
+      60%{transform: translateY(8px) scale(1.03); opacity:1}
+      100%{transform: translateY(0) scale(1)}
+    }
+
+    .title{
+      font-size:40px;
+      font-weight:700;
+      letter-spacing: -0.02em;
+      line-height:1;
+      margin:0;
+      animation: pop 900ms cubic-bezier(.2,.85,.32,1) both;
+      background: linear-gradient(90deg, var(--white), rgba(255,255,255,0.8));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 6px 30px rgba(7,10,24,0.6);
+    }
+
+    @keyframes pop{
+      0%{transform: translateY(18px) scale(.98); opacity:0}
+      60%{transform: translateY(-6px) scale(1.02); opacity:1}
+      100%{transform: translateY(0) scale(1)}
+    }
+
+    .subtitle{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:16px;
+      max-width:70%;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:28px;
+      margin-top:28px;
+      align-items:start;
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+      border-radius:12px;
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .left .big-text{
+      font-size:18px;
+      line-height:1.6;
+      color:rgba(255,255,255,0.92);
+      margin:0 0 18px 0;
+    }
+
+    .features{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .right{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .card-cta{
+      padding:22px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .time{
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .big-cta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .btn{
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:#081022;
+      font-weight:700;
+      padding:12px 16px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 8px 30px rgba(6,11,34,0.6), 0 2px 8px rgba(0,0,0,0.2);
+      transition: transform 220ms cubic-bezier(.2,.85,.32,1), box-shadow 220ms;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:active{transform: translateY(2px) scale(.997)}
+    .ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+    }
+
+    /* bouncing headline accent */
+    .accent{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      color:var(--white);
+      font-weight:700;
+      transform-origin:center;
+      animation: bounce 2200ms cubic-bezier(.22,1,.36,1) infinite;
+      margin-left:8px;
+      box-shadow: 0 6px 20px rgba(124,58,237,0.12);
+    }
+    @keyframes bounce{
+      0%,100%{transform: translateY(0)}
+      30%{transform: translateY(-8px)}
+      60%{transform: translateY(-4px)}
+    }
+
+    /* small card list */
+    .meta-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+    .meta-item{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px}
+    .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 6px 18px rgba(124,58,237,0.16)}
+
+    /* footer */
+    footer{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,0.02);
+    }
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+      color:var(--muted);
+      transition: transform 160ms ease, color 160ms ease;
+      padding:8px 10px;
+      border-radius:10px;
+    }
+    .github-link:hover{transform:translateY(-4px); color:var(--white)}
+    .github-link svg{width:20px;height:20px;fill:var(--muted);transition:fill 160ms}
+    .github-link:hover svg{fill:var(--white)}
+
+    /* responsive */
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr; }
+      .subtitle{max-width:100%}
+      .card{padding:28px}
+      .logo{width:66px;height:66px}
+      .title{font-size:32px}
+    }
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+  <div class="blob b3" aria-hidden="true"></div>
+
+  <main class="container" role="main">
+    <section class="card" aria-labelledby="site-title">
+      <header class="header">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#7c3aed"/>
+                <stop offset="1" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <rect x="6" y="6" width="52" height="52" rx="10" fill="url(#g)"/>
+            <path d="M20 36c0-8 8-14 14-14s14 6 14 14v6H20v-6z" fill="rgba(255,255,255,0.95)" opacity="0.95"/>
+          </svg>
+        </div>
+        <div>
+          <h1 id="site-title" class="title">amirabolfazle <span class="accent">landing</span></h1>
+          <p class="subtitle">A colorful gradient landing experience with lively bounce and subtle glass textures — crafted to capture attention.</p>
+        </div>
+      </header>
+
+      <div class="grid" aria-hidden="false">
+        <div class="left">
+          <div class="panel">
+            <p class="big-text">Welcome — this page demonstrates vibrant gradients, smooth bounce animations, and a clean, modern layout ready for customization. Elements float gently, headings pop with motion, and CTA elements invite interaction.</p>
+
+            <div class="features" aria-label="features">
+              <div class="chip">Gradient theme</div>
+              <div class="chip">Bounce effects</div>
+              <div class="chip">Accessible markup</div>
+              <div class="chip">Responsive</div>
+              <div class="chip">SVG icons</div>
+            </div>
+
+            <div class="meta-list" style="margin-top:18px">
+              <div class="meta-item"><span class="dot" aria-hidden="true"></span>Designed for clarity and motion</div>
+              <div class="meta-item"><span class="dot" aria-hidden="true"></span>Self-contained HTML & CSS</div>
+              <div class="meta-item"><span class="dot" aria-hidden="true"></span>Footer links to source</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="right" aria-label="actions and metadata">
+          <div class="card-cta panel" role="region" aria-label="call to action">
+            <div>
+              <div style="font-size:13px;color:var(--muted)">Creation time</div>
+              <div class="time" style="margin-top:6px">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                  <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>2025-09-26 19:25:53</span>
+              </div>
+            </div>
+
+            <div class="big-cta" style="align-items:flex-end">
+              <button class="btn" aria-label="Get started">
+                Start
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12h14M13 5l7 7-7 7" stroke="#081022" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="ghost" aria-label="Learn more">Learn</button>
+            </div>
+          </div>
+
+          <div class="panel" style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="font-weight:700">Quick Preview</div>
+              <div style="font-size:13px;color:var(--muted)">Interactive</div>
+            </div>
+
+            <div style="display:flex;gap:10px">
+              <div style="flex:1;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:10px;padding:12px">
+                <div style="font-size:13px;color:var(--muted)">Colors</div>
+                <div style="height:36px;margin-top:8px;border-radius:8px;background:linear-gradient(90deg,var(--accent1),var(--accent2))"></div>
+              </div>
+              <div style="width:90px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:10px;padding:12px;display:flex;flex-direction:column;justify-content:center;align-items:center">
+                <div style="font-size:13px;color:var(--muted)">Motion</div>
+                <div style="margin-top:8px;width:18px;height:18px;border-radius:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 6px 18px rgba(124,58,237,0.14)"></div>
+              </div>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+
+      <footer>
+        <div style="display:flex;flex-direction:column">
+          <div style="font-weight:600">amirabolfazle</div>
+          <div style="color:var(--muted);font-size:13px;margin-top:6px">Crafted for demo and inspiration</div>
+        </div>
+
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.73.5.875 5.356.875 11.633c0 4.75 3.087 8.787 7.36 10.205.538.1.736-.234.736-.518 0-.255-.01-.931-.015-1.827-2.993.65-3.627-1.442-3.627-1.442-.49-1.246-1.197-1.578-1.197-1.578-.98-.67.074-.657.074-.657 1.084.076 1.654 1.115 1.654 1.115.962 1.648 2.526 1.172 3.144.897.098-.697.377-1.172.686-1.442-2.387-.273-4.893-1.193-4.893-5.307 0-1.173.418-2.133 1.106-2.887-.11-.273-.48-1.372.105-2.86 0 0 .902-.289 2.956 1.103a10.19 10.19 0 012.692-.362c.913.004 1.833.125 2.692.363 2.052-1.39 2.952-1.102 2.952-1.102.586 1.488.216 2.587.106 2.86.69.754 1.106 1.714 1.106 2.886 0 4.125-2.51 5.03-4.903 5.296.388.334.732.99.732 1.996 0 1.44-.013 2.598-.013 2.952 0 .288.195.623.744.517 4.267-1.422 7.349-5.458 7.349-10.207C23.125 5.356 18.27.5 12 .5z" />
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // Small interactive flourish: animate CTA pulse on hover focus
+    (function(){
+      const btn = document.querySelector('.btn');
+      if(!btn) return;
+      let pulse;
+      const startPulse = ()=>{
+        btn.animate([{boxShadow:'0 8px 30px rgba(6,11,34,0.6)'},{boxShadow:'0 18px 60px rgba(6,11,34,0.28)'}],{duration:600,iterations:Infinity,direction:'alternate'});
+      };
+      btn.addEventListener('mouseenter', ()=>{ startPulse(); });
+      btn.addEventListener('focus', ()=>{ startPulse(); });
+      btn.addEventListener('mouseleave', ()=>{ btn.getAnimations().forEach(a=>a.cancel()); });
+      btn.addEventListener('blur', ()=>{ btn.getAnimations().forEach(a=>a.cancel()); });
+    })();
+  </script>
+</body>
+</html>
