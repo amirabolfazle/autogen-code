@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f1a;
+      --bg2: #0a1020;
+      --neon-cyan: #00f5ff;
+      --neon-purp: #b400ff;
+      --neon-pink: #ff00c8;
+      --panel: rgba(255,255,255,.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: #e8faff;
+      background: radial-gradient(circle at 20% -10%, rgba(0,255,230,.15), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(255,0,180,.15), transparent 40%),
+                  linear-gradient(#041018, #0a0e1a 60%, #040612 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Neon header */
+    .header {
+      text-align: center;
+      padding: 48px 20px 18px;
+      position: relative;
+    }
+    .brand {
+      font-weight: 800;
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 14px rgba(0,255,255,.75));
+      animation: hue 6s linear infinite;
+    }
+    @keyframes hue {
+      0% { filter: drop-shadow(0 0 14px rgba(0,255,255,.75)); }
+      50% { filter: drop-shadow(0 0 20px rgba(180,0,255,.9)); }
+      100% { filter: drop-shadow(0 0 14px rgba(0,255,255,.75)); }
+    }
+    .subtitle {
+      font-size: 1.05rem;
+      color: #d6f7ff;
+      opacity: .92;
+      margin-top: 6px;
+      letter-spacing: .04em;
+      text-shadow: 0 0 8px rgba(0,255,255,.5);
+    }
+    .creation {
+      margin-top: 8px;
+      font-family: ui-monospace,SFMono-Regular,Consolas,"Liberation Mono";
+      font-size: .9rem;
+      color: #aaf7ff;
+      opacity: .9;
+    }
+
+    /* Neon backdrop with orbiting elements */
+    .scene {
+      width: min(92vw, 520px);
+      height: min(92vw, 520px);
+      max-width: 540px;
+      max-height: 540px;
+      margin: 0 auto;
+      position: relative;
+      display: block;
+      border-radius: 50%;
+      perspective: 1000px;
+      filter: saturate(120%);
+      margin-top: 18px;
+      /* subtle glow behind */
+      background: radial-gradient(circle at 50% 50%, rgba(0,255,230,.12), transparent 40%),
+                  radial-gradient(circle at 60% 40%, rgba(255,0,180,.12), transparent 40%);
+    }
+
+    .orbit {
+      position: absolute; top: 50%; left: 50%;
+      width: 0; height: 0; transform-style: preserve-3d;
+      transform: translate(-50%, -50%);
+    }
+
+    .orb {
+      position: absolute;
+      width: 54px; height: 54px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(0,255,230,.75) 40%, rgba(0,180,255,.25) 100%);
+      border: 1px solid rgba(0,255,255,.95);
+      box-shadow: 0 0 14px rgba(0,255,255,.9), inset 0 0 8px rgba(255,255,255,.7);
+      mix-blend-mode: screen;
+      transform-origin: center;
+    }
+    /* Distinct glow colors per orb */
+    .orb.a { background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(0,255,230,.85) 40%, rgba(0,180,255,.25) 100%); border-color: rgba(0,255,255,.95); box-shadow: 0 0 18px rgba(0,255,255,.95); animation: orbitA 12s linear infinite; }
+    .orb.b { background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(255,0,180,.85) 40%, rgba(180,0,255,.25) 100%); border-color: rgba(255,0,180,.95); box-shadow: 0 0 20px rgba(255,0,180,.95); animation: orbitB 16s linear infinite; }
+    .orb.c { background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(0,255,180,.85) 40%, rgba(0,180,150,.25) 100%); border-color: rgba(0,255,180,.95); box-shadow: 0 0 18px rgba(0,255,180,.95); animation: orbitC 20s linear infinite; }
+
+    @keyframes orbitA {
+      0% { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+    }
+    @keyframes orbitB {
+      0% { transform: rotate(0deg) translateX(170px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(170px) rotate(-360deg); }
+    }
+    @keyframes orbitC {
+      0% { transform: rotate(0deg) translateX(90px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(90px) rotate(-360deg); }
+    }
+
+    /* 3D tilt on the scene for interactivity */
+    .scene-inner { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; }
+
+    /* Projects grid */
+    main { padding: 28px 16px 40px; }
+    .section-title {
+      text-align:center;
+      font-size: 1.15rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: #aaf7ff;
+      margin: 6px 0 14px;
+      opacity:.95;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      justify-items: center;
+      padding: 6px 6px 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .card {
+      width: 100%;
+      max-width: 260px;
+      height: 180px;
+      background: rgba(6,12,24,.55);
+      border: 1px solid rgba(0,255,255,.8);
+      border-radius: 14px;
+      padding: 14px;
+      color: #eaffff;
+      box-shadow: 0 8px 28px rgba(0,255,255,.28), inset 0 0 14px rgba(0,255,255,.12);
+      transition: transform .6s cubic-bezier(.22,.61,.36,1), box-shadow .6s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: rotateY(12deg) rotateX(-4deg) scale(1.02);
+      box-shadow: 0 20px 38px rgba(0,255,255,.55), inset 0 0 18px rgba(255,255,255,.15);
+    }
+    .card .title {
+      font-size: 1.05rem;
+      margin: 0 0 6px;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0,255,255,.8);
+    }
+    .card .desc {
+      font-size: .92rem;
+      color: #c6f0ff;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    /* footer with GitHub icon and text */
+    footer.footer {
+      padding: 28px 12px;
+      text-align: center;
+      color: #aaf7ff;
+      border-top: 1px solid rgba(0,255,255,.25);
+      margin-top: 40px;
+      background: linear-gradient(to top, rgba(0,0,0,.0), rgba(0,0,0,.15));
+    }
+    .github-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #aaf7ff; text-decoration: none;
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.5);
+      box-shadow: 0 0 14px rgba(0,255,255,.25);
+    }
+    .github-link:hover {
+      background: rgba(0,255,255,.12);
+      box-shadow: 0 0 18px rgba(0,255,255,.45);
+    }
+    .github-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; color: currentColor; }
+
+    /* responsive tweaks */
+    @media (max-width: 600px){
+      .brand { font-size: 2.7rem; }
+      .creation { font-size: .85rem; }
+      .scene { width: 86vw; height: 86vw; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand" aria-label="Amir A Bolshe Neon Portfolio">
+      amirabolfazle
+    </div>
+    <div class="subtitle">Frontend Developer • Neon Aesthete</div>
+    <div class="creation">Creation time: 2025-09-27 01:48:13</div>
+  </header>
+
+  <section class="scene" aria-label="neon orbit backdrop">
+    <div class="scene-inner">
+      <div class="orbit" aria-hidden="true">
+        <div class="orb a"></div>
+        <div class="orb b"></div>
+        <div class="orb c"></div>
+      </div>
+    </div>
+  </section>
+
+  <main aria-label="Portfolio projects">
+    <h2 class="section-title" style="margin-top:18px;">Projects</h2>
+    <section class="grid" aria-label="projects grid">
+      <article class="card" tabindex="0">
+        <div class="title">Neon Pulse</div>
+        <p class="desc">Real-time neon UI toolkit for dazzling dashboards.</p>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="title">Pulse Grid</div>
+        <p class="desc">Interactive grid with glow and motion effects.</p>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="title">Aurora Flux</div>
+        <p class="desc">Animated gradients, glow, and smooth transitions.</p>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="title">Nova Neon</div>
+        <p class="desc">Lightweight components with vibrant neon aesthetics.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub SVG Icon -->
+      <svg class="github-icon" viewBox="0 0 24 24" aria-label="GitHub" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5a12.5 12.5 0 0 0-3.97 24.37c.63.12.86-.27.86-.6v-2.15c-3.51.76-4.25-1.51-4.25-1.51-.57-1.46-1.39-1.85-1.39-1.85-1.14-.78.09-.76.09-.76 1.26.09 1.92 1.29 1.92 1.29 1.12 1.92 2.94 1.37 3.66 1.05.11-.8.44-1.34.79-1.65-2.8-.32-5.74-1.39-5.74-6.18 0-1.36.47-2.47 1.25-3.34-.13-.32-.54-1.62.12-3.38 0 0 1.02-.33 3.35 1.27a11.7 11.7 0 0 1 6.11 0C14.3 3.98 15.32 4.31 15.32 4.31c.68 1.77.25 3.08.12 3.4.78.87 1.25 1.98 1.25 3.34 0 4.8-2.93 5.85-5.73 6.16.45.38.86 1.14.86 2.3v3.42c0 .32.23.7.86.58A12.5 12.5 0 0 0 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <script>
+    // Lightweight 3D tilt on the neon scene for a little interaction
+    (function(){
+      const scene = document.querySelector('.scene');
+      if (!scene) return;
+
+      const onMove = (e) => {
+        const rect = scene.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rx = (y / rect.height - 0.5) * -8; // tilt along X
+        const ry = (x / rect.width - 0.5) * 10;  // tilt along Y
+        scene.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        scene.style.transition = 'transform 0.1s linear';
+      };
+      const onLeave = () => {
+        scene.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        scene.style.transition = 'transform 0.6s ease';
+      };
+      scene.addEventListener('mousemove', onMove);
+      scene.addEventListener('mouseleave', onLeave);
+    }());
+  </script>
+</body>
+</html>
