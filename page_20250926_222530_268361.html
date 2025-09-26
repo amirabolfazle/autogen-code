@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:  rgba(255,255,255,0.08);
+      --bg2:  rgba(255,255,255,0.15);
+      --text: #e6f0ff;
+      --accent: #7dd3fc;
+      --glass: rgba(255,255,255,0.14);
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+      --blur: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 0%, rgba(125,211,252,0.25), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(99,102,241,0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0b1020 60%, #1b1a2b 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated ambient blobs for depth */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 12s ease-in-out infinite;
+    }
+    .bg-blob.b1 { width: 420px; height: 420px; left: -120px; top: 40px; background: #60a5fa; }
+    .bg-blob.b2 { width: 520px; height: 520px; right: -160px; bottom: -60px; background: #a78bfa; animation-duration: 18s; }
+
+    @keyframes float {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(20px,-20px) scale(1.05); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    /* Glass layout container */
+    .wrap {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glass {
+      width: min(1100px, 90vw);
+      padding: 40px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.4);
+      backdrop-filter: blur(var(--blur)) saturate(1.2);
+      -webkit-backdrop-filter: blur(var(--blur));
+      box-shadow: var(--shadow);
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1), background 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Zoom effect on hover for glass cards */
+    .glass:hover {
+      transform: scale(1.02);
+      background: linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08));
+    }
+
+    /* Hero content */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .brand {
+      display: inline-block;
+      padding: 14px 20px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transform: translateZ(0);
+      animation: popIn 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes popIn {
+      from { transform: translateY(-8px) scale(0.98); opacity: 0; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    h1 {
+      font-size: clamp(40px, 6vw, 96px);
+      margin: 0;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, #e0e7ff, #93c5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 20px rgba(59,130,246,.25);
+      filter: drop-shadow(0 6px 20px rgba(0,0,0,.25));
+      user-select: none;
+    }
+
+    .tagline {
+      font-size: clamp(14px, 2.5vw, 20px);
+      color: rgba(230, 238, 255, 0.9);
+      margin: 4px 0 0;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: .4px;
+      transition: transform .25s ease, background .25s ease;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .btn:hover {
+      transform: translateY(-1px) scale(1.03);
+      background: rgba(255,255,255,0.28);
+    }
+
+    .subtle {
+      font-size: 12px;
+      color: rgba(230,238,255,.85);
+      margin-left: 6px;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(2,6,23,.45);
+      border: 1px solid rgba(255,255,255,.25);
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: 12px;
+      letter-spacing: .4px;
+      color: #e6f0ff;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 28px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.38);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #eaf4ff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+      width: max-content;
+    }
+    .footer-area {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .footer-text { font-size: 14px; color: #eaf4ff; }
+
+    /* Icon styling */
+    .icon {
+      width: 20px; height: 20px; display: inline-block; vertical-align: middle;
+      color: #eaf4ff;
+    }
+    .github-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      text-decoration: none;
+      color: inherit;
+      transition: transform .25s ease;
+    }
+    .github-link:hover { transform: scale(1.05); }
+
+    /* Responsive tweaks */
+    @media (max-width: 760px) {
+      .glass { padding: 28px; }
+      footer { width: 100%; padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blob b1" aria-hidden="true"></div>
+  <div class="bg-blob b2" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <section class="glass" aria-label="Amira Bolfazle landing">
+      <div class="hero" style="gap:28px;">
+        <div class="brand" aria-label="Brand badge" title="amirabolfazle">
+          amirabolfazle
+        </div>
+
+        <h1>amirabolfazle</h1>
+
+        <p class="tagline" style="max-width: 780px;">
+          A designer, engineer, and creator sharing ideas at the intersection of glassy aesthetics and modern web magic.
+        </p>
+
+        <div class="creation" aria-label="Creation time badge">
+          Creation time: 2025-09-26 22:24:58
+        </div>
+
+        <div class="cta-row" style="margin-top:6px;">
+          <a href="#projects" class="btn" role="button" aria-label="Explore projects">Explore Projects</a>
+          <a href="#about" class="btn" role="button" aria-label="Learn more">Learn More</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="glass" style="justify-content:center; margin: 24px auto; width: max-content;">
+    <div class="footer-area" aria-label="Footer with GitHub link and creator text">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noreferrer" class="github-link" aria-label="GitHub repository">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.89.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.21 1.79 1.21 1.04 1.78 2.74 1.27 3.41.97.1-.75.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.52.11-3.17 0 0 .97-.31 3.18 1.17a11.1 11.1 0 0 1 2.9-.39c1.01 0 2.04.14 3.01.41 2.2-1.48 3.17-1.17 3.17-1.17.63 1.65.23 2.87.12 3.17.75.81 1.19 1.84 1.19 3.1 0 4.44-2.71 5.41-5.29 5.68.42.36.8 1.07.8 2.15 0 1.56-.01 2.82-.01 3.2 0 .31.21.68.8.56C20.71 21.38 24 17.08 24 12 24 5.73 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span class="footer-text" style="margin-left:6px;">Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
