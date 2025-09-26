@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="description" content="A cool animated one-file portfolio in dark mode." />
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg-grad: radial-gradient(circle at 10% -10%, rgba(0,200,255,0.08), transparent 40%), radial-gradient(circle at 90% 10%, rgba(139,0,255,0.08), transparent 40%), #0b0f14;
+      --surface: rgba(255,255,255,0.04);
+      --text: #e6e6e6;
+      --muted: #a3a9b8;
+      --accent: #7afcff;
+      --card-border: rgba(255,255,255,0.08);
+      --shadow: 0 8px 30px rgba(0,0,0,.25);
+      --glow: 0 0 22px rgba(122, 252, 255, 0.6);
+    }
+
+    html, body { height: 100%; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: var(--bg-grad);
+      background-color: var(--bg);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Global fade-in utility */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 600ms ease, transform 600ms ease;
+    }
+    .in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(1.2) blur(6px);
+      background: rgba(2,6,23,0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 30% 30%, #7afcff 0%, #7f5cff 40%, #2d2d2d 60%);
+      box-shadow: inset 0 0 12px rgba(255,255,255,.4), var(--glow);
+      display: inline-block;
+    }
+
+    main { padding: 48px 0 80px; }
+
+    .hero {
+      text-align: left;
+      padding: 40px 0 24px;
+    }
+    .brand-name {
+      font-size: clamp(40px, 8vw, 92px);
+      line-height: 0.95;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: .02em;
+      background: linear-gradient(135deg, #7afcff 0%, #8a5cff 60%, #00ffa2 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 14px rgba(0,255,214,.25);
+    }
+    .subtitle {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(122,252,255,0.4);
+      color: #d7fdff;
+      background: rgba(122,252,255,0.08);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .9rem;
+      margin-top: 14px;
+      box-shadow: inset 0 0 12px rgba(0,0,0,.15);
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      margin: 28px 0 14px;
+      letter-spacing: .01em;
+      color: #eaf6ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 170px;
+      box-shadow: var(--shadow);
+      transition: transform 280ms ease, box-shadow 280ms ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.32);
+      border-color: rgba(122,252,255,.25);
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(122,252,255,.4);
+      color: #cffaff;
+      font-size: .75rem;
+      background: rgba(122,252,255,.08);
+    }
+
+    section#skills .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+    .skill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0,255,214,.08);
+      border: 1px solid rgba(0,255,214,.4);
+      color: #bff8ff;
+      margin: 6px;
+      font-size: .85rem;
+    }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+      text-align: center;
+      color: var(--muted);
+    }
+    .footer-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      color: var(--text);
+      border-radius: 6px;
+      transition: transform 180ms ease, background 180ms ease;
+      text-decoration: none;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .github-link:hover { transform: translateY(-1px); background: rgba(255,255,255,.08); }
+
+    @media (max-width: 720px) {
+      .brand-name { font-size: 48px; }
+      .creation { font-size: .85rem; padding: 6px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header aria-label="Site header">
+    <div class="container nav">
+      <a class="brand" href="#hero" aria-label="amirabolfazle home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span style="font-weight:800; letter-spacing:.04em;">amirabolfazle</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#projects" class="brand" style="color:#e6fbff; text-decoration:none; padding:6px 10px; border-radius:6px;">Projects</a>
+        <a href="#skills" class="brand" style="color:#e6fbff; text-decoration:none; padding:6px 10px; border-radius:6px;">Skills</a>
+        <a href="#contact" class="brand" style="color:#e6fbff; text-decoration:none; padding:6px 10px; border-radius:6px;">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="hero" class="container" role="main">
+    <section class="hero" aria-label="Intro">
+      <h1 class="brand-name fade-in" style="animation-delay:.05s">amirabolfazle</h1>
+      <p class="subtitle fade-in" style="animation-delay:.15s">
+        Creative Developer • UI/UX Enthusiast • Open Source Traveler
+      </p>
+      <span class="creation fade-in" style="animation-delay:.25s" aria-label="creation time">
+        Creation time: 2025-09-26 23:24:24
+      </span>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title" class="fade-in" style="animation-delay:.3s">
+      <h2 id="projects-title" class="section-title" style="margin-top:0;">Projects</h2>
+      <div class="grid" aria-label="Project cards">
+        <article class="card fade-in" style="animation-delay:.05s;">
+          <h3>Neon Portfolio V3</h3>
+          <p>A shimmering portfolio scaffold with glassy cards and neon accents. Built for speed and accessibility.</p>
+          <span class="chip" style="margin-top:8px;">Web</span>
+        </article>
+        <article class="card fade-in" style="animation-delay:.15s;">
+          <h3>Async Lab</h3>
+          <p>Experimenting with asynchronous UI patterns and micro-interactions that feel alive.</p>
+          <span class="chip" style="margin-top:8px;">UX</span>
+        </article>
+        <article class="card fade-in" style="animation-delay:.25s;">
+          <h3>Nightcoder CLI</h3>
+          <p>Minimalist command-line tooling with a sleek dark theme and fast feedback loops.</p>
+          <span class="chip" style="margin-top:8px;">Tooling</span>
+        </article>
+        <article class="card fade-in" style="animation-delay:.35s;">
+          <h3>Nebula UI Kit</h3>
+          <p>Composable components, accessible tokens, and a scalable design system.</p>
+          <span class="chip" style="margin-top:8px;">Design</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title" class="fade-in" style="animation-delay:.45s; margin-top:28px;">
+      <h2 id="skills-title" class="section-title" style="margin-top:0;">Skills</h2>
+      <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));">
+        <span class="skill">JavaScript</span>
+        <span class="skill">TypeScript</span>
+        <span class="skill">React</span>
+        <span class="skill">UI/UX</span>
+        <span class="skill">CSS Animations</span>
+        <span class="skill">Node.js</span>
+        <span class="skill">Figma</span>
+        <span class="skill">A11y</span>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title" class="fade-in" style="animation-delay:.55s; margin-top:28px;">
+      <h2 id="contact-title" class="section-title" style="margin-top:0;">Contact</h2>
+      <p style="color:var(--muted);">Want to collaborate or just say hi? Drop a line.</p>
+      <form action="#" onsubmit="return false;" style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+        <input type="email" placeholder="Email" aria-label="Email" style="flex:1 1 240px; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.04); color:var(--text); outline:none;" required/>
+        <textarea placeholder="Your message" aria-label="Message" rows="4" style="flex:2 1 480px; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.04); color:var(--text);" required></textarea>
+        <button type="submit" style="padding:12px 16px; border-radius:8px; border:1px solid rgba(122,252,255,.4); background: linear-gradient(135deg, rgba(122,252,255,.25), rgba(122,252,255,.45)); color:#eaffff; cursor:pointer;">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer aria-label="Site footer">
+    <div class="container" style="padding-bottom:8px;">
+      <div class="footer-row fade-in" style="animation-delay:.65s;">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" title="GitHub repository" aria-label="GitHub link">
+          <!-- GitHub inline SVG icon -->
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:block; margin:auto;">
+            <path d="M12 .5C5.73.5 1.5 4.92 1.5 9.68c0 3.83 2.47 7.08 5.9 8.22.43.08.59-.19.59-.42 0-.21-.01-.77-.01-1.51-2.4.53-2.9-1.04-2.9-1.04-.37-.93-.9-1.18-.9-1.18-.73-.5.06-.49.06-.49.81.06 1.24.84 1.24.84.72 1.23 1.89.88 2.35.67.07-.52.28-.88.51-1.08-1.92-.22-3.94-1.01-3.94-4.49 0-1.01.36-1.84.96-2.49-.1-.24-.42-1.22.09-2.54 0 0 .78-.25 2.56 1.01A8.9 8.9 0 0 1 12 6.8c.79-.02 1.59-.11 2.34-.32 1.78-1.26 2.56-1.01 2.56-1.01.51 1.32.2 2.3.1 2.54.63.65.96 1.48.96 2.49 0 3.49-2.04 4.27-3.98 4.48.29.25.55.74.55 1.5 0 1.08-.01 1.95-.01 2.21 0 .23.16.5.58.41C18.53 16.75 21 13.5 21 9.68 21 4.92 16.27.5 12 .5z"/>
+          </svg>
+        </a>
+        <span style="margin-left:8px;">Created by amirabolfazle</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple IntersectionObserver to trigger fade-in for elements with .fade-in
+    document.addEventListener('DOMContentLoaded', function(){
+      const obs = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      document.querySelectorAll('.fade-in').forEach(el => {
+        obs.observe(el);
+      });
+      // Also make sure hero heading animates on load for a nice first impression
+      const heroElems = document.querySelectorAll('.brand-name, .subtitle, .creation');
+      heroElems.forEach((el, idx) => {
+        setTimeout(() => el.classList.add('in-view'), idx * 80);
+      });
+    });
+  </script>
+</body>
+</html>
