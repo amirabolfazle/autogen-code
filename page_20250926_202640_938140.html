@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(14,20,33,1);
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.09);
+      --accent1: rgba(130,88,255,0.85);
+      --accent2: rgba(0,210,255,0.9);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.7);
+      --glass-border: rgba(255,255,255,0.12);
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(130,88,255,0.12), transparent 8%),
+                  radial-gradient(1000px 400px at 95% 85%, rgba(0,210,255,0.08), transparent 9%),
+                  linear-gradient(180deg,#0c1220 0%, #070812 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    /* animated background shapes */
+    .orb {
+      position:absolute;
+      filter: blur(40px);
+      opacity:0.7;
+      mix-blend-mode: screen;
+      animation: float 12s ease-in-out infinite;
+      transform-origin:center;
+      will-change:transform;
+    }
+    .orb.a{ width:420px;height:420px; left:-10%; top:10%; background:radial-gradient(circle at 30% 30%, var(--accent1), transparent 40%); animation-duration:18s;}
+    .orb.b{ width:360px;height:360px; right:-8%; bottom:5%; background:radial-gradient(circle at 70% 70%, var(--accent2), transparent 40%); animation-duration:14s; animation-direction:reverse;}
+    .orb.c{ width:220px;height:220px; left:40%; top:-8%; background:radial-gradient(circle at 60% 40%, rgba(255,255,255,0.06), transparent 50%); animation-duration:22s; opacity:0.4;}
+
+    @keyframes float{
+      0%{ transform: translateY(0) rotate(0deg) }
+      25%{ transform: translateY(-18px) rotate(18deg) }
+      50%{ transform: translateY(0) rotate(36deg) }
+      75%{ transform: translateY(18px) rotate(18deg) }
+      100%{ transform: translateY(0) rotate(0deg) }
+    }
+
+    /* main card */
+    .stage{
+      width: min(1000px, 92vw);
+      height: auto;
+      padding: 64px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      z-index:2;
+    }
+
+    .glass-card{
+      width:100%;
+      max-width:880px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:20px;
+      padding:36px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      border: 1px solid transparent;
+      position:relative;
+      overflow:hidden;
+      transition: transform 0.9s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective:800px;
+    }
+
+    /* subtle rotating rim */
+    .glass-card::before{
+      content:'';
+      position:absolute;
+      inset:-2px;
+      z-index:-1;
+      background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:22px;
+      mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events:none;
+    }
+
+    .glass-card .rims{
+      position:absolute;
+      inset:0;
+      border-radius:20px;
+      pointer-events:none;
+      background:
+        conic-gradient(from 120deg at 50% 50%, rgba(130,88,255,0.12), rgba(0,210,255,0.12), rgba(130,88,255,0.12));
+      mix-blend-mode: screen;
+      opacity:0.6;
+      transform: rotate(0deg);
+      animation: slow-rotate 14s linear infinite;
+      filter: blur(30px);
+    }
+    @keyframes slow-rotate{
+      from{ transform: rotate(0deg) }
+      to{ transform: rotate(360deg) }
+    }
+
+    /* header */
+    .header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:18px;
+    }
+    .avatar {
+      width:86px;
+      height:86px;
+      border-radius:18px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:28px;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.5);
+      transform-origin:center;
+      transition: transform 600ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    .title {
+      font-size:34px;
+      font-weight:700;
+      letter-spacing: -0.02em;
+      color:var(--text);
+      margin:0;
+      line-height:1;
+      text-shadow: 0 6px 30px rgba(8,12,20,0.6);
+    }
+
+    .subtitle{
+      margin:6px 0 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* body area */
+    .content{
+      display:flex;
+      gap:28px;
+      align-items:stretch;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:18px;
+      flex:1 1 300px;
+      min-width:220px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transform-origin:center;
+      transition: transform 600ms cubic-bezier(.2,.8,.2,1), box-shadow 300ms ease;
+    }
+
+    .panel h3{
+      margin:0 0 8px 0;
+      font-size:16px;
+    }
+    .panel p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    /* rotate hover effect on card and avatar */
+    .glass-card:hover{ transform: rotateX(8deg) rotateY(-6deg) translateY(-6px); box-shadow: 0 30px 60px rgba(3,8,20,0.6);}
+    .glass-card:hover .avatar{ transform: translateZ(36px) rotate(-6deg) scale(1.02); }
+
+    /* animated highlight line */
+    .shimmer{
+      position:absolute;
+      left:-40%;
+      top:0;
+      width:80%;
+      height:100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      transform: skewX(-20deg);
+      pointer-events:none;
+      mix-blend-mode: overlay;
+      animation: shimmer 6s linear infinite;
+      opacity:0.6;
+    }
+    @keyframes shimmer{
+      0%{ left:-60% }
+      50%{ left:60% }
+      100%{ left:-60% }
+    }
+
+    /* badges and time */
+    .meta{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .chip{
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .time{
+      font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      font-size:13px;
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:10px 14px;
+      border-radius:999px;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index:4;
+      color:var(--muted);
+      font-size:13px;
+    }
+    footer a{
+      color:var(--muted);
+      text-decoration:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    footer svg{ width:18px;height:18px; fill:var(--muted); transition: transform 220ms ease, fill 220ms ease;}
+    footer a:hover svg{ transform: translateY(-3px) scale(1.05); fill:var(--accent2); }
+    footer a:hover span{ color:var(--text); }
+
+    /* small screens */
+    @media (max-width:640px){
+      .header{ gap:12px }
+      .title{ font-size:26px }
+      .avatar{ width:64px;height:64px;font-size:20px;border-radius:14px}
+      .stage{ padding:28px }
+      .glass-card{ padding:20px }
+      footer{ bottom:14px; padding:8px 10px; font-size:12px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="orb a" aria-hidden="true"></div>
+  <div class="orb b" aria-hidden="true"></div>
+  <div class="orb c" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="page-title">
+    <section class="glass-card" aria-label="Personal card">
+      <div class="rims" aria-hidden="true"></div>
+      <div class="shimmer" aria-hidden="true"></div>
+
+      <header class="header">
+        <div class="avatar" aria-hidden="true">AB</div>
+        <div>
+          <h1 id="page-title" class="title">amirabolfazle</h1>
+          <div class="subtitle">Fancy animated personal page • glassmorphism • rotating accents</div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="panel" style="--i:1">
+          <h3>Hello</h3>
+          <p>Welcome to a polished, animated single-page profile. The design pairs glass-like surfaces with gentle rotational motion and soft gradient lights.</p>
+          <div class="meta" style="margin-top:14px;">
+            <div class="chip" title="Role">Creator</div>
+            <div class="chip" title="Status">Design + Code</div>
+            <div class="time" title="Creation time">2025-09-26 20:25:56</div>
+          </div>
+        </div>
+
+        <div class="panel" style="--i:2">
+          <h3>About</h3>
+          <p>Crafted with CSS animations, glassmorphism effects, and subtle motion. Hover to tilt the card, watch rims rotate, and enjoy the ambient orbs dancing in the background.</p>
+        </div>
+
+        <div class="panel" style="--i:3">
+          <h3>Contact</h3>
+          <p>Find the project repository or get in touch via GitHub. Click the link in the footer to open the repo.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 0.297C5.37 0.297 0 5.667 0 12.296c0 5.292 3.438 9.777 8.205 11.366.6.111.82-.261.82-.579 0-.286-.011-1.043-.017-2.048-3.338.727-4.042-1.609-4.042-1.609-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.494.997.108-.775.418-1.304.762-1.604-2.665-.304-5.466-1.333-5.466-5.93 0-1.309.469-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.323 3.301 1.23a11.52 11.52 0 013.009-.404c1.02.005 2.047.139 3.009.404 2.291-1.553 3.297-1.23 3.297-1.23.656 1.652.244 2.873.12 3.176.77.84 1.235 1.912 1.235 3.221 0 4.61-2.805 5.624-5.475 5.921.43.371.814 1.102.814 2.222 0 1.604-.015 2.898-.015 3.293 0 .32.218.694.825.576C20.565 22.07 24 17.58 24 12.296 24 5.667 18.627.297 12 .297z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
