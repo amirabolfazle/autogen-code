@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0b12;
+      --panel: rgba(12, 12, 28, 0.7);
+      --border: rgba(0,255,255,0.5);
+      --neon-cyan: #00e5ff;
+      --neon-magenta: #ff00f5;
+      --neon-lime: #a6ff00;
+      --text: #e8faff;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0,229,255,0.15), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(255,0,245,0.12), transparent 40%),
+                  linear-gradient(180deg, #050710 0%, #0b0b12 60%, #050812 100%);
+      background-size: 1000px 1000px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      position: relative;
+    }
+
+    /* Subtle animated background glow */
+    @keyframes bgShift {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 0%; }
+    }
+    body { animation: bgShift 12s linear infinite; }
+
+    /* Neon header */
+    .site-header {
+      text-align: center;
+      padding: clamp(1.5rem, 4vw, 3rem) 1rem 1rem;
+    }
+    .brand {
+      font-weight: 900;
+      font-size: clamp(2.6rem, 9vw, 7rem);
+      line-height: 0.95;
+      margin: 0.25rem 0 0.25rem;
+      color: transparent;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-lime));
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow: 0 0 6px rgba(0, 229, 255, 0.8),
+                   0 0 18px rgba(255, 0, 245, 0.6),
+                   0 0 40px rgba(166, 255, 0, 0.5);
+      letter-spacing: 0.5px;
+      user-select: none;
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.95rem;
+      color: #b7eaff;
+      margin: 0.8rem auto 0;
+      padding: 0.35rem 0.65rem;
+      display: inline-block;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.4);
+      background: linear-gradient(135deg, rgba(0,0,0,0.28), rgba(0,0,0,0.12));
+      text-shadow: 0 0 8px rgba(0,255,255,0.6);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.25rem 2rem;
+    }
+
+    .intro {
+      text-align: center;
+      color: #e8faff;
+      padding: 0.75rem;
+      margin: 0 auto 1.25rem;
+      max-width: 800px;
+    }
+    .intro p {
+      margin: 0.25rem 0;
+      opacity: 0.95;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.1rem;
+      align-items: stretch;
+      margin-top: 0.75rem;
+    }
+
+    .card {
+      position: relative;
+      padding: 1.25rem;
+      border-radius: 16px;
+      background: rgba(6, 8, 25, 0.7);
+      border: 1px solid rgba(0, 255, 255, 0.35);
+      box-shadow: 0 6px 28px rgba(0, 255, 255, 0.15);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0, 255, 255, 0.25);
+    }
+    .card .icon {
+      width: 48px; height: 48px; display: inline-block;
+      margin-bottom: 0.5rem;
+      color: var(--neon-cyan);
+      filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.9));
+    }
+    .card h3 {
+      margin: 0.2rem 0 0.25rem;
+      font-size: 1.15rem;
+      letter-spacing: .2px;
+    }
+    .card p {
+      margin: 0;
+      color: #dbeafe;
+      font-size: 0.95rem;
+      opacity: 0.95;
+    }
+
+    /* Glass border glow on cards */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 18px;
+      padding: 2px;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0,229,255,0.6), rgba(255,0,245,0.6), rgba(166,255,0,0.6), rgba(0,229,255,0.6));
+      -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      animation: glow 6s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .card > * { position: relative; z-index: 1; }
+
+    @keyframes glow {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(20deg); }
+      100% { filter: hue-rotate(0deg); }
+    }
+
+    /* Slide-up animation on reveal */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      will-change: transform, opacity;
+    }
+    .slide-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .site-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 28px 12px 40px;
+      margin-top: 16px;
+      border-top: 1px solid rgba(0,255,255,0.25);
+      color: #b8f0ff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.95rem;
+      background: linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.8) 60%, rgba(2,6,23,0.6));
+    }
+    .site-footer a {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #b8f0ff; text-decoration: none;
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.4);
+      background: rgba(0,0,0,0.25);
+    }
+    .site-footer a:hover { background: rgba(0,255,255,0.25); }
+    .site-footer svg { display: block; }
+
+    /* Small screens tweaks */
+    @media (max-width: 520px) {
+      .brand { font-size: clamp(2.2rem, 14vw, 5rem); }
+      .creation-time { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Site header">
+    <h1 class="brand" aria-label="Site title">amirabolfazle</h1>
+    <div class="creation-time slide-up" aria-label="creation time">
+      Creation time: 2025-09-27 01:58:50
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <section class="intro slide-up" aria-label="intro">
+      <p style="font-size:1.05rem; color:#d8f4ff; opacity:0.95;">
+        A fully responsive, neon-themed demo with smooth slide-up animations.
+      </p>
+      <p style="margin-top:6px; color:#a7f0ff; opacity:0.9;">
+        Scroll to reveal the neon cards. The page scales beautifully across devices.
+      </p>
+    </section>
+
+    <section class="grid" aria-label="features">
+      <article class="card slide-up" aria-label="Neon pulse feature">
+        <div class="icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#00e5ff;">
+            <polyline points="13 3 4 14 9 14 8 21 16 9 11 9 13 3"></polyline>
+          </svg>
+        </div>
+        <h3>Neon Pulse</h3>
+        <p>Bold neon accents with glow to highlight content.</p>
+      </article>
+
+      <article class="card slide-up" aria-label="Glow effects feature">
+        <div class="icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#ff00f5;">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="M4.22 4.22l1.41 1.41"></path>
+            <path d="M18.36 18.36l1.41 1.41"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+            <path d="M4.22 19.78l1.41-1.41"></path>
+            <path d="M18.36 5.64l1.41-1.41"></path>
+          </svg>
+        </div>
+        <h3>Glow Effects</h3>
+        <p>Subtle glows and gradients create atmospheric depth.</p>
+      </article>
+
+      <article class="card slide-up" aria-label="Responsive layout feature">
+        <div class="icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#a6ff00;">
+            <path d="M3 7h18"></path>
+            <path d="M3 12h18"></path>
+            <path d="M3 17h18"></path>
+          </svg>
+        </div>
+        <h3>Responsive Grid</h3>
+        <p>Auto-fitting columns ensure a consistent layout on any screen.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer slide-up" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub logo (inline) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" xmlns="http://www.w3.org/2000/svg" role="img" style="vertical-align: middle;">
+        <path d="M12 0C5.37 0 0 5.37 0 12a12.01 12.01 0 0 0 8.21 11.43c.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.44-4.04-1.44-.55-1.41-1.34-1.79-1.34-1.79-1.09-.75.08-.74.08-.74 1.21.08 1.85 1.25 1.85 1.25 1.07 1.84 2.81 1.31 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.4 1.24-3.25-.12-.31-.54-1.57.12-3.27 0 0 1.01-.32 3.31 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.31-1.23 3.31-1.23.66 1.7.25 2.96.12 3.27.77.85 1.24 1.93 1.24 3.25 0 4.63-2.8 5.65-5.47 5.95.43.37.81 1.1.81 2.22 0 1.6-.02 2.89-.02 3.29 0 .32.22.69.83.57A12.01 12.01 0 0 0 24 12c0-6.63-5.37-12-12-12Z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple intersection observer for slide-up reveal
+    (function(){
+      const items = document.querySelectorAll('.slide-up');
+      // stagger delay for nicer reveal
+      items.forEach((el, idx) => {
+        el.style.transitionDelay = (idx * 0.04) + 's';
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+
+      items.forEach(el => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>
