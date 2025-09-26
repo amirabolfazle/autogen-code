@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f2027;
+      --bg2:#203a43;
+      --bg3:#2c5364;
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.06);
+      --accent1: #7b2ff7;
+      --accent2: #f107a3;
+      --glass-border: rgba(255,255,255,0.08);
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.75);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      color:var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2) 40%, var(--bg3));
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      position:relative;
+    }
+
+    /* Animated gradient overlay */
+    .gradient-animated{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      background:
+        radial-gradient(600px 400px at 10% 10%, rgba(123,47,247,0.18), transparent 10%),
+        radial-gradient(500px 350px at 90% 80%, rgba(241,7,163,0.12), transparent 10%);
+      mix-blend-mode: overlay;
+      animation: float 12s ease-in-out infinite alternate;
+      opacity:0.9;
+    }
+    @keyframes float{
+      from{transform:translateY(-10px) rotate(-2deg)}
+      to{transform:translateY(10px) rotate(2deg)}
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      position:relative;
+      z-index:2;
+    }
+
+    .card{
+      width:100%;
+      max-width:980px;
+      border-radius:18px;
+      padding:36px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:hidden;
+    }
+
+    header{
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+
+    .avatar{
+      flex:0 0 96px;
+      height:96px;
+      border-radius:20px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      color:white;
+      font-size:28px;
+      box-shadow: 0 6px 30px rgba(123,47,247,0.28);
+      transform:translateZ(0);
+    }
+
+    .title-wrap{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    h1{
+      margin:0;
+      font-size:36px;
+      letter-spacing:0.4px;
+    }
+
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-weight:500;
+      font-size:14px;
+    }
+
+    .meta{
+      margin-left:auto;
+      text-align:right;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .creation{
+      font-weight:600;
+      color:var(--muted);
+      background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:inline-block;
+    }
+
+    main{
+      margin-top:28px;
+      display:grid;
+      grid-template-columns:1fr 320px;
+      gap:24px;
+    }
+
+    .panel{
+      background:var(--card);
+      padding:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .about h2, .projects h2, .contact h2{font-size:18px;margin:0 0 10px 0}
+    .about p{margin:0;color:var(--muted);line-height:1.5}
+    .list-item{
+      display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:10px;
+      transition:transform 250ms cubic-bezier(.2,.9,.3,1), box-shadow 250ms;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+    }
+    .list-item:hover{transform:translateY(-6px); box-shadow: 0 10px 30px rgba(2,6,23,0.5);}
+
+    .project-title{font-weight:600;color:white}
+    .project-desc{color:var(--muted);font-size:13px;margin-top:6px}
+
+    aside .card-mini{padding:14px;border-radius:10px;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+
+    .cta{
+      margin-top:18px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:white;
+      font-weight:600;
+      text-decoration:none;
+      box-shadow: 0 8px 30px rgba(123,47,247,0.22);
+      border:0;
+      cursor:pointer;
+    }
+
+    /* Slide-up effect */
+    .slide{
+      opacity:0;
+      transform:translateY(28px);
+      transition: transform 700ms cubic-bezier(.18,.9,.4,1), opacity 700ms ease;
+      will-change:transform,opacity;
+    }
+    .slide.in-view{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    footer{
+      margin-top:22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:8px;
+      transition:background 200ms, transform 160ms;
+    }
+    .github-link:hover{background:rgba(255,255,255,0.02); transform:translateY(-4px) scale(1.01)}
+    .github-icon{width:20px;height:20px;display:inline-block;fill:currentColor}
+
+    @media (max-width:880px){
+      main{grid-template-columns:1fr; padding-bottom:8px}
+      .meta{display:none}
+      .card{padding:20px}
+      .avatar{height:72px;flex-basis:72px;font-size:20px}
+      h1{font-size:28px}
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-animated" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <section class="card" role="main" aria-labelledby="main-title">
+      <header>
+        <div class="avatar slide" aria-hidden="true">AM</div>
+        <div class="title-wrap">
+          <h1 id="main-title" class="slide">amirabolfazle</h1>
+          <p class="subtitle slide">Designer · Developer · Maker</p>
+        </div>
+
+        <div class="meta slide">
+          <div class="creation">Creation time: 2025-09-26 21:13:29</div>
+          <div style="font-size:12px;margin-top:6px;color:var(--muted)">Live demo • Animated • Responsive</div>
+        </div>
+      </header>
+
+      <main>
+        <div>
+          <section class="panel about slide" aria-labelledby="about-title">
+            <h2 id="about-title">About</h2>
+            <p>I craft beautiful interfaces and write code that scales. This page is a compact, animated personal micro-site showcasing style, motion and clear structure. Explore the projects and contact me for collaborations.</p>
+            <div class="cta slide" style="margin-top:14px">
+              <a class="btn" href="#projects">View Projects</a>
+              <a class="btn" href="#contact" style="background:transparent;border:1px solid rgba(255,255,255,0.06)">Contact</a>
+            </div>
+          </section>
+
+          <section id="projects" class="panel projects slide" style="margin-top:18px" aria-labelledby="projects-title">
+            <h2 id="projects-title">Projects</h2>
+            <div style="display:grid;gap:12px;margin-top:12px">
+              <div class="list-item">
+                <div style="width:10px;height:40px;border-radius:6px;background:linear-gradient(180deg,var(--accent1),var(--accent2));"></div>
+                <div>
+                  <div class="project-title">Autogen Code</div>
+                  <div class="project-desc">Smart code generation tools and utilities — automating common workflows and scaffolding.</div>
+                </div>
+              </div>
+
+              <div class="list-item">
+                <div style="width:10px;height:40px;border-radius:6px;background:linear-gradient(180deg,#4facfe,#00f2fe);"></div>
+                <div>
+                  <div class="project-title">UI Experiments</div>
+                  <div class="project-desc">Playground for micro-interactions, motion patterns and accessible components.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <aside>
+          <div class="card-mini panel slide" id="contact" aria-labelledby="contact-title">
+            <h2 id="contact-title">Contact</h2>
+            <p style="color:var(--muted);margin:0 0 12px 0">Say hi — friendly conversations welcome. For code and projects, check the GitHub link below.</p>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:8px;align-items:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:0.9"><path d="M21 8a2 2 0 0 0-2-2h-1.586a1 1 0 0 1-.707-.293l-1.414-1.414A1 1 0 0 0 14.586 3H9.414a1 1 0 0 0-.707.293L7.293 4.707A1 1 0 0 1 6.586 5H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8z" fill="currentColor"/></svg>
+                <span style="color:var(--muted)">hello@amirabolfazle.dev</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:0.9"><path d="M12 2a10 10 0 0 0-7.07 17.07A10 10 0 1 0 12 2z" fill="currentColor"/></svg>
+                <span style="color:var(--muted)">@amirabolfazle</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="slide" style="margin-top:22px">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 0.297C5.372 0.297 0 5.67 0 12.297c0 5.292 3.438 9.787 8.205 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.082-.729.082-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.836 2.809 1.305 3.494.998.108-.775.418-1.305.76-1.605-2.665-.303-5.467-1.333-5.467-5.93 0-1.31.47-2.38 1.237-3.22-.124-.303-.536-1.523.117-3.176 0 0 1.01-.323 3.31 1.23A11.5 11.5 0 0 1 12 5.8c1.02.005 2.045.138 3.003.404 2.3-1.553 3.31-1.23 3.31-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.624-5.48 5.92.43.372.816 1.102.816 2.222 0 1.606-.015 2.903-.015 3.297 0 .32.216.694.825.576C20.565 22.08 24 17.586 24 12.297 24 5.67 18.627.297 12 .297z"></path>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+
+        <div style="color:var(--muted);font-size:13px">© 2025</div>
+      </footer>
+    </section>
+  </div>
+
+  <script>
+    // Intersection observer for slide-up reveal with staggering
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      if(prefersReduced){
+        slides.forEach(s => s.classList.add('in-view'));
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const el = entry.target;
+            // Stagger children if container has multiple
+            const children = el.querySelectorAll && el.querySelectorAll('.slide');
+            if(children && children.length){
+              children.forEach((c,i) => setTimeout(()=>c.classList.add('in-view'), i*80));
+            }
+            // Add delay based on position for nice cascade
+            const delay = Array.from(slides).indexOf(el) * 80;
+            setTimeout(()=>el.classList.add('in-view'), delay);
+            observer.unobserve(el);
+          }
+        });
+      }, {threshold:0.12});
+
+      slides.forEach(s => observer.observe(s));
+
+      // Stagger the avatar/title manually for immediate feel
+      document.querySelectorAll('.title-wrap .slide, .avatar.slide').forEach((el,i)=>{
+        setTimeout(()=>el.classList.add('in-view'), 120 + i*80);
+      });
+
+      // Fallback: ensure visible after timeout
+      setTimeout(()=>slides.forEach(s=>s.classList.add('in-view')), 2000);
+    })();
+  </script>
+</body>
+</html>
