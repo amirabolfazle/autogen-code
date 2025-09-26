@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg-dark: #0a0f1a;
+      --card: #141a2a;
+      --text: #e9e9f5;
+      --muted: #a9b0c8;
+      --accent: #7bdff6;
+      --accent-2: #8b5cf6;
+      --ring: rgba(123,223,246,.45);
+      --shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: #0b1020;
+      background-image:
+        radial-gradient(circle at 20% -10%, rgba(123,223,246,.15), transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(139,92,246,.25), transparent 40%);
+      background-attachment: fixed;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Hero / title area */
+    .hero {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem;
+      overflow: hidden;
+    }
+
+    /* decorative shapes behind content */
+    .bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(2px);
+      opacity: .25;
+      pointer-events: none;
+      transform: translateZ(0);
+    }
+    .bg-shape.shape1 {
+      width: 420px; height: 420px;
+      left: -140px; top: 20%;
+      background: radial-gradient(circle at 30% 30%, rgba(125,211,252,.95), rgba(125,211,252,.0) 60%);
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .bg-shape.shape2 {
+      width: 520px; height: 520px;
+      right: -180px; bottom: 8%;
+      background: radial-gradient(circle at 60% 40%, rgba(139,92,246,.9), rgba(139,92,246,.0) 60%);
+      animation: drift2 16s ease-in-out infinite alternate;
+    }
+    @keyframes drift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px,-40px) scale(1.04); } }
+    @keyframes drift2 { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(-40px,40px) scale(1.05); } }
+
+    /* content card with dark gradient and zoom on hover */
+    .content {
+      text-align: center;
+      padding: clamp(1.25rem, 4vw, 2.5rem);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(20,26,42,.92), rgba(18,22,38,.92));
+      border: 1px solid rgba(255,255,255,.08);
+      max-width: 860px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      transform-style: preserve-3d;
+      /* initial pop-in animation/zoom */
+      opacity: 0;
+      transform: scale(0.98) translateY(8px);
+      animation: popIn 900ms ease-out forwards;
+    }
+    @keyframes popIn {
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    h1 {
+      margin: 0 0 .5rem;
+      font-weight: 900;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      letter-spacing: .04em;
+      text-shadow: 0 6px 24px rgba(0,0,0,.5);
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      margin: 0 0 1rem;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+    }
+
+    .creation {
+      display: inline-block;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      font-size: .92rem;
+      padding: .25rem .6rem;
+      border-radius: 999px;
+      background: rgba(123,223,246,.18);
+      border: 1px solid rgba(123,223,246,.38);
+      color: #e9f8ff;
+    }
+
+    .tagline {
+      display: inline-block;
+      margin-top: .6rem;
+      color: #d9e0ff;
+      font-size: .95rem;
+      opacity: .9;
+    }
+
+    .card-figure {
+      display: inline-block;
+      margin-top: 1.75rem;
+      padding: 1rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(125,211,152,.15), rgba(0,0,0,.15));
+      border: 1px solid rgba(125,211,152,.4);
+      transition: transform 420ms cubic-bezier(.22,1,.36,1);
+      transform: translateZ(0);
+      cursor: default;
+      user-select: none;
+    }
+
+    .card-figure:hover {
+      transform: scale(1.04);
+    }
+
+    /* zoomable micro-button style inside the card, to emphasize interactivity */
+    .micro {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(123,223,246,.5);
+      background: rgba(123,223,246,.15);
+      color: #eaffff;
+      font-weight: 600;
+      font-size: .92rem;
+      transition: transform 200ms;
+      cursor: default;
+    }
+    .micro:hover { transform: translateY(-1px); }
+
+    /* decorative small stars */
+    .spark {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 12px 6px rgba(255,255,255,.8);
+      animation: twinkle 4s ease-in-out infinite;
+      opacity: .6;
+    }
+    @keyframes twinkle {
+      0%, 100% { transform: scale(0.8); opacity: .2; }
+      50% { transform: scale(1.2); opacity: .8; }
+    }
+
+    /* tilt on mouse for 3D feel */
+    #scene {
+      display: inline-block;
+      perspective: 800px;
+    }
+
+    /* ensure dark footer */
+    footer {
+      margin-top: auto;
+      padding: 1.25rem;
+      background: #0a0f1a;
+      border-top: 1px solid rgba(255,255,255,.05);
+      text-align: center;
+      color: #cbd6f6;
+    }
+
+    footer a {
+      color: #e6f1ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin-right: .5rem;
+    }
+
+    footer svg {
+      width: 1.25em;
+      height: 1.25em;
+      fill: currentColor;
+    }
+
+    @media (max-width: 900px) {
+      .bg-shape.shape2 { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 3rem 1rem; }
+      .bg-shape { display: none; }
+    }
+
+    /* reduce motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .bg-shape { display: none; }
+      .card-figure { transition: none; }
+      #scene { transform: none !important; }
+      @keyframes popIn { from { opacity: 0; transform: scale(0.98) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero" id="hero" aria-label="Amir Abolfazle hero section">
+      <span class="bg-shape shape1" aria-hidden="true"></span>
+      <span class="bg-shape shape2" aria-hidden="true"></span>
+
+      <div class="content" id="scene" role="group" aria-label="Introduction card">
+        <h1 aria-label="amirabolfazle title">amirabolfazle</h1>
+        <p class="subtitle" aria-label="Subtitle">Dark-mode, responsive, animated HTML showcase</p>
+
+        <div class="creation" aria-label="Creation time">Creation time: 2025-09-27 00:02:49</div>
+
+        <div class="tagline" aria-label="Short tagline">A lightweight demo page with zoom effects and subtle motion</div>
+
+        <div class="card-figure" aria-label="Animated panel">
+          <div class="micro" style="gap:.6rem;">
+            <span style="display:inline-block;width:8px;height:8px;background:#7bdff6;border-radius:50%;box-shadow:0 0 12px #7bdff6;"></span>
+            Zoom on hover
+          </div>
+        </div>
+
+        <!-- subtle sparkles for visual interest -->
+        <span class="spark" style="top:10%; left:18%;"></span>
+        <span class="spark" style="top:40%; left:82%; animation-delay: 1s;"></span>
+        <span class="spark" style="top:68%; left:28%; animation-delay: 2s;"></span>
+      </div>
+    </section>
+
+    <footer>
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub Repository">
+        <svg viewBox="0 0 24 24" aria-label="GitHub Icon" width="22" height="22" role="img" focusable="false">
+          <path fill="currentColor" d="M12 .5C5.73.5 1 5.23 1 11.01c0 4.48 2.87 8.28 6.84 9.63.5.1.68-.22.68-.49v-1.7c-2.78.6-3.37-1.21-3.37-1.21-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.07 1.54 1.04 1.54 1.04.9 1.53 2.36 1.09 2.93.83.09-.66.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.02-2.68-.1-.25-.44-1.28.1-2.67 0 0 .84-.27 2.75 1.02a9.58 9.58 0 0 1 2.5-.34c.85 0 1.71.11 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.54 1.39.21 2.42.11 2.67.64.7 1.02 1.59 1.02 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.6.69.49A10.51 10.51 0 0 0 23 11.01C23 5.23 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Tilt interaction for depth on mouse move
+    (function(){
+      const hero = document.getElementById('hero');
+      const scene = document.getElementById('scene');
+      if (!hero || !scene) return;
+
+      hero.addEventListener('mousemove', function(e){
+        const r = hero.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const dx = (e.clientX - cx) / (r.width / 2);  // -1..1
+        const dy = (e.clientY - cy) / (r.height / 2); // -1..1
+
+        const tiltX = dy * -6; // invert because Y axis is down
+        const tiltY = dx * 6;
+        scene.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.03)`;
+      });
+
+      hero.addEventListener('mouseleave', function(){
+        scene.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1.0)';
+      });
+
+      // Allow keyboard focus to trigger a gentle reset for accessibility
+      hero.addEventListener('keydown', function(e){
+        if(e.key === 'Escape'){
+          scene.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1.0)';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
