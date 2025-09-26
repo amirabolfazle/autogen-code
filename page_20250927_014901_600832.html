@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-start: rgba(255,255,255,.14);
+      --bg-end: rgba(255,255,255,.08);
+      --glass-border: rgba(255,255,255,.38);
+      --text: #eaf2ff;
+      --muted: rgba(234,241,255,.75);
+      --accent: #7bdcff;
+    }
+
+    /* Global reset-ish */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto;
+      color:var(--text);
+      background:
+        radial-gradient( circle at 20% -10%, rgba(124, 199, 255, .25), transparent 40% ),
+        radial-gradient( circle at 90% 0%, rgba(120, 210, 255, .20), transparent 40% ),
+        linear-gradient(135deg, #0b1020 0%, #1a1f3a 60%, #0b1020 100%);
+      background-attachment: fixed;
+      overflow-x:hidden;
+    }
+
+    /* Subtle animated backdrop glow */
+    .bg-glow{
+      position: fixed;
+      inset: -10vmax;
+      z-index: -1;
+      background: radial-gradient( circle at 30% 20%, rgba(120,180,255,.25), transparent 40% ),
+                  radial-gradient( circle at 70% 80%, rgba(100,255,220,.12), transparent 40% );
+      filter: blur(0.5px);
+      animation: drift 16s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes drift {
+      0%{ transform: translate3d(0,0,0) rotate(0deg); }
+      50%{ transform: translate3d(-6px,6px,0) rotate(1deg); }
+      100%{ transform: translate3d(0,0,0) rotate(0deg); }
+    }
+
+    .wrapper{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 16px;
+    }
+
+    .glass{
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      border:1px solid var(--glass-border);
+      border-radius:20px;
+      padding:28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+      backdrop-filter: saturate(1.2) blur(14px);
+      -webkit-backdrop-filter: saturate(1.2) blur(14px);
+    }
+
+    .card{
+      width: min(980px, 92vw);
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+      align-items:center;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      padding:6px;
+    }
+
+    .logo{
+      font-weight:800;
+      font-size: clamp(28px, 6vw, 64px);
+      letter-spacing: 2px;
+      text-transform: lowercase;
+      background: linear-gradient(135deg, #fff, #cde3ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: glow 4s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%,100% { filter: drop-shadow(0 0 0 rgba(123,220,255,.0)); transform: translateY(0); }
+      50% { filter: drop-shadow(0 6px 14px rgba(123,220,255,.6)); transform: translateY(-2px); }
+    }
+
+    .subtitle{
+      text-align:center;
+      color: var(--muted);
+      font-size: clamp(14px, 2.5vw, 18px);
+      max-width: 70ch;
+    }
+
+    .creation{
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      font-size: 12px;
+      color: #e8f2ff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.25);
+      padding: 6px 10px;
+      border-radius: 999px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:6px;
+      backdrop-filter: blur(4px);
+    }
+
+    .cta-row{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:center;
+      margin:8px 0 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      padding:14px 22px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:600;
+      color:#0b1020;
+      text-decoration:none;
+      background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(230,234,255,.92));
+      box-shadow: 0 6px 16px rgba(0,0,0,.15);
+      transition: transform .25s ease, box-shadow .25s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .btn:hover{ transform: translateY(-4px); box-shadow:0 12px 22px rgba(0,0,0,.22);}
+    .btn:active{ transform: translateY(0); }
+    .btn.primary{
+      background: linear-gradient(135deg, #a6e0ff 0%, #7bdcff 100%);
+      color:#041022;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+    }
+
+    .ghost{
+      background: rgba(255,255,255,.65);
+      color: #0b1020;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    /* subtle bounce animation for the main heading container */
+    .bounce{ animation: bounce 2.6s ease-in-out infinite; }
+    @keyframes bounce{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-6px); }
+    }
+
+    .footer{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      padding:18px;
+      margin-top:16px;
+      flex-wrap: wrap;
+    }
+
+    .footer a{ color:inherit; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
+
+    .github-icon{ width:22px; height:22px; color:#e5e7eb; }
+
+    .credit{ color:#e5e7eb; opacity:.95; font-size:14px; }
+
+    @media (max-width: 640px){
+      .logo{ font-size: 42px; }
+      .cta-row{ width:100%; justify-content: center; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <main class="wrapper" aria-label="Amir Abolfazle landing">
+    <section class="glass card" style="max-width:1100px;">
+      <div class="brand bounce" aria-label="Site title">
+        <h1 class="logo" style="margin:0;">amirabolfazle</h1>
+      </div>
+
+      <p class="subtitle" style="margin:0 8px 0 8px;">
+        A stunning landing page crafted with glassmorphism and playful bounce effects.
+      </p>
+
+      <div class="creation" aria-label="Creation time">
+        Creation time: 2025-09-27 01:48:32
+      </div>
+
+      <div class="cta-row" aria-label="Call to action">
+        <a class="btn primary" href="#learn" role="button" aria-label="Learn more">Learn More</a>
+        <a class="btn ghost" href="#projects" role="button" aria-label="View projects">Projects</a>
+      </div>
+    </section>
+
+    <footer class="glass footer" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="24" height="24">
+          <path d="M12 .5C5.65.5 0 5.99 0 12.01c0 4.44 2.87 8.2 6.84 9.52.5.09.68-.22.68-.49 0-.24-.01-1-.01-1.53-2.78.6-3.37-1.24-3.37-1.24-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1 .07 1.53 1.04 1.53 1.04.89 1.58 2.34 1.12 2.92.86.11-.66.41-1.11.75-1.37-2.37-.27-4.87-1.2-4.87-5.34 0-1.18.42-2.14 1.11-2.89-.11-.28-.48-1.42.11-2.95 0 0 .92-.29 3.01 1.15a10.57 10.57 0 015.48 0c2.09-1.44 3.01-1.15 3.01-1.15.63 1.54.23 2.69.11 2.95.69.75 1.11 1.71 1.11 2.89 0 4.15-2.5 5.08-4.87 5.34.41.36.77 1.08.77 2.2 0 1.58-.01 2.85-.01 3.23 0 .29.2.63.72.51C19.93 20.14 24 16.25 24 11.5 24 5.99 17.76 0.5 12 .5z"/>
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </main>
+</body>
+</html>
