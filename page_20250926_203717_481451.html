@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #f8f4ff;
+      --bg-2: #fffaf6;
+      --accent-1: #cfe9ff;
+      --accent-2: #ffdede;
+      --accent-3: #e8ffd6;
+      --muted: #6b6b77;
+      --card-bg: rgba(255,255,255,0.7);
+      --glass: rgba(255,255,255,0.6);
+      --radius: 18px;
+      --soft-shadow: 0 8px 24px rgba(20,20,30,0.06);
+      --deep-shadow: 0 20px 40px rgba(20,20,30,0.12);
+    }
+
+    /* Layout */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      box-sizing:border-box;
+      overflow-x:hidden;
+    }
+
+    /* Animated pastel blobs in background */
+    .bg-blobs{
+      pointer-events:none;
+      position:fixed;
+      inset:0;
+      z-index:0;
+      overflow:hidden;
+    }
+    .blob{
+      position:absolute;
+      filter: blur(48px);
+      opacity:0.8;
+      transform-origin:center;
+      mix-blend-mode:screen;
+      animation: float 12s ease-in-out infinite;
+      will-change:transform;
+    }
+    .blob.a{ width:420px;height:420px;background:radial-gradient(circle at 30% 30%, var(--accent-1), transparent 40%); left:-8%; top:5%; animation-duration:14s;}
+    .blob.b{ width:380px;height:380px;background:radial-gradient(circle at 70% 70%, var(--accent-2), transparent 40%); right:-6%; top:18%; animation-duration:16s; animation-delay:2s;}
+    .blob.c{ width:360px;height:360px;background:radial-gradient(circle at 50% 50%, var(--accent-3), transparent 40%); left:10%; bottom:-10%; animation-duration:18s; animation-delay:1s;}
+
+    @keyframes float{
+      0%{ transform: translateY(0) rotate(0deg) scale(1);}
+      25%{ transform: translateY(-18px) rotate(4deg) scale(1.03);}
+      50%{ transform: translateY(0) rotate(0deg) scale(1);}
+      75%{ transform: translateY(18px) rotate(-3deg) scale(0.98);}
+      100%{ transform: translateY(0) rotate(0deg) scale(1);}
+    }
+
+    /* Card */
+    .container{
+      position:relative;
+      z-index:1;
+      max-width:1100px;
+      width:100%;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .container{ grid-template-columns: 1fr; padding: 0 8px; }
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      border-radius: var(--radius);
+      box-shadow: var(--soft-shadow);
+      backdrop-filter: blur(10px) saturate(120%);
+      padding: clamp(20px, 4vw, 36px);
+      transition: transform 360ms cubic-bezier(.2,.9,.2,1), box-shadow 360ms;
+      transform-origin:center;
+      will-change: transform;
+      overflow:hidden;
+    }
+
+    .panel:hover{
+      transform: scale(1.02);
+      box-shadow: var(--deep-shadow);
+    }
+
+    /* Title block */
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .title{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .avatar{
+      width:84px;
+      height:84px;
+      border-radius:18px;
+      flex:0 0 84px;
+      background: linear-gradient(135deg, #ffffff66, rgba(255,255,255,0.2));
+      display:grid;
+      place-items:center;
+      box-shadow: 0 6px 18px rgba(50,50,60,0.06), inset 0 -6px 18px rgba(255,255,255,0.35);
+      transform: translateZ(0);
+      transition: transform 420ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .panel:hover .avatar{ transform: scale(1.06); }
+
+    .name{
+      font-size: clamp(20px, 3.4vw, 34px);
+      font-weight:700;
+      letter-spacing:-0.02em;
+      color:#11121a;
+      margin:0;
+      line-height:1;
+      transform-origin:left center;
+      animation: gentleZoom 7s ease-in-out infinite;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size: clamp(13px, 2.2vw, 16px);
+      margin:0;
+    }
+
+    @keyframes gentleZoom{
+      0%{ transform: scale(1); }
+      50%{ transform: scale(1.01); }
+      100%{ transform: scale(1); }
+    }
+
+    .meta{
+      margin-top:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      box-shadow: 0 6px 18px rgba(20,20,30,0.04);
+    }
+
+    /* Right column card */
+    .card{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:center;
+      text-align:center;
+    }
+
+    .preview{
+      width:100%;
+      border-radius:14px;
+      overflow:hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.35));
+      padding:22px;
+      box-shadow: inset 0 -10px 20px rgba(255,255,255,0.4);
+      transition: transform 520ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .preview:hover{ transform: scale(1.03); }
+
+    .preview .mock{
+      width:100%;
+      height:180px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(250,250,255,0.15));
+      display:grid;
+      place-items:center;
+      color:var(--muted);
+      font-weight:600;
+      font-size:14px;
+      box-shadow: 0 8px 24px rgba(20,20,30,0.03);
+      transform-origin:center;
+      animation: softPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes softPulse{
+      0%{ transform: scale(1); }
+      50%{ transform: scale(1.01); }
+      100%{ transform: scale(1); }
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      width:100%;
+      justify-content:center;
+      margin-top:4px;
+    }
+
+    .btn{
+      border:0;
+      padding:10px 14px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.35));
+      box-shadow: var(--soft-shadow);
+      cursor:pointer;
+      font-weight:600;
+      color:#222;
+      transition: transform 220ms, box-shadow 220ms;
+    }
+
+    .btn:active{ transform: translateY(2px); }
+
+    /* Footer */
+    footer{
+      margin-top:20px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:14px;
+      justify-content:flex-start;
+      padding-top:8px;
+    }
+
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:6px 10px;
+      border-radius:10px;
+      transition: background 180ms, transform 180ms;
+    }
+    .gh:hover{
+      background: rgba(255,255,255,0.6);
+      transform: translateY(-3px);
+    }
+    .gh svg{ width:20px;height:20px; display:block; }
+
+    /* small screen footer center */
+    @media (max-width:900px){
+      footer{ justify-content:center; }
+      .container{ gap:18px; }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; }
+    }
+
+    /* Small decorative line under title */
+    .accent-line{
+      height:6px;
+      width:86px;
+      border-radius:999px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+      box-shadow: 0 6px 18px rgba(50,50,70,0.06);
+    }
+
+    .creation{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <main class="container" role="main" aria-labelledby="page-title">
+    <section class="panel hero" aria-labelledby="page-title">
+      <div class="title">
+        <div class="avatar" aria-hidden="true">
+          <!-- subtle logo monogram -->
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="24" height="24" rx="6" fill="#ffffff66"/>
+            <path d="M6 16V8a4 4 0 0 1 4-4h4" stroke="#7b61ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18 8v8a4 4 0 0 1-4 4H8" stroke="#ff7bac" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div style="min-width:0;">
+          <h1 id="page-title" class="name">amirabolfazle</h1>
+          <p class="subtitle">Pastel-themed responsive page • animated zoom effects</p>
+        </div>
+      </div>
+
+      <div class="meta" role="list">
+        <div class="chip" role="listitem">Theme: Pastel</div>
+        <div class="chip" role="listitem">Effects: Zoom &amp; Float</div>
+        <div class="chip" role="listitem">Responsive: Adaptive layout</div>
+      </div>
+
+      <div class="creation" aria-label="creation time">Creation time: 2025-09-26 20:36:20</div>
+
+      <div style="margin-top:18px;">
+        <div class="accent-line" aria-hidden="true"></div>
+      </div>
+
+      <footer style="border:none;padding:0;margin-top:18px;">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="false" role="img" xmlns="http://www.w3.org/2000/svg">
+            <title>GitHub</title>
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1.01.07 1.54 1.04 1.54 1.04.9 1.54 2.36 1.1 2.94.84.09-.66.35-1.1.63-1.35-2.22-.25-4.55-1.11-4.55-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.28.1-2.66 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85.004 1.71.11 2.51.32 1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.41.1 2.66.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.86 0 1.35-.01 2.44-.01 2.77 0 .26.18.58.69.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z" fill="#111827"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+
+    <aside class="panel card" aria-label="preview panel">
+      <div class="preview" role="img" aria-label="Live preview mock">
+        <div class="mock">Animated Preview • Zooms & Float</div>
+      </div>
+
+      <div style="width:100%;display:flex;flex-direction:column;gap:8px;align-items:center;">
+        <div class="actions" role="toolbar" aria-label="demo actions">
+          <button class="btn" onclick="document.querySelector('.panel').scrollIntoView({behavior:'smooth'});" aria-label="Explore">Explore</button>
+          <button class="btn" onclick="toggleDark();" aria-label="Toggle vibe">Vibe</button>
+        </div>
+        <div style="font-size:13px;color:var(--muted);">Resize the window to see the responsive behavior</div>
+      </div>
+
+      <footer style="width:100%;justify-content:center;margin-top:8px;">
+        <small style="color:var(--muted);">Last update: 2025-09-26</small>
+      </footer>
+    </aside>
+  </main>
+
+  <script>
+    // Small interactive touch: toggles a slightly different pastel vibe
+    (function(){
+      window.toggleDark = function(){
+        var root = document.documentElement;
+        var isAlt = root.dataset.vibe === 'alt';
+        if(isAlt){
+          root.style.setProperty('--bg-1','#f8f4ff');
+          root.style.setProperty('--bg-2','#fffaf6');
+          root.style.setProperty('--accent-1','#cfe9ff');
+          root.style.setProperty('--accent-2','#ffdede');
+          root.style.setProperty('--accent-3','#e8ffd6');
+          root.dataset.vibe = '';
+        } else {
+          root.style.setProperty('--bg-1','#fff6fb');
+          root.style.setProperty('--bg-2','#f0fff6');
+          root.style.setProperty('--accent-1','#ffd9f0');
+          root.style.setProperty('--accent-2','#cfe9ff');
+          root.style.setProperty('--accent-3','#e6ffd9');
+          root.dataset.vibe = 'alt';
+        }
+      };
+    })();
+  </script>
+</body>
+</html>
