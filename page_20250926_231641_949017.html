@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #fdf6f9;
+      --bg2: #f7f9ff;
+      --bg3: #f7fffb;
+      --text: #2e2a3a;
+      --shadow: 0 8px 20px rgba(0,0,0,.08);
+      --card-radius: 14px;
+      --card-gap: 16px;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, #fff8fb 0%, #f8fbff 40%, #f4fff6 100%);
+      overflow-x: hidden;
+    }
+
+    /* Pastel rotating orbs in the background */
+    .scene {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .orb {
+      position: absolute;
+      width: var(--size, 120px);
+      height: var(--size, 120px);
+      border-radius: 999px;
+      background: var(--color, #ffd6e4);
+      opacity: 0.6;
+      filter: saturate(120%);
+      animation: spin var(--dur, 20s) linear infinite;
+      mix-blend-mode: overlay;
+      top: calc(var(--top, 10%));
+      left: calc(var(--left, 10%));
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Layout */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header.brand {
+      padding: 48px 20px 12px;
+      text-align: center;
+      position: relative;
+      isolation: isolate;
+    }
+
+    /* Fancy pastel gradient title */
+    h1.brand-title {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      margin: 0;
+      line-height: 1.04;
+      letter-spacing: .04em;
+      background: linear-gradient(135deg, #ffb3c7 0%, #cbd8ff 40%, #d6ffd1 70%, #ffd9f5 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 4px 18px rgba(0,0,0,.04);
+      transform-origin: center;
+      animation: floatTitle 12s ease-in-out infinite;
+    }
+    @keyframes floatTitle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(-0.5deg); }
+    }
+
+    .tagline {
+      margin: 8px auto 0;
+      color: #5b5b78;
+      font-size: 0.98rem;
+      opacity: .9;
+    }
+
+    .creation {
+      margin: 8px auto 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem;
+      color: #5a5a6a;
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.8);
+      border: 1px solid rgba(0,0,0,.05);
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
+    }
+
+    main.main {
+      padding: 28px 20px 60px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      align-items: stretch;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      position: relative;
+      border-radius: var(--card-radius);
+      padding: 20px;
+      min-height: 140px;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(0,0,0,.05);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform-origin: center;
+      transition: transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .3s;
+      isolation: isolate;
+    }
+    .card:hover {
+      transform: rotate(-1deg) scale(1.03);
+      box-shadow: 0 18px 40px rgba(0,0,0,.12);
+    }
+
+    .card:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,.0) 0%, rgba(255,255,255,.25) 60%);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .card-title {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    .card p {
+      margin: 0;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    /* pastel tint per card via inline style variable --color */
+    .card .tint {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: var(--color, rgba(255,0,0,.0));
+      opacity: .28;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    /* footer with GitHub icon */
+    footer.site-footer {
+      padding: 22px 16px;
+      text-align: center;
+      color: #5a5a6a;
+      font-size: .92rem;
+      border-top: 1px solid rgba(0,0,0,.05);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    footer.site-footer a.github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: inherit;
+      text-decoration: none;
+      padding: 6px 8px;
+      border-radius: 999px;
+      transition: background .2s;
+    }
+    footer.site-footer a.github:hover {
+      background: rgba(0,0,0,.04);
+    }
+
+    /* subtle responsive tweak for small screens */
+    @media (max-width: 600px) {
+      header.brand { padding-top: 28px; }
+      .creation { font-size: .85rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="orb" style="--size: 180px; --color:#ffd6e4; --dur: 22s; --top: 6%; --left: 8%;"></div>
+    <div class="orb" style="--size: 140px; --color:#d8f4ff; --dur: 28s; --top: 40%; --left: 70%;"></div>
+    <div class="orb" style="--size: 220px; --color:#e6ffd8; --dur: 26s; --top: 70%; --left: 20%;"></div>
+    <div class="orb" style="--size: 120px; --color:#ffd9ff; --dur: 24s; --top: 20%; --left: 40%;"></div>
+  </div>
+
+  <div class="wrap">
+    <header class="brand" aria-label="Brand header">
+      <h1 class="brand-title">amirabolfazle</h1>
+      <div class="tagline" aria-label="Subtitle">Pastel, animated, personal space</div>
+      <div class="creation" aria-label="Creation time">
+        Creation time: <time datetime="2025-09-26T23:16:02">2025-09-26 23:16:02</time>
+      </div>
+    </header>
+
+    <main class="main" role="main" aria-label="Main content">
+      <section class="grid" aria-label="Intro grid">
+        <article class="card" style="--color: rgba(255, 213, 222, .25);">
+          <span class="tint" style="--color: rgba(255, 213, 222, .4);"></span>
+          <h3 class="card-title">Hello</h3>
+          <p>I'm amirabolfazle. This is a playful, pastel-tinged personal page with subtle rotation and motion to keep things lively.</p>
+        </article>
+
+        <article class="card" style="--color: rgba(214, 244, 255, .25);">
+          <span class="tint" style="--color: rgba(214, 244, 255, .32);"></span>
+          <h3 class="card-title">Projects</h3>
+          <p>Exploring creative coding, generative art, and tiny web experiences. This space invites imagination and curiosity.</p>
+        </article>
+
+        <article class="card" style="--color: rgba(238, 240, 255, .25);">
+          <span class="tint" style="--color: rgba(238, 240, 255, .32);"></span>
+          <h3 class="card-title">Notes</h3>
+          <p>Feel free to reach out if you want to chat about design, animation, or ideas for delightful user interfaces.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false" style="display:block;">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.69-.01-1.35A5.93 5.93 0 013.8 12.2a5.9 5.9 0 01-1.6-3.15c0-.94.37-1.8 1-2.46-.02-.24-.49-1.22.09-2.54 0 0 .82-.27 2.68 1.01A9.2 9.2 0 018 4.5c.83-.01 1.67.11 2.45.32 1.86-1.28 2.68-1.01 2.68-1.01.58 1.32.11 2.3.08 2.54.64.66 1 1.52 1 2.46 0 1.58-.6 3.04-1.64 4.19A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+      <span style="margin-left:8px;">Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
