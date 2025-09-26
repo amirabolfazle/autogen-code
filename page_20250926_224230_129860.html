@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle - Portfolio</title>
+  <style>
+    :root{
+      --bg1: #f8e8f4;
+      --bg2: #e8fbff;
+      --bg3: #f6fff0;
+      --card: #ffffff;
+      --text: #1f1f1f;
+      --muted: #5b5b5b;
+      --accent: #a8d5ff;
+      --shadow: 0 10px 25px rgba(0,0,0,.05);
+    }
+
+    /* Pastel gradient background with subtle movement for vibe */
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(255,183,214,.25), rgba(167, 238, 255,.25) 40%, rgba(216, 255, 226,.25) 70%), #fdfcff;
+      min-height: 100vh;
+    }
+
+    /* Simple decorative bubbles (non-intrusive) */
+    body::before{
+      content:"";
+      position: fixed;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.2) 40%, rgba(255,255,255,0) 60%), radial-gradient(circle at 60% 70%, rgba(168,213,255,.6), rgba(168,213,255,.0) 60%);
+      top: 6%;
+      left: 8%;
+      filter: blur(0.3px);
+      opacity:.9;
+      animation: float 12s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-6px) translateX(6px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    header.site-header{
+      padding: 32px 20px 8px;
+      text-align: center;
+    }
+
+    /* Title with pastel gradient text look */
+    .title{
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      margin: 0;
+      background: linear-gradient(135deg, #ffb6c1 0%, #c6e2ff 40%, #d6fbd3 70%, #e9d6ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: .5px;
+      user-select: none;
+    }
+
+    .sub{ color: var(--muted); font-size: 0.95rem; margin-top: 6px; }
+
+    .creation-time{
+      display:inline-block;
+      margin-top: 10px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.05);
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: .85rem;
+    }
+
+    nav.main-nav{
+      margin: 18px auto 0;
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav a{
+      text-decoration: none;
+      color: #2b2b2b;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.06);
+      font-size: .92rem;
+    }
+    nav a:hover{ transform: translateY(-1px); transition: transform .2s; }
+
+    main.container{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .card{
+      background: var(--card);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,.05);
+    }
+
+    section.section{ grid-column: span 12; }
+
+    .section-title{
+      margin: 0 0 12px;
+      font-size: 1.4rem;
+    }
+
+    .grid-3{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .project{
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff 0%, #f9f9fb 100%);
+      border: 1px solid rgba(0,0,0,.06);
+      min-height: 110px;
+      display:flex; flex-direction:column; justify-content:space-between;
+    }
+    .project h4{ margin:0 0 6px; font-size: 1.05rem; }
+    .project p{ margin:0; font-size:.92rem; color: #555; }
+
+    /* Bounce animation (one-file friendly) */
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: translateY(18px) scale(.98); }
+      60% { opacity: 1; transform: translateY(-4px) scale(1.02); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    .bounce-in{ opacity:0; transform: translateY(18px); animation: bounceIn 0.9s forwards; }
+    /* small helper for staggering when using inline delays */
+    .delay-1{ animation-delay: 0.15s; }
+    .delay-2{ animation-delay: 0.3s; }
+    .delay-3{ animation-delay: 0.45s; }
+    .delay-4{ animation-delay: 0.6s; }
+    .delay-5{ animation-delay: 0.75s; }
+
+    /* Responsive tweaks */
+    @media (max-width: 1024px){
+      .grid-3{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px){
+      .grid-3{ grid-template-columns: 1fr; }
+      header.site-header{ padding: 20px 12px 6px; }
+    }
+
+    footer.site-footer{
+      text-align:center;
+      padding: 22px 12px 40px;
+      color: var(--muted);
+    }
+    .footer-link{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(0,0,0,.06);
+      text-decoration:none; color:inherit;
+      transition: transform .2s;
+    }
+    .footer-link:hover{ transform: translateY(-1px); }
+
+    .footer-icon{ width:20px; height:20px; display:inline-block; vertical-align:middle; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+    <div class="creation-time" aria-label="creation time">Creation time: 2025-09-26 22:41:54</div>
+    <nav class="main-nav" aria-label="Main">
+      <a href="#about" class="bounce-in" style="animation-delay:.1s;">About</a>
+      <a href="#projects" class="bounce-in" style="animation-delay:.25s;">Projects</a>
+      <a href="#skills" class="bounce-in" style="animation-delay:.4s;">Skills</a>
+      <a href="#contact" class="bounce-in" style="animation-delay:.55s;">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container" id="top">
+    <section id="about" class="section card bounce-in delay-1" style="animation-delay:.2s;">
+      <h2 class="section-title">About</h2>
+      <p style="margin:0; line-height:1.6;">
+        Hey, I’m amirabolfazle — a frontend developer who loves thoughtful UI, smooth motion, and pastel vibes.
+        I build accessible, fast interfaces with a sprinkle of playful animation. This single-file portfolio demonstrates style, bite-sized projects, and a little bit of personality, all in one place.
+      </p>
+    </section>
+
+    <section id="projects" class="section card bounce-in delay-2" style="animation-delay:.4s;">
+      <h2 class="section-title">Projects</h2>
+      <div class="grid-3" aria-label="Projects grid">
+        <article class="project" style="animation-delay:.05s;">
+          <div>
+            <h4>Autogen Code Studio</h4>
+            <p>One-file code generator with a friendly pastel UI and animated transitions.</p>
+          </div>
+          <span style="font-size:.82rem; color:#666;">HTML, CSS, JS</span>
+        </article>
+        <article class="project" style="animation-delay:.15s;">
+          <div>
+            <h4>Portfolio Playground</h4>
+            <p>Animated blocks, bouncing micro-interactions, responsive layouts.</p>
+          </div>
+          <span style="font-size:.82rem; color:#666;">CSS, JS</span>
+        </article>
+        <article class="project" style="animation-delay:.25s;">
+          <div>
+            <h4>UI Motion Kit</h4>
+            <p>Reusable motion primitives with pleasant spring-like feel.</p>
+          </div>
+          <span style="font-size:.82rem; color:#666;">CSS, TS</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="section card bounce-in delay-3" style="animation-delay:.6s;">
+      <h2 class="section-title">Skills</h2>
+      <ul style="margin:0; padding-left:20px; line-height:1.8;">
+        <li>HTML5, CSS3, JavaScript (ES6+)</li>
+        <li>UI/UX design sense with pastel aesthetics</li>
+        <li>Accessibility and performance-minded</li>
+        <li>Frontend frameworks (React, Vue) – but I love vanilla for quick demos</li>
+      </ul>
+    </section>
+
+    <section id="contact" class="section card bounce-in delay-4" style="animation-delay:.8s;">
+      <h2 class="section-title">Get in touch</h2>
+      <p style="margin:0; line-height:1.6;">
+        Open to collaborations, freelance work, or friendly chats about UI animation ideas.
+        Reach out via email or social: links below.
+      </p>
+      <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+        <a class="footer-link" href="mailto:hello@amirabolfazle.dev" aria-label="Email">
+          ✉️ Email
+        </a>
+        <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+          <!-- GitHub inline icon -->
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+            <path d="M12 .5C5.73.5.5 5.74.5 12.01c0 5.1 3.29 9.41 7.86 10.94.58.11.79-.25.79-.58 0-.29-.01-1.04-.02-2.04-3.2.69-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.77 2.73 1.26 3.4.96.1-.74.41-1.26.75-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.2-3.09-.12-.29-.52-1.46.11-3.04 0 0 .98-.31 3.21 1.18a11.2 11.2 0 0 1 2.92-.39c.99 0 1.99.13 2.92.39 2.24-1.49 3.21-1.18 3.21-1.18.63 1.58.23 2.75.12 3.04.75.8 1.2 1.83 1.2 3.09 0 4.43-2.69 5.41-5.25 5.69.42.36.8 1.07.8 2.15 0 1.56-.01 2.82-.01 3.2 0 .32.21.69.8.57C20.72 21.41 24 17.12 24 12.01 24 5.74 18.77.5 12 .5z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+      <p style="margin:12px 0 0; font-size:.92rem;">Created by amirabolfazle</p>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer" aria-label="Footer">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+      <!-- GitHub inline icon (same as above) -->
+      <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+        <path d="M12 .5C5.73.5.5 5.74.5 12.01c0 5.1 3.29 9.41 7.86 10.94.58.11.79-.25.79-.58 0-.29-.01-1.04-.02-2.04-3.2.69-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.77 2.73 1.26 3.4.96.1-.74.41-1.26.75-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.2-3.09-.12-.29-.52-1.46.11-3.04 0 0 .98-.31 3.21 1.18a11.2 11.2 0 0 1 2.92-.39c.99 0 1.99.13 2.92.39 2.24-1.49 3.21-1.18 3.21-1.18.63 1.58.23 2.75.12 3.04.75.8 1.2 1.83 1.2 3.09 0 4.43-2.69 5.41-5.25 5.69.42.36.8 1.07.8 2.15 0 1.56-.01 2.82-.01 3.2 0 .32.21.69.8.57C20.72 21.41 24 17.12 24 12.01 24 5.74 18.77.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <!-- No external resources needed; single-file portfolio complete -->
+</body>
+</html>
