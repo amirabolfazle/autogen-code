@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#082032;
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: rgba(99,102,241,0.9);
+      --muted: rgba(255,255,255,0.7);
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --radius: 16px;
+      --fade-duration: 800ms;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 400px at 10% 20%, rgba(99,102,241,0.12), transparent 8%),
+                  radial-gradient(700px 350px at 90% 80%, rgba(56,189,248,0.08), transparent 8%),
+                  linear-gradient(160deg, var(--bg1), var(--bg2));
+      color: #e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    /* subtle moving orbs behind */
+    .orb{
+      position:fixed;
+      border-radius:50%;
+      filter: blur(40px);
+      opacity:0.12;
+      animation: float 12s ease-in-out infinite;
+      mix-blend-mode: screen;
+      pointer-events:none;
+    }
+    .orb.o1{width:420px;height:420px;background:#7c3aed;left:-10%;top:10%;animation-duration:18s;}
+    .orb.o2{width:320px;height:320px;background:#06b6d4;right:-8%;bottom:-5%;animation-duration:20s;opacity:0.1;}
+    @keyframes float{
+      0%{transform: translateY(0) translateX(0) scale(1)}
+      50%{transform: translateY(-30px) translateX(20px) scale(1.05)}
+      100%{transform: translateY(0) translateX(0) scale(1)}
+    }
+
+    /* center glass card */
+    .card{
+      width: min(760px, 92vw);
+      max-width:760px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: clamp(28px, 4.5vw, 48px);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      transform: translateY(8px);
+      opacity:0;
+      animation: fadeInUp var(--fade-duration) cubic-bezier(.2,.9,.3,1) forwards;
+    }
+
+    @keyframes fadeInUp{
+      from{opacity:0; transform: translateY(18px)}
+      to{opacity:1; transform: translateY(0)}
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .logo{
+      width:64px;height:64px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(6,182,212,0.85));
+      display:inline-grid;place-items:center;
+      color:white;font-weight:700;font-size:20px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.5), inset 0 -6px 18px rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      flex-shrink:0;
+      transform: translateY(-6px);
+      animation: pop 600ms cubic-bezier(.2,.9,.3,1) 200ms both;
+    }
+    @keyframes pop{
+      from{opacity:0; transform: translateY(-10px) scale(.96)}
+      to{opacity:1; transform: translateY(0) scale(1)}
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(20px, 3.5vw, 32px);
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    p.lead{
+      margin:6px 0 0 0;
+      color: var(--muted);
+      font-size:14px;
+      opacity:0.95;
+    }
+
+    .meta{
+      margin-top:12px;
+      color: rgba(230,238,248,0.75);
+      font-size:13px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      opacity:0;
+      animation: fadeIn var(--fade-duration) cubic-bezier(.2,.9,.3,1) 200ms both;
+    }
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    .time{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:13px;
+      color: rgba(230,238,248,0.9);
+    }
+
+    .content{
+      margin-top:18px;
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .description{
+      color: rgba(230,238,248,0.88);
+      font-size:15px;
+      line-height:1.45;
+      max-width:64ch;
+    }
+
+    .cta{
+      margin-left:auto;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      animation: fadeIn var(--fade-duration) cubic-bezier(.2,.9,.3,1) 340ms both;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(99,102,241,0.14), rgba(6,182,212,0.06));
+      border:1px solid rgba(255,255,255,0.04);
+      color: #fff;
+      text-decoration:none;
+      font-size:14px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.35);
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    }
+    .btn:hover{transform: translateY(-4px); box-shadow: 0 14px 36px rgba(2,6,23,0.45)}
+    .btn:active{transform: translateY(-1px)}
+
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      opacity:0;
+      animation: fadeIn var(--fade-duration) cubic-bezier(.2,.9,.3,1) 480ms both;
+    }
+    .footer-left{color: rgba(230,238,248,0.78); font-size:13px}
+    .social{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .gh{
+      display:inline-grid;
+      place-items:center;
+      width:40px;height:40px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.04);
+      text-decoration:none;
+      color: white;
+      transition: transform 160ms ease, background 160ms ease;
+    }
+    .gh:hover{transform: translateY(-4px); background: linear-gradient(90deg, rgba(99,102,241,0.12), rgba(6,182,212,0.08));}
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      .card{padding:20px;border-radius:14px}
+      .logo{width:56px;height:56px}
+      .cta{width:100%;justify-content:flex-end}
+      footer{flex-direction:column; align-items:flex-start; gap:10px}
+    }
+  </style>
+</head>
+<body>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+
+  <main class="card" role="main" aria-labelledby="site-title">
+    <header>
+      <div class="logo" aria-hidden="true">A</div>
+      <div>
+        <h1 id="site-title">amirabolfazle</h1>
+        <p class="lead">minimal • glassmorphism • animated</p>
+      </div>
+    </header>
+
+    <div class="meta" role="status" aria-live="polite">
+      <div class="time" title="Creation time">Created: 2025-09-26 19:02:09</div>
+      <div style="flex:1"></div>
+      <nav class="cta" aria-label="Quick actions">
+        <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          View Repo
+        </a>
+      </nav>
+    </div>
+
+    <section class="content" aria-label="Content">
+      <p class="description">
+        A tiny, focused landing card showcasing a glassmorphism aesthetic with soft motion and subtle fade-in effects. Clean, responsive, and intentionally minimal — built for clarity and calm.
+      </p>
+    </section>
+
+    <footer>
+      <div class="footer-left">Created by amirabolfazle</div>
+      <div class="social">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub — amirabolfazle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.648.5.5 5.648.5 12c0 5.086 3.292 9.4 7.865 10.922.575.106.784-.25.784-.556 0-.274-.01-1-.015-1.958-3.2.696-3.876-1.543-3.876-1.543-.523-1.33-1.277-1.684-1.277-1.684-1.044-.713.079-.699.079-.699 1.155.082 1.763 1.186 1.763 1.186 1.026 1.757 2.693 1.25 3.347.956.104-.744.402-1.25.731-1.538-2.555-.29-5.244-1.278-5.244-5.686 0-1.256.449-2.283 1.185-3.088-.119-.29-.513-1.459.113-3.042 0 0 .966-.31 3.167 1.18a11.02 11.02 0 0 1 2.88-.387c.977.004 1.961.132 2.88.387 2.2-1.49 3.165-1.18 3.165-1.18.628 1.582.234 2.751.115 3.042.739.805 1.183 1.832 1.183 3.088 0 4.42-2.694 5.392-5.257 5.676.414.357.783 1.06.783 2.136 0 1.542-.014 2.784-.014 3.163 0 .31.206.669.792.555C20.713 21.398 24 17.085 24 12c0-6.352-5.148-11.5-11.5-11.5z" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
