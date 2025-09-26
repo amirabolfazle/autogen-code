@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #0a0f1a;
+      --card: #14172a;
+      --fg: #e8eaf6;
+      --muted: #aab4d4;
+      --accent: #7c5cff;
+      --accent2: #1ee6d6;
+      --ring: rgba(124,92,255,.6);
+    }
+
+   * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% 0%, rgba(124,92,255,.15), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(30,230,214,.12), transparent 40%),
+                  linear-gradient(135deg, #0a0f1a 0%, #0b1020 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* animated subtle glow layers in the background */
+    .bg-orb {
+      position: fixed;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: .25;
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 30s linear infinite;
+      mix-blend-mode: screen;
+    }
+    .bg-orb.a { background: #7c5cff; left: -120px; top: 10%; }
+    .bg-orb.b { background: #1ee6d6; right: -140px; bottom: 10%; animation-duration: 40s; }
+
+    @keyframes drift {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(40px, -20px) scale(1.05); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    .stage {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+
+    header.hero {
+      text-align: center;
+      padding: 32px 16px 8px;
+    }
+
+    .brand {
+      font-size: 64px;
+      line-height: 1.05;
+      margin: 0;
+      letter-spacing: 6px;
+      background: linear-gradient(90deg, #fff, #8be9ff 60%, #baff8a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .tagline {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 14px;
+      letter-spacing: .4px;
+    }
+
+    .creation-time {
+      margin-top: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #8ab4d8;
+      opacity: .9;
+    }
+
+    /* Projects grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+      padding: 28px 0 0;
+    }
+
+    /* Card tilt container */
+    .card {
+      perspective: 1000px;
+      border-radius: 16px;
+      padding: 0;
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s ease;
+      background: linear-gradient(135deg, rgba(20,24,40,.95), rgba(22,26,52,.95));
+      border: 1px solid rgba(124,92,255,.35);
+      box-shadow: 0 10px 25px rgba(0,0,0,.35);
+      isolation: isolate;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(0,0,0,.5);
+    }
+
+    .card-inner {
+      position: relative;
+      height: 100%;
+      padding: 20px;
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.15s ease;
+    }
+
+    .card .chips {
+      display: inline-flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(124,92,255,.25);
+      color: #e8e3ff;
+      border: 1px solid rgba(124,92,255,.45);
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin: 6px 0 6px;
+    }
+
+    .card p {
+      color: #cbd5e1;
+      font-size: 13.5px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Decorative glow on content inside a card */
+    .card-inner:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 0%, rgba(124,92,255,.22), transparent 40%);
+      pointer-events: none;
+    }
+
+    /* Floating subtle animation for variety */
+    @keyframes floaty {
+      0% { transform: translateY(0) translateZ(0); }
+      50% { transform: translateY(-6px) translateZ(20px); }
+      100% { transform: translateY(0) translateZ(0); }
+    }
+
+    .card-inner {
+      animation: floaty 8s ease-in-out infinite;
+    }
+
+    /* Small responsive tweak to typography */
+    @media (max-width: 640px){
+      .brand { font-size: 44px; }
+    }
+
+    /* Footer */
+    footer.site-footer {
+      margin-top: 40px;
+      padding: 20px 16px;
+      text-align: center;
+      color: #a0b4d6;
+      font-size: 14px;
+      border-top: 1px solid rgba(124,92,255,.25);
+      background: rgba(11,16,32,.6);
+      backdrop-filter: blur(6px);
+      position: relative;
+      z-index: 1;
+    }
+    footer.site-footer a.github {
+      color: #e8eaff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(124,92,255,.4);
+      background: rgba(124,92,255,.15);
+      transition: transform .2s ease;
+    }
+    footer.site-footer a.github:hover { transform: translateY(-1px); }
+    footer.site-footer svg { display: block; width: 18px; height: 18px; }
+
+    /* Focus styles for accessibility */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orb a" aria-hidden="true"></div>
+  <div class="bg-orb b" aria-hidden="true"></div>
+
+  <main class="stage" aria-label="Portfolio">
+    <header class="hero" role="banner">
+      <h1 class="brand">amirabolfazle</h1>
+      <div class="tagline">Dark-mode animated single-file portfolio with tilt cards</div>
+      <div class="creation-time" title="Creation timestamp">
+        Creation time: 2025-09-26 23:00:54
+      </div>
+    </header>
+
+    <section class="grid" aria-label="Projects">
+      <article class="card" aria-label="Project One">
+        <div class="card-inner" data-tilt-target="true">
+          <div class="chips" aria-label="Tech stack">
+            <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JS</span>
+          </div>
+          <h3>Project One: Neon Portfolio Card</h3>
+          <p>A sleek, glow-inspired card with a 3D tilt effect on hover and ambient animation in the background.</p>
+        </div>
+      </article>
+
+      <article class="card" aria-label="Project Two">
+        <div class="card-inner" data-tilt-target="true">
+          <div class="chips" aria-label="Tech stack">
+            <span class="chip">SVG</span><span class="chip">CSS</span>
+          </div>
+          <h3>Project Two: Tilt Gallery</h3>
+          <p>A responsive gallery where each tile subtly tilts toward the cursor, creating depth in a dark canvas.</p>
+        </div>
+      </article>
+
+      <article class="card" aria-label="Project Three">
+        <div class="card-inner" data-tilt-target="true">
+          <div class="chips" aria-label="Tech stack">
+            <span class="chip">Web Animations</span><span class="chip">UI</span>
+          </div>
+          <h3>Project Three: Orbital UI</h3>
+          <p>Floating orbs and gradients breathe life into a minimal portfolio interface.</p>
+        </div>
+      </article>
+
+      <article class="card" aria-label="Project Four">
+        <div class="card-inner" data-tilt-target="true">
+          <div class="chips" aria-label="Tech stack">
+            <span class="chip">Accessibility</span><span class="chip">Performance</span>
+          </div>
+          <h3>Project Four: Accessible Dark Demo</h3>
+          <p>Dark-mode-first layout with clear contrast and keyboard-friendly navigation.</p>
+        </div>
+      </article>
+    </section>
+
+    <footer class="site-footer" role="contentinfo">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+          <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.55-1.39-1.35-1.76-1.35-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.84 1.31 3.53 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.4 1.24-3.25-.13-.3-.54-1.52.12-3.17 0 0 1 .32 3.3 1.24A11.5 11.5 0 0 1 12 6.8c.9.01 1.81.12 2.66.36 2.3-.92 3.3-1.24 3.3-1.24.66 1.65.25 2.87.12 3.17.77.85 1.23 1.93 1.23 3.25 0 4.62-2.81 5.64-5.49 5.93.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.58A12 12 0 0 0 12 .5z"/>
+        </svg>
+      </a>
+      <span style="margin-left:8px;">Created by amirabolfazle</span>
+    </footer>
+  </main>
+
+  <script>
+    // Tilt effect logic for each card inner
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const inner = card.querySelector('.card-inner');
+        // Only apply tilt if pointer is present
+        const handleMove = (e) => {
+          const rect = card.getBoundingClientRect();
+          const relX = (e.clientX - rect.left) / rect.width; // 0 -> 1
+          const relY = (e.clientY - rect.top) / rect.height; // 0 -> 1
+          // Center around 0.5
+          const dx = (relX - 0.5);
+          const dy = (relY - 0.5);
+          // Tilt angles
+          const rotY = dx * -14; // rotate around Y axis
+          const rotX = dy * 14;  // rotate around X axis
+          inner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(20px)`;
+        };
+        const reset = () => {
+          inner.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+        };
+        card.addEventListener('mousemove', handleMove);
+        card.addEventListener('mouseleave', reset);
+        card.addEventListener('mouseenter', () => {
+          // Pause outer float animation while interacting
+          inner.style.transition = 'transform 0.08s ease';
+        });
+        card.addEventListener('mouseleave', () => {
+          inner.style.transition = '';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
