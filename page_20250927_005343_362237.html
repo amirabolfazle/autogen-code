@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-a: #0b1020;
+      --bg-b: #1a1140;
+      --fg: #e6e6f3;
+      --muted: #a5a5b8;
+      --card: #0b0b12;
+      --glow: rgba(99, 102, 241, 0.65);
+    }
+
+    /* Gradient animated background */
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(99,102,241,0.25), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(236,72,153,0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0b1020 40%, #0a0b1a 100%);
+      background-size: 200% 200%;
+      animation: gradientBG 25s ease infinite;
+      overflow-x: hidden;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Layout */
+    header {
+      padding: 40px 20px 20px;
+      position: relative;
+      text-align: center;
+    }
+    .brand {
+      display: inline-block;
+      font-weight: 900;
+      font-size: clamp(48px, 8vw, 120px);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #34d399 0%, #3b82f6 40%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 8px 22px rgba(0,0,0,.25));
+    }
+    .sub {
+      font-size: clamp(14px, 2.5vw, 18px);
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .creation {
+      margin-top: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.04);
+    }
+
+    /* Floating gradient shapes for vibe */
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .shape.a{ width: 280px; height: 280px; left: -60px; top: 60px; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,.9), transparent 40%); }
+    .shape.b{ width: 360px; height: 360px; right: -120px; top: 20vh; background: radial-gradient(circle at 40% 40%, rgba(236,72,153,.8), transparent 40%); }
+
+    main { position: relative; z-index: 1; padding: 10px 20px 60px; }
+
+    section.section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    h2 {
+      font-size: clamp(22px, 3.5vw, 32px);
+      margin: 0 0 14px;
+      letter-spacing: .5px;
+    }
+    p { color: #e7e7f5; }
+
+    /* About card style */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (min-width: 800px){
+      .about { grid-template-columns: 1.1fr 0.9fr; }
+    }
+    .about-card {
+      padding: 18px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(15,23,42,.8), rgba(2,6,23,.9));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    }
+
+    /* Projects grid with gradient border illusion */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 6px;
+    }
+    .card {
+      border-radius: 12px;
+      padding: 0;
+      overflow: hidden;
+      background: transparent;
+      border: 0;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+    .card-outer {
+      padding: 2px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f472b6, #3b82f6, #34d399);
+    }
+    .card-inner {
+      border-radius: 10px;
+      padding: 14px;
+      background: #0b0b12;
+    }
+    .card h3 { margin: 6px 0 6px; font-size: 1.1rem; }
+    .card p { margin: 0; color: #cbd5e1; font-size: 0.95rem; }
+
+    .icon {
+      width: 22px; height: 22px; display: inline-block; vertical-align: middle;
+      margin-right: 6px;
+      color: #fff;
+    }
+
+    /* Footer with GitHub icon and credit */
+    footer.site-footer {
+      margin-top: 40px;
+      padding: 24px 20px;
+      text-align: center;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(2,6,23,.6);
+    }
+    .gh-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 999px;
+      margin-right: 8px;
+      background: linear-gradient(135deg, #111, #333);
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    }
+    .gh-link svg { width: 22px; height: 22px; display: block; }
+
+    .credit {
+      display: inline-block;
+      vertical-align: middle;
+      font-family: ui-sans-serif, system-ui;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    /* Utility for section fade-in on load */
+    .fade-in { opacity: 0; transform: translateY(14px); animation: fadeIn 0.7s ease forwards; }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.30s; }
+    .delay-3 { animation-delay: 0.45s; }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Subtle gradient accents inside sections */
+    .section:after {
+      content: "";
+      display: block;
+      height: 1px;
+      width: 100%;
+      max-width: 800px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      margin: 14px auto 0;
+      opacity: .4;
+    }
+  </style>
+</head>
+<body>
+  <div class="shape a" aria-hidden="true"></div>
+  <div class="shape b" aria-hidden="true"></div>
+
+  <header aria-label="Site header">
+    <div class="brand fade-in" style="animation-delay:.05s">amirabolfazle</div>
+    <div class="sub fade-in delay-1" style="animation-delay:.15s">Frontend enthusiast • creative developer • maker</div>
+    <div class="creation fade-in delay-2" style="animation-delay:.25s" aria-label="creation time">
+      Creation time: 2025-09-27 00:53:03
+    </div>
+  </header>
+
+  <main>
+    <section id="about" class="section about fade-in delay-1" aria-label="About me" style="animation-delay:.2s">
+      <div class="about-card">
+        <h2 style="margin-top:0">About</h2>
+        <p>
+          Hi, I’m amirabolfazle—a curious builder who loves turning ideas into interactive
+          experiences. This single-file portfolio showcases a gradient-driven vibe with smooth
+          fade-ins and a focus on clarity, performance, and playful aesthetics.
+        </p>
+        <p style="color:#cbd5e1">
+          This page is intentionally self-contained: no external assets, just a single HTML file with
+          inline CSS and a splash of JavaScript to keep things snappy.
+        </p>
+      </div>
+
+      <div class="about-card" aria-label="quick stats">
+        <h2 style="margin-top:0">Creation snapshot</h2>
+        <p>Portfolio theme: gradient + fade-in animation</p>
+        <p>Single-file implementation</p>
+        <p>Live feel with CSS-only motion (plus a tiny script for future enhancements)</p>
+      </div>
+    </section>
+
+    <section id="projects" class="section fade-in delay-2" aria-label="Projects" style="animation-delay:.35s">
+      <h2>Projects</h2>
+      <div class="grid" aria-label="Projects grid">
+        <div class="card" title="Autogen Code Runner">
+          <div class="card-outer">
+            <div class="card-inner" style="background: #0b0b12;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span class="icon" aria-hidden="true" style="width:20px;height:20px; display:inline-flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #38bdf8, #a78bfa); border-radius:6px;">
+                  <!-- simple code glyph -->
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white" aria-label="code icon" style="display:block">
+                    <path d="M8 9l-4 3 4 3V9zm8 0v6l4-3-4-3zM6 5h2v14H6V5zm12 0h2v14h-2V5z"/>
+                  </svg>
+                </span>
+                <strong style="font-size:1rem;">Autogen Code Runner</strong>
+              </div>
+              <p>One-file code generator with a lightweight UI and quick-start workflow.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" title="Live Playground">
+          <div class="card-outer">
+            <div class="card-inner" style="background: #0b0b12;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span class="icon" aria-hidden="true" style="width:20px;height:20px; display:inline-flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #34d399, #3b82f6); border-radius:6px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white" aria-label="play icon" style="display:block">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </span>
+                <strong style="font-size:1rem;">Live Playground</strong>
+              </div>
+              <p>Interactive demo ideas and rapid prototyping in a single file.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" title="Design System">
+          <div class="card-outer">
+            <div class="card-inner" style="background: #0b0b12;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span class="icon" aria-hidden="true" style="width:20px;height:20px; display:inline-flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #f472b6, #f59e0b); border-radius:6px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white" aria-label="design icon" style="display:block">
+                    <path d="M12 3l3 6 6 1-4.5 4.5L18 21l-6-3-6 3 1.5-6.5L3 10l6-1z"/>
+                  </svg>
+                </span>
+                <strong style="font-size:1rem;">Design System</strong>
+              </div>
+              <p>Consistent style primitives and accessible components in one canvas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section fade-in delay-3" aria-label="Skills" style="animation-delay:.5s">
+      <h2>Skills</h2>
+      <p>Crafting pixels that feel fast and friendly. JS/TS, HTML/CSS, UI/UX, and performance-minded techniques.</p>
+      <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px;">
+        <li class="creation" style="border-radius: 999px; padding: 6px 12px; background: rgba(99,102,241,.25); border: 1px solid rgba(99,102,241,.5);">JavaScript / TypeScript</li>
+        <li class="creation" style="border-radius: 999px; padding: 6px 12px; background: rgba(56,189,248,.25); border: 1px solid rgba(56,189,248,.5);">React / Web Components</li>
+        <li class="creation" style="border-radius: 999px; padding: 6px 12px; background: rgba(245, 158, 11,.25); border: 1px solid rgba(245,158,11,.5);">CSS / Animations</li>
+        <li class="creation" style="border-radius: 999px; padding: 6px 12px; background: rgba(34,197,94,.25); border: 1px solid rgba(34,197,94,.5);">UI/UX</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="gh-link" aria-label="GitHub repository">
+      <!-- GitHub icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" fill="white" width="22" height="22" aria-label="GitHub icon" role="img">
+        <path d="M12 .5C5.73.5 0 5.98 0 12.05c0 5.04 3.168 9.32 7.557 10.84.552.1.754-.24.754-.54v-2.02c-3.07.66-3.72-1.54-3.72-1.54-.502-1.28-1.226-1.62-1.226-1.62-1.003-.69.08-.68.08-.68 1.107.08 1.69 1.14 1.69 1.14.984 1.69 2.577 1.2 3.234.92.1-.79.383-1.26.697-1.55-2.45-.28-5.02-1.22-5.02-5.43 0-1.2.43-2.18 1.14-2.95-.12-.29-.49-1.46.11-3.04 0 0 .92-.29 3.01 1.13a11.04 11.04 0 015.48 0c2.09-1.42 3.01-1.13 3.01-1.13.6 1.58.25 2.75.13 3.04.73.77 1.16 1.74 1.16 2.95 0 4.22-2.57 5.15-5.01 5.43.39.33.74 1 .74 2.02v3.0c0 .3.21.63.78.53C20.835 21.94 24 17.67 24 12.05 24 5.98 18.27.5 12 .5z"/>
+      </svg>
+    </a>
+    <span class="credit" style="margin-left:6px;">Created by amirabolfazle</span>
+  </footer>
+
+  <!-- Minimal script to optionally re-trigger fade-ins if needed -->
+  <script>
+    // Optional: enhance: re-apply fade-in if page is loaded again (no external deps)
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.fade-in');
+      sections.forEach((el, idx) => {
+        // stagger if not already animated
+        el.style.animationPlayState = 'running';
+      });
+    });
+  </script>
+</body>
+</html>
