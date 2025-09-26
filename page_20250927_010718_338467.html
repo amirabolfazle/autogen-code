@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f15;
+      --bg2: #111821;
+      --panel: #151c24;
+      --text: #e6f0ff;
+      --muted: #aab4c8;
+      --accent: #7bd6ff;
+      --card: rgba(255,255,255,.04);
+      --shadow: 0 8px 30px rgba(0,0,0,.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system;
+      background: radial-gradient(circle at 15% -10%, rgba(123,214,255,.08), transparent 40%),
+                  linear-gradient(#0b0f15, #0b0f15 60%, #0b0f15);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header { padding: 28px 20px 12px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    .brand { display: flex; align-items: center; gap: 28px; }
+    .orbit {
+      width: 150px; height: 150px; border-radius: 50%;
+      border: 2px dashed rgba(125, 210, 255, .6);
+      animation: spin 12s linear infinite;
+      box-shadow: inset 0 0 12px rgba(125,210,255,.3);
+      position: relative;
+    }
+    .orbit::after {
+      content: "";
+      position: absolute; width: 10px; height: 10px;
+      background: #8be8ff; border-radius: 50%;
+      top: 0; left: 50%; transform: translate(-50%, -50%);
+      animation: orbit 4s linear infinite;
+    }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes orbit { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    h1.title {
+      font-size: clamp(48px, 8vw, 96px);
+      margin: 0;
+      letter-spacing: .12em;
+      text-transform: lowercase;
+      color: #eaf6ff;
+      text-shadow: 0 0 14px rgba(123,214,255,.5);
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .creation-time {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,monospace;
+      font-size: 12px;
+      color: #06232a;
+      background: linear-gradient(135deg, rgba(167,243,208,.95), rgba(125,211,252,.95));
+      border: 1px solid rgba(0,0,0,.15);
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+
+    main { padding: 24px 0 40px; }
+
+    .section-title {
+      font-size: 18px;
+      color: #e0fbff;
+      margin: 0 0 12px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding: 6px 0 0; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(180, 190, 210, .25);
+      border-radius: 16px;
+      padding: 18px;
+      min-height: 180px;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform .6s ease, box-shadow .6s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: rotateY(8deg) rotateX(6deg);
+      box-shadow: 0 20px 40px rgba(0,0,0,.4);
+    }
+
+    .card h3 { margin: 0 0 6px; font-size: 18px; }
+    .card p { margin: 0; color: #cbd5e1; font-size: 14px; }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: 999px;
+      font-size: 12px; color: #0b1a24;
+      background: #a5f3fc;
+      margin-top: 12px;
+    }
+
+    .cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.2);
+      color: #eaf6ff; text-decoration: none;
+      background: linear-gradient(135deg, rgba(59,130,246,.9), rgba(96,165,250,.9));
+      transition: transform .2s ease;
+      margin-top: 12px;
+    }
+    .cta:hover { transform: translateY(-1px); }
+
+    .section { padding: 24px 0; }
+    #about {
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 22px; align-items: center;
+    }
+    .about-text { font-size: 15px; color: #e6f0ff; line-height: 1.7; }
+
+    .avatar {
+      width: 170px; height: 170px; border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #0ea5e9, #38bdf8, #a3e635, #0ea5e9);
+      display: inline-grid; place-items: center;
+      box-shadow: 0 0 0 4px rgba(14,165,233,.25);
+      animation: spin 6s linear infinite;
+    }
+    @media (max-width: 900px) {
+      #about { grid-template-columns: 1fr; text-align: center; }
+      .avatar { margin: 0 auto; }
+    }
+
+    footer.site-footer {
+      margin-top: 40px;
+      padding: 18px 20px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      color: #a8b3c7;
+    }
+    .github-link { color: #e8f1ff; display:inline-flex; align-items:center; gap:8px; }
+    .footer-text { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 14px; }
+    .github-link:hover { color: #fff; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container brand" aria-label="brand">
+      <div class="orbit" aria-hidden="true"></div>
+      <div>
+        <div class="creation-time" aria-label="creation-time">Creation time: 2025-09-27 01:06:31</div>
+        <h1 class="title" aria-label="portfolio-title">amirabolfazle</h1>
+        <div class="subtitle" aria-label="portfolio-subtitle">Dark-mode animated portfolio</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <section id="about" class="section" aria-label="about">
+      <div class="avatar" aria-label="avatar"></div>
+      <div class="about-text">
+        <p>Hi, I’m amirabolfazle — a curious builder who loves turning ideas into interactive experiences. This single-file portfolio showcases a few projects, a splash of motion, and a dash of neon. Everything here is self-contained in one file.</p>
+        <p>Feel free to explore the projects grid below. Hover cards to tilt them for a bit of life in static code.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-label="projects">
+      <h2 class="section-title">Projects</h2>
+      <div class="projects" aria-label="project-grid">
+        <article class="card" aria-label="Project One">
+          <h3>Project One</h3>
+          <p>A sleek UI prototype with a focus on motion design and accessibility.</p>
+          <span class="chip" aria-label="tech-stack">CSS • HTML • JS</span>
+          <a href="#" class="cta" onclick="return false;">View</a>
+        </article>
+
+        <article class="card" aria-label="Project Two">
+          <h3>Project Two</h3>
+          <p>Interactive data viz with a dark theme and subtle depth cues.</p>
+          <span class="chip" aria-label="tech-stack">D3 • Canvas</span>
+          <a href="#" class="cta" onclick="return false;">View</a>
+        </article>
+
+        <article class="card" aria-label="Project Three">
+          <h3>Project Three</h3>
+          <p>Single-file portfolio generator with elegant typography and responsive layout.</p>
+          <span class="chip" aria-label="tech-stack">SVG • CSS</span>
+          <a href="#" class="cta" onclick="return false;">View</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="github-link" aria-label="GitHub">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M12 .5C5.73.5 0 5.73 0 12.25c0 5.1 3.29 9.41 7.86 10.94.58.11.79-.25.79-.56 0-.28-.01-1-.02-2-.94.21-1.64-.41-1.64-.41-.53-.69-1.3-0.86-1.3-0.86-1.06-.74.08-.72.08-.72 1.17.08 1.78 1.21 1.78 1.21 1.04 1.78 2.74 1.28 3.41 0.97.11-.75.41-1.28.75-1.58-2.56-.29-5.25-1.29-5.25-5.75 0-1.27.46-2.32 1.22-3.14-.12-.3-.53-1.5.11-3.12 0 0 1-.32 3.28 1.23A11.3 11.3 0 0 1 12 6.8c.97-.01 1.95-.13 2.86-.39 2.28-.65 3.28-1.23 3.28-1.23.64 1.62.24 2.82.12 3.12.76.82 1.22 1.87 1.22 3.14 0 3.46-2.69 5.46-5.25 5.75.42.37.8 1.1.8 2.22 0 1.6-.02 2.89-.02 3.28 0 .31.21.66.8.55A12 12 0 0 0 24 12C24 5.73 18.27.5 12 .5z"/>
+      </svg>
+    </a>
+    <span class="footer-text">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
