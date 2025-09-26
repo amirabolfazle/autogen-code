@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#071021;
+      --panel:#0f1724;
+      --muted:#94a3b8;
+      --accent:#6ee7b7;
+      --accent-2:#60a5fa;
+      --glass: rgba(255,255,255,0.03);
+      --card-glow: 0 6px 30px rgba(96,165,250,0.08);
+      --radius:14px;
+      --ease:cubic-bezier(.2,.9,.3,1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:
+        radial-gradient(800px 400px at 10% 10%, rgba(96,165,250,0.06), transparent 8%),
+        radial-gradient(700px 350px at 90% 90%, rgba(110,231,183,0.04), transparent 10%),
+        var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:36px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      overflow-y:auto;
+    }
+
+    /* animated background subtle motion */
+    @keyframes floatBG{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-8px) scale(1.01)}
+      100%{transform:translateY(0) scale(1)}
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:linear-gradient(120deg, rgba(255,255,255,0.01), transparent 20%);
+      mix-blend-mode:screen;
+      animation:floatBG 14s ease-in-out infinite;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1000px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:22px;
+      align-items:start;
+    }
+
+    header.card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), var(--glass));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:26px;
+      border-radius:var(--radius);
+      box-shadow:var(--card-glow);
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+
+    .avatar{
+      width:96px;height:96px;border-radius:18px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:32px;color:#032024;flex:0 0 96px;
+      box-shadow:0 8px 30px rgba(96,165,250,0.12), inset 0 -6px 18px rgba(0,0,0,0.12);
+    }
+
+    .head-info h1{
+      margin:0;font-size:22px;letter-spacing:0.6px;
+      display:flex;gap:10px;align-items:center;
+    }
+    .tag{
+      background:rgba(255,255,255,0.04);
+      padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px;
+    }
+    .head-info p{margin:8px 0 0;color:var(--muted);line-height:1.45}
+
+    /* sections */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:20px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), var(--glass));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:20px;border-radius:12px;
+      color:var(--muted); box-shadow:0 6px 20px rgba(2,6,23,0.6);
+      overflow:hidden;
+    }
+
+    .card h3{margin:0 0 12px;color:#ecfeff;font-size:16px}
+    .card p{margin:0 0 14px}
+
+    /* projects list */
+    .projects{display:flex;flex-direction:column;gap:12px}
+    .project{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .project .meta{display:flex;gap:12px;align-items:center}
+    .pill{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;font-size:13px;color:var(--muted)}
+    .project a{color:var(--accent-2);text-decoration:none;font-weight:600}
+
+    /* contact */
+    .contact-list{display:flex;flex-direction:column;gap:10px}
+    .contact-item{display:flex;align-items:center;gap:12px;color:var(--muted)}
+    .contact-item b{color:#fff}
+
+    footer{
+      margin-top:8px;padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted)
+    }
+
+    /* slide-up animation */
+    .reveal{transform:translateY(18px);opacity:0;transition:transform .65s var(--ease),opacity .65s var(--ease)}
+    .reveal.in{transform:translateY(0);opacity:1}
+
+    /* stagger helper */
+    .reveal.delay-1{transition-delay:0.06s}
+    .reveal.delay-2{transition-delay:0.12s}
+    .reveal.delay-3{transition-delay:0.18s}
+    .reveal.delay-4{transition-delay:0.24s}
+    .reveal.delay-5{transition-delay:0.30s}
+
+    /* small screens */
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr}
+      .avatar{width:80px;height:80px;border-radius:14px;flex:0 0 80px;font-size:26px}
+    }
+
+    /* subtle hover glows */
+    .project:hover{transform:translateY(-6px);transition:transform .25s var(--ease);box-shadow:0 12px 40px rgba(6,18,48,0.6)}
+    .card:hover{transform:translateY(-4px);transition:transform .3s var(--ease)}
+    a.icon-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none}
+    a.icon-link svg{filter:drop-shadow(0 6px 18px rgba(2,6,23,0.6))}
+    .creation-time{font-family:monospace;color:#9fb7cf;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="card reveal delay-1" id="top">
+      <div class="avatar">AM</div>
+      <div class="head-info">
+        <h1>
+          amirabolfazle
+          <span class="tag">Designer • Developer</span>
+        </h1>
+        <p>A dark-mode portfolio that slides up into view. I craft clean interfaces, thoughtful interactions, and tiny animations that make products feel alive.</p>
+        <div style="margin-top:10px;display:flex;gap:12px;align-items:center">
+          <span class="pill creation-time">Creation time: 2025-09-26 21:05:47</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card reveal delay-2">
+        <h3>Featured Projects</h3>
+        <div class="projects">
+          <div class="project">
+            <div class="meta">
+              <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent-2),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;color:#001523">A1</div>
+              <div>
+                <div style="color:#e6f6ff;font-weight:700">Aurora Dashboard</div>
+                <div style="font-size:13px;color:var(--muted)">Realtime analytics with calm visuals.</div>
+              </div>
+            </div>
+            <a href="#" aria-label="Aurora Dashboard">View</a>
+          </div>
+
+          <div class="project">
+            <div class="meta">
+              <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#7dd3fc,#a78bfa);display:flex;align-items:center;justify-content:center;font-weight:700;color:#021">B2</div>
+              <div>
+                <div style="color:#e6f6ff;font-weight:700">Photon CMS</div>
+                <div style="font-size:13px;color:var(--muted)">Headless CMS with simple editing flows.</div>
+              </div>
+            </div>
+            <a href="#" aria-label="Photon CMS">Explore</a>
+          </div>
+
+          <div class="project">
+            <div class="meta">
+              <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#fca5a5,#fdba74);display:flex;align-items:center;justify-content:center;font-weight:700;color:#231">C3</div>
+              <div>
+                <div style="color:#e6f6ff;font-weight:700">SketchFlow</div>
+                <div style="font-size:13px;color:var(--muted)">Prototyping with playful micro-interactions.</div>
+              </div>
+            </div>
+            <a href="#" aria-label="SketchFlow">Demo</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="card reveal delay-3">
+        <h3>About</h3>
+        <p>I'm amirabolfazle — a maker who blends clean code with quiet visuals. I enjoy simplifying interfaces, improving clarity, and adding motion where it delights, not distracts.</p>
+
+        <h3 style="margin-top:16px">Skills</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <span class="pill">HTML</span>
+          <span class="pill">CSS / Animations</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">React</span>
+          <span class="pill">Design Systems</span>
+        </div>
+      </section>
+
+      <section class="card reveal delay-4" style="grid-column:1/-1">
+        <h3>Contact</h3>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:12px">
+          <div class="contact-list" style="flex:1;min-width:220px">
+            <div class="contact-item"><span style="width:36px;height:36;border-radius:8px;background:#0b1220;display:inline-flex;align-items:center;justify-content:center">✉️</span><div><b>Email</b><div style="font-size:13px;color:var(--muted)">hello@amirabolfazle.dev</div></div></div>
+            <div class="contact-item"><span style="width:36px;height:36;border-radius:8px;background:#0b1220;display:inline-flex;align-items:center;justify-content:center">🌐</span><div><b>Website</b><div style="font-size:13px;color:var(--muted)">amirabolfazle.dev</div></div></div>
+          </div>
+          <div style="flex:1;min-width:220px">
+            <h3 style="margin-top:0">Quick message</h3>
+            <form onsubmit="event.preventDefault(); alert('Thanks — message simulated.');" style="display:flex;flex-direction:column;gap:8px">
+              <input placeholder="Your name" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+              <input placeholder="Email" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit" />
+              <textarea placeholder="Message" rows="3" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit"></textarea>
+              <div style="display:flex;gap:8px;justify-content:flex-end">
+                <button style="background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;padding:10px 14px;border-radius:10px;color:#001523;font-weight:700;cursor:pointer">Send</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="reveal delay-5">
+      <a class="icon-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.99 5.24.99 11.52c0 4.66 3.02 8.61 7.22 10.01.53.1.72-.23.72-.51 0-.25-.01-.92-.01-1.8-2.94.64-3.56-1.42-3.56-1.42-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.62 2.46 1.15 3.06.88.09-.69.37-1.15.67-1.41-2.35-.27-4.82-1.18-4.82-5.26 0-1.16.41-2.11 1.08-2.86-.11-.27-.47-1.36.11-2.83 0 0 .88-.28 2.9 1.08a9.91 9.91 0 012.64-.36c.9 0 1.81.12 2.64.36 2.02-1.36 2.9-1.08 2.9-1.08.58 1.47.22 2.56.11 2.83.67.75 1.08 1.7 1.08 2.86 0 4.09-2.48 4.98-4.84 5.25.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.61.73.51 4.2-1.4 7.22-5.35 7.22-10.01C23.01 5.24 18.27.5 12 .5z" fill="#9fb7cf"/>
+        </svg>
+        <span style="color:var(--muted)">Repository</span>
+      </a>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="font-size:13px;color:var(--muted)">Created by <strong style="color:#ecfeff">amirabolfazle</strong></div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up reveal with IntersectionObserver
+    (function(){
+      const opts = {threshold: 0.12};
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) e.target.classList.add('in');
+        });
+      }, opts);
+
+      document.querySelectorAll('.reveal').forEach(el=>{
+        observer.observe(el);
+      });
+
+      // small keyboard shortcut to focus top (press "g")
+      document.addEventListener('keydown', (ev)=>{
+        if(ev.key.toLowerCase() === 'g'){
+          const top = document.getElementById('top');
+          if(top) top.scrollIntoView({behavior:'smooth',block:'center'});
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
