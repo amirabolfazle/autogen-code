@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(28,28,42,0.6);
+      --bg2: rgba(255,255,255,0.15);
+      --border: rgba(255,255,255,0.25);
+      --text: #eaf2ff;
+      --accent: #9b8cff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, rgba(124,92,255,0.25), transparent 40%),
+                  radial-gradient(circle at 85% 25%, rgba(0,191,255,0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0a1020 100%);
+      overflow-x: hidden;
+    }
+
+    /* Subtle glass blobs in the background for depth */
+    .bg-blob {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(123, 0, 255, 0.6), transparent 40%),
+                  radial-gradient(circle at 60% 60%, rgba(0, 180, 255, 0.6), transparent 40%);
+      filter: blur(40px);
+      opacity: 0.6;
+      pointer-events: none;
+      animation: drift 18s linear infinite;
+      z-index: 0;
+    }
+    .bg-blob.b1 { top: -80px; left: -40px; transform: rotate(15deg); }
+    .bg-blob.b2 { bottom: -100px; right: -60px; width: 520px; height: 520px; animation-duration: 28s; }
+
+    @keyframes drift {
+      0% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(-20px, 18px) rotate(180deg); }
+      100% { transform: translate(0,0) rotate(360deg); }
+    }
+
+    /* Layout */
+    .stage {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      padding: 40px 20px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    header.brand {
+      width: min(1100px, 92%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      margin-top: 20px;
+    }
+    .brand h1 {
+      font-size: 1.15rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    /* Glassy hero card with rotate on hover */
+    .card-wrap {
+      perspective: 1000px;
+      width: 100%;
+      display: grid;
+      place-items: center;
+      margin: 40px 0 20px;
+    }
+
+    .glass {
+      width: min(860px, 92%);
+      padding: 48px 56px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      color: #f6faff;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      transform-style: preserve-3d;
+      transition: transform 0.6s ease;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .glass:hover {
+      transform: rotateX(6deg) rotateY(-6deg);
+    }
+
+    .glass h2 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin: 0 0 12px;
+      letter-spacing: .04em;
+    }
+    .subtitle {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      opacity: 0.95;
+      margin-bottom: 18px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .cta {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.5);
+      background: linear-gradient(135deg, rgba(156,115,255,0.75), rgba(0,191,255,0.75));
+      color: white;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(124,92,255,0.6);
+    }
+    .cta:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 8px 26px rgba(124,92,255,0.8); }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      font-size: 0.95rem;
+      margin-top: 14px;
+    }
+
+    .creation .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #6ff; box-shadow: 0 0 12px #6ff;
+      animation: ping 2s infinite;
+    }
+    @keyframes ping {
+      0% { transform: scale(0.8); opacity: 0.9; }
+      70% { transform: scale(1.2); opacity: 0.3; }
+      100% { transform: scale(0.8); opacity: 0.9; }
+    }
+
+    /* Decorative rotating orb behind the card for depth */
+    .orb {
+      position: fixed;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(126,92,255,0.6), rgba(0, 255, 255, 0.6), rgba(126,92,255,0.6));
+      filter: blur(24px);
+      opacity: 0.35;
+      left: -40px;
+      top: 18%;
+      transform: rotate(15deg);
+      z-index: 0;
+      animation: rotate 60s linear infinite;
+    }
+    @keyframes rotate {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer with GitHub icon and creator text */
+    footer.footer {
+      width: min(1100px, 92%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      margin-top: 40px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #eaf2ff;
+      text-decoration: none;
+    }
+    .footer svg { display: block; color: #eaf2ff; width: 20px; height: 20px; }
+
+    .credit {
+      opacity: 0.95;
+    }
+
+    @media (max-width: 860px){
+      .glass { padding: 34px 28px; }
+      .brand { padding: 8px 12px; }
+      footer.footer { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blob b1" aria-hidden="true"></div>
+  <div class="bg-blob b2" aria-hidden="true"></div>
+
+  <div class="stage" role="main">
+    <header class="brand" aria-label="Brand header">
+      <h1>amirabolfazle</h1>
+      <div style="display:flex; align-items:center; gap:12px; opacity:.9;">
+        <span style="font-size:.92rem; color:#dbe7ff; letter-spacing:.12em; text-transform:uppercase;">Glass + Motion</span>
+      </div>
+    </header>
+
+    <div class="card-wrap" aria-label="Hero section">
+      <section class="glass" style="--gradient: linear-gradient(135deg, rgba(156,115,255,.75), rgba(0,191,255,.75));">
+        <h2 style="margin:0 0 6px; font-weight:800; letter-spacing:.04em;">amirabolfazle</h2>
+        <p class="subtitle" style="margin-top:0; max-width: 60ch; line-height: 1.5;">
+          A stunning landing page demonstrating glassmorphism with subtle rotate effects and a polished, modern aesthetic.
+        </p>
+
+        <div class="creation" aria-label="Creation time">
+          <span class="dot" aria-hidden="true"></span>
+          Creation time: 2025-09-27 01:41:15
+        </div>
+
+        <div class="row" style="margin-top: 18px;">
+          <a href="#learn" class="cta" aria-label="Get started">Get started</a>
+          <a href="#learn" class="cta" style="background: rgba(255,255,255,0.25); color:#0b1020; border:1px solid rgba(0,0,0,.2); box-shadow:none;">Learn more</a>
+        </div>
+      </section>
+      <div class="orb" aria-hidden="true"></div>
+    </div>
+
+    <footer class="footer" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
+          <path d="M12 .5C5.73.5.5 5.72.5 12.01c0 5.1 3.29 9.41 7.86 10.92.58.11.79-.25.79-.56 0-.28-.01-1.08-.02-2.12-3.2.69-3.88-1.37-3.88-1.37-.53-1.36-1.29-1.72-1.29-1.72-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.2 1.77 1.2 1.01 1.77 2.68 1.26 3.34.96.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.3 1.2-3.12-.12-.29-.52-1.46.11-3.04 0 0 .98-.31 3.21 1.18a11.1 11.1 0 012.93-.39c1 0 2 .14 2.93.41 2.23-1.49 3.21-1.18 3.21-1.18.64 1.58.24 2.75.12 3.04.75.81 1.2 1.84 1.2 3.1 0 4.41-2.69 5.41-5.25 5.69.41.36.77 1.07.77 2.15 0 1.55-.01 2.8-.01 3.18 0 .31.21.68.8.56A10.99 10.99 0 0024 12.28C24 5.7 17.64.5 12 .5z" />
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
