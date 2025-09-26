@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg-soft: #11161d;
+      --surface: #141a22;
+      --text: #e6e6e6;
+      --muted: #a5b0c0;
+      --accent: #7c3aed;
+      --card-front: linear-gradient(135deg, rgba(22,26,46,.95), rgba(22,32,60,.95));
+      --card-back: linear-gradient(135deg, rgba(10,16,34,.95), rgba(20,28,52,.95));
+      --shadow: 0 10px 25px rgba(0,0,0,.5);
+    }
+
+    /* Dark-mode aesthetic with subtle glow and rotating orb in background */
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: #0b0f14;
+      overflow-x: hidden;
+    }
+
+    /* Animated rotating background orb for a cool vibe */
+    .bg-orb {
+      position: fixed;
+      width: 900px;
+      height: 900px;
+      left: -320px;
+      top: -320px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #4b5cff, #00e5ff, #00ffb2, #ffd166, #ff4d6d, #4b5cff);
+      filter: blur(60px);
+      opacity: 0.28;
+      transform: rotate(0deg);
+      animation: spin 60s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Layout and sections */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      padding: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header.site-header {
+      display: grid;
+      gap: 12px;
+      align-items: center;
+      grid-template-columns: 1fr auto;
+      padding: 20px 0 8px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+
+    .brand .title {
+      font-size: 2.4rem;
+      letter-spacing: .4px;
+      margin: 0;
+      font-weight: 700;
+      text-transform: lowercase;
+    }
+    .brand .title::after {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #7c3aed;
+      border-radius: 50%;
+      box-shadow: 0 0 14px #7c3aed;
+      margin-left: 6px;
+    }
+
+    .tagline {
+      color: var(--muted);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.8rem;
+      color: #d1d5db;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+      justify-self: end;
+      align-self: start;
+    }
+
+    nav.main-nav {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    nav.main-nav a {
+      color: #d7e0f5;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      transition: transform .25s ease, background .25s ease;
+      background: rgba(255,255,255,.03);
+    }
+    nav.main-nav a:hover {
+      transform: translateY(-1px);
+      background: rgba(124,58,237,.25);
+      border-color: rgba(124,58,237,.5);
+    }
+
+    /* Hero section */
+    .section-hero {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 48px 0 28px;
+      min-height: 40vh;
+    }
+
+    .section-hero h2 {
+      font-size: 3rem;
+      margin: 8px 0 6px;
+      letter-spacing: .5px;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed, #0ea5e9);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+    .cta:hover { transform: translateY(-1px); }
+
+    /* Projects grid with 3D tilt on hover */
+    #projects { padding: 26px 0 60px; }
+    #projects h2 {
+      font-size: 1.6rem;
+      margin: 0 0 14px;
+      color: #e8eaf6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      perspective: 1000px;
+      border-radius: 16px;
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(.22,.61,.36,1);
+      box-shadow: var(--shadow);
+    }
+
+    .card:hover .card-inner,
+    .card:focus-within .card-inner {
+      transform: rotateY(-12deg) rotateX(8deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      border-radius: 16px;
+      backface-visibility: hidden;
+      color: #fff;
+    }
+
+    .front {
+      background: var(--card-front);
+      text-align: center;
+    }
+    .front h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: .4px;
+    }
+    .front .subtitle {
+      font-size: .85rem;
+      color: rgba(255,255,255,.85);
+    }
+
+    .back {
+      transform: rotateY(180deg);
+      background: var(--card-back);
+      color: #dbeafe;
+      text-align: left;
+      padding: 18px;
+      font-size: .92rem;
+    }
+
+    /* About and contact placeholders for structure */
+    #about, #contact {
+      padding: 40px 0 60px;
+    }
+    .section-title {
+      font-size: 1.6rem;
+      margin: 0 0 10px;
+    }
+    .muted {
+      color: var(--muted);
+    }
+
+    /* Footer with GitHub icon and attribution */
+    footer.site-footer {
+      margin-top: 60px;
+      padding: 22px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: rgba(0,0,0,.25);
+    }
+    .footer-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-left a {
+      color: #e5e7eb;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.04);
+    }
+    .footer-left a:hover { background: rgba(255,255,255,.12); }
+
+    .credit {
+      color: #d1d5db;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem;
+    }
+
+    /* Accessibility focus ring for tilt cards */
+    .card:focus-within {
+      outline: 2px solid #93c5fd;
+      outline-offset: 4px;
+    }
+
+    /* Responsive tiny adjustments */
+    @media (max-width: 720px) {
+      header.site-header {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .creation-time { justify-self: start; }
+      .section-hero h2 { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orb" aria-hidden="true"></div>
+
+  <div class="wrap" role="main">
+    <header class="site-header" aria-label="Site header">
+      <div class="brand" style="align-items: baseline;">
+        <span class="title" aria-label="Site title">amirabolfazle</span>
+        <span class="tagline" style="font-size:.95rem; color:#9fb3d9;">Interactive Frontend Designer</span>
+      </div>
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div class="creation-time" title="Creation time">2025-09-27 00:08:19</div>
+      </div>
+      <nav class="main-nav" aria-label="Main navigation" style="margin-left:auto;">
+        <a href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section id="home" class="section-hero" aria-label="Intro">
+      <div>
+        <h2 style="margin:0; font-size: clamp(2rem, 4vw, 3rem); text-align:center;">amiralbofazle</h2>
+        <p style="text-align:center; color:#cbd5e1; margin:6px 0 0;">
+          Crafting interactive experiences with code and design.
+        </p>
+        <div style="text-align:center; margin-top:14px;">
+          <a href="#projects" class="cta">View Projects</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" aria-label="Projects" class="section">
+      <h2 class="section-title" style="text-align:left;">Projects</h2>
+      <div class="grid" style="margin-top:6px;">
+        <!-- Card 1 -->
+        <article class="card" tabindex="0" aria-label="Project: Aurora UI Kit">
+          <div class="card-inner">
+            <div class="card-face front">
+              <div style="text-align:center;">
+                <h3>Aurora UI Kit</h3>
+                <div class="subtitle" style="opacity:.95;">Dark-mode components</div>
+              </div>
+            </div>
+            <div class="card-face back">
+              <div>
+                <strong>Overview:</strong> A modular component library optimized for dark themes, with subtle 3D motion and accessible states.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" tabindex="0" aria-label="Project: Parallax Playground">
+          <div class="card-inner">
+            <div class="card-face front" style="background: linear-gradient(135deg, #1b2140, #0f1b2a);">
+              <div style="text-align:center;">
+                <h3>Parallax Playground</h3>
+                <div class="subtitle" style="opacity:.95;">Depthive scrolling demo</div>
+              </div>
+            </div>
+            <div class="card-face back">
+              <div>
+                <strong>Overview:</strong> A canvas-free parallax system with layered gradients and rotate-based parallax hints.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card" tabindex="0" aria-label="Project: Pulse Animations">
+          <div class="card-inner">
+            <div class="card-face front" style="background: linear-gradient(135deg, #2b1740, #1a102b);">
+              <div style="text-align:center;">
+                <h3>Pulse Animations</h3>
+                <div class="subtitle" style="opacity:.95;">Micro-interactions</div>
+              </div>
+            </div>
+            <div class="card-face back">
+              <div>
+                <strong>Overview:</strong> A collection of performance-friendly micro-interactions for UIs.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card" tabindex="0" aria-label="Project: Data Viz Studio">
+          <div class="card-inner">
+            <div class="card-face front" style="background: linear-gradient(135deg, #132033, #0b1a2b);">
+              <div style="text-align:center;">
+                <h3>Data Viz Studio</h3>
+                <div class="subtitle" style="opacity:.95;">Visual storytelling</div>
+              </div>
+            </div>
+            <div class="card-face back">
+              <div>
+                <strong>Overview:</strong> Lightweight visualizations and charts with accessible color palettes.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card" tabindex="0" aria-label="Project: WebGL Art Tour">
+          <div class="card-inner">
+            <div class="card-face front" style="background: linear-gradient(135deg, #0f1d2e, #1a2a4a);">
+              <div style="text-align:center;">
+                <h3>WebGL Art Tour</h3>
+                <div class="subtitle" style="opacity:.95;">GPU-powered visuals</div>
+              </div>
+            </div>
+            <div class="card-face back">
+              <div>
+                <strong>Overview:</strong> A tiny exploration of GPU shaders and shader-based motion.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="card" tabindex="0" aria-label="Project: AutoGen Helper">
+          <div class="card-inner">
+            <div class="card-face front" style="background: linear-gradient(135deg, #1b2540, #122033);">
+              <div style="text-align:center;">
+                <h3>AutoGen Helper</h3>
+                <div class="subtitle" style="opacity:.95;">Code generation UI</div>
+              </div>
+            </div>
+            <div class="card-face back">
+              <div>
+                <strong>Overview:</strong> A tiny UI showing how autogenerated code could be presented with animations.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" aria-label="About" id="about-section" class="section" style="padding-top:6px;">
+      <h2 class="section-title">About</h2>
+      <p class="muted" style="max-width: 740px;">
+        I enjoy building fast, accessible user interfaces with a focus on design systems, motion, and performance.
+        This single-file portfolio demonstrates rotating 3D card interactions, a dark aesthetic, and an animated backdrop.
+      </p>
+    </section>
+
+    <section id="contact" aria-label="Contact" class="section" style="padding-bottom:40px;">
+      <h2 class="section-title">Contact</h2>
+      <p class="muted">Feel free to reach out if you want to collaborate on a project or discuss ideas.</p>
+    </section>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="footer-left">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <!-- GitHub SVG Icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align: middle;">
+            <path d="M12 2C6.477 2 2 6.58 2 12.25c0 4.5 2.865 8.317 6.839 9.682.5.092.682-.22.682-.488 0-.241-.009-.877-.013-1.722-2.782.618-3.369-1.27-3.369-1.27-.454-1.164-1.11-1.476-1.11-1.476-.908-.63.069-.618.069-.618 1.005.07 1.532 1.04 1.532 1.04.892 1.54 2.341 1.096 2.91.838.092-.652.35-1.095.635-1.347-2.221-.26-4.555-1.142-4.555-5.087 0-1.122.381-2.037 1.008-2.755-.101-.26-.437-1.307.096-2.722 0 0 .826-.268 2.708 1.04a9.2 9.2 0 0 1 2.463-.337 9.2 9.2 0 0 1 2.462.337c1.882-1.308 2.708-1.04 2.708-1.04.533 1.415.198 2.462.097 2.722.629.718 1.008 1.633 1.008 2.755 0 3.955-2.337 4.824-4.566 5.077.359.313.679.93.679 1.878 0 1.355-.012 2.447-.012 2.779 0 .27.18.584.688.486C19.138 20.567 22 16.75 22 12.25 22 6.58 17.523 2 12 2z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+      <div class="credit" aria-label="Creator credit">
+        Created by amirabolfazle
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
