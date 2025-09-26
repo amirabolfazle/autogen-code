@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #0f1020;
+      --bg2: #1a1030;
+      --fg: #ffffff;
+      --accent1: #ff7eb3;
+      --accent2: #5b8cff;
+      --accent3: #7af3d1;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: #fff;
+      background: radial-gradient(circle at 20% 20%, rgba(123, 97, 255, 0.25), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(0, 200, 255, 0.25), transparent 40%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2) 60%);
+      background-size: 200% 200%;
+      animation: gradientBG 18s ease infinite;
+      min-height: 100%;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .app {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+    .header {
+      padding: clamp(20px, 5vw, 40px);
+      text-align: center;
+    }
+    .title {
+      font-family: inherit;
+      margin: 0;
+      font-weight: 900;
+      font-size: clamp(48px, 12vw, 128px);
+      line-height: 1.04;
+      letter-spacing: 0.5px;
+      /* gradient text */
+      background: linear-gradient(135deg, #ff7eb3 0%, #5b8cff 40%, #7af3d1 100%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientMove 12s ease infinite;
+      transform-origin: center;
+      /* entrance zoom */
+      animation-name: gradientMove, popIn;
+      animation-duration: 12s, 0.9s;
+      animation-timing-function: ease, ease;
+      animation-iteration-count: 1, 1;
+      text-align: center;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .meta {
+      font-size: clamp(14px, 2.5vw, 18px);
+      margin-top: 12px;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .main {
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: clamp(20px, 6vw, 60px);
+    }
+    .stage {
+      width: min(1100px, 90%);
+      height: 60vh;
+      min-height: 420px;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: saturate(120%) blur(2px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      display: grid;
+      place-items: center;
+    }
+    .orb {
+      position: absolute;
+      width: min(250px, 25%);
+      height: min(250px, 25%);
+      border-radius: 50%;
+      filter: blur(0.2px);
+      opacity: 0.75;
+      mix-blend-mode: screen;
+      animation: drift 14s ease-in-out infinite;
+    }
+    .orb.one {
+      background: radial-gradient(circle at 30% 30%, #fff6, transparent 40%), conic-gradient(from 0deg, #ff7eb3, #5b8cff, #7af3d1, #ff7eb3);
+      top: -6%;
+      left: -8%;
+      animation-duration: 22s;
+    }
+    .orb.two {
+      background: radial-gradient(circle at 60% 40%, #fff6, transparent 40%), conic-gradient(from 180deg, #ffd166, #06d6a0, #4cc9f0, #ffd166);
+      bottom: -8%;
+      right: -10%;
+      width: 280px;
+      height: 280px;
+      animation-duration: 26s;
+    }
+    .orb.three {
+      background: radial-gradient(circle at 40% 60%, #fff6, transparent 40%), conic-gradient(from -90deg, #a29bfe, #38bdf8, #34d399, #a29bfe);
+      top: 20%;
+      right: 8%;
+      width: 180px;
+      height: 180px;
+      animation-duration: 18s;
+    }
+    @keyframes drift {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(20px, -15px) scale(1.05); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+    .card {
+      position: relative;
+      padding: 28px;
+      border-radius: 16px;
+      text-align: center;
+      width: min(720px, 90%);
+      background: rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      transform: translateZ(0);
+      animation: popIn 0.9s ease forwards;
+      opacity: 0;
+    }
+    @keyframes popIn {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: clamp(18px, 4vw, 28px);
+      color: #fff;
+    }
+    .card p {
+      margin: 0;
+      color: rgba(255,255,255,0.9);
+    }
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.85);
+    }
+    .icon-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+      text-decoration: none;
+      padding: 8px;
+      border-radius: 8px;
+      transition: transform 0.25s ease;
+    }
+    .icon-link:hover {
+      transform: translateY(-1px) scale(1.05);
+    }
+    .icon-link svg {
+      width: 20px;
+      height: 20px;
+    }
+    @media (max-width: 600px) {
+      .stage { height: 54vh; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header" aria-label="Header">
+      <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+      <div class="meta" aria-label="Creation timestamp">Creation time: 2025-09-26 23:46:03</div>
+    </header>
+
+    <main class="main" aria-label="Main content">
+      <section class="stage" aria-label="Animated stage">
+        <div class="orb one" aria-hidden="true"></div>
+        <div class="orb two" aria-hidden="true"></div>
+        <div class="orb three" aria-hidden="true"></div>
+
+        <div class="card" role="region" aria-label="Intro card">
+          <h2>Welcome</h2>
+          <p>Fully responsive, animated gradient theme with zoom effects.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Footer">
+      <a class="icon-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub Repository">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-label="GitHub icon" role="img" focusable="false" fill="currentColor">
+          <path d="M12 .5C5.73.5 0 6.23 0 12.5c0 4.42 2.867 8.166 6.839 9.489.5.092.682-.217.682-.48 0-.237-.01-1.022-.016-1.856-2.782.606-3.368-1.195-3.368-1.195-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.077-.607.077-.607 1.004.071 1.533 1.033 1.533 1.033.892 1.53 2.341 1.089 2.912.832.091-.647.35-1.089.635-1.341-2.22-.252-4.555-1.11-4.555-4.943 0-1.091.389-2.193 1.026-2.682-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.026a9.56 9.56 0 0 1 5.0-0c1.91-1.295 2.75-1.026 2.75-1.026.546 1.378.203 2.397.101 2.65.707.773 1.133 1.758 1.133 2.966 0 4.255-2.338 5.184-4.566 5.462.143.31.27.72.27 1.15 0 1.342-.012 2.423-.012 2.752 0 .266.176.576.688.478C19.641 20.666 24 16.92 24 12.5 24 6.23 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
