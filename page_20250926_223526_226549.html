@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --glass: rgba(255,255,255,0.16);
+      --glass-border: rgba(255,255,255,0.28);
+      --text: #eaf3ff;
+      --muted: #d6e4ff;
+      --bg1: rgba(255,255,255,0.15);
+      --bg2: rgba(255,255,255,0.08);
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient( circle at 20% 10%, rgba(0,150,255,0.25), transparent 40% ),
+                  radial-gradient( circle at 90% 0%, rgba(255,0,140,0.25), transparent 40% ),
+                  linear-gradient(135deg, #0b1020 0%, #1a1a2b 60%, #0b0e1a 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* decorative light orbs for glassy vibe */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(30px);
+      opacity: 0.75;
+      mix-blend-mode: screen;
+      animation: float 12s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .orb.a { width: 180px; height: 180px; background: rgba(120,200,255,0.6); left: -60px; top: 20px; animation-delay: 0s; }
+    .orb.b { width: 240px; height: 240px; background: rgba(255,180,210,0.5); right: 5%; bottom: -60px; animation-delay: 2s; }
+    .orb.c { width: 140px; height: 140px; background: rgba(180,255,180,0.6); left: 60%; top: 60%; animation-delay: 4s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(15px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(12, 14, 28, 0.6);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .brand .logo {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.3);
+      display: inline-block;
+      box-shadow: inset 0 0 10px rgba(255,255,255,.25);
+    }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: transform .4s cubic-bezier(.2,.7,0,1), background .4s;
+      font-size: 14px;
+    }
+    nav a:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.14);
+    }
+
+    main {
+      position: relative;
+      padding: 40px 20px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .glass {
+      background: var(--bg1);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: saturate(1.2) blur(12px);
+      -webkit-backdrop-filter: saturate(1.2) blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: center;
+      padding: 40px 0;
+    }
+
+    .title {
+      font-size: 6rem;
+      line-height: 0.95;
+      font-weight: 800;
+      letter-spacing: .5px;
+      margin: 0;
+      background: linear-gradient(135deg, #e8f0ff 0%, #b8e0ff 40%, #a2f0c7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: pop 0.9s ease-out both;
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: var(--muted);
+      margin: 6px 0 0;
+      opacity: 0.95;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.95); opacity: 0; }
+      60% { transform: scale(1.02); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .creation {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.12);
+      font-size: 0.95rem;
+      color: #eaf5ff;
+      animation: bounceIn 1s ease-out both;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(-20px); opacity: 0; }
+      60% { transform: translateY(6px); opacity: 1; }
+      100% { transform: translateY(0); }
+    }
+
+    .section {
+      margin-top: 40px;
+    }
+
+    h2.section-title {
+      font-size: 2rem;
+      margin: 0 0 14px;
+      letter-spacing: .4px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .title { font-size: 4rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 120px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      backdrop-filter: saturate(1.2) blur(8px);
+      -webkit-backdrop-filter: saturate(1.2) blur(8px);
+      transition: transform .4s cubic-bezier(.2,.7,0,1), box-shadow .4s;
+      box-shadow: 0 8px 20px rgba(0,0,0,.15);
+      animation: bounceInUp 0.9s both;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 14px 28px rgba(0,0,0,.25);
+    }
+    .card .card-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin: 0 0 6px;
+    }
+    .card .card-desc {
+      font-size: .95rem;
+      color: #e9f1ff;
+    }
+
+    @keyframes bounceInUp {
+      0% { transform: translateY(20px); opacity: 0; }
+      60% { transform: translateY(-6px); opacity: 1; }
+      100% { transform: translateY(0); }
+    }
+
+    /* footer */
+    footer {
+      margin-top: 60px;
+      padding: 28px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: #d6e4ff;
+      border-top: 1px solid rgba(255,255,255,.15);
+      background: rgba(10,12,28,.7);
+      backdrop-filter: blur(6px);
+    }
+    .github-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 10px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.35);
+      color: #fff; text-decoration: none;
+      transition: transform .25s;
+    }
+    .github-icon:hover { transform: translateY(-2px) scale(1.05); }
+    .credit-text { font-size: .95rem; }
+
+    /* accessibility helpers */
+    :focus-visible { outline: 2px solid #7bdcff; outline-offset: 2px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <span class="orb a" aria-hidden="true"></span>
+  <span class="orb b" aria-hidden="true"></span>
+  <span class="orb c" aria-hidden="true"></span>
+
+  <header>
+    <div class="brand">
+      <span class="logo" aria-label="Logo"></span>
+      <strong style="letter-spacing:.5px;font-size:1.05rem;color:#e9f1ff;text-transform:uppercase;">amirabolfazle</strong>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="glass hero" aria-label="Introduction">
+      <h1 class="title" style="margin:0; padding:0;">amirabolfazle</h1>
+      <p class="subtitle" style="margin:0;">
+        A tiny, glassy portfolio showcasing ideas, experiments, and autogen code vibes.
+      </p>
+      <div class="creation" role="note" aria-label="Creation time">
+        Creation time: 2025-09-26 22:34:46
+      </div>
+    </section>
+
+    <section id="about" class="section glass" aria-label="About">
+      <h2 class="section-title" style="margin-top:8px;">About</h2>
+      <p style="color:#e9f2ff; line-height:1.6; margin:0 0 6px;">
+        This is a single-file, glassmorphism-inspired portfolio with subtle bounce animations.
+        It demonstrates a compact, animated, responsive layout without external dependencies.
+      </p>
+    </section>
+
+    <section id="projects" class="section glass section" aria-label="Projects">
+      <h2 class="section-title">Projects</h2>
+      <div class="grid" role="list">
+        <article class="card" role="listitem" style="--i:0;">
+          <div>
+            <div class="card-title">Project One</div>
+            <div class="card-desc">A small UI utility with glassy aesthetics and tiny interactions.</div>
+          </div>
+          <span aria-label="badge" style="font-size:12px; color:#d3e7ff; opacity:.8;">Glass UI</span>
+        </article>
+
+        <article class="card" role="listitem" style="--i:1;">
+          <div>
+            <div class="card-title">Project Two</div>
+            <div class="card-desc">Animation-driven micro-frontend concept with bounce on mount.</div>
+          </div>
+          <span aria-label="badge" style="font-size:12px; color:#d3e7ff; opacity:.8;">Animation</span>
+        </article>
+
+        <article class="card" role="listitem" style="--i:2;">
+          <div>
+            <div class="card-title">Project Three</div>
+            <div class="card-desc">Experimental code generator templates in a single file.</div>
+          </div>
+          <span aria-label="badge" style="font-size:12px; color:#d3e7ff; opacity:.8;">Templates</span>
+        </article>
+
+        <article class="card" role="listitem" style="--i:3;">
+          <div>
+            <div class="card-title">Project Four</div>
+            <div class="card-desc">Minimalist gallery with glass panels and parallax glow.</div>
+          </div>
+          <span aria-label="badge" style="font-size:12px; color:#d3e7ff; opacity:.8;">Gallery</span>
+        </article>
+
+        <article class="card" role="listitem" style="--i:4;">
+          <div>
+            <div class="card-title">Project Five</div>
+            <div class="card-desc">Small component library lean on accessibility and motion.</div>
+          </div>
+          <span aria-label="badge" style="font-size:12px; color:#d3e7ff; opacity:.8;">Library</span>
+        </article>
+
+        <article class="card" role="listitem" style="--i:5;">
+          <div>
+            <div class="card-title">Project Six</div>
+            <div class="card-desc">Glossy cards with hover polish and subtle springy feel.</div>
+          </div>
+          <span aria-label="badge" style="font-size:12px; color:#d3e7ff; opacity:.8;">Polish</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section glass section" aria-label="Contact">
+      <h2 class="section-title">Contact</h2>
+      <p style="color:#e9f2ff; margin:0 0 8px;">
+        Want to collaborate or chat about glassy UX and animation? Reach out!
+      </p>
+      <form action="#" onsubmit="return false;" style="display:flex; gap:12px; flex-wrap:wrap;">
+        <input aria-label="Your name" placeholder="Your name" style="flex:1 1 180px; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.2); color:#fff;">
+        <input aria-label="Email" type="email" placeholder="Email" style="flex:1 1 180px; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.2); color:#fff;">
+        <textarea aria-label="Message" placeholder="Your message" rows="4" style="flex:1 1 100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.2); color:#fff;"></textarea>
+        <button type="submit" style="padding:12px 16px; border-radius:8px; border:0; background: #6fb7ff; color:white; cursor:pointer;">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer aria-label="Site footer">
+    <a class="github-icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="display:block;">
+        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.523 2 12.006c0 4.423 2.865 8.168 6.839 9.488.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.704-2.782.605-3.369-1.419-3.369-1.419-.454-1.158-1.11-1.468-1.11-1.468-.909-.623.083-.611.083-.611 1.005.086 1.532 1.036 1.532 1.036.892 1.532 2.341 1.089 2.91.834.091-.648.35-1.095.636-1.347-2.221-.252-4.555-1.109-4.555-4.936 0-1.088.388-1.977 1.026-2.676-.103-.253-.447-1.27.098-2.647 0 0 .84-.269 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.852.003 1.706.115 2.506.337 1.911-1.296 2.75-1.026 2.75-1.026.546 1.378.203 2.394.1 2.647.64.7 1.028 1.594 1.028 2.686 0 3.853-2.336 4.69-4.566 4.938.359.31.679.92.679 1.855 0 1.338-.012 2.416-.012 2.746 0 .268.178.58.687.482A10.007 10.007 0 0 0 22 12.006C22 6.523 17.523 2 12 2Z" clip-rule="evenodd"/>
+      </svg>
+    </a>
+    <span class="credit-text">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple enter-animations for sections when they come into view
+    (function(){
+      const sections = document.querySelectorAll('.glass');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.style.animationPlayState = 'running';
+            entry.target.style.opacity = '1';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: "0px 0px -10% 0px", threshold: 0.15 });
+      sections.forEach(sec => {
+        // Start hidden
+        sec.style.opacity = '0';
+        // staggered reveal
+        sec.style.animation = 'fadeIn 0.6s ease-out forwards';
+        // define keyframe if not present
+        const styleSheet = document.styleSheets[0];
+        if (!Array.from(styleSheet.cssRules).some(r => r.name === 'fadeIn')) {
+          styleSheet.insertRule('@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }', styleSheet.cssRules.length);
+        }
+        observer.observe(sec);
+      });
+    })();
+  </script>
+</body>
+</html>
