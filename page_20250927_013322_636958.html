@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --bg-soft: #111522;
+      --fg: #e5e7eb;
+      --muted: #a3a3a3;
+      --accent: #7c3aed;
+      --accent2: #22d3ee;
+      --card: rgba(14, 18, 32, 0.8);
+      --border: rgba(255,255,255,0.08);
+    }
+
+    /* Dark mode base */
+    html, body {
+      height: 100%;
+      background: radial-gradient(circle at 20% -10%, rgba(124,58,237,0.15), transparent 40%),
+                  radial-gradient(circle at 100% 100%, rgba(2,132,199,0.12), transparent 40%),
+                  linear-gradient(#0b0f1a, #0b0f1a);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Global layout */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 28px;
+      background: rgba(10,12,23,0.75);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #e8eaf0;
+    }
+
+    .orb {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg, #6ee7b7, #06b6d4, #8b5cf6, #f472b6, #6ee7b7);
+      box-shadow: 0 0 22px rgba(124,58,237,0.6);
+      animation: spin 8s linear infinite;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    nav a {
+      color: #d1d5db;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+    nav a:hover { opacity: 1; color: #fff; }
+
+    main {
+      position: relative;
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px 60px;
+      overflow: hidden;
+    }
+
+    /* Decorative rotating shapes in the background */
+    .rotating-shapes {
+      position: absolute;
+      width: 1200px;
+      height: 1200px;
+      left: 50%;
+      top: -100px;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,0.4), transparent 40%), transparent;
+      filter: blur(0.2px);
+      animation: rotateShape infinite linear;
+    }
+    .shape.s1 {
+      width: 520px; height: 520px; left: -150px; top: 110px;
+      animation-duration: 28s;
+    }
+    .shape.s2 {
+      width: 420px; height: 420px; right: -120px; bottom: 140px;
+      animation-duration: 22s;
+      background: radial-gradient(circle at 60% 40%, rgba(2,132,199,0.4), transparent 40%), transparent;
+    }
+    @keyframes rotateShape {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero {
+      position: relative;
+      width: min(1000px, 92%);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      text-align: center;
+    }
+
+    .card {
+      padding: 28px;
+      border-radius: 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      transform: rotate(-1.5deg);
+      animation: cardSwing 8s ease-in-out infinite;
+    }
+
+    @keyframes cardSwing {
+      0% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+      100% { transform: rotate(-2deg); }
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 4vw + 1rem, 4.8rem);
+      line-height: 1.05;
+      margin: 0 0 8px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #ffffff 0%, #93c5fd 60%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .tagline {
+      color: #d1d5db;
+      font-size: 1.15rem;
+      margin: 0 auto;
+      max-width: 720px;
+      opacity: 0.95;
+    }
+
+    .cta-row {
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .cta-row button {
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%);
+      color: #041016;
+      box-shadow: 0 6px 20px rgba(59,130,246,0.4);
+    }
+
+    .cta-row button.secondary {
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+      color: #e5e7eb;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: none;
+      padding: 12px 18px;
+    }
+
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .creation-time .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #34d399;
+      box-shadow: 0 0 8px #34d399;
+      display: inline-block;
+    }
+
+    .footer-spacer { height: 20px; }
+
+    .site-footer {
+      padding: 28px;
+      text-align: center;
+      color: #cbd5e1;
+      border-top: 1px solid var(--border);
+      background: rgba(2,6,23,0.6);
+    }
+
+    .footer-links {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #a5b4fc;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-links svg { display: inline-block; vertical-align: middle; fill: currentColor; }
+
+    .footer-text {
+      display: inline-block;
+      margin-left: 10px;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    @media (min-width: 700px) {
+      main { padding-top: 80px; }
+      .hero { grid-template-columns: 1fr; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Site header">
+    <div class="logo" aria-label="Site logo">
+      <span class="orb" aria-label="Rotating orb"></span>
+      <span>amirabolfazle</span>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="#intro">Intro</a>
+      <a href="#features">Features</a>
+      <a href="#footer" aria-label="Footer">Footer</a>
+    </nav>
+  </header>
+
+  <div class="rotating-shapes" aria-hidden="true">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+
+  <main id="intro" class="hero" role="main">
+    <section class="card" aria-label="Hero card">
+      <h1>amirabolfazle</h1>
+      <p class="tagline">
+        A stunning, dark-mode landing page with rotating effects and a clean, modern aesthetic.
+        Dive into smooth motion, depth, and a focus on clarity.
+      </p>
+      <div class="creation-time" aria-label="Creation time">
+        <span class="dot" aria-hidden="true"></span>
+        Creation time: 2025-09-27 01:32:55
+      </div>
+      <div class="cta-row" id="cta">
+        <button type="button" aria-label="Get started">Get started</button>
+        <button type="button" class="secondary" aria-label="Learn more">Learn more</button>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="site-footer" role="contentinfo">
+    <a class="footer-links" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-label="GitHub Icon" role="img" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.83 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.12-1.52-1.12-1.52-.92-.64.07-.63.07-.63 1.02.07 1.56 1.05 1.56 1.05.9 1.57 2.36 1.11 2.93.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.15-4.56-5.12 0-1.13.39-2.05 1.03-2.77-.1-.27-.45-1.38.1-2.87 0 0 .84-.27 2.75 1.05a9.2 9.2 0 012.5-.34c.85 0 1.7.12 2.5.34 1.9-1.32 2.75-1.05 2.75-1.05.56 1.49.2 2.6.1 2.87.64.72 1.03 1.64 1.03 2.77 0 3.98-2.34 4.85-4.57 5.11.36.31.69.92.69 1.87 0 1.35-.01 2.44-.01 2.77 0 .27.18.6.69.49A10.01 10.01 0 0022 12.26C22 6.58 17.52 2 12 2z" clip-rule="evenodd"/>
+      </svg>
+      autogen-code
+    </a>
+    <span class="footer-text">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
