@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg-alt: #111522;
+      --card: rgba(20, 24, 32, 0.92);
+      --text: #e6e6e6;
+      --muted: #b5c2d4;
+      --accent: #7c3aed;
+      --accent2: #22d3ee;
+      --shadow: 0 8px 24px rgba(0,0,0,.5);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(circle at 20% 0%, rgba(24, 24, 48, 0.6) 0%, transparent 40%), 
+                  radial-gradient(circle at 80% 0%, rgba(0, 0, 0, 0.4) 0%, transparent 40%), 
+                  var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* Animated ambient background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -20vh;
+      left: -10vw;
+      width: 120vw;
+      height: 60vh;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.25), transparent 40%),
+                  radial-gradient(circle at 80% 60%, rgba(2, 132, 199, 0.25), transparent 40%);
+      filter: blur(60px);
+      z-index: 0;
+      animation: drift 16s infinite linear;
+    }
+    @keyframes drift {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-20px, 20px) scale(1.05); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem 4rem;
+    }
+
+    header.hero {
+      min-height: 68vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 6rem 0 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glassy, animated title */
+    h1.title {
+      font-size: clamp(2.8rem, 6vw + 1rem, 7rem);
+      line-height: 1.05;
+      margin: 0;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #f472b6 0%, #a78bfa 40%, #60a5fa 70%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 4px 20px rgba(124,58,237,.25);
+      animation: glow 6s infinite alternate;
+    }
+    @keyframes glow {
+      0% { filter: drop-shadow(0 0 6px rgba(124,58,237,.4)); transform: scale(1); }
+      100% { filter: drop-shadow(0 0 14px rgba(96,165,250,.6)); transform: scale(1.02); }
+    }
+
+    .tagline {
+      margin-top: .75rem;
+      font-size: 1.05rem;
+      color: var(--muted);
+      letter-spacing: .4px;
+    }
+
+    .creation-time {
+      margin-top: 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .95rem;
+      color: #93c5fd;
+      opacity: .95;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      display: inline-block;
+      background: rgba(2,6,23,.4);
+      border: 1px solid rgba(99, 102, 241, .25);
+    }
+
+    /* Cards grid with zoom on hover */
+    main.content {
+      padding-top: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.75rem;
+      align-items: stretch;
+      perspective: 1000px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.05);
+      transform: translateZ(0);
+      transition: transform 0.5s cubic-bezier(.2,.8,.2,1), box-shadow 0.5s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 20px 60px rgba(0,0,0,.65);
+    }
+
+    .card h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* subtle float for a nicer feel on all cards */
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+      100% { transform: translateY(0); }
+    }
+    .card { animation: floaty 9s ease-in-out infinite; }
+
+    /* footer with GitHub link and author text */
+    footer.site-footer {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 1.25rem 0;
+      text-align: center;
+      color: var(--muted);
+      margin-top: 2rem;
+      background: rgba(2,6,23,.7);
+    }
+
+    .footer-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .25rem .5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #a5f3fc;
+    }
+
+    .footer-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    a.footer-link {
+      color: #a5f3fc;
+      text-decoration: none;
+      transition: color .25s ease;
+    }
+    a.footer-link:hover {
+      color: #e0f2fe;
+    }
+
+    /* prefers-reduced-motion handling */
+    @media (prefers-reduced-motion: reduce) {
+      html:focus-within {
+        scroll-behavior: auto;
+      }
+      .card { transition: none; animation: none; }
+      .hero::before { animation: none; }
+    }
+
+    /* small responsive typography adjustments */
+    @media (max-width: 520px) {
+      h1.title { font-size: clamp(2.4rem, 8vw, 5rem); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero" aria-label="Intro">
+      <div>
+        <h1 class="title">amirabolfazle</h1>
+        <p class="tagline">A fancy animated personal page with a dark theme and zoom effects.</p>
+        <div class="creation-time" aria-label="creation-time">Creation time: 2025-09-27 03:24:38</div>
+      </div>
+    </header>
+
+    <main class="content container" role="main">
+      <section class="grid" aria-label="sections">
+        <article class="card" tabindex="0">
+          <h3>About</h3>
+          <p>Hi there! This is a polished, dark-mode personal page example featuring subtle zoom on hover and animated accents.</p>
+        </article>
+
+        <article class="card" tabindex="0">
+          <h3>Projects</h3>
+          <p>Links and quick glimpses of work. This area can host project cards with hover zoom effects to highlight details.</p>
+        </article>
+
+        <article class="card" tabindex="0">
+          <h3>Contact</h3>
+          <p>Feel free to reach out. You can adapt this page to include contact forms or social links.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="GitHub repository">
+        <span class="footer-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-label="GitHub icon">
+            <path d="M12 0C5.37 0 0 5.373 0 12a12 12 0 008.207 11.385c.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.043-3.338.726-4.042-1.61-4.042-1.61-.546-1.388-1.333-1.758-1.333-1.758-1.089-.745.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.306.76-1.606-2.665-.302-5.466-1.335-5.466-5.932 0-1.31.468-2.381 1.235-3.221-.125-.303-.535-1.523.118-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 016 0C17.991 3.02 19 3.343 19 3.343c.653 1.653.243 2.873.119 3.176.77.84 1.234 1.911 1.234 3.221 0 4.61-2.804 5.625-5.476 5.923.43.37.815 1.102.815 2.222 0 1.606-.015 2.898-.015 3.296 0 .32.216.695.825.576A12.003 12.003 0 0024 12c0-6.627-5.373-12-12-12z"/>
+          </svg>
+        </span>
+        GitHub
+      </a>
+      <span>• Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
