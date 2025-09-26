@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg2: #0b1022;
+      --fg: #e8f0ff;
+      --neon: #22ffe2;
+      --neon2: #9d5cff;
+      --card: rgba(255,255,255,0.08);
+      --border: rgba(0,255,230,.55);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% 0%, rgba(0,255,200,0.15), transparent 40%),
+                  radial-gradient(circle at 90% 10%, rgba(153,0,255,0.15), transparent 40%),
+                  linear-gradient(135deg, #020202 0%, #04040a 50%, #020202 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 100vmax;
+      height: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, transparent, rgba(0,255,230,.8), transparent);
+      filter: blur(0.5px);
+      animation: glow 6s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before { top: 8%; }
+    body::after { bottom: 8%; animation-direction: reverse; }
+
+    @keyframes glow {
+      0% { opacity: .0; transform: translateX(-50%) translateY(0) scaleX(0.9); }
+      50% { opacity: .7; transform: translateX(-50%) translateY(0) scaleX(1.0); }
+      100% { opacity: .0; transform: translateX(-50%) translateY(0) scaleX(0.9); }
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; position: relative; z-index: 1; }
+
+    header.brand {
+      padding: 2.5rem 0 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+    header.brand h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      letter-spacing: .4rem;
+      color: #0ff;
+      text-transform: lowercase;
+      text-shadow:
+        0 0 6px #0ff,
+        0 0 14px #0ff,
+        0 0 28px #00f7ff,
+        0 0 40px #0ff;
+    }
+    header.brand .creation {
+      display: inline-block;
+      margin-top: .75rem;
+      padding: .25rem .6rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .8rem;
+      color: #aaf;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.4);
+      box-shadow: 0 0 8px rgba(0,255,255,.4);
+      text-shadow: 0 0 8px rgba(0,255,255,.8);
+      background: rgba(2,0,15,.4);
+    }
+
+    nav.main-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: .5rem 0 2rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #bff;
+      text-decoration: none;
+      padding: .5rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,230,.4);
+      background: rgba(0,0,0,.15);
+      transition: transform .2s ease, background .3s ease;
+    }
+    nav a:hover { transform: translateY(-2px); background: rgba(0,255,230,.25); }
+
+    section.section {
+      padding: 2rem 0 4rem;
+    }
+    section.section h2 {
+      font-size: 1.4rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin: 0 0 1rem;
+      color: #8af;
+      text-shadow: 0 0 8px rgba(0,255,230,.8);
+      display: inline-block;
+      border-bottom: 2px solid rgba(0,255,230,.4);
+      padding-bottom: .25rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .card {
+      position: relative;
+      padding: 1.1rem;
+      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid rgba(0,255,230,.4);
+      box-shadow: 0 6px 20px rgba(0,0,0,.4);
+      overflow: hidden;
+      min-height: 140px;
+      transition: transform .25s ease, box-shadow .25s ease;
+      animation: bounce 2s infinite;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,.5); }
+
+    .card .title {
+      font-size: 1.1rem;
+      margin: 0 0 .25rem;
+      color: #d6fcff;
+      text-shadow: 0 0 8px rgba(0,255,230,.9);
+    }
+    .card .desc {
+      font-size: .92rem;
+      color: #b6e3ff;
+    }
+    .icon {
+      position: absolute;
+      right: -22px;
+      top: -22px;
+      width: 120px; height: 120px;
+      opacity: .25;
+      transform: rotate(15deg);
+      filter: saturate(1.2);
+    }
+    .card .tag {
+      position: absolute;
+      left: -40px;
+      bottom: -40px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,255,230,.6);
+      animation: pulse 4s infinite;
+      pointer-events: none;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity:.5; }
+      50% { transform: scale(1.0); opacity:1; }
+      100% { transform: scale(0.8); opacity:.5; }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .neon {
+      color: #7ff;
+      text-shadow: 0 0 6px rgba(0,255,230,.6), 0 0 14px rgba(0,255,230,.9), 0 0 28px rgba(0,255,230,.9);
+    }
+
+    .footer {
+      padding: 2rem 0;
+      text-align: center;
+      color: #a6f3ff;
+      background: linear-gradient(to top, rgba(2,0,15,.95), rgba(2,0,15,.75) 60%, rgba(0,0,0,0));
+      border-top: 1px solid rgba(0,255,230,.2);
+      position: relative;
+      z-index: 1;
+    }
+    .footer a {
+      color: #a6f3ff;
+      text-decoration: none;
+      margin: 0 .5rem;
+      display: inline-flex; align-items: center; gap: .4rem;
+    }
+    .footer svg { vertical-align: middle; fill: currentColor; width: 1em; height: 1em; }
+
+    @media (max-width: 600px) {
+      header.brand { padding: 1.5rem 0 1rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="brand container" aria-label="Site header">
+    <h1>amirabolfazle</h1>
+    <div class="creation" aria-label="Creation time">Creation time: 2025-09-27 02:33:26</div>
+  </header>
+
+  <nav class="container main-nav" aria-label="Main navigation">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="about" class="section container" aria-label="About me">
+    <h2 class="neon" style="font-weight:700; margin-bottom:.75rem;">About</h2>
+    <p style="color:#cdeaff; line-height:1.6; max-width: 700px;">
+      I’m amirabolfazle — a developer who loves creating vibrant, neon-lit experiences
+      on the web. This single-file portfolio highlights a few of my personal projects, with a playful bounce and glow.
+    </p>
+  </section>
+
+  <section id="projects" class="section container" aria-label="Projects">
+    <h2 class="neon" style="margin-bottom:.75rem;">Projects</h2>
+    <div class="grid" role="list">
+      <article class="card" role="listitem" aria-label="AutoGen Code project">
+        <svg class="icon" viewBox="0 0 64 64" width="120" height="120" aria-label="bolt icon" focusable="false">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop stop-color="#00ffd5"/>
+              <stop offset="1" stop-color="#0066ff"/>
+            </linearGradient>
+          </defs>
+          <path d="M31 2 L5 28 h14 l0 25 12-15h-6l15-18z" fill="url(#g1)"/>
+        </svg>
+        <div class="tag" aria-hidden="true"></div>
+        <div class="content">
+          <h3 class="title" style="margin:0 0 .25rem; font-size:1.05rem; color:#d6faff;">AutoGen Code</h3>
+          <p class="desc" style="margin:0; color:#bdeaff;">A tiny helper that scaffolds code blocks with neon flair.</p>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" aria-label="Neon Portfolio project">
+        <svg class="icon" viewBox="0 0 64 64" width="120" height="120" aria-label="spark icon" focusable="false">
+          <defs>
+            <linearGradient id="g2" x1="0" x2="1" y1="0" y2="0">
+              <stop stop-color="#28f5ff"/>
+              <stop offset="1" stop-color="#9b5cff"/>
+            </linearGradient>
+          </defs>
+          <path d="M32 6 L38 24 L54 28 L40 38 L44 54 L32 46 L20 54 L24 38 L10 28 L26 24 Z" fill="url(#g2)"/>
+        </svg>
+        <div class="tag" aria-hidden="true" style="animation-delay:.2s"></div>
+        <div class="content">
+          <h3 class="title" style="margin:0 0 .25rem; font-size:1.05rem; color:#d6faff;">Neon Portfolio</h3>
+          <p class="desc" style="margin:0; color:#bdeaff;">A glowing, animated personal site sample.</p>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" aria-label="Bounce UI project">
+        <svg class="icon" viewBox="0 0 64 64" width="120" height="120" aria-label="bounce icon" focusable="false">
+          <circle cx="32" cy="32" r="16" fill="url(#g3)"/>
+          <defs>
+            <linearGradient id="g3" x1="0" x2="1" y1="0" y2="1">
+              <stop stop-color="#00ffea"/>
+              <stop offset="1" stop-color="#00aaff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="tag" aria-hidden="true" style="animation-delay:.4s"></div>
+        <div class="content">
+          <h3 class="title" style="margin:0 0 .25rem; font-size:1.05rem; color:#d6faff;">Bounce UI</h3>
+          <p class="desc" style="margin:0; color:#bdeaff;">Playful, kinetic user interface components.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" class="section container" aria-label="Contact">
+    <h2 class="neon" style="margin-bottom:.75rem;">Contact</h2>
+    <p style="color:#cdeaff; max-width: 700px;">
+      Feel free to reach out for collaborations or discussions about neon-inspired web experiences.
+      This is a single-file showcase—compact, fast, and expressive.
+    </p>
+  </section>
+
+  <footer class="footer" role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" aria-label="GitHub repository">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" fill="currentColor">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.206 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.01-2.04-2 .37-2.53-.49-2.53-.49-.36-.92-.88-1.17-.88-1.17-.72-.49.055-.48.055-.48.8.056 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.37.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.14 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+    </a>
+    <span style="margin-left:.5rem;">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    (function(){
+      // Simple enhancement: ensure the neon header remains readable on load
+      const root = document.documentElement;
+      if (root) {
+        // noop placeholder for any future dynamic glow tweaks
+      }
+    })();
+  </script>
+</body>
+</html>
