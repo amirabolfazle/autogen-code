@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --glass: rgba(255,255,255,0.14);
+      --glass-border: rgba(255,255,255,0.25);
+      --text: #e6f2ff;
+      --muted: rgba(230,246,255,.8);
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--text);
+      background: #0a0f1e;
+      overflow-x: hidden;
+    }
+
+    /* animated glassy background */
+    .bg {
+      position: fixed; inset: 0; z-index: -1;
+      background: radial-gradient(circle at 20% 0%, rgba(100,180,255,.14), transparent 40%),
+                  radial-gradient(circle at 80% 100%, rgba(180,120,255,.14), transparent 40%),
+                  linear-gradient(135deg, #0a0f1e 0%, #0a0f1e 100%);
+      filter: saturate(110%);
+      animation: drift 28s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.04); }
+    }
+
+    header.app-header {
+      display: flex; justify-content: center; padding: 2.2rem 1rem;
+      position: relative; z-index: 2;
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      max-width: 1100px;
+      width: 100%;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      color: var(--text);
+      text-align: center;
+    }
+
+    /* zoom-in on load for hero feel */
+    @keyframes zoomIn {
+      0% { transform: scale(0.98); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .hero-stage { animation: zoomIn 1.2s cubic-bezier(.22,.61,.36,1) both; }
+
+    h1 {
+      margin: 0 0 .5rem;
+      font-size: clamp(2.4rem, 4vw + 1rem, 5rem);
+      line-height: 1.05;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #e6f0ff 0%, #b8e1ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 18px rgba(200,210,255,.4);
+    }
+    .subtitle {
+      margin: .25rem auto 1rem;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .45rem .8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.32);
+      background: rgba(255,255,255,.12);
+      font-size: .85rem;
+      color: #eaffff;
+      margin-top: .75rem;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .creation-time .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #7bd4ff; display: inline-block;
+    }
+
+    main.grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      width: min(1100px, 92%);
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      padding: 1.6rem;
+      min-height: 170px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform .5s ease, background .5s ease;
+    }
+    .card:hover {
+      transform: scale(1.03);
+      background: rgba(255,255,255,0.15);
+    }
+    .card h3 { margin: 0 0 .4rem; font-size: 1.15rem; }
+    .card p, .card ul { margin: 0; color: #eaf4ff; font-size: .95rem; text-align: left; }
+    .card ul { padding-left: 1.15rem; }
+
+    footer.footer {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 1.4rem; margin-top: 2rem;
+      color: #cfe8ff;
+      flex-wrap: wrap;
+    }
+    a.icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.15);
+      color: #fff; text-decoration: none;
+      transition: transform .3s ease, background .3s ease;
+    }
+    a.icon:hover { transform: translateY(-2px) scale(1.06); background: rgba(255,255,255,.22); }
+
+    .footer .text { font-size: .95rem; opacity: .95; }
+
+    @media (max-width: 700px) {
+      .glass { padding: 1.4rem; }
+      .card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <header class="app-header" aria-label="Intro header">
+    <div class="glass hero-stage" style="max-width:1100px; width:100%;">
+      <h1>amirabolfazle</h1>
+      <div class="subtitle">Fully responsive animated HTML with glassmorphism and zoom effects</div>
+      <div class="creation-time" aria-label="Creation time chip">
+        <span class="dot" aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:#7bd4ff;display:inline-block;"></span>
+        <span>Creation time: 2025-09-27 03:06:15</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="grid" aria-label="Glass panels">
+    <section class="card" aria-label="What is this panel">
+      <h3>What is this?</h3>
+      <p>A clean, glassy interface with subtle motion. Hover to feel the zoom.</p>
+    </section>
+
+    <section class="card" aria-label="Features panel">
+      <h3>Features</h3>
+      <ul>
+        <li>Glassmorphism panels</li>
+        <li>Backdrop blur and translucency</li>
+        <li>Smooth zoom interactions</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-label="Create your own panel">
+      <h3>Create your own</h3>
+      <p>Copy this structure and adapt content for your project.</p>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo" aria-label="Footer">
+    <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub SVG Icon -->
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="display:block;">
+        <path d="M8 0C3.58 0 0 3.58 0 8a8.01 8.01 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2-.37-2.53-.49-2.53-.49-.36-.92-.88-1.17-.88-1.17-.72-.49.055-.48.055-.48.8.056 1.22.82 1.22.82.71 1.21 1.87.86 2.33.66.07-.52.28-.87.51-1.07-1.59-.18-3.26-.8-3.26-3.57 0-.79.28-1.43.74-1.93-.075-.18-.32-.93.07-1.94 0 0 .6-.19 1.97.74a6.85 6.85 0 0 1 1.79-.24c.61 0 1.22.08 1.79.24 1.37-.93 1.97-.74 1.97-.74.39 1.01.146 1.76.072 1.94.46.5.74 1.14.74 1.93 0 2.78-1.69 3.39-3.3 3.57.29.25.55.73.55 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+    </a>
+    <span class="text">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
