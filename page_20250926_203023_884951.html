@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #fff7ff;
+      --bg-2: #f7fff6;
+      --bg-3: #f7fbff;
+      --card: #ffffffcc;
+      --muted: #6b6b7a;
+      --accent-1: #ffd6e0; /* pastel pink */
+      --accent-2: #d6fff0; /* pastel mint */
+      --accent-3: #d6e7ff; /* pastel blue */
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 8px 30px rgba(37, 46, 66, 0.08);
+      --radius: 14px;
+      --max-width: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(120deg,var(--bg-1), var(--bg-2) 40%, var(--bg-3) 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color: #222;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      transition:background 0.6s ease;
+      overflow-x:hidden;
+    }
+
+    /* Animated floating blobs */
+    .scene{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .blob{
+      position:absolute;
+      filter:blur(40px) saturate(120%);
+      opacity:0.9;
+      transform-origin:center;
+      mix-blend-mode:lighten;
+      animation:float 10s ease-in-out infinite;
+    }
+    .blob.one{
+      width:420px;height:420px;
+      background: radial-gradient(circle at 30% 30%, var(--accent-1), transparent 40%);
+      left:-8%;
+      top:-6%;
+      animation-duration:14s;
+    }
+    .blob.two{
+      width:360px;height:360px;
+      background: radial-gradient(circle at 70% 70%, var(--accent-2), transparent 45%);
+      right:-6%;
+      top:10%;
+      animation-duration:18s;
+      animation-direction:reverse;
+    }
+    .blob.three{
+      width:500px;height:500px;
+      background: radial-gradient(circle at 50% 40%, var(--accent-3), transparent 40%);
+      right:-12%;
+      bottom:-8%;
+      animation-duration:20s;
+    }
+    @keyframes float{
+      0% {transform: translateY(0) scale(1) rotate(0deg);}
+      50% {transform: translateY(-20px) scale(1.05) rotate(6deg);}
+      100% {transform: translateY(0) scale(1) rotate(0deg);}
+    }
+
+    .container{
+      position:relative;
+      z-index:2;
+      width:100%;
+      max-width:var(--max-width);
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      border-radius:12px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    .brand{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .logo{
+      width:64px;height:64px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent-1),var(--accent-3));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#222;
+      box-shadow: 0 6px 20px rgba(30,30,40,0.06);
+      transform:translateZ(0);
+      transition:transform 0.36s ease, box-shadow 0.36s ease;
+    }
+    .logo:hover{transform:scale(1.06); box-shadow: 0 12px 36px rgba(30,30,40,0.09);}
+
+    h1{
+      margin:0;
+      font-size:clamp(18px, 2.6vw, 28px);
+      letter-spacing:-0.02em;
+      color:#222;
+    }
+    .meta{
+      color:var(--muted);
+      font-size:clamp(12px,1.6vw,14px);
+    }
+
+    main{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:22px;
+      align-items:start;
+    }
+
+    @media (max-width:900px){
+      main{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow);
+      transition:transform 0.6s cubic-bezier(.2,.9,.3,1), box-shadow 0.6s;
+      transform-origin:center;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .card.zoom-in{
+      transform:translateZ(0) scale(1.02);
+      box-shadow: 0 18px 50px rgba(30,30,50,0.09);
+    }
+
+    .hero{
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+    .avatar{
+      width:110px;height:110px;border-radius:18px;
+      background:linear-gradient(135deg,var(--accent-2),var(--accent-3));
+      display:flex;align-items:center;justify-content:center;
+      font-size:30px;font-weight:700;color:#123;
+      box-shadow: 0 8px 30px rgba(30,30,40,0.06);
+      transition: transform 0.6s;
+    }
+    .avatar:hover{transform:scale(1.06) rotate(-3deg);}
+
+    .intro{
+      flex:1;
+    }
+    .intro h2{
+      margin:0 0 8px 0;
+      font-size:clamp(20px,3vw,32px);
+      line-height:1.05;
+    }
+    .intro p{
+      margin:0;
+      color:var(--muted);
+    }
+
+    .features{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+    @media (max-width:560px){
+      .features{grid-template-columns:1fr}
+    }
+    .feature{
+      background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
+      padding:12px;
+      border-radius:10px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      transition:transform 0.5s ease, box-shadow 0.5s;
+      cursor:default;
+    }
+    .feature:hover{transform:translateY(-6px) scale(1.01); box-shadow:0 16px 40px rgba(20,20,30,0.06);}
+    .feature .icon{
+      width:44px;height:44px;border-radius:10px;
+      display:grid;place-items:center;font-weight:700;
+    }
+    .feature .title{font-size:14px;font-weight:600}
+    .feature .desc{font-size:12px;color:var(--muted)}
+
+    /* sidebar */
+    .sidebar{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .time{
+      font-weight:600;
+      font-size:14px;
+      color:#2b2b34;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .time small{color:var(--muted); font-weight:500; font-size:12px}
+
+    .preview{
+      height:220px;
+      border-radius:12px;
+      background: linear-gradient(135deg,var(--accent-3),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      color:#082;
+      font-weight:700;
+      font-size:18px;
+      box-shadow:0 14px 40px rgba(20,20,30,0.06);
+      transition:transform 0.6s cubic-bezier(.2,.9,.3,1);
+    }
+    .preview:hover{transform:scale(1.03)}
+    .cta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,#ffffff, rgba(255,255,255,0.85));
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(20,20,30,0.06);
+      transition:transform 0.22s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.ghost{
+      background:transparent;
+      border:1px solid rgba(30,30,40,0.06);
+    }
+
+    footer{
+      margin-top:8px;
+      padding:14px 18px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+      box-shadow: var(--shadow);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .footer-left{display:flex;gap:10px;align-items:center}
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:inherit;
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:background 0.18s, transform 0.18s;
+    }
+    .github-link:hover{transform:translateY(-4px); background:rgba(255,255,255,0.6)}
+    .github-icon{width:20px;height:20px;display:inline-block;vertical-align:middle}
+
+    /* subtle zoom-in on load using prefers-reduced-motion */
+    @media (prefers-reduced-motion: no-preference){
+      .card{transform:translateY(8px) scale(.998); animation:appear 650ms cubic-bezier(.2,.9,.3,1) both;}
+      @keyframes appear{
+        from{transform:translateY(20px) scale(.98); opacity:0}
+        to{transform:translateY(0) scale(1); opacity:1}
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="blob three"></div>
+  </div>
+
+  <div class="container" role="main">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">AB</div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="meta">Pastel themed responsive demo • animated zoom effects</div>
+        </div>
+      </div>
+      <nav aria-label="primary actions">
+        <button class="btn">Explore</button>
+        <button class="btn ghost">Contact</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="card content-card" id="contentCard">
+        <div class="hero">
+          <div class="avatar" aria-hidden="true">A</div>
+          <div class="intro">
+            <h2>Clean pastel interface with lively motion</h2>
+            <p>Fluid layout, animated blobs, and gentle zooms create a calm, playful experience across devices.</p>
+          </div>
+        </div>
+
+        <div class="features" style="margin-top:18px;">
+          <div class="feature">
+            <div class="icon" style="background:linear-gradient(135deg,var(--accent-1),#fff);width:44px;height:44px;border-radius:10px;display:grid;place-items:center">✦</div>
+            <div>
+              <div class="title">Responsive</div>
+              <div class="desc">Adapts seamlessly from tiny phones to wide screens.</div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="icon" style="background:linear-gradient(135deg,var(--accent-3),#fff);width:44px;height:44px;border-radius:10px;display:grid;place-items:center">⤢</div>
+            <div>
+              <div class="title">Animated</div>
+              <div class="desc">Subtle motion and zoom effects bring focus and delight.</div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="icon" style="background:linear-gradient(135deg,var(--accent-2),#fff);width:44px;height:44px;border-radius:10px;display:grid;place-items:center">⚑</div>
+            <div>
+              <div class="title">Accessible</div>
+              <div class="desc">Readable contrast and reduced-motion respect built in.</div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="icon" style="background:linear-gradient(135deg,#ffe4f0,#e6f8ff);width:44px;height:44px;border-radius:10px;display:grid;place-items:center">♺</div>
+            <div>
+              <div class="title">Customizable</div>
+              <div class="desc">Swap colors, speed, or scale to match your voice.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <div class="card" id="infoCard">
+          <div class="time" aria-live="polite">
+            <span>Creation time:</span>
+            <small>2025-09-26 20:29:34</small>
+          </div>
+
+          <div class="preview" style="margin-top:12px;">
+            Live Preview
+          </div>
+
+          <div style="margin-top:12px; display:flex; gap:8px; align-items:center; justify-content:space-between;">
+            <div class="cta">
+              <button class="btn">Download</button>
+              <button class="btn ghost">Share</button>
+            </div>
+            <div style="font-size:12px;color:var(--muted)">v1.0</div>
+          </div>
+        </div>
+
+        <div class="card" id="notesCard">
+          <div style="font-weight:700;margin-bottom:8px">Notes</div>
+          <div style="color:var(--muted); font-size:13px; line-height:1.4;">
+            Elements scale gently on hover and zoom in when revealed. Try resizing the window or tapping elements on mobile.
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg class="github-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 .5a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.2.7-3.8-1.5-3.8-1.5-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.7-.8 2-1.2.1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.2-3.3-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.4 1.2a11.6 11.6 0 016.1 0C18.3 4 19.3 4.3 19.3 4.3c.7 1.7.3 3 .1 3.3.8.9 1.2 2 1.2 3.3 0 4.6-2.7 5.6-5.3 5.9.4.4.7 1.1.7 2.2v3.2c0 .3.2.7.8.6A12 12 0 0012 .5z" fill="#1b1f23"/>
+          </svg>
+          <span>autogen-code</span>
+        </a>
+        <div style="color:var(--muted)">Created by amirabolfazle</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted)">Made with pastel vibes ✦</div>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      // Respect reduced motion preference
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // Simple intersection to add zoom-in when cards come into view
+      if (!reduced && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{
+            if (e.isIntersecting) {
+              e.target.classList.add('zoom-in');
+            } else {
+              e.target.classList.remove('zoom-in');
+            }
+          });
+        }, {threshold: 0.18});
+        document.querySelectorAll('.card').forEach(el=>io.observe(el));
+      } else {
+        // If reduced motion or no IO support, just reveal without extra motion
+        document.querySelectorAll('.card').forEach(el=>el.classList.add('zoom-in'));
+      }
+
+      // Tiny accessible focus ring for keyboard users
+      document.body.addEventListener('keydown', (e)=>{
+        if (e.key === 'Tab') document.documentElement.style.setProperty('--focus-visible', 'auto');
+      }, {once:true});
+    })();
+  </script>
+</body>
+</html>
