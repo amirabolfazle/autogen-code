@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg2: #111522;
+      --card: rgba(22, 25, 38, 0.92);
+      --text: #e9eefb;
+      --muted: #a6b3cc;
+      --accent1: #7c3aed;
+      --accent2: #14e0a8;
+      --glow: 0 0 40px rgba(92, 255, 230, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 15% 0%, rgba(124,58,237,.15), transparent 40%),
+                  radial-gradient(circle at 85% 100%, rgba(20,224,168,.15), transparent 40%),
+                  linear-gradient(#0b0f14, #0b0f14);
+      overflow-x: hidden;
+    }
+
+    /* Floating orbs for rotate effects */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb {
+      position: absolute;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      background: conic-gradient(from 180deg, rgba(124,58,237,.9), rgba(20,224,168,.9), rgba(244,114,182,.9), rgba(124,58,237,.9));
+      opacity: .55;
+      filter: blur(0.2px);
+      animation: spin 60s linear infinite;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Header / hero area */
+    header.intro {
+      position: relative;
+      text-align: center;
+      padding: 64px 20px 28px;
+      z-index: 1;
+    }
+
+    .brand {
+      font-size: clamp(2.6rem, 4vw + 1rem, 5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      margin: 0 0 8px;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #7c3aed, #14e0a8, #f472b6, #7c3aed);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradient 8s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .tagline {
+      color: var(--muted);
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+      opacity: .95;
+    }
+
+    .creation-time {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.88rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+      color: #d7e0f7;
+      margin-top: 8px;
+    }
+
+    /* Layout for content cards */
+    main {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+      perspective: 1000px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 22px;
+      min-height: 160px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .card:hover {
+      transform: rotateX(6deg) rotateY(-6deg) translateY(-6px);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      color: #e8ebff;
+    }
+
+    .card p {
+      margin: 0;
+      color: #cbd5e1;
+    }
+
+    /* Footer with GitHub icon and creator text */
+    footer.site-footer {
+      padding: 22px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.25);
+      color: #aab4c9;
+      margin-top: 40px;
+    }
+
+    .footer-link {
+      color: #e3e7ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+    }
+
+    .footer-link svg {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 520px) {
+      .creation-time { display: inline-block; margin-top: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <span class="orb" style="--size:260px; top:6%; left:-120px; animation-duration: 28s;"></span>
+    <span class="orb" style="--size:180px; bottom:14%; right:-60px; animation-duration: 34s; opacity:.6;"></span>
+    <span class="orb" style="--size:140px; top:50%; left:40%; animation-duration: 22s; opacity:.5;"></span>
+  </div>
+
+  <header class="intro" aria-label="Introduction">
+    <div class="brand" style="margin-bottom:6px;">amirabolfazle</div>
+    <p class="tagline">A personal space of code, curiosity, and creative vibes.</p>
+    <div class="creation-time" aria-label="Creation time badge">Creation time: 2025-09-27 03:21:14</div>
+  </header>
+
+  <main>
+    <section class="grid" aria-label="Highlights">
+      <article class="card" style="transform: rotateX(0);">
+        <h3>About</h3>
+        <p>Frontend developer exploring motion, UI polish, and delightful interactions.</p>
+      </article>
+      <article class="card" style="transform: rotateX(0);">
+        <h3>Projects</h3>
+        <p>Autogen code experiments, open-source contributions, and playful experiments with CSS animations.</p>
+      </article>
+      <article class="card" style="transform: rotateX(0);">
+        <h3>Skills</h3>
+        <p>HTML, CSS, JavaScript, React, CSS art, and a passion for readable, maintainable code.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub Repository">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" width="20" height="20">
+        <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58l-.02-2.54c-3.34.73-4.04-1.44-4.04-1.44-.55-1.41-1.34-1.79-1.34-1.79-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.82 2.81 1.29 3.49.99.11-.77.42-1.29.76-1.59-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.66 11.66 0 016 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.93.43.37.82 1.1.82 2.22l-.02 3.29c0 .31.21.69.83.58A12 12 0 0012 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+</body>
+</html>
