@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-a: rgba(255, 255, 255, 0.15);
+      --bg-b: rgba(255, 255, 255, 0.25);
+      --text: #eaf2ff;
+      --muted: #d7e2f9;
+      --glow: rgba(128, 180, 255, 0.65);
+      --border: rgba(255, 255, 255, 0.4);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(120,180,255,.25), transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(60,210,210,.25), transparent 40%),
+        linear-gradient(135deg, #0b1020 0%, #0a1220 60%, #0b1020 100%);
+      background-attachment: fixed;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app {
+      width: min(100%, 1100px);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      position: relative;
+    }
+
+    /* Glassy card */
+    .glass {
+      width: 100%;
+      max-width: 900px;
+      background: var(--bg-a);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 3rem;
+      text-align: center;
+      color: #f7faff;
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(115deg, rgba(255,255,255,.25), rgba(255,255,255,0) 40%),
+                  linear-gradient(225deg, rgba(0,0,0,.15), rgba(0,0,0,0) 40%);
+      filter: blur(40px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .title {
+      font-size: clamp(2.2rem, 4vw + 1rem, 4rem);
+      margin: 0 0 0.75rem;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #ffffff 0%, #d9eaff 50%, #c8f5dd 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 14px rgba(0,0,0,.15);
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: #dde8ff;
+      opacity: .95;
+      margin: 0 0 1rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      padding: 1.1rem;
+      border-radius: 16px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.28);
+      min-height: 120px;
+      text-align: left;
+      backdrop-filter: blur(6px);
+      color: #eef6ff;
+    }
+
+    .card h4 {
+      margin: 0 0 .5rem;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: #e7f0ff;
+      font-size: .95rem;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .9rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.45);
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .2s ease, background .3s ease;
+      margin-top: 0.75rem;
+      box-shadow: inset 0 0 0 rgba(255,255,255,0);
+    }
+    .cta:hover { transform: translateY(-1px); background: rgba(255,255,255,.22); }
+    .cta:active { transform: translateY(0); }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .95rem;
+      color: #d9e6ff;
+      opacity: .95;
+      margin-top: 0.75rem;
+    }
+
+    .footer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 0;
+      margin-top: 2rem;
+    }
+
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 1rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #eaf2ff;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(6px);
+    }
+
+    .footer svg {
+      width: 1.1em;
+      height: 1.1em;
+      fill: currentColor;
+    }
+
+    .footer span {
+      font-family: inherit;
+      font-size: .95rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 1s forwards;
+      opacity: 0;
+    }
+
+    .delay-1 { animation-delay: .2s; }
+    .delay-2 { animation-delay: .4s; }
+    .delay-3 { animation-delay: .6s; }
+    .delay-4 { animation-delay: .8s; }
+  </style>
+</head>
+<body>
+  <div class="app" aria-label="amirabolfazle landing">
+    <section class="glass fade-in delay-1" style="position:relative;">
+      <h1 class="title" style="margin-top:0;">amirabolfazle</h1>
+      <p class="subtitle" style="margin-top:0.25rem;">
+        A stunning landing page with glassmorphism and fade-in effects
+      </p>
+
+      <div class="features" aria-label="feature highlights">
+        <div class="card fade-in delay-2" style="min-height:auto;">
+          <h4>Glassmorphic UI</h4>
+          <p>Translucent layers with soft glow and blur for depth.</p>
+        </div>
+        <div class="card fade-in delay-3" style="min-height:auto;">
+          <h4>Fade-in Animations</h4>
+          <p>Elements gracefully appear as the page loads.</p>
+        </div>
+        <div class="card fade-in delay-4" style="min-height:auto;">
+          <h4>Creation Time</h4>
+          <p>2025-09-27 02:49:59</p>
+        </div>
+      </div>
+
+      <p class="creation fade-in delay-4" style="margin-top: 0.75rem;">
+        Creation time: 2025-09-27 02:49:59
+      </p>
+
+      <div style="margin-top:1rem; display:flex; justify-content:center;">
+        <a href="#" class="cta" aria-label="Get started">
+          Get started
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer fade-in delay-4" style="width:100%; text-align:center;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
+          <path d="M12 .5A12 12 0 0 0 0 12.5C0 18 4.4 22.5 9.6 23.5c.7.1 1-.3 1-1v-2.7c-3.9.8-4.7-1.7-4.7-1.7-.6-1.4-1.5-1.7-1.5-1.7-1.2-.9.1-.9.1-.9 1.3.1 2 .8 2.3 1.1 1.4 2.3 3.7 1.6 4.6 1.2.1-.9.5-1.6.9-2-3.1-.3-6.4-1.5-6.4-6.8 0-1.5.5-2.8 1.3-3.8-.1-.3-.6-1.6.1-3.3 0 0 1 .3 3.2 1.3A11.5 11.5 0 0 1 12 4.8c1.1 0 2.2.2 3.2.6 2.2-1 3.2-1.3 3.2-1.3.7 1.7.2 3 .1 3.3.9 1 1.3 2.2 1.3 3.8 0 5.3-3.3 6.5-6.4 6.8.5.4 1 1.3 1 2.7v3.9c0 .7.3 1.1 1 1 5.2-1 9.6-5.5 9.6-10.9C24 6.4 19.6 1 12 .5z" fill="currentColor"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
