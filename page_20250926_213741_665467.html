@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #0f2027;
+      --bg-2: #203a43;
+      --bg-3: #2c5364;
+      --accent-1: #ff7e5f;
+      --accent-2: #feb47b;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --text: #f6f7fb;
+      --muted: rgba(246,247,251,0.75);
+      --shadow: 0 8px 30px rgba(12,14,18,0.5);
+      --radius: 16px;
+    }
+
+    /* Basic reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 50%, var(--bg-3) 100%);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+
+    /* animated gradient overlay */
+    .gradient-anim{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      background: linear-gradient(45deg, rgba(255,126,95,0.06), rgba(254,180,123,0.04) 25%, rgba(99,102,241,0.04) 50%, rgba(0,0,0,0.03));
+      pointer-events:none;
+      animation: rotateGradient 18s linear infinite;
+      mix-blend-mode:overlay;
+    }
+    @keyframes rotateGradient{
+      0%{transform:rotate(0deg) scale(1)}
+      50%{transform:rotate(180deg) scale(1.02)}
+      100%{transform:rotate(360deg) scale(1)}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      gap:28px;
+      align-items:stretch;
+      animation:fadeInUp .9s ease both;
+    }
+
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(18px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    /* left panel: hero */
+    .hero{
+      flex:1.2;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:var(--radius);
+      padding:34px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      position:relative;
+      overflow:hidden;
+      min-height:300px;
+    }
+
+    .title{
+      font-size:clamp(28px,4vw,44px);
+      line-height:1.02;
+      letter-spacing:-0.02em;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      opacity:0;
+      animation:fadeIn .8s .15s both;
+    }
+    .title .logo{
+      width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:20px;box-shadow:0 6px 20px rgba(255,126,95,0.18);
+    }
+
+    .subtitle{
+      color:var(--muted);
+      margin-bottom:20px;
+      opacity:0;
+      animation:fadeIn .8s .3s both;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:18px;
+      opacity:0;
+      animation:fadeIn .8s .45s both;
+    }
+    .badge{
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      padding:10px 14px;border-radius:12px;font-size:13px;color:var(--muted);
+      display:inline-flex;align-items:center;gap:10px;
+      box-shadow: 0 6px 18px rgba(10,10,10,0.35);
+    }
+
+    .clock{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:13px;color:var(--muted);
+    }
+
+    /* right panel: cards */
+    .panel{
+      flex:0.8;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      min-width:260px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:18px;border-radius:14px;box-shadow:var(--shadow);
+      backdrop-filter: blur(6px);
+      opacity:0; transform:translateY(10px);
+      animation:fadeIn .8s .6s both;
+    }
+    .card.small{padding:12px;border-radius:12px}
+    .card h3{margin-bottom:8px;font-size:15px}
+    .card p{font-size:13px;color:var(--muted);line-height:1.45}
+
+    /* floating decorative shapes */
+    .float{
+      position:absolute;border-radius:14px;filter:blur(20px);opacity:.12;mix-blend-mode:screen;
+      animation:floatMove 8s ease-in-out infinite;
+    }
+    .float.one{width:220px;height:220px;right:-30px;top:-40px;background:linear-gradient(180deg,#ff7e5f,#feb47b);animation-duration:10s}
+    .float.two{width:160px;height:160px;left:-50px;bottom:-40px;background:linear-gradient(180deg,#63a4ff,#83eaf1);animation-duration:12s}
+    .float.three{width:90px;height:90px;right:18%;bottom:10%;background:linear-gradient(180deg,#a18cd1,#fbc2eb);animation-duration:9s}
+    @keyframes floatMove{
+      0%{transform:translateY(0) translateX(0) rotate(0deg)}
+      50%{transform:translateY(-18px) translateX(6px) rotate(8deg)}
+      100%{transform:translateY(0) translateX(0) rotate(0deg)}
+    }
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      opacity:0;
+      animation:fadeIn .8s .9s both;
+      z-index:1;
+    }
+    .footer-inner{
+      display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 18px rgba(8,10,14,0.35);
+    }
+
+    .github-link{
+      display:inline-flex;align-items:center;gap:8px;color:var(--text);text-decoration:none;
+      padding:6px;border-radius:8px;transition:transform .18s ease, background .18s ease;
+      background:transparent;
+    }
+    .github-link:hover{transform:translateY(-4px)}
+    .github-link svg{width:20px;height:20px;display:block;fill:var(--text)}
+
+    /* subtle CTA */
+    .cta{
+      margin-top:18px;
+      display:inline-flex;gap:12px;align-items:center;
+    }
+    .btn{
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      color:#fff;padding:10px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:600;box-shadow:0 10px 30px rgba(255,126,95,0.16);
+      transition:transform .16s ease, box-shadow .16s;
+    }
+    .btn:active{transform:translateY(2px);box-shadow:0 6px 16px rgba(255,126,95,0.12)}
+
+    /* animations for fade-in elements */
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(6px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    /* responsive */
+    @media (max-width:880px){
+      .wrap{flex-direction:column;padding:8px}
+      .panel{flex-direction:row;gap:12px;align-items:stretch}
+      .card{flex:1}
+      .float.one{display:none}
+    }
+    @media (max-width:520px){
+      body{padding:18px}
+      .title{font-size:22px}
+      .hero{padding:20px}
+      .wrap{gap:14px}
+    }
+
+    /* little reveal delay for children */
+    .meta .badge:nth-child(2){animation-delay:.48s}
+    .card:nth-child(2){animation-delay:.75s}
+    .card:nth-child(3){animation-delay:.9s}
+  </style>
+</head>
+<body>
+  <div class="gradient-anim" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="main-title">
+    <section class="hero" aria-labelledby="main-title">
+      <div class="float one" aria-hidden="true"></div>
+      <div class="float two" aria-hidden="true"></div>
+      <div class="float three" aria-hidden="true"></div>
+
+      <h1 id="main-title" class="title">
+        <span class="logo" aria-hidden="true">A</span>
+        amirabolfazle
+      </h1>
+
+      <p class="subtitle">A responsive animated landing demo with gradient theme and smooth fade-ins. Built to look crisp on any device.</p>
+
+      <div class="meta" role="group" aria-label="creation and meta">
+        <div class="badge" title="Creation time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M12 7V12L15 14" stroke="rgba(255,255,255,0.9)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0z" stroke="rgba(255,255,255,0.9)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="clock">Created: 2025-09-26 21:36:44</span>
+        </div>
+
+        <div class="badge" title="Theme">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M12 3v1M12 20v1M4.2 4.2l.7.7M19.1 19.1l.7.7M1 12h1M22 12h1M4.2 19.8l.7-.7M19.1 4.9l.7-.7" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" />
+          </svg>
+          <span>Gradient • Fade-in</span>
+        </div>
+      </div>
+
+      <div class="cta" role="group" aria-label="actions">
+        <button class="btn" onclick="pulse()">Pulse</button>
+        <a class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);box-shadow:none" href="#footer" aria-label="Jump to footer">Footer</a>
+      </div>
+    </section>
+
+    <aside class="panel" aria-labelledby="panel-title">
+      <div class="card">
+        <h3 id="panel-title">Responsive design</h3>
+        <p>Layouts adapt using flexible boxes and relative sizing. The gradient and decorative shapes scale or hide on smaller screens to keep clarity.</p>
+      </div>
+
+      <div class="card small" style="animation-delay:.8s">
+        <h3>Animations</h3>
+        <p>Subtle keyframe animations provide motion without distraction: floating shapes, gradient rotation, and fade-in reveals.</p>
+      </div>
+
+      <div class="card small" style="animation-delay:1s">
+        <h3>Accessible & lightweight</h3>
+        <p>SVG icons, CSS-only effects, and semantic structure reduce dependencies while preserving accessibility hints.</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer id="footer" aria-label="page footer">
+    <div class="footer-inner" role="contentinfo">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.74c0 4.93 3.19 9.1 7.61 10.57.56.1.77-.24.77-.54 0-.27-.01-1.15-.02-2.09-3.1.67-3.75-1.4-3.75-1.4-.5-1.27-1.22-1.61-1.22-1.61-1-.69.08-.68.08-.68 1.09.08 1.68 1.12 1.68 1.12.98 1.68 2.57 1.2 3.2.92.1-.72.38-1.2.69-1.48-2.47-.28-5.07-1.24-5.07-5.53 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.42.11-2.96 0 0 .95-.3 3.12 1.16a10.8 10.8 0 0 1 2.84-.38c.96 0 1.93.13 2.84.38 2.17-1.46 3.11-1.16 3.11-1.16.62 1.54.24 2.68.12 2.96.72.78 1.15 1.78 1.15 3 0 4.29-2.6 5.25-5.08 5.52.39.34.74 1.02.74 2.06 0 1.49-.01 2.69-.01 3.05 0 .3.2.65.78.54 4.41-1.47 7.6-5.64 7.6-10.57C23.25 5.48 18.27.5 12 .5z"/>
+        </svg>
+        <span style="font-size:13px;color:var(--muted)">Created by amirabolfazle</span>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // small interactive touch: pulse animation on hero
+    function pulse(){
+      const h = document.querySelector('.hero');
+      if(!h) return;
+      h.animate([
+        {transform:'scale(1)'},
+        {transform:'scale(1.015)'},
+        {transform:'scale(1)'}
+      ], {duration:420, easing:'cubic-bezier(.2,.9,.3,1)'});
+    }
+
+    // Reduced motion respect
+    (function(){
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        document.querySelectorAll('*').forEach(el=>{
+          el.style.animation = 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
