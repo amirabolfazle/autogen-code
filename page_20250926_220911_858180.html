@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="color-scheme" content="light dark">
+  <style>
+    :root{
+      --bg-1: #0f172a;
+      --bg-2: #1e293b;
+      --card: rgba(255,255,255,0.06);
+      --accent-a: rgba(255, 94, 98, 0.9);
+      --accent-b: rgba(123, 97, 255, 0.9);
+      --glass: rgba(255,255,255,0.04);
+      --text: #e6eef8;
+      --muted: rgba(230,238,248,0.7);
+      --footer-bg: rgba(0,0,0,0.18);
+    }
+
+    /* animated gradient background */
+    html,body{
+      height:100%;
+      margin:0;
+      padding:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(120deg, var(--bg-1) 0%, #09203f 25%, #0b1020 50%, #07121b 75%, var(--bg-2) 100%);
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-20% -10%;
+      z-index:-2;
+      background: radial-gradient(40vmax 30vmax at 10% 10%, rgba(123,97,255,0.18), transparent 10%),
+                  radial-gradient(40vmax 30vmax at 90% 80%, rgba(255,94,98,0.14), transparent 15%);
+      filter: blur(40px) saturate(120%);
+      animation: floatBG 12s linear infinite;
+      opacity:1;
+    }
+    @keyframes floatBG{
+      0%{ transform: translate3d(0,0,0) rotate(0deg); }
+      50%{ transform: translate3d(-2%,2%,0) rotate(2deg); }
+      100%{ transform: translate3d(0,0,0) rotate(0deg); }
+    }
+
+    /* layout */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      box-sizing:border-box;
+      gap:28px;
+      flex-direction:column;
+    }
+
+    /* main card */
+    .card{
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      padding:36px;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      justify-content:space-between;
+      transform-origin:center;
+      transition:transform 350ms cubic-bezier(.2,.9,.2,1), box-shadow 350ms;
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+    .card:hover{
+      transform: scale(1.02);
+      box-shadow: 0 18px 50px rgba(2,6,23,0.7);
+    }
+
+    /* left content */
+    .intro{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      flex:1 1 380px;
+      min-width:0;
+    }
+    .logo{
+      width:108px;
+      height:108px;
+      border-radius:18px;
+      background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:34px;
+      box-shadow: 0 6px 24px rgba(99,64,255,0.18);
+      transform: translateZ(0);
+      transition: transform 420ms cubic-bezier(.2,.9,.2,1);
+    }
+    .card:hover .logo{
+      transform: scale(1.08) rotate(-3deg);
+    }
+    .meta{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      overflow:hidden;
+    }
+    h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing: -0.02em;
+      line-height:1.05;
+      color:var(--text);
+      display:block;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+      max-width:60ch;
+    }
+
+    /* right area */
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:flex-end;
+      min-width:180px;
+      flex-shrink:0;
+    }
+    .time{
+      font-size:13px;
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.012);
+      transition: transform 300ms;
+    }
+    .time:hover{ transform: scale(1.04); }
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 16px;
+      border-radius:12px;
+      color:white;
+      background: linear-gradient(90deg, rgba(255,94,98,0.95), rgba(123,97,255,0.95));
+      border:none;
+      cursor:pointer;
+      text-decoration:none;
+      font-weight:600;
+      box-shadow: 0 6px 28px rgba(99,64,255,0.18);
+      transform-origin:center;
+      transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms;
+    }
+    .cta:active{ transform: translateY(1px) scale(0.995); }
+    .cta:hover{ transform: scale(1.04); box-shadow: 0 14px 40px rgba(99,64,255,0.24); }
+
+    /* animated details area */
+    .panels{
+      margin-top:20px;
+      width:100%;
+      max-width:980px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+    }
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:18px;
+      border-radius:12px;
+      color:var(--muted);
+      min-height:84px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 420ms;
+      border:1px solid rgba(255,255,255,0.02);
+      cursor:default;
+    }
+    .panel:hover{
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.6);
+      color:var(--text);
+    }
+    .panel h3{
+      margin:0 0 6px 0;
+      font-size:14px;
+      color:var(--text);
+    }
+    .panel p{
+      margin:0;
+      font-size:13px;
+      opacity:0.92;
+    }
+
+    /* subtle breathing animation on headings */
+    .pulse{
+      display:inline-block;
+      animation: pulseScale 4s ease-in-out infinite;
+      transform-origin:center;
+    }
+    @keyframes pulseScale{
+      0%{ transform: scale(1); filter: blur(0); opacity:1; }
+      50%{ transform: scale(1.02); filter: blur(0.2px); opacity:0.98; }
+      100%{ transform: scale(1); filter: blur(0); opacity:1; }
+    }
+
+    /* footer */
+    footer{
+      width:100%;
+      max-width:980px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      margin-top:22px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 6px 24px rgba(2,6,23,0.45);
+    }
+    .gh{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .gh svg{ display:block; width:18px; height:18px; fill:currentColor; opacity:0.95; transition: transform 240ms; }
+    .gh:hover svg{ transform: scale(1.08); }
+    .footer-text{ color:var(--muted); }
+
+    /* responsive */
+    @media (max-width:880px){
+      .card{ flex-direction:column; align-items:stretch; padding:20px; gap:18px; }
+      .actions{ justify-content:space-between; width:100%; flex-wrap:wrap; }
+      .panels{ grid-template-columns: repeat(2, 1fr); }
+      .logo{ width:84px; height:84px; font-size:28px; border-radius:14px; }
+      h1{ font-size:22px; white-space:normal; }
+    }
+    @media (max-width:520px){
+      .panels{ grid-template-columns: 1fr; }
+      .actions{ min-width:unset; gap:8px; }
+      .time{ font-size:12px; padding:8px; }
+      .cta{ padding:10px 12px; font-size:14px; }
+      .card{ padding:18px; border-radius:14px; }
+      footer{ padding:10px; border-radius:10px; font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card" role="main" aria-labelledby="title">
+      <div class="intro">
+        <div class="logo" aria-hidden="true">A</div>
+        <div class="meta">
+          <h1 id="title"><span class="pulse">amirabolfazle</span></h1>
+          <p class="lead">A responsive animated layout showcasing a gradient theme and zoom effects — crafted for modern screens and motion-friendly interactions.</p>
+        </div>
+      </div>
+
+      <div class="actions" aria-hidden="false">
+        <div class="time" title="Creation time">Created: 2025-09-26 22:08:24</div>
+        <a class="cta" href="#explore" role="button">Explore • Zoom</a>
+      </div>
+    </main>
+
+    <section class="panels" aria-label="Highlights">
+      <article class="panel" style="--i:1;">
+        <h3>Fluid Gradient</h3>
+        <p>Multi-stop gradient with drifting light forms for depth and warmth.</p>
+      </article>
+      <article class="panel" style="--i:2;">
+        <h3>Zoom Interactions</h3>
+        <p>Hover and focus states provide a tactile zoom and elevation feel.</p>
+      </article>
+      <article class="panel" style="--i:3;">
+        <h3>Accessible</h3>
+        <p>High contrast text, clear hit targets, and reduced motion-friendly structure.</p>
+      </article>
+    </section>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <!-- Inline GitHub icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.89 10.95c.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.21.7-3.89-1.55-3.89-1.55-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.18.08 1.8 1.21 1.8 1.21 1.04 1.78 2.72 1.27 3.38.97.11-.76.41-1.27.74-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.2-3.1-.12-.3-.52-1.52.11-3.17 0 0 .98-.31 3.2 1.19a11.1 11.1 0 0 1 5.82 0c2.22-1.5 3.2-1.19 3.2-1.19.63 1.65.23 2.87.11 3.17.75.81 1.2 1.84 1.2 3.1 0 4.43-2.71 5.41-5.29 5.69.42.36.8 1.08.8 2.18 0 1.57-.01 2.84-.01 3.23 0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+        </svg>
+        <span class="footer-text">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // gentle reduced-motion detection and small interactive touches
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced){
+        document.querySelectorAll('.pulse, .logo, .card, .panel, .wrap::before').forEach(()=>{});
+        document.documentElement.style.animation = 'none';
+        document.body.style.transition = 'none';
+      }
+
+      // small floating zoom on the Explore button to invite interaction
+      const cta = document.querySelector('.cta');
+      if(cta && !prefersReduced){
+        let dir = 1;
+        let t = 0;
+        const loop = () => {
+          t += dir * 0.02;
+          if(t > 1 || t < -1) dir *= -1;
+          cta.style.transform = `translateY(${t}px) scale(${1 + Math.abs(t) * 0.0015})`;
+          requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+      }
+
+      // Make the created time easily selectable on click
+      const timeEl = document.querySelector('.time');
+      timeEl && timeEl.addEventListener('click', () => {
+        const txt = '2025-09-26 22:08:24';
+        navigator.clipboard?.writeText?.(txt).then(()=> {
+          timeEl.textContent = 'Copied • ' + txt;
+          setTimeout(()=> timeEl.textContent = 'Created: ' + txt, 1200);
+        }).catch(()=> {
+          // fallback select
+          const range = document.createRange();
+          range.selectNodeContents(timeEl);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
