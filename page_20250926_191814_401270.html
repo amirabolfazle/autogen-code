@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #fffafc;
+      --bg-2: #f7fff9;
+      --accent-1: #ffd6e0;
+      --accent-2: #d7f7ff;
+      --accent-3: #e9f5d9;
+      --muted: #6b6b6b;
+      --glass: rgba(255,255,255,0.6);
+      --card-shadow: 0 8px 30px rgba(20,20,40,0.06);
+    }
+
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{
+      background: linear-gradient(135deg,var(--bg-1) 0%, var(--bg-2) 100%);
+      overflow-y:auto;
+      -webkit-font-smoothing:antialiased;
+      color:#222;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      position:relative;
+      min-height:80vh;
+    }
+
+    /* pastel floating blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(40px);
+      opacity:.85;
+      transform:translate3d(0,0,0);
+      mix-blend-mode:screen;
+      animation:float 8s ease-in-out infinite;
+    }
+    .blob.b1{width:300px;height:300px;left:-5%;top:-8%;background:linear-gradient(135deg,var(--accent-1),#ffe9f1);animation-duration:9s;}
+    .blob.b2{width:260px;height:260px;right:-6%;top:10%;background:linear-gradient(135deg,var(--accent-2),#cfefff);animation-duration:11s;animation-delay:1s;}
+    .blob.b3{width:220px;height:220px;left:10%;bottom:-6%;background:linear-gradient(135deg,var(--accent-3),#eefbdc);animation-duration:12s;animation-delay:2s;}
+    @keyframes float{
+      0%{transform:translateY(0) scale(1);}
+      50%{transform:translateY(-18px) scale(1.03);}
+      100%{transform:translateY(0) scale(1);}
+    }
+
+    /* main card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.6));
+      backdrop-filter: blur(8px) saturate(120%);
+      border-radius:16px;
+      padding:36px;
+      box-shadow:var(--card-shadow);
+      border:1px solid rgba(255,255,255,0.5);
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:18px;
+      opacity:0;
+      transform:translateY(28px);
+      transition:all .7s cubic-bezier(.2,.9,.3,1);
+    }
+    header.revealed{opacity:1;transform:none;}
+
+    .avatar{
+      width:76px;height:76px;border-radius:16px;
+      background:conic-gradient(from 180deg at 50% 50%, #ffd6e0, #d7f7ff, #e9f5d9, #ffd6e0);
+      display:inline-grid;place-items:center;
+      font-weight:700;color:#2b2b2b;font-size:22px;
+      box-shadow:0 6px 20px rgba(60,60,80,0.06);
+      flex-shrink:0;
+    }
+
+    h1{margin:0;font-size:28px;letter-spacing:-0.02em;}
+    .subtitle{color:var(--muted);font-size:14px;margin-top:6px;}
+
+    .meta{
+      margin-top:6px;font-size:13px;color:#555;display:flex;gap:12px;align-items:center;
+    }
+    .time{
+      padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.65);font-weight:600;font-size:13px;
+      box-shadow:inset 0 -2px 6px rgba(0,0,0,0.03);
+    }
+
+    main.grid{
+      margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+    }
+    @media (max-width:880px){ main.grid{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:560px){ main.grid{grid-template-columns:1fr;} }
+
+    .tile{
+      padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.75));
+      box-shadow:var(--card-shadow); border:1px solid rgba(255,255,255,0.6);
+      transform:translateY(28px);opacity:0;transition:all .7s cubic-bezier(.2,.9,.3,1);
+    }
+    .tile.revealed{transform:none;opacity:1;}
+
+    .tile h3{margin:0;font-size:16px;}
+    .tile p{margin-top:8px;color:var(--muted);font-size:13px;line-height:1.45;}
+
+    /* animated underline */
+    .fancy-line{
+      height:6px;border-radius:999px;margin-top:14px;background:
+      linear-gradient(90deg,#ffd6e0 0%, #d7f7ff 40%, #e9f5d9 100%);
+      width:120px;box-shadow:0 6px 18px rgba(200,200,220,0.12);
+      transform-origin:left center;transform:scaleX(0);transition:transform .9s cubic-bezier(.18,.9,.3,1);
+    }
+    .fancy-line.revealed{transform:scaleX(1);}
+
+    /* footer */
+    footer{
+      margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font-size:13px;
+      opacity:0;transform:translateY(18px);transition:all .7s cubic-bezier(.2,.9,.3,1);
+    }
+    footer.revealed{opacity:1;transform:none;}
+
+    .github{
+      display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:inherit;padding:8px;border-radius:10px;
+      transition:all .18s ease;
+      background:linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.25));
+      border:1px solid rgba(0,0,0,0.04);
+    }
+    .github:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(40,40,80,0.06);}
+
+    .gh-ico{width:18px;height:18px;display:inline-block;fill:#333;opacity:.9;transition:all .18s ease;}
+    .github:hover .gh-ico{fill:#6b6b6b;transform:scale(1.02);}
+
+    /* little interactive hint */
+    .hint{font-size:12px;color:var(--muted);margin-top:10px;text-align:right;opacity:.9;}
+
+    /* subtle entrance staggering */
+    .tile.revealed[data-delay="1"]{transition-delay:.05s}
+    .tile.revealed[data-delay="2"]{transition-delay:.12s}
+    .tile.revealed[data-delay="3"]{transition-delay:.2s}
+    .tile.revealed[data-delay="4"]{transition-delay:.28s}
+    .tile.revealed[data-delay="5"]{transition-delay:.36s}
+    .tile.revealed[data-delay="6"]{transition-delay:.44s}
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+    <div class="blob b3" aria-hidden="true"></div>
+
+    <section class="card" role="main" aria-labelledby="title">
+      <header id="hero" class="">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div>
+          <h1 id="title">amirabolfazle</h1>
+          <div class="subtitle">Pastel personal page with soft animations</div>
+          <div class="meta">
+            <div class="time" title="Creation time">Created: 2025-09-26 19:17:30</div>
+            <div style="font-size:13px;color:var(--muted)">• Smooth slide-up & reveal</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="fancy-line" aria-hidden="true"></div>
+
+      <main class="grid" id="grid">
+        <article class="tile" data-delay="1">
+          <h3>About</h3>
+          <p>Hello — I'm amirabolfazle. This page showcases a soft pastel theme with animated slide-up sections and floating backgrounds. Thoughtfully minimal and gentle on the eyes.</p>
+        </article>
+
+        <article class="tile" data-delay="2">
+          <h3>Work</h3>
+          <p>Projects, experiments, and code lives here. Links and demos can be added below or connected to your repositories for quick access.</p>
+        </article>
+
+        <article class="tile" data-delay="3">
+          <h3>Skills</h3>
+          <p>Frontend, small animations, subtle UI polish, thoughtful colors and micro-interactions that feel calm and approachable.</p>
+        </article>
+
+        <article class="tile" data-delay="4">
+          <h3>Contact</h3>
+          <p>Prefer a clean connection: place an email or link to socials here for visitors to reach out. Short and pleasant works best.</p>
+        </article>
+
+        <article class="tile" data-delay="5">
+          <h3>Notes</h3>
+          <p>Everything is intentionally lightweight — no heavy libraries. Animations are CSS-first with a tiny bit of JS to reveal on scroll.</p>
+        </article>
+
+        <article class="tile" data-delay="6">
+          <h3>Playground</h3>
+          <p>Drop interactive demos, buttons, or small widgets here. Try toggling themes or showcasing small projects with live previews.</p>
+        </article>
+      </main>
+
+      <footer id="page-footer" class="">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="gh-ico" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.54 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+        <div class="hint">Tip: Scroll to reveal more cards</div>
+      </footer>
+    </section>
+  </div>
+
+  <script>
+    // Reveal header & line on load
+    document.addEventListener('DOMContentLoaded', function(){
+      const hero = document.getElementById('hero');
+      const fancy = document.querySelector('.fancy-line');
+      const footer = document.getElementById('page-footer');
+      setTimeout(()=> hero.classList.add('revealed'), 120);
+      setTimeout(()=> fancy.classList.add('revealed'), 420);
+      setTimeout(()=> footer.classList.add('revealed'), 680);
+
+      // Intersection observer for tiles
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.15});
+
+      document.querySelectorAll('.tile').forEach((el,i)=>{
+        observer.observe(el);
+      });
+    });
+
+    // small prefers-reduced-motion support
+    (function(){
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        document.querySelectorAll('.blob').forEach(b=>b.style.animation='none');
+        document.querySelectorAll('.tile, header, footer, .fancy-line').forEach(el=>{
+          el.style.transition='none';
+          el.style.transform='none';
+          el.style.opacity='1';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
