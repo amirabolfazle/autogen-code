@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#04030a;
+    --neon-cyan:#00f0ff;
+    --neon-pink:#ff1fb3;
+    --neon-yellow:#fff06b;
+    --glass:#0b0b10cc;
+    --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,240,255,0.06), transparent),
+                radial-gradient(900px 500px at 90% 90%, rgba(255,31,179,0.04), transparent),
+                var(--bg1);
+    color:#eafcff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* Animated grid lines */
+  .grid {
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(180deg, rgba(0,240,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,31,179,0.03) 1px, transparent 1px);
+    background-size: 100% 120px, 120px 100%;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    animation: drift 20s linear infinite;
+    opacity:0.9;
+  }
+  @keyframes drift{
+    0%{transform:translate3d(0,0,0)}
+    50%{transform:translate3d(-40px,20px,0) }
+    100%{transform:translate3d(0,0,0)}
+  }
+
+  /* Soft neon blur glows */
+  .glow {
+    position:absolute;
+    filter:blur(60px);
+    opacity:0.12;
+    pointer-events:none;
+    mix-blend-mode:screen;
+  }
+  .glow.cyan{width:560px;height:560px;left:-120px;top:-120px;background:radial-gradient(circle at 30% 30%, #00f0ff 0%, transparent 45%);}
+  .glow.pink{width:480px;height:480px;right:-140px;bottom:-140px;background:radial-gradient(circle at 70% 70%, #ff1fb3 0%, transparent 45%);}
+
+  /* Main card */
+  .card {
+    position:relative;
+    max-width:920px;
+    margin:6vh auto;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:20px;
+    padding:48px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,240,255,0.03);
+    border: 1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px) saturate(120%);
+    overflow:hidden;
+  }
+
+  /* Neon title */
+  h1 {
+    margin:0;
+    font-size:64px;
+    letter-spacing:2px;
+    line-height:1;
+    color:transparent;
+    background:var(--accent);
+    -webkit-background-clip:text;
+    background-clip:text;
+    filter:drop-shadow(0 8px 32px rgba(0,240,255,0.18)) drop-shadow(0 0 18px rgba(255,31,179,0.08));
+    text-transform:lowercase;
+    font-weight:700;
+    display:inline-block;
+    position:relative;
+  }
+  /* neon outline */
+  h1::after{
+    content:'amirabolfazle';
+    position:absolute;
+    left:4px;
+    top:4px;
+    z-index:-1;
+    color:transparent;
+    -webkit-text-stroke:1px rgba(0,0,0,0.2);
+    filter:blur(6px);
+    opacity:0.25;
+  }
+
+  /* Subtitle & badges */
+  .subtitle{
+    margin-top:12px;
+    font-size:16px;
+    color:rgba(234,252,255,0.85);
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .chip{
+    display:inline-flex;
+    gap:8px;
+    padding:6px 10px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    font-size:13px;
+    color:rgba(234,252,255,0.9);
+    align-items:center;
+  }
+  .dot{
+    width:10px;height:10px;border-radius:50%;
+    box-shadow:0 0 12px 2px rgba(0,240,255,0.18), inset 0 -1px 0 rgba(255,255,255,0.04);
+  }
+  .dot.cyan{background:var(--neon-cyan)}
+  .dot.pink{background:var(--neon-pink)}
+  .dot.yellow{background:var(--neon-yellow)}
+
+  /* Content area */
+  .content{
+    margin-top:28px;
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+  .bio{
+    flex:1 1 420px;
+    min-width:260px;
+    color:rgba(234,252,255,0.92);
+    font-size:15px;
+    line-height:1.6;
+    filter:drop-shadow(0 6px 30px rgba(0,0,0,0.6));
+  }
+  .card-meta{
+    flex:0 0 220px;
+    min-width:200px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.24), rgba(0,0,0,0.12));
+    border-radius:14px;
+    padding:18px;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .meta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:rgba(234,252,255,0.86)}
+  .meta-label{font-size:13px;opacity:0.8}
+  .meta-value{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:linear-gradient(90deg,#00f0ff33,#ff1fb333);padding:6px 10px;border-radius:8px;color:var(--neon-cyan);font-size:13px}
+
+  /* Timestamp style */
+  .timestamp{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-size:13px;
+    color:rgba(234,252,255,0.78);
+  }
+  .time-badge{
+    background:linear-gradient(90deg, rgba(0,240,255,0.06), rgba(255,31,179,0.04));
+    padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    color:#dffcff;
+    box-shadow:0 6px 20px rgba(0,0,0,0.5) inset;
+  }
+
+  /* Footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    display:flex;
+    gap:8px;
+    align-items:center;
+    padding:10px 14px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+    box-shadow:0 8px 30px rgba(0,0,0,0.6);
+  }
+  footer a{
+    color:inherit;
+    text-decoration:none;
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    color:rgba(234,252,255,0.95);
+    font-size:14px;
+    font-weight:600;
+  }
+  .gh-icon{
+    width:22px;height:22px;display:inline-block;vertical-align:middle;
+    filter:drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+    transition:transform .18s ease;
+  }
+  footer a:hover .gh-icon{transform:translateY(-3px) scale(1.05) rotate(-3deg);}
+
+  /* Fade-in animations */
+  .fade-in{opacity:0;transform:translateY(12px) scale(.998);animation:fadeUp .9s cubic-bezier(.2,.9,.25,1) forwards}
+  .fade-in.delay-1{animation-delay:.12s}
+  .fade-in.delay-2{animation-delay:.26s}
+  .fade-in.delay-3{animation-delay:.42s}
+  .fade-in.delay-4{animation-delay:.58s}
+  .fade-in.delay-5{animation-delay:.74s}
+  @keyframes fadeUp{
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
+
+  /* subtle title flicker */
+  @keyframes flicker {
+    0%,18%,22%,25%,53%,100% { opacity:1; text-shadow: 0 0 24px rgba(0,240,255,0.9), 0 0 36px rgba(255,31,179,0.7); }
+    20% { opacity:.85; text-shadow: 0 0 6px rgba(0,240,255,0.3); }
+    24% { opacity:.7; text-shadow: none; }
+  }
+  h1{animation:flicker 6s infinite;}
+
+  /* responsive tweaks */
+  @media (max-width:720px){
+    h1{font-size:44px}
+    .card{margin:4vh 18px;padding:28px}
+    .content{flex-direction:column-reverse}
+    footer{left:12px;transform:none;bottom:12px}
+  }
+</style>
+</head>
+<body>
+  <div class="glow cyan" aria-hidden="true"></div>
+  <div class="glow pink" aria-hidden="true"></div>
+  <div class="grid" aria-hidden="true"></div>
+
+  <main class="card" role="main" aria-labelledby="page-title">
+    <h1 id="page-title" class="fade-in delay-1">amirabolfazle</h1>
+
+    <div class="subtitle fade-in delay-2" role="note" aria-label="subtitle">
+      <span class="chip"><span class="dot cyan" aria-hidden="true"></span> neon experiments</span>
+      <span class="chip"><span class="dot pink" aria-hidden="true"></span> creative code</span>
+      <span class="chip"><span class="dot yellow" aria-hidden="true"></span> 2025</span>
+    </div>
+
+    <div class="content">
+      <section class="bio fade-in delay-3" aria-label="About">
+        <p>Welcome — this is a personal micro-page wrapped in neon glow and subtle motion. Think of it as a moodboard for late-night creativity, code sketches, and small experiments. Hover around, enjoy the glow, and feel free to fork the vibe.</p>
+
+        <p style="margin-top:18px;color:rgba(234,252,255,0.78);">Small pleasures: animated gradients, soft glows, and perfectly timed fade-ins. Big ambitions: make things that are delightful to use and fun to look at.</p>
+
+        <div class="timestamp" aria-hidden="false">
+          <div class="time-badge">Created: 2025-09-26 19:34:34</div>
+        </div>
+      </section>
+
+      <aside class="card-meta fade-in delay-4" aria-label="Meta">
+        <div class="meta-row"><div class="meta-label">Handle</div><div class="meta-value">amirabolfazle</div></div>
+        <div class="meta-row"><div class="meta-label">Theme</div><div class="meta-value">Neon • Fade</div></div>
+        <div class="meta-row"><div class="meta-label">Status</div><div class="meta-value">Active</div></div>
+        <div style="margin-top:8px;color:rgba(234,252,255,0.72);font-size:13px">A tiny collection of visual choices to spark a mood. Built with simple HTML & CSS, sprinkled with subtle motion.</div>
+        <div style="height:10px"></div>
+        <div class="meta-row" style="margin-top:10px">
+          <div class="meta-label">Tools</div>
+          <div style="display:flex;gap:8px">
+            <div class="chip" style="padding:6px 8px;font-size:12px">CSS</div>
+            <div class="chip" style="padding:6px 8px;font-size:12px">HTML</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer role="contentinfo" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" title="GitHub - amirabolfazle/autogen-code">
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.88 10.95c.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.21.7-3.89-1.55-3.89-1.55-.53-1.36-1.3-1.72-1.3-1.72-1.06-.73.08-.72.08-.72 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.69 0-1.26.45-2.29 1.2-3.1-.12-.3-.52-1.52.12-3.16 0 0 .97-.31 3.18 1.18a11.06 11.06 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.5 3.17-1.18 3.17-1.18.64 1.64.24 2.86.12 3.16.75.81 1.2 1.84 1.2 3.1 0 4.42-2.71 5.4-5.29 5.68.42.36.8 1.08.8 2.18 0 1.57-.01 2.84-.01 3.22 0 .31.2.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" fill="url(#g)"/>
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#00F0FF"/>
+            <stop offset="1" stop-color="#FF1FB3"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <script>
+    // subtle interactive parallax for background grid on mouse move
+    (function(){
+      const grid = document.querySelector('.grid');
+      let lastX = 0, lastY = 0;
+      window.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 40;
+        const y = (e.clientY / window.innerHeight - 0.5) * 30;
+        lastX += (x - lastX) * 0.08;
+        lastY += (y - lastY) * 0.08;
+        grid.style.transform = `translate3d(${lastX}px, ${lastY}px, 0)`;
+      });
+
+      // reduce motion for prefers-reduced-motion users
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        grid.style.animation = 'none';
+        document.querySelectorAll('.fade-in').forEach(el => {
+          el.style.animation = 'none';
+          el.style.opacity = 1;
+          el.style.transform = 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
