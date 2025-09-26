@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1:#040014;
+    --bg-2:#06102a;
+    --neon-cyan:#00f0ff;
+    --neon-pink:#ff2dd4;
+    --neon-purple:#8a00ff;
+    --glass: rgba(255,255,255,0.03);
+    --soft: rgba(255,255,255,0.06);
+    --shadow: 0 0 20px rgba(0,0,0,0.6);
+    --ease:cubic-bezier(.2,.9,.3,1);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(10,6,40,0.5), transparent),
+                radial-gradient(800px 400px at 90% 80%, rgba(20,0,80,0.35), transparent),
+                linear-gradient(180deg,var(--bg-1), var(--bg-2));
+    color:#e8f3ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* Subtle background animated shapes */
+  .bg-shape{
+    position:absolute;
+    inset: -20vh -20vw auto auto;
+    width:70vh;
+    height:70vh;
+    background: conic-gradient(from 120deg, rgba(0,240,255,0.12), rgba(255,45,212,0.12), rgba(138,0,255,0.12));
+    filter: blur(60px);
+    transform: rotate(0deg);
+    animation: bgSpin 40s linear infinite;
+    pointer-events:none;
+    mix-blend-mode:screen;
+  }
+  .bg-shape.s2{ inset:auto -10vw -20vh 40vw; width:90vh;height:90vh; animation-duration:60s; opacity:0.9; }
+
+  @keyframes bgSpin{
+    to{ transform: rotate(360deg); }
+  }
+
+  .container{
+    position:relative;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:6vh 4vw;
+    z-index:2;
+  }
+
+  .card{
+    width:100%;
+    max-width:1100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:18px;
+    padding:40px;
+    box-shadow: var(--shadow);
+    border:1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px) saturate(120%);
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:28px;
+    align-items:center;
+    position:relative;
+    overflow:visible;
+  }
+
+  /* Neon title block */
+  .hero{
+    padding:10px 0;
+  }
+
+  .title{
+    font-size: clamp(34px, 6vw, 64px);
+    letter-spacing: -1px;
+    line-height:0.9;
+    margin:0 0 12px 0;
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  .title .name{
+    display:inline-block;
+    color:var(--neon-cyan);
+    text-shadow:
+      0 0 8px rgba(0,240,255,0.18),
+      0 0 24px rgba(0,240,255,0.12),
+      0 10px 30px rgba(0,0,0,0.6);
+    transform-origin:center;
+    animation: float 6s var(--ease) infinite;
+    padding:6px 14px;
+    border-radius:8px;
+    background: linear-gradient(90deg, rgba(0,240,255,0.02), rgba(138,0,255,0.02));
+    border:1px solid rgba(0,240,255,0.06);
+    box-shadow: 0 0 30px rgba(0,240,255,0.06), inset 0 0 8px rgba(255,255,255,0.02);
+  }
+
+  @keyframes float{
+    0%{ transform: translateY(0) rotate(-1deg); }
+    50%{ transform: translateY(-8px) rotate(1.2deg); }
+    100%{ transform: translateY(0) rotate(-1deg); }
+  }
+
+  .subtitle{
+    font-size:14px;
+    color:rgba(230,245,255,0.9);
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  .neon-tag{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:8px 12px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(0,240,255,0.03), rgba(255,45,212,0.03));
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  .neon-dot{
+    width:10px;height:10px;border-radius:50%;
+    box-shadow: 0 0 10px 4px rgba(255,45,212,0.07);
+    background: linear-gradient(180deg,var(--neon-pink),var(--neon-purple));
+  }
+
+  .bio{
+    margin-top:18px;
+    color:rgba(230,245,255,0.85);
+    line-height:1.5;
+    font-size:15px;
+    max-width:60ch;
+  }
+
+  /* Right side: rotating neon card */
+  .panel{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:stretch;
+  }
+
+  .rotor{
+    height:240px;
+    border-radius:14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.018));
+    border:1px solid rgba(255,255,255,0.03);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    position:relative;
+    overflow:visible;
+  }
+
+  .rotor .rings{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    pointer-events:none;
+  }
+
+  .ring{
+    width:220px;height:220px;border-radius:50%;
+    border:2px solid rgba(0,0,0,0.08);
+    box-shadow: 0 0 60px rgba(138,0,255,0.08), inset 0 0 20px rgba(0,240,255,0.02);
+    position:absolute;
+    transform-origin:center;
+    mix-blend-mode:screen;
+  }
+
+  .ring.r1{ border-color: rgba(0,240,255,0.6); filter: drop-shadow(0 0 10px rgba(0,240,255,0.2)); animation: spinRev 12s linear infinite; }
+  .ring.r2{ width:170px;height:170px; border-color: rgba(255,45,212,0.6); animation: spin 9s linear infinite; }
+  .ring.r3{ width:120px;height:120px; border-color: rgba(138,0,255,0.7); animation: spinRev 6s linear infinite; }
+
+  @keyframes spin { to{ transform: rotate(360deg); } }
+  @keyframes spinRev { to{ transform: rotate(-360deg); } }
+
+  .rotor .center{
+    width:86px;height:86px;border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.06);
+    display:grid;place-items:center;
+    color:var(--neon-cyan);
+    font-weight:700;
+    text-shadow: 0 0 20px rgba(0,240,255,0.2);
+    transform-origin:center;
+    animation: pop 4s ease-in-out infinite;
+  }
+
+  @keyframes pop{
+    0%,100%{ transform: scale(1); }
+    50%{ transform: scale(1.06); }
+  }
+
+  /* Skills list with rotate hover effect */
+  .skills{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .skill{
+    background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+    border-radius:10px;
+    padding:10px 12px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    border:1px solid rgba(255,255,255,0.03);
+    transition: transform 420ms var(--ease), box-shadow 240ms var(--ease);
+    transform-origin:center;
+  }
+
+  .skill .icon{
+    width:36px;height:36px;border-radius:8px;
+    display:grid;place-items:center;
+    background: linear-gradient(180deg, rgba(0,240,255,0.06), rgba(138,0,255,0.04));
+    box-shadow: 0 0 18px rgba(0,240,255,0.05);
+    color:var(--neon-cyan);
+    font-weight:700;
+    font-size:14px;
+  }
+
+  .skill:hover{
+    transform: rotate3d(0.2,1,0,6deg) translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.6), 0 0 40px rgba(138,0,255,0.06);
+  }
+
+  /* Creation time badge */
+  .ctime{
+    position:absolute;
+    right:20px;
+    top:20px;
+    font-size:12px;
+    color:rgba(200,240,255,0.95);
+    background: linear-gradient(90deg, rgba(0,240,255,0.03), rgba(255,45,212,0.03));
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.025);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+  }
+
+  /* Footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    z-index:5;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    padding:8px 14px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  }
+
+  .gh{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    color:var(--neon-cyan);
+    text-decoration:none;
+    font-weight:600;
+    font-size:13px;
+    transition: transform 200ms var(--ease);
+  }
+  .gh:hover{ transform: translateY(-4px) scale(1.02); }
+
+  .gh svg{ filter: drop-shadow(0 0 8px rgba(0,240,255,0.08)); }
+
+  /* responsive */
+  @media (max-width:920px){
+    .card{ grid-template-columns: 1fr; padding:28px; gap:18px; }
+    .panel{ order:-1; }
+    .rotor{ height:200px; }
+    footer{ bottom:14px; padding:6px 10px; }
+    .ctime{ position:relative; right:auto; top:auto; margin-top:8px; align-self:flex-end; }
+  }
+
+</style>
+</head>
+<body>
+  <div class="bg-shape" aria-hidden="true"></div>
+  <div class="bg-shape s2" aria-hidden="true"></div>
+
+  <main class="container" role="main">
+    <section class="card" aria-label="amirabolfazle portfolio">
+      <div class="hero">
+        <div class="ctime">Created: 2025-09-26 21:02:40</div>
+
+        <h1 class="title" aria-hidden="false">
+          <span class="name" aria-label="amirabolfazle">amirabolfazle</span>
+          <span class="neon-tag" title="Neon portfolio">
+            <span class="neon-dot" aria-hidden="true"></span>
+            neon portfolio
+          </span>
+        </h1>
+
+        <div class="subtitle" aria-hidden="true">
+          <div>Creative coder • Motion & UI</div>
+          <div style="opacity:0.8">•</div>
+          <div>Interactive experiments</div>
+        </div>
+
+        <p class="bio">
+          A compact neon-themed portfolio demo with animated rotating elements and subtle glass UI.
+          Hover the skill tiles and watch the neon rings rotate — built as a single-file page for quick sharing.
+        </p>
+      </div>
+
+      <aside class="panel" aria-label="interactive preview">
+        <div class="rotor" role="img" aria-label="rotating neon rings">
+          <div class="rings" aria-hidden="true">
+            <div class="ring r1"></div>
+            <div class="ring r2"></div>
+            <div class="ring r3"></div>
+          </div>
+          <div class="center">AB</div>
+        </div>
+
+        <div class="skills" aria-hidden="false">
+          <div class="skill">
+            <div class="icon">JS</div>
+            <div>
+              <div style="font-weight:700">JavaScript</div>
+              <div style="font-size:12px;opacity:0.9">Interactive & animations</div>
+            </div>
+          </div>
+
+          <div class="skill">
+            <div class="icon">UI</div>
+            <div>
+              <div style="font-weight:700">UI / UX</div>
+              <div style="font-size:12px;opacity:0.9">Neon micro-interactions</div>
+            </div>
+          </div>
+
+          <div class="skill">
+            <div class="icon">CSS</div>
+            <div>
+              <div style="font-weight:700">CSS</div>
+              <div style="font-size:12px;opacity:0.9">Modern layouts & effects</div>
+            </div>
+          </div>
+
+          <div class="skill">
+            <div class="icon">SVG</div>
+            <div>
+              <div style="font-weight:700">SVG</div>
+              <div style="font-size:12px;opacity:0.9">Icons & vector motion</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.7 3.04 8.7 7.26 10.12.53.1.72-.23.72-.5 0-.25-.01-.92-.01-1.8-2.95.64-3.57-1.42-3.57-1.42-.48-1.22-1.17-1.55-1.17-1.55-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.95 1.63 2.5 1.16 3.12.89.1-.7.36-1.16.66-1.43-2.36-.27-4.85-1.18-4.85-5.25 0-1.16.41-2.11 1.08-2.85-.11-.27-.47-1.36.1-2.84 0 0 .88-.28 2.9 1.08a10.2 10.2 0 0 1 2.64-.36c.9 0 1.8.12 2.64.36 2.01-1.37 2.89-1.08 2.89-1.08.57 1.48.21 2.57.1 2.84.67.74 1.08 1.7 1.08 2.85 0 4.08-2.5 4.98-4.88 5.24.36.31.67.92.67 1.86 0 1.34-.01 2.42-.01 2.75 0 .28.19.6.73.5C20.06 20.3 23.1 16.3 23.1 11.6 23.1 5.33 18.27.5 12 .5z" fill="url(#g)"/>
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0" stop-color="#00f0ff"/>
+            <stop offset="1" stop-color="#ff2dd4"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+<script>
+  // Subtle interactive parallax: rotate rotor based on mouse
+  (function(){
+    const rotor = document.querySelector('.rotor');
+    const rings = rotor.querySelectorAll('.ring');
+    let w = window.innerWidth, h = window.innerHeight;
+
+    function onMove(e){
+      const mx = (e.clientX - w/2) / (w/2);
+      const my = (e.clientY - h/2) / (h/2);
+      rotor.style.transform = `perspective(800px) rotateX(${my * 6}deg) rotateY(${mx * 8}deg)`;
+      rings[0].style.transform = `rotate(${mx*20}deg)`;
+      rings[1].style.transform = `rotate(${my*40}deg)`;
+      rings[2].style.transform = `rotate(${mx*-30}deg)`;
+    }
+
+    function onLeave(){
+      rotor.style.transform = '';
+      rings.forEach(r=>r.style.transform='');
+    }
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', function(e){
+      if(e.touches && e.touches[0]) onMove(e.touches[0]);
+    }, {passive:true});
+    window.addEventListener('resize', ()=>{ w=innerWidth; h=innerHeight; });
+    window.addEventListener('mouseout', onLeave);
+    window.addEventListener('touchend', onLeave);
+  })();
+</script>
+</body>
+</html>
