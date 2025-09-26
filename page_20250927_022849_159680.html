@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --glass: rgba(255,255,255,0.16);
+      --glass-border: rgba(255,255,255,0.35);
+      --text: #e8f0ff;
+      --muted: rgba(232,240,255,0.75);
+      --bg: #0b1020;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      background: #0b1020;
+      overflow-x: hidden;
+    }
+
+    /* Animated glassy backdrop background */
+    .bg {
+      position: fixed; inset: 0;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(120, 180, 255, 0.25), rgba(180, 120, 255, 0.25), rgba(120, 255, 200, 0.25), rgba(120, 180, 255, 0.25));
+      filter: saturate(110%);
+      animation: spin 40s linear infinite;
+      z-index: -1;
+      mix-blend-mode: screen;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    header.hero {
+      display: grid;
+      gap: 14px;
+      padding: 28px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    }
+
+    header.hero h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 64px);
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    }
+
+    header.hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(14px, 2.5vw, 18px);
+    }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #dbeaff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(221,235,255,0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.08);
+      margin-top: 6px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin: 26px 0 12px;
+      color: #eaf2ff;
+      letter-spacing: .4px;
+    }
+
+    /* Grid of project cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px){
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px){
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      --delay: 0s;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 120px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+    .card.visible { transform: translateY(0); opacity: 1; }
+
+    .card-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .icon {
+      width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    .card h3 {
+      margin: 0; font-size: 16px;
+    }
+
+    .card p {
+      margin: 6px 0 0; color: #eaf2ffcc; font-size: 13px;
+    }
+
+    /* Simple code/icon inside cards */
+    .code-icon {
+      width: 18px; height: 18px; display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    footer.glass {
+      margin-top: 40px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid var(--glass-border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    footer.glass a {
+      color: #e8f0ff;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    footer.glass a:hover { text-decoration: underline; }
+
+    .footer-right {
+      color: #dbeaff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+    }
+
+    /* Subtle hover for cards */
+    .card:hover { transform: translateY(6px); }
+
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="container">
+    <section class="hero glass reveal" aria-label="Intro">
+      <h1 style="margin:0; font-weight:700; letter-spacing:.5px;">amirabolfazle</h1>
+      <p>Frontend engineer • UI/UX tinkerer • passionate about glassy interfaces and smooth interactions.</p>
+      <div class="creation" aria-label="Creation time">
+        Creation time: 2025-09-27 02:28:11
+      </div>
+    </section>
+
+    <section aria-label="Projects" style="margin-top:26px;">
+      <h2 class="section-title" style="opacity:.9">Projects</h2>
+      <div class="grid">
+        <article class="card reveal" style="--delay:0s;">
+          <div class="card-header">
+            <span class="icon" aria-label="project icon">
+              <!-- simple code icon -->
+              <svg class="code-icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                <path d="M8.5 5L3 12l5.5 7V5zm7 0l5.5 7L15.5 12 15 7z"/>
+              </svg>
+            </span>
+            <h3>Autogen Code Explorer</h3>
+          </div>
+          <p>A lightweight playground for auto-generated snippets and rapid prototyping.</p>
+        </article>
+
+        <article class="card reveal" style="--delay:0.05s;">
+          <div class="card-header">
+            <span class="icon" aria-label="project icon">
+              <svg class="code-icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                <path d="M7 7l5 5-5 5V7zM2 4h3v16H2zM19 4h3v16h-3z"/>
+              </svg>
+            </span>
+            <h3>GlassKit UI Kit</h3>
+          </div>
+          <p>Modular, glassmorphic components with buttery transitions and accessible defaults.</p>
+        </article>
+
+        <article class="card reveal" style="--delay:0.1s;">
+          <div class="card-header">
+            <span class="icon" aria-label="project icon">
+              <svg class="code-icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                <path d="M9 18l-6-6 6-6v12zm6 0l6-6-6-6v12z"/>
+              </svg>
+            </span>
+            <h3>Animated Cards System</h3>
+          </div>
+          <p>Reusable glass cards with staggered slide-up and keyboard navigation.</p>
+        </article>
+
+        <article class="card reveal" style="--delay:0.15s;">
+          <div class="card-header">
+            <span class="icon" aria-label="project icon">
+              <svg class="code-icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                <path d="M12 2l8 4v4c0 6-4 10-8 12-4-2-8-6-8-12V6l8-4zm0 4l-4-2v2l4 2 4-2V4l-4-2-4 2z"/>
+              </svg>
+            </span>
+            <h3>Prototype Studio</h3>
+          </div>
+          <p>Rapid iteration space for new ideas with glassy aesthetics.</p>
+        </article>
+
+        <article class="card reveal" style="--delay:0.2s;">
+          <div class="card-header">
+            <span class="icon" aria-label="project icon">
+              <svg class="code-icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                <path d="M4 6h4v12H4zM16 6h4v12h-4z"/>
+              </svg>
+            </span>
+            <h3>Code Snippet Studio</h3>
+          </div>
+          <p>Snippets organizer with copy-to-clipboard and live previews.</p>
+        </article>
+
+        <article class="card reveal" style="--delay:0.25s;">
+          <div class="card-header">
+            <span class="icon" aria-label="project icon">
+              <svg class="code-icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                <path d="M3 6h18v2H3V6zm0 5h12v2H3v-2zm0 5h8v2H3v-2z"/>
+              </svg>
+            </span>
+            <h3>Showcase Gallery</h3>
+          </div>
+          <p>A small, elegant gallery to showcase glass-inspired work and experiments.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="glass" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <!-- Inline GitHub icon (Bootstrap-like GitHub mark) -->
+        <svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="vertical-align: middle;">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.53-.49-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1.01.07 1.54 1.03 1.54 1.03.9 1.53 2.36 1.09 2.93.83.09-.65.35-1.09.63-1.34-1.6-.18-3.28-.8-3.28-3.56 0-.79.28-1.43.74-1.93-.07-.18-.32-.92.07-1.92 0 0 .61-.2 2 .75A6.6 6.6 0 0 1 8 4.5c.63 0 1.26.08 1.85.23 1.39-1 2-1.41 2-1.41.39.99.15 1.74.07 1.93.46.5.73 1.14.73 1.93 0 2.77-1.68 3.38-3.28 3.56.36.31.68.93.68 1.88 0 1.36-.01 2.46-.01 2.79 0 .21.15.45.55.37A8.002 8.002 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span style="vertical-align: middle; font-weight: 600; margin-left: 6px;">GitHub</span>
+      </a>
+      <span class="footer-right">Created by amirabolfazle</span>
+    </footer>
+  </main>
+
+  <script>
+    // Reveal on scroll for elements with class 'reveal'
+    document.addEventListener('DOMContentLoaded', () => {
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      reveals.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
