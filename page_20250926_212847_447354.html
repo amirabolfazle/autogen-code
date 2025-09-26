@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: linear-gradient(135deg,#0f172a 0%, #061126 50%, #00121a 100%);
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: #7ee7ff;
+      --accent-2: #a78bfa;
+      --muted: rgba(255,255,255,0.7);
+      --glass-radius: 16px;
+      --blur: 10px;
+      --card-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100%;
+      background: var(--bg1);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color: #e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+    }
+
+    /* Ambient shapes */
+    .ambient{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+    .blob{
+      position:absolute;
+      filter: blur(60px) saturate(120%);
+      opacity:0.16;
+      mix-blend-mode:screen;
+      transform: translate3d(0,0,0);
+    }
+    .blob.a{width:520px;height:520px;right:-120px;top:-60px;background:radial-gradient(circle at 20% 20%, var(--accent), transparent 40%);}
+    .blob.b{width:420px;height:420px;left:-100px;bottom:-80px;background:radial-gradient(circle at 70% 70%, var(--accent-2), transparent 40%);opacity:0.14}
+
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      z-index:1;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      margin-bottom:28px;
+    }
+
+    /* Glass card */
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--glass-radius);
+      backdrop-filter: blur(var(--blur)) saturate(120%);
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(120%);
+      box-shadow: var(--card-shadow);
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    h1{
+      margin:0 0 12px 0;
+      font-size:40px;
+      line-height:1.03;
+      letter-spacing:-0.02em;
+      color: #fbfdff;
+    }
+    .sub{
+      color: var(--muted);
+      margin:0 0 20px 0;
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .tag{
+      background: linear-gradient(90deg, rgba(126,231,255,0.08), rgba(167,139,250,0.04));
+      border: 1px solid rgba(255,255,255,0.04);
+      padding:8px 12px;
+      border-radius:999px;
+      color:#dff8ff;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+    }
+
+    .cta{
+      display:inline-flex;
+      gap:12px;
+      margin-top:20px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      color:#052231;
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow: 0 8px 20px rgba(124,58,237,0.18);
+      transition:transform .14s ease, box-shadow .14s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.06);
+      padding:10px 16px;
+      border-radius:10px;
+    }
+
+    /* Right column card */
+    .profile{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      align-items:stretch;
+    }
+    .avatar{
+      width:100%;
+      height:260px;
+      border-radius:12px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),
+        linear-gradient(90deg, rgba(126,231,255,0.06), rgba(167,139,250,0.04));
+      border:1px solid rgba(255,255,255,0.05);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      color:#e9fbff;
+    }
+    .stats{
+      display:flex;
+      gap:12px;
+    }
+    .stat{
+      flex:1;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:12px;
+      border-radius:10px;
+      text-align:center;
+    }
+    .stat strong{display:block;font-size:18px;color:#fff}
+    .stat span{font-size:12px;color:var(--muted)}
+
+    /* Features section */
+    .features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:8px;
+    }
+    .feature{
+      padding:18px;
+      border-radius:12px;
+      min-height:130px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .feature h3{margin:0;font-size:16px}
+    .feature p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+
+    /* footer */
+    footer{
+      margin-top:22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .footer-left{display:flex;gap:12px;align-items:center}
+    .github{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    }
+    .github svg{width:18px;height:18px;display:block;fill:currentColor}
+
+    .creation{
+      font-size:12px;
+      color:rgba(255,255,255,0.52);
+    }
+
+    /* Slide-up animation */
+    .reveal{
+      opacity:0;
+      transform:translateY(22px);
+      transition: transform .6s cubic-bezier(.2,.9,.2,1), opacity .6s ease;
+      will-change:transform,opacity;
+    }
+    .reveal.in-view{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .profile .avatar{height:200px}
+      .features{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:600px){
+      .features{grid-template-columns:1fr}
+      h1{font-size:28px}
+      .hero{gap:16px}
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+  </div>
+
+  <div class="wrap">
+    <div class="hero">
+      <section class="glass reveal" aria-labelledby="title">
+        <div style="display:flex;gap:16px;align-items:flex-start;justify-content:space-between;">
+          <div>
+            <div class="tag">amirabolfazle</div>
+            <h1 id="title">Design · Code · Automate</h1>
+            <p class="sub">A sleek portfolio landing experience built with glassmorphism and smooth slide-up micro-interactions.</p>
+            <div class="meta">
+              <div class="tag" style="padding:8px 10px;">Creative Technologist</div>
+              <div class="meta-item">Remote-friendly · Open to collaboration</div>
+            </div>
+            <div class="cta">
+              <button class="btn" onclick="ctaAction()" aria-label="Get Started">Get Started</button>
+              <button class="ghost" onclick="learnMore()" aria-label="Learn More">Learn more</button>
+            </div>
+          </div>
+          <div style="text-align:right;color:var(--muted);font-size:13px">
+            <div style="margin-bottom:8px">Creation time</div>
+            <div class="creation">2025-09-26 21:28:07</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="profile glass reveal" aria-label="Profile card">
+        <div class="avatar" aria-hidden="true">
+          <svg width="92" height="92" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="24" height="24" rx="5" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop offset="0" stop-color="#7EE7FF"/>
+                <stop offset="1" stop-color="#A78BFA"/>
+              </linearGradient>
+            </defs>
+            <g transform="translate(3 3)" fill="#022431">
+              <circle cx="9" cy="6" r="3.2" fill="rgba(2,36,49,0.06)"/>
+              <rect x="2" y="12" width="14" height="5" rx="2.2" fill="rgba(2,36,49,0.06)"/>
+            </g>
+          </svg>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-weight:800;font-size:16px;color:#fff">amirabolfazle</div>
+            <div style="font-size:13px;color:var(--muted)">Builder of elegant automation</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:800;color:#fff">Open to work</div>
+            <div style="font-size:12px;color:var(--muted)">Let's collaborate</div>
+          </div>
+        </div>
+
+        <div class="stats" style="margin-top:12px;">
+          <div class="stat">
+            <strong>120+</strong>
+            <span>Projects</span>
+          </div>
+          <div class="stat">
+            <strong>45</strong>
+            <span>Repos</span>
+          </div>
+          <div class="stat">
+            <strong>10k+</strong>
+            <span>Users served</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="glass reveal" aria-labelledby="features">
+      <h2 id="features" style="margin:0 0 12px 0;font-size:18px;color:#fff">Highlights</h2>
+      <p class="sub" style="margin-bottom:18px">Tiny details, big impact: animations, clarity, and an interface that feels alive.</p>
+
+      <div class="features">
+        <div class="feature reveal" style="background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border:1px solid rgba(255,255,255,0.03);">
+          <h3>Glassmorphism UI</h3>
+          <p>Soft frosted panels with depth and contrast that keep focus on content while feeling modern.</p>
+        </div>
+        <div class="feature reveal" style="background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border:1px solid rgba(255,255,255,0.03);">
+          <h3>Smooth Interactions</h3>
+          <p>Slide-up reveals powered by intersection observers for crisp, performant motion.</p>
+        </div>
+        <div class="feature reveal" style="background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border:1px solid rgba(255,255,255,0.03);">
+          <h3>Accessible & Responsive</h3>
+          <p>Readable typography, clear contrast and layouts that adapt from phone to desktop.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="glass reveal" style="margin-top:18px;display:flex;align-items:center;justify-content:space-between;">
+      <div class="footer-left">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 .297a12 12 0 00-3.797 23.4c.6.113.82-.26.82-.577v-2.17c-3.338.726-4.043-1.61-4.043-1.61-.546-1.387-1.333-1.758-1.333-1.758-1.089-.744.082-.729.082-.729 1.205.084 1.84 1.239 1.84 1.239 1.07 1.834 2.809 1.304 3.494.997.108-.775.418-1.304.762-1.604-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.468-2.381 1.235-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 016 0c2.29-1.552 3.296-1.23 3.296-1.23.655 1.653.244 2.873.12 3.176.77.84 1.234 1.912 1.234 3.222 0 4.61-2.804 5.624-5.476 5.921.43.372.813 1.102.813 2.222v3.293c0 .32.217.695.825.576A12.005 12.005 0 0012 .297z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <div style="font-size:13px;color:var(--muted);">Created by amirabolfazle</div>
+      </div>
+
+      <div style="text-align:right">
+        <div class="creation">2025-09-26 21:28:07</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Simple slide-up on scroll using IntersectionObserver
+    (function(){
+      const revealEls = Array.from(document.querySelectorAll('.reveal'));
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+            // optional: unobserve to avoid re-triggering
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.12});
+
+      revealEls.forEach((el, i) => {
+        // Stagger small elements for a nicer entrance
+        el.style.transitionDelay = (i * 70) + 'ms';
+        observer.observe(el);
+      });
+    })();
+
+    // sample CTA actions (non-intrusive)
+    function ctaAction(){
+      alert('Hello — welcome! Open the GitHub link in the footer to see the project repository.');
+    }
+    function learnMore(){
+      window.scrollTo({top: document.body.scrollHeight/3, behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>
