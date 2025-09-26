@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #FFFBFF;
+      --p1: #FFDCE6; /* pastel pink */
+      --p2: #E8F8FF; /* pastel cyan */
+      --p3: #F3E8FF; /* pastel lavender */
+      --accent: #7CC4D9;
+      --muted: #6b6b6b;
+      --card: rgba(255,255,255,0.7);
+      --glass: rgba(255,255,255,0.35);
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(17,24,39,0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--p1), transparent 12%),
+                  radial-gradient(1000px 500px at 90% 90%, var(--p3), transparent 10%),
+                  linear-gradient(180deg,#FFF 0%, var(--p2) 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:36px;
+      align-items:center;
+    }
+
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      border-radius: var(--radius);
+      padding:48px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin:0 0 12px 0;
+    }
+
+    .logo{
+      width:68px;
+      height:68px;
+      border-radius:14px;
+      background: linear-gradient(135deg, #FFDCE6 0%, #F3E8FF 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 18px rgba(124,196,217,0.18);
+      transform-origin:center;
+      animation: bounce-slow 2200ms infinite ease-in-out;
+    }
+
+    .logo svg{ width:40px; height:40px; transform:translateY(-2px); }
+
+    h1{
+      font-size:36px;
+      line-height:1;
+      margin:0;
+      color: #173646;
+      letter-spacing:-0.6px;
+      animation: bounce-soft 2000ms infinite ease-in-out;
+    }
+
+    p.lead{
+      margin:18px 0 28px 0;
+      color: #375A5F;
+      max-width:62ch;
+      font-size:16px;
+    }
+
+    .actions{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .btn{
+      background: linear-gradient(90deg, #7CC4D9 0%, #9AD1E6 100%);
+      color:#063241;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:600;
+      border: none;
+      box-shadow: 0 8px 24px rgba(124,196,217,0.16);
+      cursor:pointer;
+      transform-origin:center;
+      transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 200ms;
+      animation: bounce-btn 1800ms infinite ease-in-out;
+    }
+
+    .btn:hover{
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 14px 34px rgba(124,196,217,0.22);
+    }
+
+    .ghost{
+      background: transparent;
+      color: #375A5F;
+      padding:10px 14px;
+      border-radius:12px;
+      border: 1px solid rgba(55,90,95,0.08);
+      box-shadow:none;
+      cursor:pointer;
+    }
+
+    .meta{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+      border-radius:14px;
+      padding:24px;
+      box-shadow: var(--shadow);
+    }
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .profile{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .avatar{
+      width:84px;
+      height:84px;
+      border-radius:14px;
+      background: linear-gradient(135deg,#E8F8FF 0%, #FFDCE6 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 10px 30px rgba(17,24,39,0.06);
+      animation: float 3800ms infinite ease-in-out;
+    }
+
+    .avatar svg{ width:44px; height:44px; }
+
+    .info h3{
+      margin:0;
+      font-size:18px;
+      color:#132E31;
+    }
+
+    .info span{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .stats{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .stat{
+      flex:1;
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.78));
+      border-radius:12px;
+      padding:12px;
+      text-align:center;
+      box-shadow: 0 6px 18px rgba(17,24,39,0.04);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:18px;
+      color:#173646;
+    }
+
+    .blobs{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(18px);
+      opacity:0.9;
+      transform-origin:center;
+    }
+
+    .b1{ width:220px;height:220px;background:rgba(255,220,230,0.55); left:-40px; top:-40px; animation: drift 8000ms infinite ease-in-out; }
+    .b2{ width:260px;height:260px;background:rgba(243,232,255,0.5); right:-60px; bottom:-40px; animation: drift 9200ms 600ms infinite ease-in-out; }
+    .b3{ width:160px;height:160px;background:rgba(232,248,255,0.52); left:20%; top:40%; animation: drift 7200ms 1200ms infinite ease-in-out; }
+
+    footer.pagefoot{
+      margin-top:32px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-size:14px;
+      justify-content:center;
+      width:100%;
+    }
+
+    footer a{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+
+    .gh{
+      width:22px;
+      height:22px;
+      display:inline-block;
+      fill:var(--muted);
+      transition: transform 180ms, fill 180ms;
+    }
+
+    a:hover .gh{ transform: translateY(-3px) scale(1.04); fill:#173646; }
+    a:hover span{ color:#173646; }
+
+    /* Animations */
+    @keyframes bounce-slow{
+      0%,100%{ transform: translateY(0) }
+      50%{ transform: translateY(-6px) }
+    }
+
+    @keyframes bounce-soft{
+      0%,100%{ transform: translateY(0) }
+      40%{ transform: translateY(-8px) }
+    }
+
+    @keyframes bounce-btn{
+      0%,100%{ transform: translateY(0) }
+      60%{ transform: translateY(-6px) }
+    }
+
+    @keyframes float{
+      0%{ transform: translateY(0) }
+      50%{ transform: translateY(-10px) }
+      100%{ transform: translateY(0) }
+    }
+
+    @keyframes drift{
+      0%{ transform: translateY(0) scale(1) }
+      50%{ transform: translateY(-18px) scale(1.05) }
+      100%{ transform: translateY(0) scale(1) }
+    }
+
+    @media (max-width:980px){
+      .wrap{ grid-template-columns: 1fr; padding:0; }
+      .hero{ order:2; }
+      .side{ order:1; }
+      footer.pagefoot{ justify-content:flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="blobs" aria-hidden="true">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+      </div>
+
+      <div class="title">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 2C8 2 5 5.2 5 9c0 5.2 7 11 7 11s7-5.8 7-11c0-3.8-3-7-7-7z" fill="#183B3F"/>
+            <circle cx="11.8" cy="9" r="2.2" fill="#FFF"/>
+          </svg>
+        </div>
+        <div>
+          <h1 id="hero-title">amirabolfazle</h1>
+          <div class="meta">Pastel landing • elegant bounce accents</div>
+        </div>
+      </div>
+
+      <p class="lead">A soft, modern landing experience blending pastel tones with playful bounce motion — polished for portfolios, projects and elegant presentations. Explore the vibe or jump straight into the code.</p>
+
+      <div class="actions">
+        <button class="btn" onclick="location.href='#'">Explore</button>
+        <button class="ghost" onclick="location.href='#contact'">Contact</button>
+      </div>
+
+      <div style="margin-top:20px;color:var(--muted);font-size:13px;">
+        Creation time: <strong style="color:#173646;">2025-09-26 21:07:55</strong>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="card profile">
+        <div class="avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" fill="#173646" />
+            <path d="M3.6 20.6a8.6 8.6 0 0116.8 0 .6.6 0 01-.6.8H4.2a.6.6 0 01-.6-.8z" fill="#7CC4D9"/>
+          </svg>
+        </div>
+        <div class="info">
+          <h3>amirabolfazle</h3>
+          <span>Designer & developer crafting calm interfaces</span>
+          <div class="stats" aria-hidden="true">
+            <div class="stat">
+              <strong>12</strong>
+              Projects
+            </div>
+            <div class="stat">
+              <strong>4</strong>
+              Awards
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4 style="margin:0 0 10px 0;color:#173646;">Quick links</h4>
+        <ul style="margin:0;padding:0 0 0 18px;color:var(--muted);line-height:1.9">
+          <li><a href="#" style="color:#1b4f53;text-decoration:none;">Portfolio</a></li>
+          <li><a href="#" style="color:#1b4f53;text-decoration:none;">About</a></li>
+          <li><a href="#" style="color:#1b4f53;text-decoration:none;">Contact</a></li>
+        </ul>
+      </div>
+
+      <footer class="pagefoot" role="contentinfo">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg class="gh" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.7 3 8.7 7.2 10.1.5.1.7-.2.7-.5v-1.7c-2.9.6-3.5-1.3-3.5-1.3-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.2.1 1.8 1.3 1.8 1.3 1 .1 1.7.8 2.2 1.2.2-.8.5-1.4.9-1.8-2.4-.3-4.9-1.2-4.9-5.4 0-1.2.4-2.1 1.1-2.8-.1-.3-.5-1.5.1-3.1 0 0 .9-.3 3 .9.9-.2 1.9-.3 2.9-.3 1 0 2 .1 2.9.3 2.1-1.2 3-.9 3-.9.6 1.6.2 2.8.1 3.1.7.7 1.1 1.6 1.1 2.8 0 4.2-2.5 5.1-4.9 5.4.5.4 1 1.3 1 2.6v3.9c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10.1C23.1 5.3 18.3.5 12 .5z"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </aside>
+  </div>
+</body>
+</html>
