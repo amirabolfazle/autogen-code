@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f2027;
+    --bg2:#203a43;
+    --accent1:#ff6a88;
+    --accent2:#5f2c82;
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.04);
+    --card-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    --text: #e9eef6;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);background:linear-gradient(135deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased;display:flex;align-items:center;justify-content:center}
+  .wrap{
+    width:min(1100px,94vw);
+    margin:40px auto;
+    position:relative;
+    perspective:1200px;
+  }
+
+  /* animated, rotating gradient orb backgrounds */
+  .glow{
+    position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:18px;
+  }
+  .orb{
+    position:absolute;border-radius:50%;
+    filter:blur(70px);
+    opacity:0.9;
+    mix-blend-mode:screen;
+    animation:float 12s ease-in-out infinite;
+  }
+  .orb.one{width:420px;height:420px;background:linear-gradient(45deg,var(--accent1),#ffd36b);left:-80px;top:-120px;animation-duration:18s}
+  .orb.two{width:360px;height:360px;background:linear-gradient(45deg,var(--accent2),#61c7d6);right:-80px;bottom:-100px;animation-duration:16s;animation-direction:reverse}
+  .orb.three{width:240px;height:240px;background:linear-gradient(45deg,#7b61ff,#19d3aa);left:50%;top:10%;transform:translateX(-50%);animation-duration:14s;opacity:0.7}
+
+  @keyframes float{
+    0%{transform:translateY(0) rotate(0deg) scale(1)}
+    50%{transform:translateY(-18px) rotate(45deg) scale(1.08)}
+    100%{transform:translateY(0) rotate(90deg) scale(1)}
+  }
+
+  /* main card */
+  .card{
+    position:relative;
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:28px;
+    padding:38px;
+    border-radius:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow:var(--card-shadow);
+    backdrop-filter: blur(8px) saturate(120%);
+    transform-style:preserve-3d;
+    transition:transform 300ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms;
+    overflow:visible;
+  }
+
+  /* title area */
+  .hero{
+    display:flex;flex-direction:column;gap:14px;justify-content:center;
+  }
+  .title{
+    font-size:48px;line-height:1;font-weight:800;
+    letter-spacing:-0.02em;
+    background:linear-gradient(90deg,#fff 0%, #f3f7ff 6%, var(--accent1) 28%, var(--accent2) 68%, #b1f0ff 100%);
+    -webkit-background-clip:text;
+    background-clip:text;color:transparent;
+    animation:glimmer 6s linear infinite;
+    display:inline-block;
+    transform-origin:center;
+    text-transform:lowercase;
+  }
+  @keyframes glimmer{
+    0%{filter:blur(0px)}
+    50%{filter:blur(.6px)}
+    100%{filter:blur(0px)}
+  }
+  .subtitle{
+    color:rgba(233,238,246,0.85);
+    font-size:14px;
+    max-width:60ch;
+  }
+  .meta{
+    display:flex;gap:12px;align-items:center;margin-top:10px;flex-wrap:wrap;
+  }
+  .chip{
+    background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    padding:8px 12px;border-radius:999px;font-size:13px;color:rgba(233,238,246,0.9);
+    display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,0.03);
+    box-shadow:0 6px 18px rgba(2,6,23,0.45);
+  }
+  .time{font-variant-numeric:tabular-nums;font-weight:600}
+
+  /* rotating projects column */
+  .projects{
+    align-self:stretch;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    transform-style:preserve-3d;
+  }
+  .project{
+    background:linear-gradient(135deg,var(--glass),var(--glass-2));
+    padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);
+    display:flex;align-items:center;gap:12px;justify-content:space-between;
+    transform-origin:center;
+    box-shadow:0 8px 20px rgba(2,6,23,0.5);
+    transition:transform 400ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms;
+  }
+  .project:hover{transform:translateY(-6px) rotateZ(-1deg) scale(1.01);box-shadow:0 18px 40px rgba(2,6,23,0.6)}
+  .p-left{display:flex;gap:12px;align-items:center}
+  .logo{
+    width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#ffffff11,#ffffff07);
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--text);font-size:18px;border:1px solid rgba(255,255,255,0.04)
+  }
+  .p-info{display:flex;flex-direction:column}
+  .p-title{font-weight:700}
+  .p-desc{font-size:13px;color:rgba(233,238,246,0.75)}
+  .p-action{font-size:13px;color:rgba(233,238,246,0.9);opacity:0.95;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+
+  /* animated rotating container for subtle rotation */
+  .rotator{
+    position:absolute;right:-160px;top:-160px;width:600px;height:600px;border-radius:50%;
+    transform-style:preserve-3d;mix-blend-mode:overlay;opacity:0.08;
+    background:conic-gradient(from 120deg,var(--accent1),var(--accent2),#61c7d6,#7b61ff,var(--accent1));
+    animation:spin 18s linear infinite;
+    filter:blur(28px);
+    pointer-events:none;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* footer */
+  footer{
+    margin-top:18px;display:flex;align-items:center;gap:12px;justify-content:flex-start;color:rgba(233,238,246,0.75);font-size:13px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.02)
+  }
+  .gh{
+    display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none;padding:6px 10px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)
+  }
+  .gh svg{width:18px;height:18px;display:block;fill:currentColor;opacity:0.95}
+  .created{opacity:0.95}
+
+  /* responsive */
+  @media (max-width:880px){
+    .card{grid-template-columns:1fr; padding:20px;}
+    .projects{order:2}
+    .rotator{display:none}
+  }
+
+  /* playful cursor dot */
+  .cursor-dot{position:fixed;pointer-events:none;left:0;top:0;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 35%,#fff,#ffffff66 20%,transparent 40%);mix-blend-mode:screen;opacity:0.9;transition:transform 80ms linear}
+
+</style>
+</head>
+<body>
+  <div class="wrap" id="scene">
+    <div class="glow" aria-hidden="true">
+      <div class="orb one"></div>
+      <div class="orb two"></div>
+      <div class="orb three"></div>
+    </div>
+
+    <div class="rotator" aria-hidden="true"></div>
+
+    <main class="card" id="card" role="main" aria-labelledby="h-title">
+      <section class="hero">
+        <h1 id="h-title" class="title">amirabolfazle</h1>
+        <p class="subtitle">Creative tinkerer • front-end experiments • micro tools and design systems. This single-file portfolio showcases animated gradients, subtle 3D rotation and smooth micro-interactions.</p>
+
+        <div class="meta" aria-hidden="false">
+          <div class="chip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 8v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Animated gradient theme</span>
+          </div>
+
+          <div class="chip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 17v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M17 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span>Rotate & tilt effects</span>
+          </div>
+
+          <div class="chip time" title="creation time">2025-09-26 20:16:45</div>
+        </div>
+
+        <footer>
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 .5C5.73.5.9 5.34.9 11.6c0 4.74 3.08 8.76 7.36 10.18.54.1.73-.24.73-.52 0-.26-.01-.95-.01-1.87-2.99.65-3.63-1.45-3.63-1.45-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.08-.66.08-.66 1.08.08 1.65 1.12 1.65 1.12.96 1.65 2.51 1.18 3.12.9.1-.7.38-1.18.69-1.45-2.39-.27-4.9-1.2-4.9-5.35 0-1.18.42-2.14 1.12-2.9-.11-.27-.49-1.36.11-2.83 0 0 .91-.29 2.98 1.11a10.3 10.3 0 0 1 2.71-.37c.92.01 1.85.13 2.71.37 2.07-1.4 2.98-1.11 2.98-1.11.6 1.47.22 2.56.11 2.83.7.76 1.12 1.72 1.12 2.9 0 4.16-2.52 5.08-4.92 5.34.39.34.73 1.03.73 2.08 0 1.5-.01 2.71-.01 3.08 0 .29.19.63.74.52C19.02 20.36 22.1 16.34 22.1 11.6 22.1 5.34 17.27.5 12 .5z"></path>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </footer>
+      </section>
+
+      <aside class="projects" aria-label="projects">
+        <div class="project" data-tilt>
+          <div class="p-left">
+            <div class="logo" aria-hidden="true">ac</div>
+            <div class="p-info">
+              <div class="p-title">AutoGen Code</div>
+              <div class="p-desc">A tool to scaffold tiny automation snippets and experiment with code generation.</div>
+            </div>
+          </div>
+          <div class="p-action">View →</div>
+        </div>
+
+        <div class="project" data-tilt>
+          <div class="p-left">
+            <div class="logo" aria-hidden="true">ui</div>
+            <div class="p-info">
+              <div class="p-title">Gradient UI Kit</div>
+              <div class="p-desc">A collection of components with animated gradients and accessible styles.</div>
+            </div>
+          </div>
+          <div class="p-action">Explore →</div>
+        </div>
+
+        <div class="project" data-tilt>
+          <div class="p-left">
+            <div class="logo" aria-hidden="true">fx</div>
+            <div class="p-info">
+              <div class="p-title">Micro Effects</div>
+              <div class="p-desc">Micro-interactions: tilt, parallax and subtle motion for delightful interfaces.</div>
+            </div>
+          </div>
+          <div class="p-action">Try →</div>
+        </div>
+      </aside>
+    </main>
+
+    <div class="cursor-dot" id="cursor" aria-hidden="true"></div>
+  </div>
+
+<script>
+  // card tilt based on pointer
+  (function(){
+    const card = document.getElementById('card');
+    const scene = document.getElementById('scene');
+    const cursor = document.getElementById('cursor');
+    let rect = card.getBoundingClientRect();
+
+    function updateRect(){ rect = card.getBoundingClientRect(); }
+
+    window.addEventListener('resize', updateRect);
+    scene.addEventListener('pointermove', (e) => {
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width/2;
+      const cy = rect.height/2;
+      const dx = (x - cx) / cx;
+      const dy = (y - cy) / cy;
+      const rx = dy * -6; // rotateX
+      const ry = dx * 8;  // rotateY
+      card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+      // cursor
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(1.1)`;
+    });
+
+    scene.addEventListener('pointerleave', () => {
+      card.style.transition = 'transform 700ms cubic-bezier(.2,.9,.3,1)';
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
+      cursor.style.transform = 'translate(-50%,-50%) scale(0.95)';
+      setTimeout(()=>card.style.transition='',700);
+    });
+
+    // tilt on each project for micro-interaction
+    document.querySelectorAll('[data-tilt]').forEach(el=>{
+      el.addEventListener('pointermove', (ev)=>{
+        const r = el.getBoundingClientRect();
+        const mx = (ev.clientX - r.left) / r.width;
+        const my = (ev.clientY - r.top) / r.height;
+        const rx = (my - 0.5) * -6;
+        const ry = (mx - 0.5) * 10;
+        el.style.transform = `translateZ(8px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      el.addEventListener('pointerleave', ()=> el.style.transform = '');
+    });
+
+    // subtle parallax for orbs
+    const orbs = document.querySelectorAll('.orb');
+    scene.addEventListener('mousemove', e=>{
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const nx = (e.clientX / w) - 0.5;
+      const ny = (e.clientY / h) - 0.5;
+      orbs.forEach((o,i)=>{
+        const move = (i+1) * 12;
+        o.style.transform = `translate3d(${nx * move}px, ${ny * move}px, 0)`;
+      });
+    });
+  })();
+</script>
+</body>
+</html>
