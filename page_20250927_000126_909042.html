@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --glass: rgba(255,255,255,0.08);
+      --glass-border: rgba(255,255,255,0.25);
+      --text: #eaf2ff;
+      --muted: rgba(234,242,255,0.8);
+      --shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient( circle at 20% -10%, rgba(124,255,249,0.25), transparent 40% ),
+                  radial-gradient( circle at 90% 10%, rgba(178,138,255,0.25), transparent 40% ),
+                  linear-gradient(135deg, #0b1020 0%, #0c0f1a 60%, #0b1020 100%);
+      overflow-x: hidden;
+      perspective: 1000px;
+    }
+
+    /* Decorative glassy blobs for glassmorphism feel */
+    .bg-glow {
+      position: fixed;
+      inset: -10vmin;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 20%, rgba(125, 255, 230, 0.25), transparent 40%),
+                  radial-gradient(circle at 70% 60%, rgba(170, 130, 255, 0.25), transparent 40%);
+      filter: blur(40px);
+      transform: translateZ(-1px);
+      pointer-events: none;
+    }
+
+    .page {
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 6rem 1rem;
+      position: relative;
+    }
+
+    .card {
+      width: min(1000px, 92vw);
+      padding: 48px 56px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04) 60%);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(14px) saturate(1.2);
+      box-shadow: var(--shadow);
+      text-align: center;
+      transform: scale(0.96);
+      animation: zoomIn 0.9s ease forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .4px;
+      color: #d9ebff;
+      background: rgba(14, 26, 56, 0.6);
+      border: 1px solid rgba(140,180,255,0.6);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 1.04;
+      margin: 14px 0 6px;
+      background: linear-gradient(90deg, #a9f1ff 0%, #d9b3ff 50%, #9af0a8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.25);
+      letter-spacing: 2px;
+      text-transform: none;
+    }
+
+    .subtitle {
+      font-size: clamp(14px, 2.5vw, 18px);
+      color: var(--muted);
+      margin: 8px 0 20px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 22px;
+      font-size: 16px;
+      color: #e8f6ff;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    .cta:hover {
+      transform: translateY(-2px) scale(1.03);
+      background: rgba(255,255,255,0.22);
+    }
+
+    .cta .arrow {
+      display: inline-block;
+      transition: transform 0.25s ease;
+    }
+
+    .cta:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color: #d8eaff;
+      opacity: 0.9;
+      margin-top: -8px;
+      margin-bottom: 6px;
+      letter-spacing: .5px;
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(122, 210, 255, 0.55), rgba(122, 210, 255, 0) 60%),
+                  radial-gradient(circle at 70% 70%, rgba(214, 168, 255, 0.55), rgba(214, 168, 255, 0) 60%);
+      filter: blur(28px);
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 18s ease-in-out infinite;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(-10%, -10%) scale(1); opacity: 0.9; }
+      50% { transform: translate(6%, 2%) scale(1.05); opacity: 0.8; }
+      100% { transform: translate(-10%, -10%) scale(1); opacity: 0.9; }
+    }
+
+    .glass-footer {
+      width: min(1000px, 92vw);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 20px;
+      margin: 40px auto 0;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(8px);
+    }
+
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      color: #e6f0ff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: transform .2s ease;
+      margin-right: 6px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+
+    .footer a:hover { transform: translateY(-1px) scale(1.05); }
+
+    .footer span {
+      font-size: 14px;
+      color: #dbeaff;
+    }
+
+    @media (max-width: 720px) {
+      .card { padding: 32px 20px; }
+      .glow-orb { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <div class="page" role="main">
+    <section class="card" aria-label="amirabolfazle landing">
+      <div class="badge" aria-label="creation time badge">
+        Creation time: 2025-09-27 00:00:53
+      </div>
+      <h1>amirabolfazle</h1>
+      <p class="subtitle">Stunning glassmorphism landing page with smooth zoom and subtle depth.</p>
+      <a href="#" class="cta" aria-label="Get started">
+        Get started
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <div class="glow-orb" style="left: -60px; top: -60px;"></div>
+      <div class="glow-orb" style="right: -100px; bottom: -100px; animation-direction: reverse;"></div>
+    </section>
+  </div>
+
+  <footer class="glass-footer" role="contentinfo" aria-label="footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" role="img" style="display:block;">
+        <path d="M12 .5C5.73.5 1 5.14 1 11.84c0 4.98 3.22 9.19 7.68 10.68.56.1.76-.24.76-.54 0-.26-.01-1-.01-1.96-3.12.68-3.77-1.37-3.77-1.37-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.09.08 1.67 1.09 1.67 1.09.92 1.58 2.41 1.12 3 .86.11-.66.38-1.1.69-1.36-2.5-.29-5.13-1.28-5.13-5.74 0-1.27.46-2.31 1.21-3.12-.12-.29-.53-1.46.11-3.04 0 0 .99-.32 3.25 1.19a11.3 11.3 0 013.01-.39c1.02 0 2.05.14 3.01.39 2.26-1.51 3.25-1.19 3.25-1.19.65 1.58.24 2.75.12 3.04.79.81 1.21 1.85 1.21 3.12 0 4.46-2.63 5.45-5.14 5.74.39.34.74 1.01.74 2.04 0 1.48-.01 2.68-.01 3.05 0 .3.2.65.77.54A10.99 10.99 0 0023 11.84C23 5.14 18.27.5 12 .5z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
