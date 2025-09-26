@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0a0b15;
+      --neon1: #00e6ff;
+      --neon2: #ff4d93;
+      --neon3: #7dff7a;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #eaffff;
+      background: #05060b;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(0, 230, 255, 0.15), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(255, 0, 212, 0.15), transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(0, 255, 140, 0.15), transparent 40%);
+      background-blend-mode: screen;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: -20vmin;
+      left: -20vmin;
+      width: 140vmin;
+      height: 140vmin;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0,255,255,0.08), rgba(255,0,255,0.08), rgba(0, 255, 139, 0.08), rgba(0,255,255,0.08));
+      animation: spin 40s linear infinite;
+      filter: blur(40px);
+      z-index: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      min-height: 100vh;
+      grid-template-rows: auto 1fr auto;
+      align-items: start;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10vh 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero h1 {
+      font-size: clamp(48px, 9vw, 110px);
+      line-height: 0.95;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(0, 230, 255, 0.9),
+                   0 0 28px rgba(0, 0, 0, 0.25);
+      animation: glow 3s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%,100% { text-shadow: 0 0 8px rgba(0,255,255,0.7), 0 0 22px rgba(0,255,255,0.6); }
+      50% { text-shadow: 0 0 20px rgba(255,0,212,0.95), 0 0 40px rgba(0,255,255,0.9); }
+    }
+    .creation-time {
+      margin-top: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      color: #dffaff;
+      background: rgba(0, 255, 255, 0.14);
+      border: 1px solid rgba(0, 255, 255, 0.32);
+      box-shadow: 0 0 14px rgba(0, 255, 255, 0.5);
+    }
+    nav {
+      margin-top: 18px;
+    }
+    nav a {
+      display: inline-block;
+      margin: 0 8px;
+      padding: 8px 14px;
+      color: #eaffff;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.5);
+      background: rgba(0, 255, 255, 0.08);
+      transition: transform 0.25s ease;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+    }
+    nav a:hover { transform: scale(1.05); }
+
+    .section {
+      padding: 4rem 1rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section h2 {
+      font-size: 2rem;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+      margin-bottom: 0.75rem;
+    }
+    .section p { color: #e8f7ff; opacity: 0.95; line-height: 1.6; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .card {
+      padding: 1rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      box-shadow: 0 0 18px rgba(0, 255, 255, 0.25);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .card:hover { transform: scale(1.03); border-color: rgba(0, 255, 255, 0.8); }
+    .card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; color: #eaffff; }
+    .card p { margin: 0; color: #d8f7ff; font-size: 0.95rem; }
+
+    .footer {
+      padding: 16px;
+      text-align: center;
+      background: #0a0b14;
+      border-top: 1px solid rgba(0,255,255,0.25);
+      color: #d6f0ff;
+    }
+    .footer-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #d6f0ff; text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .footer-link:hover { background: rgba(0,255,255,0.08); }
+    .footer svg { width: 20px; height: 20px; fill: currentColor; filter: drop-shadow(0 0 6px rgba(0,255,255,0.9)); }
+
+    @media (max-width: 600px) {
+      .hero { padding-top: 40px; padding-bottom: 2rem; }
+      .hero h1 { font-size: 60px; }
+    }
+
+    /* Subtle overall zoom-in on load for the page content */
+    .page {
+      transform: scale(0.98);
+      opacity: 0;
+      animation: zoomIn 1.4s ease-out forwards;
+    }
+    @keyframes zoomIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      60% { transform: scale(1.02); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Personal page content">
+    <section class="hero" aria-label="Intro">
+      <h1>amirabolfazle</h1>
+      <div class="creation-time" aria-label="creation-time">
+        Creation time: 2025-09-27 02:19:12
+      </div>
+      <nav aria-label="Main sections">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </section>
+
+    <section id="about" class="section" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p>Hi, I’m amirabolfazle. This is a neon-inspired personal page featuring animated visuals and a zoom-in intro. It’s a playful demonstration of CSS-powered effects with a clean structure.</p>
+      <div class="card-grid" aria-label="quick-cards">
+        <div class="card">
+          <h3>Experience</h3>
+          <p>Frontend, UI/UX, and interactive design with a love for motion.</p>
+        </div>
+        <div class="card">
+          <h3>Skills</h3>
+          <p>HTML, CSS, JavaScript, animation, neon aesthetics.</p>
+        </div>
+        <div class="card">
+          <h3>Focus</h3>
+          <p>Accessible, fast, and delightful user experiences.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Autogen Code</h3>
+          <p>A sample autogen code generator project that inspired this page.</p>
+        </div>
+        <div class="card">
+          <h3>Neon Studio</h3>
+          <p>Experimenting with glow and depth in a web UI.</p>
+        </div>
+        <div class="card">
+          <h3>Live Demos</h3>
+          <p>Interactive UI demos built with pure CSS and a sprinkle of JS.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p>Feel free to reach out if you’d like to discuss neon-themed UI experiments or collaborate on a project.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Email</h3>
+          <p>you@example.com</p>
+        </div>
+        <div class="card">
+          <h3>Social</h3>
+          <p>GitHub, LinkedIn, and more on the repo footer below.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .5A12 12 0 0 0 0 12.16a12 12 0 0 0 8.21 11.41c.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.73-4.04-1.62-4.04-1.62-.54-1.38-1.32-1.75-1.32-1.75-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.25-3.22-.13-.31-.54-1.57.12-3.28 0 0 1 .32 3.28 1.23a11.3 11.3 0 0 1 6 0C12.3 3.43 13.3 3.11 14.7 3.11c.66 1.71.75 2.97.12 3.28.81.84 1.25 1.91 1.25 3.22 0 4.6-2.81 5.63-5.47 5.93.43.37.82 1.1.82 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.69.83.58A12 12 0 0012 .5z" fill="currentColor"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
