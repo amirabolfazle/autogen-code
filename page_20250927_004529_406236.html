@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-dark: #0b0f1a;
+      --bg-gradient-start: #0b1020;
+      --grad1: #ff7e5f;
+      --grad2: #feb47b;
+      --grad3: #2dd4bf;
+      --grad4: #4f46e5;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: #e8eaf6;
+      background: #0a0a10;
+      background: radial-gradient(circle at 20% 10%, rgba(255,255,255,0.08) 0, rgba(255,255,255,0) 25%),
+                  radial-gradient(circle at 80% 20%, rgba(0,0,0,0.25) 0, rgba(0,0,0,0) 40%),
+                  linear-gradient(135deg, #0b1020 0%, #1a0f2b 40%, #0b1020 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 6rem 1rem 4rem;
+      overflow: hidden;
+    }
+
+    /* Floating gradient orbs for zoom/depth effect */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.7;
+      mix-blend-mode: screen;
+      filter: blur(0.4px);
+      animation: float 18s ease-in-out infinite;
+    }
+    .orb.o1 {
+      width: 28vmin; height: 28vmin;
+      left: -6vmin; top: -6vmin;
+      background: radial-gradient(circle at 30% 30%, rgba(255,214,102,0.95), rgba(255,120,120,0) 40%),
+                  conic-gradient(from 0deg, rgba(255,126,95,0.8), rgba(34,197,94,0.8), rgba(79,70,229,0.8));
+      animation-delay: -4s;
+    }
+    .orb.o2 {
+      width: 32vmin; height: 32vmin;
+      right: -6vmin; bottom: -6vmin;
+      background: radial-gradient(circle at 50% 50%, rgba(56,182,255,0.9), rgba(0,0,0,0) 40%),
+                  linear-gradient(135deg, rgba(56,189,248,0.7), rgba(99,102,241,0.7));
+      animation-delay: -2s;
+    }
+    .orb.o3 {
+      width: 22vmin; height: 22vmin;
+      left: 10%; bottom: -6vmin;
+      background: radial-gradient(circle at 50% 50%, rgba(168,85,247,0.9), rgba(0,0,0,0) 50%),
+                  conic-gradient(from 180deg, rgba(14,165,233,0.8), rgba(34,197,94,0.8));
+      animation-delay: -6s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(15px, -20px) scale(1.05); }
+    }
+
+    /* Title with gradient text and zoom/pulse effect */
+    .title {
+      font-size: clamp(2rem, 8vw, 9rem);
+      line-height: 0.95;
+      font-weight: 900;
+      margin: 0;
+      letter-spacing: .04em;
+      display: inline-block;
+      background: linear-gradient(135deg, var(--grad1), var(--grad2), var(--grad3), var(--grad4));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transform-origin: center;
+      animation: zoom 8s ease-in-out infinite;
+    }
+
+    @keyframes zoom {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .subtitle {
+      margin-top: 0.5rem;
+      font-size: clamp(0.95rem, 4vw, 1.1rem);
+      color: #e5e7eb;
+      opacity: 0.95;
+      text-align: center;
+      max-width: 700px;
+    }
+
+    .creation-time {
+      margin-top: 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: clamp(0.8rem, 3.5vw, 1rem);
+      color: #e5e7eb;
+      opacity: 0.92;
+      text-align: center;
+    }
+
+    /* Footer with GitHub icon and creator text */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(2,6,23,0.65);
+      color: #e5e7eb;
+      backdrop-filter: blur(6px);
+      font-family: ui-sans-serif, system-ui;
+      z-index: 5;
+    }
+    .footer a {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #e5e7eb; text-decoration: none;
+      border: 1px solid rgba(229,231,235,.25);
+      padding: 6px 12px; border-radius: 8px;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .footer a:hover { transform: translateY(-1px); background: rgba(255,255,255,0.05); }
+    .footer svg { width: 1em; height: 1em; fill: currentColor; }
+
+    .footer .credit { font-size: 0.95em; padding: 0 6px; }
+
+    @media (max-width: 700px) {
+      .stage { padding: 4rem 1rem 3rem; }
+      .orb { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Animated stage featuring a gradient headline">
+    <span class="orb o1" aria-hidden="true"></span>
+    <span class="orb o2" aria-hidden="true"></span>
+    <span class="orb o3" aria-hidden="true"></span>
+
+    <div style="text-align:center; z-index:1;">
+      <h1 class="title" aria-label="Site title">amirabolfazle</h1>
+      <div class="creation-time" aria-label="Creation time badge">Creation time: 2025-09-27 00:44:51</div>
+      <p class="subtitle" aria-label="Description">A fully responsive animated HTML page with a gradient theme and zoom effects.</p>
+    </div>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" title="GitHub repository">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="GitHub icon" role="img" width="20" height="20">
+        <path fill="currentColor" d="M12 2C6.477 2 2 6.58 2 12.29c0 4.59 2.987 8.47 7.153 9.83.52.1.708-.23.708-.51 0-.25-.01-1.02-.015-1.86-2.914.66-3.53-1.12-3.53-1.12-.473-1.22-1.155-1.54-1.155-1.54-.945-.66.073-.647.073-.647 1.043.072 1.593 1.08 1.593 1.08.93 1.59 2.44 1.13 3.04.86.094-.676.362-1.13.657-1.39-2.327-.27-4.77-1.178-4.77-5.244 0-1.16.42-2.11 1.11-2.86-.11-.28-.48-1.41.1-2.94 0 0 .92-.3 3.01 1.13a10.49 10.49 0 0 1 2.74-.37c.93 0 1.87.12 2.75.36 2.09-1.43 3.01-1.13 3.01-1.13.58 1.53.21 2.66.1 2.94.69.75 1.11 1.7 1.11 2.86 0 4.07-2.45 4.97-4.78 5.23.37.34.7 1.01.7 2.04 0 1.48-.01 2.68-.01 3.05 0 .28.18.61.72.51C19.01 20.75 22 16.88 22 12.29 22 6.58 17.522 2 12 2z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span class="credit" aria-label="Creator text">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
