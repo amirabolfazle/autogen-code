@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#081028;
+    --glass-bg: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --accent: rgba(120, 95, 255, 0.85);
+    --muted: rgba(255,255,255,0.75);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial;
+    background: radial-gradient(800px 400px at 10% 20%, rgba(120,95,255,0.08), transparent 10%),
+                radial-gradient(600px 300px at 90% 80%, rgba(0,200,255,0.04), transparent 10%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:var(--muted);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* animated background shimmer */
+  @keyframes bgShift {
+    0%{background-position:0% 0%, 100% 100%;}
+    50%{background-position:10% 5%, 90% 95%;}
+    100%{background-position:0% 0%, 100% 100%;}
+  }
+  body{ animation: bgShift 12s ease-in-out infinite; }
+
+  .wrap{
+    width:min(720px,92vw);
+    padding:48px 36px;
+    border-radius:16px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border:1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:flex-start;
+    transform:translateY(10px);
+    opacity:0;
+    animation: fadeUp 700ms ease-out 200ms forwards;
+    position:relative;
+    overflow:visible;
+  }
+
+  @keyframes fadeUp{
+    to{ transform:translateY(0); opacity:1; }
+  }
+
+  h1{
+    margin:0;
+    font-size:clamp(22px,4.6vw,36px);
+    letter-spacing:0.02em;
+    color:#fff;
+    background: linear-gradient(90deg,#fff, rgba(255,255,255,0.85));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    line-height:1;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  p.lead{
+    margin:0;
+    color:rgba(255,255,255,0.8);
+    font-size:14px;
+  }
+
+  .meta{
+    margin-top:10px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    color:rgba(255,255,255,0.7);
+    font-size:13px;
+  }
+
+  .dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:linear-gradient(180deg,var(--accent), rgba(80,70,200,0.9));
+    box-shadow:0 6px 18px rgba(120,95,255,0.12);
+    transform-origin:center;
+    animation: float 3.6s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+    100%{transform:translateY(0);}
+  }
+
+  .badge{
+    padding:6px 10px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    font-size:12px;
+    color:rgba(255,255,255,0.75);
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  footer{
+    margin-top:26px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    opacity:0;
+    transform:translateY(6px) scale(0.995);
+    animation: fadeInFooter 900ms ease-out 600ms forwards;
+  }
+  @keyframes fadeInFooter{
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  .footer-left{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    color:rgba(255,255,255,0.65);
+    font-size:13px;
+  }
+
+  a.repo{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    color:inherit;
+    text-decoration:none;
+    padding:6px 8px;
+    border-radius:8px;
+    transition:transform 160ms ease, background 160ms ease;
+  }
+  a.repo:hover{ transform:translateY(-4px); background:rgba(255,255,255,0.02); }
+
+  .github-icon{
+    width:18px;
+    height:18px;
+    display:inline-block;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    transition:transform 200ms ease;
+  }
+  a.repo:hover .github-icon{ transform:scale(1.06); }
+
+  /* small decorative floating blur */
+  .orb{
+    position:absolute;
+    width:220px;
+    height:220px;
+    right:-60px;
+    top:-70px;
+    background: radial-gradient(circle at 30% 30%, rgba(120,95,255,0.14), transparent 30%),
+                radial-gradient(circle at 70% 70%, rgba(0,200,255,0.06), transparent 20%);
+    filter:blur(24px);
+    pointer-events:none;
+    transform:translateZ(0);
+    opacity:0.9;
+    animation: drift 10s linear infinite;
+  }
+  @keyframes drift{
+    0%{ transform:translate(0,0) rotate(0deg); }
+    50%{ transform:translate(-12px,8px) rotate(6deg); }
+    100%{ transform:translate(0,0) rotate(0deg); }
+  }
+
+  /* accessibility: reduce motion */
+  @media (prefers-reduced-motion:reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  /* responsive footer stacking */
+  @media (max-width:520px){
+    footer{ flex-direction:column; align-items:flex-start; gap:10px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="site-title">
+    <div class="orb" aria-hidden="true"></div>
+    <h1 id="site-title">amirabolfazle</h1>
+    <p class="lead">Minimal glassmorphism page with soft animations and subtle motion.</p>
+
+    <div class="meta" aria-hidden="false">
+      <div class="dot" title="status indicator"></div>
+      <div class="badge">Created: 2025-09-26 21:42:03</div>
+    </div>
+
+    <footer>
+      <div class="footer-left">
+        <a class="repo" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg class="github-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.648.5.5 5.648.5 12c0 5.084 3.292 9.393 7.867 10.915.576.106.786-.25.786-.556 0-.274-.01-1-.015-1.964-3.2.696-3.877-1.542-3.877-1.542-.523-1.33-1.277-1.684-1.277-1.684-1.044-.714.08-.699.08-.699 1.155.081 1.763 1.187 1.763 1.187 1.026 1.757 2.693 1.25 3.348.956.104-.744.402-1.25.731-1.537-2.554-.291-5.241-1.277-5.241-5.686 0-1.256.45-2.282 1.188-3.087-.119-.292-.515-1.466.112-3.056 0 0 .97-.311 3.178 1.18a11.07 11.07 0 0 1 2.897-.39c.983.004 1.975.133 2.896.39 2.206-1.491 3.174-1.18 3.174-1.18.63 1.59.234 2.764.115 3.056.74.805 1.187 1.83 1.187 3.087 0 4.42-2.693 5.391-5.257 5.675.413.357.781 1.062.781 2.142 0 1.545-.014 2.792-.014 3.172 0 .308.207.668.792.555C20.713 21.39 24 17.08 24 12c0-6.352-5.148-11.5-11.999-11.5z" fill="currentColor"/>
+          </svg>
+          <span style="font-size:13px;color:rgba(255,255,255,0.85)">autogen-code</span>
+        </a>
+      </div>
+
+      <div style="color:rgba(255,255,255,0.6);font-size:13px;">
+        Created by amirabolfazle
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
