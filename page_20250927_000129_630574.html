@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --pink: #ffd6e6;
+      --mint: #d6f5e2;
+      --lavender: #e9e1ff;
+      --blue: #d7f0ff;
+      --bg: #fbf7ff;
+      --text: #2c2c2c;
+      --shadow: rgba(0,0,0,.08);
+      --card: rgba(255,255,255,.82);
+    }
+
+    /* Base */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 10% 10%, rgba(255, 210, 230, .5), transparent 35%),
+                  radial-gradient(circle at 90% 0%, rgba(210, 235, 255, .5), transparent 40%),
+                  linear-gradient(135deg, #fffafc 0%, #f3fbff 60%, #f9fff4 100%);
+      overflow-x: hidden;
+    }
+
+    /* Gentle pastel blobs behind content */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(0.2px);
+      opacity: .6;
+      z-index: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    .orb.one {
+      width: 460px; height: 460px;
+      left: -100px; top: -120px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,180,210,.9), rgba(255,255,255,0) 40%),
+                  radial-gradient(circle at 70% 70%, rgba(180,235,255,.9), rgba(255,255,255,0) 40%);
+      animation: spin 60s linear infinite;
+    }
+    .orb.two {
+      width: 360px; height: 360px;
+      right: -60px; bottom: -60px;
+      background: radial-gradient(circle at 40% 40%, rgba(210, 255, 210,.8), rgba(255,255,255,0) 40%),
+                  radial-gradient(circle at 60% 60%, rgba(200,180,255,.8), rgba(255,255,255,0) 40%);
+      animation: spin 80s linear reverse infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Layout */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100%;
+      padding: 40px 20px 80px;
+    }
+
+    header.site-header {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 20px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw + 1rem, 5.5rem);
+      line-height: 1.05;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: .02em;
+      background: linear-gradient(135deg, #ffafcc 0%, #c3f0d7 50%, #b5d7ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 25px rgba(0,0,0,.04);
+      user-select: none;
+    }
+
+    .tagline {
+      margin-top: 12px;
+      font-size: clamp(1rem, 1.5vw + .8rem, 1.25rem);
+      color: #555;
+      letter-spacing: .01em;
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      font-size: .92rem;
+      color: #444;
+      border: 1px solid rgba(0,0,0,.05);
+    }
+
+    /* Active paste card area */
+    .grid {
+      max-width: 1000px;
+      margin: 28px auto 0;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 18px 40px var(--shadow);
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(.22,.61,.36,1);
+      perspective: 1000px;
+      border: 1px solid rgba(255,255,255,.7);
+    }
+    .card:hover {
+      transform: rotateX(6deg) rotateY(-6deg) translateZ(0);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 6px;
+      font-size: 1.25rem;
+      letter-spacing: .02em;
+    }
+
+    .card p {
+      margin: 0;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .card .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: .75rem;
+      background: #fff3;
+      border: 1px solid #ddd6;
+      margin-bottom: 12px;
+    }
+
+    /* Decorative pastel accents in cards */
+    .card.featured { border: none; background: linear-gradient(135deg, rgba(255,223,235,.9), rgba(230,245,255,.9)); }
+    .card .mini {
+      font-size: .85rem;
+      color: #666;
+    }
+
+    /* Footer */
+    footer.site-footer {
+      max-width: 1000px;
+      margin: 40px auto 0;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      color: #555;
+      border-top: 1px solid rgba(0,0,0,.05);
+      background: rgba(255,255,255,.6);
+      backdrop-filter: blur(2px);
+      border-radius: 12px;
+    }
+
+    footer.site-footer a {
+      color: inherit; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    footer.site-footer svg {
+      width: 20px; height: 20px;
+      vertical-align: middle;
+    }
+
+    /* Reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- pastel ambient blobs -->
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+
+  <div class="wrap" role="main">
+    <header class="site-header">
+      <h1>amirabolfazle</h1>
+      <div class="tagline">A fancy pastel-tinged, animated personal page with rotate effects</div>
+      <div class="creation-time" aria-label="Creation time">
+        Creation time: <time datetime="2025-09-27T00:01:00">2025-09-27 00:01:00</time>
+      </div>
+    </header>
+
+    <section class="grid" aria-label="Overview">
+      <article class="card featured" style="--accent:#ffd6e6;">
+        <span class="badge" aria-label="Intro badge">Intro</span>
+        <h3>Hi, I’m Amir</h3>
+        <p>
+          Welcome to my little pastel corner on the web. This page is designed with soft colors,
+          gentle rotation, and a touch of whimsy. I love building small, delightful experiences
+          and exploring creative code.
+        </p>
+        <p class="mini" style="margin-top:8px;">
+          Hover over cards to see subtle 3D tilts. Elements softly spin in the background for atmosphere.
+        </p>
+      </article>
+
+      <article class="card" aria-label="Experience">
+        <span class="badge" aria-label="Experience badge">Experience</span>
+        <h3>Frontend Enthusiast</h3>
+        <p>
+          I enjoy crafting intuitive UI patterns, visual storytelling through code, and
+          picking pastel palettes that feel calm and inviting.
+        </p>
+        <p class="mini">Languages: HTML, CSS, JavaScript. Tools: React, vanilla JS, CSS art.</p>
+      </article>
+
+      <article class="card" aria-label="Projects">
+        <span class="badge" aria-label="Projects badge">Projects</span>
+        <h3>Autogen Code (example)</h3>
+        <p>
+          Demonstrating a little of how code generation can be visualized. This page itself
+          is a tiny generated mockup to show animation-friendly design.
+        </p>
+        <p class="mini">Repository: amirabolfazle/autogen-code</p>
+      </article>
+    </section>
+
+    <footer class="site-footer" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub link">
+        <!-- GitHub icon (inline SVG) -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" width="20" height="20" style="color: #333;">
+          <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58V20c-3.35.73-4.07-1.44-4.07-1.44-.55-1.4-1.34-1.78-1.34-1.78-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 .97-.31 3.18 1.17a11.5 11.5 0 016 0C17.3 4.3 18.3 4 18.3 4c.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.6-2.81 5.61-5.49 5.9.43.37.81 1.1.81 2.22v3.3c0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
