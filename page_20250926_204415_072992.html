@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#030615;
+    --bg2:#07102a;
+    --neon-cyan:#00f0ff;
+    --neon-pink:#ff00d0;
+    --neon-lime:#a4ff4d;
+    --glass: rgba(255,255,255,0.03);
+    --card-bg: rgba(255,255,255,0.02);
+    --text: #e6f7ff;
+    --muted: rgba(230,247,255,0.5);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:
+      radial-gradient(1200px 500px at 10% 10%, rgba(0,240,255,0.04), transparent 8%),
+      radial-gradient(1000px 400px at 90% 90%, rgba(255,0,208,0.03), transparent 8%),
+      linear-gradient(160deg,var(--bg1) 0%, var(--bg2) 100%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:auto;
+    line-height:1.4;
+    padding:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* container */
+  .wrap{
+    width:min(1100px,96%);
+    backdrop-filter: blur(6px) saturate(120%);
+    border-radius:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,240,255,0.02);
+    overflow:hidden;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float{
+    0%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+    100%{transform:translateY(0)}
+  }
+
+  header{
+    padding:40px;
+    display:flex;
+    gap:28px;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,0.02);
+  }
+
+  .logo {
+    width:110px;
+    height:110px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    flex:0 0 110px;
+    background:
+      linear-gradient(135deg, rgba(0,240,255,0.06), rgba(255,0,208,0.04));
+    box-shadow: 0 6px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,240,255,0.03);
+    border: 1px solid rgba(255,255,255,0.03);
+    overflow:hidden;
+  }
+
+  .logo .sig {
+    font-weight:800;
+    font-size:20px;
+    letter-spacing:1px;
+    color:var(--neon-cyan);
+    text-shadow:
+      0 0 6px rgba(0,240,255,0.6),
+      0 0 18px rgba(0,240,255,0.12);
+    transform:translateY(-4px);
+  }
+
+  .logo::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(45deg, rgba(0,240,255,0.02), rgba(255,0,208,0.02));
+    mix-blend-mode:screen;
+    filter: blur(18px);
+    opacity:0.9;
+  }
+
+  .header-body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  h1{
+    margin:0;
+    font-size:36px;
+    letter-spacing:2px;
+    color:transparent;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow:
+      0 0 12px rgba(0,240,255,0.18),
+      0 0 30px rgba(255,0,208,0.06);
+    display:inline-block;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+  }
+
+  .tag{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:6px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+
+  .pill{
+    padding:6px 10px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+    color:var(--muted);
+    font-weight:600;
+    font-size:13px;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  main{
+    padding:36px;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:28px;
+    align-items:start;
+  }
+
+  .panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:20px;
+    border:1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 18px rgba(0,240,255,0.02);
+  }
+
+  .intro{
+    font-size:15px;
+    color:var(--muted);
+    margin-bottom:18px;
+  }
+
+  .features{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .card {
+    flex: 1 1 220px;
+    min-width:160px;
+    padding:16px;
+    border-radius:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    transition:transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .28s;
+    cursor:default;
+  }
+
+  .card:hover{
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0,240,255,0.03);
+  }
+
+  .card h3{
+    margin:0 0 8px 0;
+    font-size:16px;
+    color:var(--neon-pink);
+    text-shadow: 0 0 10px rgba(255,0,208,0.12);
+  }
+
+  .card p{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  aside{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  .meta{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .meta .line{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 12px;
+    border-radius:10px;
+    background:linear-gradient(90deg, rgba(0,240,255,0.02), rgba(255,0,208,0.02));
+    border:1px solid rgba(255,255,255,0.02);
+    color:var(--muted);
+    font-weight:600;
+    font-size:13px;
+  }
+
+  .projects{
+    display:grid;
+    gap:12px;
+    margin-top:8px;
+  }
+
+  .proj{
+    padding:12px;
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+    border:1px solid rgba(255,255,255,0.02);
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  .dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:linear-gradient(180deg,var(--neon-cyan),var(--neon-lime));
+    box-shadow: 0 0 10px rgba(0,240,255,0.18), 0 0 20px rgba(164,255,77,0.06);
+    flex:0 0 12px;
+  }
+
+  .proj .meta {
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+
+  .proj .meta span{font-size:13px; color:var(--muted); font-weight:600}
+  .proj .meta small{font-size:12px; color:rgba(230,247,255,0.45); font-weight:500}
+
+  footer{
+    padding:18px 24px;
+    border-top:1px solid rgba(255,255,255,0.02);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+
+  .creation {
+    color:var(--muted);
+    font-size:13px;
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  .gh {
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+  }
+
+  .gh a{
+    color:var(--muted);
+    text-decoration:none;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    padding:8px 10px;
+    border-radius:10px;
+    transition: all .18s ease;
+    border:1px solid rgba(255,255,255,0.02);
+    background:linear-gradient(90deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+  }
+
+  .gh a:hover{
+    transform:translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,240,255,0.04);
+  }
+
+  .gh svg{
+    width:20px;height:20px;
+    display:block;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+  }
+
+  /* fade-in sequence */
+  .wrap *{
+    opacity:0;
+    transform: translateY(8px);
+    animation: fadeInUp .8s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+
+  .wrap header *{animation-delay:.12s}
+  .wrap main *{animation-delay:.3s}
+  .wrap footer *{animation-delay:.9s}
+
+  .logo{animation-delay:.05s}
+  h1{animation-delay:.14s}
+  .tag{animation-delay:.18s}
+  .intro{animation-delay:.26s}
+  .card{animation-delay:.33s}
+  .projects .proj:nth-child(1){animation-delay:.38s}
+  .projects .proj:nth-child(2){animation-delay:.42s}
+  .projects .proj:nth-child(3){animation-delay:.46s}
+  .meta .line{animation-delay:.34s}
+  .creation{animation-delay:.92s}
+
+  @keyframes fadeInUp{
+    to{opacity:1; transform:translateY(0)}
+  }
+
+  /* responsive */
+  @media (max-width:900px){
+    main{grid-template-columns:1fr; padding:24px}
+    .logo{width:86px;height:86px;flex:0 0 86px}
+    header{gap:16px;padding:24px}
+    .wrap{margin:14px 0}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="site-title">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <div class="sig">amirabolfazle</div>
+      </div>
+      <div class="header-body">
+        <h1 id="site-title">amirabolfazle</h1>
+        <div class="tag">
+          <div class="pill">Neon Portfolio</div>
+          <div style="color:var(--muted); font-weight:600; font-size:13px">Creative coder • UI experiments • Lightweight demos</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="panel">
+          <p class="intro">A compact neon-themed single-file portfolio showcasing small creative projects, UI experiments, and dev notes. Smooth animations, bold color accents, and subtle glassmorphism keep everything sleek and focused.</p>
+
+          <div class="features">
+            <div class="card">
+              <h3>Interactive UI</h3>
+              <p>Micro-interactions and neon accents to make interfaces feel alive.</p>
+            </div>
+
+            <div class="card">
+              <h3>Performance First</h3>
+              <p>Small, dependency-free components and clean CSS animations.</p>
+            </div>
+
+            <div class="card">
+              <h3>Design Experiments</h3>
+              <p>Playful color palettes and motion to explore new visual languages.</p>
+            </div>
+          </div>
+
+          <div style="height:18px"></div>
+
+          <div class="panel" style="padding:14px; display:flex; gap:12px; align-items:center;">
+            <div style="flex:0 0 56px; width:56px; height:56px; border-radius:10px; display:grid; place-items:center; background:linear-gradient(180deg, rgba(0,240,255,0.04), rgba(255,0,208,0.03)); border:1px solid rgba(255,255,255,0.02)">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 2L20 7v6c0 5-4 9-8 9s-8-4-8-9V7l8-5z" fill="url(#g1)" />
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="1">
+                    <stop offset="0" stop-color="#00f0ff"/>
+                    <stop offset="1" stop-color="#ff00d0"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <div style="font-weight:700; color:var(--neon-cyan)">Selected Focus</div>
+              <div style="color:var(--muted); font-size:13px">Micro front-end builds, interactive SVGs, and theme experiments.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:18px"></div>
+
+        <div class="panel">
+          <h3 style="margin-top:0; color:var(--neon-lime)">Recent Projects</h3>
+          <div class="projects">
+            <div class="proj">
+              <div class="dot" aria-hidden="true"></div>
+              <div class="meta">
+                <span>autogen-code</span>
+                <small>Tooling & demos for lightweight code generation</small>
+              </div>
+            </div>
+
+            <div class="proj">
+              <div class="dot" style="background:linear-gradient(180deg,#ff00d0,#ffd34d)"></div>
+              <div class="meta">
+                <span>neon-ui-kit</span>
+                <small>Style primitives and animated components</small>
+              </div>
+            </div>
+
+            <div class="proj">
+              <div class="dot" style="background:linear-gradient(180deg,#00f0ff,#a4ff4d)"></div>
+              <div class="meta">
+                <span>svg-playground</span>
+                <small>Experimental SVG interactions and micro-animations</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside>
+        <div class="panel meta">
+          <div class="line"><span>Location</span><span style="color:var(--neon-cyan)">Remote</span></div>
+          <div class="line"><span>Primary</span><span style="color:var(--neon-pink)">Frontend / Creative Code</span></div>
+        </div>
+
+        <div class="panel" style="padding:16px;">
+          <h3 style="margin:0 0 8px 0; color:var(--neon-cyan)">Contact</h3>
+          <div style="color:var(--muted); font-size:13px; margin-bottom:10px">Reach me via GitHub or explore the projects below.</div>
+          <div style="display:flex; gap:8px; align-items:center">
+            <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); background:linear-gradient(90deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01)); color:var(--muted); font-weight:700; text-decoration:none">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 .5C5.65.5.5 5.66.5 12.01c0 5.12 3.32 9.46 7.94 10.99.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.23.7-3.91-1.56-3.91-1.56-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.72 1.27 3.38.97.11-.76.41-1.27.74-1.56-2.58-.29-5.29-1.29-5.29-5.74 0-1.27.45-2.31 1.19-3.12-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.17 1.19.92-.26 1.91-.39 2.9-.39s1.98.13 2.9.39c2.2-1.5 3.16-1.19 3.16-1.19.63 1.59.24 2.77.12 3.06.74.81 1.19 1.85 1.19 3.12 0 4.46-2.72 5.44-5.31 5.72.42.36.8 1.08.8 2.18 0 1.57-.01 2.83-.01 3.22 0 .31.2.68.8.56C20.68 21.47 24 17.13 24 12.01 24 5.66 18.85.5 12 .5z" fill="#cddcff"/>
+              </svg>
+              <span style="font-weight:700; color:var(--neon-pink)">/amirabolfazle</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="panel" style="display:flex; align-items:center; justify-content:center; gap:12px; flex-direction:column;">
+          <div style="font-weight:800; color:var(--neon-lime); font-size:20px">Explore</div>
+          <div style="color:var(--muted); font-size:13px; text-align:center">Small experiments and source links live on GitHub. Pull, remix, and iterate.</div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="creation">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:0.85">
+          <path d="M12 7v6l4 2" stroke="#a9f9ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="9" stroke="#6eeaff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>Created: <strong style="color:var(--neon-cyan)">2025-09-26 20:43:15</strong></div>
+      </div>
+
+      <div class="gh" aria-hidden="false">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" title="GitHub — amirabolfazle/autogen-code">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="url(#g)" d="M12 .5C5.65.5.5 5.66.5 12.01c0 5.12 3.32 9.46 7.94 10.99.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.23.7-3.91-1.56-3.91-1.56-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.72 1.27 3.38.97.11-.76.41-1.27.74-1.56-2.58-.29-5.29-1.29-5.29-5.74 0-1.27.45-2.31 1.19-3.12-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.17 1.19.92-.26 1.91-.39 2.9-.39s1.98.13 2.9.39c2.2-1.5 3.16-1.19 3.16-1.19.63 1.59.24 2.77.12 3.06.74.81 1.19 1.85 1.19 3.12 0 4.46-2.72 5.44-5.31 5.72.42.36.8 1.08.8 2.18 0 1.57-.01 2.83-.01 3.22 0 .31.2.68.8.56C20.68 21.47 24 17.13 24 12.01 24 5.66 18.85.5 12 .5z"/>
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop offset="0" stop-color="#00f0ff"/>
+                <stop offset="1" stop-color="#ff00d0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span style="font-weight:700; color:var(--muted)">Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Tiny enhancement: keyboard focus outline for accessibility
+    (function(){
+      function handleKeyboard(e){
+        if(e.key === "Tab") document.body.classList.add('show-focus');
+      }
+      window.addEventListener('keydown', handleKeyboard, {once:true});
+    })();
+  </script>
+</body>
+</html>
