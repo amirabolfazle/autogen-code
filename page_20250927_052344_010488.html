@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0b12;
+      --bg-soft: #11131a;
+      --fg: #e5e7eb;
+      --muted: #a0a6b2;
+      --accent: #7c3aed;
+      --accent-2: #22d3ee;
+      --glass: rgba(255,255,255,0.05);
+      --ring: rgba(124,58,237,0.6);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(1200px circle at 10% -10%, rgba(124,58,237,0.25), transparent 25%),
+                  radial-gradient(900px circle at 100% 0%, rgba(34,211,238,0.25), transparent 25%),
+                  linear-gradient(#0b0b12 0%, #0a0a0f 100%);
+      background-attachment: fixed;
+    }
+
+    /* Decorative glow */
+    .orb {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,0.8), transparent 40%);
+      filter: blur(40px);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+      transform: translate3d(-20%, -20%, 0);
+    }
+    @media (max-width: 700px){
+      .orb { display: none; }
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      padding: 28px 20px 12px;
+      text-align: center;
+    }
+
+    /* Brand/Title with dark neon vibe */
+    .brand {
+      font-size: clamp(48px, 9vw, 120px);
+      line-height: 1;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: .5px;
+      text-transform: lowercase;
+      background: linear-gradient(90deg, #8b5cf6, #22d3ee 60%, #34d399);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 12px rgba(124,58,237,.4));
+      user-select: none;
+    }
+
+    .tagline {
+      margin: 14px auto 0;
+      font-size: clamp(14px, 2.5vw, 18px);
+      color: var(--muted);
+      max-width: 900px;
+      text-wrap: balance;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      padding: 40px 20px 80px;
+    }
+
+    .hero {
+      width: min(1100px, 90vw);
+      min-height: 60vh;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(2,6,23,0.95));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      display: grid;
+      place-items: center;
+      padding: 40px;
+      overflow: hidden;
+      position: relative;
+      transition: transform .3s ease;
+    }
+
+    /* Subtle animated sheen inside the hero */
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle at 50% 50%, rgba(124,58,237,.25), transparent 50%);
+      filter: blur(20px);
+      transform: rotate(25deg);
+      animation: drift 16s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(-20px, -20px) rotate(25deg); }
+      50% { transform: translate(20px, 20px) rotate(25deg); }
+      100% { transform: translate(-20px, -20px) rotate(25deg); }
+    }
+
+    .hero-content {
+      transform: scale(0.98);
+      animation: zoomIn 0.8s ease forwards;
+      text-align: center;
+      padding: 20px;
+    }
+
+    @keyframes zoomIn {
+      to { transform: scale(1); }
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(124,58,237,.6);
+      color: #e9e7ff;
+      text-decoration: none;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(34,211,238,.25));
+      transition: transform .25s ease, background .25s ease;
+      box-shadow: 0 6px 16px rgba(124,58,237,.25);
+    }
+    .btn:hover {
+      transform: translateY(-1px) scale(1.03);
+      background: linear-gradient(135deg, rgba(124,58,237,.4), rgba(34,211,238,.4));
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #dbeafe;
+      background: rgba(2,6,23,.6);
+      border: 1px solid rgba(99,102,241,.5);
+    }
+
+    footer.site-footer {
+      position: relative;
+      z-index: 1;
+      padding: 28px 16px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #e5e7eb;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      transition: background .2s ease;
+    }
+    .github-link:hover {
+      background: rgba(255,255,255,.07);
+    }
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      color: #e5e7eb;
+    }
+
+    .credit {
+      margin-left: 8px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 720px){
+      .brand { font-size: clamp(40px, 22vw, 84px); }
+      .creation-time { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb" aria-hidden="true"></div>
+
+  <header>
+    <h1 class="brand" aria-label="amirabolfazle title">amirabolfazle</h1>
+    <p class="tagline">A dark-mode landing page with subtle zoom effects and a minimal aesthetic.</p>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Hero section">
+      <div class="hero-content">
+        <div style="text-align:center;">
+          <div style="font-size:0; line-height:0;">
+            <!-- spacer for precise vertical rhythm -->
+          </div>
+        </div>
+        <a href="#more" class="btn" aria-label="Enter the site">Enter</a>
+        <div class="creation-time" aria-label="Creation time">
+          Creation time: 2025-09-27 05:23:10
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository: amirabolfazle/autogen-code">
+      <!-- GitHub icon (inline SVG) -->
+      <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path fill-rule="evenodd" d="M12 .5C5.73.5 0 6.23 0 12.01c0 4.43 2.867 8.19 6.839 9.51.5.09.682-.22.682-.49 0-.24-.01-.87-.01-1.71-2.782.6-3.37-1.37-3.37-1.37-.455-1.16-1.111-1.47-1.111-1.47-.909-.62.07-.61.07-.61 1.01.07 1.54 1.04 1.54 1.04.895 1.54 2.346 1.09 2.92.84.091-.65.35-1.09.635-1.34-2.223-.25-4.556-1.11-4.556-4.93 0-1.09.39-1.98 1.03-2.68-.103-.25-.447-1.27.098-2.65 0 0 .84-.27 2.75 1.03A9.6 9.6 0 0 1 12 6.84c.853 0 1.708.12 2.505.34 1.91-1.3 2.748-1.03 2.748-1.03.547 1.38.2 2.39.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.82-2.34 4.68-4.57 4.93.36.31.68.92.68 1.86 0 1.35-.01 2.43-.01 2.76 0 .27.18.58.68.48A10 10 0 1 0 12 .5z"/>
+      </svg>
+      GitHub
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
