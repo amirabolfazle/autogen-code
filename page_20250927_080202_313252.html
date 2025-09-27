@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #000;
+      --fg: #e6faff;
+      --cyan: #00e6ff;
+      --cyan-dark: #00b8d9;
+      --magenta: #ff00f5;
+      --card: rgba(4, 9, 25, 0.65);
+      --glow: 0 0 12px rgba(0, 230, 255, 0.9), 0 0 28px rgba(0, 230, 255, 0.6);
+    }
+
+    /* Global reset-ish */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--fg);
+      background: #000;
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    /* Subtle neon grid overlay for neon vibe */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+      pointer-events: none;
+      animation: drift 20s linear infinite;
+      mix-blend-mode: screen;
+    }
+    @keyframes drift {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(-5px, -5px); }
+      100% { transform: translate(0,0); }
+    }
+
+    /* Neon header with floating orbs */
+    .site-header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 8vh 1rem 4vh;
+      overflow: hidden;
+    }
+    .neon-title {
+      font-size: clamp(2.2rem, 9vw, 4rem);
+      margin: 0;
+      letter-spacing: .25rem;
+      color: #0ff;
+      text-shadow:
+        0 0 6px #0ff,
+        0 0 14px rgba(0,255,255,.8),
+        0 0 34px rgba(0,255,255,.6);
+      font-weight: 800;
+      line-height: 1.05;
+      user-select: none;
+      animation: glow 2s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%, 100% { text-shadow:
+        0 0 6px #0ff,
+        0 0 14px rgba(0,255,255,.8),
+        0 0 34px rgba(0,255,255,.6);
+      }
+      50% { text-shadow:
+        0 0 8px #0ff,
+        0 0 22px rgba(0,255,255,.95),
+        0 0 46px rgba(0,255,255,.75);
+      }
+    }
+    .neon-subtitle {
+      margin: .5rem 0 0;
+      color: #9af1ff;
+      text-shadow: 0 0 6px rgba(0, 255, 255, .8);
+      opacity: .9;
+    }
+
+    /* decorative orbs */
+    .orb {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      filter: blur(0.4px);
+      opacity: .9;
+      z-index: 0;
+      mix-blend-mode: screen;
+      animation: floaty 12s ease-in-out infinite;
+    }
+    .orb.o1 { left: -40px; top: 6%; background: radial-gradient(circle at 30% 30%, rgba(0,255,255,.9), rgba(0,0,0,0) 40%), radial-gradient(circle at 60% 60%, rgba(130,0,255,.6), rgba(0,0,0,0) 40%); }
+    .orb.o2 { right: -60px; top: 28%; background: radial-gradient(circle at 40% 40%, rgba(255,0,255,.8), rgba(0,0,0,0) 40%), radial-gradient(circle at 70% 70%, rgba(0,255,128,.6), rgba(0,0,0,0) 40%); animation-delay: -6s; }
+    .orb.o3 { left: 20%; bottom: -40px; background: radial-gradient(circle at 40% 40%, rgba(0,180,255,.75), rgba(0,0,0,0) 40%), radial-gradient(circle at 60% 60%, rgba(0,255,200,.5), rgba(0,0,0,0) 40%); animation-delay: -3s; }
+    @keyframes floaty {
+      0% { transform: translateY(0) translateX(0) scale(1); }
+      50% { transform: translateY(-30px) translateX(15px) scale(1.05); }
+      100% { transform: translateY(0) translateX(0) scale(1); }
+    }
+
+    /* layout */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem 4rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.6rem;
+    }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(0, 230, 255, 0.5);
+      border-radius: 14px;
+      padding: 1.4rem;
+      box-shadow: var(--glow);
+      position: relative;
+      overflow: hidden;
+    }
+    .card h2 {
+      margin-top: 0;
+      color: #aafcff;
+      text-shadow: 0 0 8px rgba(0,255,255,.9);
+    }
+    .card p, .card ul {
+      color: #e7fbff;
+    }
+    .card ul { padding-left: 1.25rem; }
+    .card li { margin: .25rem 0; }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 0.5rem;
+      border: 1px solid rgba(0, 255, 255, 0.5);
+      color: #b6fbff;
+      text-shadow: 0 0 8px rgba(0,255,255,.8);
+      background: rgba(2, 9, 30, 0.6);
+    }
+
+    /* footer */
+    .site-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 1.2rem;
+      border-top: 1px solid rgba(0, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.5);
+      color: #a6f3ff;
+      position: relative;
+      z-index: 1;
+    }
+    .gh-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #a6f3ff;
+      text-decoration: none;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 255, 255, 0.5);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .gh-link:hover {
+      transform: translateY(-1px);
+      background: rgba(0, 255, 255, 0.15);
+    }
+    .credit {
+      font-size: .92rem;
+      opacity: .9;
+    }
+
+    /* fade-in effects */
+    .fade-in { opacity: 0; transform: translateY(12px); animation: fadeInUp 0.8s ease forwards; }
+    .delay-1 { animation-delay: .15s; }
+    .delay-2 { animation-delay: .35s; }
+    .delay-3 { animation-delay: .55s; }
+    .delay-4 { animation-delay: .75s; }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ensure good contrast on small screens */
+    @media (max-width: 420px) {
+      .neon-title { letter-spacing: .3rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header fade-in delay-1" aria-label="Site header">
+    <div class="orb o1" aria-hidden="true"></div>
+    <div class="orb o2" aria-hidden="true"></div>
+    <div class="orb o3" aria-hidden="true"></div>
+    <h1 class="neon-title" style="margin-bottom: .4rem;">amirabolfazle</h1>
+    <div class="neon-subtitle" aria-label="Subtitle">Neon Studio</div>
+  </header>
+
+  <main class="container" role="main">
+    <section class="grid fade-in delay-2" aria-label="Intro grid">
+      <article class="card" aria-label="About">
+        <h2>About</h2>
+        <p>
+          This is a fully responsive, animated HTML page with a neon theme and fade-in effects.
+          It takes a lightweight, CSS-driven approach to bring a bright, modern aesthetic without dependencies.
+        </p>
+      </article>
+
+      <section class="card" aria-label="Highlights">
+        <h2>Highlights</h2>
+        <ul>
+          <li>Fully responsive layout</li>
+          <li>Neon glow effects on text and panels</li>
+          <li>Smooth fade-in transitions</li>
+          <li>Inline SVG icons for a self-contained page</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="creation fade-in delay-3" aria-label="Creation time">
+      Creation time: 2025-09-27 08:01:12
+    </section>
+  </main>
+
+  <footer class="site-footer fade-in delay-4" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="gh-link" aria-label="GitHub repository">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" focusable="false">
+        <path d="M12 .5C5.73.5 1.5 4.95 1.5 11.09c0 4.63 2.99 8.56 7.14 9.95.52.1.71-.23.71-.51 0-.25-.01-1-.02-2-.29.06-.6-.17-.6-.6 0-.27.01-1 .02-1.96-2.9.63-3.52-1.28-3.52-1.28-.47-1.2-1.15-1.52-1.15-1.52-.94-.64.07-.63.07-.63 1.04.07 1.59 1.1 1.59 1.1.92 1.57 2.38 1.11 2.96.85.09-.66.36-1.1.65-1.35-2.32-.26-4.76-1.18-4.76-5.25 0-1.16.41-2.11 1.09-2.86-.11-.27-.47-1.37.1-2.85 0 0 .88-.28 2.89 1.07a10.02 10.02 0 0 1 5.28-.34c1.02 0 2.05.14 3.01.34 2.01-1.36 2.89-1.07 2.89-1.07.65 1.49.28 2.63.14 2.85.68.75 1.08 1.7 1.08 2.87 0 4.05-2.44 5-4.75 5.24.37.32.69.95.69 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.58.69.48C20.43 20.5 24 16.69 24 11.09 24 4.95 19.77.5 12 .5z"/>
+      </svg>
+      GitHub
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
