@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #0f1020;
+      --bg2: #1a1f3a;
+      --glass: rgba(255,255,255,0.14);
+      --stroke: rgba(255,255,255,0.25);
+      --text: #e6ebff;
+      --shadow: rgba(0,0,0,0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(10,14,40,0.8), rgba(34,37,66,0.8) 50%), 
+                  radial-gradient(circle at 20% 10%, rgba(255,120,200,0.15), transparent 40%), 
+                  radial-gradient(circle at 80% 90%, rgba(120,255,180,0.15), transparent 40%), 
+                  #0a0b15;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    /* subtle moving overlay for depth */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,0.08), rgba(0,0,0,0.0) 60%);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      animation: tilt 12s linear infinite;
+    }
+    @keyframes tilt {
+      0% { transform: rotate(0deg); }
+      50% { transform: rotate(0.5deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .container {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px 100px;
+    }
+
+    header.brand {
+      width: min(1000px, 92%);
+      margin: 0 auto 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 14px 22px;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      animation: pop 0.9s ease-out;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.9); opacity: 0; }
+      60% { transform: scale(1.02); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      font-size: 0.95rem;
+      color: #f2f6ff;
+    }
+
+    main.grid {
+      width: min(1100px, 92%);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      transform: translateY(20px);
+      opacity: 0;
+      animation: rise 0.8s ease forwards;
+      animation-delay: calc(var(--index) * 0.08s);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      animation: bounce 0.6s ease;
+      cursor: pointer;
+    }
+
+    @keyframes rise {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(-2px); }
+      25% { transform: translateY(6px); }
+      50% { transform: translateY(-4px); }
+      100% { transform: translateY(0); }
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.25rem;
+      color: #fff;
+    }
+
+    .card p {
+      margin: 0;
+      color: #eef2ff;
+      opacity: 0.92;
+    }
+
+    .card .badge {
+      align-self: flex-start;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: #0b1020;
+      background: linear-gradient(135deg, #a3e635 0%, #22c55e 100%);
+      font-weight: 700;
+    }
+
+    footer {
+      width: 100%;
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #f8fbff;
+      text-decoration: none;
+      backdrop-filter: blur(6px);
+    }
+
+    .footer-icon {
+      width: 20px; height: 20px;
+      display: inline-block;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    @media (max-width: 720px) {
+      .brand-title { font-size: 1.8rem; padding: 12px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="brand" aria-label="Site header">
+      <div class="brand-title" style="--index:0">amirabolfazle</div>
+      <div class="creation-time" aria-live="polite" title="Creation time">
+        Creation time: 2025-09-28 00:32:12
+      </div>
+    </header>
+
+    <main class="grid" aria-label="Content cards">
+      <section class="card" style="--index:0" onclick="location.hash='#card1'">
+        <span class="badge" aria-label="Card type">Glass</span>
+        <h3>Glassmorphism</h3>
+        <p>Smooth, frosted surfaces with blur and depth.</p>
+      </section>
+      <section class="card" style="--index:1" onclick="location.hash='#card2'">
+        <span class="badge" aria-label="Card type" style="background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%); color:#0b1020;">Bounce</span>
+        <h3>Bounce on Hover</h3>
+        <p>Elements gently bounce to delight and draw attention.</p>
+      </section>
+      <section class="card" style="--index:2" onclick="location.hash='#card3'">
+        <span class="badge" aria-label="Card type" style="background: linear-gradient(135deg, #f472b6 0%, #f43f5e 100%); color:#0b1020;">Animation</span>
+        <h3>Animated Experience</h3>
+        <p>Responsive, accessible, and visually engaging.</p>
+      </section>
+    </main>
+
+    <footer aria-label="Page footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="footer-inner" title="GitHub repository">
+        <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.09c-3.34.73-4.04-1.4-4.04-1.4-.54-1.37-1.32-1.74-1.32-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.48.99.11-.77.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.31 1.23a11.5 11.5 0 0 1 6.02 0c2.3-1.55 3.31-1.23 3.31-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.84.57A12 12 0 0 0 12 .5z"/>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.querySelector('.container');
+      container.addEventListener('mousemove', (e) => {
+        const w = window.innerWidth;
+        const x = (e.clientX / w) - 0.5;
+        document.documentElement.style.setProperty('--tilt', (x * 6).toFixed(2) + 'deg');
+      });
+    });
+  </script>
+</body>
+</html>
