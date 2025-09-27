@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f7f5fb;
+      --surface: #ffffff;
+      --text: #2b2540;
+      --muted:#6b6778;
+      --p1:#ffdbe7;
+      --p2:#d9f7ea;
+      --p3:#e9e2ff;
+      --shadow:0 6px 20px rgba(0,0,0,.08);
+      --radius:14px;
+      --gap:1.25rem;
+      --card-border: rgba(0,0,0,.05);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(255,221,236,.9), rgba(217,247,234,.9) 60%, rgba(233,226,255,.9)),
+                  radial-gradient(circle at 20% -10%, rgba(255,255,255,.9), rgba(255,255,255,.2) 40%),
+                  var(--bg);
+      background-attachment: fixed;
+    }
+
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.75);
+      backdrop-filter: saturate(1.2) blur(6px);
+      border-bottom: 1px solid rgba(0,0,0,.05);
+    }
+
+    .container { width: min(1100px, 92%); margin: 0 auto; padding: 0 0.5rem; }
+
+    .brand {
+      display:flex; align-items:center; justify-content: space-between;
+      padding: .75rem 0;
+    }
+
+    .logo {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #ffd1dc, #d1fbd8, #d9d0ff, #ffd1dc);
+      box-shadow: inset 0 0 12px rgba(255,255,255,.6);
+    }
+
+    nav { display:flex; gap:.5rem; align-items:center; }
+    .nav-links { display:flex; gap:.75rem; align-items:center; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .button {
+      padding:.6rem .95rem; border-radius:999px; border:1px solid rgba(0,0,0,.08);
+      background:#fff; color:var(--text);
+      box-shadow:0 2px 6px rgba(0,0,0,.04);
+      transition: transform .2s ease;
+    }
+    .button:hover { transform: translateY(-1px); }
+
+    /* Hero */
+    .hero { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center; padding:4rem 0; }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
+      line-height:1.15; margin:0 0 .5rem; color:#2a2540;
+    }
+
+    .tagline { font-size:1.05rem; color: var(--muted); margin-bottom: .75rem; }
+
+    .avatar {
+      width: 260px; height:260px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #f6f0ff 40%, #ffe5ea 60%), conic-gradient(from 90deg, #ffd6d6, #d3fbd8, #d1d6ff, #ffd6d6);
+      box-shadow:0 12px 28px rgba(0,0,0,.08);
+      margin-left:auto;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* Animations: slide-up for sections */
+    .section { opacity:0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .section.in-view { opacity:1; transform: translateY(0); }
+
+    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+
+    .card {
+      background: #fff; border-radius: var(--radius); padding:1rem;
+      box-shadow: var(--shadow); border:1px solid var(--card-border);
+      min-height: 140px; display:flex; flex-direction:column; justify-content:space-between;
+      opacity:0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease;
+    }
+    .card.in-view { opacity:1; transform: translateY(0); }
+
+    .card h3 { margin:0 0 .5rem; font-size:1.05rem; color:#2d2350; }
+    .card p { margin:0; color:var(--muted); font-size:.95rem; }
+
+    .badge { display:inline-flex; align-items:center; gap:.4rem; padding:.35rem .6rem;
+      border-radius:999px; background:#fff5f8; color:#b13b6f; font-size:.8rem;
+      border:1px solid rgba(177,59,111,.25); }
+
+    .about { display:grid; grid-template-columns: 1fr 1fr; gap:1rem; align-items:center; padding:0; margin-top:2rem; }
+    .about p { margin:0; }
+
+    /* Contact form */
+    #contact form { display:flex; flex-direction:column; gap:.75rem; max-width:600px; }
+    #contact input, #contact textarea {
+      padding:.75rem; border-radius:8px; border:1px solid #e6e6e6;
+      font-family:inherit;
+    }
+
+    /* Footer */
+    footer { padding:2rem; text-align:center; color:var(--muted); border-top:1px solid rgba(0,0,0,.05); }
+    .footer-row { display:flex; justify-content:center; align-items:center; gap:.75rem; flex-wrap:wrap; }
+
+    .footer-icon { width:20px; height:20px; color:currentColor; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; padding: 2rem 0; }
+      .avatar { width: 190px; height:190px; margin:0 auto; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .about { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container brand" aria-label="Site header">
+      <div style="display:flex; align-items:center; gap:.75rem;">
+        <div class="logo" aria-label="Logo"></div>
+        <strong style="font-size:1.1rem; letter-spacing:.5px;">amirabolfazle</strong>
+      </div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="button" href="#projects" style="padding:.4rem .9rem;">Projects</a>
+        <a class="button" href="#about" style="padding:.4rem .9rem;">About</a>
+        <a class="button" href="#contact" style="padding:.4rem .9rem;">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="top" style="padding-top:1rem;">
+    <section class="hero section in-view" aria-label="Hero">
+      <div>
+        <h1>amirabolfazle</h1>
+        <p class="tagline">A pastel-loving frontend developer crafting shimmering, slide-up experiences.</p>
+        <div class="badge" aria-label="Creation time badge" style="margin-top:.5rem;">
+          Creation time: 2025-09-27 09:31:57
+        </div>
+      </div>
+      <div class="avatar" aria-label="Avatar placeholder"></div>
+    </section>
+
+    <section id="projects" class="section" aria-label="Projects" style="margin-top:2rem;">
+      <h2 style="font-size:1.4rem; margin-bottom:.75rem;">Projects</h2>
+      <div class="grid" aria-label="Project cards">
+        <article class="card" style="background:#fff;">
+          <div>
+            <h3>Pastel Gallery</h3>
+            <p>Animated gallery showcasing smooth slide-up transitions and pastel aesthetics.</p>
+          </div>
+          <span class="badge" aria-label="Tech used">CSS, JS</span>
+        </article>
+        <article class="card" style="background:#fff;">
+          <div>
+            <h3>Fluid Cards</h3>
+            <p>Responsive, tactile cards with micro-interactions and soft shadows.</p>
+          </div>
+          <span class="badge" aria-label="Tech used">HTML, CSS</span>
+        </article>
+        <article class="card" style="background:#fff;">
+          <div>
+            <h3>Slide-on Scroll</h3>
+            <p>Scroll-triggered slide-up effect with intersection observer.</p>
+          </div>
+          <span class="badge" aria-label="Tech used">JS</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section about" aria-label="About me" style="margin-top:2rem;">
+      <div style="padding:.25rem;">
+        <div class="badge" aria-label="Intro">About</div>
+        <h2 style="margin:.5rem 0 .25rem;">Hi, I’m Amir</h2>
+        <p>I enjoy turning ideas into delightful, accessible interfaces with a sprinkle of motion.</p>
+      </div>
+      <div style="padding:.25rem;">
+        <p>Pastel color theory informs my design system, balancing readability with playful visuals. I value performance, accessibility, and clean code.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="section" aria-label="Contact" style="margin-top:2rem;">
+      <h2>Let’s build something</h2>
+      <p>Drop a note or connect on GitHub.</p>
+      <form onsubmit="event.preventDefault();" style="display:flex; flex-direction:column; gap:.75rem; max-width:600px;">
+        <input aria-label="Your name" placeholder="Your name" style="padding:.75rem; border-radius:8px; border:1px solid #e6e6e6;">
+        <input aria-label="Email" type="email" placeholder="Email" style="padding:.75rem; border-radius:8px; border:1px solid #e6e6e6;">
+        <textarea aria-label="Message" placeholder="Message" rows="4" style="padding:.75rem; border-radius:8px; border:1px solid #e6e6e6;"></textarea>
+        <button class="button" type="submit" style="align-self:flex-start;">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="20" height="20" role="img">
+          <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.68.5.1.68-.22.68-.48 0-.24-.01-.86-.01-1.69-2.78.62-3.37-1.23-3.37-1.23-.46-1.2-1.12-1.52-1.12-1.52-.92-.64.07-.63.07-.63 1.02.07 1.56 1.05 1.56 1.05.9 1.57 2.36 1.12 2.93.86.09-.68.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.41-2.04 1.08-2.76-.11-.27-.47-1.36.1-2.84 0 0 .88-.28 2.89 1.04a9.75 9.75 0 012.64-.36c.89.01 1.78.12 2.62.36 2-1.32 2.89-1.04 2.89-1.04.57 1.48.21 2.57.1 2.84.67.72 1.08 1.64 1.08 2.76 0 3.92-2.34 4.78-4.57 5.04.36.32.69.94.69 1.89 0 1.37-.01 2.47-.01 2.81 0 .26.18.58.69.48A10.01 10.01 0 0022 12.26C22 6.58 17.52 2 12 2z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Slide-up on sections when they come into view
+    const sections = document.querySelectorAll('.section');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    sections.forEach(sec => io.observe(sec));
+
+    // Reveal project cards with a slight stagger when Projects section is visible
+    const cards = document.querySelectorAll('.card');
+    function revealCards() {
+      cards.forEach((card, idx) => {
+        card.style.transitionDelay = (idx * 0.08) + 's';
+        card.classList.add('in-view');
+      });
+    }
+
+    const projSection = document.querySelector('#projects');
+    if (projSection) {
+      const cardObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          revealCards();
+          cardObserver.disconnect();
+        }
+      }, { threshold: 0.5 });
+      cardObserver.observe(projSection);
+    }
+  </script>
+</body>
+</html>
