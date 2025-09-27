@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#fcefee;
+      --bg2:#eaf6f0;
+      --bg3:#f5f2ff;
+      --card:#ffffff;
+      --text:#1f1f1f;
+      --muted:#6b6b6b;
+      --accent1:#ffd6e4;
+      --accent2:#d7f3e0;
+      --accent3:#e7e2ff;
+      --shadow: 0 8px 20px rgba(0,0,0,.07);
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 40%, var(--bg3) 100%);
+      overflow-x:hidden;
+    }
+
+    /* Layout helpers */
+    .container{
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 48px 0;
+    }
+
+    /* Slide-up animation trigger */
+    .slide-up{ opacity:0; transform: translateY(20px); transition: all 0.8s ease-out; }
+    .slide-up.visible{ opacity:1; transform: translateY(0); }
+
+    /* Header / hero */
+    header.site-header{
+      position: sticky; top:0; z-index: 10;
+      background: rgba(255,255,255,.6);
+      backdrop-filter: saturate(1.2) blur(6px);
+      border-bottom: 1px solid rgba(0,0,0,.05);
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      padding:14px 0;
+    }
+    .brand-mark{
+      width:34px; height:34px; border-radius:9px;
+      background: conic-gradient(from 180deg at 50% 50%, #ffd6e4, #d6f4e9, #e2ddff, #ffd6e4);
+      box-shadow: inset 0 0 10px rgba(255,255,255,.6);
+    }
+    .brand-name{ font-weight:700; letter-spacing:.04em; font-size:1.05rem; color:#333; }
+
+    .hero{
+      display:grid; gap:28px;
+      align-items:center;
+      padding: 48px 0 24px;
+    }
+    .hero-title{
+      font-family: "Poppins", Inter, sans-serif;
+      font-size: clamp(2.6rem, 6vw + 1rem, 5.5rem);
+      line-height:1.05;
+      margin:0;
+      text-transform: none;
+      background: linear-gradient(90deg, #ffb0c4 0%, #b7e2d8 50%, #b0c3ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing:.02em;
+    }
+    .hero-sub{ font-size: clamp(1rem, 2vw + .8rem, 1.25rem); color:#555; max-width:60ch; }
+
+    .cta-row{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin-top:6px; }
+    .btn{
+      padding:12px 20px; border-radius:999px; border:0; cursor:pointer;
+      font-weight:600; font-size:0.95rem;
+      box-shadow: var(--shadow);
+      transition: transform .2s ease;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg, #ff7eb6 0%, #b88bff 100%);
+      color:white;
+    }
+    .btn-secondary{
+      background: #ffffff; color:#333; border:1px solid #e5e5e5;
+    }
+    .btn:active{ transform: translateY(1px) scale(0.99); }
+
+    .creation-chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(255,255,255,.7);
+      border:1px solid rgba(0,0,0,.05);
+      font-size:.85rem; color:#555;
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
+    }
+
+    .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap:16px; margin-top: 16px; }
+
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      padding:18px; min-height:120px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{ margin:0 0 8px; font-size:1.05rem; }
+    .card p{ margin:0; color:var(--muted); font-size:.95rem; }
+
+    /* pastel accent styles for cards */
+    .card.p1{ background: #fff8f9; border:1px solid #ffdbe9; }
+    .card.p2{ background: #f8fffb; border:1px solid #d9f3e3; }
+    .card.p3{ background: #f6f6ff; border:1px solid #d9d7ff; }
+
+    /* footer with GitHub icon */
+    footer.site-footer{
+      padding: 28px 0 60px; color:#555; text-align:center;
+      border-top: 1px solid rgba(0,0,0,.05);
+      background: rgba(255,255,255,.6);
+      margin-top: 40px;
+    }
+    .footer-row{ display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; }
+    .footer-note{ font-size:.95rem; }
+
+    /* GitHub icon sizing */
+    .github-link{ display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:inherit; }
+
+    /* responsive tweaks */
+    @media (max-width: 700px){
+      .hero{ padding: 28px 0 0; }
+      .creation-chip{ font-size:.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Site header">
+    <div class="container brand" style="justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="brand-mark" aria-label="brand mark"></div>
+        <div class="brand-name" style="font-weight:800; font-size:1.05rem; letter-spacing:.04em;">amirabolfazle</div>
+      </div>
+      <nav aria-label="Main navigation" style="opacity:.9;">
+        <span class="creation-chip" style="font-size:.85rem;">Pastel Landing</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main" aria-label="Main content">
+    <section class="hero slide-up" id="hero" aria-label="Hero">
+      <h1 class="hero-title">amirabolfazle</h1>
+      <p class="hero-sub">
+        A serene, pastel-inspired landing experience with smooth slide-up interactions. Crafted to feel lightweight, friendly, and modern.
+      </p>
+      <div class="cta-row slide-up" style="transition-delay:.1s;">
+        <button class="btn btn-primary" aria-label="Get started">Get started</button>
+        <button class="btn btn-secondary" aria-label="Learn more">Learn more</button>
+        <span class="creation-chip" aria-label="creation time chip" style="margin-left:8px;">Creation time: 2025-09-27 09:11:55</span>
+      </div>
+    </section>
+
+    <section class="grid slide-up" aria-label="Feature highlights" style="margin-top:18px;">
+      <article class="card p1" aria-label="Pastel card 1">
+        <h3>Pastel Aesthetics</h3>
+        <p>Soft gradients, gentle shadows, and airy spacing that feel calm and inviting.</p>
+      </article>
+      <article class="card p2" aria-label="Pastel card 2">
+        <h3>Fluid Interactions</h3>
+        <p>Slide-up reveals and micro-interactions that enhance exploration without distraction.</p>
+      </article>
+      <article class="card p3" aria-label="Pastel card 3">
+        <h3>Accessible Design</h3>
+        <p>Readable typography, high contrast accents, and responsive layouts for every device.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container footer-row" style="flex-direction:column; gap:8px;">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository link">
+        <!-- GitHub SVG Icon -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+          <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.58 2 12.29c0 4.5 2.865 8.32 6.839 9.682.5.094.682-.217.682-.483 0-.237-.009-.87-.014-1.708-2.782.606-3.37-1.28-3.37-1.28-.454-1.17-1.11-1.48-1.11-1.48-.909-.625.069-.612.069-.612 1 .071 1.526 1.04 1.526 1.04.892 1.59 2.341 1.132 2.91.866.093-.676.35-1.132.636-1.393-2.22-.255-4.555-1.14-4.555-5.082 0-1.12.386-2.036 1.02-2.754-.103-.256-.445-1.29.098-2.686 0 0 .84-.271 2.75 1.04a9.32 9.32 0 012.5-.356c.851.003 1.708.117 2.508.344 1.909-1.311 2.748-1.04 2.748-1.04.545 1.397.214 2.43.105 2.69.638.718 1.02 1.634 1.02 2.754 0 3.952-2.338 4.823-4.565 5.073.361.316.684.937.684 1.892 0 1.364-.012 2.462-.012 2.795 0 .269.178.581.688.482A10.003 10.003 0 0022 12.29C22 6.58 17.522 2 12 2z"/>
+        </svg>
+        <span style="font-weight:600;">GitHub</span>
+      </a>
+      <div class="footer-note" aria-label="Created by text">
+        Created by amirabolfazle
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal on scroll (slide-up)
+    document.addEventListener('DOMContentLoaded', () => {
+      const faders = document.querySelectorAll('.slide-up');
+      const options = { root: null, rootMargin: '0px', threshold: 0.15 };
+
+      const appearOnScroll = new IntersectionObserver((entries, observe) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('visible');
+          observe.unobserve(entry.target);
+        });
+      }, options);
+
+      faders.forEach(el => appearOnScroll.observe(el));
+    });
+  </script>
+</body>
+</html>
