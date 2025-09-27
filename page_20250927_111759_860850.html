@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg-soft: #11172a;
+      --card: #141a2b;
+      --text: #e8eaf6;
+      --muted: #aab6d6;
+      --accent: #7c3aed;
+      --accent-2: #10b981;
+      --glow: 0 0 24px rgba(124,58,237,.6);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(124,58,237,.15), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(16,185,129,.12), transparent 40%),
+                  linear-gradient(#0b1020 0%, #0b1020 100%);
+      overflow-x: hidden;
+    }
+
+    /* Layout */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11,16,32,0.92);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(124,58,237,.25);
+    }
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+    .brand .logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #7c3aed, #22d3ee);
+      display: inline-block;
+      box-shadow: var(--glow);
+    }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      margin: 0 8px;
+      font-size: 14px;
+      opacity: .9;
+    }
+    nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Hero / Title area */
+    #hero {
+      padding: 72px 0 40px;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 28px;
+    }
+    .title {
+      font-size: clamp(34px, 6vw, 72px);
+      line-height: 1.04;
+      margin: 0;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 60%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-wrap: balance;
+    }
+    .subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(124,58,237,.18);
+      border: 1px solid rgba(124,58,237,.4);
+      color: #e9d5ff;
+      font-size: 12px;
+      letter-spacing: .4px;
+    }
+
+    .hero-visual {
+      position: relative;
+      height: 320px;
+      min-height: 260px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(2,6,23,.8) 60%), 
+                  radial-gradient(circle at 30% 20%, rgba(124,58,237,.35), transparent 40%);
+      border: 1px solid rgba(124,58,237,.5);
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,.4);
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(2px);
+      opacity: .75;
+    }
+    .orb.one { width: 180px; height: 180px; background: rgba(34,211,238,.6); left: -40px; top: 40px; }
+    .orb.two { width: 120px; height: 120px; background: rgba(124,58,237,.6); right: -20px; bottom: 40px; }
+
+    /* Sections */
+    section { padding: 72px 0; }
+    h2.section-title {
+      font-size: 28px;
+      margin: 0 0 18px;
+      letter-spacing: .2px;
+      color: #eef2ff;
+    }
+    p.lead {
+      color: var(--muted);
+      max-width: 60ch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .card {
+      background: linear-gradient(#141a2b, #0d1220);
+      border: 1px solid rgba(124,58,237,.4);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+      transition: transform .3s ease;
+    }
+    .card:hover { transform: translateY(-4px); }
+    .card h3 { margin: 0 0 6px; font-size: 18px; }
+    .card p { margin: 0; color: var(--muted); font-size: 13.5px; }
+    .badge {
+      display: inline-flex;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(124,58,237,.25);
+      border: 1px solid rgba(124,58,237,.5);
+      color: #e9d5ff;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #1e293b;
+      border: 1px solid rgba(99,102,241,.6);
+      color: #e2e8f0;
+      text-decoration: none;
+      font-size: 13px;
+      width: max-content;
+      cursor: pointer;
+    }
+    .button:hover { background: #1b2a45; }
+
+    /* Slide-up animation */
+    .slide-up { opacity: 0; transform: translateY(20px); transition: all .6s ease-out; }
+    .slide-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* Footer */
+    footer.site-footer {
+      padding: 28px 0;
+      text-align: center;
+      border-top: 1px solid rgba(124,58,237,.4);
+      color: var(--muted);
+      background: #0b1020;
+    }
+    .footer-content {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .github-link { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .github-icon { width: 20px; height: 20px; display: block; fill: currentColor; }
+
+    /* Responsive */
+    @media (max-width: 1024px){
+      .hero-inner { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px){
+      .grid { grid-template-columns: 1fr; }
+      .creation { padding: 6px 10px; font-size: 11px; }
+      .title { font-size: 44px; }
+      .hero-visual { height: 260px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav" aria-label="Main navigation">
+      <a href="#" class="brand" aria-label="amirabolfazle portfolio home">
+        <span class="logo" aria-hidden="true"></span>
+        <span>amirabolfazle</span>
+      </a>
+      <nav aria-label="Site navigation">
+        <a href="#about" >About</a>
+        <a href="#projects" >Projects</a>
+        <a href="#contact" >Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content" role="main" aria-label="Main content">
+    <section id="hero" class="container slide-up visible" aria-label="Intro">
+      <div class="hero-inner">
+        <div>
+          <h1 class="title" style="margin:0 0 12px;">amirabolfazle</h1>
+          <p class="subtitle" style="max-width: 60ch;">
+            Frontend developer • UI enthusiast • Open source explorer
+          </p>
+          <div class="creation" title="Creation timestamp">
+            Creation Time: 2025-09-27 11:17:33
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Hero decorative visuals">
+          <span class="orb one" aria-hidden="true"></span>
+          <span class="orb two" aria-hidden="true"></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="container slide-up" aria-label="About me">
+      <h2 class="section-title">About</h2>
+      <p class="lead">
+        I’m a curious software craftsman who loves building fast, accessible, and delightful user interfaces.
+        I enjoy turning ideas into polished frontend experiences, exploring new design systems, and contributing
+        to open source. This one-file portfolio demonstrates a compact, animated presentation using a dark theme.
+      </p>
+    </section>
+
+    <section id="projects" class="container slide-up" aria-label="Projects">
+      <h2 class="section-title">Projects</h2>
+      <p class="lead" style="margin-bottom:14px;">A small selection of work and experiments.</p>
+      <div class="grid" role="list">
+        <article class="card" role="listitem">
+          <div>
+            <span class="badge" aria-label="Project tag">Open Source</span>
+            <h3>AutoGen Code Generator</h3>
+            <p>Scriptable generator that scaffolds boilerplate code and documentation with a single command.</p>
+          </div>
+          <a class="button" href="#" aria-label="View AutoGen Code Generator">
+            View
+          </a>
+        </article>
+
+        <article class="card" role="listitem">
+          <div>
+            <span class="badge" aria-label="Project tag">Portfolio</span>
+            <h3>Minimal Portfolio v1</h3>
+            <p>Lightweight, accessible, and responsive portfolio skeleton with smooth slide-up animations.</p>
+          </div>
+          <a class="button" href="#" aria-label="View Minimal Portfolio">
+            View
+          </a>
+        </article>
+
+        <article class="card" role="listitem">
+          <div>
+            <span class="badge" aria-label="Project tag">Experiment</span>
+            <h3>Dark Mode Playground</h3>
+            <p>UI experiments focused on color contrast, motion, and keyboard navigation in dark themes.</p>
+          </div>
+          <a class="button" href="#" aria-label="View Dark Mode Playground">
+            View
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="container slide-up" aria-label="Contact">
+      <h2 class="section-title">Contact</h2>
+      <p class="lead">Want to chat about a project or collaboration? Reach out anytime.</p>
+      <form onsubmit="event.preventDefault();" style="display:flex; flex-direction:column; gap:12px; max-width:600px;">
+        <input aria-label="Your name" placeholder="Your name" style="padding:12px; border-radius:8px; border:1px solid #2e3a8f; background:#0a1020; color:var(--text);" />
+        <input aria-label="Email" placeholder="Email" type="email" style="padding:12px; border-radius:8px; border:1px solid #2e3a8f; background:#0a1020; color:var(--text);" />
+        <textarea aria-label="Message" placeholder="Message" rows="4" style="padding:12px; border-radius:8px; border:1px solid #2e3a8f; background:#0a1020; color:var(--text);"></textarea>
+        <button class="button" type="submit" style="width:max-content;">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container footer-content slide-up" style="justify-content:center;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="GitHub repository">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.58 2 12.29c0 4.5 2.87 8.32 6.84 9.68.5.1.68-.23.68-.5 0-.24-.01-.87-.01-1.7-2.78.61-3.37-1.23-3.37-1.23-.45-1.17-1.11-1.48-1.11-1.48-.91-.63.07-.62.07-.62 1.01.07 1.54 1.05 1.54 1.05.9 1.59 2.36 1.13 2.94.86.09-.68.35-1.13.63-1.39-2.22-.26-4.55-1.13-4.55-5.01 0-1.11.38-2.01 1-2.72-.1-.26-.44-1.31.1-2.73 0 0 .82-.26 2.69 1.04A9.2 9.2 0 0112 6.8c.83-.01 1.66-.11 2.44-.32 1.87-1.3 2.69-1.04 2.69-1.04.54 1.42.2 2.47.1 2.73.62.71 1 1.61 1 2.72 0 3.89-2.33 4.74-4.55 5 .36.31.68.92.68 1.86 0 1.34-.01 2.41-.01 2.74 0 .27.18.61.69.5A10.008 10.008 0 0022 12.29C22 6.58 17.52 2 12 2z" fill="currentColor"></path>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <span style="margin-left:8px;">
+        <span>Created by amirabolfazle</span>
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    // Simple IntersectionObserver for slide-up
+    (function(){
+      const elements = document.querySelectorAll('.slide-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15 });
+
+      elements.forEach(el => {
+        // Ensure elements start hidden (in case some are not yet)
+        if (!el.classList.contains('visible')) {
+          el.style.willChange = 'transform, opacity';
+        }
+        observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
