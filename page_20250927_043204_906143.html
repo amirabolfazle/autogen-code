@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f8f5f7;
+      --bg-dk: #f1eaf7;
+      --text: #2b2b2b;
+      --muted: #7a6e85;
+      --pink: #ffd7e7;
+      --mint: #d7fbe8;
+      --lav: #e8d7ff;
+      --peach: #ffe9d2;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 15% 10%, rgba(255,220,235,.25), transparent 40%),
+                  radial-gradient(circle at 85% 0%, rgba(210,240,255,.25), transparent 40%),
+                  linear-gradient(135deg, #fef8fb 0%, #f5fbff 60%, #fffaf0 100%);
+      overflow-x: hidden;
+    }
+
+    /* decorative rotating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(0.4px);
+      opacity: .25;
+      z-index: -1;
+      animation: spin 60s linear infinite;
+    }
+    .orb.o1 { width: 600px; height: 600px; background: radial-gradient(circle at 30% 30%, #ffd2e1 0%, transparent 40%); top: -180px; left: -180px; }
+    .orb.o2 { width: 480px; height: 480px; background: radial-gradient(circle at 60% 40%, #d6fbd6 0%, transparent 40%); bottom: -180px; right: -180px; animation-duration: 90s; }
+    .orb.o3 { width: 700px; height: 700px; background: radial-gradient(circle at 50% 50%, #e5e0ff 0%, transparent 40%); top: 40%; left: 50%; transform: translate(-50%, -50%); animation-duration: 120s; opacity: .18; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    header.site-header {
+      position: relative;
+      padding: 48px 24px 20px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .logo {
+      font-size: clamp(28px, 6vw, 64px);
+      line-height: 1.05;
+      margin: 0;
+      letter-spacing: .04em;
+      background: linear-gradient(135deg, #f8a6d8 0%, #a0d6ff 50%, #ffd9b3 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: float 6s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-6px) rotate(1.5deg); }
+    }
+
+    .creation-time {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    main.content { padding: 24px; max-width: 1100px; margin: 0 auto; }
+
+    section.section {
+      margin: 28px 0;
+    }
+
+    section.section h2 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      color: #6c5d87;
+      text-transform: none;
+    }
+
+    .intro {
+      font-size: 1rem;
+      color: #555;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .card {
+      position: relative;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.06);
+      background: var(--bgCard, #fff);
+      min-height: 150px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.05);
+      transform-style: preserve-3d;
+      transition: transform .15s ease, box-shadow .15s ease;
+      will-change: transform;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .card p { margin: 0; color: #555; font-size: .95rem; }
+
+    /* subtle tilt on hover via JS, but allow gentle lift when not moving */
+    .card:hover { box-shadow: 0 18px 28px rgba(0,0,0,.08); }
+
+    .skills { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 0; }
+
+    .chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.08);
+      color: #333;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 22px 12px;
+      margin-top: 28px;
+      border-top: 1px solid rgba(0,0,0,.08);
+      color: #6b6b6b;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .footer svg { display: inline-block; vertical-align: middle; margin-right: 6px; }
+
+    @media (max-width: 640px) {
+      .creation-time { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Intro">
+    <h1 class="logo">amirabolfazle</h1>
+    <div class="creation-time" title="Creation timestamp">Creation time: 2025-09-27 04:31:26</div>
+  </header>
+
+  <main class="content" role="main">
+    <section id="about" class="section" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p class="intro">
+        Hi, I’m amirabolfazle—an explorer of interfaces and micro-interactions.
+        This minimal, pastel-toned single-file portfolio showcases a few projects,
+        some UI vibes, and a sprinkle of motion for a friendly vibe.
+      </p>
+    </section>
+
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <div class="grid" aria-label="Projects grid">
+        <article class="card" style="--bgCard: #fff0f5;">
+          <h3>Project Aurora</h3>
+          <p>A pastel landing page with subtle tilt interactions and responsive layouts.</p>
+        </article>
+        <article class="card" style="--bgCard: #f3fff0;">
+          <h3>Palette Playground</h3>
+          <p>Experimenting with soft palettes and motion to teach composition.</p>
+        </article>
+        <article class="card" style="--bgCard: #f6eeff;">
+          <h3>Silent Gallery</h3>
+          <p>Minimal image grid with gentle hover rotation for a calm browsing vibe.</p>
+        </article>
+        <article class="card" style="--bgCard: #fff5e8;">
+          <h3>Microinteractions</h3>
+          <p>Tiny animated cues that reward exploration without shouting.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="section" aria-labelledby="skills-title">
+      <h2 id="skills-title">Skills</h2>
+      <div class="skills" aria-label="Skill set">
+        <span class="chip">HTML</span>
+        <span class="chip">CSS</span>
+        <span class="chip">JavaScript</span>
+        <span class="chip">UI/UX</span>
+        <span class="chip">Animation</span>
+        <span class="chip">Figma</span>
+      </div>
+    </section>
+
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p class="intro" style="max-width: 700px; text-align: center;">
+        Want to chat about a project or collaboration? Reach out through the GitHub repo linked below.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+        <path d="M12 .5A12.5 12.5 0 000 12.5C0 18.07 3.438 22.58 8.205 23.92c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.52-4.04-1.52-.546-1.39-1.333-1.76-1.333-1.76-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.996.11-.774.42-1.3.764-1.6-2.665-.3-5.466-1.333-5.466-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.536-.94-.01-.94 1.12-.01 2.07 1.04 2.07 1.04.99 1.66 2.74 1.3 3.42 1 .23-.75.93-1.3 1.68-1.3 1.09 0 2.01.99 2.01 2.24 0 1.29-.9 2.42-2.11 3.18-.24.14-.56.36-.56 1.12v2.02c0 .32.22.69.83.57A12.01 12.01 0 0024 12.5C24 5.92 18.08.5 12 .5z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple cardioid tilt on cards based on pointer position
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      const bounds = () => card.getBoundingClientRect();
+
+      function handleMove(e){
+        const rect = bounds();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rx = ((y / rect.height) - 0.5) * -14; // rotateX
+        const ry = ((x / rect.width) - 0.5) * 14;   // rotateY
+        const scale = 1.03;
+        card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${scale})`;
+      }
+
+      function handleLeave(){
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
+      }
+
+      card.addEventListener('mousemove', handleMove);
+      card.addEventListener('mouseleave', handleLeave);
+      // Ensure initial transform state
+      card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
+    });
+  </script>
+</body>
+</html>
