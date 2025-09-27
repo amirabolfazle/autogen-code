@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>amirabolfazle</title>
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --surface: #141923;
+      --surface-2: #1b2030;
+      --text: #e6e6f0;
+      --muted: #a6a6b7;
+      --accent: #7c5cff;
+      --accent-2: #2be4d8;
+      --glow: 0 0 40px rgba(124,92,255,.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: #0b0f14;
+      overflow-x: hidden;
+      background-attachment: fixed;
+    }
+
+    /* Ambient animated background gradient */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(124,92,255,.25), rgba(43,228,216,.25), rgba(124,92,255,.25));
+      filter: saturate(120%);
+      animation: rotateGradient 40s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes rotateGradient {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Subtle orbiting bubbles for depth */
+    .orb {
+      position: fixed;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      opacity: .25;
+      z-index: -1;
+      mix-blend-mode: screen;
+      animation: spin 34s linear infinite;
+    }
+    .orb.one { left: -60px; top: -60px; background: radial-gradient(circle at 30% 30%, #7c5cff, transparent 60%); }
+    .orb.two { right: -90px; bottom: -120px; width: 340px; height: 340px; background: radial-gradient(circle at 40% 40%, #2be4d8, transparent 60%); animation-duration: 42s; }
+    .orb.three { left: 40%; top: 20%; width: 260px; height: 260px; background: radial-gradient(circle at 40% 40%, #21d4fd, transparent 60%); animation-duration: 50s; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Layout */
+    .stage {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 40px 16px;
+    }
+
+    .card {
+      position: relative;
+      width: min(900px, 92vw);
+      background: linear-gradient(135deg, rgba(20,24,35,.92), rgba(20,24,35,.8) 60%), #11131a;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 40px 40px 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      transform-style: preserve-3d;
+      transform: translateZ(0);
+      transition: transform 0.3s ease;
+      overflow: hidden;
+      perspective: 1000px;
+    }
+
+    /* 3D tilt on hover / mouse move */
+    .card-inner {
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease;
+    }
+
+    .header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 700;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #c7b5ff 0%, #89fbd3 60%, #a6e1ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(124,92,255,.4);
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: .5px;
+      padding-left: 2px;
+    }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #c7d2fe;
+      background: rgba(124,92,255,.14);
+      border: 1px solid rgba(124,92,255,.28);
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .content {
+      color: #e8eaf6;
+      line-height: 1.75;
+      font-size: 16px;
+      opacity: .95;
+      padding-top: 6px;
+    }
+
+    .content p {
+      margin: 0 0 12px 0;
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: #cbd5e1;
+      opacity: .9;
+      margin-top: 22px;
+    }
+
+    /* GitHub footer */
+    footer {
+      margin-top: 28px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .gh-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #e5e7eb;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+    .gh-link:hover {
+      transform: translateY(-1px) scale(1.01);
+      background: rgba(124,92,255,.15);
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 720px){
+      .creation { display: none; }
+      .card { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient" aria-hidden="true"></div>
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+  <div class="orb three" aria-hidden="true"></div>
+
+  <main class="stage" aria-label="Personal page stage">
+    <section class="card" id="card" role="region" aria-label="Amir Abolfazle personal card">
+      <div class="card-inner" id="card-inner">
+        <div class="header">
+          <div>
+            <h1>amirabolfazle</h1>
+          </div>
+          <div class="creation" title="Creation timestamp">
+            Creation time: 2025-09-27 06:12:10
+          </div>
+        </div>
+        <div class="tagline" style="margin-bottom:8px; color:#a5b4fc;">
+          A fancy animated personal page with dark mode and rotate effects
+        </div>
+        <div class="content" aria-label="Intro content">
+          <p>Welcome. This is a stylish, dark-themed personal page for amirabolfazle with subtle 3D tilt, rotating orbs, and smooth animations.</p>
+          <p>Feel free to explore the visuals and enjoy the motion as elements gently rotate and drift in the background.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer aria-label="Footer">
+      <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for autogen code">
+        <!-- GitHub Inline Icon -->
+        <svg class="icon" viewBox="0 0 24 24" aria-label="GitHub icon" role="img" focusable="false" fill="currentColor">
+          <path d="M12 0.5C5.73 0.5 0.5 5.73 0.5 12.07c0 4.43 2.87 8.18 6.84 9.5.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.61-3.37-1.2-3.37-1.2-.46-1.18-1.13-1.5-1.13-1.5-.92-.64.07-.63.07-.63 1.02.07 1.56 1.04 1.56 1.04.9 1.58 2.36 1.12 2.93.86.09-.67.35-1.12.64-1.38-2.22-.25-4.55-1.13-4.55-5.04 0-1.11.39-2.02 1.03-2.73-.11-.25-.45-1.28.1-2.67 0 0 .84-.27 2.75 1.04A9.58 9.58 0 0112 6.8c.85.004 1.71.11 2.51.32 1.9-1.31 2.74-1.04 2.74-1.04.55 1.39.21 2.42.1 2.67.64.71 1.03 1.62 1.03 2.73 0 3.92-2.34 4.79-4.57 5.04.36.31.68.92.68 1.86 0 1.34-.01 2.42-.01 2.75 0 .27.18.59.69.47A10.57 10.57 0 0023.5 12.07C23.5 5.73 18.27 0.5 12 0.5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Lightweight 3D tilt on mouse move for the card
+    (function(){
+      const card = document.getElementById('card');
+      const inner = document.getElementById('card-inner');
+      const rect = () => card.getBoundingClientRect();
+
+      let width = 0, height = 0, cx = 0, cy = 0;
+
+      function updateSize(){
+        const r = rect();
+        width = r.width;
+        height = r.height;
+        cx = r.left + width / 2;
+        cy = r.top + height / 2;
+      }
+      updateSize();
+      window.addEventListener('resize', updateSize);
+
+      document.addEventListener('mousemove', (e) => {
+        // Only tilt within the card area
+        const dx = (e.clientX - cx) / (width / 2);
+        const dy = (e.clientY - cy) / (height / 2);
+        const rotX = (-dy) * 8; // tilt sensitivity
+        const rotY = (dx) * 8;
+        inner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(40px)`;
+      });
+
+      document.addEventListener('mouseleave', () => {
+        inner.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+      });
+    })();
+  </script>
+</body>
+</html>
