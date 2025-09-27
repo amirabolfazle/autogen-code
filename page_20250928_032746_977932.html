@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --bg-soft: #111522;
+      --fg: #e8e8e8;
+      --muted: #a5a5a5;
+      --card: #141923;
+      --accent: #7a7aff;
+      --glass: rgba(255,255,255,0.05);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Inter, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% 0%, rgba(122,122,255,.08), transparent 40%),
+                  radial-gradient(circle at 100% 20%, rgba(0,180,255,.08), transparent 40%),
+                  linear-gradient(#0a0d14 0%, #0b0e14 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Layout */
+    .site {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(10,12,20,0.92);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav {
+      width: 92%;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+    .brand .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      margin: 0 8px;
+      font-size: 14px;
+      opacity: .9;
+    }
+    nav a:hover { opacity: 1; color: #fff; }
+
+    /* Hero section with zoom on hover */
+    .hero {
+      position: relative;
+      padding: 72px 0 60px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 25% 10%, rgba(120,120,255,.15), transparent 40%),
+                  radial-gradient(circle at 75% 20%, rgba(0,180,255,.15), transparent 40%);
+      filter: blur(0.2px);
+      transition: transform 0.8s ease;
+      z-index: 0;
+    }
+    .hero:hover::before { transform: scale(1.04); }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 28px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      max-width: 980px;
+      width: min(92%, 980px);
+      transform: scale(1);
+      transition: transform 0.6s ease;
+    }
+    .hero:hover .hero-content { transform: scale(1.02); }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 4vw + 1rem, 5rem);
+      line-height: 1.05;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #e6eaff 0%, #a6a8ff 40%, #7a7aff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 24px rgba(122,122,255,.25);
+    }
+
+    .subtitle {
+      margin-top: 14px;
+      font-size: 1.05rem;
+      color: #d6d9e3;
+      opacity: .95;
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", monospace;
+      font-size: 12px;
+      color: #dbe3f0;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 22px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6b6bff 0%, #8a5cff 100%);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 6px 18px rgba(122,122,255,.4);
+      transition: transform .2s ease;
+    }
+    .cta:hover { transform: translateY(-1px) scale(1.02); }
+
+    .features {
+      width: min(1100px, 92%);
+      margin: 48px auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(20,25,35,.95), rgba(20,25,35,.75));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 20px;
+      min-height: 140px;
+      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.25);
+    }
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 22px rgba(0,0,0,.4);
+    }
+    .card h3 { margin: 6px 0 8px; font-size: 1.05rem; }
+    .card p { margin: 0; color: #cbd5e1; font-size: 0.98rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    footer.site-footer {
+      margin-top: auto;
+      padding: 28px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(10,12,20,.92);
+    }
+    .footer-inner {
+      width: 92%;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #dbe3f0;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.03);
+    }
+    .github-link svg { width: 20px; height: 20px; fill: currentColor; }
+    .credit { font-size: 14px; color: #d1d5db; }
+
+    @media (max-width: 900px) {
+      .features { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .features { grid-template-columns: 1fr; }
+      .nav { padding: 10px 0; }
+      .subtitle { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header class="site-header" aria-label="Site header">
+      <div class="nav">
+        <a class="brand" href="#">
+          <span class="dot" aria-hidden="true"></span>
+          <span>amirabolfazle</span>
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero" id="home" aria-label="Hero section">
+      <div class="hero-content">
+        <h1>amirabolfazle</h1>
+        <p class="subtitle">A stunning dark-mode landing experience with smooth zoom effects and a clean, focused layout.</p>
+        <a class="cta" href="#features" aria-label="Explore features">
+          Explore Features
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path d="M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <span class="creation-time" aria-label="Creation time badge">Creation time: 2025-09-28 03:27:09</span>
+      </div>
+    </section>
+
+    <section class="features" id="features" aria-label="Feature highlights">
+      <div class="card" style="animation: none;">
+        <h3>Dark-mode by design</h3>
+        <p>Thoughtful contrast, legible typography, and a calm palette that reduces eye strain.</p>
+      </div>
+      <div class="card" style="animation: none;">
+        <h3>Subtle zoom interactions</h3>
+        <p>Hover-driven zooms and gentle motion to elevate focus without distraction.</p>
+      </div>
+      <div class="card" style="animation: none;">
+        <h3>Responsive layout</h3>
+        <p>Looks great on phones, tablets, and desktops with fluid grid balance.</p>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Additional info">
+      <div class="card">
+        <h3>Performance-first</h3>
+        <p>Lightweight styles and minimal assets for fast loading and smooth interactions.</p>
+      </div>
+      <div class="card">
+        <h3>Accessible</h3>
+        <p>Keyboard navigable, properly labeled elements, and high-contrast defaults.</p>
+      </div>
+      <div class="card" id="about">
+        <h3>Developer-friendly</h3>
+        <p>Clean markup and clear structure to help you customize quickly.</p>
+      </div>
+    </section>
+
+    <footer class="site-footer" aria-label="Site footer">
+      <div class="footer-inner">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-label="GitHub icon" role="img" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5 0 6.08 0 12.69c0 5.62 3.64 10.4 8.69 11.98.64.12.87-.28.87-.62 0-.31-.01-1.13-.02-2.21-3.54.77-4.29-1.63-4.29-1.63-.58-1.47-1.41-1.86-1.41-1.86-1.15-.79.09-.78.09-.78 1.27.09 1.94 1.31 1.94 1.31 1.14 1.95 2.99 1.39 3.72 1.07.11-.84.44-1.39.8-1.71-2.82-.32-5.79-1.41-5.79-6.28 0-1.39.49-2.52 1.29-3.41-.13-.32-.56-1.62.12-3.37 0 0 1-.33 3.28 1.28a11.3 11.3 0 0 1 5.98 0C15.5 3.65 16.5 4 17.8 4c.68-1.75.75-3.05.12-3.37-.01-.01-.03-.03-.04-.04-.03-.02-.07-.05-.1-.07-.43-.25-1.05-.37-2.06-.37-1.02 0-1.63.16-2.08.26-1.69-1.14-3.58-1.33-4.72-.92-1.38.53-2.24 1.86-2.24 3.29 0 2.08 1.32 3.88 3.33 4.49-.32.1-.66.31-.66 1.05 0 1.01.01 2.03.01 2.63 0 .35.23.75.89.57C8.92 22.25 12 17.88 12 12.69 12 6.08 6.27.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
