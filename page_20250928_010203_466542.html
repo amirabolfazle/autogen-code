@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle — Portfolio</title>
+  <style>
+    :root{
+      --glass: rgba(255,255,255,0.16);
+      --glass-border: rgba(255,255,255,0.28);
+      --text: #eaf2ff;
+      --muted: rgba(234,243,255,0.85);
+      --bg1: #0b1020;
+      --bg2: #1a1f2b;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow-x: hidden;
+    }
+
+    /* Animated glassy background layers */
+    .bg-animation {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(120,190,255,0.25), transparent 40%),
+        radial-gradient(circle at 80% 60%, rgba(180,120,255,0.25), transparent 40%),
+        linear-gradient(135deg, #0b1020 0%, #0a1020 60%, #0b0e1a 100%);
+      background-size: 200% 200%;
+      animation: drift 20s ease infinite;
+      filter: saturate(110%);
+    }
+    @keyframes drift {
+      0% { background-position: 0% 0%, 0% 0%; }
+      50% { background-position: 100% 0%, 0% 100%; }
+      100% { background-position: 0% 0%, 100% 100%; }
+    }
+
+    /* Layout containers */
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 60px;
+    }
+
+    /* Glass panel styling */
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      padding: 42px 0 18px;
+    }
+
+    .title {
+      font-size: clamp(28px, 5vw, 58px);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 0;
+      background: linear-gradient(135deg, #e8f0ff 0%, #b6e0ff 60%, #e8f0ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.25);
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-top: -6px;
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #bcd4ff;
+      opacity: 0.95;
+      margin-top: 8px;
+    }
+
+    /* Sections */
+    section { margin: 42px 0; }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #d9e6ff;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      padding: 16px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transform: translateZ(0);
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #d9e6ff;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .card .tag {
+      align-self: flex-start;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.25);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #f0f5ff;
+      margin-top: 8px;
+    }
+
+    .card a.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      color: #0a1230;
+      background: linear-gradient(135deg, #cfe2ff, #a0d0ff);
+      border: 1px solid rgba(0,0,0,0.15);
+      align-self: start;
+    }
+
+    .card a.btn svg { width: 16px; height: 16px; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Staggered delays for cards */
+    .card.del-1 { animation-delay: 0.05s; }
+    .card.del-2 { animation-delay: 0.15s; }
+    .card.del-3 { animation-delay: 0.25s; }
+    .card.del-4 { animation-delay: 0.35s; }
+    .card.del-5 { animation-delay: 0.45s; }
+
+    /* Footer */
+    footer {
+      margin-top: 20px;
+      padding: 14px 0;
+      text-align: center;
+    }
+
+    .footer-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .footer a { color: #eaf2ff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .footer a:hover { text-decoration: underline; }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+    @media (max-width: 720px) {
+      .header { padding: 28px 0; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animation" aria-hidden="true"></div>
+
+  <header class="container glass header" aria-label="Intro">
+    <h1 class="title">amirabolfazle</h1>
+    <div class="subtitle" aria-label="Subtitle">Frontend Developer • UI/UX Enthusiast</div>
+    <div class="creation-time" title="Creation timestamp">Creation time: 2025-09-28 01:01:35</div>
+  </header>
+
+  <main class="container" aria-label="Main content">
+    <section aria-labelledby="about-title">
+      <h2 id="about-title" class="section-title" style="text-align:center; margin-top:6px;">About</h2>
+      <div class="glass" style="padding:22px; text-align:left;">
+        <p style="margin:0; line-height:1.6; color:#e9f0ff;">
+          I'm amirabolfazle — a curious craftsperson weaving clean interfaces and delightful interactions. I enjoy translating complex ideas into accessible, performant front-end experiences. This one-file portfolio demonstrates a glassy aesthetic, smooth fade-ins, and a touch of motion to keep things lively.
+        </p>
+      </div>
+    </section>
+
+    <section aria-labelledby="projects-title">
+      <h2 id="projects-title" class="section-title">Projects</h2>
+      <div class="grid">
+        <article class="card del-1" aria-label="Project Autogen Code">
+          <div>
+            <h3>Autogen Code</h3>
+            <p>Automated code snippets and templates that speed up your workflow. Live demo with quick-start examples.</p>
+          </div>
+          <span class="tag">Tooling</span>
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+            View on GitHub
+          </a>
+        </article>
+
+        <article class="card del-2" aria-label="Project Design System Demo">
+          <div>
+            <h3>Design System Demo</h3>
+            <p>A small, cohesive system for components, tokens, and accessibility-focused defaults.</p>
+          </div>
+          <span class="tag">Design</span>
+          <a class="btn" href="#" aria-label="Open demo">
+            Demo
+          </a>
+        </article>
+
+        <article class="card del-3" aria-label="Project Mosaic UI">
+          <div>
+            <h3>Mosaic UI</h3>
+            <p>Experimenting with glassy cards, subtle shadows, and motion curves for a modern feel.</p>
+          </div>
+          <span class="tag">Experiment</span>
+          <a class="btn" href="#" aria-label="Open project">
+            Learn more
+          </a>
+        </article>
+
+        <article class="card del-4" aria-label="Project Case Study">
+          <div>
+            <h3>Case Study Template</h3>
+            <p>A crisp, readable layout for writing and sharing design case studies.</p>
+          </div>
+          <span class="tag">Content</span>
+          <a class="btn" href="#" aria-label="Read case study">
+            Read
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align: middle;">
+              <path d="M13 5l7 7-7 7-1.41-1.41L16.17 12l-4.58-4.59L13 5z"/>
+              <path d="M5 5h4V3H3v6h2V5zM5 19h4v-2H3v2h2z"/>
+            </svg>
+          </a>
+        </article>
+
+        <article class="card del-5" aria-label="Project Contact">
+          <div>
+            <h3>Contact & Hire</h3>
+            <p>Open for freelance, collaboration, and full-time roles. Let's build something great.</p>
+          </div>
+          <span class="tag">Contact</span>
+          <a class="btn" href="#" aria-label="Email">
+            Email
+          </a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer" style="padding-bottom:40px;">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="footer-inner glass" role="contentinfo" aria-label="Footer content" style="gap:12px;">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository for autogen-code">
+          <!-- GitHub Icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align:middle;">
+            <path d="M12 .5C5.73.5 0 5.73 0 12c0 5.08 3.29 9.37 7.86 10.87.58.11.79-.25.79-.56V21c-3.2.7-3.87-1.37-3.87-1.37-.53-1.38-1.3-1.75-1.3-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.77.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 .98-.31 3.21 1.18a11.5 11.5 0 0 1 6 0C18.47 4.14 19.5 3.8 19.5 3.8c.66 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.47 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.58A12 12 0 0 0 12 .5z"/>
+          </svg>
+        </a>
+        <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas; font-size:12px; color:#dbe8ff;">
+          Created by amirabolfazle
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
