@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0b14;
+      --fg: #e8f5ff;
+      --neon: #00e5ff;
+      --neon2: #ff00c6;
+      --panel: rgba(0, 0, 0, 0.42);
+      --glow: 0 0 20px rgba(0, 229, 255, 0.8);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(0,255,230,0.15), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(255,0,230,0.15), transparent 40%),
+                  linear-gradient(135deg, #0a0a14 0%, #0b0b14 60%, #0a0a14 100%);
+      font-family: Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto;
+      min-height: 100%;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Neon header title */
+    .site-header {
+      text-align: center;
+      padding: 48px 20px 16px;
+      position: relative;
+    }
+    .title {
+      font-size: clamp(40px, 8vw, 110px);
+      margin: 0;
+      line-height: 1.05;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #00e5ff, #ff00c6 60%, #00e5ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(0,229,255,0.8), 0 0 28px rgba(255,0,198,0.8);
+      filter: drop-shadow(0 0 8px rgba(0,229,255,0.6));
+      text-transform: lowercase;
+      transform: translateZ(0);
+    }
+
+    .subtle {
+      opacity: 0.9;
+      font-size: 0.92rem;
+      color: #cdeaff;
+      margin-top: 8px;
+      text-shadow: 0 0 8px rgba(0,255,255,0.5);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.5);
+      background: rgba(0,0,0,0.25);
+      color: #bffaff;
+      font-family: monospace;
+      font-size: 0.88rem;
+      margin-top: 12px;
+      box-shadow: 0 0 14px rgba(0,255,255,0.6);
+    }
+
+    main {
+      max-width: 980px;
+      margin: 26px auto 40px;
+      padding: 0 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(0,255,255,0.25);
+      border-radius: 16px;
+      padding: 28px;
+      margin: 28px 0;
+      box-shadow: inset 0 0 50px rgba(0,255,255,0.04),
+                  0 0 40px rgba(0,255,255,0.08);
+      backdrop-filter: blur(2px);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.6rem;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0,255,255,0.7);
+    }
+
+    p, li {
+      color: #d9f7ff;
+      line-height: 1.7;
+    }
+
+    ul { padding-left: 20px; }
+
+    a {
+      color: #a6fbff;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(166,251,255,0.5);
+    }
+    a:hover {
+      color: #fff;
+      text-decoration: none;
+      text-shadow: 0 0 8px rgba(0,255,255,0.9);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 700px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Fade-in animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeIn 0.9s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer with neon vibe */
+    footer {
+      border-top: 1px solid rgba(0,255,255,0.25);
+      padding: 26px 20px;
+      text-align: center;
+      color: #b8f0ff;
+      background: linear-gradient(to top, rgba(0,0,0,0.3), rgba(0,0,0,0.0) 60%);
+      position: relative;
+      z-index: 1;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.6);
+      background: rgba(0,0,0,0.28);
+      color: #eaffff;
+      text-decoration: none;
+      box-shadow: 0 0 14px rgba(0,255,255,0.6);
+      transition: transform 0.2s ease;
+    }
+    .github-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(0,255,255,0.9);
+    }
+    .github-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      color: #eaffff;
+    }
+
+    .credit {
+      font-family: monospace;
+      font-size: 0.95rem;
+      margin-left: 6px;
+      color: #c8fbff;
+    }
+
+    /* Creation time tag style for neon feel */
+    .creation {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.6);
+      color: #aef3ff;
+      background: rgba(0,0,0,0.25);
+      box-shadow: 0 0 12px rgba(0,255,255,0.6);
+      font-family: monospace;
+      font-size: 0.92rem;
+    }
+
+    /* Small ambient glow behind content */
+    .ambient {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      left: -100px;
+      top: 20%;
+      background: radial-gradient(circle at center, rgba(0,255,255,0.25), transparent 60%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 12s ease-in-out infinite;
+    }
+    @keyframes drift {
+      0%,100% { transform: translateX(0) translateY(0); }
+      50% { transform: translateX(60px) translateY(-40px); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Intro">
+    <h1 class="title fade-in" style="animation-delay:0.15s;">amirabolfazle</h1>
+    <div class="subtle fade-in" style="animation-delay:0.45s;">
+      Neon-inspired personal page
+    </div>
+    <div class="badge fade-in" style="animation-delay:0.6s;">
+      Creation Time: 2025-09-27 07:09:34
+    </div>
+  </header>
+
+  <main aria-label="Main content">
+    <section class="panel fade-in" style="animation-delay:0.2s;">
+      <h2>About</h2>
+      <p>
+        Hello! I'm amirabolfazle, a curious developer who enjoys blending sleek UX with a neon aesthetic.
+        This page is a little neon-dreamy corner to showcase touches of style alongside code-friendly content.
+      </p>
+      <p>
+        I love building small, thoughtful tools and experiments. If something catches your eye here, reach out or explore the links below.
+      </p>
+    </section>
+
+    <section class="panel fade-in" style="animation-delay:0.4s;">
+      <h2>Projects</h2>
+      <div class="grid" aria-label="Projects grid">
+        <div>
+          <strong>Autogen Code</strong>
+          <p>A lightweight code generator and helper scripts. Quick, repeatable templates with a neon twist.</p>
+          <p><a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">GitHub Repository</a></p>
+        </div>
+        <div>
+          <strong>Experiment 2</strong>
+          <p>Fun side-projects exploring CSS animations and interactive UI elements.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel fade-in" style="animation-delay:0.6s;">
+      <h2>Creation Time</h2>
+      <p>The page includes the creation timestamp you provided: 2025-09-27 07:09:34</p>
+      <p>You can customize this page further or add more neon-flare sections as you like.</p>
+    </section>
+  </main>
+
+  <footer class="fade-in" style="animation-delay:0.8s;">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg class="github-icon" viewBox="0 0 24 24" aria-label="GitHub" role="img" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5C5.73.5 0 6.21 0 12.7c0 4.72 3.07 8.75 7.36 10.17.54.1.74-.23.74-.51 0-.25-.01-1-.02-2.01-3 .65-3.62-1.38-3.62-1.38-.49-1.24-1.2-1.58-1.2-1.58-.99-.69.08-.68.08-.68 1.08.08 1.64 1.11 1.64 1.11.92 1.63 2.41 1.16 3.01.89.11-.69.37-1.17.67-1.44-2.39-.27-4.9-1.2-4.9-5.34 0-1.18.43-2.15 1.14-2.92-.11-.28-.5-1.43.11-2.98 0 0 .93-.3 3.55 1.12a10.5 10.5 0 016.08 0c2.62-1.42 3.55-1.12 3.55-1.12.61 1.55.28 2.7.13 2.98.71.77 1.15 1.75 1.15 2.92 0 4.15-2.51 5.06-4.92 5.32.4.33.76.98.76 1.98 0 1.43-.01 2.58-.01 2.93 0 .36.23.75.89.64C20.04 21.5 24 17.47 24 12.7 24 6.21 18.27.5 12 .5z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span class="credit" aria-label="Created by author">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
