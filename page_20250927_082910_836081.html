@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg2: #111522;
+      --card: #151b23;
+      --text: #e8e8e8;
+      --muted: #a2aab8;
+      --accent: #7dd3fc;
+      --glow: rgba(125,211,252,0.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 15% 0%, rgba(0,153,255,0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 100% 20%, rgba(110,200,255,0.15) 0%, transparent 40%),
+                  linear-gradient(#0b0f14, #0b0f14 60%, #0b0f14);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    header.brand {
+      display: flex; align-items: center; justify-content: center;
+      padding: 28px 16px;
+    }
+    .brand-title {
+      font-weight: 800; letter-spacing: .2em; text-transform: uppercase;
+      font-size: 28px; color: #e5e7eb;
+      display: inline-flex; align-items: center;
+    }
+    .brand-title .dot {
+      width: 12px; height: 12px; border-radius: 50%; background: #7dd3fc;
+      margin-right: 8px; box-shadow: 0 0 12px #7dd3fc;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: center;
+      justify-items: center;
+      padding: 20px;
+    }
+
+    .cube-wrap { width: 260px; height: 260px; perspective: 1000px; position: relative; }
+    .glow {
+      position: absolute; width: 420px; height: 420px; border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(125,211,252,.25), transparent 60%);
+      filter: blur(20px); z-index: -1; left: -80px; top: -20px;
+      animation: floatGlow 12s ease-in-out infinite;
+    }
+    @keyframes floatGlow {
+      0% { transform: translate(0,0) scale(1); opacity: .95; }
+      50% { transform: translate(20px, 6px) scale(1.04); opacity: 1; }
+      100% { transform: translate(0,0) scale(1); opacity: .95; }
+    }
+
+    .cube {
+      width: 260px; height: 260px; position: relative;
+      transform-style: preserve-3d;
+      animation: spin 24s linear infinite;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
+    }
+    .face { position: absolute; width: 260px; height: 260px;
+             display: flex; align-items: center; justify-content: center;
+             font-weight: 700; color: white; border: 1px solid rgba(255,255,255,.15);
+    }
+    .front { transform: translateZ(130px); background: linear-gradient(135deg, #ef4444, #b91c1c); }
+    .back  { transform: rotateY(180deg) translateZ(130px); background: linear-gradient(135deg, #3b82f6, #1e3a8a); }
+    .right { transform: rotateY(90deg) translateZ(130px); background: linear-gradient(135deg, #10b981, #047857); }
+    .left  { transform: rotateY(-90deg) translateZ(130px); background: linear-gradient(135deg, #f59e0b, #b45309); }
+    .top   { transform: rotateX(90deg) translateZ(130px); background: linear-gradient(135deg, #8b5cf6, #4c1d95); }
+    .bottom{ transform: rotateX(-90deg) translateZ(130px); background: linear-gradient(135deg, #f472b6, #c026d3); }
+
+    @keyframes spin { from { transform: rotateX(-15deg) rotateY(0deg); } to { transform: rotateX(-15deg) rotateY(360deg); } }
+
+    .intro {
+      text-align: center; max-width: 760px; padding: 0 20px;
+    }
+    .intro h2 { margin: 0 0 6px; font-size: 28px; font-weight: 700; letter-spacing: .02em; }
+    .sub { color: var(--muted); font-size: 14px; }
+    .creation-time { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+                      font-size: 12px; color: #a1a1aa; margin-top: 6px; }
+
+    .portfolio { width: min(1100px, 92vw); margin: 40px auto 0; padding: 0 6px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; align-items: stretch; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px; padding: 20px; min-height: 120px; color: #eae6ff;
+      box-shadow: 0 8px 20px rgba(0,0,0,.25);
+      transition: transform .15s ease;
+      transform-style: preserve-3d;
+    }
+
+    .tilt { perspective: 1000px; }
+    .tilt-card { transform-style: preserve-3d; }
+
+    .footer {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 24px; border-top: 1px solid rgba(255,255,255,.08);
+      color: #cbd5e1; background: rgba(2,6,23,.6);
+    }
+    .footer a { color: #cbd5e1; text-decoration: none; display:inline-flex; align-items:center; gap:8px; }
+    .footer svg { display:block; width:20px; height:20px; fill: currentColor; }
+
+    @media (max-width: 700px) {
+      .cube-wrap { width: 180px; height: 180px; }
+      .face { width:180px; height:180px; }
+      .front{ transform: translateZ(90px); }
+      .back{ transform: rotateY(180deg) translateZ(90px); }
+      .right{ transform: rotateY(90deg) translateZ(90px); }
+      .left{ transform: rotateY(-90deg) translateZ(90px); }
+      .top{ transform: rotateX(90deg) translateZ(90px); }
+      .bottom{ transform: rotateX(-90deg) translateZ(90px); }
+      .intro h2 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="brand" aria-label="brand">
+    <div class="brand-title" style="display:inline-flex; align-items:center;">
+      <span class="dot" aria-hidden="true"></span>
+      amirabolfazle
+    </div>
+  </header>
+
+  <section class="hero" aria-label="intro">
+    <div class="cube-wrap" aria-label="rotating cube">
+      <div class="glow" aria-hidden="true"></div>
+      <div class="cube" id="cube" role="img" aria-label="rotating cube of skills">
+        <div class="face front">Frontend</div>
+        <div class="face back">UI/UX</div>
+        <div class="face right">Code</div>
+        <div class="face left">Design</div>
+        <div class="face top">Projects</div>
+        <div class="face bottom">Creative</div>
+      </div>
+    </div>
+    <div class="intro">
+      <h2>amirabolfazle</h2>
+      <p class="sub">A cool, animated one-file portfolio in dark mode with rotating visuals.</p>
+      <div class="creation-time">Creation time: 2025-09-27 08:28:19</div>
+    </div>
+  </section>
+
+  <section class="portfolio" aria-label="portfolio projects">
+    <div class="grid tilt" style="gap:20px;">
+      <article class="card tilt-card" style="background:linear-gradient(135deg, rgba(34,197,94,.15), rgba(2,6,23,.0));">
+        <h3>Project Aurora</h3>
+        <p>Interactive UI kit demonstrating motion and depth.</p>
+      </article>
+      <article class="card tilt-card" style="background:linear-gradient(135deg, rgba(59,130,246,.15), rgba(2,6,23,.0));">
+        <h3>Lumina Gallery</h3>
+        <p>WebGL-based visual exploration with parallax lighting.</p>
+      </article>
+      <article class="card tilt-card" style="background:linear-gradient(135deg, rgba(236,72,153,.15), rgba(2,6,23,.0));">
+        <h3>Pulse Dashboard</h3>
+        <p>Real-time data visualization with micro-interactions.</p>
+      </article>
+      <article class="card tilt-card" style="background:linear-gradient(135deg, rgba(234,179,8,.15), rgba(2,6,23,.0));">
+        <h3>Nova Studio</h3>
+        <p>Creative prototyping environment for rapid ideas.</p>
+      </article>
+      <article class="card tilt-card" style="background:linear-gradient(135deg, rgba(56,189,248,.15), rgba(2,6,23,.0));">
+        <h3>Orbit Kit</h3>
+        <p>Component library with accessible presets.</p>
+      </article>
+      <article class="card tilt-card" style="background:linear-gradient(135deg, rgba(139,92,246,.15), rgba(2,6,23,.0));">
+        <h3>Echo Forms</h3>
+        <p>Accessible forms with progressive enhancement.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer" aria-label="footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">
+        <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58 0-.28-.01-1.02-.02-2-2.73.59-3.32-1.18-3.32-1.18-.54-1.38-1.32-1.75-1.32-1.75-1.08-.74.08-.73.08-.73 1.19.08 1.82 1.22 1.82 1.22 1.06 1.81 2.77 1.29 3.46.99.11-.77.42-1.29.76-1.59-2.18-.25-4.47-1.09-4.47-4.85 0-1.07.38-1.95 1-2.63-.1-.25-.44-1.26.1-2.63 0 0 .85-.27 2.78 1.04A9.5 9.5 0 0 1 12 5.8c.86-.01 1.74.12 2.56.34 1.93-1.31 2.78-1.04 2.78-1.04.55 1.37.21 2.38.1 2.63.63.68 1 1.56 1 2.63 0 3.77-2.31 4.59-4.5 4.84.43.37.82 1.1.82 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.69.83.57A12 12 0 0 0 12 .5z" />
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Tilt effect for cards
+    (function(){
+      const cards = document.querySelectorAll('.tilt-card');
+      cards.forEach(card => {
+        card.style.transition = 'transform 0.15s ease';
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          const x = e.clientX - r.left;
+          const y = e.clientY - r.top;
+          const dx = (x / r.width - 0.5) * 14;
+          const dy = (y / r.height - 0.5) * -14;
+          card.style.transform = `rotateX(${dy}deg) rotateY(${dx}deg) translateZ(0)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'none';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
