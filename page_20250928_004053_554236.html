@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle — Portfolio</title>
+  <style>
+    :root{
+      --bg: rgba(255,255,255,0.12);
+      --bg2: rgba(255,255,255,0.20);
+      --border: rgba(255,255,255,0.35);
+      --txt: #eaf0ff;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    /* Page base */
+    body {
+      margin: 0;
+      color: var(--txt);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      line-height: 1.5;
+      background: radial-gradient(circle at 20% -10%, rgba(114, 199, 255, 0.25), transparent 40%),
+                  radial-gradient(circle at 90% 10%, rgba(0, 230, 170, 0.25), transparent 30%),
+                  linear-gradient(135deg, #0b0f2b 0%, #1a1740 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Glassy surfaces */
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05) 60%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+    }
+
+    /* Layout helpers */
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    header.header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 0;
+      margin: 0;
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: .3px;
+      font-size: 1.05rem;
+    }
+
+    nav a {
+      color: #e8f1ff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: background 0.25s ease;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.22);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 56px 0 28px;
+      margin-top: 8px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      margin: 0 0 10px;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #eaffff 0%, #b6e7ff 50%, #d8b4fe 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      margin: 6px 0 14px;
+      opacity: 0.95;
+      font-size: 1.05rem;
+    }
+
+    .creation-pill {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.18);
+      font-size: .92rem;
+      color: #f7fbff;
+      margin-top: 6px;
+    }
+
+    /* Projects grid */
+    #projects {
+      padding: 20px 0 60px;
+      margin-top: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      perspective: 1000px;
+    }
+
+    .card {
+      position: relative;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+      display:flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 180px;
+      color: #f7fbff;
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease;
+      overflow: hidden;
+    }
+
+    .card .card-media {
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #7c9cff, #6affb0, #7c9cff);
+      margin-bottom: 12px;
+      box-shadow: inset 0 0 12px rgba(255,255,255,.5);
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: rgba(230,235,255,.95);
+      font-size: .95rem;
+    }
+
+    .card a.card-link {
+      align-self: flex-start;
+      margin-top: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.35);
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255,255,255,0.15);
+      transition: transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .9rem;
+    }
+
+    .card-link:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Tilt effect on movement via JS */
+    .tilt-card { transform: rotateX(0deg) rotateY(0deg); }
+
+    /* Footer */
+    footer.footer {
+      padding: 18px 0 28px;
+      text-align: center;
+      color: #e9f0ff;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer a.git {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.32);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* Small screens tweaks */
+    @media (max-width: 700px) {
+      .nav { flex-wrap: wrap; gap: 8px; }
+      .brand { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header" aria-label="Site header">
+    <div class="container nav" style="align-items:center; justify-content:space-between;">
+      <div class="brand" aria-label="Site brand">amirabolfazle</div>
+      <nav aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="container hero glass" aria-label="Hero section" style="margin-top:18px; padding: 34px 20px;">
+      <h1>amirabolfazle</h1>
+      <p>Creative coder • UI/UX enthusiast • frontend & backend explorer</p>
+      <div class="creation-pill" title="Creation timestamp">
+        Creation time: 2025-09-28 00:40:08
+      </div>
+    </section>
+
+    <section id="projects" class="container" aria-label="Projects section" style="padding-top:6px;">
+      <h2 style="margin:0 0 12px; font-size:1.25rem; color:#eaf1ff;">Selected Projects</h2>
+      <div class="grid" >
+        <article class="card tilt-card" aria-label="Project 1" >
+          <div class="card-media" aria-hidden="true"></div>
+          <div class="card-content">
+            <h3>Glassflow Dashboard</h3>
+            <p>A glassmorphic dashboard with real-time charts and smooth transitions.</p>
+          </div>
+          <a class="card-link" href="#" aria-label="View project 1">
+            View
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+
+        <article class="card tilt-card" aria-label="Project 2" >
+          <div class="card-media" aria-hidden="true"></div>
+          <div class="card-content">
+            <h3>Aurora Gallery</h3>
+            <p>Interactive gallery with tilt effects and lazy-loaded images.</p>
+          </div>
+          <a class="card-link" href="#" aria-label="View project 2">
+            View
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+
+        <article class="card tilt-card" aria-label="Project 3" >
+          <div class="card-media" aria-hidden="true"></div>
+          <div class="card-content">
+            <h3>Pulse Analytics</h3>
+            <p>Analytics board with modular widgets and glass UI.</p>
+          </div>
+          <a class="card-link" href="#" aria-label="View project 3">
+            View
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+
+        <article class="card tilt-card" aria-label="Project 4" >
+          <div class="card-media" aria-hidden="true"></div>
+          <div class="card-content">
+            <h3>Nova Todo</h3>
+            <p>Minimal task app with delightful micro-interactions.</p>
+          </div>
+          <a class="card-link" href="#" aria-label="View project 4">
+            View
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+
+        <article class="card tilt-card" aria-label="Project 5" >
+          <div class="card-media" aria-hidden="true"></div>
+          <div class="card-content">
+            <h3>Nebula Editor</h3>
+            <p>Lightweight editor with live preview and syntax highlighting.</p>
+          </div>
+          <a class="card-link" href="#" aria-label="View project 5">
+            View
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+
+        <article class="card tilt-card" aria-label="Project 6" >
+          <div class="card-media" aria-hidden="true"></div>
+          <div class="card-content">
+            <h3>Echo Cards</h3>
+            <p>Card-based UI kit with glass surfaces and motion.</p>
+          </div>
+          <a class="card-link" href="#" aria-label="View project 6">
+            View
+            <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="container" aria-label="About section" style="padding: 20px 0 40px;">
+      <div class="glass" style="padding: 20px; border-radius: 16px;">
+        <h2 style="margin:0 0 8px; font-size:1.15rem;">About</h2>
+        <p style="margin:0; color:#e9f0ff;">
+          I'm an enthusiastic developer focusing on delightful UI and reliable systems. This single-file portfolio demonstrates glassmorphism visuals, subtle rotations, and a few interactive elements—all in one HTML doc.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="container" aria-label="Contact section" style="padding: 0 0 40px;">
+      <div class="glass" style="padding: 20px; border-radius: 16px;">
+        <h2 style="margin:0 0 8px; font-size:1.15rem;">Contact</h2>
+        <p style="margin:0; color:#e9f0ff;">Message me via email or connect through GitHub.</p>
+        <p style="margin:8px 0 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92rem; color:#dbe6ff;">
+          Email: hello@example.com
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer" role="contentinfo" aria-label="Footer">
+    <div class="footer-inner container" style="max-width:1100px;">
+      <a class="git" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository link">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:block;">
+          <path d="M12 .5C5.73.5 0 6.226 0 12.003c0 5.003 3.438 9.255 8.205 10.75.6.111.82-.26.82-.577 0-.285-.01-1.04-.015-2.042-3.343.726-4.043-1.613-4.043-1.613-.546-1.389-1.333-1.758-1.333-1.758-1.089-.746.083-.73.083-.73 1.204.086 1.84 1.234 1.84 1.234 1.07 1.835 2.809 1.303 3.493.997.108-.774.419-1.304.761-1.605-2.665-.304-5.466-1.333-5.466-5.93 0-1.31.466-2.382 1.234-3.22-.125-.303-.54-1.524.118-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 013.003-.404c1.016.005 2.042.136 3.003.404 2.293-1.552 3.3-1.23 3.3-1.23.659 1.652.244 2.873-.118 3.176.77.838 1.23 1.91 1.23 3.22 0 4.61-2.804 5.624-5.476 5.921.43.37.814 1.102.814 2.223 0 1.606-.015 2.896-.015 3.289 0 .32.217.694.825.575C20.565 21.796 24 17.298 24 12c0-6.627-5.373-11.5-12-11.5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Simple tilt on mouse move for all cards
+    (function(){
+      const cards = document.querySelectorAll('.tilt-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width;
+          const py = (e.clientY - rect.top) / rect.height;
+          const rotY = (px - 0.5) * 14; // tilt range left-right
+          const rotX = (0.5 - py) * 12; // tilt range up-down
+          card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
