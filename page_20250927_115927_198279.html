@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg2: #111522;
+      --card: #141a2a;
+      --text: #e6e6e6;
+      --muted: #a6adbb;
+      --accent: #7bdff6;
+      --glow: 0 0 12px rgba(123,223,246,.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: radial-gradient( circle at 15% -10%, rgba(123,223,246,.08), transparent 40% ),
+                  radial-gradient( circle at 100% 0%, rgba(123,223,246,.06), transparent 40% ),
+                  linear-gradient(#0b0f14, #0b0f14 60%, #0b0f14);
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Light prefers dark is default; still honor user preference if any */
+    @media (prefers-color-scheme: light) {
+      :root{ --bg: #f7f7f7; --bg2: #ffffff; --card: #ffffff; --text: #111; --muted: #555; }
+      body{ background: linear-gradient(#f7f7f7, #f7f7f7); }
+    }
+
+    .wrap {
+      flex: 1 1 auto;
+      display: grid;
+      place-items: center;
+      padding: clamp(20px, 4vw, 60px);
+    }
+
+    .card {
+      width: min(1100px, 92vw);
+      background: linear-gradient(135deg, rgba(20,26,42,.92), rgba(20,26,42,.86));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 40px 40px 60px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative faint grid */
+    .card:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image: radial-gradient(circle at 20px 20px, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events:none;
+      opacity:.6;
+      mix-blend-mode: overlay;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+      perspective: 1000px;
+    }
+
+    .logo {
+      font-weight: 900;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      font-size: clamp(3.2rem, 8vw, 6rem);
+      line-height: 1;
+      margin: 0;
+      background: linear-gradient(135deg, #7bdff6 0%, #8a5cff 60%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 14px rgba(123,223,246,.6));
+      animation: bounceIn 0.95s ease-out both;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2.8vw, 1.15rem);
+      margin: 6px 0 18px;
+      letter-spacing: .04em;
+      opacity: 0.95;
+      animation: fadeUp 1s ease-out both;
+      animation-delay: 0.15s;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(123,223,246,.15);
+      border: 1px solid rgba(123,223,246,.35);
+      color: #dff6ff;
+      font-weight: 600;
+      font-size: .92rem;
+      margin: 0 auto 22px;
+      transform-origin: center;
+      animation: bounce 2s ease-in-out infinite;
+      animation-delay: 0.3s;
+    }
+
+    .creation time {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .orbs {
+      display: flex;
+      gap: clamp(10px, 5vw, 28px);
+      justify-content: center;
+      align-items: center;
+      margin: 6px auto 10px;
+      padding: 6px;
+    }
+
+    .orb {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: inline-block;
+      animation: bob 3s ease-in-out infinite;
+      box-shadow: inset 0 0 12px rgba(255,255,255,.4);
+    }
+
+    .orb.green { background: radial-gradient(circle at 40% 35%, #9affb1, #3bd27d 60%, #1c7a4b); animation-delay: .15s; }
+    .orb.purple { background: radial-gradient(circle at 40% 35%, #d6b7ff, #8a5cff 60%, #3b1e7a); animation-delay: .35s; }
+    .orb.blue { background: radial-gradient(circle at 40% 35%, #a6e4ff, #4cc9ff 60%, #1d4f6e); animation-delay: .55s; }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(-60px) scale(.92); opacity: 0; }
+      60% { transform: translateY(8px) scale(1.02); opacity: 1; }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fadeUp {
+      0% { transform: translateY(12px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-12px); }
+      60% { transform: translateY(-6px); }
+    }
+
+    /* Footer with GitHub icon + text */
+    footer {
+      width: 100%;
+      padding: 16px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer-inner {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .footer a {
+      color: var(--text);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .footer svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      color: #fff;
+    }
+
+    @media (max-width: 700px){
+      .card { padding: 28px 20px; }
+      .creation { font-size: .88rem; padding: 7px 12px; }
+      .orb { width: 46px; height: 46px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .logo { animation: none; }
+      .creation { animation: none; }
+      .orb { animation: none; }
+      .card:before { content: ""; }
+    }
+
+    /* simple entry fade-in for overall page on load */
+    .page-loaded .card { animation: fadeIn 0.8s ease-out both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  </style>
+</head>
+<body>
+  <div class="wrap" aria-label="Main content wrapper">
+    <section class="card" aria-label="Intro card">
+      <div class="brand">
+        <h1 class="logo" aria-label="Site title">amirabolfazle</h1>
+      </div>
+      <p class="subtitle">A fully responsive, animated HTML page with a dark theme and bounce effects.</p>
+
+      <div class="creation" aria-label="Creation time" title="Creation time">
+        Creation time: <time datetime="2025-09-27T11:58:46" aria-label="Creation timestamp">2025-09-27 11:58:46</time>
+      </div>
+
+      <div class="orbs" aria-label="Decorative bouncing orbs">
+        <span class="orb green" aria-hidden="true"></span>
+        <span class="orb purple" aria-hidden="true"></span>
+        <span class="orb blue" aria-hidden="true"></span>
+      </div>
+    </section>
+  </div>
+
+  <footer role="contentinfo" aria-label="Footer area">
+    <div class="footer-inner">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository link">
+        <!-- GitHub icon (inline SVG) -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="20" height="20" focusable="false">
+          <path fill-rule="evenodd" d="M12 0a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1-.02-2.04-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.34-1.78-1.34-1.78-1.09-.75.09-.74.09-.74 1.21.086 1.84 1.25 1.84 1.25 1.07 1.84 2.81 1.31 3.495 1 .11-.78.42-1.31.765-1.61-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-2.01 1.03-2.72-.1-.25-.45-1.26.1-2.63 0 0 .84-.27 2.75 1.02a9.5 9.5 0 016 0c1.91-1.29 2.75-1.02 2.75-1.02.56 1.65.01 2.73.01 2.73.59.68 1.03 1.28 1.03 2.38 0 4.04-2.34 4.92-4.57 5.15.36.31.69.87.69 1.76 0 1.27-.01 2.3-.01 2.61 0 .32-.21.68-.82.56A12 12 0 0024 12c0-6.63-5.37-12-12-12z" />
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <span style="margin-left:6px; color:#dfe6f7;">Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Simple on-load class to trigger page-wide animation if desired
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('page-loaded');
+    });
+  </script>
+</body>
+</html>
