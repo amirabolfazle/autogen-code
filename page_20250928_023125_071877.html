@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #0e1430;
+      --fg: #e9e7ff;
+      --muted: #a6a2c7;
+      --card: rgba(255,255,255,0.04);
+      --accent: #7c5cff;
+      --acc2: #4de6e9;
+      --ring: rgba(124,92,255,.6);
+      --glow: 0 0 20px rgba(124,92,255,.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(124,92,255,.25), transparent 40%),
+                  radial-gradient(circle at 90% 10%, rgba(0,255,180,.15), transparent 40%),
+                  linear-gradient(#0b0f1a, #0b0f1a 60%, #0b0f1a);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Layout */
+    .wrapper {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 4vmin 4vmin 2rem;
+      position: relative;
+      min-height: calc(100vh - 72px);
+    }
+
+    /* Decorative rotating rings behind the title (dark-mode friendly) */
+    .rings {
+      position: absolute;
+      top: 6vmin;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 420px;
+      height: 420px;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(124,92,255,.4));
+    }
+    .ring {
+      position: absolute;
+      border: 2px solid rgba(124,92,255,.65);
+      border-radius: 50%;
+      width: 320px;
+      height: 320px;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin 14s linear infinite;
+      mix-blend-mode: screen;
+      opacity: .5;
+    }
+    .ring.r2 {
+      width: 240px; height: 240px;
+      animation-duration: 9s;
+      border-color: rgba(77,230,233,.55);
+      opacity: .4;
+    }
+    .ring.r3 {
+      width: 160px; height: 160px;
+      animation-duration: 6s;
+      border-color: rgba(255,214,102,.55);
+      opacity: .3;
+    }
+    @keyframes spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Hero title with glow and subtle rotation on hover */
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 6vh 2rem 4vh;
+      max-width: 980px;
+      width: 100%;
+    }
+
+    .title {
+      font-weight: 900;
+      font-size: clamp(2.6rem, 8vw, 6rem);
+      line-height: 1.02;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin: 0;
+      background: linear-gradient(135deg, #ffffff 0%, #9ae6ff 40%, #b99dff 60%, #7affd4 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 12px rgba(124,92,255,.9));
+      transform: rotate(-2deg);
+      transition: transform .5s ease, text-shadow .5s ease;
+      user-select: none;
+    }
+    .title:hover {
+      transform: rotate(2deg) scale(1.04);
+      text-shadow: 0 0 18px rgba(124,92,255,.85);
+    }
+
+    .subtitle {
+      margin: .7rem auto 0;
+      color: var(--muted);
+      font-size: clamp(.95rem, 2.5vw, 1.05rem);
+      letter-spacing: .04em;
+    }
+
+    /* Creation time badge */
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      margin-top: 1.6rem;
+      padding: .5rem 1rem;
+      border-radius: 999px;
+      background: rgba(124,92,255,.18);
+      color: #eaf2ff;
+      font-family: ui-monospace,SFMono-Regular,Menlo,Consolas;
+      font-size: .92rem;
+      border: 1px solid rgba(124,92,255,.35);
+      backdrop-filter: blur(2px);
+    }
+
+    /* Content area to show responsive behavior without overwhelming visuals */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      width: min(100%, 1000px);
+      margin-top: 2rem;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 700px){
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 16px;
+      padding: 1.1rem;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      backdrop-filter: blur(2px);
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .card p {
+      margin: 6px 0 0;
+      color: #d7d4ff;
+      font-size: .95rem;
+    }
+
+    /* Footer with GitHub icon and attribution */
+    footer {
+      width: 100%;
+      margin-top: auto;
+      padding: 20px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(2,6,23,.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--fg);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.15);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .github-link:hover {
+      transform: translateY(-1px);
+      background: rgba(124,92,255,.25);
+    }
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+    }
+
+    /* Small screens tweak */
+    @media (max-width: 520px){
+      .rings { display: none; }
+      .title { font-size: clamp(2.2rem, 12vw, 4.8rem); }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrapper" aria-label="amirabolfazle landing page with dark theme and rotating elements">
+    <div class="rings" aria-hidden="true">
+      <span class="ring" ></span>
+      <span class="ring r2"></span>
+      <span class="ring r3"></span>
+    </div>
+
+    <section class="hero" role="region" aria-label="Hero section">
+      <h1 class="title">amirabolfazle</h1>
+      <div class="subtitle" style="opacity:.9">Fully responsive animated HTML with dark mode and rotation effects</div>
+
+      <div class="creation" aria-label="creation time">
+        Creation time: 2025-09-28 02:30:59
+      </div>
+
+      <div class="grid" style="margin-top: 28px;">
+        <div class="card" aria-label="card example">
+          <div>
+            <h3>Animated by CSS</h3>
+            <p>Rings rotate, title glows, responsive layout.</p>
+          </div>
+        </div>
+        <div class="card" aria-label="card example two">
+          <div>
+            <h3>Dark mode ready</h3>
+            <p>Designed for low-light environments with vibrant accents.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer aria-label="Footer with GitHub link">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository amirabolfazle/autogen-code">
+        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" role="img">
+          <path d="M12 .5C5.73.5.9 5.36.9 11.74c0 4.95 3.22 9.13 7.69 10.61.56.1.76-.24.76-.54 0-.27-.01-1.16-.02-2.12-3.13.68-3.79-1.34-3.79-1.34-.51-1.3-1.25-1.65-1.25-1.65-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.74.39-1.23.71-1.51-2.5-.28-5.13-1.29-5.13-5.74 0-1.27.45-2.31 1.19-3.13-.12-.28-.52-1.4.11-2.92 0 0 .98-.32 3.2 1.19a11.1 11.1 0 0 1 2.92-.41c.99.01 1.99.14 2.92.41 2.22-1.51 3.2-1.19 3.2-1.19.63 1.52.23 2.64.11 2.92.75.82 1.19 1.86 1.19 3.13 0 4.46-2.65 5.45-5.17 5.73.4.34.75 1.01.75 2.04 0 1.48-.01 2.68-.01 3.04 0 .3.2.64.77.53C20.78 20.87 24 16.69 24 11.74 24 5.36 19.27.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+
+  <!-- No external scripts; all animations are CSS-driven -->
+</body>
+</html>
