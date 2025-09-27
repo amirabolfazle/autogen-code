@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #060810;
+      --bg2: #0b1020;
+      --neon: #00ffe0;
+      --text: #e8faff;
+      --muted: #a8f7ff;
+      --panel: rgba(6, 10, 23, 0.75);
+      --border: rgba(0, 255, 170, 0.6);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at 20% 0%, rgba(0, 255, 200, 0.12), transparent 40%),
+                  radial-gradient(circle at 90% 80%, rgba(0, 170, 255, 0.15), transparent 40%),
+                  linear-gradient(135deg, #04040a 0%, #0a0b1a 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      overflow-x: hidden;
+    }
+
+    .bg-tilt {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 10% 20%, rgba(0, 255, 170, 0.12), transparent 40%),
+                  radial-gradient(circle at 85% 60%, rgba(0, 170, 255, 0.12), transparent 40%);
+      z-index: 0;
+      pointer-events: none;
+      animation: drift 20s linear infinite;
+    }
+    @keyframes drift {
+      0% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(-10px, 8px, 0) scale(1.02); }
+      100% { transform: translate3d(0,0,0) scale(1); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 60px 20px 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    header.brand { margin-top: 12px; }
+
+    h1.title {
+      font-size: clamp(2.6rem, 6vw, 6rem);
+      margin: 0.2rem 0 0.4rem;
+      letter-spacing: .25rem;
+      color: #22ffd9;
+      text-shadow: 0 0 6px rgba(34, 255, 217, 0.7),
+                   0 0 14px rgba(34, 255, 217, 0.95),
+                   0 0 28px rgba(0, 255, 210, 0.8);
+      transform-origin: center;
+      animation: pop 1s ease-out;
+    }
+    @keyframes pop {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .neon-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      text-shadow: 0 0 8px rgba(0, 255, 200, 0.8);
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+
+    .glow-bar {
+      width: 260px;
+      height: 6px;
+      border-radius: 999px;
+      margin: 8px auto 16px;
+      background: linear-gradient(90deg, #00ffd8, #7bff00, #00d9ff);
+      box-shadow: 0 0 16px rgba(0,255,214,0.9);
+      animation: barSweep 4s infinite;
+    }
+    @keyframes barSweep {
+      0% { transform: translateX(-40%); opacity: 0.9; }
+      50% { transform: translateX(0%); opacity: 1; }
+      100% { transform: translateX(40%); opacity: 0.9; }
+    }
+
+    .panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: min(1100px, 92%);
+      margin-top: 10px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: left;
+      box-shadow: 0 0 24px rgba(0, 255, 170, 0.25);
+      transform: scale(0.92);
+      opacity: 0;
+      animation: panelIn 0.8s forwards;
+    }
+
+    @keyframes panelIn {
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      color: #e0fff1;
+      text-shadow: 0 0 6px rgba(0, 255, 170, 0.9);
+    }
+
+    .panel p {
+      margin: 0;
+      color: #d6f5ff;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 255, 170, 0.6);
+      color: #baffea;
+      font-size: 0.8rem;
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      background: rgba(0,255,170,0.08);
+      box-shadow: inset 0 0 12px rgba(0,255,170,0.4);
+    }
+
+    .section-title {
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      color: #e6fff3;
+      margin: 40px 0 10px;
+      text-shadow: 0 0 10px rgba(0, 255, 170, 0.9);
+    }
+
+    .creation-pill {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,255,170,0.6);
+      background: rgba(0,255,170,0.08);
+      color: #eafff9;
+      margin-top: 8px;
+    }
+
+    .footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      background: linear-gradient(to top, rgba(2,6,12,0.9), rgba(2,6,12,0.65));
+      color: #bfefff;
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(0,255,170,0.5);
+      z-index: 2;
+      backdrop-filter: blur(2px);
+    }
+
+    .footer a.icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      margin-right: 8px;
+      color: #baf0ff;
+      text-decoration: none;
+    }
+
+    .github-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .footer .text {
+      display: inline-block;
+    }
+
+    .hero-zoom {
+      display: inline-block;
+      transition: transform 0.6s;
+    }
+    .hero-zoom:hover { transform: scale(1.04); }
+
+    @media (max-width: 700px) {
+      .panels { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-tilt" aria-hidden="true"></div>
+
+  <div class="container" role="main" aria-label="Amir Abolfazle personal page">
+    <header class="brand">
+      <div class="hero-title">
+        <h1 class="title hero-zoom" aria-label="amirabolfazle">amirabolfazle</h1>
+        <div class="neon-sub">Neon personal page with zoom effects</div>
+        <div class="glow-bar" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <section class="panels" aria-label="Intro panels" style="gap:28px;">
+      <article class="panel" style="animation-delay:0.1s;">
+        <h3>About</h3>
+        <p>Software creator, enthusiast of neon aesthetics and fluid UI interactions. This page showcases a playful yet polished personal site with animated zoom effects and glowing visuals.</p>
+        <span class="tag">neon</span>
+      </article>
+
+      <article class="panel" style="animation-delay:0.2s;">
+        <h3>Projects</h3>
+        <p>Autogenerated code snippets, experiments in CSS animations, and interactive UI demos. Built with a love for tiny details.</p>
+        <span class="tag">animation</span>
+      </article>
+
+      <article class="panel" style="animation-delay:0.3s;">
+        <h3>Creation Time</h3>
+        <p>Creation timestamp is shown on the page as requested.</p>
+        <span class="tag">timestamp</span>
+        <div class="creation-pill" style="margin-top:8px;">
+          Creation time: 2025-09-27 11:02:35
+        </div>
+      </article>
+    </section>
+
+    <section class="section" aria-label="Footer note">
+      <!-- decorative placeholder -->
+    </section>
+
+    <footer class="footer" role="contentinfo" aria-label="Footer">
+      <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.34 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.64-3.37-1.28-3.37-1.28-.46-1.2-1.12-1.52-1.12-1.52-.92-.63.07-.62.07-.62 1.02.07 1.56 1.08 1.56 1.08 .9 1.57 2.36 1.12 2.94.86.09-.69.35-1.12.63-1.38-2.22-.26-4.56-1.15-4.56-5.12 0-1.13.41-2.05 1.09-2.77-.11-.27-.47-1.37.11-2.86 0 0 .89-.29 2.92 1.07a10.1 10.1 0 012.66-.39c.9.01 1.81.12 2.66.38 2.03-1.36 2.92-1.07 2.92-1.07.58 1.49.23 2.59.12 2.86.68.72 1.09 1.64 1.09 2.77 0 3.98-2.34 4.86-4.57 5.1.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49A10.01 10.01 0 0022 12.26C22 6.58 17.52 2 12 2z"/>
+        </svg>
+      </a>
+      <span class="text">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Ensure panels animate with slight stagger on load if not already
+    window.addEventListener('DOMContentLoaded', function() {
+      const panels = document.querySelectorAll('.panel');
+      panels.forEach((p, i) => {
+        p.style.animationDelay = (0.12 * (i + 1)) + 's';
+      });
+    });
+  </script>
+</body>
+</html>
