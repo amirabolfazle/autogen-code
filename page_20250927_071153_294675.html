@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg-soft: #11161c;
+      --fg: #e8eaf6;
+      --muted: #aab4c4;
+      --accent: #7dd3fc;
+      --accent2: #8b5cf6;
+      --card: #141923;
+      --card2: #1b2030;
+      --glow: 0 0 20px rgba(125,211,252,.6);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--fg);
+      background: radial-gradient(circle at 15% -10%, rgba(46,51,74,.5) 0%, rgba(6,9,18,0) 40%),
+                  radial-gradient(circle at 85% 10%, rgba(20, 40, 70, .6) 0%, rgba(6,9,18,0) 40%),
+                  linear-gradient(#0b0f14, #0b0f14 60%, #0b0f14);
+      overflow-x: hidden;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 20px 60px;
+    }
+
+    header.hero {
+      text-align: center;
+      padding: 40px 0 10px;
+      position: relative;
+    }
+
+    h1.title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      margin: 0.2rem 0 0.4rem;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #a6e3ff, #e9d5ff, #9be7ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px rgba(122, 180, 255, .4);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    }
+
+    /* Avatar with orbiting dots around it */
+    .hero-scene {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 28px auto 14px;
+    }
+
+    .avatar {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 64px;
+      color: #eaf2ff;
+      background: conic-gradient(from 180deg at 50% 50%, #4f46e5, #06b6d4, #a78bfa, #4f46e5);
+      box-shadow: 0 6px 22px rgba(0,0,0,.35);
+      isolation: isolate;
+    }
+
+    .avatar:after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 2px solid rgba(125,211,252,.55);
+      filter: blur(.2px);
+      animation: spin 12s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .orbit {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 260px;
+      height: 260px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      /* light glow behind orbs */
+      filter: drop-shadow(0 0 14px rgba(125,211,252,.45));
+      animation: spin 18s linear infinite;
+    }
+
+    .orbit .dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #7dd3fc;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(var(--angle)) translateX(110px);
+      /* keep dots visible on top of avatar */
+      z-index: 2;
+    }
+
+    @media (max-width: 700px){
+      .hero-scene { width: 280px; height: 280px; }
+      .avatar { width: 120px; height: 120px; font-size: 56px; }
+    }
+
+    /* Projects / cards */
+    section.projects {
+      margin-top: 28px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 0 0 6px;
+    }
+
+    .flip-card {
+      background: transparent;
+      perspective: 1000px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      border-radius: 14px;
+    }
+
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-face {
+      position: absolute;
+      width: 100%; height: 100%;
+      backface-visibility: hidden;
+      border-radius: 14px;
+      padding: 18px;
+      display: flex; flex-direction: column; justify-content: center;
+      color: #eef4ff;
+    }
+
+    .flip-front {
+      background: linear-gradient(135deg, rgba(20,24,39,.92), rgba(20,24,39,.75));
+      border: 1px solid rgba(125,211,252,.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(135deg, rgba(20,24,39,.95), rgba(14,18,32,.95));
+      border: 1px solid rgba(125,211,252,.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    }
+
+    .flip-title {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+    .flip-desc { font-size: .92rem; color: #d9e6ff; }
+
+    .flip-back p { margin: 0; font-size: .92rem; color: #dbeafe; }
+
+    /* Footer with GitHub icon + credit text */
+    footer.site-footer {
+      margin-top: 40px;
+      padding: 16px 8px;
+      text-align: center;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,.08);
+      font-size: .95rem;
+    }
+
+    footer.site-footer a.icon-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      color: #e5e7eb;
+      margin-right: 8px;
+      transition: transform .2s ease;
+    }
+
+    footer.site-footer a.icon-link:hover {
+      transform: translateY(-1px);
+      background: rgba(125,211,252,.15);
+    }
+
+    /* background subtle decorative gradient rings */
+    .decor-ring {
+      position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      left: 50%; top: 0;
+      transform: translateX(-50%);
+      pointer-events: none;
+      filter: blur(0.2px);
+      opacity: .25;
+      background: conic-gradient(from 0deg, rgba(96,165,250,.8), rgba(168,85,247,.8), rgba(96,165,250,.8));
+      animation: rotate-decor 22s linear infinite;
+    }
+    @keyframes rotate-decor {
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="decor-ring" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-scene" aria-label="Rotating scene with avatar">
+        <div class="orbit" aria-label="orbiting decorations">
+          <span class="dot" style="--angle:0deg"></span>
+          <span class="dot" style="--angle:90deg"></span>
+          <span class="dot" style="--angle:180deg"></span>
+          <span class="dot" style="--angle:270deg"></span>
+        </div>
+        <div class="avatar" aria-label="Initials avatar">A</div>
+      </div>
+
+      <h1 class="title">amirabolfazle</h1>
+      <div class="subtitle">Designer • Developer • Creator</div>
+
+      <div class="creation-time" style="margin-top:14px; display:inline-flex; align-items:center; gap:8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color:#c7d2fe;">
+        Creation time: 2025-09-27 07:11:16
+      </div>
+    </header>
+
+    <section class="projects" aria-label="Projects">
+      <div class="grid" style="margin-top: 8px;">
+        <div class="flip-card" role="article" aria-label="Project 1">
+          <div class="flip-card-inner">
+            <div class="flip-face flip-front">
+              <h3 class="flip-title" style="margin:0 0 6px;">Aurora Studio</h3>
+              <div class="flip-desc">A neon-inspired UI kit for dashboards and portfolios.</div>
+            </div>
+            <div class="flip-face flip-back">
+              <p>Tech: HTML, CSS, vanilla JS. Includes glassmorphism, subtle motion, and responsive grids.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" role="article" aria-label="Project 2">
+          <div class="flip-card-inner">
+            <div class="flip-face flip-front">
+              <h3 class="flip-title" style="margin:0 0 6px;">Luma Labs</h3>
+              <div class="flip-desc">Experimenting with shader-like gradients and dynamic color systems.</div>
+            </div>
+            <div class="flip-face flip-back">
+              <p>Focus on color-space awareness, accessibility, and performance optimizations.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" role="article" aria-label="Project 3">
+          <div class="flip-card-inner">
+            <div class="flip-face flip-front">
+              <h3 class="flip-title" style="margin:0 0 6px;">Pulse Portfolio</h3>
+              <div class="flip-desc">A minimal portfolio with animated transitions and parallax.</div>
+            </div>
+            <div class="flip-face flip-back">
+              <p>Includes interactive SVGs, scalable typography, and accessible keyboard navigation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer" aria-label="Footer">
+      <a class="icon-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:#e5e7eb;">
+          <path d="M12 .5C5.73.5 0 5.226 0 11.02c0 4.846 3.152 8.97 7.514 10.414.55.1.753-.239.753-.533 0-.263-.01-1.143-.015-2.08-3.062.667-3.711-1.45-3.711-1.45-.494-1.256-1.206-1.589-1.206-1.589-.988-.675.075-.661.075-.661 1.093.077 1.668 1.126 1.668 1.126.971 1.66 2.546 1.181 3.168.904.098-.702.38-1.181.69-1.455-2.444-.28-5.012-1.223-5.012-5.436 0-1.202.43-2.18 1.13-2.951-.114-.283-.49-1.43.108-2.98 0 0 .93-.296 3.048 1.13a10.6 10.6 0 0 1 3.04-.374c1.03.006 2.07.139 3.04.374 2.118-1.425 3.047-1.13 3.047-1.13.6 1.55.223 2.697.11 2.98.704.771 1.13 1.749 1.13 2.951 0 4.21-2.574 5.153-5.021 5.436.392.336.744.999.744 2.016 0 1.456-.014 2.63-.014 2.987 0 .296.199.628.757.522C20.852 19.98 24 15.86 24 11.02 24 5.226 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+</body>
+</html>
