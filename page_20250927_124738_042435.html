@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg0: #0b1020;
+      --bg1: #0b1020;
+      --fg: #e5e7eb;
+      --muted: #a3a3a3;
+      --card: rgba(255,255,255,.08);
+      --glow: rgba(99, 102, 241, 0.75);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #fff;
+      background: #0b1020;
+      overflow-x: hidden;
+    }
+
+    /* Animated gradient background that rotates for a gradient theme */
+    .gradient-bg {
+      position: fixed;
+      width: 180vmax;
+      height: 180vmax;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #4f46e5, #06b6d4, #10b981, #f472b6, #4f46e5);
+      animation: spin 60s linear infinite;
+      filter: saturate(1.15);
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.95;
+    }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Subtle glow behind content */
+    .glow {
+      position: fixed;
+      width: 40vmin;
+      height: 40vmin;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, rgba(56,189,248,.25), rgba(0,0,0,0) 60%);
+      filter: blur(6px);
+      z-index: -1;
+      pointer-events: none;
+      animation: pulse 6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .9; }
+      50% { transform: translate(-50%, -50%) scale(1.15); opacity: .5; }
+    }
+
+    /* Decorative orbiting orbs to enhance rotate effect */
+    .orb-wrap {
+      position: absolute;
+      width: 40vmin;
+      height: 40vmin;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      animation: no-spread 0s linear forwards; /* just a placeholder to keep layout predictable */
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orbit {
+      position: absolute;
+      width: 40vmin;
+      height: 40vmin;
+      border-radius: 50%;
+      left: 0; top: 0;
+      transform: translateZ(0);
+      animation: rotate-orbs 18s linear infinite;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 0 12px rgba(255,255,255,.9);
+    }
+
+    /* Position a few orbs around the center */
+    .orb--1 { top: 0%; left: 50%; transform: translate(-50%, -50%); }
+    .orb--2 { left: 100%; top: 50%; transform: translate(-50%, -50%); }
+    .orb--3 { top: 100%; left: 50%; transform: translate(-50%, -50%); }
+    .orb--4 { left: 0%; top: 50%; transform: translate(-50%, -50%); }
+    .orb--5 { top: 25%; left: 25%; transform: translate(-50%, -50%); opacity:.85; }
+    .orb--6 { top: 75%; left: 75%; transform: translate(-50%, -50%); opacity:.85; }
+
+    @keyframes rotate-orbs {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Layout */
+    header {
+      text-align: center;
+      padding: 8vh 2rem 4rem;
+    }
+
+    h1 {
+      margin: 0 0 0.75rem;
+      font-weight: 800;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: .04em;
+      background: linear-gradient(90deg, #fff, #d5e6ff, #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 16px rgba(0,0,0,.15);
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: #e2e8f0;
+      opacity: .95;
+    }
+
+    .wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.15);
+      backdrop-filter: saturate(120%) blur(2px);
+      transition: transform .4s ease, box-shadow .4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .mini {
+      font-size: .95rem;
+      color: #e5e7eb;
+      line-height: 1.5;
+    }
+
+    /* Creation time display */
+    .creation-time {
+      text-align: center;
+      margin-top: 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92rem;
+      color: #dbeafe;
+      opacity: .95;
+    }
+
+    /* Footer with GitHub icon and creator text */
+    footer {
+      margin-top: auto;
+      padding: 1.25rem;
+      text-align: center;
+      color: #e5e7eb;
+      background: rgba(2,6,23,.55);
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .footer-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .gh-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: transform .2s ease;
+    }
+
+    .gh-link:hover { transform: translateY(-1px); }
+
+    .github-icon {
+      width: 22px;
+      height: 22px;
+      display: block;
+      color: #ffffff;
+    }
+
+    .credit {
+      font-size: .95rem;
+      color: #e2e8f0;
+    }
+
+    @media (max-width: 600px){
+      .creation-time { font-size: .9rem; }
+      h1 { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-bg" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+
+  <!-- Decorative orbiting shapes to emphasize "rotate" effects -->
+  <div class="orb-wrap" aria-hidden="true">
+    <div class="orbit">
+      <div class="orb orb--1"></div>
+      <div class="orb orb--2"></div>
+      <div class="orb orb--3"></div>
+      <div class="orb orb--4"></div>
+      <div class="orb orb--5"></div>
+      <div class="orb orb--6"></div>
+    </div>
+  </div>
+
+  <header>
+    <h1>amirabolfazle</h1>
+    <p class="subtitle">Fully responsive animated page with gradient theme and rotate effects</p>
+  </header>
+
+  <main class="wrapper" aria-label="Main content">
+    <section class="grid" role="region" aria-label="Overview">
+      <article class="card" aria-label="Intro card">
+        <div class="mini" style="font-weight:600; font-size:1rem; color:#e8f0ff;">Creation details</div>
+        <div class="creation-time" aria-label="Creation time">
+          Creation time: 2025-09-27 12:47:01
+        </div>
+      </article>
+
+      <article class="card" aria-label="About this page">
+        <div class="mini" style="font-weight:600; font-size:1rem; color:#e8f0ff;">About</div>
+        <p class="mini">
+          This page demonstrates a gradient-driven animated background with subtle orbiting elements and responsive layout. Resize the window to see the layout adapt gracefully.
+        </p>
+      </article>
+
+      <article class="card" aria-label="Tech notes">
+        <div class="mini" style="font-weight:600; font-size:1rem; color:#e8f0ff;">Tech</div>
+        <p class="mini">
+          HTML, CSS animations, pure CSS gradients, inline SVG icons. No external scripts required.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-row" aria-label="Footer">
+      <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <!-- GitHub icon (inline SVG) -->
+        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 0C5.37 0 0 5.373 0 12a12 12 0 008.207 11.385c.599.111.818-.26.818-.578v-2.237c-3.338.727-4.033-1.614-4.033-1.614-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.305 3.495.997.108-.775.42-1.305.764-1.605-2.665-.3-5.466-1.33-5.466-5.931 0-1.31.468-2.381 1.236-3.221-.124-.304-.54-1.531.116-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 013-.404c1.11-.19 2.262-.28 3.414-.069 2.293-1.552 3.301-1.23 3.301-1.23.656 1.645.238 2.867.114 3.173.77.84 1.235 1.912 1.235 3.223 0 4.605-2.804 5.625-5.476 5.92.43.37.824 1.102.824 2.222v3.293c0 .321.218.694.825.576A12 12 0 0012 0z"/>
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
