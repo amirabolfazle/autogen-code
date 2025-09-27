@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg2: #0a0f1a;
+      --fg: #e5e7eb;
+      --card: rgba(255,255,255,0.04);
+      --accent: #7bdfff;
+      --accent2: #7fffda;
+      --text: #e8ecf8;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 0%, rgba(88, 99, 255, 0.15), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(20, 180, 255, 0.15), transparent 40%),
+                  linear-gradient(#0b1020, #0a0f1a 60%, #0b1020);
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+    header.title {
+      position: relative;
+      z-index: 2;
+      padding: 2rem 1rem 0;
+      text-align: center;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #eaf2ff;
+      text-shadow: 0 2px 20px rgba(0,0,0,.4);
+    }
+
+    /* Scene for animated shapes */
+    #scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      animation: scenePulse 20s infinite alternate;
+    }
+    .shape {
+      position: absolute;
+      width: clamp(60px, 18vw, 180px);
+      height: clamp(60px, 18vw, 180px);
+      border-radius: 50%;
+      opacity: 0.75;
+      mix-blend-mode: screen;
+      display: block;
+      animation: rotate 40s linear infinite;
+      filter: saturate(1.1);
+    }
+    .shape .orb {
+      display: block;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      animation: pulse 6s ease-in-out infinite;
+    }
+
+    /* Individual colors and positions */
+    .s1 { left: 6%; top: 12%; background: radial-gradient(circle at 30% 30%, rgba(0,220,255,.9), rgba(0,0,0,0) 60%), rgba(0,180,255,.6); }
+    .s2 { right: 8%; top: 20%; background: radial-gradient(circle at 30% 30%, rgba(120,255,220,.9), rgba(0,0,0,0) 60%), rgba(140, 255, 180,.5); animation-duration: 50s; }
+    .s3 { left: 20%; bottom: 12%; background: radial-gradient(circle at 30% 30%, rgba(255,170,0,.9), rgba(0,0,0,0) 60%), rgba(255, 200, 100, .6); animation-duration: 60s; }
+    .s4 { right: 25%; bottom: 6%; background: radial-gradient(circle at 30% 30%, rgba(180, 80, 255,.9), rgba(0,0,0,0) 60%), rgba(160, 80, 255, .6); animation-duration: 70s; }
+    .s5 { left: 40%; top: 40%; background: radial-gradient(circle at 30% 30%, rgba(0, 255, 170,.9), rgba(0,0,0,0) 60%), rgba(0, 210, 150, .6); animation-duration: 65s; }
+    .s6 { right: 12%; top: 50%; background: radial-gradient(circle at 30% 30%, rgba(255, 0, 170,.9), rgba(0,0,0,0) 60%), rgba(255, 100, 180, .6); animation-duration: 55s; }
+
+    @keyframes rotate { from { transform: rotate(0turn); } to { transform: rotate(1turn); } }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+    @keyframes scenePulse { 0% { transform: scale(1); } 100% { transform: scale(1.02); } }
+
+    /* Content card centered and readable on top of scene */
+    main.content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      min-height: 60dvh;
+      padding: 2rem 1rem;
+    }
+    .card {
+      backdrop-filter: blur(2px) saturate(1.2);
+      background: rgba(8, 12, 20, 0.55);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: clamp(1rem, 3vw, 2.5rem);
+      text-align: center;
+      max-width: 720px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .card h2 {
+      margin: 0 0 .75rem;
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      color: #eaf3ff;
+    }
+    .card p { margin: 0; opacity: 0.9; }
+
+    .creation { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace; font-size: 0.95rem; color: #cbd5e1; margin-top: .5rem; }
+
+    /* Footer with GitHub icon link */
+    footer.footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: 1.25rem;
+      font-size: .95rem;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(9,12,20,0.6);
+      position: relative;
+      z-index: 1;
+    }
+    footer a {
+      color: #cbd5e1;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    footer a:hover { color: #fff; }
+    svg { display: block; width: 1em; height: 1em; }
+
+    /* Responsive tweaks for very small screens */
+    @media (max-width: 600px) {
+      .card { padding: 1rem; border-radius: 14px; }
+      header.title { padding-top: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="scene" aria-hidden="true">
+    <span class="shape s1" aria-hidden="true"><span class="orb" aria-hidden="true"></span></span>
+    <span class="shape s2" aria-hidden="true"><span class="orb" aria-hidden="true"></span></span>
+    <span class="shape s3" aria-hidden="true"><span class="orb" aria-hidden="true"></span></span>
+    <span class="shape s4" aria-hidden="true"><span class="orb" aria-hidden="true"></span></span>
+    <span class="shape s5" aria-hidden="true"><span class="orb" aria-hidden="true"></span></span>
+    <span class="shape s6" aria-hidden="true"><span class="orb" aria-hidden="true"></span></span>
+  </div>
+
+  <header class="title" aria-label="Site title">
+    <h1>amirabolfazle</h1>
+  </header>
+
+  <main class="content" role="main">
+    <section class="card" aria-label="Intro">
+      <h2>amirabolfazle</h2>
+      <p class="creation">Creation time: 2025-09-27 05:31:27</p>
+      <p style="margin-top:.75rem; color:#cbd5e1;">A fully responsive, animated dark-mode page with rotating visuals and neon accents.</p>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg aria-label="GitHub icon" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" role="img">
+        <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.89.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2.01-3.2.7-3.88-1.38-3.88-1.38-.53-1.34-1.29-1.7-1.29-1.7-1.06-.72.08-.7.08-.7 1.17.08 1.79 1.2 1.79 1.2.95 1.77 2.48 1.26 3.09.97.11-.77.42-1.26.77-1.55-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.46-2.29 1.22-3.1-.12-.29-.54-1.46.12-3.04 0 0 .99-.32 3.26 1.2A11.3 11.3 0 0 1 12 6.8c.99 0 1.99.13 2.92.39 2.27-1.52 3.25-1.2 3.25-1.2.66 1.58.24 2.75-.14 3.04.77.82 1.23 1.85 1.23 3.1 0 4.44-2.7 5.41-5.27 5.69.43.36.82 1.05.82 2.12 0 1.53-.01 2.76-.01 3.13 0 .31.21.68.82.56C18.72 21.38 22 17.08 22 12c0-6.27-5.23-11.5-10-11.5z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
