@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --glass: rgba(255, 255, 255, 0.18);
+      --border: rgba(255, 255, 255, 0.4);
+      --text: #eaf4ff;
+      --muted: rgba(235, 245, 255, 0.7);
+      --shadow: 0 8px 30px rgba(0,0,0,0.25);
+      --glow: 0 0 20px rgba(120,180,255,0.6);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #0a1e3d 0%, #0b2546 40%, #0b1a2a 100%);
+      overflow-x: hidden;
+      background-attachment: fixed;
+      perspective: 1000px;
+      animation: bg-pan 20s ease infinite;
+    }
+
+    @keyframes bg-pan {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    /* Glassy container styling */
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header.glass {
+      text-align: center;
+      padding: 40px 28px 24px;
+      margin-bottom: 26px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      line-height: 1.1;
+      margin: 0 0 6px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.25);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.85rem;
+      color: #d8eaff;
+      opacity: 0.9;
+      margin-top: 10px;
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+    }
+
+    section { margin: 20px 0 28px; }
+
+    .intro {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: #eaf4ff;
+    }
+
+    /* Rotating/tilting decorative orbs */
+    .rotators {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+
+    .card {
+      position: relative;
+      height: 140px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #eaf4ff;
+      font-weight: 600;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      transform-style: preserve-3d;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    .card .label {
+      position: relative;
+      z-index: 2;
+      mix-blend-mode: screen;
+    }
+
+    /* subtle rotating animation with different speeds */
+    @keyframes spin360 {
+      from { transform: rotateY(0deg) rotateX(0deg); }
+      to   { transform: rotateY(360deg) rotateX(360deg); }
+    }
+
+    .card {
+      animation: spin360 14s linear infinite;
+    }
+
+    .card[data-delay="1"] { animation-delay: -2s; }
+    .card[data-delay="2"] { animation-delay: -4s; }
+    .card[data-delay="3"] { animation-delay: -6s; }
+
+    /* glowing accent on hover to emphasize glassy feel */
+    .card:hover {
+      border-color: rgba(255,255,255,0.7);
+      box-shadow: 0 0 40px rgba(120,180,255,0.6);
+      transform: translateZ(40px);
+      z-index: 2;
+    }
+
+    /* Floating abstract shapes to enhance glassmorphism feel */
+    .floaty {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 2px solid rgba(180,200,255,0.3);
+      filter: blur(0.2px);
+      animation: float 12s ease-in-out infinite;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.6;
+    }
+
+    .floaty.one { left: -40px; top: -40px; background: rgba(120,180,255,0.25); animation-delay: 0s; }
+    .floaty.two { right: -60px; top: 20px; background: rgba(180,120,255,0.25); animation-delay: -4s; }
+    .floaty.three { left: 40px; bottom: -50px; background: rgba(120,255,180,0.25); animation-delay: -2s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-18px) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
+    }
+
+    footer.footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px;
+      color: #dbeaff;
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(255,255,255,0.25);
+      margin-top: 16px;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #eaf4ff;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .github-link:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.25);
+    }
+
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      fill: currentColor;
+    }
+
+    @media (max-width: 720px) {
+      h1 { font-size: 2.6rem; }
+      .rotators { grid-template-columns: 1fr; }
+      .floaty { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Glassy header with creation time -->
+    <header class="glass" aria-label="Intro">
+      <h1 style="margin:0; font-weight:800; letter-spacing:.5px;">amirabolfazle</h1>
+      <div class="creation-time" aria-label="Creation time">
+        Creation time: 2025-09-28 00:31:13
+      </div>
+      <p class="subtitle" style="margin-top:6px;">A fancy glassmorphism animated personal page</p>
+    </header>
+
+    <!-- Main content -->
+    <section class="glass intro" aria-label="Introduction">
+      <p class="intro" style="margin:0;">
+        Welcome to a stylish, glassy personal page with subtle 3D rotations and gentle motion. Hover or let the elements glide with continuous spin.
+      </p>
+    </section>
+
+    <!-- Decorative and interactive rotators -->
+    <section class="glass rotators" aria-label="Rotating sections" style="padding-top:20px; padding-bottom:22px;">
+      <div class="card" data-delay="1" aria-label="About card" style="background: rgba(255,255,255,0.18);">
+        <span class="label">About</span>
+      </div>
+      <div class="card" data-delay="2" aria-label="Projects card" style="background: rgba(255,255,255,0.18);">
+        <span class="label">Projects</span>
+      </div>
+      <div class="card" data-delay="3" aria-label="Contact card" style="background: rgba(255,255,255,0.18);">
+        <span class="label">Contact</span>
+      </div>
+    </section>
+
+    <!-- Floating glass-like shapes to enhance the glassmorphism feel -->
+    <div class="floaty one" aria-hidden="true"></div>
+    <div class="floaty two" aria-hidden="true"></div>
+    <div class="floaty three" aria-hidden="true"></div>
+
+    <!-- Footer with GitHub icon and attribution -->
+    <footer class="footer glass" aria-label="Footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <!-- GitHub icon (inline SVG) -->
+        <svg class="github-icon" viewBox="0 0 24 24" aria-label="GitHub" role="img">
+          <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.66.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.72-2.78.61-3.37-1.24-3.37-1.24-.45-1.16-1.1-1.47-1.1-1.47-.9-.63.07-.62.07-.62 1 .07 1.56 1.08 1.56 1.08.89 1.57 2.34 1.12 2.9.85.09-.69.35-1.12.64-1.38-2.22-.26-4.56-1.16-4.56-5.15 0-1.14.43-2.07 1.13-2.8-.11-.27-.49-1.36.11-2.84 0 0 .93-.3 3.05 1.08a10.5 10.5 0 0 1 2.78-.37c.95.01 1.9.13 2.79.38 2.1-1.38 3.03-1.08 3.03-1.08.6 1.48.23 2.57.11 2.85.71.73 1.13 1.66 1.13 2.8 0 3.99-2.34 4.88-4.57 5.13.36.32.68.93.68 1.88 0 1.36-.01 2.46-.01 2.79 0 .27.18.61.69.46C19.13 20.58 22 16.78 22 12.26 22 6.58 17.52 2 12 2z" fill="currentColor"></path>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
