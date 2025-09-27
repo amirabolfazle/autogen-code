@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #050512;
+      --fg: #e8f1ff;
+      --neon1: #00f5d4;
+      --neon2: #ff00d4;
+      --glow1: rgba(0,245,212,.9);
+      --glow2: rgba(255,0,212,.9);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #e8f1ff;
+      background: radial-gradient(circle at 20% -10%, rgba(0, 255, 200, .15), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(255, 0, 214, .15), transparent 40%),
+                  linear-gradient(135deg, #07031a 0%, #040617 60%, #03030f 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      padding: 2rem;
+    }
+    h1.title {
+      margin: 0;
+      font-size: clamp(2.4rem, 6vw, 6rem);
+      font-weight: 900;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #9affff, #7d5cff, #ff6bd6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 14px rgba(0, 255, 212, .8));
+      animation: hue 8s linear infinite;
+    }
+    @keyframes hue {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .panel {
+      position: relative;
+      width: min(92vw, 980px);
+      height: min(70vh, 520px);
+      min-height: 320px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.25);
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
+    /* rotating glow layers */
+    .panel:before, .panel:after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      width: 60vmin;
+      height: 60vmin;
+      left: -12vmin;
+      top: -12vmin;
+      background: conic-gradient(from 0deg, rgba(0,255,255,.6), rgba(255,0,214,.6), rgba(0,255,255,.6));
+      filter: blur(18px);
+      animation: rotate 22s linear infinite;
+      mix-blend-mode: screen;
+      opacity: .8;
+    }
+    .panel:after {
+      width: 70vmin;
+      height: 70vmin;
+      left: auto;
+      right: -16vmin;
+      top: auto;
+      bottom: -16vmin;
+      animation-duration: 26s;
+      animation-direction: reverse;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .orb {
+      position: absolute;
+      width: 38vmin;
+      height: 38vmin;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 255, 214, .9);
+      box-shadow: 0 0 20px rgba(0,255,213,.9);
+      animation: spin 12s linear infinite;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .orb.a { left: 6%; top: 18%; border-color: rgba(0, 255, 214, .95); }
+    .orb.b { right: 8%; bottom: 12%; border-color: rgba(255, 0, 214, .95); animation-duration: 16s; }
+
+    @keyframes spin {
+      0% { transform: rotate(0turn); }
+      100% { transform: rotate(1turn); }
+    }
+
+    .center {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+    }
+    .tagline {
+      font-size: clamp(1rem, 2.6vw, 1.5rem);
+      color: #cfeaff;
+      text-shadow: 0 0 14px rgba(0, 255, 213, .8);
+      margin: 0.5rem 0 0.25rem;
+    }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .95rem;
+      color: #9bd3ff;
+      letter-spacing: .08em;
+      text-shadow: 0 0 6px rgba(0, 170, 255, .9);
+      margin-top: .4rem;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      padding: 1.4rem 1rem;
+      color: #cfeaff;
+      font-family: system-ui, -apple-system, "Segoe UI";
+    }
+    footer a.github {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(0,0,0,.25);
+      color: #fff;
+      text-decoration: none;
+      transition: transform .2s ease, background .3s ease;
+    }
+    footer a.github:hover {
+      transform: translateY(-1px) scale(1.05);
+      background: rgba(255,255,255,.15);
+    }
+    .footer-text {
+      font-size: .95rem;
+      opacity: .95;
+    }
+    /* SVG icon color inherits currentColor (white) by default; you can customize if needed */
+    .github svg { width: 18px; height: 18px; display: inline-block; vertical-align: middle; }
+
+    @media (max-width: 720px) {
+      .panel { height: 60vh; }
+      .orb { width: 28vmin; height: 28vmin; }
+      h1.title { letter-spacing: .35em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header aria-label="site-header" style="text-align:center;">
+      <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+    </header>
+
+    <section class="panel" aria-label="neon-rotating-panel">
+      <div class="orb a" aria-hidden="true"></div>
+      <div class="orb b" aria-hidden="true"></div>
+
+      <div class="center">
+        <p class="tagline" aria-label="neon-statement">Neon Studio — Fully responsive animated page</p>
+        <div class="creation" aria-label="creation-time">
+          Creation time: 2025-09-27 12:00:35
+        </div>
+      </div>
+    </section>
+
+    <footer aria-label="page-footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="github" aria-label="GitHub repository">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+          <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.5 2.87 8.31 6.84 9.66.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.24-3.37-1.24-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.52 1.05 1.52 1.05.89 1.58 2.34 1.13 2.91.86.09-.71.35-1.13.63-1.39-2.22-.26-4.56-1.16-4.56-5.16 0-1.14.39-2.08 1.03-2.82-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.08A9.34 9.34 0 0 1 12 6.83c.85.04 1.71.12 2.51.37 1.9-1.35 2.74-1.08 2.74-1.08.56 1.42.2 2.47.1 2.73.64.74 1.03 1.68 1.03 2.82 0 4-2.34 4.89-4.57 5.15.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .28.18.6.69.49A10.01 10.01 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/>
+        </svg>
+      </a>
+      <span class="footer-text" aria-label="Created by amirabolfazle">Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
