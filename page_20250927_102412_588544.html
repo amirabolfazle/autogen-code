@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-start:#0b1020;
+      --bg-end:#1a2166;
+      --glass: rgba(255,255,255,.16);
+      --gloss: rgba(255,255,255,.35);
+      --text: #eafaff;
+      --muted: #dbeaff;
+    }
+
+    /* Global layout */
+    html,body { height:100%; }
+    body {
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color:var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(120,180,255,.25), transparent 40%),
+                  radial-gradient(circle at 80% 10%, rgba(180,120,255,.25), transparent 40%),
+                  linear-gradient(135deg, var(--bg-start), var(--bg-end) 70%);
+      background-attachment: fixed;
+      overflow-x:hidden;
+    }
+
+    /* Glass container */
+    .glass {
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 22px;
+      padding: 28px;
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    /* Page structure */
+    .wrap {
+      min-height: 100%;
+      display:flex;
+      flex-direction:column;
+      align-items: center;
+      padding: 48px 20px 28px;
+      gap: 28px;
+    }
+
+    header.hero {
+      width: min(1100px, 92%);
+      text-align:center;
+      padding: 20px 28px;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    /* Fancy title with glassy glow and subtle rotation/float */
+    .title {
+      font-size: clamp(2.5rem, 6vw, 6rem);
+      margin: 6px 0 8px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #f3fbff;
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.26);
+      backdrop-filter: blur(6px);
+      transform: rotateX(8deg);
+      animation: floatTitle 6s ease-in-out infinite;
+      text-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
+    @keyframes floatTitle {
+      0%,100% { transform: rotateX(8deg) translateY(0); }
+      50% { transform: rotateX(-6deg) translateY(-4px); }
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2.6vw, 1.25rem);
+      margin: 6px 0 0;
+    }
+
+    /* Floating decorative orbit plus content area */
+    section.hero {
+      width: min(1100px, 92%);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .orb {
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      position: relative;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12) 40%, rgba(255,255,255,.04) 60%);
+      border: 1px solid rgba(255,255,255,.5);
+      box-shadow: inset 0 0 28px rgba(255,255,255,.22);
+      animation: spin 20s linear infinite;
+    }
+    .orb::before,
+    .orb::after {
+      content:"";
+      position:absolute;
+      width: 12px; height:12px;
+      border-radius:50%;
+      background: rgba(170,230,255,.95);
+      filter: blur(.2px);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      opacity:.9;
+      animation: drift 4s ease-in-out infinite;
+    }
+    .orb::before { top: 24%; left: 28%; width:14px; height:14px; background: rgba(120,180,255,.95); animation-duration: 5s; }
+    .orb::after  { top: 72%; left: 72%; width:12px; height:12px; background: rgba(180,120,255,.95); animation-duration: 6s; }
+
+    @keyframes spin { from { transform: rotate(0turn); } to { transform: rotate(1turn); } }
+    @keyframes drift { 0%,100% { transform: translate(-50%,-50%) translateZ(0); } 50% { transform: translate(-50%,-52%) translateZ(2px); } }
+
+    .intro {
+      max-width: 860px;
+      text-align: center;
+      color: #eafaff;
+      line-height: 1.6;
+      font-size: 1.05rem;
+      padding: 6px 12px;
+    }
+
+    .creation-time {
+      margin-top: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .95rem;
+      color: #e0f0ff;
+      opacity: .95;
+    }
+
+    /* Footer with GitHub icon + credit text */
+    footer.site-footer {
+      width: min(1100px, 92%);
+      display:flex;
+      align-items:center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px;
+      margin-top: auto;
+      color: #eafaff;
+    }
+
+    .git-link {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 34px; height: 34px;
+      color: #eafaff;
+      text-decoration: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.3);
+      transition: transform .3s ease;
+    }
+    .git-link:hover { transform: translateY(-2px) scale(1.05); }
+
+    .credit {
+      font-size: .95rem;
+      opacity:.95;
+    }
+
+    /* Simple responsive tweaks */
+    @media (min-width: 720px) {
+      section.hero { grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; text-align:left; }
+      .intro { text-align:left; }
+    }
+
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero glass" aria-label="Intro header">
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+        <p class="tagline">A fancy animated glassmorphic personal page with rotate effects</p>
+      </div>
+    </header>
+
+    <section class="hero glass" aria-label="Decorative and introduction section" style="justify-items:center;">
+      <div class="orb" aria-label="rotating glass orb decorative element" role="img"></div>
+      <div class="intro" style="text-align:center;">
+        <p>Welcome to a glassy, animated personal page. This demo showcases glassmorphism with subtle rotate effects and soft elevation.</p>
+        <p class="creation-time">Creation time: 2025-09-27 10:23:42</p>
+      </div>
+    </section>
+
+    <footer class="site-footer glass" aria-label="Footer">
+      <a class="git-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" role="img" style="display:block;">
+          <path d="M12 .5C5.73.5 0 5.97 0 12.6c0 5.05 3.29 9.34 7.86 10.85.57.1.78-.25.78-.56 0-.28-.01-1.03-.02-2.02-3.2.71-3.87-1.5-3.87-1.5-.52-1.34-1.27-1.69-1.27-1.69-1.04-.72.08-.71.08-.71 1.15.08 1.75 1.2 1.75 1.2 1.02 1.78 2.68 1.26 3.34.96.11-.75.4-1.26.73-1.55-2.55-.29-5.23-1.32-5.23-5.88 0-1.3.46-2.36 1.21-3.19-.12-.29-.53-1.46.11-3.04 0 0 .99-.32 3.25 1.21a11.2 11.2 0 012.97-.4c1.01.01 2.03.14 2.97.41 2.26-1.53 3.24-1.21 3.24-1.21.65 1.58.24 2.75.12 3.04.76.83 1.21 1.89 1.21 3.19 0 4.58-2.69 5.58-5.25 5.87.41.36.77 1.08.77 2.18 0 1.58-.01 2.85-.01 3.23 0 .31.21.67.79.56C20.72 21.93 24 17.64 24 12.6 24 5.97 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </main>
+</body>
+</html>
