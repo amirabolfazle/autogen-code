@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f6f2f9;
+      --bg2: #fef7f9;
+      --card: #ffffff;
+      --text: #2a2936;
+      --muted: #6b6b83;
+      --accent1: #ffd6e4; /* pastel pink */
+      --accent2: #d7f7e2; /* pastel mint */
+      --accent3: #e9e4ff; /* pastel lavender */
+      --shadow: 0 8px 20px rgba(0,0,0,.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg), #ffffff 60%), radial-gradient(circle at top left, #fff7f0 0%, rgba(0,0,0,0) 40%);
+      background-attachment: fixed;
+    }
+
+    /* Layout container */
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 16px 80px;
+    }
+
+    /* Pastel header hero */
+    .hero {
+      border-radius: 18px;
+      padding: 28px;
+      margin: 28px 0;
+      background: linear-gradient(135deg, rgba(255,214,230,.25), rgba(214,247,235,.25) 60%);
+      border: 1px solid rgba(0,0,0,.05);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after{
+      content: "";
+      position: absolute;
+      right: -40px;
+      bottom: -40px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(255,209,217,.6), transparent 60%);
+      filter: blur(2px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .title {
+      font-size: 3.2rem;
+      line-height: 1.08;
+      margin: 8px 0 6px;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #7aa8ff 0%, #9e6cff 50%, #ff8bd6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 6px 0 14px;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #e9e5f3;
+      color: #5a5470;
+      font-weight: 600;
+      font-size: .92rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    }
+
+    /* Slide-up preload state + transition handled by .in-view */
+    .slide-up { transform: translateY(20px); opacity: 0; transition: transform .6s ease, opacity .6s ease; }
+    .slide-up.in-view { transform: translateY(0); opacity: 1; }
+
+    /* Sections grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
+      display: flex;
+      flex-direction: column;
+      min-height: 120px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.4;
+    }
+
+    .accent {
+      height: 8px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+    .accent.p1 { background: linear-gradient(90deg, #ffd6e4, #fff0f6); }
+    .accent.p2 { background: linear-gradient(90deg, #d7f7e2, #eafbf0); }
+    .accent.p3 { background: linear-gradient(90deg, #e9e4ff, #f0eaff); }
+
+    /* Gallery-like pastel blocks */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .tile {
+      height: 100px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-shadow: 0 1px 2px rgba(0,0,0,.25);
+    }
+    .tile.t1 { background: #ffa6c9; }
+    .tile.t2 { background: #7bd3cd; }
+    .tile.t3 { background: #a8a4ff; }
+    .tile.t4 { background: #ffd6a5; }
+    .tile.t5 { background: #8de0ff; }
+    .tile.t6 { background: #a0e0a9; }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted);
+    }
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: inherit;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+      transition: transform .2s ease;
+    }
+    .footer a:hover { transform: translateY(-1px); }
+    .footer svg { width: 20px; height: 20px; display: block; }
+
+    /* Responsive tweaks */
+    @media (max-width: 700px){
+      .title { font-size: 2.6rem; }
+      .creation { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero slide-up" aria-label="Intro section">
+      <div class="content">
+        <h1 class="title">amirabolfazle</h1>
+        <p class="subtitle">A fully responsive, animated HTML page with a pastel theme and slide-up effects.</p>
+        <span class="creation" title="Creation timestamp">Creation time: 2025-09-27 04:00:15</span>
+      </div>
+    </header>
+
+    <section class="grid slide-up" aria-label="Overview">
+      <article class="card" style="background: #fff;">
+        <h3>Responsive Layout</h3>
+        <p>Adapts gracefully from mobile to desktop with auto-fit grids and flexible typography.</p>
+        <span class="accent p1" aria-hidden="true"></span>
+      </article>
+
+      <article class="card" style="background: #fff;">
+        <h3>Pastel Theme</h3>
+        <p>Soft colors and gentle contrasts create a calm visual experience.</p>
+        <span class="accent p2" aria-hidden="true"></span>
+      </article>
+
+      <article class="card" style="background: #fff;">
+        <h3>Animated Interactions</h3>
+        <p>Elements slide into view as you scroll, with smooth transitions.</p>
+        <span class="accent p3" aria-hidden="true"></span>
+      </article>
+    </section>
+
+    <section class="slide-up" aria-label="Gallery and details" style="margin-top:22px;">
+      <div class="grid" style="align-items: stretch;">
+        <div class="card" style="padding:16px;">
+          <h3 style="margin:0 0 8px;">Pastel Tiles</h3>
+          <p style="margin:0; color:var(--muted);">A small showcase using pastel tiles for a playful layout.</p>
+          <div class="gallery" aria-label="Pastel tiles gallery">
+            <div class="tile t1" role="img" aria-label="Tile pink">1</div>
+            <div class="tile t2" role="img" aria-label="Tile mint">2</div>
+            <div class="tile t3" role="img" aria-label="Tile lavender">3</div>
+            <div class="tile t4" role="img" aria-label="Tile peach">4</div>
+            <div class="tile t5" role="img" aria-label="Tile blue">5</div>
+            <div class="tile t6" role="img" aria-label="Tile green">6</div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:16px;">
+          <h3 style="margin:0 0 8px;">Notes</h3>
+          <p style="margin:0; color:var(--muted); line-height:1.5;">
+            This page is a self-contained example of a responsive, animated HTML document with a pastel design.
+            The slide-up effect is triggered as sections come into view.
+          </p>
+        </div>
+
+        <div class="card" style="padding:16px;">
+          <h3 style="margin:0 0 8px;">Tech Stack</h3>
+          <p style="margin:0; color:var(--muted);">HTML5, CSS3 (custom properties, grid, transitions), vanilla JS for intersection observing.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer slide-up" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <!-- GitHub icon (inline SVG) -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" width="20" height="20">
+          <path d="M12 .5C5.73.5.75 5.25.75 11.97c0 5.15 3.34 9.52 7.97 11.07.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.24.71-3.93-1.4-3.93-1.4-.53-1.32-1.3-1.67-1.3-1.67-1.06-.72.08-.71.08-.71 1.18.08 1.8 1.21 1.8 1.21 1.04 1.78 2.74 1.27 3.41.97.11-.75.41-1.27.75-1.56-2.6-.3-5.33-1.3-5.33-5.79 0-1.28.46-2.33 1.22-3.15-.12-.3-.53-1.52.12-3.17 0 0 .99-.32 3.25 1.2A11.3 11.3 0 0 1 12 5.8c.99 0 1.99.14 2.92.41 2.26-1.52 3.25-1.2 3.25-1.2.65 1.65.24 2.87.12 3.17.76.82 1.22 1.87 1.22 3.15 0 4.5-2.74 5.48-5.34 5.77.42.38.8 1.13.8 2.28 0 1.65-.02 2.98-.02 3.38 0 .31.21.68.79.56A12 12 0 0 0 23.25 12C23.25 5.25 18.27.5 12 .5Z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Intersection Observer for slide-up effect
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            // Unobserve after it has come into view to avoid repeated triggers
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.25 });
+
+      document.querySelectorAll('.slide-up').forEach(el => {
+        // If already in view on load (e.g., from cached), reveal it quickly
+        if (el.getBoundingClientRect().top < window.innerHeight) {
+          el.classList.add('in-view');
+        } else {
+          observer.observe(el);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
