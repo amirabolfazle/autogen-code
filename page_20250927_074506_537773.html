@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#fff3f8;
+      --bg2:#eafaf0;
+      --bg3:#f6f0ff;
+      --text:#2b2b2b;
+      --card1:#fff1f3;
+      --card2:#f0f9f3;
+      --card3:#f3f0ff;
+      --shadow:0 6px 18px rgba(0,0,0,.08);
+      --radius:16px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color:var(--text);
+      background: linear-gradient(135deg, #fff7fb 0%, #f1fffb 40%, #f7f4ff 100%);
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* Decorative pastel orbs */
+    .orb{ position:absolute; border-radius:50%; filter: blur(40px); opacity:.6; pointer-events:none; z-index:0; }
+    .orb.a{ width:260px; height:260px; background:#ffd6e5; top:-60px; left:-60px; animation: float 14s ease-in-out infinite; }
+    .orb.b{ width:200px; height:200px; background:#c8e6ff; bottom:-70px; right:-60px; animation: float 18s ease-in-out infinite reverse; }
+
+    @keyframes float {
+      0%{ transform: translate(0,0) scale(1); }
+      50%{ transform: translate(20px,-20px) scale(1.05); }
+      100%{ transform: translate(0,0) scale(1); }
+    }
+
+    /* Hero / header area */
+    header.hero{
+      position:relative;
+      padding: clamp(2rem, 6vw, 6rem) 1rem 2rem;
+      text-align:center;
+      overflow:hidden;
+      z-index:1;
+    }
+
+    /* Gradient text title to emphasize pastel vibe */
+    .title{
+      font-size: clamp(3rem, 6vw + 1rem, 6rem);
+      line-height:1.04;
+      margin:0;
+      letter-spacing:.02em;
+      background: linear-gradient(90deg, #7b61f2 0%, #7bd5e5 40%, #ffd1dc 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      transform: translateZ(0);
+      animation: popIn 900ms ease-out both;
+    }
+
+    @keyframes popIn {
+      0%{ transform: scale(.85); opacity:0; }
+      60%{ transform: scale(1.05); opacity:1; }
+      100%{ transform: scale(1); opacity:1; }
+    }
+
+    .subtitle{
+      margin:12px auto 0;
+      font-size: clamp(1rem, 2.6vw, 1.25rem);
+      color:#555;
+      max-width: 700px;
+    }
+
+    .creation-time{
+      margin: 14px auto 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .95rem;
+      color:#6b6b6b;
+    }
+
+    /* Card grid */
+    main.container{
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.1rem;
+      align-items: stretch;
+      perspective: 1000px;
+    }
+
+    .card{
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      background: rgba(255,255,255,.95);
+      box-shadow: var(--shadow);
+      transform: translateZ(0);
+      transform-style: preserve-3d;
+      transition: transform .6s cubic-bezier(.2,.8,.2,1);
+      min-height: 120px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      opacity:0;
+      animation: fadeInUp 600ms ease forwards;
+    }
+
+    .card h3{ margin:0 0 .4rem 0; font-size:1.15rem; }
+    .card p{ margin:0; color:#555; font-size:.95rem; }
+
+    .zoom{ transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+    .zoom:hover{ transform: scale(1.06); }
+
+    .pastel1{ background: rgba(255, 230, 230, .95); border:1px solid rgba(255, 180, 180,.6); }
+    .pastel2{ background: rgba(225, 255, 230, .95); border:1px solid rgba(170, 230, 195,.6); }
+    .pastel3{ background: rgba(235, 231, 255, .95); border:1px solid rgba(190, 160, 255,.6); }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(14px); }
+    }
+
+    .grid .card:nth-child(1){ animation-delay:.05s; }
+    .grid .card:nth-child(2){ animation-delay:.15s; }
+    .grid .card:nth-child(3){ animation-delay:.25s; }
+
+    /* Footer */
+    footer.site-footer{
+      margin-top:auto;
+      padding: 1.25rem 1rem;
+      text-align:center;
+      border-top: 1px solid rgba(0,0,0,.05);
+      background: linear-gradient(180deg, rgba(255,255,255,.0), rgba(255,255,255,.8));
+      font-size:.95rem;
+    }
+
+    .footer-inner{ display:inline-flex; align-items:center; gap:0.5rem; color:#555; }
+
+    .github-link{ color:inherit; text-decoration:none; display:inline-flex; align-items:center; padding:6px; border-radius:8px; transition: transform .2s ease; }
+    .github-link:hover{ transform: translateY(-1px); background: rgba(0,0,0,.04); }
+
+    .github-icon{ width:20px; height:20px; display:inline-block; vertical-align:middle; fill:currentColor; }
+
+    @media (max-width: 600px){
+      .title{ font-size: 56px; }
+      .creation-time{ font-size: .9rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb a" aria-hidden="true"></div>
+  <div class="orb b" aria-hidden="true"></div>
+
+  <header class="hero" aria-label="Intro">
+    <h1 class="title">amirabolfazle</h1>
+    <p class="subtitle">A pastel-inspired, responsive, animated page with zoom effects.</p>
+    <p class="creation-time" aria-label="Creation timestamp">Creation time: 2025-09-27 07:44:39</p>
+  </header>
+
+  <main class="container" role="main">
+    <section class="grid" aria-label="Feature grid">
+      <article class="card pastel1 zoom" role="article">
+        <div>
+          <h3>Pastel Theme</h3>
+          <p>Soft hues for a calm, friendly vibe.</p>
+        </div>
+      </article>
+      <article class="card pastel2 zoom" role="article">
+        <div>
+          <h3>Zoom on Hover</h3>
+          <p>Elements gently scale to draw attention.</p>
+        </div>
+      </article>
+      <article class="card pastel3 zoom" role="article">
+        <div>
+          <h3>Responsive Layout</h3>
+          <p>Looks great on phones, tablets, and desktops.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="footer-inner">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository for amirabolfazle autogen code">
+        <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58l-.02-2.01c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.35-1.78-1.35-1.78-1.11-.76.09-.75.09-.75 1.23.09 1.88 1.27 1.88 1.27 1.09 1.87 2.87 1.33 3.57 1.02.11-.79.42-1.32.76-1.62-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.5.12-3.13 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.63.25 2.83.12 3.13.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.62-5.47 5.92.43.37.82 1.1.82 2.23l-.02 3.29c0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
