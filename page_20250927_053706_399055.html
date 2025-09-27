@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg2: #111825;
+      --card: #141c2a;
+      --text: #e6e6e6;
+      --muted: #a0a7b8;
+      --accent: #7c5cff;
+      --glow: 0 0 14px rgba(124,92,255,.6);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(124,92,255,.15), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(0,255,204,.12), transparent 40%),
+                  linear-gradient(#0b0f14, #0b0f14 60%, #0b0f14);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      overflow-x: hidden;
+      /* subtle animated background shimmer */
+      background-size: 200% 200%;
+      animation: bgShift 20s ease infinite;
+    }
+    @keyframes bgShift {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    .container {
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+    }
+
+    header.hero {
+      padding: 48px 20px 20px;
+      text-align: center;
+    }
+    .name {
+      font-size: 48px;
+      line-height: 1.15;
+      margin: 0;
+      letter-spacing: .5px;
+      text-transform: none;
+      text-shadow: 0 2px 20px rgba(124,92,255,.6);
+      color: #fff;
+      animation: bounceIn 0.9s forwards;
+      opacity: 0;
+    }
+    .tagline {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+      opacity: 0;
+      animation: fadeIn .8s forwards 0.25s;
+    }
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: ui-monospace,SFMono-Regular,"Consolas","Liberation Mono", monospace;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      margin-top: 14px;
+      color: #dbe3f0;
+      animation: fadeIn .8s forwards 0.4s;
+      opacity: 0;
+      user-select: none;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: translateY(40px); }
+      60% { opacity: 1; transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 20px 20px 60px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: linear-gradient(#141c2a, #0f1420);
+      border: 1px solid rgba(124,92,255,.25);
+      border-radius: 14px;
+      padding: 18px 18px 14px;
+      min-height: 180px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.4);
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      color: #eaf0f8;
+      transform: translateY(20px);
+      opacity: 0;
+      /* Bounce will be triggered via JS with staggered delays */
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      transition: transform 0.25s ease;
+      box-shadow: 0 12px 28px rgba(0,0,0,.55);
+    }
+
+    .card-icon {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: rgba(124,92,255,.25);
+      color: #dbe6ff;
+      box-shadow: 0 0 0 2px rgba(124,92,255,.25);
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #f8fbff;
+    }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+
+    .link {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13.5px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(124,92,255,.4);
+      width: max-content;
+      transition: transform .25s ease;
+    }
+    .link:hover { transform: translateX(2px); }
+
+    footer.footer {
+      margin-top: auto;
+      padding: 18px 20px 40px;
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 13.5px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(to top, rgba(0,0,0,.25), rgba(0,0,0,.0) 80%);
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #dbe7ff;
+      text-decoration: none;
+    }
+    .github-link svg {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+      fill: currentColor;
+      color: #d9e4ff;
+    }
+
+    @media (max-width: 600px) {
+      .name { font-size: 40px; }
+      header.hero { padding: 36px 12px 12px; }
+    }
+
+    /* Small helper animation for the creation badge once visible */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero" aria-label="Intro">
+      <h1 class="name" style="animation-delay:0s;">amirabolfazle</h1>
+      <p class="tagline" style="animation-delay:0.15s;">Animated portfolio • dark-mode vibes</p>
+      <div class="creation-time" aria-label="Creation time" style="animation-delay:0.25s;">Creation time: 2025-09-27 05:36:38</div>
+    </header>
+
+    <section class="grid" aria-label="Projects">
+      <article class="card" style="animation-delay:0s;">
+        <div class="card-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+            <path d="M12 3l3.09 6.26L22 11.27l-5 4.89L18.2 22 12 18.77 5.8 22 7 14.16l-5-4.89 6.91-1.01L12 3z"/>
+          </svg>
+        </div>
+        <h3>Neon Gallery Demo</h3>
+        <p>An interactive, glow-soaked gallery with subtle motion trails and keyboard navigation.</p>
+        <a class="link" href="#" aria-label="View Neon Gallery Demo">View details</a>
+      </article>
+
+      <article class="card" style="animation-delay:0.1s;">
+        <div class="card-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 7h16M4 12h10M4 17h6"/>
+          </svg>
+        </div>
+        <h3>UI Components Kit</h3>
+        <p>A compact set of reusable components with accessible states and nice defaults.</p>
+        <a class="link" href="#" aria-label="View UI Components Kit">View details</a>
+      </article>
+
+      <article class="card" style="animation-delay:0.2s;">
+        <div class="card-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3l3 6 6 1-4.5 4.5 1 6-5.5-3-5.5 3 1-6L3 10l6-1 3-6z"/>
+          </svg>
+        </div>
+        <h3>Motion Experiments</h3>
+        <p>Tiny motion studies: springy cards, spring timelines, and micro-interactions.</p>
+        <a class="link" href="#" aria-label="View Motion Experiments">View details</a>
+      </article>
+
+      <article class="card" style="animation-delay:0.3s;">
+        <div class="card-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 12h16M8 8h8M8 16h6"/>
+          </svg>
+        </div>
+        <h3>About This Page</h3>
+        <p>A single-file, dark-mode portfolio with bounce entrances and a GitHub footer.</p>
+        <a class="link" href="#about" aria-label="About this page">Learn more</a>
+      </article>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository: amirabolfazle/autogen-code">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.31 6.84 9.66.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.25-3.37-1.25-.46-1.22-1.12-1.55-1.12-1.55-.92-.63.07-.62.07-.62 1.02.07 1.56 1.05 1.56 1.05.9 1.59 2.36 1.13 2.94.86.09-.68.35-1.13.64-1.39-2.22-.26-4.55-1.16-4.55-5.17 0-1.14.39-2.07 1.03-2.8-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.07A9.3 9.3 0 0 1 12 6.8c.85.04 1.71.11 2.51.33 1.91-1.34 2.74-1.07 2.74-1.07.55 1.42.21 2.47.1 2.73.64.73 1.03 1.66 1.03 2.8 0 4.04-2.34 4.9-4.57 5.16.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.58.69.48C19.14 20.57 22 16.76 22 12.26 22 6.58 17.52 2 12 2z" fill="currentColor"></path>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Simple staggered bounce-in for cards after load
+    document.addEventListener('DOMContentLoaded', function() {
+      const cards = document.querySelectorAll('.card');
+      // reveal hero elements with slight delays
+      const name = document.querySelector('.name');
+      const tagline = document.querySelector('.tagline');
+      const creation = document.querySelector('.creation-time');
+      if (name) name.style.opacity = 1;
+      if (tagline) tagline.style.opacity = 1;
+      if (creation) creation.style.opacity = 1;
+
+      cards.forEach((card, idx) => {
+        // ensure initial state
+        card.style.opacity = 0;
+        card.style.transform = 'translateY(20px)';
+        // staggered animation
+        const delay = idx * 120 + 350;
+        setTimeout(() => {
+          card.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, delay);
+      });
+    });
+  </script>
+</body>
+</html>
