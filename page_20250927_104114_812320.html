@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --glass: rgba(255,255,255,0.14);
+      --glass-border: rgba(255,255,255,0.25);
+      --text: #e8eefc;
+      --muted: #cbd7f2;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: #0b1020;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Glassy animated background orbs */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .orb {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.25;
+      background: radial-gradient(circle at 30% 30%, rgba(180, 230, 255, 0.8), transparent 40%),
+                  radial-gradient(circle at 60% 60%, rgba(255, 180, 180, 0.6), transparent 50%);
+      animation: spin 60s linear infinite;
+    }
+    .orb.orb1 { left: -120px; top: -60px; animation-duration: 70s; }
+    .orb.orb2 { right: -140px; top: 120px; width: 520px; height: 520px; animation-duration: 90s; opacity: 0.22; }
+    .orb.orb3 { left: 20%; bottom: -160px; width: 480px; height: 480px; animation-duration: 120s; opacity: 0.18; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Scene and glass card */
+    .scene {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 6rem 1rem;
+      perspective: 1000px;
+    }
+
+    .card {
+      width: min(92vw, 760px);
+      padding: 2.4rem;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.10));
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(12px) saturate(1.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      transform-style: preserve-3d;
+      transition: transform 0.7s ease, box-shadow 0.7s ease;
+      text-align: center;
+    }
+    .scene:hover .card {
+      transform: rotateX(6deg) rotateY(-6deg);
+      box-shadow: 0 40px 80px rgba(0,0,0,.35);
+    }
+
+    .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      margin: 0 auto 14px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.15);
+      transform: rotate(0deg);
+      transition: transform 0.6s ease;
+      position: relative;
+    }
+    .scene:hover .logo-wrap {
+      transform: rotate(12deg);
+    }
+    .logo-svg {
+      width: 72px;
+      height: 72px;
+      display: block;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+    }
+
+    h1.title {
+      margin: 0.25rem 0 0.75rem;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #ffffff, #d6e6ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .creation {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,monospace;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 0 0 0.75rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(4px);
+    }
+
+    .sub {
+      color: #dfeaff;
+      font-size: 0.98rem;
+      margin: 0;
+    }
+
+    @media (max-width: 640px) {
+      .card { padding: 1.8rem; }
+      .logo-wrap { width: 90px; height: 90px; }
+      .logo-svg { width: 64px; height: 64px; }
+    }
+
+    /* Footer with GitHub icon and creator text */
+    .footer {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: var(--text);
+      font-size: 14px;
+      z-index: 2;
+      backdrop-filter: blur(6px);
+    }
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      color: inherit;
+      text-decoration: none;
+    }
+    .footer svg { width: 22px; height: 22px; display: block; }
+
+  </style>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <span class="orb orb1"></span>
+    <span class="orb orb2"></span>
+    <span class="orb orb3"></span>
+  </div>
+
+  <main class="scene" aria-label="Amirabolfazle demo">
+    <section class="card" aria-label="Glass card">
+      <div class="logo-wrap" aria-label="Rotating logo">
+        <svg class="logo-svg" viewBox="0 0 100 100" role="img" aria-label="Logo">
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#8bd3ff"/>
+              <stop offset="100%" stop-color="#a7f3d0"/>
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="50" r="38" fill="url(#grad1)" opacity="0.9"/>
+          <circle cx="50" cy="50" r="28" fill="none" stroke="white" stroke-opacity="0.7" stroke-width="6"/>
+          <text x="50" y="60" text-anchor="middle" font-family="Arial" font-size="28" fill="white" opacity="0.95">A</text>
+        </svg>
+      </div>
+
+      <h1 class="title">amirabolfazle</h1>
+      <p class="creation">Creation time: 2025-09-27 10:40:44</p>
+      <p class="sub">A fully responsive, animated, glassmorphism themed page with rotate effects.</p>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub Repository">
+      <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="GitHub icon" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5C5.73.5.8 5.44.8 11.72c0 4.88 3.13 8.97 7.46 10.42.58.11.79-.25.79-.56v-2.04c-3.03.65-3.66-1.37-3.66-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.06-.74.08-.73.08-.73 1.18.08 1.8 1.15 1.8 1.15 1.04 1.78 2.73 1.27 3.41.97.11-.76.41-1.28.75-1.57-2.41-.27-4.95-1.28-4.95-5.7 0-1.26.46-2.28 1.22-3.08-.12-.3-.54-1.52.12-3.17 0 0 1 .32 3.28 1.24a11.4 11.4 0 0 1 5.96 0C15.2 3.28 16.2 3 16.2 3c.65 1.58.24 2.75.12 3.04.76.8 1.22 1.82 1.22 3.08 0 4.43-2.54 5.42-4.96 5.69.36.31.69.92.69 1.86 0 1.34-.01 2.42-.01 2.75 0 .28.2.61.74.51 4.33-1.45 7.46-5.54 7.46-10.42C23.2 5.44 18.27.5 12 .5z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
