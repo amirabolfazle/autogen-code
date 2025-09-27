@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-start: #0b1020;
+      --bg-mid: #15162a;
+      --bg-end: #0e1a2b;
+      --glass: rgba(255, 255, 255, 0.15);
+      --glass-edge: rgba(255, 255, 255, 0.25);
+      --text: #e9e9ff;
+      --muted: #cbd6ff;
+      --accent: #8dc8ff;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      /* Glassy gradient background animation */
+      background: radial-gradient(circle at 20% 0%, rgba(120, 60, 200, 0.25), transparent 40%),
+                  radial-gradient(circle at 100% 100%, rgba(0, 160, 230, 0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0b1e2a 100%);
+      background-size: 200% 200%;
+      animation: gradientBG 12s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container { width: min(1100px, 92%); margin: 0 auto; }
+
+    /* Glass panels and typography */
+    header.hero {
+      padding: 34px 0 8px;
+    }
+
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logo {
+      width: 46px; height: 46px; border-radius: 12px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.35);
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+    }
+    .logo svg { width: 26px; height: 26px; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 54px);
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #fff, #a6d3ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      margin: 6px 0 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .creation-time {
+      margin-top: 8px;
+      margin-left: 56px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color: #e8eaff;
+      opacity: 0.95;
+    }
+
+    .actions { display: flex; gap: 12px; margin: 14px 0 0 56px; }
+
+    a.btn {
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: transform 0.2s ease, background 0.25s ease;
+    }
+    a.btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.25); }
+
+    main { padding: 14px 0 0; }
+
+    section.panel { padding: 22px 0; display: flex; flex-direction: column; gap: 12px; }
+
+    .section-title { font-size: 18px; font-weight: 600; margin-bottom: 6px; color: #fff; }
+
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+
+    .card {
+      grid-column: span 4;
+      min-height: 120px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+    }
+
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 12px; color: #fff;
+            background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.3); margin-bottom: 6px; }
+
+    .small { font-size: 13px; color: #e6e6ff; }
+
+    @media (max-width: 980px) {
+      .card { grid-column: span 6; }
+    }
+    @media (max-width: 640px) {
+      .card { grid-column: span 12; }
+      .creation-time, .subtitle, .actions { margin-left: 0; margin-right: 0; }
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 14px 0;
+      border-top: 1px solid rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.18);
+      text-align: center;
+    }
+    footer a { color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+               padding: 6px 10px; border-radius: 8px; border:1px solid rgba(255,255,255,0.3);
+               background: rgba(255,255,255,0.15); }
+    footer .info { display: block; color: #dde3ff; font-size: 12px; margin-top: 6px; }
+
+    /* Slide-up reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+
+  </style>
+</head>
+<body>
+  <header class="hero container" aria-label="intro">
+    <div class="brand reveal" style="align-items: center;">
+      <div class="logo" aria-label="Logo">
+        <!-- simple glassy glyph -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="glass glyph">
+          <path d="M12 3l7 4v6a7 7 0 01-14 0V7l7-4z" fill="white" fill-opacity="0.1"/>
+          <path d="M5 9l7-4 7 4v6a7 7 0 01-14 0V9z" fill="none" stroke="white" opacity="0.6"/>
+        </svg>
+      </div>
+      <h1>amirabolfazle</h1>
+    </div>
+
+    <p class="subtitle reveal" style="margin: 6px 0 0 56px;">
+      A glassy, animated one-file portfolio
+    </p>
+
+    <div class="creation-time reveal" aria-label="creation-time" style="margin-left:56px;">
+      2025-09-27 09:30:07
+    </div>
+
+    <nav class="actions reveal" aria-label="quick-nav" style="margin-left:56px;">
+      <a href="#about" class="btn">About</a>
+      <a href="#projects" class="btn">Projects</a>
+      <a href="#skills" class="btn">Skills</a>
+    </nav>
+  </header>
+
+  <main class="container" role="main">
+    <section id="about" class="panel reveal" aria-label="about-section">
+      <div class="section-title">About</div>
+      <p style="margin:0; color:#e5e5ff;">
+        I'm amirabolfazle, a curious creator exploring code, design, and motion. This is a single-file, glassmorphism portfolio
+        with slide-up animations to showcase projects and skills in a clean, immersive way.
+      </p>
+    </section>
+
+    <section id="projects" class="panel reveal" aria-label="projects-section">
+      <div class="section-title">Projects</div>
+      <div class="grid" aria-label="projects-grid">
+        <div class="card" style="grid-column: span 4;">
+          <div class="pill">Demo</div>
+          <div style="font-weight:700; font-size:14px; color:#fff; margin-bottom:6px;">One-file portfolio</div>
+          <div class="small">Animated glassmorphism layout with slide-up effects</div>
+        </div>
+        <div class="card" style="grid-column: span 4;">
+          <div class="pill">Tech</div>
+          <div style="font-weight:700; font-size:14px; color:#fff; margin-bottom:6px;">HTML/CSS/JS</div>
+          <div class="small">Pure client-side rendering, no frameworks</div>
+        </div>
+        <div class="card" style="grid-column: span 4;">
+          <div class="pill">Note</div>
+          <div style="font-weight:700; font-size:14px; color:#fff; margin-bottom:6px;">Single-file design</div>
+          <div class="small">All assets embedded in this file</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="panel reveal" aria-label="skills-section">
+      <div class="section-title">Skills</div>
+      <div class="grid" aria-label="skills-grid">
+        <div class="card" style="grid-column: span 4;">
+          <div class="pill">Code</div>
+          <div style="font-weight:700; font-size:14px; color:#fff; margin-bottom:6px;">JavaScript / HTML / CSS</div>
+          <div class="small">Nice and fast interactions</div>
+        </div>
+        <div class="card" style="grid-column: span 4;">
+          <div class="pill">Design</div>
+          <div style="font-weight:700; font-size:14px; color:#fff; margin-bottom:6px;">Glassmorphism</div>
+          <div class="small">Soft-focus surfaces</div>
+        </div>
+        <div class="card" style="grid-column: span 4;">
+          <div class="pill">Motion</div>
+          <div style="font-weight:700; font-size:14px; color:#fff; margin-bottom:6px;">Slide-up transitions</div>
+          <div class="small">Fluid, non-jarring</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" style="vertical-align:middle;">
+        <path d="M12 .5C5.73.5.5 5.73.5 12c0 4.43 2.87 8.17 6.84 9.5.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.19-3.37-1.19-.46-1.17-1.13-1.48-1.13-1.48-.92-.63.07-.62.07-.62 1.02.07 1.56 1.05 1.56 1.05.9 1.56 2.37 1.11 2.95.85.09-.66.35-1.11.64-1.37-2.22-.25-4.55-1.11-4.55-4.95 0-1.09.39-1.98 1.03-2.68-.11-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85.01 1.7.11 2.5.32 1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.69-4.57 4.94.36.31.69.93.69 1.88 0 1.36-.01 2.46-.01 2.79 0 .27.18.59.69.49A10.01 10.01 0 0012 22.5c6.27 0 11.5-5.23 11.5-11.5S18.27.5 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // Mount animations: reveal elements with the 'reveal' class when they enter the viewport
+    document.addEventListener('DOMContentLoaded', function() {
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      reveals.forEach(el => observer.observe(el));
+
+      // Optional: reveal everything quickly after a moment if not in view
+      window.setTimeout(() => {
+        document.querySelectorAll('.reveal').forEach(el => {
+          if (!el.classList.contains('revealed')) el.classList.add('revealed');
+        });
+      }, 1200);
+    });
+  </script>
+</body>
+</html>
