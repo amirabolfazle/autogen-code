@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f7f2f7;
+      --bg2: #f9f3f9;
+      --card: #ffffff;
+      --text: #2a2a2a;
+      --muted: #6b6b6b;
+      --accent: #c6a6d9;
+      --accent2: #a8e3c8;
+      --accent3: #ffd5e5;
+      --shadow: 0 8px 20px rgba(0,0,0,.05);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color: var(--text);
+      background: radial-gradient( circle at 20% -10%, rgba(198,166,217,.25), transparent 40%),
+                  radial-gradient( circle at 90% 0%, rgba(168,227,200,.25), transparent 40%),
+                  linear-gradient(#fbf7fb, #f7f3f7 60%, #f6f4f9);
+      background-attachment: fixed;
+    }
+
+    /* Decorative pastel blobs */
+    .blob {
+      position: fixed;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: .6;
+      z-index: 0;
+      animation: float 12s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .blob.b1 { background: #ffd7ea; top: -60px; left: -60px; animation-delay: -2s; }
+    .blob.b2 { background: #c8f0d8; bottom: -60px; right: -60px; animation-delay: -4s; width: 420px; height: 420px; }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0) scale(1); }
+      50% { transform: translateY(-20px) translateX(20px) scale(1.05); }
+      100% { transform: translateY(0) translateX(0) scale(1); }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: saturate(1.2) blur(6px);
+      background: rgba(255,255,255,.8);
+      border-bottom: 1px solid rgba(0,0,0,.05);
+    }
+
+    .site-header { padding: 14px 0; }
+    .container { max-width: 980px; margin: 0 auto; padding: 0 20px; position: relative; }
+
+    .brand {
+      margin: 0;
+      font-weight: 800;
+      font-size: 34px;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #bfa6d6 0%, #a5e0cf 50%, #ffd0e6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+      user-select: none;
+    }
+
+    nav {
+      display: flex; gap: 18px; align-items: center;
+      margin-top: 8px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: transform .2s ease, background .2s ease;
+      border: 1px solid rgba(0,0,0,.05);
+      background: rgba(255,255,255,.8);
+    }
+    nav a:hover { transform: translateY(-2px); background: rgba(255,255,255,.95); }
+
+    .creation-time {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px dashed rgba(0,0,0,.15);
+      background: rgba(255,255,255,.8);
+    }
+
+    main { position: relative; z-index: 1; padding: 48px 0 80px; }
+
+    section.section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: transform 600ms ease, opacity 600ms ease;
+      margin-bottom: 28px;
+    }
+
+    section.section.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,.05);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* About section pastel styling */
+    #about.section {
+      background: linear-gradient(135deg, #fce2f0 0%, #e8f7e9 60%);
+    }
+
+    #projects.section {
+      background: linear-gradient(135deg, #f1f6ff 0%, #fff6e3 100%);
+    }
+
+    #contact.section {
+      background: linear-gradient(135deg, #e8f7ff 0%, #fef7e0 100%);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .project {
+      padding: 16px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.05);
+      transition: transform .25s ease;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .project:hover { transform: translateY(-3px); }
+
+    .project .thumb {
+      height: 110px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ffd2e6, #d6f5e6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: #555;
+      border: 1px solid rgba(0,0,0,.05);
+    }
+
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 600;
+      background: #f3f3f9; color: #555;
+      border: 1px solid rgba(0,0,0,.05);
+    }
+
+    .cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border-radius: 999px;
+      border: none; cursor: pointer;
+      background: #6d9edb; color: white; font-weight: 700;
+      text-decoration: none;
+    }
+    .cta:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+    .footer {
+      padding: 28px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid rgba(0,0,0,.05);
+      background: rgba(255,255,255,.8);
+    }
+    .footer a {
+      color: inherit; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    .github-icon {
+      width: 22px; height: 22px;
+      display: inline-block;
+    }
+
+    @media (max-width: 640px) {
+      .brand { font-size: 28px; }
+      .creation-time { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container" style="display:flex; align-items:center; gap:16px;">
+      <h1 class="brand" aria-label=" Site title">amirabolfazle</h1>
+      <nav aria-label="Main navigation" style="margin-left:8px;">
+        <a href="#about" >About</a>
+        <a href="#projects" >Projects</a>
+        <a href="#contact" >Contact</a>
+      </nav>
+      <div class="creation-time" aria-label="Creation time">
+        Created: 2025-09-27 14:33:10
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="about" class="section card container" style="margin-top: 28px;">
+      <h2>About</h2>
+      <p class="subtitle" style="margin-top:6px;">
+        A pastel-toned, single-file portfolio showcasing work samples with slide-up animations.
+      </p>
+      <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="project" style="border-radius:16px;">
+          <div class="thumb" aria-label="Profile">
+            Profile
+          </div>
+          <strong>Hi, I’m amirabolfazle</strong>
+          <p style="margin:0; color:var(--muted);">Designer and developer crafting clean, delightful interfaces with a soft, pastel aesthetic.</p>
+          <span class="tag" style="margin-top:auto;">Frontend</span>
+        </div>
+        <div class="project" style="border-radius:16px;">
+          <div class="thumb" aria-label="Skills">
+            Skills
+          </div>
+          <strong>Tech stack</strong>
+          <p style="margin:0; color:var(--muted);">HTML, CSS, JavaScript, UI/UX, animation, accessibility.</p>
+          <span class="tag" style="margin-top:auto;">Pastel UI</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section container" aria-label="Projects" style="margin-top: 14px;">
+      <div class="card">
+        <h2>Projects</h2>
+        <p class="subtitle" style="margin-top:4px;">A quick look at a few sample pieces. Each card uses a gentle pastel vibe with slide-up reveal.</p>
+
+        <div class="grid" style="gap:18px;">
+          <div class="project" style="background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);">
+            <div class="thumb" aria-label="Project 1 thumbnail">Animation Playground</div>
+            <strong>Pastel Card Trails</strong>
+            <p style="margin:0; color:var(--muted);">A micro-interaction library for slide-up sections on scroll.</p>
+            <span class="tag" style="align-self:flex-start;">Animation</span>
+          </div>
+
+          <div class="project" style="background: linear-gradient(135deg, #fff7f0 0%, #e8f7fb 100%);">
+            <div class="thumb" aria-label="Project 2 thumbnail">Portfolio Theme</div>
+            <strong>Single-file Portfolio</strong>
+            <p style="margin:0; color:var(--muted);">A self-contained HTML/CSS/JS template with pastel aesthetics.</p>
+            <span class="tag" style="align-self:flex-start;">Template</span>
+          </div>
+
+          <div class="project" style="background: linear-gradient(135deg, #f0fff6 0%, #fff3f8 100%);">
+            <div class="thumb" aria-label="Project 3 thumbnail">UI Components</div>
+            <strong>Reusable Cards</strong>
+            <p style="margin:0; color:var(--muted);">Flexible card components with clean geometry.</p>
+            <span class="tag" style="align-self:flex-start;">Components</span>
+          </div>
+
+          <div class="project" style="background: linear-gradient(135deg, #f9f1ff 0%, #e9f6ff 100%);">
+            <div class="thumb" aria-label="Project 4 thumbnail">Interaction</div>
+            <strong>Slide-up Reveal</strong>
+            <p style="margin:0; color:var(--muted);">IntersectionObserver-driven reveal effects for sections.</p>
+            <span class="tag" style="align-self:flex-start;">Effects</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section container" aria-label="Contact" style="margin-top: 14px;">
+      <div class="card">
+        <h2>Contact</h2>
+        <p class="subtitle" style="margin-top:4px;">Interested in collaborating? Reach out.</p>
+        <form onsubmit="event.preventDefault();" style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+          <input aria-label="Your name" placeholder="Your name" style="flex:1 1 240px; padding:12px; border-radius:8px; border:1px solid #ddd;">
+          <input aria-label="Email" type="email" placeholder="Email" style="flex:1 1 240px; padding:12px; border-radius:8px; border:1px solid #ddd;">
+          <textarea aria-label="Message" placeholder="Your message" rows="4" style="flex:1 1 100%; padding:12px; border-radius:8px; border:1px solid #ddd; min-height: 80px;"></textarea>
+          <button class="cta" type="button" onclick="alert('This is a static demo.')">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="color:#333;">
+        <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.68.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.25-3.37-1.25-.45-1.18-1.11-1.5-1.11-1.5-.91-.63.07-.62.07-.62 1.01.07 1.54 1.04 1.54 1.04.9 1.56 2.36 1.11 2.94.85.09-.66.35-1.11.63-1.37-2.22-.26-4.54-1.15-4.54-5.11 0-1.13.39-2.05 1.03-2.77-.11-.26-.45-1.31.1-2.72 0 0 .84-.27 2.75 1.08a9.46 9.46 0 012.5-.34 9.46 9.46 0 012.5.34c1.9-1.35 2.74-1.08 2.74-1.08.56 1.41.22 2.46.11 2.72.64.72 1.03 1.64 1.03 2.77 0 4-2.33 4.85-4.55 5.1.36.32.69.95.69 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.58.69.48A10.003 10.003 0 0022 12.26C22 6.58 17.52 2 12 2z"/>
+      </svg>
+      </a>
+    <span style="margin-left:10px;">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Slide-up reveal on scroll
+    (function(){
+      const sections = document.querySelectorAll('.section');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('animate');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+
+      sections.forEach(sec => {
+        // delay stagger for nicer effect
+        setTimeout(() => obs.observe(sec), 100);
+      });
+    })();
+  </script>
+</body>
+</html>
