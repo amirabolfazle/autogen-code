@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg2: #0f1420;
+      --fg: #e9e9ff;
+      --muted: #b7b7d8;
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.15);
+      --accent: #8a5aff;
+      --glow: 0 0 30px rgba(138,90,255,.6);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(138,90,255,.25), transparent 25%),
+                  radial-gradient(circle at 85% 10%, rgba(0,230,214,.25), transparent 25%),
+                  linear-gradient(135deg, #0b1020 0%, #0a0f1c 60%, #0b1020 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    .bg-tilt {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: conic-gradient(from 0deg, rgba(138,90,255,.08), rgba(0,230,214,.08), rgba(138,90,255,.08));
+      mask: radial-gradient(circle at center, transparent 0%, black 60%);
+      animation: rotate 20s linear infinite;
+      mix-blend-mode: screen;
+    }
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      padding: 4rem 1rem;
+      perspective: 1000px;
+    }
+    .card {
+      width: min(980px, 92vw);
+      background: linear-gradient(135deg, rgba(20,24,40,.85), rgba(10,14,28,.85));
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      transform: scale(0.95);
+      opacity: 0;
+      animation: zoomIn 900ms cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    @keyframes zoomIn {
+      to { transform: scale(1); opacity: 1; }
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-weight: 700;
+      color: white;
+      background: conic-gradient(from 180deg at 50% 50%, #6d28d9, #0ea5e9, #8b5cf6, #6d28d9);
+      box-shadow: 0 8px 28px rgba(0,0,0,.4);
+      mix-blend-mode: normal;
+    }
+    .title {
+      font-size: 2.6rem;
+      margin: 0;
+      letter-spacing: .5px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+      font-size: 0.98rem;
+    }
+    .creation {
+      margin-left: auto;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-family: ui-sans-serif;
+      font-size: .8rem;
+      color: #cbd5e1;
+      background: rgba(99,102,241,.15);
+      border: 1px solid rgba(99,102,241,.35);
+    }
+    main {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      padding-top: 26px;
+    }
+    section {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: #e2e8f0;
+    }
+    p {
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .footer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 0 40px;
+      color: #94a3b8;
+    }
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      margin-right: 12px;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      background: rgba(0,0,0,.25);
+      transition: transform .25s ease, background .25s ease;
+      box-shadow: 0 6px 14px rgba(0,0,0,.25);
+    }
+    .footer a:hover {
+      transform: translateY(-2px) scale(1.05);
+      background: rgba(0,0,0,.4);
+    }
+    .footer span {
+      font-family: ui-sans-serif;
+      color: #cbd5e1;
+    }
+    /* simple GitHub-like icon badge inside the link for accessibility and aesthetics */
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #111;
+      color: #fff;
+      font-size: 10px;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; }
+      .creation { margin-left: 0; }
+      header { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-tilt" aria-hidden="true"></div>
+  <div class="wrap" role="main">
+    <div class="card">
+      <header>
+        <div class="avatar" aria-label="Avatar">AA</div>
+        <div>
+          <h1 class="title" style="margin:0; font-weight:800; letter-spacing:.08em;">amirabolfazle</h1>
+          <p class="subtitle">Fancy animated personal page • dark mode • zoom on load</p>
+        </div>
+        <div class="creation" title="Creation time">
+          2025-09-28 01:41:14
+        </div>
+      </header>
+      <main aria-label="Content">
+        <section aria-label="About">
+          <h2>About</h2>
+          <p>Hi, I’m amirabolfazle. This is a dark-mode, animated personal page featuring a zoom-in effect on load. Built with clean, minimal HTML/CSS to showcase personality and style.</p>
+        </section>
+        <section aria-label="Projects">
+          <h2>Projects</h2>
+          <p>• autogen-code (GitHub) — a collection of small automation snippets and demos. Try exploring the footer to visit the GitHub repository.</p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- Simple GitHub-like icon badge -->
+      <span class="icon-badge" aria-label="GitHub">GH</span>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
