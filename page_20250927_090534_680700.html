@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg2: #0e111a;
+      --fg: #e6f0ff;
+      --card: rgba(20,22,36,.9);
+      --muted: #9db4d8;
+      --accent: #7bf0ff;
+      --accent2: #a77dff;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(0,180,255,.15), transparent 30%),
+                  radial-gradient(circle at 90% 10%, rgba(167,105,248,.15), transparent 30%),
+                  linear-gradient(#0b0f14, #0b0f14);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .header { padding: 48px 20px 12px; text-align: center; position: relative; z-index: 2; }
+    .brand { font-weight: 800; font-size: clamp(2.4rem, 6vw + 1rem, 4.2rem); letter-spacing: .08em;
+              margin: 0; text-transform: none; background: linear-gradient(135deg, #7bf0ff, #a77dff, #ff8bd3);
+              -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .brand-glow { text-shadow: 0 0 14px rgba(123,240,255,.9); animation: glow 2.5s ease-in-out infinite; display: inline-block; }
+    @keyframes glow { 0%,100%{ text-shadow: 0 0 8px rgba(123,240,255,.6); } 50% { text-shadow: 0 0 18px rgba(167,125,255,.9); } }
+
+    .subtitle { margin: 8px 0 0; font-size: 1.08rem; color: #cbdaf1; opacity: .9; letter-spacing: .02em; }
+
+    .creation { margin-top: 14px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas; font-size: .92rem; color: #c9d8f0; opacity: .9; }
+
+    .stage-wrap { display:flex; align-items:center; justify-content:center; padding: 28px 20px 60px; perspective: 1000px; }
+
+    .stage { width: min(72vw, 520px); height: min(72vw, 520px); position: relative; transform-style: preserve-3d; transition: transform 0.1s ease-out; }
+
+    .cube { width: 260px; height: 260px; position: relative; transform-style: preserve-3d; margin: auto; animation: spin 16s linear infinite; transform-origin: center; }
+
+    .face { position: absolute; width: 260px; height: 260px; display:flex; align-items:center; justify-content:center; border-radius: 16px; color: white; font-weight: 600;
+             font-family: ui-sans-serif, system-ui; box-shadow: inset 0 0 40px rgba(0,0,0,.25); 
+             background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); text-align:center; padding: 8px; }
+
+    .face1 { transform: rotateY(0deg) translateZ(130px); background: linear-gradient(135deg, rgba(12,180,255,.95), rgba(0,120,255,.95)); }
+    .face2 { transform: rotateY(90deg) translateZ(130px); background: linear-gradient(135deg, rgba(167,105,248,.95), rgba(120,0,255,.95)); }
+    .face3 { transform: rotateY(180deg) translateZ(130px); background: linear-gradient(135deg, rgba(0,220,160,.95), rgba(0,120,255,.95)); }
+    .face4 { transform: rotateY(-90deg) translateZ(130px); background: linear-gradient(135deg, rgba(255,180,0,.95), rgba(255,120,120,.95)); }
+    .face5 { transform: rotateX(90deg) translateZ(130px); background: linear-gradient(135deg, rgba(0,180,255,.8), rgba(0,255,200,.8)); }
+    .face6 { transform: rotateX(-90deg) translateZ(130px); background: linear-gradient(135deg, rgba(100,0,255,.8), rgba(0,150,255,.8)); }
+
+    .face-content { text-align: center; padding: 10px; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+    .face-content h3 { margin: 0; font-size: 1.15rem; letter-spacing:.04em; }
+    .face-content p { font-size: .85rem; margin: 6px 0 0; color: #f2f6ff; opacity:.9; }
+
+    @keyframes spin { from { transform: rotateX(-18deg) rotateY(0deg);} to { transform: rotateX(-18deg) rotateY(360deg);} }
+
+    @media (max-width: 700px) {
+      .stage { width: 86vw; height: 86vw; }
+      .cube { width: 200px; height: 200px; }
+      .face { width: 200px; height: 200px; }
+      .face1, .face2, .face3, .face4, .face5, .face6 { transform: translateZ(100px); }
+    }
+
+    .footer { text-align:center; padding: 28px 12px; color: #a9c0e8; font-size: .95rem; }
+    .github-link { display:inline-flex; align-items:center; gap:8px; color:#cfe7ff; text-decoration:none; padding:8px 12px; border-radius:999px;
+                    background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); transition: transform .2s ease; }
+    .github-link:hover { transform: translateY(-1px); background: rgba(255,255,255,.08); }
+    .github-icon { width: 20px; height: 20px; display:inline-block; vertical-align: middle; fill: currentColor; }
+
+    @media (prefers-color-scheme: light) {
+      body { background: #f7f7f9; color: #1f1f1f; }
+      .face { background: rgba(0,0,0,.04); border: 1px solid rgba(0,0,0,.08); color: #122; }
+      .github-link { color: #1a1a1a; background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header" aria-label="Intro">
+    <h1 class="brand brand-glow" aria-label="amirabolfazle">amirabolfazle</h1>
+    <p class="subtitle">Fancy animated personal page with dark mode and rotate effects</p>
+    <div class="creation" aria-label="Creation time">
+      Creation time: 2025-09-27 09:04:53
+    </div>
+  </header>
+
+  <section class="stage-wrap" aria-label="Interactive cube stage">
+    <div class="stage" id="stage" tabindex="0">
+      <div class="cube" role="img" aria-label="Rotating information cube">
+        <div class="face face1">
+          <div class="face-content">
+            <h3>About</h3>
+            <p>Hi, I'm Amir Abolfazle — tinkerer, coder, creator.</p>
+          </div>
+        </div>
+        <div class="face face2">
+          <div class="face-content">
+            <h3>Projects</h3>
+            <p>Autogen code generator and experiments.</p>
+          </div>
+        </div>
+        <div class="face face3">
+          <div class="face-content">
+            <h3>Skills</h3>
+            <p>HTML, CSS, JS, animations, 3D transforms</p>
+          </div>
+        </div>
+        <div class="face face4">
+          <div class="face-content">
+            <h3>Experience</h3>
+            <p>Creative coding and frontend engineering.</p>
+          </div>
+        </div>
+        <div class="face face5">
+          <div class="face-content">
+            <h3>Timeline</h3>
+            <p>Moments in development.</p>
+          </div>
+        </div>
+        <div class="face face6">
+          <div class="face-content">
+            <h3>Contact</h3>
+            <p>Open to collaborations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="github-link" aria-label="GitHub repository">
+      <svg class="github-icon" viewBox="0 0 24 24" aria-label="GitHub logo" role="img">
+        <path d="M12 0C5.37 0 0 5.373 0 12a12 12 0 008.205 11.387c.6.111.82-.261.82-.58 0-.287-.011-1.244-.018-2.257-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.838 1.237 1.838 1.237 1.07 1.834 2.809 1.305 3.495.997.108-.775.419-1.305.762-1.606-2.665-.303-5.466-1.333-5.466-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 016.003 0c2.29-1.552 3.297-1.23 3.297-1.23.655 1.653.243 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.803 5.624-5.476 5.921.431.37.815 1.102.815 2.222 0 1.606-.015 2.901-.015 3.296 0 .322.216.695.825.576A12.003 12.003 0 0024 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // Optional: tilt stage on mouse move for extra depth
+    (function() {
+      const stage = document.getElementById('stage');
+      if (!stage) return;
+      stage.addEventListener('mousemove', (e) => {
+        const r = stage.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const tiltX = (py - 0.5) * -16; // invert
+        const tiltY = (px - 0.5) * 16;
+        stage.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      });
+      stage.addEventListener('mouseleave', () => {
+        stage.style.transform = '';
+      });
+    })();
+  </script>
+</body>
+</html>
