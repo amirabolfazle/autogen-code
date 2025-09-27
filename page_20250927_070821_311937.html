@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #0b1020;
+      --bg2: #1e0b3e;
+      --text: #ffffff;
+      --card: rgba(255,255,255,0.08);
+      --glow: 0 8px 30px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: #fff;
+      background: #0a0b14;
+      overflow-x: hidden;
+    }
+
+    /* animated gradient background layer */
+    .gradient-bg {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #2a0a57 0%, #0a2a5e 40%, #1f8b8c 70%, #2a0a57 100%);
+      background-size: 400% 400%;
+      filter: saturate(1.1);
+      z-index: -2;
+      animation: gradientShift 16s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* decorative floating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.7;
+      mix-blend-mode: screen;
+      filter: blur(0.2px);
+      animation: float 8s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    .orb.o1 {
+      width: 230px; height: 230px; left: -60px; top: 20%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9) 0 15%, rgba(255,150,150,.6) 15% 40%, rgba(0,0,0,0) 40%), conic-gradient(from 180deg, #ff7eb3, #7cffc4, #7aa2ff, #ffd26e);
+      animation-delay: 0s;
+    }
+    .orb.o2 {
+      width: 320px; height: 320px; right: -100px; bottom: 10%;
+      background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.9) 0 15%, rgba(125, 220, 255,.6) 15% 40%, rgba(0,0,0,0) 40%), conic-gradient(from 0deg, #7cffc4, #7aa2ff, #ff7eb3, #ffd26e, #7cffc4);
+      animation-delay: 2s;
+    }
+    .orb.o3 {
+      width: 180px; height: 180px; left: 40%; bottom: -40px;
+      background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.92) 0 18%, rgba(255, 185, 0, .5) 18% 40%, rgba(0,0,0,0) 40%), conic-gradient(from 90deg, #ffd26e, #ff7eb3, #7cffc4, #7aa2ff, #ffd26e);
+      animation-delay: 4s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0) scale(1); }
+      50% { transform: translateY(-24px) translateX(12px) scale(1.05); }
+      100% { transform: translateY(0) translateX(0) scale(1); }
+    }
+
+    /* content layout */
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header.site-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 16px 16px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1.logo {
+      font-size: clamp(2rem, 4vw + 1rem, 4rem);
+      margin: 0;
+      line-height: 1.05;
+      letter-spacing: .5px;
+      font-weight: 800;
+      /* gradient text */
+      background: linear-gradient(90deg, #fff, #e6e6ff, #b3e8ff, #fff);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: hue 6s linear infinite;
+      text-shadow: 0 6px 20px rgba(0,0,0,.25);
+      display: inline-block;
+      transform: translateZ(0);
+      animation: bounceIn 0.9s ease-out both;
+    }
+
+    @keyframes hue {
+      0% { background-position: 0% 0; }
+      50% { background-position: 100% 0; }
+      100% { background-position: 0% 0; }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(-20px); opacity: 0; }
+      60% { transform: translateY(6px); opacity: 1; }
+      100% { transform: translateY(0); }
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      color: #e8e8ff;
+      opacity: .95;
+      padding: 6px 12px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,.25);
+      margin-top: 8px;
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(2px);
+    }
+
+    main {
+      display: grid;
+      place-items: center;
+      padding: 20px 16px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      width: min(940px, 90vw);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: var(--glow);
+      transform: translateY(0);
+      animation: pop 0.8s ease-out;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.98); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    p {
+      color: #f5f7ff;
+      font-size: clamp(1rem, 1.2vw + 1rem, 1.25rem);
+      margin: 0.75rem 0 0;
+    }
+
+    /* footer with GitHub link and Created by text */
+    footer.site-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+      font-size: 0.95rem;
+      color: #e9e9ff;
+      background: rgba(9,9,14,.6);
+      border-top: 1px solid rgba(255,255,255,.15);
+    }
+
+    footer a.github {
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: rgba(0,0,0,.2);
+      transition: transform .2s ease;
+    }
+
+    footer a.github:hover { transform: translateY(-1px) scale(1.05); }
+
+    footer svg { display: block; width: 20px; height: 20px; fill: currentColor; }
+
+    /* responsive tweaks for small screens */
+    @media (max-width: 600px) {
+      .orb { display: none; }
+      header.site-header { padding: 28px 12px; }
+      .card { padding: 28px; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="gradient-bg" aria-hidden="true"></div>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <div class="wrap" role="main">
+    <header class="site-header" aria-label="Site header">
+      <div>
+        <h1 class="logo" aria-label="amirabolfazle">amirabolfazle</h1>
+        <div class="creation-time" title="Creation time">
+          Creation time: 2025-09-27 07:07:40
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card" aria-label="Introduction card">
+        <h2 style="margin:0 0 8px 0;font-size: clamp(1.2rem, 2vw + 1rem, 1.6rem);">Fully Responsive Animated HTML</h2>
+        <p>This page features a gradient theme with bounce effects, crafted to be fully responsive and visually engaging.</p>
+        <p>Resize your window to see the layout adapt and enjoy the subtle motion as the gradient blobs bounce softly in the background.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12a11.99 11.99 0 008.207 11.385c.599.111.817-.258.817-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.612-4.042-1.612-.546-1.387-1.333-1.758-1.333-1.758-1.089-.745.083-.729.083-.729 1.205.086 1.84 1.238 1.84 1.238 1.07 1.835 2.809 1.305 3.492.998.108-.776.42-1.305.762-1.606-2.665-.303-5.466-1.333-5.466-5.93 0-1.31.469-2.381 1.235-3.22-.124-.303-.535-1.523.117-3.173 0 0 1.008-.322 3.301 1.23a11.51 11.51 0 013.003-.403c1.02.005 2.042.138 3.003.403 2.291-1.552 3.299-1.23 3.299-1.23.655 1.651.244 2.871.12 3.173.77.839 1.235 1.909 1.235 3.22 0 4.609-2.808 5.625-5.478 5.92.43.37.814 1.102.814 2.222 0 1.606-.014 2.897-.014 3.293 0 .319.217.692.825.575C20.565 22.092 24 17.596 24 12.297 24 5.673 18.627.297 12 .297z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
