@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0b14;
+      --fg: #e6e6ff;
+      --neon-cyan: #00e5ff;
+      --neon-pink: #ff1df2;
+      --neon-blue: #3b82f6;
+      --glow: 0 0 12px rgba(0, 238, 255, 0.6), 0 0 24px rgba(0, 227, 255, 0.6);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: radial-gradient(circle at 10% -20%, rgba(0, 180, 255, 0.15), transparent 40%), radial-gradient(circle at 90% 10%, rgba(255,0,200,0.15), transparent 40%), #050509; color: #e6e6e6; }
+    header { position: relative; padding: 40px 20px; text-align: center; overflow: hidden; }
+    .hero-title { font-size: clamp(2.4rem, 5vw + 1rem, 6rem); letter-spacing: 0.4rem; color: #fff; text-transform: lowercase; text-shadow: 0 0 8px rgba(0, 255, 255, 0.9), 0 0 20px rgba(0, 255, 255, 0.6); margin: 0; }
+    .subtitle { font-size: 1.1rem; color: #cde3ff; opacity: 0.9; margin-top: 12px; text-shadow: 0 0 8px rgba(0, 255, 255, 0.6); }
+
+    /* Neon rotating rings */
+    .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(0,255,255,0.4); filter: drop-shadow(0 0 6px rgba(0, 255, 255, 0.6)); animation: spin 18s linear infinite; }
+    .ring.r1 { width: 420px; height: 420px; left: -60px; top: 60px; border-color: rgba(0, 235, 255, 0.8); }
+    .ring.r2 { width: 540px; height: 540px; right: -120px; bottom: -120px; border-color: rgba(0, 102, 255, 0.6); animation-duration: 22s; }
+    .ring.r3 { width: 680px; height: 680px; left: 50%; top: 30%; transform: translate(-50%, -50%); border-color: rgba(255, 0, 200, 0.6); animation-duration: 28s; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    nav { display:flex; justify-content:center; gap: 12px; position: sticky; top:0; padding: 12px; background: rgba(5,5,12,0.8); backdrop-filter: blur(4px); z-index: 5; }
+    nav a { color:#b9e3ff; text-decoration:none; padding:8px 14px; border-radius:999px; border:1px solid rgba(180,240,255,.2); transition: transform .3s, background .3s; }
+    nav a:hover { transform: translateY(-2px); background: rgba(0, 255, 255, 0.15); }
+
+    main { padding: 20px; max-width: 1100px; margin: 0 auto; }
+    section { padding: 48px 20px; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+
+    .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(0,255,255,0.25); border-radius: 14px; padding: 18px; position: relative; overflow: hidden; min-height: 180px; transition: transform 0.5s; transform-style: preserve-3d; }
+    .card:hover { transform: rotateY(3deg) rotateX(3deg); }
+    .card .title { font-size: 1.15rem; margin-bottom: 8px; color:#d7f7ff; text-shadow: 0 0 8px rgba(0,255,255,0.8); }
+    .card .desc { font-size: 0.95rem; color: #b8dfff; }
+    .card:before { content: ""; position: absolute; inset: -2px; border-radius: 14px; pointer-events:none; background: linear-gradient(135deg, rgba(0,255,255,0.15), rgba(255,0,200,0.15)); filter: blur(8px); opacity: 0; transition: opacity 0.3s; }
+    .card:hover:before { opacity: 1; }
+
+    .creation { color: #aaf3ff; font-family: monospace; font-size: 0.95rem; margin-top: 6px; text-shadow: 0 0 8px rgba(0, 235, 255, 0.7); }
+
+    footer { padding: 28px 20px; text-align: center; color:#9bdcff; }
+
+    .footer-row { display:flex; align-items:center; justify-content:center; gap:10px; }
+
+    .gh-icon { width: 28px; height: 28px; display:inline-block; vertical-align: middle; color: currentColor; filter: drop-shadow(0 0 8px rgba(0,0,0,.8)); }
+    a.brand { color: #aee6ff; text-decoration:none; font-weight:600; text-shadow: 0 0 8px rgba(0, 235, 255, 0.7); display:inline-flex; align-items:center; gap:6px; }
+
+    .glow-dots { position: fixed; width: 8px; height: 8px; border-radius: 50%; background: rgba(0, 255, 255, 0.8); pointer-events: none; filter: blur(0.2px); animation: float 3s ease-in-out infinite; z-index: 0; }
+    @keyframes float { 0%, 100% { transform: translateY(0); opacity: 0.9; } 50% { transform: translateY(-8px); opacity: 0.6; } }
+
+    @media (max-width: 600px) {
+      .hero-title { letter-spacing: 0.3rem; font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ring r1" aria-hidden="true"></div>
+  <div class="ring r2" aria-hidden="true"></div>
+  <div class="ring r3" aria-hidden="true"></div>
+
+  <nav aria-label="Main navigation">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <header id="top" role="banner">
+    <h1 class="hero-title" style="font-weight:700; font-family: 'Segoe UI', Tahoma, sans-serif;">amirabolfazle</h1>
+    <div class="subtitle">Neon one-file portfolio • animated • rotate</div>
+    <div class="creation" aria-live="polite" style="margin-top:16px;">
+      Creation time: 2025-09-27 06:35:21
+    </div>
+  </header>
+
+  <main>
+    <section id="about" aria-label="About me">
+      <h2 style="color:#d6fbff; text-shadow:0 0 12px rgba(0,255,255,.8);">About</h2>
+      <p style="color:#cfefff; max-width: 800px; line-height:1.6;">
+        Hello! I’m amirabolfazle — a frontend tinkerer who loves crafting neon-inspired, animated experiences in a single-file format. This page is designed to feel playful and fast, with rotating shapes and glow effects that pop on hover.
+      </p>
+      <div class="card-grid" style="margin-top: 18px;">
+        <div class="card">
+          <div class="title">Tech</div>
+          <div class="desc">HTML, CSS, JS, WebGL-ish vibes, and tiny bits of magic. All in one file.</div>
+        </div>
+        <div class="card">
+          <div class="title">Approach</div>
+          <div class="desc">Minimal dependencies, responsive layout, accessible interactions with a neon flair.</div>
+        </div>
+        <div class="card">
+          <div class="title">Fun fact</div>
+          <div class="desc">Rotating rings are pure CSS + a pinch of love.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" aria-label="Projects">
+      <h2 style="color:#d6fbff; text-shadow:0 0 12px rgba(0,255,255,.8);">Projects</h2>
+      <div class="card-grid" aria-label="Project gallery">
+        <article class="card" tabindex="0">
+          <div class="title">Autogen Code Playground</div>
+          <div class="desc">A tiny, auto-generated code playground in one file with neon glow.</div>
+        </article>
+        <article class="card" tabindex="0">
+          <div class="title">One-File Demos</div>
+          <div class="desc">A selection of micro-interactions and effects that load instantly.</div>
+        </article>
+        <article class="card" tabindex="0">
+          <div class="title">Rotation + Neon</div>
+          <div class="desc">CSS-animated rings, glow trails, and perspective tilt on hover.</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" aria-label="Contact">
+      <h2 style="color:#d6fbff; text-shadow:0 0 12px rgba(0,255,255,.8);">Contact</h2>
+      <p style="color:#cfefff; max-width: 800px;">
+        Want to discuss a project or collaboration? Reach out anytime.
+      </p>
+      <p><a href="mailto:hello@amirabolfazle.dev" style="color:#9ce6ff; text-decoration: none; border-bottom: 1px dotted #9ce6ff;">hello@amirabolfazle.dev</a></p>
+    </section>
+  </main>
+
+  <footer role="contentinfo" aria-label="Footer">
+    <div class="footer-row">
+      <a class="brand" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.582 2 12.26c0 4.52 2.865 8.349 6.839 9.713.5.092.682-.218.682-.485 0-.24-.008-.873-.013-1.717-2.782.622-3.37-1.229-3.37-1.229-.455-1.178-1.11-1.494-1.11-1.494-.909-.63.07-.617.07-.617 1.005.072 1.532 1.04 1.532 1.04.895 1.54 2.346 1.096 2.918.837.091-.658.35-1.097.636-1.347-2.222-.264-4.555-1.152-4.555-5.12 0-1.132.39-2.057 1.03-2.784-.103-.264-.447-1.33.098-2.77 0 0 .844-.27 2.766 1.057A9.25 9.25 0 0 1 12 6.844c.856.004 1.717.113 2.521.333 1.92-1.327 2.764-1.057 2.764-1.057.548 1.44.203 2.506.1 2.77.642.727 1.029 1.652 1.029 2.784 0 3.98-2.338 4.853-4.566 5.114.36.31.681.92.681 1.853 0 1.337-.012 2.414-.012 2.741 0 .271.18.583.688.483C19.139 20.606 22 16.778 22 12.26 22 6.582 17.523 2 12 2z"/>
+        </svg>
+        <span style="margin-left:6px; vertical-align: middle;">Created by amirabolfazle</span>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Subtle neon ambience: glow dots that subtly react to cursor
+    (function(){
+      const dots = [];
+      const max = 15;
+      for (let i = 0; i < max; i++) {
+        const d = document.createElement('span');
+        d.className = 'glow-dots';
+        d.style.left = Math.random() * 100 + 'vw';
+        d.style.top = Math.random() * 100 + 'vh';
+        d.style.animationDelay = (Math.random() * 2).toFixed(2) + 's';
+        document.body.appendChild(d);
+        dots.push(d);
+      }
+      document.addEventListener('mousemove', e => {
+        const x = e.clientX;
+        const y = e.clientY;
+        dots.forEach((d, i) => {
+          const dx = x + Math.sin(i) * 80;
+          const dy = y + Math.cos(i) * 80;
+          d.style.transform = `translate(${dx/10}px, ${dy/10}px)`;
+        });
+      });
+    }());
+  </script>
+</body>
+</html>
