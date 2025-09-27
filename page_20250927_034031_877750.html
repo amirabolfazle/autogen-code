@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #0b1020;
+      --bg2: #1b1f35;
+      --bg3: #0f3b66;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: #fff;
+      background: linear-gradient(135deg, #0b1020 0%, #1b1f35 40%, #0f3b66 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* subtle gradient ambience behind content */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 0%, rgba(99,102,241,.25), rgba(0,0,0,0) 40%),
+                  radial-gradient(circle at 80% 20%, rgba(236,72,153,.28), rgba(0,0,0,0) 40%),
+                  linear-gradient(135deg, rgba(10,14,26,.6), rgba(0,0,0,.4));
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* decorative blobs behind the hero */
+    .blob {
+      position: fixed;
+      width: 420px; height: 420px; border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.6;
+      z-index: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    .blob.one {
+      left: -140px; top: -180px;
+      background: radial-gradient(circle at 30% 30%, rgba(99,102,241,.95), rgba(99,102,241,0) 60%);
+    }
+    .blob.two {
+      right: -120px; bottom: -160px;
+      background: radial-gradient(circle at 70% 70%, rgba(16,185,129,.9), rgba(16,185,129,0) 60%);
+    }
+    .blob.three {
+      left: 20%; bottom: -200px;
+      width: 520px; height: 520px;
+      background: radial-gradient(circle at 40% 40%, rgba(236,72,153,.95), rgba(236,72,153,0) 60%);
+    }
+
+    /* hero layout */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 6rem 1rem;
+      overflow: hidden;
+    }
+
+    .brand {
+      font-weight: 900;
+      font-size: clamp(48px, 12vw, 180px);
+      line-height: 0.95;
+      margin: 0;
+      letter-spacing: .02em;
+      background: linear-gradient(90deg, #fff 0%, #c7f9ff 40%, #ffd5e8 70%, #fff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 28px rgba(0,0,0,.25);
+      animation: fadeIn 1s ease forwards;
+      opacity: 0;
+    }
+
+    .tagline {
+      font-size: clamp(16px, 3.5vw, 28px);
+      color: rgba(255,255,255,.92);
+      margin: 0.75rem auto 0;
+      max-width: 780px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: .25s;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 1.25rem;
+      padding: 0.9rem 1.6rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #0a0f1a;
+      background: linear-gradient(135deg, #fff, #e9f0ff);
+      box-shadow: 0 6px 22px rgba(0,0,0,.25);
+      text-decoration: none;
+      transition: transform .2s ease;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: .5s;
+    }
+    .cta:hover { transform: translateY(-2px); }
+
+    .creation {
+      margin-top: .75rem;
+      font-family: ui-monospace, SFMono-Regular, Monaco, Consolas, "Liberation Mono";
+      font-size: .92rem;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: .75s;
+      color: rgba(255,255,255,.85);
+    }
+
+    main { z-index: 1; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in { opacity: 0; transform: translateY(20px); animation: fadeIn 1s forwards; }
+    .delay-1 { animation-delay: .2s; }
+    .delay-2 { animation-delay: .4s; }
+    .delay-3 { animation-delay: .6s; }
+    .delay-4 { animation-delay: .8s; }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 1.5rem;
+      color: rgba(255,255,255,.9);
+      font-family: ui-monospace, SFMono-Regular, Monaco, Consolas, "Liberation Mono";
+      background: rgba(0,0,0,.15);
+      border-top: 1px solid rgba(255,255,255,.15);
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+    footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    @media (max-width: 700px) {
+      .blob { display: none; }
+      .brand { font-size: 96px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient" aria-hidden="true"></div>
+  <div class="blob one" aria-hidden="true"></div>
+  <div class="blob two" aria-hidden="true"></div>
+  <div class="blob three" aria-hidden="true"></div>
+
+  <header class="hero" role="banner">
+    <div>
+      <h1 class="brand fade-in" style="animation-delay:.05s">amirabolfazle</h1>
+      <p class="tagline fade-in" style="animation-delay:.15s">A landing space for ideas, code, and creativity.</p>
+      <a href="#projects" class="cta fade-in" style="animation-delay:.25s">Explore Projects</a>
+      <div class="creation fade-in delay-3" style="animation-delay:.45s">Creation time: 2025-09-27 03:39:51</div>
+    </div>
+  </header>
+
+  <main id="projects" aria-label="Projects">
+    <section style="padding:4rem 1rem; text-align:center; color:#e9e9e9;">
+      <h2 style="margin:0 0 1rem; font-size: clamp(28px, 6vw, 48px);">Projects</h2>
+      <p style="opacity:.9; max-width: 760px; margin: 0 auto 1.5rem;">
+        A glimpse into the kinds of things I enjoy building: clean interfaces, thoughtful interactions, and scalable code.
+      </p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; max-width:1000px; margin:0 auto;">
+        <div style="background: rgba(255,255,255,.08); border-radius:12px; padding:1rem;">
+          <strong>Project A</strong>
+          <p style="opacity:.9; margin:6px 0 0;">Idea, prototype, and execution.</p>
+        </div>
+        <div style="background: rgba(255,255,255,.08); border-radius:12px; padding:1rem;">
+          <strong>Project B</strong>
+          <p style="opacity:.9; margin:6px 0 0;">Tooling and automation.</p>
+        </div>
+        <div style="background: rgba(255,255,255,.08); border-radius:12px; padding:1rem;">
+          <strong>Project C</strong>
+          <p style="opacity:.9; margin:6px 0 0;">Creative experiments.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Site footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" focusable="false" style="display:block;">
+        <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.54-1.37-1.31-1.74-1.31-1.74-1.07-.73.08-.72.08-.72 1.18.08 1.8 1.22 1.8 1.22 1.05 1.8 2.75 1.28 3.42.98.11-.77.41-1.28.75-1.58-2.66-.3-5.46-1.33-5.46-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1 .32 3.3 1.22A11.5 11.5 0 0 1 12 6.85c.01-.25.15-.51.37-.75 2.29-.9 3.3-1.22 3.3-1.22.66 1.65.25 2.87.13 3.17.77.84 1.23 1.91 1.23 3.22 0 4.6-2.81 5.61-5.49 5.91.42.36.8 1.08.8 2.19v3.25c0 .32.22.69.83.57A12 12 0 0 0 12 .5Z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
