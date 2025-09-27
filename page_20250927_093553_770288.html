@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f7f5fb;
+      --surface: #ffffff;
+      --text: #1f1b2a;
+      --muted: #6b6b80;
+      --pink: #ffdceb;
+      --mint: #e4fbf4;
+      --lav: #ece3ff;
+      --blue: #d6eaff;
+      --shadow: 0 8px 22px rgba(0,0,0,.08);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient( circle at 20% -10%, rgba(255, 200, 220, .6) 0%, rgba(255,255,255,0) 40% ),
+                  radial-gradient( circle at 90% 10%, rgba(180, 230, 255, .6) 0%, rgba(255,255,255,0) 40% ),
+                  linear-gradient(#fbfafe, #f8f4ff);
+      overflow-x: hidden;
+    }
+
+    /* Decorative pastel blobs */
+    .blobs { position: absolute; top: -60px; left: -60px; width: 260px; height: 260px; pointer-events: none; z-index: 0; }
+    .blob {
+      position: absolute; width: 180px; height: 180px; border-radius: 50%; filter: blur(0.5px);
+      opacity: .55;
+      animation: float 9s ease-in-out infinite;
+    }
+    .blob.b1 { background: #ffd6e6; left: 20px; top: 40px; animation-delay: 0s; }
+    .blob.b2 { background: #c3f0ff; right: 40px; top: 100px; animation-delay: -3s; width: 140px; height: 140px; }
+    .blob.b3 { background: #e2d1ff; left: 120px; bottom: -20px; width: 160px; height: 160px; animation-delay: -6s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0px) translateX(0); }
+      50% { transform: translateY(-18px) translateX(8px); }
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 72px 20px 28px;
+    }
+
+    .title {
+      font-weight: 900;
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      line-height: 1.05;
+      margin: 0;
+      letter-spacing: .02em;
+      background: linear-gradient(90deg, #ff7ecb, #7bdfff, #bba7ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 0 rgba(255,255,255,.6);
+      animation: pop 0.9s ease forwards;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    @keyframes pop {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: #3b3b3b;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.75);
+      backdrop-filter: saturate(1.2);
+      transform: translateY(6px);
+      opacity: 0;
+      animation: rise 0.6s ease forwards;
+      animation-delay: 0.25s;
+    }
+    @keyframes rise {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    main { position: relative; z-index: 1; padding: 12px 20px 60px; }
+    section { max-width: 1100px; margin: 0 auto; }
+
+    h2.section-title {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      margin: 28px 0 14px;
+      text-align: left;
+      color: #2b2b2b;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid rgba(0,0,0,.05);
+      transform: translateY(12px) scale(.98);
+      opacity: 0;
+      animation: bounceIn 0.8s ease forwards;
+      animation-delay: calc(var(--i) * 0.08s);
+      transition: transform .25s ease;
+    }
+    .card:hover { transform: translateY(-4px) scale(1.005); }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(22px) scale(.92); opacity: 0; }
+      60% { transform: translateY(-6px) scale(1.02); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, #ffd9e6, #d7f7e9);
+      color: #6b2c91;
+      align-self: start;
+    }
+
+    .card h3 { margin: 0; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.4; }
+
+    /* Minor responsive tweak for very narrow screens */
+    @media (max-width: 520px) {
+      header { padding-top: 48px; }
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      color: #555;
+    }
+    .github {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: inherit; text-decoration: none;
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.8);
+      transition: transform .2s ease;
+    }
+    .github:hover { transform: translateY(-1px); }
+    .footer-credit {
+      display: inline-block;
+      margin-left: 12px;
+      font-size: .95rem;
+      vertical-align: middle;
+      color: #555;
+    }
+    svg{ display: block; }
+
+  </style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <header>
+    <h1 class="title">amirabolfazle</h1>
+    <div class="creation-time" aria-label="Creation time">2025-09-27 09:35:27</div>
+  </header>
+
+  <main>
+    <section aria-label="Portfolio projects">
+      <h2 class="section-title" style="padding-left: 4px;">Portfolio</h2>
+      <div class="grid" style="padding: 0 6px;">
+        <!-- Card 1 -->
+        <article class="card" style="--i:0" aria-label="Autogen Code project">
+          <div class="card-icon" aria-hidden="true">
+            <!-- Code icon -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 9l-4 4 4 4v-3h8v-2H8v-3z"/>
+            </svg>
+          </div>
+          <h3>Autogen Code</h3>
+          <p>A tiny, self-contained demonstration of code generation logic with prompts and templates.</p>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" style="--i:1" aria-label="Pastel illustrations project">
+          <div class="card-icon" aria-hidden="true" style="background: linear-gradient(135deg, #d4fff0, #ffdbe8); color:#0a6a6f;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 3l2.09 4.26L18 8.5l-3.3 3.21L15 16l-3-1.5L9 16l-1.2-4.29L4 8.5l3.91-.24L12 3z"/>
+            </svg>
+          </div>
+          <h3>Pastel Sketches</h3>
+          <p>Soft, iterative illustrations that explore color harmony and gentle motion.</p>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card" style="--i:2" aria-label="Responsive layout project">
+          <div class="card-icon" aria-hidden="true" style="background: linear-gradient(135deg, #e6f0ff, #e9fff0); color:#1e4a8a;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M4 5h16v14H4z" opacity=".3"/><path d="M3 5h18v14H3z"/>
+            </svg>
+          </div>
+          <h3>Responsive Grid</h3>
+          <p>Fluid layout examples that adapt gracefully to various viewports.</p>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card" style="--i:3" aria-label="Interactive micro-interactions project">
+          <div class="card-icon" aria-hidden="true" style="background: linear-gradient(135deg, #ffe1f0, #e6fbdc); color:#7b2dbe;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 3l2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4z"/>
+            </svg>
+          </div>
+          <h3>Micro Interactions</h3>
+          <p>Subtle bounce and hover effects to enhance user delight.</p>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card" style="--i:4" aria-label="Animation experiments project">
+          <div class="card-icon" aria-hidden="true" style="background: linear-gradient(135deg, #e6d4ff, #d4fff2); color:#2b2b2b;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2l3 7h7l-6 4.5L18 21l-6-4-6 4 2-7.5L3 9h7z"/>
+            </svg>
+          </div>
+          <h3>Animation Experiments</h3>
+          <p>Playful motion ideas captured in a single file portfolio.</p>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="card" style="--i:5" aria-label="Contact/info project">
+          <div class="card-icon" aria-hidden="true" style="background: linear-gradient(135deg, #fff0c9, #ffd9e6); color:#2e2e2e;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3 6h18v12H3z" opacity=".3"/><path d="M12 3l9 4v10l-9 4-9-4V7l9-4z"/>
+            </svg>
+          </div>
+          <h3>About this Page</h3>
+          <p>A compact, self-contained showcase with pastel vibes and bounce magic.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo" aria-label="Site footer" style="padding: 12px 20px;">
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" focusable="false" style="color:#333;">
+        <path d="M12 .5A12 12 0 0 0 0 12.5c0 5.29 3.438 9.77 8.205 11.345.6.113.82-.26.82-.58 0-.287-.01-1.04-.016-2.04-3.338.726-4.042-1.612-4.042-1.612-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.084-.73.084-.73 1.205.084 1.84 1.238 1.84 1.238 1.07 1.832 2.809 1.303 3.494.997.108-.776.42-1.304.764-1.605-2.666-.303-5.466-1.333-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.125-.303-.535-1.525.117-3.176 0 0 1.008-.322 3.3 1.23a11.4 11.4 0 0 1 6 0C17.47 4.01 18.48 4.33 18.48 4.33c.653 1.65.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.624-5.476 5.921.431.373.815 1.102.815 2.22 0 1.606-.015 2.896-.015 3.294 0 .324.217.699.825.58A12.01 12.01 0 0 0 24 12.5 12 12 0 0 0 12 .5z"/>
+      </svg>
+      <span style="display:inline-block; vertical-align: middle;"> </span>
+    </a>
+    <span class="footer-credit" aria-label="Credits">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
