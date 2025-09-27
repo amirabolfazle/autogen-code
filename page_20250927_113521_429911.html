@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle — Neon Portfolio</title>
+  <style>
+    :root{
+      --bg0: #040614;
+      --bg1: #020312;
+      --cyan: #00e6ff;
+      --pink: #ff4bd6;
+      --purple: #9a00ff;
+      --green: #39ff14;
+      --card: rgba(6, 8, 28, 0.8);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: #e6fbff;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      background-color: var(--bg0);
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(0, 230, 255, 0.15), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(255, 0, 208, 0.12), transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(120, 255, 180, 0.08), transparent 40%);
+      background-size: cover;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated neon glow behind content */
+    body:before {
+      content: "";
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0, 230, 255, 0.15), rgba(255, 0, 208, 0.15), rgba(0, 255, 120, 0.15), rgba(0, 230, 255, 0.15));
+      filter: blur(40px);
+      animation: rotate 40s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+    }
+    @keyframes rotate { to { transform: rotate(360deg); } }
+
+    .container {
+      max-width: 1100px;
+      padding: 28px 20px 80px;
+      margin: 0 auto;
+    }
+
+    header.hero {
+      text-align: center;
+      padding: 64px 16px 28px;
+      position: relative;
+    }
+
+    h1.brand {
+      font-size: clamp(42px, 8vw, 92px);
+      line-height: 0.95;
+      margin: 0;
+      letter-spacing: .5px;
+      text-transform: lowercase;
+      color: #eaffff;
+      text-shadow:
+        0 0 6px rgba(0, 226, 255, 0.9),
+        0 0 18px rgba(0, 226, 255, 0.6),
+        0 0 40px rgba(255, 0, 214, 0.7);
+      filter: drop-shadow(0 0 6px rgba(0, 226, 255, 0.6));
+    }
+
+    h1.brand .underline {
+      display: inline-block;
+      padding-bottom: 6px;
+      border-bottom: 2px solid rgba(0, 226, 255, 0.8);
+      text-shadow: 0 0 10px rgba(0, 226, 255, 0.8);
+    }
+
+    .tagline {
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #bafcff;
+      opacity: .9;
+      margin-top: 14px;
+      animation: glow 2.5s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 6px rgba(0, 230, 255, 0.8), 0 0 20px rgba(0, 230, 255, 0.4); }
+      50% { text-shadow: 0 0 12px rgba(255, 0, 214, 0.9), 0 0 28px rgba(255, 0, 214, 0.6); }
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(0, 230, 255, 0.5);
+      color: #eaffff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      text-shadow: 0 0 6px rgba(0, 226, 255, 0.6);
+      box-shadow: inset 0 0 12px rgba(0, 230, 255, 0.25);
+    }
+
+    .section {
+      margin-top: 38px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 8px 2px 14px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: clamp(20px, 4vw, 28px);
+      letter-spacing: 0.5px;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0, 226, 255, 0.9);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(6,8,28,.85), rgba(6,8,28,.65));
+      border: 1px solid rgba(0, 230, 255, 0.35);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 140px;
+      color: #eaffff;
+      box-shadow: 0 0 24px rgba(0, 230, 255, 0.15);
+      transform: scale(0.97);
+      opacity: 0;
+      animation: zoomIn 0.6s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    @keyframes zoomIn {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 40px rgba(0, 230, 255, 0.45);
+      border-color: rgba(0, 230, 255, 0.65);
+    }
+
+    .card .title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #eaffff;
+      text-shadow: 0 0 6px rgba(0, 226, 255, 0.8);
+    }
+
+    .card .desc {
+      font-size: 13px;
+      color: #d8f7ff;
+      opacity: 0.95;
+    }
+
+    .card .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(0, 230, 255, 0.5);
+      background: rgba(0, 230, 255, 0.15);
+      color: #eaffff;
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+
+    /* Neon glow accents on cards using pseudo element */
+    .card:after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 16px;
+      pointer-events: none;
+      box-shadow: 0 0 14px rgba(0, 255, 200, 0.25);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .card:hover:after { opacity: 1; }
+
+    /* Small footer area styling */
+    footer.footer {
+      margin-top: 60px;
+      text-align: center;
+      color: #bafcff;
+    }
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 230, 255, 0.6);
+      background: rgba(0, 230, 255, 0.12);
+      color: #eaffff;
+      text-decoration: none;
+      transition: transform .25s ease;
+    }
+    .footer-link:hover { transform: translateY(-1px); }
+
+    .github-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+      fill: currentColor;
+    }
+
+    @media (max-width: 700px) {
+      header.hero { padding: 40px 12px; }
+      .section { padding: 0 6px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero" aria-label="Intro">
+      <h1 class="brand" style="margin:0;">
+        <span class="underline" style="font-weight:900; letter-spacing:.5px; color:#eaffff;">amirabolfazle</span>
+      </h1>
+      <div class="tagline" aria-label="Neon portfolio subtitle">Neon-themed, animated one-page portfolio</div>
+      <div class="creation-time" aria-label="Creation timestamp" style="margin-top:14px;">
+        Creation time: 2025-09-27 11:34:55
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="projects-title">
+      <div class="section-header">
+        <h2 id="projects-title" style="opacity:.95">Projects</h2>
+        <span class="creation-time" style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12px; padding:6px 10px;">Zoom on hover</span>
+      </div>
+
+      <div class="grid" role="list">
+        <article class="card" role="listitem" aria-label="Project 1: Neon Explorer">
+          <div class="title">Neon Explorer</div>
+          <div class="desc">A neon-inspired data visualization dashboard with reactive gradients and crisp typography.</div>
+          <span class="chip">Web App</span>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project 2: Pulse Studio">
+          <div class="title">Pulse Studio</div>
+          <div class="desc">Creative animation studio landing with parallax neon glow and micro-interactions.</div>
+          <span class="chip">UI/UX</span>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project 3: Aurora Portfolio">
+          <div class="title">Aurora Portfolio</div>
+          <div class="desc">Personal portfolio template featuring zoom cards and neon outlines.</div>
+          <span class="chip">Template</span>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project 4: HyperScale Grid">
+          <div class="title">HyperScale Grid</div>
+          <div class="desc">Responsive grid system with smooth transitions and scalable components.</div>
+          <span class="chip">CSS/JS</span>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project 5: Neon Night Owl">
+          <div class="title">Neon Night Owl</div>
+          <div class="desc">Creative coding experiment: glow-driven animation loop and sound reactive visuals.</div>
+          <span class="chip">Creative Coding</span>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project 6: Flux Cards">
+          <div class="title">Flux Cards</div>
+          <div class="desc">Modular card components with fluid motion and accessible color contrast.</div>
+          <span class="chip">Components</span>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2
+            .01-.41-2.08-.54-2.13-2.16-.5-.58-.93-1.54-.93-1.54-.41-.84-1
+            .05-1.04-.05-1.04-.36-.75.08-.74.08-.74  i.86.06 1.31 0 1.31 0 .36-.59.9
+            - .55 1.32-.55.1- ,1 0-1 .99-.06 1.86-.93 1.86-1 0-.52.17-.9.37-1.11
+            -1.66-.19-3.41-.83-3.41-3.7 0-.82.28-1.49.74-2.02-.07-.19-.32-.95.07-1.98
+            0 0 .61-.2 2 .77a6.5 6.5 0 015 0c1.39-.98 2-.77 2-.77.39 1.03.15 1.79.08 1.98.46.53.74
+            1.2.74 2.02 0 2.88-1.75 3.5-3.41 3.69.37.32.7.95.7 1.92 0 1.39-.01 2.51-.01 2.85 0 .21.15.46.56.38A8
+            8 0 0016 8c0-4.42-3.58-8-8-8z">
+          </path>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <div style="margin-top:8px; display:block; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12px; color:#bafcff;">
+        Created by amirabolfazle
+      </div>
+    </footer>
+  </div>
+
+  <!-- Lightweight JS to stagger card animations on load for a nicer feel -->
+  <script>
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, idx) => {
+        card.style.animationDelay = (idx * 0.08) + 's';
+      });
+    })();
+  </script>
+</body>
+</html>
