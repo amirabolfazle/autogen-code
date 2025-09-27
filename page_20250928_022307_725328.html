@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg1:#fff0f5;
+      --bg2:#f8fbf7;
+      --bg3:#f3f6ff;
+      --text:#2b2b2b;
+      --muted:#5a5a5a;
+      --primary:#a27bd6;
+      --accent:#87e0c8;
+      --card: rgba(255,255,255,.85);
+      --shadow: 0 6px 18px rgba(0,0,0,.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, #fff4f8 0%, #f9fbff 40%, #f4fff7 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    /* decorative pastel blobs */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: .6;
+      z-index: -1;
+      pointer-events: none;
+    }
+    body::before {
+      width: 40vmin; height: 40vmin;
+      top: -10vmin; left: -10vmin;
+      background: radial-gradient(circle at 30% 30%, rgba(163,122,214,.6), transparent 40%), 
+                  radial-gradient(circle at 70% 60%, rgba(135,224,200,.6), transparent 40%);
+    }
+    body::after {
+      width: 50vmin; height: 50vmin;
+      bottom: -15vmin; right: -15vmin;
+      background: radial-gradient(circle at 40% 40%, rgba(255,200,210,.6), transparent 40%), 
+                  radial-gradient(circle at 60% 60%, rgba(150,190,255,.6), transparent 40%);
+    }
+
+    /* layout */
+    .site-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 48px;
+      position: sticky;
+      top: 0;
+      backdrop-filter: saturate(1.1) blur(2px);
+      background: rgba(255,255,255,.75);
+      border-bottom: 1px solid rgba(0,0,0,.05);
+      z-index: 10;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: .5px;
+      color: #2b2b2b;
+    }
+    .brand-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: linear-gradient(135deg, #ffd1e6, #c6f0e5);
+      box-shadow: 0 0 0 6px rgba(255,255,255,0.9);
+    }
+    .creation-time {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.04);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 72px 20px 40px;
+    }
+    .hero h1 {
+      font-size: 64px;
+      line-height: 1.05;
+      margin: 8px 0 12px;
+      letter-spacing: .5px;
+      color: #2c2c2c;
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 780px;
+      margin: 0 auto 22px;
+    }
+    .cta {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ffd6e6 0%, #c7f0e6 100%);
+      color: #1a1a1a;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 6px 14px rgba(0,0,0,.08);
+      transition: transform .2s ease;
+    }
+    .cta:hover { transform: translateY(-1px); }
+
+    .features {
+      padding: 0 40px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 140px;
+      border: 1px solid rgba(0,0,0,.05);
+    }
+    .card h3 { margin: 0 0 6px; font-size: 18px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .site-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 16px;
+      border-top: 1px solid rgba(0,0,0,.08);
+      color: var(--muted);
+      background: rgba(255,255,255,.75);
+    }
+    .footer-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: inherit; text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .footer-link:hover { background: rgba(0,0,0,.04); }
+
+    svg { display: block; width: 20px; height: 20px; color: #333; }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 48px; }
+      .site-header { padding: 20px 16px; }
+      .brand { font-size: 22px; }
+    }
+
+    /* slide-up animation */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 0.6s forwards;
+    }
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header slide-up" style="animation-delay:0s">
+    <div class="brand" aria-label="Brand">
+      <span class="brand-dot" style="display:inline-block"></span>
+      <span aria-label="Site title">amirabolfazle</span>
+    </div>
+    <div class="creation-time" aria-label="Creation time">
+      Creation time: 2025-09-28 02:22:33
+    </div>
+  </header>
+
+  <main>
+    <section class="hero slide-up" style="animation-delay:0.15s;">
+      <h1>amirabolfazle</h1>
+      <p>Pastel-toned landing page with smooth slide-up effects. A minimal, elegant presence designed to delight from the moment you arrive.</p>
+      <a class="cta" href="#features" aria-label="See features">Explore Features</a>
+    </section>
+
+    <section id="features" class="features slide-up" style="animation-delay:0.3s;">
+      <div class="card">
+        <h3>Pastel Aesthetic</h3>
+        <p>Soft color palette to create a calm, inviting experience for visitors.</p>
+      </div>
+      <div class="card">
+        <h3>Accessible Motion</h3>
+        <p>Subtle slide-up animations that feel natural and non-intrusive.</p>
+      </div>
+      <div class="card">
+        <h3>Clean Structure</h3>
+        <p>Clear layout with readable typography and intuitive navigation.</p>
+      </div>
+      <div class="card">
+        <h3>Responsive</h3>
+        <p>Looks great on phones, tablets, and desktops alike.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer slide-up" style="animation-delay:0.45s;">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+        <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.74.08-.74 1.2.08 1.84 1.25 1.84 1.25 1.07 1.84 2.81 1.31 3.49.99.11-.77.42-1.31.76-1.61-2.67-.3-5.46-1.36-5.46-5.97 0-1.32.46-2.38 1.22-3.22-.12-.3-.53-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02.01 2.05.13 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.69.24 2.87.12 3.18.77.84 1.22 1.9 1.22 3.22 0 4.62-2.81 5.66-5.48 5.95.42.36.8 1.08.8 2.18 0 1.57-.01 2.84-.01 3.22 0 .32.22.69.83.57C20.76 21.07 24 16.5 24 12.1 24 5.43 18.63 0 12 0z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
