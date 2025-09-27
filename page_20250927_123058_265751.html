@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0e14;
+      --bg2: #11161e;
+      --surface: #151923;
+      --text: #e9eefc;
+      --muted: #a6b0c9;
+      --accent: #7dd3fc;
+      --glow: 0 0 18px rgba(125,211,252,.6);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0,180,255,.08), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(0,255,200,.08), transparent 40%),
+                  linear-gradient(#0b0e14, #0b0e14 60%, #0a0d12);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Zoom-in on load */
+    .stage {
+      transform: scale(0.98);
+      opacity: 0;
+      animation: stageIn 900ms ease forwards;
+      perspective: 1000px;
+    }
+    @keyframes stageIn {
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    header.site-header {
+      text-align: center;
+      padding: 60px 20px 20px;
+      overflow: hidden;
+    }
+
+    .sig {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(125,211,252,.25), rgba(99,102,241,.25));
+      color: #eaf6ff;
+      font-size: 12px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      box-shadow: 0 0 0 1px rgba(125,211,252,.25);
+      margin-bottom: 6px;
+    }
+
+    h1.title {
+      margin: 4px 0 0;
+      font-size: clamp(28px, 6vw, 64px);
+      font-weight: 900;
+      text-transform: lowercase;
+      letter-spacing: .04em;
+      color: #eaf2ff;
+      text-shadow: 0 2px 12px rgba(0,0,0,.4);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px 20px 60px;
+      position: relative;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #1e3a8a, #06b6d4, #8b5cf6, #1e3a8a);
+      box-shadow: inset 0 0 14px rgba(255,255,255,.4), 0 6px 28px rgba(0,0,0,.4);
+      position: relative;
+    }
+    .avatar:after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.8), transparent 40%);
+      mix-blend-mode: overlay;
+      filter: saturate(1.2);
+    }
+
+    .intro {
+      max-width: 700px;
+      padding: 6px 14px;
+    }
+    .intro h2 {
+      margin: 0 0 6px;
+      font-size: clamp(20px, 4vw, 32px);
+      color: #f7fbff;
+      letter-spacing: .01em;
+    }
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(125,211,252,.9), rgba(99,102,241,.9));
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+      transition: transform .25s ease;
+    }
+    .btn:hover { transform: translateY(-1px) scale(1.02); }
+
+    .creation {
+      text-align: center;
+      color: #cbd5e1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: inline-block;
+      background: rgba(2,6,23,.4);
+      border: 1px solid rgba(125,211,252,.25);
+      margin: 0 auto 40px;
+      box-shadow: inset 0 0 8px rgba(125,211,252,.15);
+    }
+
+    section { padding: 0 20px 60px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 0 20px 40px;
+    }
+
+    .card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(125,211,252,.25);
+      border-radius: 16px;
+      padding: 18px;
+      transition: transform .25s ease, box-shadow .25s ease;
+      min-height: 120px;
+      box-shadow: inset 0 0 30px rgba(125,211,252,.05);
+    }
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(0,0,0,.4);
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(125,211,252,.9), transparent 40%);
+      filter: blur(2px);
+      opacity: .6;
+      pointer-events: none;
+      animation: float 12s ease-in-out infinite;
+    }
+    .glow1 { top: -40px; left: -40px; }
+    .glow2 { bottom: -60px; right: -60px; background: radial-gradient(circle at 40% 40%, rgba(0,255,180,.8), transparent 40%); animation-duration: 14s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(20px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    @media (max-width: 600px) {
+      header.site-header { padding-top: 40px; }
+      .avatar { width: 90px; height: 90px; }
+    }
+
+    /* tilt interaction for elements with class "tilt" */
+    .tilt { transition: transform .1s ease; will-change: transform; }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage" aria-label="Animated stage">
+    <header class="site-header tilt" aria-label="Site header">
+      <span class="sig" aria-label="signature" style="font-family:inherit; font-size:12px; letter-spacing:.3em;">personal page</span>
+      <h1 class="title" style="margin-top:8px; font-weight:900;">amirabolfazle</h1>
+      <div class="subtitle" aria-label="subtitle" style="opacity:.9;">A fancy animated dark-mode page</div>
+    </header>
+
+    <section class="hero tilt" aria-label="Intro" style="position:relative;">
+      <div class="glow-orb glow1" aria-hidden="true"></div>
+      <div class="avatar" aria-label="avatar decorative"></div>
+      <div class="intro">
+        <h2>Hi there, I’m Amir Abolfazle</h2>
+        <p>Building delightful web experiences with a touch of whimsy. This page features dark mode, zoom-in animation, and subtle motion effects.</p>
+        <a href="#projects" class="btn" aria-label="See projects">View projects</a>
+      </div>
+      <div class="glow-orb glow2" aria-hidden="true"></div>
+    </section>
+
+    <section class="creation" aria-label="Creation time">
+      Creation time: 2025-09-27 12:30:20
+    </section>
+
+    <section id="projects" aria-label="Projects" class="grid tilt">
+      <div class="card" style="aspect-ratio:1/1;">
+        <strong>Project a</strong>
+        <p style="color:var(--muted); margin:.4rem 0 0;">A sample description for project A.</p>
+      </div>
+      <div class="card" style="aspect-ratio:1/1;">
+        <strong>Project b</strong>
+        <p style="color:var(--muted); margin:.4rem 0 0;">A sample description for project B.</p>
+      </div>
+      <div class="card" style="aspect-ratio:1/1;">
+        <strong>Project c</strong>
+        <p style="color:var(--muted); margin:.4rem 0 0;">A sample description for project C.</p>
+      </div>
+    </section>
+
+    <footer class="site-footer" aria-label="Footer" style="padding:20px 0 40px; text-align:center;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noreferrer" class="github-link" style="display:inline-flex; align-items:center; gap:8px; color:#e8f6ff; text-decoration:none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5A12 12 0 0 0 0 12.5a12.1 12.1 0 0 0 8.29 11.5c.6.11.82-.26.82-.58l-.01-2.01c-3.37.73-4.08-1.45-4.08-1.45-.55-1.41-1.34-1.79-1.34-1.79-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.69-.31-5.51-1.34-5.51-5.95 0-1.32.47-2.4 1.24-3.25-.12-.31-.54-1.57.12-3.28 0 0 1.01-.32 3.31 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.31-1.23 3.31-1.23.66 1.71.24 2.97.12 3.28.77.85 1.24 1.93 1.24 3.25 0 4.62-2.82 5.63-5.5 5.93.43.37.82 1.1.82 2.22l-.01 3.29c0 .32.22.69.83.58A12 12 0 0 0 24 12.5 12 12 0 0 0 12 .5Z"/>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Simple tilt effect for elements with class 'tilt'
+    (function(){
+      const tiltEls = document.querySelectorAll('.tilt');
+      window.addEventListener('mousemove', (e) => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const rx = (e.clientY / h - 0.5) * -8; // rotateX
+        const ry = (e.clientX / w - 0.5) * 12; // rotateY
+        tiltEls.forEach(el => {
+          el.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+      });
+      window.addEventListener('mouseleave', () => {
+        tiltEls.forEach(el => { el.style.transform = 'none'; });
+      });
+    })();
+  </script>
+</body>
+</html>
