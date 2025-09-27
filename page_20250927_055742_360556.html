@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle - Neon Portfolio</title>
+  <style>
+    :root{
+      --bg: #0b0e19;
+      --fg: #e8f7ff;
+      --neon cyan: #00e5ff;
+      --cyan: #00f5ff;
+      --pink: #ff3bd8;
+      --purple: #9a5cff;
+      --glow-cyan: 0 0 12px rgba(0, 245, 255, 0.9), 0 0 28px rgba(0, 245, 255, 0.6);
+      --glow-pink: 0 0 12px rgba(255, 59, 216, 0.9), 0 0 28px rgba(255, 59, 216, 0.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% 20%, rgba(0,255,255,.08), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(255,0,200,.08), transparent 40%),
+                  linear-gradient(#0a0b12 0%, #0a0b12 60%, #090a12 100%);
+      overflow-x: hidden;
+    }
+
+    /* soft animated glow overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -10vmax;
+      left: -10vmax;
+      width: 120vmax;
+      height: 120vmax;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0,245,255,.25), rgba(255,0,214,.25), rgba(0,245,255,.25));
+      filter: blur(60px);
+      z-index: -1;
+      animation: drift 22s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes drift {
+      0% { transform: rotate(0deg) translateY(0); }
+      50% { transform: rotate(180deg) translateY(-6px); }
+      100% { transform: rotate(360deg) translateY(0); }
+    }
+
+    header {
+      text-align: center;
+      padding: 54px 20px 20px;
+    }
+
+    /* Neon title with slow rotation */
+    .brand {
+      display: inline-block;
+      font-family: "Noto Sans", system-ui, sans-serif;
+      font-weight: 900;
+      font-size: clamp(48px, 9vw, 120px);
+      letter-spacing: .25em;
+      color: #eaffff;
+      text-shadow:
+        0 0 6px rgba(0, 245, 255, 0.9),
+        0 0 14px rgba(0, 245, 255, 0.6),
+        0 0 28px rgba(0, 245, 255, 0.25);
+      transform-origin: center;
+      animation: brandSpin 40s linear infinite;
+      user-select: none;
+    }
+
+    @keyframes brandSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .tagline {
+      margin-top: 12px;
+      font-size: 1.05rem;
+      color: #b8eaff;
+      opacity: .9;
+    }
+
+    /* Orbiting decorative ring (neon) */
+    .orbit {
+      position: relative;
+      width: 260px;
+      height: 260px;
+      margin: 18px auto 0;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 245, 255, 0.6);
+      box-shadow: 0 0 28px rgba(0, 245, 255, 0.6);
+      animation: spin 28s linear infinite;
+      display: grid;
+      place-items: center;
+    }
+    .orbit::after {
+      content: "";
+      position: absolute;
+      width: 70%;
+      height: 70%;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 0, 214, 0.5);
+      box-shadow: inset 0 0 12px rgba(255,0,214,.5);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .dot {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #00f5ff;
+      box-shadow: 0 0 8px #00f5ff;
+    }
+    /* place a few dots around the orbit */
+    .dot.d1 { top: 6%; left: 50%; transform: translate(-50%, -50%); }
+    .dot.d2 { top: 50%; left: 94%; transform: translate(-50%, -50%); }
+    .dot.d3 { top: 94%; left: 50%; transform: translate(-50%, -50%); }
+    .dot.d4 { top: 50%; left: 6%; transform: translate(-50%, -50%); }
+
+    /* Create the rotating 3D card grid */
+    main {
+      padding: 20px;
+    }
+
+    .creation-time {
+      text-align: center;
+      color: #c3fbff;
+      margin: 6px 0 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      letter-spacing: .04em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      padding: 10px 12px 40px;
+      perspective: 1000px;
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(12,18,40,.9), rgba(6,9,20,.9));
+      border-radius: 16px;
+      padding: 18px;
+      min-height: 170px;
+      color: #eaffff;
+      border: 1px solid rgba(0, 245, 255, .4);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, .55), inset 0 0 12px rgba(0, 245, 255, .15);
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 14px 34px rgba(0, 245, 255, .25), inset 0 0 16px rgba(0,245,255,.25);
+    }
+
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px;
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-shadow: 0 0 8px rgba(0,255,245,.95);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: .75rem;
+      color: #002424;
+      background: linear-gradient(135deg, #66fff2, #00d3ff);
+      box-shadow: 0 0 8px rgba(0, 245, 255, .8);
+      text-transform: uppercase;
+    }
+
+    .card-content {
+      margin-top: 8px;
+      font-size: .95rem;
+      line-height: 1.4;
+      color: #d6fbff;
+      min-height: 72px;
+      opacity: .95;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #062a2f;
+      background: linear-gradient(135deg, #7cffd2, #00f5ff);
+      font-weight: 700;
+      letter-spacing: .04em;
+      border: 1px solid rgba(0,0,0,.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    }
+
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .4);
+    }
+
+    /* neon glow accents for each card edge */
+    .card::before,
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .card::before {
+      border: 1px solid rgba(0, 245, 255, .5);
+      box-shadow: 0 0 16px rgba(0, 245, 255, .6);
+      filter: saturate(1.2);
+    }
+    .card::after {
+      border: 1px solid rgba(255, 0, 214, .4);
+      box-shadow: inset 0 0 12px rgba(255,0,214,.35);
+      mix-blend-mode: screen;
+    }
+
+    /* simple rotating strip animation inside cards to enhance neon feel */
+    .glow-strip {
+      position: absolute;
+      height: 3px;
+      width: 120%;
+      top: 0;
+      left: -10%;
+      background: linear-gradient(90deg, transparent, rgba(0,245,255,.9), rgba(255,0,214,.9), transparent);
+      transform: translateZ(0);
+      animation: sweep 3s linear infinite;
+    }
+    @keyframes sweep {
+      0% { transform: translateX(-110%); }
+      100% { transform: translateX(110%); }
+    }
+
+    footer.site-footer {
+      text-align: center;
+      padding: 28px 12px 40px;
+      color: #bfefff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+    }
+    .gh-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #bfefff; text-decoration: none;
+      padding: 8px 12px; border-radius: 999px;
+      border: 1px solid rgba(0,245,255,.35);
+      background: rgba(0,0,0,.25);
+      box-shadow: 0 6px 14px rgba(0,0,0,.25);
+      transition: transform .2s ease;
+    }
+    .gh-link:hover { transform: translateY(-2px); }
+    .gh-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; }
+
+    @media (max-width: 600px) {
+      .orbit { width: 180px; height: 180px; }
+      .brand { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="orbit" aria-label="neon orbit decoration">
+      <span class="dot d1" aria-hidden="true"></span>
+      <span class="dot d2" aria-hidden="true"></span>
+      <span class="dot d3" aria-hidden="true"></span>
+      <span class="dot d4" aria-hidden="true"></span>
+    </div>
+    <div class="brand" aria-label="amirabolfazle">
+      amirabolfazle
+    </div>
+    <div class="tagline">Neon-animated portfolio</div>
+  </header>
+
+  <main aria-label="Portfolio items">
+    <div class="creation-time" title="Creation timestamp">Creation time: 2025-09-27 05:56:59</div>
+
+    <section class="grid" aria-label="Projects grid">
+      <!-- Card 1 -->
+      <article class="card" role="article" aria-label="Project 1">
+        <div class="glow-strip" aria-hidden="true"></div>
+        <div class="card-header">
+          <span class="card-title">Project Aurora</span>
+          <span class="badge" aria-label="badge">Web</span>
+        </div>
+        <div class="card-content">
+          A neon-lit landing page showcasing subtle 3D tilt and dynamic color shifts.
+        </div>
+        <a class="cta" href="#" onclick="return false;">
+          View
+        </a>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card" role="article" aria-label="Project 2">
+        <div class="glow-strip" aria-hidden="true" style="animation-duration: 2.6s;"></div>
+        <div class="card-header">
+          <span class="card-title">Neon Pulse</span>
+          <span class="badge" aria-label="badge">UI/UX</span>
+        </div>
+        <div class="card-content">
+          Interactive components with glow and micro-animations tuned for accessibility.
+        </div>
+        <a class="cta" href="#" onclick="return false;">Open</a>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card" role="article" aria-label="Project 3">
+        <div class="glow-strip" aria-hidden="true" style="animation-duration: 4s; background: linear-gradient(90deg, transparent, rgba(0,255,214,.9), transparent);"></div>
+        <div class="card-header">
+          <span class="card-title">Spectra Code</span>
+          <span class="badge" aria-label="badge">Code</span>
+        </div>
+        <div class="card-content">
+          A compact, single-file portfolio with neon accents and smooth rotations.
+        </div>
+        <a class="cta" href="#" onclick="return false;">Source</a>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="card" role="article" aria-label="Project 4">
+        <div class="glow-strip" aria-hidden="true" style="animation-duration: 5s;"></div>
+        <div class="card-header">
+          <span class="card-title">Lumen Gallery</span>
+          <span class="badge" aria-label="badge">Gallery</span>
+        </div>
+        <div class="card-content">
+          A showcase of neon-styled visuals with responsive layouts and subtle tilt.
+        </div>
+        <a class="cta" href="#" onclick="return false;">Explore</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.87 10.95c.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2.04-3.2.69-3.88-1.38-3.88-1.38-.53-1.34-1.29-1.7-1.29-1.7-1.08-.72.08-.7.08-.7 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.66-.29-5.45-1.33-5.45-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.53-1.52.12-3.17 0 0 .98-.32 3.21 1.24a11.18 11.18 0 0 1 5.84 0C9.5 3.03 10.48 3.35 10.48 3.35 11.46 2.23 13.02 0 16.18 0c.65.03 1.29.12 1.91.28-1.03-.63-2.22-1.07-3.51-1.07-3.5 0-5.58 2.9-5.58 6.5 0 1.93.73 3.7 1.93 4.78-.2.49-.84 1.56-.94 2.08-.05.17-.23.41-.1.58.29.38 1.04-.07 1.33-.23 1.18-.63 2.54-1.01 3.95-1.01 1.41 0 2.77.38 3.95 1.01.29.16 1.04.61 1.33.23.13-.17-.05-.41-.1-.58-.37-1.01-.82-1.94-1.37-2.8-1.15-1.72-1.52-3.48-1.52-5.07 0-3.66 2.22-6.4 6.66-6.4 0 0 1.18-.02 2.5-.54A11.5 11.5 0 0 0 12 .5Z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <script>
+    // 3D tilt interaction for cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      let rect;
+      function handleMove(e){
+        rect = card.getBoundingClientRect();
+        const px = (e.clientX - (rect.left + rect.width/2)) / (rect.width/2);
+        const py = ((rect.top + rect.height/2) - e.clientY) / (rect.height/2);
+        const rotateY = px * 12; // tilt range
+        const rotateX = -py * 12;
+        card.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(6px)`;
+      }
+      function reset(){
+        card.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0)';
+      }
+      card.addEventListener('mousemove', handleMove);
+      card.addEventListener('mouseleave', reset);
+    });
+
+    // Optional: make the neon orbit interactive on hover pause
+    const orbit = document.querySelector('.orbit');
+    if(orbit){
+      orbit.addEventListener('mouseenter', ()=> orbit.style.animationPlayState = 'paused');
+      orbit.addEventListener('mouseleave', ()=> orbit.style.animationPlayState = 'running');
+    }
+  </script>
+</body>
+</html>
