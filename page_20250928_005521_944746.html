@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f7f3f9;
+      --card: #ffffff;
+      --text: #2a2a2a;
+      --accent1: #ffd6e4; /* pastel pink */
+      --accent2: #d9f5e9; /* pastel mint */
+      --accent3: #e7e0ff; /* pastel lavender */
+      --shadow: rgba(0,0,0,.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, #fef7fb 0%, #f5fbf2 40%, #f7f4ff 100%);
+      background-attachment: fixed;
+    }
+
+    /* Layout */
+    header.hero {
+      padding: 48px 20px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 214, 212, 0.4);
+      color: #6b2a2a;
+      font-weight: 600;
+      letter-spacing: .4px;
+      margin-bottom: 14px;
+    }
+
+    h1.title {
+      font-size: clamp(28px, 6vw, 58px);
+      margin: 6px 0 8px;
+      line-height: 1.05;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #7a7bdc, #f7a8c6, #8ad6c9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-wrap: balance;
+    }
+
+    .sub {
+      color: #5b5560;
+      font-size: 16px;
+      margin: 0 0 12px;
+    }
+
+    .creation {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #eee;
+      font-size: 12px;
+      color: #555;
+      margin-top: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    }
+
+    main.container {
+      padding: 28px 20px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h2.section-title {
+      font-size: 20px;
+      margin: 8px 6px 20px;
+      color: #5a4a66;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg, #fff);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 18px var(--shadow);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: bounceIn 0.9s forwards;
+      /* each card can set its own delay via --delay */
+      animation-delay: var(--delay, 0s);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .card-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .card-desc {
+      font-size: 13.5px;
+      color: #555;
+      line-height: 1.4;
+      margin-top: 6px;
+    }
+
+    .bubble {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #6c8cff;
+      margin-left: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      animation: ping 1.2s infinite;
+    }
+
+    @keyframes ping {
+      0% { transform: scale(0.9); opacity: 0.9; }
+      70% { transform: scale(1.25); opacity: 0.5; }
+      100% { transform: scale(0.9); opacity: 0.9; }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(40px) scale(0.92); opacity: 0; }
+      60% { transform: translateY(-8px) scale(1.03); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .card:hover {
+      transform: translateY(-2px) scale(1.01);
+      transition: transform 0.2s ease;
+      box-shadow: 0 12px 22px rgba(0,0,0,.08);
+    }
+
+    /* pastel accents per card via data attribute (optional) */
+    .card[data-color="pink"] { --bg: #fff0f5; }
+    .card[data-color="mint"] { --bg: #f5fff8; }
+    .card[data-color="lav"] { --bg: #f6f2ff; }
+    .card[data-color="peach"] { --bg: #fff7f0; }
+
+    footer.footer {
+      border-top: 1px solid #eee;
+      padding: 18px 20px;
+      text-align: center;
+      color: #555;
+      background: #fff;
+    }
+
+    .footer-link {
+      color: #444;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #fafafa;
+      border: 1px solid #eee;
+    }
+
+    .footer-link:hover {
+      background: #f3f3f3;
+    }
+
+    .footer-icon {
+      width: 20px; height: 20px;
+      display: inline-block;
+    }
+
+    .footer-text {
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    /* responsive tweak for very small screens */
+    @media (max-width: 520px) {
+      header.hero { padding: 34px 12px 20px; }
+      .card { min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" aria-label="Intro">
+    <div class="badge" aria-label="Portfolio badge">Portfolio</div>
+    <h1 class="title">amirabolfazle</h1>
+    <p class="sub">A cool, pastel, animated one-file portfolio showcase</p>
+    <div class="creation" aria-label="Creation time">
+      Creation time: 2025-09-28 00:54:58
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <section aria-label="Projects" class="grid">
+      <article class="card" style="--delay:0s" data-color="pink" aria-label="Project One" >
+        <div class="card-header">
+          <span class="card-title" style="display:flex;align-items:center;gap:8px;">
+            <span class="card-icon" aria-hidden="true">🎨</span> Project One
+          </span>
+          <span class="bubble" aria-hidden="true"></span>
+        </div>
+        <div class="card-desc">Playful pastel landing page demo with a lively feel.</div>
+      </article>
+
+      <article class="card" style="--delay:0.15s" data-color="mint" aria-label="Project Two">
+        <div class="card-header">
+          <span class="card-title" style="display:flex;align-items:center;gap:8px;">
+            <span class="card-icon" aria-hidden="true">🛠️</span> Tooling Playground
+          </span>
+          <span class="bubble" aria-hidden="true" style="background:#3ddc97"></span>
+        </div>
+        <div class="card-desc">Tiny experiments with motion and layout in a single file.</div>
+      </article>
+
+      <article class="card" style="--delay:0.3s" data-color="lav" aria-label="Project Three">
+        <div class="card-header">
+          <span class="card-title" style="display:flex;align-items:center;gap:8px;">
+            <span class="card-icon" aria-hidden="true">✨</span> Journal Glow
+          </span>
+          <span class="bubble" aria-hidden="true" style="background:#a18cff"></span>
+        </div>
+        <div class="card-desc">A tiny, elegant micro-interaction diary styled in pastels.</div>
+      </article>
+
+      <article class="card" style="--delay:0.45s" data-color="peach" aria-label="Project Four">
+        <div class="card-header">
+          <span class="card-title" style="display:flex;align-items:center;gap:8px;">
+            <span class="card-icon" aria-hidden="true">🌈</span> Color Picker Studio
+          </span>
+          <span class="bubble" aria-hidden="true" style="background:#ffb74d"></span>
+        </div>
+        <div class="card-desc">A tiny palette playground with soft animated accents.</div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <!-- GitHub SVG icon -->
+      <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M12 .5C5.73.5.9 5.33.9 11.66c0 4.87 3.17 9 7.57 10.43.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.04-3.07.67-3.72-1.32-3.72-1.32-.5-1.28-1.22-1.62-1.22-1.62-1-.69.08-.68.08-.68 1.1.08 1.68 1.13 1.68 1.13 0 .75.53 1.28 1.18 1.5.14-.64.43-1.08.78-1.33-2.45-.28-5.02-1.23-5.02-5.48 0-1.21.43-2.2 1.14-2.98-.11-.28-.49-1.43.11-2.98 0 0 .95-.31 3.1 1.13a10.74 10.74 0 0 1 2.83-.39c.96 0 1.93.13 2.83.39 2.14-1.44 3.09-1.13 3.09-1.13.6 1.55.23 2.7.12 2.98.71.78 1.13 1.77 1.13 2.98 0 4.26-2.58 5.2-5.04 5.47.44.38.83 1.13.83 2.28 0 1.65-.02 2.98-.02 3.38 0 .29.2.64.76.53C20.84 20.65 24 16.5 24 11.66 24 5.33 19.27.5 12 .5z"/>
+      </svg>
+      <span class="footer-text" style="margin-left:0;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
