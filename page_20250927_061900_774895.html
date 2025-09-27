@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f15;
+      --fg: #e6f0ff;
+      --neon1: #00f5ff;
+      --neon2: #ff00e6;
+      --glow: rgba(0, 245, 255, 0.8);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #e6f0ff;
+      background: #0b0f15;
+      background-image:
+        radial-gradient(circle at 20% -10%, rgba(0,245,255,.15), transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(255,0,230,.15), transparent 40%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Neon ambient blobs */
+    .orb { position: absolute; width: 260px; height: 260px; border-radius: 50%; filter: blur(0.6px); opacity: .25; pointer-events: none; z-index: 0; }
+    .orb.o1 { top: -60px; left: -60px; background: radial-gradient(circle at 30% 30%, rgba(0,255,214,.6), transparent 40%), radial-gradient(circle at 70% 70%, rgba(255,0,230,.6), transparent 40%); animation: drift 20s linear infinite; }
+    .orb.o2 { bottom: -80px; right: -60px; background: radial-gradient(circle at 40% 40%, rgba(0,180,255,.6), transparent 40%), radial-gradient(circle at 60% 60%, rgba(0,255,180,.4), transparent 40%); animation: drift 28s linear infinite reverse; }
+
+    @keyframes drift { 
+      0% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(20px, -12px) rotate(180deg); }
+      100% { transform: translate(-6px, 6px) rotate(360deg); }
+    }
+
+    /* Layout */
+    header { position: relative; padding: 60px 20px 20px; text-align: center; z-index: 1; }
+    .creation { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono"; font-size: .95rem; color: #9bdcff; margin-bottom: 10px; }
+
+    /* Neon title with glow and gradient fill */
+    .brand {
+      font-family: "Trebuchet MS", Inter, system-ui;
+      font-size: clamp(2.8rem, 9vw, 6rem);
+      text-transform: uppercase;
+      margin: 8px 0 6px;
+      line-height: 1;
+      letter-spacing: .25em;
+      background: linear-gradient(90deg, #00f5ff 0%, #9d00ff 50%, #00ff9f 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 6px rgba(0,255,255,.6), 0 0 20px rgba(156,0,255,.8);
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 6px rgba(0,255,255,.6), 0 0 20px rgba(156,0,255,.8); }
+      50% { text-shadow: 0 0 14px rgba(0,255,255,.95), 0 0 28px rgba(156,0,255,.95); }
+    }
+
+    .tagline { font-size: 1.05rem; color: #dbeaff; opacity: .95; margin: 0 auto 18px; max-width: 760px; text-shadow: 0 0 8px rgba(0,255,230,.5); }
+
+    .cta {
+      display: inline-block;
+      padding: 14px 26px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #04131a;
+      border-radius: 999px;
+      text-decoration: none;
+      background: linear-gradient(135deg, #00f5ff 0%, #ff00e6 100%);
+      border: 0;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(0, 245, 255, .6);
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Section grid */
+    #features { padding: 40px 20px 80px; position: relative; z-index: 1; }
+    .neon-underline {
+      height: 4px;
+      width: 60%;
+      margin: 0 auto 18px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #00f5ff, #00ff99, #ff00e6);
+      box-shadow: 0 0 12px #00f5ff, 0 0 28px #00ff99;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 12px; text-align: center; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-top: 18px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 22px;
+      text-align: left;
+      min-height: 120px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,.25);
+    }
+
+    .card h3 { margin: 0 0 8px; font-size: 1.1rem; color: #e8f5ff; }
+    .card p { margin: 0; font-size: .95rem; color: #cfe0ff; }
+
+    /* Decorative small text line under section (neon style) */
+    .neon-underline.small { height: 2px; width: 40%; margin: 12px auto 0; }
+
+    /* Footer with GitHub icon and text */
+    footer {
+      position: fixed;
+      bottom: 14px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .footer-link {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #e8f4ff;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 6px 16px rgba(0,0,0,.4);
+      transition: transform .2s;
+    }
+    .footer-link:hover { transform: translateY(-2px); }
+    .github-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; fill: currentColor; }
+
+    .footer-text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono"; font-size: .95rem; color: #d7eaff; }
+
+    @media (max-width: 700px) {
+      .brand { font-size: 3.2rem; }
+      .tagline { font-size: 1rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+
+  <header role="banner" aria-label="Header">
+    <div class="creation" aria-label="Creation time badge">Creation time: 2025-09-27 06:18:31</div>
+    <h1 class="brand" aria-label="Site title">amirabolfazle</h1>
+    <p class="tagline" aria-label="Tagline">
+      A neon-inspired landing page with bounce effects, glow, and a bold visual identity.
+    </p>
+    <a href="#features" class="cta" aria-label="Explore features">Explore Features</a>
+  </header>
+
+  <section id="features" class="container" aria-label="Features">
+    <div class="neon-underline" aria-hidden="true"></div>
+    <div class="grid" role="list">
+      <article class="card" role="listitem">
+        <h3>Stunning Neon UI</h3>
+        <p>Vibrant gradients, luminous shadows, and a futuristic aesthetic that pops on dark backgrounds.</p>
+      </article>
+      <article class="card" role="listitem">
+        <h3>Responsive & Fast</h3>
+        <p>Optimized for all devices with smooth animations and minimal load.</p>
+      </article>
+      <article class="card" role="listitem">
+        <h3>Accessible & Semantically Rich</h3>
+        <p>Clear structure, keyboard navigable, and screen-reader friendly.</p>
+      </article>
+      <article class="card" role="listitem">
+        <h3>Animated Interactions</h3>
+        <p>Subtle bounce and glow effects enhance engagement without distraction.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer aria-label="Footer">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 0a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.06-.02-2.08-3.34.73-4.04-1.43-4.04-1.43-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.09-.74.09-.74 1.2.09 1.83 1.24 1.83 1.24 1.07 1.84 2.81 1.31 3.49 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.46 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.69.83.57A12 12 0 0 0 12 0z" />
+      </svg>
+      <span class="footer-text" style="color:#d7eaff;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
