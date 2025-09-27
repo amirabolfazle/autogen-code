@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.85);
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.25);
+      --bg1: #0b1020;
+      --bg2: #1b1142;
+      --bg3: #0f1a2a;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    /* Animated gradient background */
+    .gradient-bg {
+      position: fixed;
+      inset: -10vmax;
+      background: conic-gradient(from 180deg at 50% 50%, #7c3aed, #06b6d4, #22c55e, #f59e0b, #f472b6, #7c3aed);
+      filter: saturate(120%);
+      z-index: -1;
+      transform: rotate(0deg);
+      animation: spin 60s linear infinite;
+      /* ensure smooth edges on resize */
+      will-change: transform;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: transparent;
+      min-height: 100%;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Layout */
+    .wrap {
+      padding: 48px 20px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Brand / header */
+    header {
+      text-align: center;
+      padding: 48px 20px 20px;
+      position: relative;
+    }
+
+    .brand {
+      font-weight: 900;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      line-height: 1.05;
+      margin: 0 0 12px;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 40%, #34d399  eighty  );
+      /* fallback gradient text */
+      background: linear-gradient(135deg, #7c3aed 0%, #22d3ee 40%, #34d399 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    }
+
+    .creation-time {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      margin-top: 6px;
+      opacity: 0.95;
+    }
+
+    /* Portfolio grid */
+    .portfolio {
+      margin-top: 36px;
+    }
+
+    .portfolio h2 {
+      font-size: 1.25rem;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      margin: 0 0 16px;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      perspective: 1000px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 16px;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.25);
+      min-height: 190px;
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.25);
+      transform-style: preserve-3d;
+      color: #fff;
+    }
+
+    .card:hover {
+      transform: rotateY(8deg) rotateX(2deg) translateZ(0);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    }
+
+    .card-media {
+      height: 120px;
+      background: linear-gradient(135deg, rgba(125, 211, 252, 0.9), rgba(236, 72, 153, 0.9));
+      display: grid;
+      place-items: center;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    .card-content {
+      padding: 14px 14px 16px;
+    }
+
+    .card-content h3 {
+      margin: 6px 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .card-content p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.92);
+      opacity: 0.95;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px 14px 14px;
+    }
+
+    .btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Subtle rotating decorative rings behind cards */
+    .ring {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      right: -60px;
+      top: -60px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(255,255,255,0) 40%), conic-gradient(from 180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.0));
+      filter: blur(1px);
+      opacity: .25;
+      animation: spin-slow 60s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes spin-slow {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      padding: 18px 0 40px;
+      text-align: center;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.92rem;
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 8px;
+    }
+
+    footer svg {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      fill: currentColor;
+    }
+
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-bg" aria-hidden="true"></div>
+
+  <header class="wrap" role="banner">
+    <h1 class="brand" aria-label="amirabolfazle">
+      amirabolfazle
+    </h1>
+    <div class="creation-time" aria-label="Creation time">Creation time: 2025-09-27 04:50:22</div>
+  </header>
+
+  <main class="wrap portfolio" role="main" aria-label="Portfolio">
+    <h2 style="text-align:center; margin: 0 0 8px; font-size: 1.1rem; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: .3px;">
+      Portfolio
+    </h2>
+
+    <section class="grid" aria-label="Projects grid">
+      <article class="card" aria-label="Project: Gradient Playground">
+        <div class="ring" aria-hidden="true"></div>
+        <div class="card-media" style="background: linear-gradient(135deg, #7c3aed, #06b6d4);">
+          <span class="badge" style="backdrop-filter: blur(1px);">UI</span>
+        </div>
+        <div class="card-content">
+          <h3>Gradient Playground</h3>
+          <p>Experiment with layered gradients and subtle motion to create vibrant interfaces.</p>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn" aria-label="View Gradient Playground project" onclick="return false;">View</a>
+        </div>
+      </article>
+
+      <article class="card" aria-label="Project: Rotating Cards Demo">
+        <div class="ring" aria-hidden="true" style="right:-40px; top:-40px; width: 150px; height: 150px; animation-duration: 50s;"></div>
+        <div class="card-media" style="background: linear-gradient(135deg, #22c55e, #06b6d4);">
+          <span class="badge">3D</span>
+        </div>
+        <div class="card-content">
+          <h3>Rotating Cards Demo</h3>
+          <p>Hover to tilt cards in 3D space for a tactile feel.</p>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn" aria-label="View Rotating Cards Demo" onclick="return false;">View</a>
+        </div>
+      </article>
+
+      <article class="card" aria-label="Project: Interactive UI Kit">
+        <div class="ring" aria-hidden="true" style="right:-20px; top:-20px; width: 120px; height: 120px; animation-duration: 70s;"></div>
+        <div class="card-media" style="background: linear-gradient(135deg, #f472b6, #f59e0b);">
+          <span class="badge">UIK</span>
+        </div>
+        <div class="card-content">
+          <h3>Interactive UI Kit</h3>
+          <p>Modular components with motion and accessible defaults.</p>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn" aria-label="View Interactive UI Kit" onclick="return false;">View</a>
+        </div>
+      </article>
+
+      <article class="card" aria-label="Project: 3D Elements">
+        <div class="ring" aria-hidden="true" style="left:-40px; top:-40px; width: 140px; height: 140px; animation-duration: 90s; transform: rotateZ(15deg);"></div>
+        <div class="card-media" style="background: linear-gradient(135deg, #06b6d4, #8b5cf6);">
+          <span class="badge">3D</span>
+        </div>
+        <div class="card-content">
+          <h3>3D Elements</h3>
+          <p>Subtle depth with perspective to enhance visual hierarchy.</p>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn" aria-label="View 3D Elements" onclick="return false;">View</a>
+        </div>
+      </article>
+
+      <article class="card" aria-label="Project: Typography Experiments">
+        <div class="ring" aria-hidden="true" style="left:-20px; bottom:-20px; width: 120px; height: 120px; animation-duration: 80s;"></div>
+        <div class="card-media" style="background: linear-gradient(135deg, #34d399, #f472b6);">
+          <span class="badge">TYPO</span>
+        </div>
+        <div class="card-content">
+          <h3>Typography Experiments</h3>
+          <p>Explores weight, spacing, and rhythm for readability with flair.</p>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn" aria-label="View Typography Experiments" onclick="return false;">View</a>
+        </div>
+      </article>
+
+      <article class="card" aria-label="Project: Colorful Grid">
+        <div class="ring" aria-hidden="true" style="right:-30px; bottom:-30px; width: 150px; height: 150px; animation-duration: 65s;"></div>
+        <div class="card-media" style="background: linear-gradient(135deg, #f472b6, #93c5fd);">
+          <span class="badge">GRID</span>
+        </div>
+        <div class="card-content">
+          <h3>Colorful Grid</h3>
+          <p>A responsive mosaic with vivid hues and motion accents.</p>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn" aria-label="View Colorful Grid" onclick="return false;">View</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 2C6.476 2 2 6.582 2 12.29c0 4.517 2.867 8.343 6.839 9.708.5.093.682-.223.682-.496 0-.245-.009-.897-.014-1.762-2.782.622-3.37-1.344-3.37-1.344-.454-1.165-1.109-1.477-1.109-1.477-.908-.63.07-.617.07-.617 1.004.07 1.532 1.053 1.532 1.053.892 1.56 2.338 1.11 2.908.849.092-.665.35-1.11.636-1.367-2.22-.252-4.555-1.15-4.555-5.122 0-1.132.398-2.057 1.05-2.78-.106-.253-.455-1.275.1-2.657 0 0 .859-.275 2.815 1.052A9.31 9.31 0 0 1 12 6.8c.872.004 1.75.125 2.57.37 1.955-1.327 2.813-1.052 2.813-1.052.556 1.382.208 2.404.102 2.657.653.723 1.05 1.648 1.05 2.78 0 3.987-2.338 4.867-4.567 5.117.36.31.681.92.681 1.858 0 1.343-.012 2.422-.012 2.752 0 .275.176.594.688.492C19.137 20.628 22 16.808 22 12.29C22 6.582 17.522 2 12 2z" />
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
