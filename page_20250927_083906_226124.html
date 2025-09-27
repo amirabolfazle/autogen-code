@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg2: #141a2b;
+      --fg: #e6e8f5;
+      --muted: #a6accd;
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.12);
+      --accent: #6c7cff;
+      --accent2: #a28bff;
+      --glow: 0 0 20px rgba(108,124,255,0.6);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: radial-gradient(circle at 20% 0%, rgba(108,124,255,0.15), transparent 40%),
+                  radial-gradient(circle at 100% 100%, rgba(60,255,200,0.08), transparent 40%),
+                  linear-gradient(#0b1020, #0b1020 60%, #0a0f1a);
+      color: var(--fg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      overflow-x: hidden;
+    }
+
+    /* Subtle star-like specks */
+    body::before {
+      content: "";
+      position: fixed;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-image: radial-gradient(#ffffff55 1px, transparent 1.5px);
+      background-size: 3px 3px;
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 60s linear infinite;
+    }
+    @keyframes drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-1000px); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+    }
+
+    .wrap {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+    }
+
+    /* Avatar bubble with gradient glow */
+    .avatar {
+      width: 120px; height: 120px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #9affff, #6c7cff 40%, rgba(0,0,0,0) 40%),
+                  conic-gradient(from 180deg at 50% 50%, rgba(108,124,255,.85), rgba(0,0,0,0) 60%);
+      border: 1px solid rgba(255,255,255,.4);
+      box-shadow: 0 0 24px rgba(108,124,255,.6);
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .title {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      margin: 0.25rem 0;
+      line-height: 1.05;
+      text-transform: lowercase;
+      background: linear-gradient(92deg, #fff, #d6f6ff, #c0a8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: saturate(110%);
+      animation: hue 8s ease-in-out infinite;
+      text-shadow: 0 0 18px rgba(108,124,255,.65);
+    }
+    @keyframes hue {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(180deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.15rem;
+      margin-top: .25rem;
+      opacity: 0.95;
+    }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      margin-top: .75rem;
+      font-size: .95rem;
+      color: #dbeaff;
+      opacity: 0.95;
+    }
+
+    main { padding: 2rem 1rem; max-width: 1000px; margin: 0 auto; display: grid; gap: 2rem; }
+
+    section.card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.6rem;
+      box-shadow: 0 8px 28px rgba(0,0,0,.25);
+      backdrop-filter: saturate(110%) blur(4px);
+      text-align: left;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      margin-bottom: .6rem;
+      color: #eef2ff;
+    }
+
+    .about p { color: #e7eaff; margin: .25rem 0; }
+
+    .skills { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+    .badge {
+      padding: .5rem .75rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      background: rgba(108,124,255,.15);
+      border: 1px solid rgba(108,124,255,.35);
+      color: #eaf0ff;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #6c7cff;
+      box-shadow: 0 0 6px #6c7cff;
+      display: inline-block;
+    }
+
+    footer {
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      margin-top: 2rem;
+    }
+    footer a.icon-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.28);
+      margin-left: .5rem;
+      color: #fff;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    footer a.icon-link:hover { transform: translateY(-1px) scale(1.05); box-shadow: var(--glow); }
+
+    @media (min-width: 720px) {
+      main { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="wrap" style="text-align:center;">
+      <div class="avatar" aria-label="avatar"></div>
+      <h1 class="title" style="opacity:0; animation: fadeIn 1s ease forwards; animation-delay: 0.15s;">amirabolfazle</h1>
+      <div class="subtitle" style="opacity:0; animation: fadeIn 1s ease forwards; animation-delay: 0.35s;">a fancy animated personal page</div>
+      <div class="creation" style="opacity:0; animation: fadeIn 1s ease forwards; animation-delay: 0.55s;">
+        Creation time: 2025-09-27 08:38:32
+      </div>
+    </header>
+
+    <main class="page" aria-label="Main content">
+      <section class="card about" style="opacity:0; animation: fadeIn 1s ease forwards; animation-delay: 0.25s;">
+        <div class="section-title">About</div>
+        <div class="about">
+          <p>Hi, I’m amirabolfazle. This page demonstrates a dark-mode, fade-in animated personal page with a splash of flair. I enjoy building clean interfaces and playful interactions.</p>
+        </div>
+      </section>
+
+      <section class="card skills" style="opacity:0; animation: fadeIn 1s ease forwards; animation-delay: 0.45s;">
+        <div class="section-title">Skills</div>
+        <div class="skills" aria-label="skills">
+          <span class="badge"><span class="dot" aria-hidden="true"></span>HTML</span>
+          <span class="badge">CSS</span>
+          <span class="badge">JavaScript</span>
+          <span class="badge">UI/UX</span>
+          <span class="badge">React</span>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Created by amirabolfazle</span>
+      <a class="icon-link" href="https://github.com/amirabolfazle/autogen-code" aria-label="GitHub">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="display:block;">
+          <path d="M12 .5A12 12 0 0 0 0 12.5C0 17.04 3.438 21.56 8.205 22.95c.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.34-1.77-1.34-1.77-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.84 2.81 1.31 3.5 1 .11-.79.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.31 1.23a11.5 11.5 0 0 1 6 0C17.96 4.15 19 4.5 19 4.5c.66 1.65.24 2.87.12 3.17.76.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.47 5.93.43.37.82 1.1.82 2.22 0 1.6-.01 2.88-.01 3.28 0 .32.21.69.83.57C20.565 21.56 24 17.04 24 12.5A12 12 0 0 0 12 .5z"/>
+        </svg>
+      </a>
+    </footer>
+  </div>
+
+  <!-- Minimal script to ensure fade-in starts on load if needed -->
+  <script>
+    // No heavy scripting required; styles handle the fade-ins with delays.
+  </script>
+</body>
+</html>
