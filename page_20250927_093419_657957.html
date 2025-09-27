@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-start:#0b1020;
+      --bg-mid: #1b2a53;
+      --bg-end: #0a1020;
+      --glass: rgba(255,255,255,0.14);
+      --glass-border: rgba(255,255,255,0.25);
+      --text: #e8f0ff;
+      --muted: #cbd8ff;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    *{box-sizing:border-box}
+    html, body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color:var(--text);
+      background: linear-gradient(135deg, rgba(9,12,30,1) 0%, rgba(15,20,40,1) 60%), 
+                  radial-gradient( circle at 20% 0%, rgba(120,180,255,0.25), transparent 40% ),
+                  radial-gradient( circle at 80% 20%, rgba(255,120,180,0.25), transparent 40% );
+      background-color:#0b1020;
+      overflow-x:hidden;
+    }
+
+    /* animated ambient gradient layer */
+    .bg-glow{
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      pointer-events:none;
+      z-index:-2;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0,180,255,0.12), rgba(180,0,255,0.12), rgba(0,180,255,0.12));
+      mix-blend-mode: screen;
+      filter: blur(40px);
+      animation: rotateGlow 60s linear infinite;
+    }
+    @keyframes rotateGlow{
+      from{ transform: rotate(0deg) scale(1) translateZ(0);}
+      to{ transform: rotate(360deg) scale(1) translateZ(0);}
+    }
+
+    main.page{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:6vh 2rem;
+    }
+
+    .glass-wrap{
+      width: min(1000px, 92%);
+      display:flex;
+      flex-direction:column;
+      gap:1.6rem;
+    }
+
+    /* glass card baseline */
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      padding: 2rem;
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle inset shine */
+    .glass::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 40%);
+      mix-blend-mode: overlay;
+      pointer-events:none;
+    }
+
+    header.hero{
+      display:flex; flex-direction:column; align-items:flex-start; gap:0.5rem;
+    }
+
+    h1.title{
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      letter-spacing: .14em;
+      margin:0;
+      text-transform: lowercase;
+      color:#ffffff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+
+    .tagline{
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .creation-badge{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.35rem .6rem; border-radius:999px;
+      font-size:.75rem; color:#e8f0ff;
+      border:1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      margin-top: .25rem;
+    }
+
+    /* sections layout */
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:1rem;
+    }
+
+    @media (max-width: 860px){
+      .grid-2{ grid-template-columns: 1fr; }
+    }
+
+    h2{ font-size:1.25rem; margin:0 0 .5rem 0; color:#f1f7ff; }
+    p{ margin:0 0 0.75rem 0; color:#d8e6ff; line-height:1.6; }
+
+    /* footer styles */
+    footer.glass-footer{
+      display:flex; align-items:center; gap:0.75rem; justify-content:flex-start;
+      font-size:.95rem;
+      color:#e8f0ff;
+    }
+    .github-link{ display:inline-flex; align-items:center; gap:.5rem; color:inherit; text-decoration:none; }
+    .github-link svg{ width:20px; height:20px; fill: currentColor; transition: transform .3s ease; }
+    .github-link:hover svg{ transform: translateY(-1px) scale(1.05); }
+    .credit{ opacity:.9; }
+
+    /* generic fade-in with stagger */
+    .fade-in{
+      opacity:0;
+      transform: translateY(12px);
+      animation: fadeIn 0.8s ease forwards;
+    }
+    @keyframes fadeIn{
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    /* small decorative floating orbs for ambience (optional) */
+    .orb{
+      position: absolute; width: 180px; height: 180px; border-radius:50%;
+      filter: blur(20px); opacity:.25; pointer-events:none;
+      background: radial-gradient(circle at 30% 30%, #6fb6ff, transparent 40%);
+      animation: drift 18s ease-in-out infinite;
+      z-index:-1;
+    }
+    .orb.o2{ right: -60px; bottom: -40px; background: radial-gradient(circle at 30% 30%, #ff78c8, transparent 40%); animation-duration:22s; }
+    .orb.o3{ left: -50px; top: 40%; background: radial-gradient(circle at 30% 30%, #7affc8, transparent 40%); animation-duration:26s; }
+    @keyframes drift{
+      0%{ transform: translate(0,0) scale(1); }
+      50%{ transform: translate(20px, -20px) scale(1.05); }
+      100%{ transform: translate(0,0) scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="orb" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <main class="page">
+    <section class="glass glass-wrap" aria-label="amIRabolfazle personal page">
+      <header class="hero glass fade-in" style="animation-delay:0.05s;">
+        <h1 class="title" style="text-transform: lowercase;">amirabolfazle</h1>
+        <div class="tagline" aria-label="subtitle">Glassmorphic personal page</div>
+        <span class="creation-badge" aria-label="creation time">
+          Creation time: 2025-09-27 09:33:48
+        </span>
+      </header>
+
+      <section class="glass fade-in" style="animation-delay:0.15s;">
+        <div class="grid-2">
+          <div>
+            <h2>About</h2>
+            <p>I'm a curious creator exploring front-end artistry, design systems, and delightful user experiences. I enjoy blending aesthetics with accessible, high-performance code.</p>
+          </div>
+          <div>
+            <h2>Highlights</h2>
+            <p>Glassmorphism enthusiast. Animations that feel tangible. Responsive layouts that scale gracefully across devices. A little bit of drama in micro-interactions.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass fade-in" style="animation-delay:0.25s;">
+        <div class="grid-2">
+          <div>
+            <h2>Projects</h2>
+            <p>Autogen code – a tiny example repository you can explore on GitHub. I enjoy showing how clean interfaces can be both expressive and practical.</p>
+          </div>
+          <div>
+            <h2>Skills</h2>
+            <p>HTML, CSS, JavaScript, UI/UX, animation, accessibility, responsive design, performance optimization.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass fade-in" style="animation-delay:0.35s;">
+        <div class="grid-2">
+          <div>
+            <h2>Contact</h2>
+            <p>Available for collaborations, freelance work, and conversations about design systems, accessible motion, and delightful UI interactions.</p>
+          </div>
+          <div>
+            <h2>Fun fact</h2>
+            <p>Frontend experiments with glassy aesthetics and soft lighting evoke a calm, focused browsing experience.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="glass glass-footer fade-in" style="animation-delay:0.45s;">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <svg role="img" aria-label="GitHub icon" viewBox="0 0 24 24" width="20" height="20">
+            <path d="M12 .5C5.73.5 0 6.234 0 12.01c0 5.003 3.657 9.197 8.438 10.657.616.113.844-.268.844-.596 0-.295-.01-1.07-.016-2.099-3.438.748-4.17-1.48-4.17-1.48-.562-1.428-1.374-1.8-1.374-1.8-1.122-.767.086-.752.086-.752 1.242.087 1.895 1.276 1.895 1.276 1.104 1.89 2.896 1.343 3.606 1.026.112-.797.43-1.343.783-1.652-2.747-.314-5.633-1.374-5.633-6.113 0-1.352.482-2.457 1.276-3.321-.127-.312-.553-1.57.121-3.274 0 0 1.04-.333 3.41 1.263a11.65 11.65 0 0 1 3.11-.416c1.05.005 2.106.142 3.092.416 2.37-1.596 3.41-1.263 3.41-1.263.675 1.704.248 2.962.122 3.274.797.864 1.274 1.969 1.274 3.321 0 4.752-2.892 5.795-5.64 6.102.442.383.842 1.15.842 2.322 0 1.677-.016 3.027-.016 3.438 0 .33.224.714.852.592C20.345 21.203 24 17.011 24 12.011 24 6.234 18.27.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <span class="credit">Created by amirabolfazle</span>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>
