@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #030712;
+      --bg2: #0b0f1a;
+      --fg: #e7fbff;
+      --cyan: #00eaff;
+      --magenta: #ff2bff;
+      --green: #39ffb5;
+      --glow-cyan: 0 0 12px rgba(0, 238, 255, 0.9);
+      --glow-cyan-2: 0 0 26px rgba(0, 238, 255, 0.6);
+      --glow-mag: 0 0 12px rgba(255, 43, 255, 0.9);
+      --glow-mag-2: 0 0 28px rgba(255, 43, 255, 0.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(0, 230, 255, 0.10), transparent 40%),
+                  radial-gradient(circle at 85% 15%, rgba(255, 0, 170, 0.10), transparent 40%),
+                  linear-gradient(#03060f, #04070f 40%, #03060f);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Inter", "Segoe UI", Roboto, Arial;
+      overflow-x: hidden;
+    }
+
+    /* Neon header / stage */
+    .stage {
+      position: relative;
+      min-height: 72vh;
+      display: grid;
+      place-items: center;
+      padding: 40px 20px 0;
+      overflow: hidden;
+    }
+
+    /* Rotating neon rings behind the title */
+    .ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid rgba(0, 238, 255, 0.75);
+      box-shadow: 0 0 18px rgba(0, 238, 255, 0.8);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .r1 { width: 320px; height: 320px; animation: spin 20s linear infinite; border-color: rgba(0, 238, 255, 0.8); }
+    .r2 { width: 520px; height: 520px; animation: spin 28s linear infinite reverse; border-color: rgba(255, 43, 255, 0.7); }
+    .r3 { width: 700px; height: 700px; animation: spin 34s linear infinite; border-color: rgba(0, 255, 136, 0.6); }
+
+    @keyframes spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .title {
+      position: relative;
+      z-index: 2;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-weight: 800;
+      font-size: clamp(48px, 12vw, 120px);
+      letter-spacing: .15em;
+      color: #eaffff;
+      text-transform: lowercase;
+      text-shadow:
+        0 0 8px rgba(0, 238, 255, 0.95),
+        0 0 18px rgba(0, 238, 255, 0.75),
+        0 0 40px rgba(0, 238, 255, 0.6);
+      user-select: none;
+      transform: translateZ(0);
+      transition: transform 0.3s ease;
+    }
+
+    .title-glow {
+      position: absolute;
+      inset: -20px;
+      filter: blur(10px);
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, rgba(0,238,255,.25), transparent 40%);
+      mix-blend-mode: screen;
+      animation: gentlePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes gentlePulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.04); }
+    }
+
+    .creation-time {
+      position: relative;
+      z-index: 2;
+      margin-top: 22px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92rem;
+      color: #c7fffb;
+      background: rgba(0, 238, 255, 0.08);
+      border: 1px solid rgba(0, 238, 255, 0.25);
+      display: inline-block;
+      box-shadow: 0 0 20px rgba(0, 238, 255, 0.25);
+    }
+
+    /* Subtle hover effect to enhance rotate vibe */
+    .stage:hover .title { transform: rotate(-0.5deg); }
+
+    /* Intro text under the hero (optional) */
+    .tagline {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 1.05rem;
+      color: #d6fbff;
+      opacity: 0.9;
+      letter-spacing: .04em;
+      text-shadow: 0 0 12px rgba(0,255,255,.5);
+    }
+
+    /* Decorative stars */
+    .stars {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: transparent;
+      box-shadow: 9999px 9999px rgba(255,255,255,0.4);
+      animation: twinkle 4s ease-in-out infinite;
+      opacity: .5;
+    }
+    @keyframes twinkle {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: .4; }
+      50% { transform: translateY(-6px) translateX(2px); opacity: .9; }
+    }
+
+    /* About section (minimal, keeps focus on neon header) */
+    .about {
+      max-width: 860px;
+      margin: 40px auto 120px;
+      padding: 0 20px;
+      text-align: center;
+      color: #d8f6ff;
+      opacity: 0.95;
+    }
+    .about p { margin: 0.5rem 0; line-height: 1.6; }
+
+    /* Footer with GitHub icon and creator text */
+    footer {
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: #05060e;
+      color: #cfe8ff;
+      padding: 22px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    footer a {
+      color: #cfe8ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .gh-icon {
+      width: 22px; height: 22px;
+      display: inline-block;
+      color: #cfe8ff;
+    }
+    .footer-text {
+      font-size: 0.95rem;
+    }
+
+    /* Small screens tweak */
+    @media (max-width: 600px) {
+      .title { letter-spacing: .12em; font-size: clamp(40px, 14vw, 78px); }
+      .creation-time { font-size: 0.88rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Amir Abolfazle neon personal page">
+    <span class="ring r1" aria-hidden="true"></span>
+    <span class="ring r2" aria-hidden="true"></span>
+    <span class="ring r3" aria-hidden="true"></span>
+
+    <div class="title-glow" aria-hidden="true"></div>
+    <h1 class="title" style="font-family:inherit;">amirabolfazle</h1>
+    <div class="creation-time" aria-live="polite">Creation time: 2025-09-28 01:19:17</div>
+    <div class="tagline" aria-label="Intro">
+      A neon-styled, animated personal page with rotating rings and glow effects.
+    </div>
+  </main>
+
+  <section class="about" aria-label="About">
+    <p>Welcome to a kick of neon vibes. This page uses rotating rings and glowing text to create a
+    dynamic, futuristic feel. It’s lightweight, self-contained HTML and CSS with no dependencies.</p>
+  </section>
+
+  <footer aria-label="Footer with GitHub link">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+        <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.06-.02-2.08-3.34.73-4.04-1.43-4.04-1.43-.54-1.39-1.33-1.76-1.33-1.76-1.09-.75.083-.74.083-.74 1.21.085 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.77.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.01.01 2.03.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.16.77.85 1.24 1.92 1.24 3.23 0 4.61-2.74 5.62-5.35 5.92.43.37.82 1.1.82 2.22 0 1.61-.01 2.9-.01 3.3 0 .32.21.69.83.57A12 12 0 0012 .5z"/>
+      </svg>
+      <span> </span>
+    </a>
+    <span class="footer-text">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
