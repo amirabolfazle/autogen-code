@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --fg: #e8f0ff;
+      --neon: #00f5ff;
+      --neon2: #ff00ff;
+      --glass: rgba(255,255,255,0.1);
+    }
+    *{box-sizing:border-box}
+    html, body { height: 100%; }
+    body {
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #eaf7ff;
+      background: radial-gradient(circle at 20% -10%, rgba(0,255,255,.08), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(255,0,255,.08), transparent 40%),
+                  linear-gradient(#05060b, #03070f 60%, #000);
+      overflow-x:hidden;
+    }
+    /* Neon grid */
+    .grid {
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background-image: linear-gradient(rgba(0,255,255,.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,0,255,.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events:none;
+      z-index:0;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 60%);
+      mix-blend-mode: screen;
+    }
+
+    .scene {
+      position: relative;
+      min-height: 100vh;
+      z-index: 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      text-align:center;
+      border-radius: 20px;
+      padding: 40px;
+      padding-bottom: 60px;
+      max-width: 900px;
+      width: min(92vw, 900px);
+      background: linear-gradient(135deg, rgba(2,8,23,.75), rgba(2,8,23,.45) 60%), rgba(0,0,0,.15);
+      border: 1px solid rgba(0,255,255,.25);
+      box-shadow: 0 10px 40px rgba(0,255,255,.15);
+      position: relative;
+      overflow:hidden;
+    }
+
+    /* Neon title */
+    .title {
+      font-size: clamp(42px, 8vw, 120px);
+      font-weight: 800;
+      letter-spacing: .08em;
+      margin: 0 0 16px;
+      color: #19fff0;
+      text-shadow:
+        0 0 6px rgba(24,255,240,.6),
+        0 0 18px rgba(24,255,240,.6),
+        0 0 40px rgba(0,255,255,.5);
+      filter: drop-shadow(0 0 8px rgba(0,255,255,.7));
+      text-transform: lowercase;
+    }
+
+    .tagline {
+      font-size: 1.15rem;
+      color: #cde7ff;
+      opacity:.95;
+      margin-bottom: 22px;
+    }
+
+    .actions {
+      display:flex; gap:14px; justify-content:center; align-items:center;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+
+    .btn {
+      appearance:none; border:0; outline:0;
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing:.08em;
+      cursor:pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      color:#04131a;
+      background: linear-gradient(135deg, #00f5ff, #4bffb5);
+      text-shadow: 0 1px 0 rgba(255,255,255,.3);
+      box-shadow: 0 0 16px rgba(0,255,255,.7);
+    }
+
+    .btn.secondary {
+      color: #e9f6ff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(0,255,255,.25);
+      box-shadow: inset 0 0 12px rgba(0,255,255,.12);
+    }
+
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,255,255,.7); }
+
+    .creation {
+      display:inline-block;
+      margin-top: 18px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      font-size: .95rem;
+      color: #04131a;
+      background: linear-gradient(135deg, rgba(0,255,255,.95), rgba(0,200,255,.8));
+      border: 0;
+      box-shadow: 0 0 14px rgba(0,255,255,.9);
+      letter-spacing:.08em;
+    }
+
+    /* Floating or rotating deco elements */
+    .orb {
+      position: absolute;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,255,255,.7);
+      mix-blend-mode: screen;
+      animation: rotate 28s linear infinite;
+      opacity:.7;
+      filter: blur(0.2px);
+    }
+    .orb.orb1 {
+      top: -40px; left: -40px;
+      background: radial-gradient(circle at 30% 30%, rgba(0,255,255,.9), rgba(0,0,0,0) 60%);
+      width: 260px; height: 260px;
+      animation-duration: 40s;
+    }
+    .orb.orb2 {
+      bottom: -60px; right: -60px;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle at 70% 70%, rgba(255,0,255,.9), rgba(0,0,0,0) 60%);
+      animation-duration: 34s;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg) translateZ(0); }
+      to { transform: rotate(360deg) translateZ(0); }
+    }
+
+    /* subtle glow lines behind text */
+    .glow-line {
+      position: absolute; left:0; right:0; height:2px; background: linear-gradient(90deg, transparent, #00f5ff, transparent);
+      opacity:.6; filter: blur(0.5px);
+      animation: sweep 6s linear infinite;
+      transform-origin: center;
+    }
+    @keyframes sweep {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    footer {
+      position: fixed;
+      bottom: 12px; left: 50%; transform: translateX(-50%);
+      display:flex; align-items:center; gap:10px;
+      font-family: ui-sans-serif;
+      color: #d6f3ff;
+      background: rgba(0,0,0,.25);
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.35);
+      backdrop-filter: blur(6px);
+      z-index: 2;
+    }
+    .github-icon {
+      width: 20px; height: 20px; display:inline-block;
+    }
+    .footer-text {
+      font-size: .95rem;
+      letter-spacing:.04em;
+    }
+
+    @media (max-width: 700px){
+      .title { font-size: 28px; }
+      .card { padding: 28px 16px; }
+      .orb { display: none; }
+      footer { bottom: 8px; padding: 6px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <section class="scene" aria-label="Hero landing">
+    <div class="card" role="region" aria-labelledby="site-title">
+      <div class="glow-line" aria-hidden="true" style="top:0"></div>
+      <h1 id="site-title" class="title" style="margin-top:0;">
+        amirabolfazle
+      </h1>
+
+      <p class="tagline">Neon-driven landing page with rotating energy and a splash of glow.</p>
+
+      <div class="creation" aria-label="Creation time">
+        Creation time: 2025-09-27 13:22:00
+      </div>
+
+      <div class="actions" aria-label="Primary actions">
+        <button class="btn" onclick="location.hash='#get-started'">Get started</button>
+        <button class="btn secondary" onclick="alert('Nice choice! This is a demo.')">Explore demo</button>
+      </div>
+
+      <!-- decorative rotating orbs -->
+      <div class="orb orb1" aria-hidden="true"></div>
+      <div class="orb orb2" aria-hidden="true"></div>
+
+      <div class="footer-note" style="margin-top:22px; opacity:.75; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.92rem;">
+        Neon vibes • rotate and glow effects
+      </div>
+    </div>
+  </section>
+
+  <footer aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <!-- GitHub SVG Icon -->
+      <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:#e8f4ff;">
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.26.82-.58 0-.287-.01-1.04-.015-2.04-3.338.726-4.042-1.613-4.042-1.613-.546-1.387-1.333-1.757-1.333-1.757-1.089-.744.083-.729.083-.729 1.205.085 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.997.108-.775.42-1.305.764-1.605-2.665-.303-5.466-1.333-5.466-5.93 0-1.31.468-2.382 1.236-3.222-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 013.003-.403c1.018.005 2.042.138 3.003.402 2.29-1.552 3.296-1.23 3.296-1.23.654 1.652.242 2.874.118 3.176.77.84 1.235 1.912 1.235 3.222 0 4.609-2.804 5.624-5.476 5.921.431.373.815 1.104.815 2.229 0 1.606-.015 2.896-.015 3.289 0 .322.216.698.825.58C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+    </a>
+    <span class="footer-text" aria-label="Created by">
+      Created by amirabolfazle
+    </span>
+  </footer>
+</body>
+</html>
