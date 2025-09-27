@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0b12;
+      --surface: #14141e;
+      --surface-2: #1f1f2a;
+      --text: #e8eaf6;
+      --muted: #aab3c5;
+      --accent: #7c3aed;
+      --card: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.06);
+      --shadow: 0 10px 25px rgba(0,0,0,.4);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 0%, rgba(124,58,237,.15), transparent 25%),
+                  radial-gradient(circle at 80% 20%, rgba(0,219,255,.15), transparent 25%),
+                  linear-gradient(#0b0b12, #0b0b12 60%, #0b0b12);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Decorative ambient glow */
+    .aurora {
+      position: fixed;
+      width: 60vmax;
+      height: 60vmax;
+      left: -15vmax;
+      top: -15vmax;
+      background: conic-gradient(from 180deg at 50% 50%, #8b5cf6, #06b6d4, #10b981, #f472b6, #8b5cf6);
+      filter: blur(60px);
+      opacity: 0.25;
+      transform: rotate(15deg);
+      animation: spin 40s linear infinite;
+      z-index: 0;
+    }
+    @keyframes spin { to { transform: rotate(395deg); } }
+
+    .background-dots {
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.08) 0, rgba(255,255,255,0) 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .4;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 2rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+      margin: 0;
+      letter-spacing: .04em;
+      background: linear-gradient(90deg, #e9d5ff 0%, #93c5fd 50%, #a7f3d0 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 24px rgba(124,58,237,.4);
+      user-select: none;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: .75rem;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .45rem .75rem;
+      margin-top: 1rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #dbeafe;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: .85rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.1rem;
+      margin-top: 1.2rem;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: saturate(1.2);
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card h3 {
+      margin: 0 0 .25rem;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: #d1d5db;
+      font-size: .95rem;
+    }
+
+    .card-cta {
+      margin-top: .5rem;
+      align-self: flex-start;
+      padding: .4rem .6rem;
+      border-radius: 8px;
+      background: rgba(124,58,237,.25);
+      color: #fff;
+      font-size: .85rem;
+      text-decoration: none;
+    }
+
+    /* Fade-in animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fadeInUp 0.8s ease forwards;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      text-align: center;
+      color: var(--muted);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+      background: rgba(0,0,0,.15);
+      border-radius: 0 0 12px 12px;
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.08);
+      transition: transform .2s ease;
+    }
+    footer a:hover { transform: translateY(-1px) scale(1.02); }
+
+    .footer-text {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: .95rem;
+    }
+
+    @media (max-width: 600px) {
+      .title { font-size: 2.4rem; }
+      .creation { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="background-dots" aria-hidden="true"></div>
+
+  <main class="container" role="main">
+    <header aria-label="Intro">
+      <h1 class="title fade-in" style="--delay:0s">amirabolfazle</h1>
+      <p class="subtitle fade-in" style="--delay:0.15s">Personal page • dark mode • animated with fade-in effects</p>
+      <div class="creation fade-in" style="--delay:0.3s">Creation time: 2025-09-27 08:13:23</div>
+    </header>
+
+    <section class="grid" aria-label="Highlights">
+      <article class="card fade-in" style="--delay:0s">
+        <div>
+          <h3>About</h3>
+          <p>Hi, I’m amirabolfazle — designing delightful interfaces and exploring automated code ideas.</p>
+        </div>
+        <a class="card-cta" href="#about" aria-label="Read more about me">Read more</a>
+      </article>
+
+      <article class="card fade-in" style="--delay:0.2s">
+        <div>
+          <h3>Skills</h3>
+          <p>UI/UX • React • CSS animations • TypeScript • Automation tooling</p>
+        </div>
+        <a class="card-cta" href="#skills" aria-label="View skills">View skills</a>
+      </article>
+
+      <article class="card fade-in" style="--delay:0.4s">
+        <div>
+          <h3>Projects</h3>
+          <p>Explorations in auto-generated code and modular design systems.</p>
+        </div>
+        <a class="card-cta" href="#projects" aria-label="Projects">Projects</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="fade-in" style="--delay:0.6s" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" style="color:#cbd5e1;">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .296C5.373.296 0 5.669 0 12.297c0 4.536 2.924 8.385 6.993 9.725.512.094.697-.223.697-.495 0-.244-.009-.888-.013-1.744-2.848.618-3.445-1.222-3.445-1.222-.466-1.18-1.137-1.496-1.137-1.496-.931-.636.071-.625.071-.625 1.028.073 1.569 1.058 1.569 1.058.916 1.57 2.405 1.118 2.99.856.092-.664.36-1.118.653-1.376-2.271-.259-4.657-1.136-4.657-5.055 0-1.116.399-2.027 1.054-2.74-.106-.258-.457-1.298.099-2.704 0 0 .858-.275 2.813 1.047a9.76 9.76 0 012.56-.346 9.76 9.76 0 012.56.346c1.955-1.322 2.813-1.047 2.813-1.047.556 1.406.205 2.446.101 2.704.656.713 1.053 1.624 1.053 2.74 0 3.92-2.388 4.792-4.666 5.046.369.322.698.955.698 1.922 0 1.389-.012 2.509-.012 2.852 0 .274.182.593.705.492C19.077 20.678 22 16.831 22 12.297 22 5.669 16.627.296 12 .296z"/>
+      </svg>
+    </a>
+    <span class="footer-text" aria-label="Footer text">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
