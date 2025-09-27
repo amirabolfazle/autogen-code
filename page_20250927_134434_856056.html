@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg2: #11161c;
+      --card: rgba(255,255,255,0.05);
+      --text: #e8f0f7;
+      --muted: #a8b3c6;
+      --accent: #7c3aed;
+      --accent2: #22d3ee;
+      --glow: 0 0 20px rgba(124,58,237,.4);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(2,6,23,1) 0%, rgba(15,22,35,1) 60%, rgba(2,6,23,1) 100%), #0b0f14;
+      background-color: var(--bg);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated backdrop stars */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -10vmin;
+      left: -10vmin;
+      width: 120vmin;
+      height: 120vmin;
+      background-image: radial-gradient(circle at 20px 30px, rgba(124,58,237,.25) 0 2px, transparent 2px),
+                        radial-gradient(circle at 80px 60px, rgba(34,211,238,.25) 0 2px, transparent 2px),
+                        radial-gradient(circle at 140px 20px, rgba(59,130,246,.25) 0 2px, transparent 2px);
+      background-repeat: repeat;
+      filter: saturate(1.1);
+      z-index: 0;
+      animation: drift 60s linear infinite;
+      opacity: .8;
+      pointer-events: none;
+    }
+    @keyframes drift {
+      0% { transform: translate(0,0) rotate(0deg); }
+      100% { transform: translate(-20px, 20px) rotate(360deg); }
+    }
+
+    .wrapper { position: relative; z-index: 1; }
+
+    header.header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .brand .logo {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e293b, #0b1020);
+      box-shadow: inset 0 0 12px rgba(124,58,237,.6), 0 6px 18px rgba(0,0,0,.25);
+      display: grid; place-items: center;
+      color: #a78bfa;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    h1.site-title {
+      font-size: 1.4rem;
+      margin: 0;
+      letter-spacing: .5px;
+      color: #eaf2ff;
+    }
+
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      margin-left: 16px;
+      font-size: .95rem;
+      opacity: .9;
+    }
+    nav a:hover { color: #fff; text-decoration: underline; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; }
+
+    /* Cards / sections */
+    section {
+      margin: 28px auto;
+      padding: 28px;
+      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: saturate(1.3) blur(2px);
+      box-shadow: 0 6px 24px rgba(0,0,0,.25);
+      max-width: 900px;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform .6s ease-out, opacity .6s ease-out;
+    }
+
+    section.in-view {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 28px;
+      align-items: center;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    .avatar {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #4f46e5, #06b6d4, #ec4899, #4f46e5);
+      box-shadow: inset 0 0 25px rgba(255,255,255,.7), 0 10px 26px rgba(0,0,0,.4);
+      display: grid; place-items: center;
+      color: white; font-weight: 700;
+      font-size: 2rem;
+    }
+
+    .lead {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    h2.name {
+      font-size: 2rem;
+      margin: 0 0 8px;
+      letter-spacing: .4px;
+      color: #f8fbff;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: .8rem;
+      color: #dbeafe;
+      background: linear-gradient(135deg, rgba(124,58,237,.85), rgba(34,211,238,.85));
+      box-shadow: var(--glow);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 12px;
+      background: rgba(2,6,23,.25);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      color: #e9f2ff;
+    }
+
+    .muted { color: var(--muted); }
+
+    .cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      color: #eaf4ff;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(59,130,246,.25), rgba(124,58,237,.25));
+    }
+    .cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+
+    .creation-time {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(2,6,23,.5);
+      border: 1px solid rgba(255,255,255,.08);
+      font-family: monospace;
+      color: #e2e8f0;
+    }
+
+    /* Footer with GitHub icon and credit */
+    footer.site-footer {
+      margin-top: 40px;
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    footer.site-footer a.github {
+      color: #eaf2ff;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(2,6,23,.25);
+    }
+    footer.site-footer a.github:hover { background: rgba(2,6,23,.4); }
+
+    footer.site-footer .credit {
+      display: inline-block;
+      margin-left: 12px;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 900px){
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .avatar { margin: 0 auto; }
+      .grid-2 { grid-template-columns: 1fr; }
+      header.header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header slide-up" aria-label="Site header">
+      <div class="brand">
+        <div class="logo" aria-label="Logo">A</div>
+        <h1 class="site-title" style="font-weight:800; font-size:1.0rem; margin:0; letter-spacing:.6px;">amirabolfazle</h1>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="wrapper" id="top">
+      <section class="hero slide-up" id="about" aria-label="Hero section">
+        <div class="avatar" aria-label="Avatar initials">A</div>
+        <div class="intro">
+          <h2 class="name" style="margin:0 0 6px; font-size:2rem; letter-spacing:.4px;">amirabolfazle</h2>
+          <div class="lead" style="margin-bottom: 12px;">
+            Creative coder • Product-minded designer • curious thinker
+          </div>
+          <span class="tag" aria-label="Tagline">Dark mode • Animated • Personal page</span>
+          <div class="grid-2" style="margin-top:14px;">
+            <div class="card" aria-label="Intro card">
+              <strong>Location</strong>
+              <div class="muted" style="font-size:.95rem;">Remote • Global</div>
+            </div>
+            <div class="card" aria-label="Status card">
+              <strong>Status</strong>
+              <div class="muted" style="font-size:.95rem;">Building delightful interfaces</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section slide-up" id="creation" aria-label="Creation time">
+        <h3 class="section-title" style="font-weight:700;">Creation time</h3>
+        <div class="creation-time" title="Creation timestamp">2025-09-27 13:44:02</div>
+        <p class="muted" style="margin-top:8px;">
+          This page is a demonstration of a fancy animated personal page with a dark theme and slide-up effects.
+        </p>
+      </section>
+
+      <section class="section slide-up" id="projects" aria-label="Projects">
+        <h3 class="section-title" style="font-weight:700;">Projects</h3>
+        <div class="grid-2" style="gap:16px;">
+          <div class="card" aria-label="Project 1">
+            <strong>Autogen Code</strong>
+            <div class="muted" style="font-size:.95rem;">
+              Lightweight generator for boilerplate code with clever defaults.
+            </div>
+            <a class="cta" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="Open GitHub autogen-code repo" style="margin-top:8px; display:inline-flex;">
+              Explore repository
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align: middle;">
+                <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.4 11.4 0 016 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.92.43.37.82 1.11.82 2.24v3.32c0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+              </svg>
+            </a>
+          </div>
+          <div class="card" aria-label="Project 2">
+            <strong>Design Notes</strong>
+            <div class="muted" style="font-size:.95rem;">
+              A collection of micro-interactions and design tokens.
+            </div>
+            <a class="cta" href="#top" aria-label="Learn about design notes" style="margin-top:8px;">View notes</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" role="img" style="display:inline-block;">
+          <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.4 11.4 0 016 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.92.43.37.82 1.11.82 2.24v3.32c0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+        </svg>
+        GitHub
+      </a>
+      <span class="credit" aria-label="Created by text">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Simple intersection observer for slide-up on view
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      sections.forEach(sec => observer.observe(sec));
+
+      // Also observe the header if it's not too early
+      const header = document.querySelector('header');
+      if (header) {
+        observer.observe(header);
+      }
+    });
+  </script>
+</body>
+</html>
