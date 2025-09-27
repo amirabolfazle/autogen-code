@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0b1020;
+      --bg2: #1a1f36;
+      --glass: rgba(255,255,255,0.14);
+      --glass-border: rgba(255,255,255,0.25);
+      --text: #e9e9f7;
+      --muted: #d6d6e8;
+      --accent: rgba(120, 190, 255, 0.9);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1100px circle at 10% -10%, rgba(60,120,255,0.25), transparent 40%),
+                  radial-gradient(800px circle at 90% 0%, rgba(120,240,255,0.20), transparent 40%),
+                  linear-gradient(135deg, var(--bg1) 0%, #0b0f1a 60%, #0b1020 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated background blobs for depth */
+    .bg-blob {
+      position: fixed;
+      filter: blur(60px);
+      opacity: 0.25;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 0;
+      animation: drift 20s ease-in-out infinite;
+    }
+    #blob1 { width: 420px; height: 420px; top: -120px; left: -80px; background: #4cc9f0; }
+    #blob2 { width: 520px; height: 520px; bottom: -180px; right: -140px; background: #a78bfa; animation-duration: 28s; }
+
+    @keyframes drift {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(20px,-20px) scale(1.04); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    header.main {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      padding: 80px 20px 40px;
+    }
+
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.30);
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      display: grid;
+      gap: 28px;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      padding: 28px;
+    }
+
+    .title {
+      font-size: clamp(2.6rem, 4vw + 1rem, 5rem);
+      font-weight: 800;
+      letter-spacing: .5px;
+      margin: 0;
+      background: linear-gradient(135deg, #fff, #b8f1ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 14px rgba(0,0,0,.25);
+      transform: translateZ(0);
+      will-change: transform;
+      animation: zoomIn 1.5s ease-out forwards;
+    }
+
+    @keyframes zoomIn {
+      0% { transform: scale(0.92) translateY(8px); opacity: 0; }
+      60% { transform: scale(1.04) translateY(-2px); opacity: 1; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 700px;
+      line-height: 1.5;
+      margin: 0 auto;
+      opacity: 0.95;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    .button {
+      appearance: none;
+      border: 0;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0b1020;
+      background: linear-gradient(135deg, #a3e8ff, #7bd8ff);
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 6px 20px rgba(123,216,255,.6);
+    }
+    .button:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(123,216,255,.8); }
+
+    .creation-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: .88rem;
+      color: #e8f6ff;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      margin-top: 6px;
+    }
+
+    .hero-card {
+      width: min(860px, 94%);
+      padding: 28px;
+      border-radius: 20px;
+      display: grid;
+      gap: 14px;
+      text-align: left;
+      align-items: start;
+      justify-items: stretch;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transform: translateZ(0);
+      animation: cardPop 1.1s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes cardPop {
+      0% { transform: scale(0.98); opacity: 0; }
+      60% { transform: scale(1.01); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+
+    .card-text {
+      color: #e8eaff;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    footer.footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 28px;
+      margin-top: 40px;
+      font-size: 0.95rem;
+      color: var(--muted);
+      opacity: 0.95;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      background: linear-gradient(to top, rgba(0,0,0,0.0), rgba(255,255,255,0.04));
+    }
+
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      fill: currentColor;
+      color: #e8f3ff;
+    }
+
+    a.reset-link {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    @media (max-width: 720px){
+      .title { font-size: 2.8rem; }
+      .subtitle { font-size: 1.05rem; padding: 0 6px; }
+      .hero-card { width: 92%; padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="bg" aria-hidden="true" class="bg-blob" style="--bg:transparent;"></div>
+  <div id="blob1" class="bg-blob" style="top:-120px; left:-80px; width:420px; height:420px; background:#4cc9f0;"></div>
+  <div id="blob2" class="bg-blob" style="bottom:-180px; right:-140px; width:520px; height:520px; background:#a78bfa; animation-duration:28s;"></div>
+
+  <header class="main" role="banner" aria-label="Site header">
+    <section class="container glass" style="text-align:center;">
+      <h1 class="title" aria-label="Site title amirabolfazle">amirabolfazle</h1>
+
+      <div class="creation-chip" aria-label="Creation time">
+        Creation time: 2025-09-27 08:31:58
+      </div>
+
+      <div class="subtitle" id="subtitle" style="max-width:860px;">
+        A stunning, glassy landing experience with smooth zoom effects and a modern glassmorphism aesthetic. Navigate a sleek interface that embraces translucency and depth.
+      </div>
+
+      <div class="hero-card glass" aria-label="Hero content container" style="margin-top:6px;">
+        <p class="card-title" style="margin:0 0 6px 0;">Hello, world.</p>
+        <p class="card-text" style="margin:0;">
+          This page showcases a glass-morphism design with subtle zoom-in animations, creating a futuristic but readable landing experience.
+        </p>
+
+        <div class="cta-row" aria-label="Primary actions">
+          <button class="button" type="button" onclick="alert('Welcome to amirabolfazle!')">Explore</button>
+          <button class="button" type="button" style="background: linear-gradient(135deg, #ffd29b, #ffc1a1); color:#1a0a00;" onclick="alert('Coming soon!')">Get started</button>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main role="main" aria-label="Main content" style="min-height:40vh;">
+    <!-- Optional additional glass panels can be added here if desired -->
+  </main>
+
+  <footer class="footer" role="contentinfo" aria-label="Footer">
+    <a class="reset-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository for autogen-code">
+      <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.05-3.34.73-4.04-1.44-4.04-1.44-.55-1.41-1.34-1.79-1.34-1.79-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.82 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.4 1.23-3.25-.12-.3-.54-1.53.12-3.19 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 016 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.66.24 2.89.12 3.19.77.85 1.23 1.93 1.23 3.25 0 4.62-2.8 5.64-5.47 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.69.83.57A12 12 0 0012 .5z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Optional: ensure a tiny entrance animation tie-in for the hero card if JS-enabled
+    (function(){
+      const card = document.querySelector('.hero-card');
+      if(card){
+        // already animated via CSS, but we can trigger a reflow to ensure the animation plays on reload
+        card.style.opacity = '1';
+      }
+    })();
+  </script>
+</body>
+</html>
