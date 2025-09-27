@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: rgba(255,255,255,0.18);
+      --card2: rgba(255,255,255,0.08);
+      --txt: #eaf3ff;
+      --accent: #8ec5ff;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #e9f0ff;
+      background: radial-gradient(circle at 20% 10%, rgba(110, 140, 255, 0.25), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 120, 180, 0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0a0f1a 100%);
+      background-attachment: fixed;
+    }
+    .app {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      padding: 40px 20px;
+    }
+    .card {
+      position: relative;
+      width: min(900px, 92vw);
+      border-radius: 28px;
+      padding: 42px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      overflow: hidden;
+      transform: rotateX(0deg) rotateY(0deg);
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
+    }
+    .card:hover {
+      transform: rotateX(6deg) rotateY(-6deg);
+    }
+    .card::before {
+      content: "";
+      position: absolute; inset: -2px;
+      border-radius: 30px;
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.0), rgba(255,255,255,0.6), rgba(255,255,255,0.0));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: xor;
+      pointer-events: none;
+    }
+    .header {
+      display: flex; align-items: center; gap: 16px; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .brand .logo {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.2));
+      border: 1px solid rgba(255,255,255,0.5);
+      display: grid; place-items: center;
+      animation: float 6s ease-in-out infinite;
+    }
+    .brand .logo svg { width: 22px; height: 22px; filter: drop-shadow(0 2px 6px rgba(0,0,0,.3)); }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 56px);
+      margin: 0;
+      letter-spacing: .08em;
+      background: linear-gradient(90deg, #fff, #bcd6ff, #fff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 2px 16px rgba(120,170,255,.3);
+    }
+    .sub {
+      font-size: 14px; opacity: .9;
+    }
+    .main {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 26px;
+      align-items: center;
+    }
+    .panel {
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.3);
+      min-height: 180px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .panel h2 { font-size: 20px; margin: 0 0 10px; }
+    .panel p { margin: 0; line-height: 1.5; color: #e6f0ff; }
+
+    .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.18);
+      font-size: 12px;
+      color: #eaf3ff;
+      animation: rotateTag 6s linear infinite;
+    }
+    @keyframes rotateTag {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @media (max-width: 860px) {
+      .main { grid-template-columns: 1fr; }
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding: 18px 24px;
+      width: min(900px, 92vw);
+      display: flex; justify-content: space-between; align-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .footer a { display: inline-flex; align-items: center; color: #eaf3ff; text-decoration: none; }
+    .footer svg { width: 20px; height: 20px; fill: currentColor; }
+
+    .divider {
+      height: 1px; width: 100%; background: rgba(255,255,255,0.25); opacity: 0.6; margin: 16px 0;
+    }
+
+    .glow {
+      position: absolute; width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(135,206,250,.8), transparent 40%), radial-gradient(circle at 70% 70%, rgba(255,192,203,.7), transparent 40%);
+      filter: blur(20px); opacity: .8; pointer-events: none;
+      animation: drift 12s ease-in-out infinite;
+    }
+    .glow.one { top: -60px; left: -60px; }
+    .glow.two { bottom: -80px; right: -40px; animation-delay: -6s; }
+
+    @keyframes drift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(20px, -20px) scale(1.05); } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="card" aria-label="Amir Abolfazle personal card">
+      <div class="glow one" aria-hidden="true"></div>
+      <div class="glow two" aria-hidden="true"></div>
+
+      <div class="header">
+        <div class="brand">
+          <div class="logo" aria-label="logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l7 4v6c0 4-3 7-7 9-4-2-7-5-7-9V7l7-4z" fill="url(#grad)"/>
+              <defs>
+                <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                  <stop stop-color="#a6e1ff"/>
+                  <stop offset="1" stop-color="#ffffff"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <h1>amirabolfazle</h1>
+        </div>
+        <span class="tag" aria-label="glassy rotating tag">
+          <span style="display:inline-block;width:8px;height:8px;background:#8bd3ff;border-radius:50%;box-shadow:0 0 6px #8bd3ff"></span>
+          Glassmorphic
+          <span style="display:inline-block;width:8px;height:8px;background:#ffd6a8;border-radius:50%;box-shadow:0 0 6px #ffd6a8; margin-left:6px"></span>
+        </span>
+      </div>
+
+      <div class="main">
+        <section class="panel" aria-labelledby="about-title">
+          <h2 id="about-title" style="margin-top:0">About</h2>
+          <p>Hello, I’m amirabolfazle. A curious creator exploring design, code, and all things glassy and animated. This page uses glassmorphism, subtle rotations, and soft motion to create a calm, futuristic vibe.</p>
+          <div class="divider" aria-hidden="true"></div>
+          <p>Creation time: 2025-09-27 12:02:08</p>
+        </section>
+
+        <section class="panel" aria-labelledby="tech-title">
+          <h2 id="tech-title" style="margin-top:0">Tech & Effects</h2>
+          <p>Glassmorphism with backdrop-filter blur, gradient borders, rotating accents, soft shadows, and responsive layout. Hover to feel the card tilt slightly for a tactile feel.</p>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <span class="tag" style="animation-duration: 8s;">CSS</span>
+            <span class="tag" style="animation-duration: 9s;">HTML</span>
+            <span class="tag" style="animation-duration: 7s;">JS</span>
+            <span class="tag" style="animation-duration: 11s;">UX</span>
+          </div>
+        </section>
+      </div>
+
+      <div class="footer" role="contentinfo" aria-label="footer">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository" style="display:inline-flex; align-items:center;">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" role="img" fill="currentColor">
+            <path d="M12 .5A12 12 0 000 12.5 12 12 0 008.2 23.9c.6.11.82-.26.82-.58l-.02-2.18c-3.34.74-4.04-1.44-4.04-1.44-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.21.09 1.85 1.25 1.85 1.25 1.08 1.84 2.82 1.31 3.5 1 .11-.82.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.31 1.23a11.4 11.4 0 016 0c2.3-1.55 3.31-1.23 3.31-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.47 5.92.43.37.82 1.1.82 2.22l-.02 3.29c0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+          </svg>
+        </a>
+        <span style="color:#e9f1ff; font-size:14px;">Created by amirabolfazle</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
