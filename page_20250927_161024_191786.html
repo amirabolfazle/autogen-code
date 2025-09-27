@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #f7f3f4;
+      --fg: #2a2a2a;
+      --pink: #ffd6e8;
+      --mint: #cbe8e2;
+      --lav: #eedcff;
+      --card: #ffffff;
+      --muted: #6b6b6b;
+      --shadow: 0 6px 20px rgba(0,0,0,.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, 'Noto Sans', 'Droid Sans', sans-serif;
+      color: var(--fg);
+      background: radial-gradient( circle at 10% 0%, rgba(255, 210, 230, 0.5) 0%, rgba(255, 255, 255, 0) 40% ),
+                  radial-gradient( circle at 90% 20%, rgba(170, 240, 210, 0.5) 0%, rgba(255,255,255,0) 40% ),
+                  linear-gradient(135deg, #fff9fb 0%, #f8fbff 60%, #f2f7f4 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* decorative blobs */
+    .blob {
+      position: fixed;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: .6;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .blob.pink { background: #ffd8e2; top: -40px; left: -40px; }
+    .blob.mint { background: #c8f0e0; bottom: -80px; right: -60px; }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 40px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header.site-header {
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: 20px;
+      background: white;
+      width: min(900px, 90%);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* gentle pastel gradient border around header using :before */
+    header.site-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,192,203,.6), rgba(173,216,230,.6), rgba(255,230,205,.6));
+      -webkit-mask: 
+        linear-gradient(#000 0 0) content-box, 
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header.site-header > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 64px);
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: #333;
+      text-transform: lowercase;
+    }
+
+    .tagline {
+      margin: 8px 0 16px;
+      color: #555;
+      font-size: clamp(14px, 2.5vw, 18px);
+    }
+
+    .creation-time {
+      display: inline-block;
+      padding: 6px 12px;
+      font-family: monospace;
+      font-size: 12px;
+      border-radius: 999px;
+      background: #fff;
+      color: #555;
+      border: 1px solid #eee;
+      margin-top: 8px;
+    }
+
+    main.content {
+      width: min(900px, 90%);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 28px;
+      z-index: 1;
+    }
+
+    section.panel {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid #eee;
+      opacity: 0; /* initial for fade-in */
+      transform: translateY(12px);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #444;
+      font-size: 1.4rem;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #555;
+    }
+
+    ul.projects {
+      padding-left: 20px;
+      margin: 6px 0 0;
+    }
+
+    .site-footer {
+      width: min(900px, 90%);
+      margin: 34px auto 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      color: #555;
+      font-size: 14px;
+      opacity: 0; transform: translateY(12px);
+    }
+
+    .site-footer a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 6px; background: #fff; border: 1px solid #eee;
+      color: inherit; text-decoration: none;
+    }
+
+    .site-footer svg { width: 20px; height: 20px; display: block; }
+
+    /* fade-in animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeIn 0.9s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* small responsive tweaks */
+    @media (max-width: 600px) {
+      header.site-header { padding: 28px 14px; }
+      .site-footer { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob pink" aria-hidden="true"></div>
+  <div class="blob mint" aria-hidden="true"></div>
+
+  <div class="page">
+    <header class="site-header fade-in" style="animation-delay:0s;">
+      <h1>amirabolfazle</h1>
+      <div class="tagline" aria-label="tagline">Pastel-inspired, animated personal page</div>
+      <div class="creation-time" aria-label="creation-time-desc">
+        Creation time: 2025-09-27 16:09:47
+      </div>
+    </header>
+
+    <main class="content" aria-label="content">
+      <section class="panel fade-in" style="animation-delay:0.15s;">
+        <h2>About</h2>
+        <p>Hello! I’m amirabolfazle, a curious builder exploring interfaces, ideas, and creative code. This page uses a soft pastel palette and gentle fade-in animations to create a calm, friendly vibe.</p>
+      </section>
+
+      <section class="panel fade-in" style="animation-delay:0.30s;">
+        <h2>Projects</h2>
+        <p>Selected experiments and snippets generated to showcase a playful, pastel-friendly UI.</p>
+        <ul class="projects" aria-label="projects">
+          <li>Autogen code snippets</li>
+          <li>UX micro-interactions</li>
+          <li>Creative tooling ideas</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer fade-in" style="animation-delay:0.45s;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <!-- GitHub Icon SVG -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" focusable="false" width="20" height="20">
+          <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.5 2.87 8.32 6.84 9.68.5.1.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.2-3.37-1.2-.46-1.1-1.12-1.39-1.12-1.39-.92-.64.07-.63.07-.63 1.02.07 1.56 1.08 1.56 1.08.9 1.58 2.36 1.13 2.94.86.09-.66.36-1.13.65-1.39-2.22-.25-4.55-1.14-4.55-5.04 0-1.12.39-2.04 1.03-2.76-.11-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.04a9.2 9.2 0 012.5-.34c.85.01 1.7.11 2.5.33 1.9-1.31 2.74-1.04 2.74-1.04.55 1.42.21 2.46.11 2.72.64.72 1.02 1.64 1.02 2.76 0 3.91-2.34 4.78-4.57 5.03.37.33.7.98.7 1.98 0 1.43-.01 2.58-.01 2.93 0 .26.18.58.69.48A10.01 10.01 0 0014 14.24C18.74 13.04 22 9.27 22 5.63 22 3.15 18.83 2 15 2h-3z" />
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Optional: staggered reveal if JS is allowed; otherwise CSS handles.
+    // This script simply ensures all .panel and .site-footer get animated-delay progressively if not set.
+    (function() {
+      const panels = document.querySelectorAll('.panel');
+      panels.forEach((el, i) => {
+        el.style.animationDelay = (0.15 + i * 0.15) + 's';
+      });
+      const foot = document.querySelector('.site-footer');
+      if (foot) foot.style.animationDelay = (0.15 + panels.length * 0.15) + 's';
+    })();
+  </script>
+</body>
+</html>
