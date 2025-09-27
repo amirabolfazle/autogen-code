@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg2: #161a2b;
+      --glass: rgba(255, 255, 255, 0.14);
+      --glass-border: rgba(255, 255, 255, 0.28);
+      --text: #e8f0ff;
+      --muted: #cbd6e7;
+      --accent: rgba(120, 180, 255, 0.9);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(10,14,28,0.95), rgba(14,18,38,0.95) 60%), 
+                  radial-gradient(circle at 20% 20%, rgba(100,180,255,0.15), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(255,100,180,0.15), transparent 40%),
+                  #0b1020;
+      overflow-x: hidden;
+    }
+
+    /* gentle parallax-like glow behind content */
+    .bg-glow {
+      position: fixed;
+      inset: -10vmax;
+      pointer-events: none;
+      background: radial-gradient(circle at 30% 20%, rgba(120,200,255,0.15), transparent 40%),
+                  radial-gradient(circle at 70% 60%, rgba(255,120,180,0.15), transparent 40%);
+      z-index: 0;
+      filter: blur(40px);
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: start center;
+      padding: 6vmin 4vmin 8vmin;
+    }
+
+    header.title {
+      width: min(100%, 1100px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.4rem 1.6rem;
+      border-radius: 20px;
+      margin-top: 2rem;
+      transform: rotateX(0deg) rotateY(0deg);
+      transition: transform 0.4s ease;
+      will-change: transform;
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      backdrop-filter: saturate(150%) blur(12px);
+      -webkit-backdrop-filter: saturate(150%) blur(12px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+
+    header.title:hover {
+      transform: rotateX(6deg) rotateY(-6deg);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .brand .logo {
+      width: 40px; height: 40px;
+      display: grid; place-items: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(120,180,255,0.8), rgba(180,120,255,0.8));
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.5);
+      transform-origin: 50% 50%;
+      animation: slowSpin 20s linear infinite;
+    }
+
+    @keyframes slowSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    header h1 {
+      font-size: clamp(28px, 4vw, 52px);
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    header .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
+
+    .grid {
+      width: min(1100px, 100%);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      margin-top: 1.8rem;
+      align-items: stretch;
+    }
+
+    section.panel {
+      padding: 1.4rem;
+      border-radius: 20px;
+    }
+
+    .intro {
+      padding: 1.6rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .intro h2 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 28px);
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.12);
+      font-size: 0.9rem;
+      color: #e9f0ff;
+      user-select: none;
+    }
+
+    /* decorative rotating orbs */
+    .orb {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(0.2px);
+      opacity: 0.18;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      animation: orbit 36s linear infinite;
+    }
+    .orb.o1 { left: -80px; top: -60px; background: radial-gradient(circle at 30% 30%, rgba(120,200,255,0.9), transparent 60%), rgba(120,200,255,0.9); animation-duration: 50s; }
+    .orb.o2 { right: -120px; bottom: -40px; background: radial-gradient(circle at 60% 60%, rgba(255,120,180,0.9), transparent 60%), rgba(255,120,180,0.8); animation-duration: 60s; }
+    .orb.o3 { left: 20%; bottom: -120px; width: 240px; height: 240px; background: radial-gradient(circle at 40% 40%, rgba(180,255,180,0.9), transparent 60%), rgba(180,255,180,0.8); animation-duration: 40s; }
+
+    @keyframes orbit {
+      0% { transform: rotate(0deg) translateX(0) translateY(0); }
+      100% { transform: rotate(360deg) translateX(0) translateY(0); }
+    }
+
+    /* simple responsive tweaks */
+    @media (min-width: 900px) {
+      .intro { grid-template-columns: 1fr 1fr; align-items: center; }
+    }
+
+    footer {
+      width: min(1100px, 100%);
+      margin: 3rem auto 0;
+      padding: 1rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    footer a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #e9f0ff;
+      text-decoration: none;
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      transition: background 0.2s ease;
+    }
+
+    footer a:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .footer-text {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    /* small decorative glow around the page edges */
+    .glow-edge {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 0%, rgba(120,180,255,0.25), transparent 40%),
+                  radial-gradient(circle at 0% 100%, rgba(180,120,255,0.25), transparent 40%);
+      mix-blend-mode: screen;
+      filter: blur(2px);
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="glow-edge" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="title glass" role="banner" aria-label="Site header">
+      <div class="brand">
+        <div class="logo" aria-label="Logo">
+          <!-- simple rotating cube-like glyph -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" style="opacity:.9">
+            <path d="M12 2l8 4v6c0 5-3.5 9-8 9s-8-4-8-9V6l8-4z" opacity=".7"></path>
+            <path d="M4 12l8 4 8-4V8l-8-4-8 4v4z" opacity=".95"></path>
+          </svg>
+        </div>
+        <h1 style="margin:0; font-weight:700; letter-spacing:1px;">amirabolfazle</h1>
+      </div>
+      <span class="creation" aria-label="Creation time badge">Creation time: 2025-09-27 13:57:15</span>
+    </header>
+
+    <main class="grid" role="main" aria-label="Main content">
+      <section class="panel intro glass" style="position:relative; overflow:hidden;">
+        <span class="orb o1" aria-hidden="true"></span>
+        <span class="orb o2" aria-hidden="true"></span>
+        <span class="orb o3" aria-hidden="true"></span>
+
+        <div>
+          <h2>Hi, I’m Amir</h2>
+          <p>
+            Welcome to my animated personal page. This space uses a glassmorphism aesthetic with rotating accents
+            and soft, translucent panels. Hover the header to feel the tilt, watch the orbs drift, and enjoy the glow.
+          </p>
+        </div>
+
+        <div style="align-self:start;">
+          <div class="creation" title="Live timestamp">
+            <span style="width:8px; height:8px; display:inline-block; background:#8be3ff; border-radius:50%; box-shadow:0 0 6px #8be3ff;"></span>
+            Live preview
+          </div>
+        </div>
+      </section>
+
+      <section class="panel glass" aria-label="Projects" style="padding:1.6rem;">
+        <h2 style="margin:0 0 0.6rem 0; font-size:1.25rem;">Projects at a Glance</h2>
+        <p style="color:var(--muted); margin-top:0.2rem;">
+          This section is a placeholder to illustrate how glass panels can contain cards or items with their own rotate
+          animations. You can replace these with real content as needed.
+        </p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; margin-top:0.8rem;">
+          <div class="glass" style="padding:1rem; border-radius:14px; height:120px; display:flex; align-items:center; justify-content:center; transform: rotateZ(-2deg);">
+            Card 1
+          </div>
+          <div class="glass" style="padding:1rem; border-radius:14px; height:120px; display:flex; align-items:center; justify-content:center; transform: rotateZ(2deg);">
+            Card 2
+          </div>
+          <div class="glass" style="padding:1rem; border-radius:14px; height:120px; display:flex; align-items:center; justify-content:center; transform: rotateZ(-4deg);">
+            Card 3
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="glass" role="contentinfo" aria-label="Footer" style="margin-top:2rem; padding:1rem 1.2rem; display:flex; justify-content:space-between; align-items:center; width:100%; max-width:1100px;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" style="color:#e9f0ff;">
+          <path d="M12 .5C5.73.5 0 5.73 0 12a11.99 11.99 0 008.21 11.39c.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.35.73-4.05-1.44-4.05-1.44-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.21.08 1.85 1.23 1.85 1.23 1.02 1.82 2.68 1.3 3.33.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.92 0-1.31.47-2.38 1.24-3.22-.13-.31-.54-1.57.12-3.27 0 0 .99-.32 3.25 1.21a11.3 11.3 0 016.01 0c2.26-1.53 3.24-1.21 3.24-1.21.68 1.7.25 2.96.12 3.27.77.84 1.23 1.94 1.23 3.22 0 4.61-2.8 5.6-5.47 5.92.43.37.82 1.1.82 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.21.68.8.56A11.99 11.99 0 0024 12c0-6.27-5.73-11.5-12-11.5z"/>
+        </svg>
+      </a>
+      <span class="footer-text">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <!-- Optional tiny script to keep creation time static; no dynamic clock to respect exact timestamp requirement -->
+  <script>
+    // No dynamic behavior required beyond CSS-driven animation.
+  </script>
+</body>
+</html>
