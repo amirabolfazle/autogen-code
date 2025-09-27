@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0b12;
+      --surface: #141522;
+      --surface-2: #1d1a2b;
+      --fg: #e9e9f0;
+      --muted: #a5a5aa;
+      --accent: #7c5cff;
+      --accent-2: #4be1d4;
+      --ring: rgba(124,92,255,.5);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient( circle at 20% -10%, rgba(124,92,255,.15), transparent 40% ),
+                  radial-gradient( circle at 100% 0%, rgba(0,0,0,.25), transparent 40% ),
+                  var(--bg);
+      color: var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Layout */
+    header.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(10,10,18,.75);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      backdrop-filter: blur(6px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .brand .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #7c5cff, #4be1d4);
+      box-shadow: 0 0 14px rgba(124,92,255,.9);
+    }
+    nav a {
+      color: var(--fg);
+      text-decoration: none;
+      margin: 0 8px;
+      font-size: 14px;
+      opacity: .9;
+    }
+    nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 2px; }
+
+    main { padding: 0 20px; }
+
+    section.section { padding: 72px 0; }
+    .container { max-width: 1020px; margin: 0 auto; }
+
+    /* Hero */
+    .hero {
+      min-height: 68vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 40px 20px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 6vw, 5.6rem);
+      line-height: 1.02;
+      margin: 0 0 12px;
+      letter-spacing: .02em;
+      background: linear-gradient(90deg, #fff, #cbd5e1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 40px rgba(124,92,255,.25);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(124,92,255,.15);
+      color: #e8e8ff;
+      border: 1px solid rgba(124,92,255,.4);
+      font-weight: 500;
+      font-size: 13px;
+      margin-top: 14px;
+    }
+
+    /* Cards and grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(20,18,36,.9), rgba(20,18,36,.75) 60%, rgba(20,18,36,.9));
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+      overflow: hidden;
+      min-height: 180px;
+    }
+    .card-visual {
+      height: 110px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1e1b2a, #2a2340);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-visual:before {
+      content: "";
+      position: absolute;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,92,255,.8), transparent 40%);
+      filter: blur(8px);
+      left: -60px; top: -60px;
+      transform: rotate(20deg);
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      background: rgba(124,92,255,.25);
+      color: #e9e6ff;
+      border: 1px solid rgba(124,92,255,.5);
+      margin-bottom: 8px;
+    }
+    .card h3 {
+      margin: 6px 0 6px;
+      font-size: 1.1rem;
+    }
+    .muted { color: var(--muted); font-size: 0.95rem; }
+
+    /* Reveal / slide-up animation on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    footer.footer {
+      padding: 28px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(10,10,18,.8);
+    }
+    .footer-content {
+      display: inline-flex; align-items: center; gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .footer a.github {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      color: #fff;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    .footer a.github:hover { transform: translateY(-2px); }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;
+    }
+
+    /* Responsive niceties */
+    @media (max-width: 720px){
+      .hero h1 { font-size: 3.2rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="topbar" aria-label="Site header">
+    <a href="#" class="brand" aria-label="Home">
+      <span class="dot" aria-hidden="true"></span>
+      <span>amirabolfazle</span>
+    </a>
+    <nav aria-label="Site navigation">
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#contact" style="display:none">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home" aria-label="Hero">
+      <div class="container">
+        <h1 class="reveal" style="--delay:0s">amirabolfazle</h1>
+        <p class="hero-sub reveal" style="--delay:0.05s; font-weight:500">A compact, dark-mode, single-file portfolio with smooth slide-up animations.</p>
+        <div class="creation reveal" style="--delay:0.1s" aria-live="polite">
+          Created on 2025-09-27 15:20:22
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects" aria-label="Projects">
+      <div class="container">
+        <div class="badge reveal" style="display:inline-block; margin-bottom:8px;">Projects</div>
+        <h2 class="reveal" style="font-size: 1.6rem; margin:0 0 12px;">Selected Works</h2>
+        <div class="grid" aria-label="Project grid">
+          <article class="card reveal" aria-label="Project one" style="animation-delay:.02s">
+            <div class="card-visual" aria-label="Preview of Project One">
+              <!-- decorative abstract SVG -->
+              <svg width="84" height="54" viewBox="0 0 84 54" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract shape">
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                    <stop stop-color="#7c5cff"/>
+                    <stop offset="1" stop-color="#4be1d4"/>
+                  </linearGradient>
+                </defs>
+                <rect x="2" y="6" width="24" height="40" rx="6" fill="url(#g1)" opacity="0.8"/>
+                <circle cx="50" cy="26" r="14" fill="url(#g1)" opacity="0.6"/>
+                <path d="M68 18L82 10L74 32L60 28L68 18Z" fill="url(#g1)" opacity="0.8"/>
+              </svg>
+            </div>
+            <span class="badge" aria-label="Tech stack tag">Web • UI</span>
+            <h3>Aurora UI Kit</h3>
+            <p class="muted">A tiny, accessible component library focused on dark mode aesthetics and smooth motion.</p>
+          </article>
+
+          <article class="card reveal" aria-label="Project two" style="animation-delay:.08s">
+            <div class="card-visual" aria-label="Preview of Project Two" style="background: linear-gradient(135deg, #1a1a30, #1f2a53);">
+              <svg width="90" height="54" viewBox="0 0 90 54" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Code snippet">
+                <rect width="90" height="54" rx="10" fill="url(#grad)" />
+                <defs>
+                  <linearGradient id="grad" x1="0" x2="1" y1="0" y2="1">
+                    <stop stop-color="#4be1d4" />
+                    <stop offset="1" stop-color="#7c5cff" />
+                  </linearGradient>
+                </defs>
+                <path d="M20 28L34 18L42 26L28 36L20 28Z" fill="white" opacity="0.9"/>
+                <path d="M40 20L54 12L62 20" stroke="white" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="badge" aria-label="Tech stack tag">Frontend</span>
+            <h3>Lightweight Dashboard</h3>
+            <p class="muted">A responsive admin panel scaffold with modular widgets and dark-mode-first design.</p>
+          </article>
+
+          <article class="card reveal" aria-label="Project three" style="animation-delay:.12s">
+            <div class="card-visual" aria-label="Preview of Project Three" style="background: linear-gradient(135deg, #0b1020, #1a0f2a);">
+              <svg width="90" height="54" viewBox="0 0 90 54" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Device mock">
+                <rect x="6" y="6" width="78" height="42" rx="6" fill="white" opacity=".08"/>
+                <rect x="12" y="14" width="66" height="26" rx="4" fill="#7c5cff" opacity=".9"/>
+                <rect x="14" y="18" width="42" height="6" rx="2" fill="#0b0b12"/>
+              </svg>
+            </div>
+            <span class="badge" aria-label="Tech stack tag">Open-source</span>
+            <h3>Autogen Snippets</h3>
+            <p class="muted">A tiny library that generates code templates on demand, from a single-file setup.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-label="About">
+      <div class="container">
+        <div class="badge reveal" style="display:inline-block;margin-bottom:8px;">About</div>
+        <h2 class="reveal" style="margin-top:6px;">What I do</h2>
+        <p class="muted reveal" style="max-width: 700px;">
+          I enjoy crafting fast, accessible, and delightful web experiences. My sweet spot is small, focused projects
+          that ship quickly and scale gracefully. I prefer practical UI, clean architecture, and thoughtful motion that
+          guides users without distracting them.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact" aria-label="Site footer">
+    <div class="footer-content">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+          <path d="M12 .5A12.5 12.5 0 0 0 0 12.5c0 5.5 3.57 10.17 8.52 11.84.62.11.84-.27.84-.6v-2.15c-3.47.76-4.2-1.49-4.2-1.49-.57-1.43-1.39-1.82-1.39-1.82-1.14-.78.09-.77.09-.77 1.26.09 1.92 1.3 1.92 1.3 1.12 1.92 2.94 1.37 3.66 1.05.11-.82.44-1.37.8-1.69-2.77-.32-5.69-1.39-5.69-6.18 0-1.37.48-2.49 1.28-3.36-.13-.32-.56-1.62.12-3.38 0 0 1.05-.34 3.44 1.28a12 12 0 0 1 6.26 0c2.39-1.62 3.44-1.28 3.44-1.28.69 1.76.25 3.06.12 3.38.8.87 1.28 1.99 1.28 3.36 0 4.8-2.93 5.85-5.72 6.16.45.39.86 1.16.86 2.34v3.46c0 .33.21.72.85.6A12.5 12.5 0 0 0 24 12.5C24 5.81 18.18.5 12 .5Z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Simple reveal-on-scroll (slide-up) behavior
+    document.addEventListener('DOMContentLoaded', () => {
+      const revealEls = document.querySelectorAll('.reveal');
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+      };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+
+      revealEls.forEach(el => {
+        // ensure each element starts hidden
+        el.style.willChange = 'transform, opacity';
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
