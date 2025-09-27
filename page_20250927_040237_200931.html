@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(255,255,255,0.10);
+      --bg2: rgba(255,255,255,0.18);
+      --glass: rgba(255,255,255,0.15);
+      --border: rgba(255,255,255,0.28);
+      --text: #eaf4ff;
+      --muted: #cbdcff;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 20%, rgba(120,180,255,0.25), transparent 40%),
+                  radial-gradient(circle at 80% 10%, rgba(180,120,255,0.25), transparent 40%),
+                  #0b0f1a;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated glow background layers for depth */
+    body:before, body:after {
+      content: "";
+      position: fixed;
+      inset: -10vmax;
+      z-index: -1;
+      background: radial-gradient(circle at 60% 40%, rgba(100,200,255,0.15), transparent 40%),
+                  radial-gradient(circle at 20% 70%, rgba(180,100,255,0.15), transparent 40%);
+      filter: blur(40px);
+      animation: drift 20s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes drift {
+      0% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(20px,-10px,0) scale(1.02); }
+      100% { transform: translate3d(0,0,0) scale(1); }
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    header.hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items: center;
+      justify-items: center;
+      padding: 28px;
+      margin: 8px auto 22px;
+    }
+
+    .brand {
+      display: inline-block;
+      padding: 14px 20px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.25);
+      text-align: center;
+    }
+
+    h1.title {
+      margin: 0;
+      font-size: 2.6rem;
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #eaf4ff 0%, #b1d4ff 60%, #d2e4ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .tagline {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.85rem;
+      color: #dbeaff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.12);
+    }
+
+    main.grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    /* Glassmorphism card base */
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform: translateZ(0);
+    }
+
+    .glass h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.25rem;
+      letter-spacing: .4px;
+    }
+
+    .glass p { color: #e9f2ff; opacity: .92; }
+
+    /* Hover zoom effect */
+    .card:hover { transform: scale(1.04); z-index: 1; }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .project {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,255,255,.20), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.3);
+      min-height: 120px;
+    }
+
+    .thumb {
+      height: 90px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(120,180,255,.45), rgba(120,255,210,.15));
+      border: 1px solid rgba(255,255,255,.4);
+    }
+
+    .skills { padding-left: 1em; margin: 6px 0 0; }
+
+    /* Footer */
+    footer.footer {
+      margin-top: 28px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .gitlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .credit {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 700px) {
+      .title { font-size: 2.1rem; }
+      header.hero { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero" aria-label="Portfolio header">
+      <div class="brand" role="img" aria-label="amirabolfazle portfolio">
+        <h1 class="title" style="margin:0; font-size:1.6rem; letter-spacing:.5px; text-align:center;">
+          amirabolfazle
+        </h1>
+      </div>
+      <p class="tagline" style="text-align:center; margin:0;">
+        A cool, one-file portfolio with glassmorphism and smooth zoom effects
+      </p>
+      <div class="creation-time" aria-label="creation time">
+        Creation time: 2025-09-27 04:01:55
+      </div>
+    </header>
+
+    <main class="grid" aria-label="Portfolio sections">
+      <section class="glass card" id="about" aria-labelledby="about-title">
+        <h2 id="about-title" style="margin-top:0;">About</h2>
+        <p>
+          Hi, I’m amirabolfazle. This single-file portfolio demonstrates glassmorphism vibes,
+          subtle zoom on interaction, and a clean layout to present ideas, projects, and
+          skills. Everything here is contained in one HTML file for easy portability.
+        </p>
+      </section>
+
+      <section class="glass card" id="projects" aria-labelledby="projects-title">
+        <h2 id="projects-title" style="margin-top:0;">Projects</h2>
+        <div class="project-grid">
+          <article class="project card" aria-label="Project: Autogen Code Playground" style="cursor:default;">
+            <div class="thumb" aria-hidden="true"></div>
+            <h3 style="margin:0; font-size:1.05rem;">Autogen Code Playground</h3>
+            <p style="margin:0; font-size:.92rem; color:#e7f0ffcc;">
+              A compact, single-file generator for creative code snippets with live previews.
+            </p>
+          </article>
+
+          <article class="project card" aria-label="Project: Glass UI Kit" style="cursor:default;">
+            <div class="thumb" aria-hidden="true"></div>
+            <h3 style="margin:0; font-size:1.05rem;">Glass UI Kit</h3>
+            <p style="margin:0; font-size:.92rem; color:#e7f0ffcc;">
+              Pixel-perfect glassmorphism components for rapid prototyping.
+            </p>
+          </article>
+
+          <article class="project card" aria-label="Project: Interactive Animations" style="cursor:default;">
+            <div class="thumb" aria-hidden="true"></div>
+            <h3 style="margin:0; font-size:1.05rem;">Interactive Animations</h3>
+            <p style="margin:0; font-size:.92rem; color:#e7f0ffcc;">
+              Choreographed zoom and parallax effects to enhance user experience.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="glass card" id="skills" aria-labelledby="skills-title">
+        <h2 id="skills-title" style="margin-top:0;">Skills</h2>
+        <ul class="skills" style="list-style: none; padding-left: 0;">
+          <li style="margin:.25rem 0;">HTML, CSS, vanilla JS</li>
+          <li style="margin:.25rem 0;">Glassmorphism UI</li>
+          <li style="margin:.25rem 0;">Animation and UX micro-interactions</li>
+          <li style="margin:.25rem 0;">Web performance and accessibility</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer glass" aria-label="Footer">
+      <a class="gitlink" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <!-- Simple GitHub-like icon (not an official mark) -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 .5C5.73.5 0 5.84 0 12.38c0 5.43 3.44 9.99 8.21 11.58.6.11.82-.26.82-.58
+                   0-.29-.01-1.04-.02-2.04-3.34.73-4.04-1.44-4.04-1.44-.55-1.38-1.33-1.76-1.33-1.76-.99-.68.08-.67.08-.67
+                   1.11.08 1.69 1.05 1.69 1.05.97 1.66 2.54 1.18 3.17.9.09-.7.39-1.18.71-1.46-2.66-.31-5.46-1.32-5.46-5.88
+                   0-1.3.46-2.37 1.22-3.2-.12-.31-.53-1.56.11-3.25 0 0 1-.32 3.28 1.19A9.53 9.53 0 0112 6.9c.99 0 1.99-.13 2.92-.37
+                   2.28-1.37 3.28-1.19 3.28-1.19.64 1.69.23 2.94.11 3.25.77.83 1.22 1.9 1.22 3.2 0 4.66-2.8 5.56-5.46 5.87.8.69 1.49 1.99 1.49 4.01
+                   0 2.9-.03 5.24-.03 5.95 0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+        </svg>
+        <span style="vertical-align: middle;">GitHub</span>
+      </a>
+      <span class="credit" aria-label="Creator credit">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <style>
+    /* Extra tiny hover glow for links in footer when focused/hovered */
+    footer a.gitlink:hover, footer a.gitlink:focus {
+      text-decoration: none;
+      outline: none;
+      filter: saturate(1.3);
+    }
+  </style>
+</body>
+</html>
