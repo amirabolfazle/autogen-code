@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #14182a;
+      --fg: #e9e7ff;
+      --muted: #a6a6d6;
+      --accent: #7c3aed;
+      --card: rgba(20, 20, 40, 0.8);
+      --glow: 0 0 22px rgba(124,58,237,.9);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(124,58,237,.25), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(0,255,170,.15), transparent 35%),
+                  linear-gradient(135deg, #0b1020 0%, #0a0f1e 40%, #0b1020 100%);
+      overflow: hidden;
+    }
+    /* Scene and stage with 3D feel */
+    .scene { height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; perspective: 1000px; position: relative; }
+    .stage {
+      width: min(980px, 92vw);
+      height: min(560px, 62vh);
+      background: rgba(18, 20, 40, 0.75);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      grid-gap: 20px;
+      box-shadow: 0 40px 120px rgba(0,0,0,.6);
+      transform-style: preserve-3d;
+      position: relative;
+      overflow: hidden;
+    }
+    .tilt { transform-style: preserve-3d; transition: transform 0.1s ease; }
+
+    /* Fancy title with gradient text */
+    .title {
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: .04em;
+      margin: 0;
+      background: linear-gradient(135deg, #ffd166 0%, #7c3aed 45%, #3bd4ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 14px rgba(124,58,237,.6);
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    /* Avatar / name block */
+    .avatar {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-weight: 800;
+      font-size: 56px;
+      color: #111;
+      background: radial-gradient(circle at 30% 30%, #fff 0%, #ddd 25%, #bbb 60%, #888 100%);
+      border: 2px solid rgba(255,255,255,.25);
+      box-shadow: 0 10px 24px rgba(0,0,0,.45);
+      margin-top: 4px;
+    }
+
+    .headerRow {
+      display:flex; align-items:center; justify-content: space-between;
+      width: 100%; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,.08);
+      gap: 14px;
+    }
+    .leftBlock { display:flex; align-items:center; gap: 16px; }
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(2,6,23,.6);
+      color: #cbd5e1;
+    }
+
+    /* Decorative rotating orbs */
+    .orb { position: absolute; border-radius: 50%; filter: blur(0.4px); opacity:.75; mix-blend-mode: screen; }
+    .orb.o1 {
+      width: 140px; height: 140px; background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.95), rgba(255,0,140,.4) 40%, rgba(0,0,0,.3) 60%);
+      top: -20px; left: -40px; animation: spin 24s linear infinite;
+    }
+    .orb.o2 {
+      width: 240px; height: 240px; background: radial-gradient(circle at 40% 40%, rgba(0,255,170,.9), rgba(0,170,255,.4) 40%, rgba(0,0,0,.3) 60%);
+      bottom: -60px; right: -60px; animation: spin 38s linear infinite reverse;
+      opacity:.55;
+    }
+    .orb.o3 {
+      width: 320px; height: 320px; background: radial-gradient(circle at 60% 40%, rgba(180,0,255,.9), rgba(0,180,255,.4) 40%, rgba(0,0,0,.2) 60%);
+      top: 10%; right: 15%; animation: spin 52s linear infinite; opacity:.25;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg) translateZ(0); }
+      to { transform: rotate(360deg) translateZ(0); }
+    }
+
+    /* Content area cards */
+    .content { display:flex; flex-direction: column; gap: 14px; }
+    .intro { color: #d9e3ff; line-height: 1.5; }
+
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+
+    .card {
+      padding: 14px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      min-height: 90px;
+    }
+    .card h4 { margin: 6px 0 8px; font-size: 0.95rem; color:#b6c6ff; }
+    .card p { margin:0; color:#dbe4ff; font-size:.92rem; }
+
+    /* Glass overlay panel for depth */
+    .glass {
+      backdrop-filter: blur(6px);
+      background: rgba(2,6,23,.45);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(2,6,23,.65);
+      border: 1px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(6px);
+      color:#e2e8f0;
+      font-family: ui-mold, system-ui;
+    }
+    footer a { color: #e2e8f0; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    footer span { font-size: .92rem; color:#cbd5e1; }
+
+    /* Responsive tweaks */
+    @media (max-width: 860px){
+      .stage { grid-template-columns: 1fr; height: auto; padding: 20px; }
+      .orb { display: none; }
+      .avatar { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" id="scene" aria-label="animated scene">
+    <div class="orb o1" aria-hidden="true"></div>
+    <div class="orb o2" aria-hidden="true"></div>
+    <div class="orb o3" aria-hidden="true"></div>
+
+    <div class="stage tilt" id="stage" tabindex="0" aria-label="personal page stage">
+      <div class="leftBlock" style="grid-column: 1 / 2; display:flex; align-items:flex-start; gap: 18px;">
+        <div class="avatar" aria-label="avatar">A</div>
+      </div>
+
+      <div class="content" style="grid-column: 2 / 3;">
+        <div class="headerRow" style="display:flex; justify-content: space-between; align-items: baseline;">
+          <div style="display:flex; align-items: center; gap:14px;">
+            <div style="display:flex; flex-direction:column;">
+              <h1 class="title" style="margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto;">amirabolfazle</h1>
+              <span class="subtitle" style="margin-top:4px;">Fancy animated personal page</span>
+            </div>
+          </div>
+          <div class="creation" aria-label="creation time">Creation time: 2025-09-27 05:07:21</div>
+        </div>
+
+        <div class="glass" style="margin-top: 6px;">
+          <p class="intro" style="margin:0;">
+            Welcome to a dark-mode, animated personal page with rotate effects. Hover or move your mouse to tilt the stage and watch the visuals come alive.
+          </p>
+        </div>
+
+        <div class="grid" style="margin-top: 8px;">
+          <section class="card" aria-label="projects">
+            <h4>Projects</h4>
+            <p>Autogen code demo, playful and interactive.</p>
+          </section>
+          <section class="card" aria-label="skills">
+            <h4>Skills</h4>
+            <p>CSS artistry, UI/UX, front-end development.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer aria-label="footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align: middle;">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.523 2 12c0 4.418 2.867 8.168 6.839 9.488.5.092.682-.216.682-.48 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.194-3.369-1.194-.454-1.156-1.11-1.465-1.11-1.465-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.089 2.91.833.091-.651.35-1.09.636-1.343-2.22-.252-4.555-1.11-4.555-4.944 0-1.092.39-1.987 1.03-2.686-.103-.253-.448-1.273.098-2.652 0 0 .84-.269 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.853.004 1.71.116 2.514.342 1.909-1.295 2.748-1.026 2.748-1.026.548 1.38.203 2.399.1 2.652.645.699 1.03 1.594 1.03 2.686 0 3.842-2.338 4.688-4.566 4.936.359.31.679.923.679 1.867 0 1.348-.012 2.429-.012 2.761 0 .266.18.576.688.478C19.13 20.164 22 16.42 22 12c0-5.477-4.423-10-10-10z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple parallax tilt on mouse move
+    (function() {
+      const stage = document.getElementById('stage');
+      const scene = document.getElementById('scene');
+      function handle(e){
+        const bounds = stage.getBoundingClientRect();
+        const cx = bounds.left + bounds.width / 2;
+        const cy = bounds.top + bounds.height / 2;
+        const dx = (e.clientX - cx) / bounds.width;
+        const dy = (e.clientY - cy) / bounds.height;
+        const rotX = dy * -14;
+        const rotY = dx * 14;
+        stage.style.transform = 'rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
+      }
+      scene.addEventListener('mousemove', handle);
+      scene.addEventListener('mouseleave', () => { stage.style.transform = 'rotateX(0deg) rotateY(0deg)'; });
+      stage.style.transition = 'transform 0.2s ease';
+    })();
+  </script>
+</body>
+</html>
