@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --glass: rgba(255,255,255,.14);
+      --glass-border: rgba(255,255,255,.28);
+      --text: #e8f2ff;
+      --bg: #0b1020;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 0%, rgba(80,120,255,.15), transparent 40%),
+                  radial-gradient(circle at 90% 10%, rgba(0,180,255,.15), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0b1020 60%, #0a0f1e 100%);
+      overflow-x: hidden;
+    }
+    /* Animated glassy background layers */
+    .bg {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02) 40%, rgba(255,255,255,.08)),
+                  radial-gradient(circle at 50% 0%, rgba(0, 180, 255, .15), transparent 40%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: -3;
+      animation: drift 18s ease-in-out infinite;
+    }
+    @keyframes drift {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    /* Glassy shapes behind content for depth */
+    .orb {
+      position: absolute;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.95), rgba(255,255,255,.0) 40%),
+                  radial-gradient(circle at 70% 70%, rgba(0,180,255,.6), rgba(0,0,0,0) 60%);
+      border: 1px solid rgba(255,255,255,.55);
+      filter: blur(0.2px);
+      opacity: .65;
+      mix-blend-mode: screen;
+      animation: spin 28s linear infinite;
+      z-index: 0;
+    }
+    .orb.one { top: -60px; left: -60px; width: 320px; height: 320px; animation-duration: 40s; opacity:.45; }
+    .orb.two { bottom: -80px; right: -120px; width: 320px; height: 320px; animation-duration: 60s; opacity:.4; }
+    .orb.three { top: 40%; left: 60%; width: 210px; height: 210px; animation-duration: 32s; opacity:.5; }
+
+    @keyframes spin {
+      from { transform: rotate(0deg) translateZ(0); }
+      to   { transform: rotate(360deg) translateZ(0); }
+    }
+
+    /* Layout container */
+    .wrap {
+      min-height: 100h;
+      display: flex; align-items: center; justify-content: center;
+      padding: 6rem 1rem;
+    }
+
+    /* Glassy hero card with rotate effect */
+    .glass-hero {
+      position: relative;
+      width: min(1100px, 92vw);
+      padding: 4.5rem 3rem;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.08) 60%);
+      border: 1px solid rgba(255,255,255,.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      backdrop-filter: blur(14px) saturate(1.2);
+      -webkit-backdrop-filter: blur(14px) saturate(1.2);
+      overflow: hidden;
+      transform: rotate(-0.5deg);
+      transition: transform 0.6s ease;
+      z-index: 1;
+    }
+    .glass-hero:hover { transform: rotate(0deg) scale(1.012); }
+
+    /* Title styling with glassy glow and gradient text */
+    .title {
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.95;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #ffffff 0%, #b3e5ff 60%, #b6f3e7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 40px rgba(176,238,255,.6);
+    }
+
+    .sub {
+      font-size: 1.05rem;
+      color: rgba(235,245,255,.92);
+      margin: 14px 0 0;
+      opacity: .95;
+    }
+
+    .cta {
+      display: inline-flex;
+      gap: .8rem;
+      margin-top: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: .92rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.65);
+      background: linear-gradient(135deg, rgba(255,255,255,.8), rgba(255,255,255,.25));
+      color: #04101a;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: .2px;
+      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+    .btn:hover { transform: translateY(-1px) rotate(-1deg); box-shadow: 0 12px 28px rgba(0,0,0,.35); }
+    .btn.secondary {
+      background: transparent;
+      color: #e8f0ff;
+      border: 1px solid rgba(255,255,255,.8);
+    }
+
+    .creation {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .4rem .75rem; border-radius: 999px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      font-size: .9rem;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.55);
+      margin-top: 1.9rem;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Footer with GitHub icon */
+    footer {
+      padding: 2.5rem 1rem;
+      text-align: center;
+      color: #dbeaff;
+    }
+    footer a {
+      color: #e7f0ff;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: .5rem;
+      border-bottom: 1px dashed rgba(231,240,255,.6);
+    }
+    footer a:hover { border-bottom: 1px solid rgba(231,240,255,.8); }
+    .icon { width: 1em; height: 1em; fill: currentColor; }
+
+    /* Responsive tweaks */
+    @media (max-width: 860px) {
+      .title { font-size: clamp(2.5rem, 12vw, 6rem); }
+      .orb { display: none; }
+      .glass-hero { padding: 3rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+  <div class="orb three" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <section class="glass-hero" aria-label="AmiraBolfazle landing">
+      <h1 class="title" style="margin-bottom: .4rem;">amirabolfazle</h1>
+      <p class="sub">Glassmorphism landing page with rotate effects</p>
+
+      <div class="cta" aria-label="Primary actions">
+        <a href="#" class="btn" title="Explore">
+          Explore
+        </a>
+        <a href="#" class="btn secondary" title="Learn more">
+          Learn more
+        </a>
+      </div>
+
+      <div class="creation" aria-label="Creation time badge" style="margin-top:1.8rem;">
+        Creation time: 2025-09-28 00:21:09
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <span class="icon" aria-label="GitHub icon">
+        <svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.89.58.11.79-.25.79-.56 0-.28-.01-1.03-.02-2.02-3.2.69-3.88-1.46-3.88-1.46-.53-1.35-1.3-1.71-1.3-1.71-1.06-.72.08-.7.08-.7 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.74 1.27 3.41.97.11-.75.41-1.27.75-1.56-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.46-2.28 1.21-3.08-.12-.3-.53-1.51.11-3.16 0 0 1 .32 3.29 1.22a11.5 11.5 0 0 1 6 0c2.29-.9 3.29-1.22 3.29-1.22.64 1.65.23 2.86.11 3.16.75.8 1.21 1.82 1.21 3.08 0 4.41-2.68 5.4-5.24 5.69.41.35.78 1.04.78 2.11 0 1.52-.01 2.74-.01 3.11 0 .31.2.67.77.56A12.01 12.01 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/>
+        </svg>
+      </span>
+      Created by amirabolfazle
+    </a>
+  </footer>
+</body>
+</html>
