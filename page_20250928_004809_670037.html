@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle - Portfolio</title>
+  <style>
+    :root {
+      --bg: #f6f1f8;
+      --bg-grad: linear-gradient(135deg, #f6f1f8 0%, #f2fffb 60%, #e9f7ff 100%);
+      --card: #ffffff;
+      --text: #2b2b2b;
+      --muted: #5a5a5a;
+      --accent: #a9d0ff;
+      --accent-2: #ffd6e0;
+      --accent-3: #d7f9e6;
+      --border: rgba(0,0,0,.08);
+      --shadow: 0 6px 18px rgba(0,0,0,.06);
+      --radius: 14px;
+      --pad: 1rem;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans";
+      color: var(--text);
+      background: var(--bg-grad);
+      overflow-x: hidden;
+    }
+
+    header.hero {
+      padding: clamp(28px, 6vw, 64px) 20px 20px;
+      text-align: center;
+      position: relative;
+    }
+    header.hero .title {
+      font-size: clamp(40px, 6vw, 84px);
+      line-height: 0.95;
+      margin: 0 0 8px;
+      letter-spacing: .5px;
+      color: #3b335e;
+      text-transform: lowercase;
+      font-weight: 800;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+    }
+    header.hero .subtitle {
+      margin: 0;
+      font-size: clamp(14px, 2.5vw, 18px);
+      color: #5a4a72;
+      opacity: .9;
+    }
+    header.hero .creation {
+      margin-top: 14px;
+      display: inline-block;
+      padding: .35rem .6rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      border: 1px solid var(--border);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .85rem;
+      color: #3a3a3a;
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
+    }
+
+    nav.primary {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      background: rgba(251, 250, 255, 0.9);
+      backdrop-filter: saturate(1.2) blur(6px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    nav.primary a {
+      text-decoration: none;
+      color: #3b335e;
+      padding: .5rem 1rem;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: all .2s ease;
+      border: 1px solid transparent;
+    }
+    nav.primary a:hover {
+      background: #fff;
+      border-color: var(--border);
+      transform: translateY(-1px);
+    }
+
+    main {
+      padding: 28px 20px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section {
+      margin: 40px 0;
+    }
+    section h2 {
+      font-size: clamp(22px, 4vw, 32px);
+      margin: 0 0 14px;
+      color: #3b335e;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 600ms cubic-bezier(.22,.61,.36,1), opacity 600ms ease;
+    }
+    .card.in-view {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .card .thumb {
+      height: 120px;
+      background: #eaeaf1;
+    }
+    .card h3 {
+      margin: 12px 12px 6px;
+      font-size: 1.05rem;
+      color: #2b2b2b;
+    }
+    .card p {
+      margin: 0 12px 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    /* pastel accents for cards */
+    .card[data-variant="pink"] .thumb { background: linear-gradient(135deg, #ffd6e0 0%, #fbd2ff 60%, #e0f6ff 100%); }
+    .card[data-variant="mint"] .thumb { background: linear-gradient(135deg, #d4fff0 0%, #c9fbdc 60%, #e9e5ff 100%); }
+    .card[data-variant="lav"] .thumb { background: linear-gradient(135deg, #e0d7ff 0%, #d1fff5 60%, #ffe1f1 100%); }
+
+    footer {
+      padding: 22px 20px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,0.8);
+    }
+    .footer-content {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #555;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem;
+      user-select: none;
+    }
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
+      text-decoration: none;
+      color: inherit;
+    }
+    .logo-link svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+      fill: currentColor;
+    }
+
+    @media (max-width: 600px) {
+      header.hero { padding-top: 20px; }
+      header.hero .title { font-size: 64px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" aria-label="Intro">
+    <h1 class="title" style="margin:0;">amirabolfazle</h1>
+    <p class="subtitle" aria-label="Subtitle">A pastel-styled, animated one-file portfolio</p>
+    <div class="creation" aria-label="Creation time">
+      Creation time: 2025-09-28 00:47:48
+    </div>
+  </header>
+
+  <nav class="primary" aria-label="Navigation">
+    <a href="#projects" style="font-family:inherit;">Projects</a>
+    <a href="#about" style="font-family:inherit;">About</a>
+    <a href="#contact" style="font-family:inherit;">Contact</a>
+  </nav>
+
+  <main id="content" role="main">
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <div class="grid">
+        <article class="card slide" data-animate data-delay="0ms" data-variant="pink" aria-label="Autogen Code card">
+          <div class="thumb" aria-label="Autogen Code thumbnail"></div>
+          <div class="content">
+            <h3>Autogen Code</h3>
+            <p>A lightweight code-generation tool with minimal setup, designed for fast demos and experiments.</p>
+          </div>
+        </article>
+
+        <article class="card slide" data-animate data-delay="60ms" data-variant="mint" aria-label="Portfolio Builder card">
+          <div class="thumb" aria-label="Portfolio Builder thumbnail"></div>
+          <div class="content">
+            <h3>Portfolio Builder</h3>
+            <p>A modular component library for building quick, responsive portfolios with polished defaults.</p>
+          </div>
+        </article>
+
+        <article class="card slide" data-animate data-delay="120ms" data-variant="lav" aria-label="Live Demos card">
+          <div class="thumb" aria-label="Live Demos thumbnail"></div>
+          <div class="content">
+            <h3>Live Demos</h3>
+            <p>Interactive snippets that showcase ideas with smooth transition effects and pleasant aesthetics.</p>
+          </div>
+        </article>
+
+        <article class="card slide" data-animate data-delay="180ms" data-variant="pink" aria-label="Utils & Tools card">
+          <div class="thumb" aria-label="Utils & Tools thumbnail"></div>
+          <div class="content">
+            <h3>Utils & Tools</h3>
+            <p>A collection of tiny utilities for rapid prototyping, focused on clarity and delight.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p style="max-width: 750px; color: var(--muted); line-height: 1.6;">
+        Hi there. I’m amirabolfazle. This single-file portfolio demonstrates a pastel-themed, slide-up animated layout
+        that keeps everything in one HTML document. The goal is simplicity, speed, and a pleasant user experience
+        without relying on external assets.
+      </p>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p style="max-width: 750px; color: var(--muted); line-height: 1.6;">
+        Interested in collaborating or learning more? Reach out via GitHub or other channels you prefer.
+      </p>
+    </section>
+  </main>
+
+  <footer role="contentinfo" aria-label="Footer">
+    <div class="footer-content" style="gap:12px;">
+      <a class="logo-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub Repository">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.73.5 0 6.16 0 12.01c0 5.08 3.29 9.38 7.84 10.89.57.11.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.19.69-3.87-1.37-3.87-1.37-.52-1.32-1.28-1.67-1.28-1.67-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.76 2.7 1.25 3.36.96.11-.76.41-1.25.75-1.54-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.09-.12-.3-.52-1.52.11-3.17 0 0 .98-.31 3.2 1.18a11.1 11.1 0 012.92-.39c.99.01 1.99.13 2.92.38 2.22-1.49 3.2-1.18 3.2-1.18.64 1.65.24 2.87.12 3.17.75.8 1.19 1.83 1.19 3.09 0 4.43-2.69 5.41-5.25 5.68.42.36.8 1.07.8 2.15 0 1.56-.01 2.82-.01 3.2 0 .3.2.66.79.55A12.51 12.51 0 0024 12.01C24 6.16 18.27.5 12 .5z" fill="currentColor"></path>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Slide-up animation on scroll into view
+    (function() {
+      const items = document.querySelectorAll('[data-animate]');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      items.forEach(el => {
+        // Apply stagger delay if provided
+        const delay = el.getAttribute('data-delay');
+        if (delay) {
+          el.style.transitionDelay = delay;
+        }
+        observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
