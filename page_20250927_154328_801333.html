@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle — Portfolio</title>
+  <style>
+    :root{
+      --bg1: #f8f4f8;
+      --bg2: #f5f0ea;
+      --pink: #ffd2e2;
+      --mint: #d4f7e3;
+      --lav: #e6dbff;
+      --peach: #ffe8d2;
+      --text: #2b2a2d;
+      --muted: #6b6b6b;
+      --card: #ffffff;
+      --shadow: 0 6px 18px rgba(0,0,0,.05);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(255,210,230,.5) 0 20%, transparent 22%),
+                  radial-gradient(circle at 90% 0%, rgba(210,240,255,.5) 0 25%, transparent 30%),
+                  linear-gradient(135deg, #fcfbfe 0%, #f3f9ff 60%, #fffaff 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    .decor {
+      position: fixed;
+      pointer-events: none;
+      width: 420px;
+      height: 420px;
+      filter: blur(40px);
+      opacity: .6;
+      z-index: 0;
+    }
+    .decor.one { top: -60px; left: -60px; background: radial-gradient(circle at 30% 30%, #ffd6e5, transparent 40%), radial-gradient(circle at 60% 60%, #d3f7e2, transparent 40%); border-radius:50%; transform: rotate(25deg); }
+    .decor.two { bottom: -80px; right: -80px; background: radial-gradient(circle at 40% 40%, #e8d9ff, transparent 40%), radial-gradient(circle at 70% 70%, #ffe6d0, transparent 40%); border-radius:50%; transform: rotate(-15deg); }
+
+    .container { width: min(1100px, 92%); margin: 0 auto; padding: 28px 0; position: relative; z-index: 1; }
+
+    .site-header { display:flex; align-items:center; justify-content: space-between; gap: 16px; padding: 20px 0; position: relative; z-index: 1; }
+    .logo {
+      font-family: 'Poppins', system-ui, sans-serif;
+      font-size: clamp(28px, 5vw, 58px);
+      font-weight: 800;
+      letter-spacing: .5px;
+      margin: 0;
+      background: linear-gradient(90deg, #ff7eb6, #a1e3d8, #a6b0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(255,255,255,.3);
+    }
+    .creation-time {
+      font-size: .85rem;
+      color: #6b6b6b;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(0,0,0,.05);
+    }
+
+    h1, h2 { margin: 0; }
+
+    .section { padding: 40px 0; }
+    .section-header { display:flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+
+    .section h2 { font-size: clamp(1.6rem, 2vw + 1rem, 2.4rem);
+      font-weight: 800;
+      letter-spacing: .3px;
+      background: linear-gradient(90deg, #ff7eb6, #a6b0ff, #7ae6d9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtle { color: var(--muted); }
+
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,.05);
+      transform: perspective(1000px);
+      transition: transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .3s;
+    }
+    .card:hover { transform: translateY(-4px) rotateX(6deg); box-shadow: 0 14px 28px rgba(0,0,0,.08); }
+    .thumb { height: 120px; border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(135deg, #fff, #f5f9ff);
+      margin-bottom: 12px; overflow: hidden;
+    }
+    .card svg { width: 100%; height: 100%; display:block; }
+
+    .card h3 { font-size: 1.05rem; margin: 4px 0 6px; }
+    .card p { font-size: .92rem; color: #58626f; margin: 0; }
+
+    @media (max-width: 600px) {
+      .logo { font-size: 40px; }
+      .creation-time { display: none; }
+    }
+
+    .footer { margin-top: 24px; padding: 20px 0; display:flex; align-items:center; justify-content:flex-start; gap:12px;
+              border-top:1px solid rgba(0,0,0,.05); color: #555; }
+    .github-link { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:8px;
+                    background: rgba(0,0,0,.04); text-decoration:none; color: inherit; transition: transform .2s ease; }
+    .github-link:hover { transform: translateY(-1px); background: rgba(0,0,0,.07); }
+    .github-link svg { width: 20px; height: 20px; fill: currentColor; }
+
+    .credit { font-size: 0.95rem; color:#555; }
+
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .logo { animation: floaty 6s ease-in-out infinite; }
+    }
+  </style>
+</head>
+<body>
+  <div class="decor one" aria-hidden="true"></div>
+  <div class="decor two" aria-hidden="true"></div>
+
+  <header class="container site-header" aria-label="Site header">
+    <h1 class="logo" aria-label="Site title">amirabolfazle</h1>
+    <span class="creation-time" aria-label="creation time">2025-09-27 15:42:41</span>
+  </header>
+
+  <main class="container">
+    <section id="about" class="section fade-in" aria-label="About">
+      <div class="section-header">
+        <h2>About</h2>
+        <span class="subtle">A pastel-tinted playground of ideas</span>
+      </div>
+      <p style="font-size:1rem; color:#555; line-height:1.6;">
+        This is a single-file, animated portfolio for amirabolfazle. It showcases a handful of projects with soft pastel aesthetics and smooth fade-in transitions as you scroll.
+      </p>
+    </section>
+
+    <section id="portfolio" class="section fade-in" aria-label="Portfolio">
+      <div class="section-header">
+        <h2>Projects</h2>
+        <span class="subtle">Pastel gallery</span>
+      </div>
+      <div class="grid" role="list" aria-label="Projects grid">
+        <!-- Card 1 -->
+        <article class="card" role="listitem" aria-label="Project One">
+          <div class="thumb" aria-label="Project thumbnail">
+            <svg viewBox="0 0 200 120" role="img" aria-label="Abstract pastel shape">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                  <stop stop-color="#ffd0e8" offset="0"/>
+                  <stop stop-color="#bde7e6" offset="1"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="120" fill="url(#g1)"/>
+              <circle cx="60" cy="60" r="28" fill="#fff" opacity="0.7"/>
+              <circle cx="150" cy="40" r="22" fill="#ffe6a7" opacity="0.8"/>
+              <path d="M20,95 Q60,60 100,95 T180,95" fill="none" stroke="#8bd5ff" stroke-width="6" opacity="0.65"/>
+            </svg>
+          </div>
+          <h3>Colorful Grid</h3>
+          <p>A responsive grid layout with soft hues and playful accents.</p>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" role="listitem" aria-label="Project Two">
+          <div class="thumb" aria-label="Pastel illustration">
+            <svg viewBox="0 0 200 120" role="img" aria-label="Pastel shapes">
+              <defs>
+                <linearGradient id="g2" x1="0" x2="1" y1="0" y2="0">
+                  <stop stop-color="#f8c9e3" offset="0"/>
+                  <stop stop-color="#c6f2d2" offset="1"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="120" fill="url(#g2)"/>
+              <circle cx="70" cy="60" r="22" fill="#fff" opacity="0.9"/>
+              <circle cx="130" cy="80" r="26" fill="#ffd6a8" opacity="0.85"/>
+              <rect x="20" y="90" width="44" height="14" rx="4" fill="#ffffff" opacity="0.8"/>
+            </svg>
+          </div>
+          <h3>Soft Components</h3>
+          <p>Palettes and components with gentle gradients and shadows.</p>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card" role="listitem" aria-label="Project Three">
+          <div class="thumb" aria-label="Gradient blob">
+            <svg viewBox="0 0 200 120" role="img" aria-label="Blob">
+              <defs>
+                <radialGradient id="g3">
+                  <stop stop-color="#e7f0fe" offset="0"/>
+                  <stop stop-color="#fbd3e0" offset="1"/>
+                </radialGradient>
+              </defs>
+              <rect width="200" height="120" fill="#fff" />
+              <ellipse cx="60" cy="60" rx="40" ry="20" fill="url(#g3)" opacity="0.9" />
+              <ellipse cx="140" cy="70" rx="50" ry="26" fill="#ffd8e7" opacity="0.85" />
+            </svg>
+          </div>
+          <h3>Fluid UI Concepts</h3>
+          <p>Iterative ideas for delightful micro-interactions.</p>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card" role="listitem" aria-label="Project Four">
+          <div class="thumb" aria-label="Logo concept">
+            <svg viewBox="0 0 200 120" role="img" aria-label="Logo">
+              <defs>
+                <linearGradient id="g4" x1="0" x2="1" y1="0" y2="1">
+                  <stop stop-color="#fbd6e3" offset="0"/>
+                  <stop stop-color="#e6f9d8" offset="1"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="120" fill="url(#g4)"/>
+              <circle cx="100" cy="60" r="30" fill="#fff" opacity="0.95"/>
+              <path d="M60,50 L140,70" stroke="#8fbdfc" stroke-width="8" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3>Brand Moodboard</h3>
+          <p>Explorations in color, typography, and spacing.</p>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card" role="listitem" aria-label="Project Five">
+          <div class="thumb" aria-label="Magazine cover">
+            <svg viewBox="0 0 200 120" role="img" aria-label="Magazine">
+              <defs>
+                <linearGradient id="g5" x1="0" x2="1" y1="0" y2="1">
+                  <stop stop-color="#e9d5ff" offset="0"/>
+                  <stop stop-color="#fff4d6" offset="1"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="120" fill="url(#g5)"/>
+              <rect x="28" y="26" width="140" height="68" rx="6" fill="#ffffff" opacity="0.95"/>
+              <circle cx="50" cy="60" r="6" fill="#7ae6d9" />
+            </svg>
+          </div>
+          <h3>Magazine Layout</h3>
+          <p>Typography-led compositions with airy spacing.</p>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="card" role="listitem" aria-label="Project Six">
+          <div class="thumb" aria-label="Palette">
+            <svg viewBox="0 0 200 120" role="img" aria-label="Palette">
+              <defs>
+                <radialGradient id="g6">
+                  <stop stop-color="#ffd8a8" offset="0"/>
+                  <stop stop-color="#edc8ff" offset="1"/>
+                </radialGradient>
+              </defs>
+              <rect width="200" height="120" fill="#fff"/>
+              <ellipse cx="60" cy="60" rx="46" ry="34" fill="url(#g6)" opacity="0.9"/>
+              <ellipse cx="110" cy="60" rx="46" ry="34" fill="#b8f2d8" opacity="0.9"/>
+            </svg>
+          </div>
+          <h3>Palette Playground</h3>
+          <p>Experimenting with pastel color interactions.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer" role="contentinfo" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" aria-label="GitHub icon" width="20" height="20" focusable="false">
+        <path d="M12 2C6.477 2 2 6.523 2 12a9.997 9.997 0 008.208 9.8c.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.34.726-4.043-1.61-4.043-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.073 1.834 2.815 1.304 3.5.997.108-.776.419-1.304.762-1.605-2.665-.303-5.466-1.333-5.466-5.93 0-1.31.467-2.38 1.235-3.22-.124-.303-.535-1.522.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 013.003-.404c1.018.005 2.042.137 3.003.403 2.29-1.552 3.296-1.23 3.296-1.23.653 1.654.243 2.873.119 3.176.77.84 1.234 1.91 1.234 3.22 0 4.609-2.804 5.624-5.475 5.921.43.37.813 1.102.813 2.222 0 1.606-.015 2.898-.015 3.292 0 .32.216.694.825.576A10.006 10.006 0 0022 12C22 6.523 17.523 2 12 2z" fill="currentColor"/>
+      </svg>
+    </a>
+    <span class="credit" aria-label="Created by amirabolfazle">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Fade-in on scroll using IntersectionObserver
+    document.addEventListener('DOMContentLoaded', () => {
+      const fadeEls = document.querySelectorAll('.fade-in');
+      // If already in view, reveal immediately
+      const isInView = (el) => {
+        const r = el.getBoundingClientRect();
+        return r.top < window.innerHeight && r.bottom > 0;
+      };
+      fadeEls.forEach(el => { if (isInView(el)) el.classList.add('visible'); });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      fadeEls.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
