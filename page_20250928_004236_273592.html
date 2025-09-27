@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0b1020;
+      --bg2: #0a0f1b;
+      --card: #0b0f1a;
+      --fg: #e9eaff;
+      --muted: #cbd5e1;
+    }
+
+    /* Global reset-ish feel */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: linear-gradient(135deg, #1a1747 0%, #0b1020 40%, #0b1020 100%);
+      overflow-x: hidden;
+      line-height: 1.4;
+    }
+
+    /* Subtle rotating gradient blobs for a gradient theme */
+    .bg-shapes { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+    .shape {
+      position: absolute;
+      width: 42vmin; height: 42vmin; border-radius: 50%;
+      filter: blur(60px);
+      opacity: .65;
+      transform: translateZ(0);
+      animation: drift 60s linear infinite;
+    }
+    .shape.s1 { left: -10vmin; top: -10vmin; background: radial-gradient(circle at 30% 30%, rgba(110,211,255,.8), transparent 60%), linear-gradient(135deg, #6a5acd, #00e1ff); }
+    .shape.s2 { right: -12vmin; bottom: -12vmin; background: radial-gradient(circle at 60% 40%, rgba(199, 99, 255,.6), transparent 60%), linear-gradient(135deg, #ff6b6b, #ffd36b); animation-duration: 75s; }
+    .shape.s3 { left: 40%; top: 20%; width: 50vmin; height: 50vmin; background: radial-gradient(circle at 50% 50%, rgba(76, 229, 194,.6), transparent 60%), linear-gradient(135deg, #00ffd0, #7c5cff); animation-duration: 90s; animation-direction: reverse; }
+
+    @keyframes drift {
+      0% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(8px, -12px) rotate(180deg); }
+      100% { transform: translate(-8px, 12px) rotate(360deg); }
+    }
+
+    /* Layout container */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 60px; }
+
+    /* Header / hero */
+    header.site-hero {
+      text-align: center; padding: 48px 20px 12px;
+    }
+    .name {
+      font-size: clamp(2.6rem, 6vw, 4.8rem);
+      font-weight: 900;
+      margin: 0;
+      line-height: 1.04;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #ffffff 0%, #9ae6b4 40%, #7dd3fc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 14px rgba(0,0,0,.15);
+    }
+    .tagline { margin-top: 8px; font-size: 1rem; color: #d9e1ff; opacity: .9; }
+    .creation-time { margin-top: 14px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas; font-size: .92rem; color: #dbeafe; opacity: .85; }
+
+    /* Projects grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 28px 0 0;
+    }
+
+    .card {
+      position: relative;
+      border: 2px solid transparent;
+      border-radius: 16px;
+      background: linear-gradient(#0b0f1a, #0b0f1a) padding-box;
+      border-image: linear-gradient(135deg, #6a5acd, #00e1ff, #ff8a5b) 1;
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+      min-height: 150px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.25);
+    }
+    .card:hover {
+      transform: translateY(-6px) rotate(-0.5deg);
+      box-shadow: 0 22px 40px rgba(0,0,0,.35);
+    }
+    .card-inner { padding: 18px 18px 16px; }
+    .card h3 { margin: 0 0 6px; font-size: 1.15rem; }
+    .card p { margin: 0 0 12px; color: #cbd5e1; font-size: 0.95rem; }
+    .card .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+    .chip { background: rgba(106, 90, 205, .25); color: #e9e4ff; font-size: 12px; padding: 4px 8px; border-radius: 999px; }
+    .actions { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; }
+
+    .view {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-radius: 999px;
+      text-decoration: none;
+      color: #e8f5ff;
+      border: 1px solid rgba(255,255,255,.15);
+      background: linear-gradient(135deg, rgba(106,90,205,.28), rgba(0,224,255,.28));
+      transition: transform .25s ease;
+    }
+    .card:hover .view { transform: translateX(4px); }
+
+    .icon { width: 16px; height: 16px; display: inline-block; transition: transform .5s ease; }
+    .card:hover .icon { transform: rotate(90deg); }
+
+    /* GitHub footer */
+    footer.site-footer {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 28px 16px 40px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+    .github {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      color: #fff; text-decoration: none;
+      transition: transform .2s ease;
+      box-shadow: inset 0 0 0 rgba(0,0,0,0);
+    }
+    .github:hover { transform: translateY(-1px) scale(1.05); }
+    .credit { opacity: .95; }
+
+    /* Responsive niceties */
+    @media (max-width: 600px) {
+      .creation-time { font-size: .88rem; }
+      .card { min-height: 170px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-shapes" aria-hidden="true">
+    <span class="shape s1"></span>
+    <span class="shape s2"></span>
+    <span class="shape s3"></span>
+  </div>
+
+  <div class="wrap">
+    <header class="site-hero" aria-label="Site header">
+      <h1 class="name">amirabolfazle</h1>
+      <p class="tagline">Animated one-file portfolio • gradient theme • rotate effects</p>
+      <div class="creation-time">Creation time: 2025-09-28 00:42:02</div>
+    </header>
+
+    <main class="portfolio" aria-label="Portfolio projects">
+      <section class="grid" aria-label="Projects">
+        <article class="card" aria-label="Project Aurora UI Kit">
+          <div class="card-inner">
+            <div class="chips" aria-label="Project tags">
+              <span class="chip">UI</span><span class="chip">Animation</span><span class="chip">React</span>
+            </div>
+            <h3>Aurora UI Kit</h3>
+            <p>A modular UI kit with animated gradients and glassy components for rapid prototyping.</p>
+            <div class="actions">
+              <a class="view" href="#">
+                View
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Project Nebula Animations">
+          <div class="card-inner">
+            <div class="chips" aria-label="Project tags">
+              <span class="chip">SVG</span><span class="chip">Motion</span>
+            </div>
+            <h3>Nebula Animations</h3>
+            <p>Fluid spinner and orbit animations built with pure CSS for performance.</p>
+            <div class="actions">
+              <a class="view" href="#">
+                View
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Project Flux Dashboard">
+          <div class="card-inner">
+            <div class="chips" aria-label="Project tags">
+              <span class="chip">Dashboard</span><span class="chip">Data</span>
+            </div>
+            <h3>Flux Dashboard</h3>
+            <p>Minimal dashboard layout with animated charts and gradient accents.</p>
+            <div class="actions">
+              <a class="view" href="#">
+                View
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Project Glyph Studio">
+          <div class="card-inner">
+            <div class="chips" aria-label="Project tags">
+              <span class="chip">Brand</span><span class="chip">Illustration</span>
+            </div>
+            <h3>Glyph Studio</h3>
+            <p>Vector glyph experiments with geometric gradients and motion.</p>
+            <div class="actions">
+              <a class="view" href="#">
+                View
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" aria-label="Project Ambient Blog">
+          <div class="card-inner">
+            <div class="chips" aria-label="Project tags">
+              <span class="chip">Blog</span><span class="chip">Web</span>
+            </div>
+            <h3>Ambient Blog</h3>
+            <p>A lightweight blog layout with soft gradient highlights and subtle motion.</p>
+            <div class="actions">
+              <a class="view" href="#">
+                View
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer" aria-label="Site footer">
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" aria-label="GitHub repository">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="GitHub icon" style="color:#ffffff;">
+        <path d="M12 .5C5.73.5 0 6.23 0 12.01c0 5.09 3.29 9.39 7.87 10.92.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.42-3.88-1.42-.53-1.36-1.3-1.72-1.3-1.72-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.74 1.28 3.41.98.11-.78.41-1.28.75-1.58-2.56-.29-5.26-1.28-5.26-5.69 0-1.26.45-2.29 1.2-3.09-.12-.29-.52-1.46.12-3.04 0 0 .98-.31 3.2 1.18a11.12 11.12 0 012.92-.39c1.01.01 2.03.14 2.98.41 2.22-1.49 3.19-1.18 3.19-1.18.65 1.58.26 2.75.13 3.04.75.8 1.2 1.83 1.2 3.09 0 4.42-2.7 5.39-5.27 5.68.43.37.82 1.1.82 2.22 0 1.6-.01 2.89-.01 3.29 0 .31.21.68.8.56A10.999 10.999 0 0024 12.01C24 6.23 18.27.5 12 .5z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
