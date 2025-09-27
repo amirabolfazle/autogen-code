@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-start: #0b1021;
+      --bg-mid: #1a1e4f;
+      --bg-end: #0a2b5a;
+      --card: rgba(255,255,255,0.08);
+      --card-br: rgba(255,255,255,0.18);
+      --text: #eaf3ff;
+      --muted: #cbd5e1;
+      --accent: #8b5cf6;
+    }
+
+    /* Animated gradient background for the whole page */
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-mid) 40%, var(--bg-end) 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 20s ease infinite;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Layout helpers */
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    header.brand {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0 0;
+    }
+
+    /* Gradient text for the title */
+    .brand-title {
+      font-weight: 900;
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: 1.04;
+      letter-spacing: .5px;
+      margin: 0;
+      background: linear-gradient(90deg, #ffffff 0%, #a5f3fc 40%, #93c5fd 70%, #f472b6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px rgba(255,255,255,.15);
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin: 6px 0 0;
+      max-width: 60ch;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.15);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .85rem;
+      color: #eaffff;
+      margin-left: auto;
+    }
+
+    /* Hero area with subtle glass panels */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 28px;
+      padding: 22px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
+      overflow: hidden;
+    }
+
+    @media (min-width: 800px) {
+      .hero { grid-template-columns: 1.15fr 1fr; padding: 28px; }
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 180px;
+    }
+
+    .lead {
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+      color: #e5e7eb;
+      opacity: .95;
+    }
+
+    .cta {
+      display: inline-flex;
+      gap: 10px;
+      margin-top: 14px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.5);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform .2s ease, background .3s ease;
+    }
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.16); }
+
+    .hero-visual {
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(168,85,247,.25), rgba(14,165,233,.25));
+      border: 1px solid rgba(255,255,255,.25);
+      min-height: 180px;
+    }
+
+    .orb {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #9ae6b4 40%, #60a5fa 60%, #1e40af 100%);
+      filter: blur(0px);
+      animation: orbPulse 6s ease-in-out infinite;
+      box-shadow: 0 0 60px rgba(99, 102, 241, .6);
+    }
+
+    @keyframes orbPulse {
+      0%, 100% { transform: scale(1); opacity: .8; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    /* Projects grid */
+    .section {
+      margin-top: 42px;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: .4px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      position: relative;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--card);
+      border: 1px solid var(--card-br);
+      overflow: hidden;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 6px;
+      color: #fff;
+    }
+
+    .card-desc {
+      font-size: .92rem;
+      color: #e8eefc;
+      opacity: .95;
+      margin-bottom: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.4);
+      font-size: .75rem;
+      color: #e6f0ff;
+      width: fit-content;
+      background: rgba(2,6,23,.25);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .view {
+      text-decoration: none;
+      color: #eaffff;
+      background: rgba(59,130,246,.45);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 60px;
+      padding: 14px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .footer-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .gh-link {
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(0,0,0,.15);
+    }
+
+    .gh-link:hover { background: rgba(0,0,0,.25); }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      color: #fff;
+    }
+
+    /* Fade-in system */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeIn .8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: .15s; }
+    .delay-2 { animation-delay: .3s; }
+    .delay-3 { animation-delay: .45s; }
+    .delay-4 { animation-delay: .6s; }
+    .delay-5 { animation-delay: .75s; }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 520px) {
+      .brand-title { font-size: 42px; }
+      .creation { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="brand fade-in" style="animation-delay:.05s;">
+      <h1 class="brand-title" aria-label="amirabolfazle">amirabolfazle</h1>
+      <span class="creation" aria-label="creation time">
+        Created: 2025-09-27 05:47:04
+      </span>
+    </header>
+
+    <section class="hero fade-in delay-1" style="margin-top:16px;">
+      <div class="hero-content">
+        <p class="lead">
+          A compact, animated one-file portfolio showcasing taste for gradients, motion, and clean UI.
+        </p>
+        <p class="tagline" style="margin-top:6px;">
+          Built as a single self-contained page with gradient themes and smooth fade-ins.
+        </p>
+        <div class="cta" aria-label="actions">
+          <a class="btn" href="#projects" role="button">View Projects</a>
+          <a class="btn" href="#about" role="button" style="border-color: rgba(255,255,255,.25);">About</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="decorative gradient orb">
+        <div class="orb" style="animation-duration: 8s;"></div>
+      </div>
+    </section>
+
+    <section id="projects" class="section fade-in delay-2" aria-label="projects">
+      <div class="section-head" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <h2 class="section-title" style="margin:0;">Projects</h2>
+        <span class="chip" aria-label="project count" style="font-size:.85rem;">
+          6 items
+        </span>
+      </div>
+      <div class="grid" style="margin-top:12px;">
+        <article class="card fade-in delay-3" style="--delay:0s;">
+          <div>
+            <h3 class="card-title">Gradient Playground</h3>
+            <p class="card-desc">Experimented gradient combos with subtle motion to create depth.</p>
+          </div>
+          <div class="card-footer">
+            <span class="chip" aria-label="type">UI Concept</span>
+            <a href="#" class="view" aria-label="view gradient playground">View</a>
+          </div>
+        </article>
+
+        <article class="card fade-in delay-4" aria-label="project card 2">
+          <div>
+            <h3 class="card-title">Fade-In Animations</h3>
+            <p class="card-desc">A small collection of reusable fade-in patterns for sections and cards.</p>
+          </div>
+          <div class="card-footer">
+            <span class="chip" aria-label="type">Motion</span>
+            <a href="#" class="view" aria-label="view fade-in animations">View</a>
+          </div>
+        </article>
+
+        <article class="card fade-in delay-3" aria-label="project card 3" style="background: rgba(255,255,255,.08);">
+          <div>
+            <h3 class="card-title">One-File Portfolio</h3>
+            <p class="card-desc">Fully self-contained portfolio design with CSS gradients and no deps.</p>
+          </div>
+          <div class="card-footer">
+            <span class="chip" aria-label="type">Web Design</span>
+            <a href="#" class="view" aria-label="view one-file portfolio">View</a>
+          </div>
+        </article>
+
+        <article class="card fade-in delay-5" aria-label="project card 4">
+          <div>
+            <h3 class="card-title">Interactive Grid</h3>
+            <p class="card-desc">Responsive grid with hover highlights and subtle depth cues.</p>
+          </div>
+          <div class="card-footer">
+            <span class="chip" aria-label="type">Frontend</span>
+            <a href="#" class="view" aria-label="view interactive grid">View</a>
+          </div>
+        </article>
+
+        <article class="card fade-in delay-4" aria-label="project card 5">
+          <div>
+            <h3 class="card-title">Color Theory Demos</h3>
+            <p class="card-desc">A small set of color harmonies used for branding and UI accents.</p>
+          </div>
+          <div class="card-footer">
+            <span class="chip" aria-label="type">Branding</span>
+            <a href="#" class="view" aria-label="view color theory demos">View</a>
+          </div>
+        </article>
+
+        <article class="card fade-in delay-3" aria-label="project card 6">
+          <div>
+            <h3 class="card-title">Tooltip Motion</h3>
+            <p class="card-desc">Delightful micro-interactions for tooltips and hints.</p>
+          </div>
+          <div class="card-footer">
+            <span class="chip" aria-label="type">UX</span>
+            <a href="#" class="view" aria-label="view tooltip motion">View</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="fade-in delay-4" style="margin-top:40px;" aria-label="footer">
+      <div class="footer-inner" style="justify-content:center;">
+        <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" style="vertical-align:middle;">
+            <path d="M12 2C6.477 2 2 6.523 2 12c0 4.418 2.868 8.163 6.839 9.488.5.092.682-.218.682-.484 0-.24-.009-.874-.014-1.72-2.782.605-3.369-1.342-3.369-1.342-.456-1.162-1.11-1.471-1.11-1.471-.909-.623.069-.609.069-.609 1.005.07 1.532 1.032 1.532 1.032.895 1.53 2.343 1.089 2.912.833.091-.647.35-1.089.636-1.341-2.221-.254-4.555-1.111-4.555-4.943 0-1.091.39-1.985 1.029-2.685-.103-.254-.447-1.279.098-2.664 0 0 .84-.269 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.851.005 1.705.115 2.504.338 1.909-1.295 2.748-1.026 2.748-1.026.547 1.385.204 2.41.1 2.664.64.7 1.027 1.594 1.027 2.685 0 3.842-2.337 4.685-4.566 4.936.359.309.679.92.679 1.858 0 1.344-.012 2.424-.012 2.754 0 .268.178.582.688.483C19.136 20.163 22 16.418 22 12 22 6.523 17.523 2 12 2z"/>
+          </svg>
+          GitHub
+        </a>
+        <span style="margin-left: 8px;">Created by amirabolfazle</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
