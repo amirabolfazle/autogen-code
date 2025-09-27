@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #060812;
+      --panel: rgba(2, 7, 25, 0.75);
+      --neon-cyan: #00eaff;
+      --neon-pink: #ff35d9;
+      --neon-purple: #7a5cff;
+      --text: #e9f1ff;
+      --shadow: 0 0 18px rgba(0, 234, 255, 0.9);
+    }
+
+    /* Base reset-ish */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0, 234, 255, 0.15), transparent 20%),
+                  radial-gradient(circle at 85% 0%, rgba(255, 0, 214, 0.15), transparent 20%),
+                  linear-gradient(#060812, #04040f 60%, #02030b);
+      overflow-x: hidden;
+    }
+
+    /* Subtle starfield canvas is full-bleed behind content */
+    #bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+      display: block;
+    }
+
+    /* Neon header banner */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 48px 20px 24px;
+      z-index: 1;
+    }
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      margin: 0;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #e7ffff;
+      text-shadow:
+        0 0 8px rgba(0, 234, 255, 0.9),
+        0 0 20px rgba(0, 234, 255, 0.7),
+        0 0 40px rgba(124, 0, 255, 0.5);
+      animation: glow 2s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%, 100% { text-shadow:
+        0 0 6px rgba(0, 234, 255, 0.8),
+        0 0 14px rgba(0, 234, 255, 0.6),
+        0 0 28px rgba(124, 0, 255, 0.5);
+      }
+      50% { text-shadow:
+        0 0 12px rgba(0, 234, 255, 1),
+        0 0 28px rgba(0, 234, 255, 0.9),
+        0 0 48px rgba(124, 0, 255, 0.7);
+      }
+    }
+
+    .creation {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: #cfe9ff;
+      opacity: .9;
+    }
+
+    /* Neon subtitle bar under header */
+    .bar {
+      height: 4px;
+      width: 180px;
+      margin: 14px auto 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple));
+      filter: saturate(1.4);
+      box-shadow: 0 0 16px rgba(0, 234, 255, 0.9);
+      animation: barPulse 3s ease-in-out infinite;
+    }
+    @keyframes barPulse {
+      0%, 100% { transform: scaleX(1); opacity: 0.9; }
+      50% { transform: scaleX(1.1); opacity: 1; }
+    }
+
+    /* Layout containers */
+    main {
+      position: relative;
+      z-index: 1;
+      padding: 0 18px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section.section {
+      margin: 40px auto;
+    }
+
+    /* Neon cards grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      padding: 6px;
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(2,8,23,.8), rgba(2,8,23,.5));
+      border: 1px solid rgba(0, 255, 230, 0.25);
+      border-radius: 14px;
+      padding: 18px;
+      min-height: 180px;
+      overflow: hidden;
+      backdrop-filter: saturate(110%) blur(2px);
+      transform: translateY(40px);
+      opacity: 0;
+      animation: bounceIn 0.9s ease forwards;
+      box-shadow: 0 0 24px rgba(0, 234, 255, 0.15);
+    }
+    /* Staggered delays for a nicer entrance sequence */
+    .card:nth-child(1) { animation-delay: 0.08s; }
+    .card:nth-child(2) { animation-delay: 0.22s; }
+    .card:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes bounceIn {
+      0% { transform: translateY(60px); opacity: 0; }
+      60% { transform: translateY(-8px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 0 28px rgba(0, 255, 230, 0.55);
+      border-color: rgba(0, 255, 230, 0.8);
+    }
+
+    .card h3 {
+      margin: 6px 0 8px;
+      font-size: 1.15rem;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0, 234, 255, 0.9);
+    }
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #d9eaff;
+      line-height: 1.45;
+    }
+    .tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: #001018;
+      background: linear-gradient(135deg, #00f5ff, #6a00ff);
+      box-shadow: 0 0 12px rgba(0, 255, 220, 0.9);
+      transform: translateZ(0);
+    }
+
+    /* About section glow line */
+    .section-title {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      margin: 0 0 8px;
+      color: #eaffff;
+      text-shadow: 0 0 14px rgba(0, 255, 230, 0.8);
+    }
+
+    /* Footer with GitHub icon and label */
+    footer {
+      margin-top: 34px;
+      padding: 18px 0;
+      text-align: center;
+      color: #b8d7ff;
+    }
+    footer a {
+      color: #b8d7ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 255, 230, 0.35);
+      background: rgba(2,8,23,.6);
+      box-shadow: inset 0 0 12px rgba(0,255,230,.15);
+      transition: transform .2s;
+    }
+    footer a:hover {
+      transform: translateY(-1px);
+      background: rgba(2,8,23,.8);
+      box-shadow: 0 0 16px rgba(0,255,230,.4);
+    }
+    footer svg { display: block; width: 20px; height: 20px; }
+
+    /* Subtle section separator glow lines */
+    .glow-line {
+      height: 2px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,230,.9), transparent);
+      opacity: .75;
+      margin: 18px 0 6px;
+      filter: drop-shadow(0 0 8px rgba(0,255,230,.75));
+    }
+
+    /* Responsive tweak for small devices */
+    @media (max-width: 520px) {
+      h1 { letter-spacing: .18em; font-size: 2.6rem; }
+      .card { padding: 14px; min-height: 170px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <header aria-label="Intro header">
+    <h1>amirabolfazle</h1>
+    <div class="creation" aria-label="Creation time">Creation time: 2025-09-27 14:09:05</div>
+    <div class="bar" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <section class="section" aria-label="Intro section">
+      <div class="glow-line" style="max-width:700px;margin:0 auto 8px;"></div>
+      <section class="section" style="max-width:700px;margin:0 auto;">
+        <h2 class="section-title" style="text-align:center;margin:0 0 6px;">Neon Portfolio</h2>
+        <p style="text-align:center; color:#cfeaff; opacity:.9; margin:0 0 20px;">
+          A one-file animated portfolio with neon glow and bounce effects.
+        </p>
+      </section>
+    </section>
+
+    <section class="section" aria-label="Projects">
+      <h2 class="section-title" style="text-align:left; margin-left:6px;">Projects</h2>
+      <div class="grid" aria-label="Project grid">
+        <article class="card" style="animation-delay:0.08s;">
+          <span class="tag" style="background: linear-gradient(135deg, #00f5ff, #00ff88); color:#001018;">UI</span>
+          <h3>Neon Landing Page</h3>
+          <p>A responsive hero with glass morphism, neon accents, and subtle motion.</p>
+        </article>
+
+        <article class="card" style="animation-delay:0.22s;">
+          <span class="tag" style="background: linear-gradient(135deg, #ff39d0, #ffd700); color:#001018;">UI/UX</span>
+          <h3>Dashboard Visualization</h3>
+          <p>Dynamic charts and a neon-driven UI for real-time analytics.</p>
+        </article>
+
+        <article class="card" style="animation-delay:0.36s;">
+          <span class="tag" style="background: linear-gradient(135deg, #7afff5, #9b59b6); color:#001018;">Web</span>
+          <h3>Interactive Cards</h3>
+          <p>Hover-enabled motion and tactile feedback with bounce effects.</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" title="GitHub">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg role="img" aria-label="GitHub icon" viewBox="0 0 24 24" fill="currentColor" width="20" height="20" style="color:#b9f0ff;">
+        <path d="M12 2C6.48 2 2 6.58 2 12.29c0 4.54 2.87 8.39 6.84 9.75.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.61-3.37-1.2-3.37-1.2-.46-1.25-1.12-1.58-1.12-1.58-.92-.63.07-.62.07-.62 1.02.07 1.56 1.07 1.56 1.07.9 1.57 2.36 1.12 2.94.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.15-4.56-5.12 0-1.13.39-2.05 1.03-2.77-.11-.26-.45-1.31.1-2.72 0 0 .84-.27 2.75 1.05a9.2 9.2 0 012.5-.34c.85.01 1.7.11 2.5.33 1.9-1.32 2.74-1.05 2.74-1.05.56 1.41.23 2.46.12 2.72.65.72 1.02 1.64 1.02 2.77 0 4 .95 4.84 4.67 5.1-.36.31-.69.92-.69 1.85 0 1.33-.01 2.4-.01 2.72 0 .27.18.59.69.49A10.01 10.01 0 0022 12.29C22 6.58 17.52 2 12 2z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <script>
+    // Lightweight animated starfield background
+    (function() {
+      const canvas = document.getElementById('bg');
+      const ctx = canvas.getContext('2d');
+      let w = window.innerWidth;
+      let h = window.innerHeight;
+      let stars = [];
+
+      function resize() {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
+        // regenerate stars to fit new size
+        stars = Array.from({length: Math.floor((w*h)/1800)}, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          z: Math.random() * 1.4 + 0.2,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15,
+          s: Math.random() * 1.4 + 0.4
+        }));
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        // subtle gradient for depth
+        const g = ctx.createRadialGradient(w*0.25, h*0.2, 10, w*0.25, h*0.2, Math.max(w,h));
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(1, 'rgba(0,0,0,0.15)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,w,h);
+
+        for (let s of stars) {
+          s.x += s.vx;
+          s.y += s.vy;
+          if (s.x < 0) s.x = w;
+          if (s.x > w) s.x = 0;
+          if (s.y < 0) s.y = h;
+          if (s.y > h) s.y = 0;
+          const alpha = 0.4 + s.z * 0.6;
+          ctx.fillStyle = 'rgba(174, 235, 255,' + alpha + ')';
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.s, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+  </script>
+</body>
+</html>
