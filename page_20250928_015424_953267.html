@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --fg: #e6e6e6;
+      --muted: #a6b4c2;
+      --card: rgba(255,255,255,0.04);
+      --accent: #4dd2ff;
+      --shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% 10%, rgba(77,210,255,0.15), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(109,40,217,0.12), transparent 40%),
+                  linear-gradient(#0b0f14 0%, #0b0f14 100%);
+      overflow-x: hidden;
+    }
+    .wrapper {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 40px 20px 0;
+      text-align: center;
+      position: relative;
+    }
+    .brand {
+      display: inline-block;
+      font-weight: 700;
+      letter-spacing: .5px;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      color: #eaf7ff;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.4);
+      line-height: 1;
+      position: relative;
+      user-select: none;
+    }
+    .brand .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+      animation: bounceIn 0.9s cubic-bezier(.25,.8,.25,1) forwards;
+    }
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: translateY(-22px) scale(0.92); }
+      60% { opacity: 1; transform: translateY(6px) scale(1.02); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    /* create staggered delays for each letter */
+    .brand .letter:nth-child(1){ animation-delay: 0.05s; }
+    .brand .letter:nth-child(2){ animation-delay: 0.10s; }
+    .brand .letter:nth-child(3){ animation-delay: 0.15s; }
+    .brand .letter:nth-child(4){ animation-delay: 0.20s; }
+    .brand .letter:nth-child(5){ animation-delay: 0.25s; }
+    .brand .letter:nth-child(6){ animation-delay: 0.30s; }
+    .brand .letter:nth-child(7){ animation-delay: 0.35s; }
+    .brand .letter:nth-child(8){ animation-delay: 0.40s; }
+    .brand .letter:nth-child(9){ animation-delay: 0.45s; }
+    .brand .letter:nth-child(10){ animation-delay: 0.50s; }
+    .brand .letter:nth-child(11){ animation-delay: 0.55s; }
+    .brand .letter:nth-child(12){ animation-delay: 0.60s; }
+    .brand .letter:nth-child(13){ animation-delay: 0.65s; }
+
+    .tagline {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      opacity: 0.95;
+    }
+
+    .scene {
+      position: relative;
+      height: 320px;
+      margin: 40px auto 0;
+      width: min(100%, 1100px);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(10,12,16,0.6), rgba(10,12,16,0.3)),
+                  radial-gradient(circle at 20% 0%, rgba(77,210,255,0.15), transparent 40%),
+                  rgba(6,10,15,0.9);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+    /* floating orbs for bounce effect */
+    .orb {
+      position: absolute;
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(77,210,255,0.4) 40%, rgba(77,210,255,0) 60%);
+      filter: saturate(120%);
+      animation: float 8s ease-in-out infinite;
+      mix-blend-mode: screen;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    .orb.one { left: -40px; top: 20px; animation-delay: 0s; }
+    .orb.two { right: -60px; bottom: -20px; width: 120px; height: 120px; animation-delay: 2s; }
+    .orb.three { left: 30%; bottom: -20px; width: 100px; height: 100px; animation-delay: 4s; }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0) scale(1); }
+      50% { transform: translateY(-14px) translateX(10px) scale(1.05); }
+      100% { transform: translateY(0) translateX(0) scale(1); }
+    }
+
+    .cards {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      padding: 22px;
+      z-index: 2;
+      align-items: center;
+      justify-items: center;
+    }
+    .card {
+      width: 100%;
+      height: 110px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #eaf7ff;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
+      transform: translateY(8px);
+      animation: cardIn 0.6s ease forwards;
+    }
+    @keyframes cardIn {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    main .creation {
+      text-align: center;
+      margin: 28px auto;
+      font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 24px 16px;
+      text-align: center;
+      color: #cbd7e1;
+      font-size: 0.95rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.45), rgba(0,0,0,0.0) 60%);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      text-decoration: none; color: inherit;
+    }
+    .footer-icon {
+      width: 20px; height: 20px; display: inline-block;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 640px){
+      .scene { height: 360px; }
+      .orb { width: 70px; height: 70px; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrapper" aria-label="amirabolfazle animated page">
+    <header>
+      <h1 class="brand" aria-label="amirabolfazle">
+        <span class="letter">a</span>
+        <span class="letter">m</span>
+        <span class="letter">i</span>
+        <span class="letter">r</span>
+        <span class="letter">a</span>
+        <span class="letter">b</span>
+        <span class="letter">o</span>
+        <span class="letter">l</span>
+        <span class="letter">f</span>
+        <span class="letter">a</span>
+        <span class="letter">z</span>
+        <span class="letter">l</span>
+        <span class="letter">e</span>
+      </h1>
+      <div class="tagline" aria-label="site tagline">
+        A fully responsive, dark-mode animated page with bounce effects
+      </div>
+    </header>
+
+    <section class="scene" aria-label="animated scene">
+      <div class="orb one" aria-hidden="true"></div>
+      <div class="orb two" aria-hidden="true"></div>
+      <div class="orb three" aria-hidden="true"></div>
+
+      <div class="cards" role="list" aria-label="cards of animation">
+        <div class="card" role="listitem">Bounce</div>
+        <div class="card" role="listitem">Glow</div>
+        <div class="card" role="listitem">Motion</div>
+        <div class="card" role="listitem">Parallax</div>
+      </div>
+    </section>
+
+    <main class="creation" aria-label="creation time">
+      Creation time: 2025-09-28 01:54:02
+    </main>
+
+    <footer aria-label="footer">
+      <a class="footer-brand" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <span class="footer-icon" aria-hidden="true">
+          <!-- GitHub Icon (inline SVG) -->
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-label="GitHub logo" role="img">
+            <path d="M12 2C6.48 2 2 6.58 2 12.28c0 4.5 2.87 8.32 6.84 9.68.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.31-3.37-1.31-.46-1.22-1.12-1.54-1.12-1.54-.92-.63.07-.62.07-.62 1.02.07 1.56 1.07 1.56 1.07.9 1.59 2.36 1.13 2.93.86.09-.68.36-1.15.65-1.41-2.22-.26-4.56-1.14-4.56-5.08 0-1.12.38-2.03 1-2.74-.1-.26-.44-1.31.1-2.73 0 0 .83-.27 2.73 1.04a9.38 9.38 0 012.49-.34c.84 0 1.68.11 2.47.33 1.9-1.31 2.73-1.04 2.73-1.04.54 1.42.21 2.47.1 2.73.63.71 1 1.62 1 2.74 0 3.95-2.34 4.82-4.57 5.07.37.32.7.95.7 1.92 0 1.38-.01 2.49-.01 2.83 0 .27.18.59.69.48A10.01 10.01 0 0022 12.28C22 6.58 17.52 2 12 2z"/>
+          </svg>
+        </span>
+        <span aria-label="GitHub link text" style="text-transform: none;"> </span>
+      </a>
+      <div style="margin-top:6px;">
+        Created by amirabolfazle
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Optional: gently reflow letters on load to ensure animation across devices
+    window.addEventListener('load', () => {
+      // no-op placeholder for potential enhancements
+    });
+  </script>
+</body>
+</html>
