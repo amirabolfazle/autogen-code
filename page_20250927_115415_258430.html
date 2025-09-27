@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-start: #0b1020;
+      --bg-end: #0a0b1a;
+      --glass: rgba(255, 255, 255, 0.18);
+      --border: rgba(255, 255, 255, 0.4);
+      --text: #eef2ff;
+      --muted: rgba(238, 240, 255, 0.9);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(120, 140, 255, 0.25), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(0, 206, 168, 0.25), transparent 40%),
+                  linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      overflow-x: hidden;
+    }
+
+    /* Glassy backdrop elements */
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.75rem;
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      box-shadow: 0 8px 40px rgba(0,0,0,.25);
+    }
+
+    /* Layout */
+    .scene {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 4rem 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Decorative subtle animated blobs for glassy feel */
+    .blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .blob {
+      position: absolute;
+      width: 28vmin; height: 28vmin;
+      min-width: 180px; min-height: 180px;
+      background: rgba(138, 180, 255, 0.28);
+      filter: blur(40px);
+      border-radius: 50%;
+      animation: float 16s ease-in-out infinite;
+    }
+    .blob.b2 { width: 34vmin; height: 34vmin; left: auto; right: 10%; top: 20%; animation-duration: 22s; background: rgba(120,210,255,0.25); }
+    .blob.b3 { width: 26vmin; height: 26vmin; left: 6%; bottom: 12%; animation-duration: 18s; background: rgba(100, 180, 250, 0.3); }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-18px) translateX(8px); }
+    }
+
+    /* Fade-in on load */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header styles */
+    .brand {
+      font-weight: 800;
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      letter-spacing: .5px;
+      margin: 0 0 .25rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      margin: 0 0 0.75rem;
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+    }
+    .creation-time {
+      text-align: center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .95rem;
+      color: #e8f0ff;
+      opacity: .95;
+      margin: .25rem 0 0;
+    }
+
+    /* Grid content */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      width: min(100%, 1000px);
+      margin: 1.25rem auto 0;
+    }
+    @media (min-width: 700px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .card {
+      padding: 1.4rem;
+    }
+
+    .card h2 {
+      margin: 0 0 .4rem;
+      font-size: 1.15rem;
+    }
+    .card p { margin: 0; color: #eef2ff; opacity: .95; }
+
+    .footer {
+      width: min(100%, 1000px);
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      padding: .9rem 1.2rem;
+      margin: 1.1rem auto 0;
+    }
+
+    .footer a {
+      color: #eaf3ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      border-radius: 999px;
+      padding: .4rem .6rem;
+      transition: transform .2s ease;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.15);
+    }
+    .footer a:hover { transform: translateY(-1px); }
+
+    .icon {
+      width: 1.25em; height: 1.25em; display: inline-block;
+      color: #eaf3ff;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { animation: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob" style="left:6%; top:12%;"></div>
+    <div class="blob b2" style="right:12%; top:22%;"></div>
+    <div class="blob b3" style="left:18%; bottom:10%;"></div>
+  </div>
+
+  <main class="scene" aria-label="amirabolfazle main content">
+    <section class="glass card fade-in" style="width: min(100%, 900px); text-align:center; animation-delay:0s;">
+      <h1 class="brand" style="margin:0 auto;">amirabolfazle</h1>
+      <p class="subtitle" style="margin:0 auto;">Fully responsive animated HTML with glassmorphism and fade-in effects</p>
+      <p class="creation-time" style="margin-top:.25rem;">Creation time: 2025-09-27 11:53:36</p>
+    </section>
+
+    <section class="grid" aria-label="information grid">
+      <article class="card glass fade-in" style="animation-delay:0.2s;">
+        <h2>About</h2>
+        <p>A demonstration page showcasing glassmorphism, responsive layout, and smooth fade-in animations.</p>
+      </article>
+
+      <article class="card glass fade-in" style="animation-delay:0.4s;">
+        <h2>Tech</h2>
+        <p>HTML, CSS, and vanilla JS. Backdrop-filter-based glass effect with responsive design.</p>
+      </article>
+    </section>
+
+    <footer class="footer fade-in" style="animation-delay:0.6s;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" role="img" aria-label="GitHub">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.99 5.94.99 12.59c0 5.18 3.36 9.58 8.04 11.1.59.11.81-.26.81-.58 0-.29-.01-1.05-.02-2.07-3.28.74-3.97-1.41-3.97-1.41-.54-1.38-1.32-1.75-1.32-1.75-1.08-.76.08-.75.08-.75 1.2.08 1.83 1.04 1.83 1.04 1.01 1.83 2.66 1.3 3.31.99.11-.79.41-1.3.75-1.6-2.62-.29-5.37-1.38-5.37-5.99 0-1.32.46-2.4 1.21-3.25-.12-.29-.53-1.46.11-3.04 0 0 .99-.32 3.25 1.19a11.3 11.3 0 013.01-.39c1.02.02 2.06.15 3.01.39 2.27-1.51 3.25-1.19 3.25-1.19.65 1.58.24 2.75.11 3.04.75.85 1.21 1.92 1.21 3.25 0 4.62-2.75 5.69-5.38 5.98.42.37.8 1.1.8 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.21.69.79.57C18.71 21.93 22 17.54 22 12.59 22 5.94 17.64.5 12 .5z"/>
+          </svg>
+        </span>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+</body>
+</html>
