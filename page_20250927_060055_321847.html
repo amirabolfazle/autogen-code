@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #fbf7f7;
+      --card: #fffaf6;
+      --text: #2b2b2b;
+      --muted: #6b6b6b;
+      --accent1: #ffd9e8;
+      --accent2: #e9f7ff;
+      --accent3: #e4fbd1;
+      --primary: #a8b8d8;
+      --shadow: 0 6px 20px rgba(0,0,0,.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--text);
+      background: radial-gradient( circle at 20% -10%, rgba(255,204,210,.25), transparent 40% ),
+                  radial-gradient( circle at 100% 0%, rgba(204,239,255,.25), transparent 40% ),
+                  var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* Gentle pastel decorative blobs in the background */
+    .blob {
+      position: fixed;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      opacity: .35;
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
+      animation: floatBlob 12s ease-in-out infinite;
+    }
+    .blob.b1 { background: #ffd6e4; top: -40px; left: -40px; }
+    .blob.b2 { background: #d6f0ff; bottom: -40px; right: -40px; animation-duration: 18s; }
+    .blob.b3 { background: #e5ffd6; top: 40%; left: 60%; width: 360px; height: 360px; animation-duration: 22s; }
+
+    @keyframes floatBlob {
+      0%,100% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(20px, -20px) rotate(15deg); }
+    }
+
+    header.site-header {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 28px 20px 8px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .orb {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #ffd1e8, #f6fbcf, #d5e6ff, #ffd1e8);
+      box-shadow: inset 0 0 0 6px rgba(255,255,255,.6);
+      animation: spin 14s linear infinite;
+      border: 1px solid rgba(0,0,0,.05);
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    h1.brand {
+      font-size: 28px;
+      margin: 0;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #8bc6ec, #f7c6d6, #e8f5c6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    nav.primary {
+      display: flex;
+      gap: 10px;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.6);
+      transition: transform .3s ease, background .3s ease;
+    }
+    nav a:hover { transform: translateY(-1px) rotate(-1deg); background: rgba(255,255,255,.9); }
+
+    .creation-time {
+      font-size: 12px;
+      color: var(--muted);
+      align-self: center;
+    }
+
+    main { position: relative; z-index: 1; }
+
+    section.section {
+      padding: 54px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Hero banner with rotating accent shapes */
+    #hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      align-items: center;
+      padding-top: 40px;
+      padding-bottom: 60px;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      header.site-header { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1), box-shadow .4s;
+      transform: rotate(-0.5deg);
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .card:hover {
+      transform: translateY(-6px) rotate(2deg);
+      box-shadow: 0 20px 40px rgba(0,0,0,.08);
+    }
+
+    .hero-title {
+      font-size: 46px;
+      margin: 0 0 8px;
+      line-height: 1.1;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #8ec5ff, #e9d0ff, #ffd6e7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
+
+    /* Projects grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .project-thumb {
+      height: 140px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f9d5e5, #d6f0ff);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #3b3b3b;
+      font-weight: 600;
+      letter-spacing: .4px;
+      border: 1px solid rgba(0,0,0,.06);
+      transform: rotate(-0.5deg);
+      transition: transform .6s;
+    }
+    .project-card:hover .project-thumb { transform: rotate(-6deg); }
+
+    .project-title { font-weight: 700; margin: 0 0 6px; font-size: 16px; }
+    .project-desc { color: var(--muted); font-size: 13px; margin: 0 0 12px; flex: 1; }
+    .project-actions { display: flex; align-items: center; gap: 8px; }
+    .btn {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.9);
+      text-decoration: none;
+      color: #1d1d1f;
+      font-weight: 600;
+      font-size: 13px;
+      transition: transform .25s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+
+    /* Skills chips */
+    .skills { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.08);
+      font-size: 13px; color: #333;
+      transition: transform .25s ease;
+    }
+    .chip:hover { transform: translateY(-2px); }
+    .icon {
+      width: 14px; height: 14px; display: inline-block;
+    }
+
+    /* Footer */
+    footer.site-footer {
+      padding: 28px 20px;
+      border-top: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    footer .credit { color: var(--muted); font-size: 13px; }
+
+    /* Subtle entrance animation for sections */
+    .section { opacity: 0; transform: translateY(12px); animation: appear 0.6s ease forwards; }
+    .section + .section { margin-top: 18px; }
+    @keyframes appear {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* focus outline for accessibility */
+    a:focus-visible { outline: 2px solid #5b9bd5; outline-offset: 2px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <span class="blob b1" aria-hidden="true"></span>
+  <span class="blob b2" aria-hidden="true"></span>
+  <span class="blob b3" aria-hidden="true"></span>
+
+  <header class="site-header" aria-label="Site header">
+    <div class="logo" role="img" aria-label="Logo">
+      <span class="orb" aria-hidden="true"></span>
+      <h1 class="brand" style="font-size:0; line-height:0; height:0; width:0; overflow:hidden;">amirabolfazle</h1>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span id="brand" class="title" style="font-size:22px; font-weight:700; background: linear-gradient(90deg, #8ec5ff, #e9d0ff, #ffd6e7); -webkit-background-clip:text; background-clip:text; color:transparent;">
+          amirabolfazle
+        </span>
+      </div>
+    </div>
+
+    <nav class="primary" aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="creation-time" aria-label="Creation time">
+      Creation time: 2025-09-27 06:00:22
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="section" aria-labelledby="hero-title">
+      <div class="hero-inner">
+        <div class="card" style="padding:28px;">
+          <h2 id="hero-title" class="hero-title" style="font-size:48px; margin:0 0 6px;">
+            amirabolfazle
+          </h2>
+          <p class="subtitle" style="margin:0;">
+            A pastel-powered one-file portfolio with subtle rotation and smooth vibes.
+          </p>
+        </div>
+
+        <div class="card" style="min-height:180px; display:flex; align-items:center; justify-content:center;">
+          <div style="text-align:center;">
+            <div style="width:78px; height:78px; border-radius:50%; margin:auto; background: conic-gradient(from 180deg at 50% 50%, #ffd6e4, #d6f0ff, #d6ffd9, #ffd6e4); animation: spin 14s linear infinite; border:1px solid rgba(0,0,0,.08);"></div>
+            <p style="margin-top:12px; color:var(--muted); font-size:12px;">Decorative rotating orb</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section" aria-labelledby="about-title">
+      <div class="card" style="padding:22px;">
+        <h3 id="about-title" style="margin:0 0 8px; font-size:22px;">About</h3>
+        <p style="margin:0; color:var(--muted);">
+          A lightweight, self-contained portfolio showcasing projects, skills, and a dash of motion.
+          Crafted in a single HTML file with a pastel palette and rotating accents for a playful, modern feel.
+        </p>
+        <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
+          <span class="chip" aria-label="Location"><span class="icon" aria-hidden="true" style="width:14px; height:14px; display:inline-block; background:#ffd1a8; border-radius:50%;"></span> Remote</span>
+          <span class="chip" aria-label="Frontend"><span class="icon" aria-hidden="true" style="width:14px; height:14px; display:inline-block; background:#a5e1ff; border-radius:50%;"></span> Frontend</span>
+          <span class="chip" aria-label="Creative"><span class="icon" aria-hidden="true" style="width:14px; height:14px; display:inline-block; background:#ffd4ec; border-radius:50%;"></span> Creative</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <div class="card" style="padding:22px;">
+        <h3 id="projects-title" style="margin:0 0 12px; font-size:22px;">Projects</h3>
+        <div class="projects-grid" aria-label="Projects grid">
+          <article class="project-card card" style="padding:14px;">
+            <div class="project-thumb" aria-label="Project thumbnail">Proj A</div>
+            <div style="flex:1;">
+              <div class="project-title">Pastel Studio</div>
+              <div class="project-desc">A minimal UI kit demonstrating soft shadows, gentle gradients, and rotating accents.</div>
+            </div>
+            <div class="project-actions" style="margin-top:8px;">
+              <a href="#" class="btn" aria-label="View project">View</a>
+            </div>
+          </article>
+
+          <article class="project-card card" style="padding:14px;">
+            <div class="project-thumb" aria-label="Project thumbnail">Proj B</div>
+            <div style="flex:1;">
+              <div class="project-title">Pulse Cards</div>
+              <div class="project-desc">Interactive cards with tilt and rotation to create depth in a single-file demo.</div>
+            </div>
+            <div class="project-actions" style="margin-top:8px;">
+              <a href="#" class="btn" aria-label="View project">View</a>
+            </div>
+          </article>
+
+          <article class="project-card card" style="padding:14px;">
+            <div class="project-thumb" aria-label="Project thumbnail">Proj C</div>
+            <div style="flex:1;">
+              <div class="project-title">Timeline Mesh</div>
+              <div class="project-desc">A responsive timeline layout with pastel nodes and subtle rotation on hover.</div>
+            </div>
+            <div class="project-actions" style="margin-top:8px;">
+              <a href="#" class="btn" aria-label="View project">View</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section" aria-labelledby="skills-title">
+      <div class="card" style="padding:22px;">
+        <h3 id="skills-title" style="margin:0 0 12px; font-size:22px;">Skills</h3>
+        <div class="skills" aria-label="Skill set">
+          <span class="chip" title="HTML5"><span class="icon" aria-hidden="true" style="width:14px; height:14px; display:inline-block; background:#ffcd57; border-radius:50%;"></span>HTML</span>
+          <span class="chip" title="CSS3"><span class="icon" aria-hidden="true" style="width:14px; height:14px; display:inline-block; background:#7cc8f9; border-radius:50%;"></span>CSS</span>
+          <span class="chip" title="JavaScript"><span class="icon" aria-hidden="true" style="width:14px; height:14px; display:inline-block; background:#f8d3a9; border-radius:50%;"></span>JavaScript</span>
+          <span class="chip" title="UI/UX"><span class="icon" aria-hidden="true" style="width:14px; height:14px; display:inline-block; background:#b4f0a9; border-radius:50%;"></span>UI/UX</span>
+          <span class="chip" title="Animation"><span class="icon" aria-hidden="true" style="width:14px; height:14px; display:inline-block; background:#cbd5e1; border-radius:50%;"></span>CSS Animations</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <div class="card" style="padding:22px;">
+        <h3 id="contact-title" style="margin:0 0 12px; font-size:22px;">Contact</h3>
+        <form action="#" onsubmit="return false;" aria-label="Contact form" style="display:flex; flex-direction:column; gap:12px; max-width:520px;">
+          <input aria-label="Your name" placeholder="Your name" style="padding:10px 12px; border-radius:8px; border:1px solid #ddd;" />
+          <input aria-label="Email" placeholder="Email" type="email" style="padding:10px 12px; border-radius:8px; border:1px solid #ddd;" />
+          <textarea aria-label="Message" placeholder="Your message" rows="4" style="padding:10px 12px; border-radius:8px; border:1px solid #ddd;"></textarea>
+          <button class="btn" type="submit" style="align-self:flex-start; padding:10px 16px;">Send</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub icon (inline SVG) -->
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" style="color:#333;">
+        <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.31 6.84 9.66.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.34-3.37-1.34-.46-1.17-1.12-1.48-1.12-1.48-.92-.63.07-.62.07-.62 1.02.08 1.56 1.05 1.56 1.05 .9 1.58 2.37 1.12 2.95.86.09-.7.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.3.1-2.7 0 0 .84-.27 2.75 1.04a9.05 9.05 0 012.5-.34c.85.01 1.71.12 2.5.34 1.9-1.31 2.74-1.04 2.74-1.04.55 1.4.2 2.44.1 2.7.64.72 1.03 1.64 1.03 2.76 0 3.93-2.34 4.79-4.57 5.04.36.31.68.92.68 1.86 0 1.34-.01 2.42-.01 2.75 0 .27.18.59.69.49A10.01 10.01 0 0014 14.26C14 8.58 9.52 2 12 2z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Subtle enhancement: make header brand text a little dynamic on focus
+    (function(){
+      const brand = document.getElementById('brand');
+      let t = 0;
+      function tick(){
+        t += 0.01;
+        const hue = (t * 60) % 360;
+        brand.style.background = `linear-gradient(90deg, hsl(${hue},90%,60%), hsl(${(hue+60)%360},80%,65%), hsl(${(hue+120)%360},70%,70%))`;
+        brand.style.webkitBackgroundClip = 'text';
+        brand.style.backgroundClip = 'text';
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
+  </script>
+</body>
+</html>
