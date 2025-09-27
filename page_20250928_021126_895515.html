@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0b12;
+      --bg2: #0b0e1a;
+      --fg: #e8f9ff;
+      --cyan: #00f5ff;
+      --mag: #ff00d4;
+      --pink: #ff4dff;
+      --glow: 0 0 8px rgba(0,255,255,.8), 0 0 20px rgba(0,255,255,.6);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: radial-gradient(circle at 10% -10%, rgba(0,255,255,.08), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(255,0,200,.08), transparent 40%),
+                  linear-gradient(135deg, #050510 0%, #0a0b12 100%);
+      color: var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      overflow-x: hidden;
+    }
+
+    /* Neon header */
+    header {
+      position: relative;
+      padding: 48px 20px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(128,255,255,.15);
+      overflow: hidden;
+    }
+
+    .neon-title {
+      font-size: clamp(2.4rem, 6vw, 6rem);
+      line-height: 0.95;
+      margin: 0;
+      text-transform: lowercase;
+      letter-spacing: .15em;
+      color: #eaffff;
+      text-shadow:
+        0 0 6px rgba(0,255,255,.8),
+        0 0 14px rgba(0,255,255,.6),
+        0 0 40px rgba(0,255,255,.4);
+      user-select: none;
+    }
+
+    .neon-sub {
+      font-size: clamp(.9rem, 2.5vw, 1.4rem);
+      color: #aaf6ff;
+      opacity: .85;
+      margin-top: 8px;
+      text-shadow: 0 0 6px rgba(0,200,255,.6);
+    }
+
+    .creation-time {
+      margin-top: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+      font-size: .85rem;
+      color: #b7f3ff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      background: rgba(0,255,255,.08);
+      border: 1px solid rgba(0,255,255,.25);
+      box-shadow: 0 0 12px rgba(0,255,255,.25);
+    }
+
+    /* Neon frames and subtle glow lines */
+    .frame {
+      position: absolute;
+      left: -2%;
+      top: -2%;
+      width: 104%;
+      height: 60px;
+      background: linear-gradient(90deg, transparent, rgba(0,255,255,.25), transparent);
+      filter: blur(2px);
+      opacity: .6;
+      pointer-events: none;
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { transform: translateX(0); opacity: .4; }
+      50% { transform: translateX(6px); opacity: .8; }
+    }
+
+    /* Neon background decorations that rotate */
+    .bg-orb {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: .65;
+      animation: spin 40s linear infinite;
+    }
+    .orb-1 { left: -60px; top: 60px; background: radial-gradient(circle at 30% 30%, rgba(0,255,255,.95), rgba(0,0,0,0) 60%), radial-gradient(circle at 70% 70%, rgba(255,0,200,.55), rgba(0,0,0,0) 60%); }
+    .orb-2 { right: -100px; bottom: -40px; width: 420px; height: 420px; background: radial-gradient(circle at 40% 40%, rgba(0,255,255,.8), rgba(0,0,0,0) 60%), radial-gradient(circle at 60% 60%, rgba(255,0,200,.5), rgba(0,0,0,0) 60%); animation-duration: 60s; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Main content container */
+    main {
+      padding: 40px 20px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 22px;
+      max-width: 1100px;
+      margin: 0 auto;
+      perspective: 1000px;
+    }
+
+    /* 3D flip card for projects */
+    .card {
+      width: 100%;
+      height: 180px;
+      transform-style: preserve-3d;
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.8s;
+      box-shadow: 0 14px 28px rgba(0,0,0,.5);
+      border: 1px solid rgba(0,255,255,.4);
+    }
+    .card:hover {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      backface-visibility: hidden;
+      border-radius: 14px;
+      color: #eaffff;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .front {
+      background: linear-gradient(135deg, rgba(0,255,255,.15), rgba(255,0,255,.15));
+      box-shadow: inset 0 0 22px rgba(0,255,255,.15);
+    }
+
+    .back {
+      background: linear-gradient(135deg, rgba(12,12,25,.95), rgba(20,0,30,.95));
+      color: #d6f7ff;
+      transform: rotateY(180deg);
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      text-shadow: 0 0 8px rgba(0,255,255,.7);
+    }
+
+    .card p {
+      margin: 6px 0 0;
+      font-size: .88rem;
+      opacity: .9;
+      line-height: 1.2;
+    }
+
+    /* subtle floating hover prompt */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.3);
+      color: #dffaff;
+      background: rgba(0,255,255,.08);
+      font-size: .85rem;
+      margin: 14px auto 0;
+      box-shadow: 0 6px 20px rgba(0,255,255,.25);
+    }
+    .tag .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #00faff;
+      box-shadow: 0 0 8px #00faff;
+      animation: ping 1.2s ease-in-out infinite;
+    }
+    @keyframes ping {
+      0% { transform: scale(1); opacity: 1; }
+      70% { transform: scale(1.6); opacity: .6; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    /* footer with GitHub icon */
+    footer {
+      padding: 26px 20px 60px;
+      text-align: center;
+      color: #b9f7ff;
+      border-top: 1px solid rgba(0,255,255,.15);
+      background: linear-gradient(to bottom, rgba(0,0,0,.0), rgba(0,0,0,.15) 60%), transparent;
+    }
+    .footer-inner {
+      display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .github-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 8px;
+      color: #bfefff; text-decoration: none;
+      background: rgba(0,255,255,.15);
+      border: 1px solid rgba(0,255,255,.35);
+      transition: transform .2s ease;
+    }
+    .github-link:hover { transform: scale(1.05); }
+    .copyright {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem;
+      opacity: .9;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .neon-title { font-size: 3.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <span class="frame" aria-hidden="true"></span>
+  <span class="bg-orb orb-1" aria-hidden="true"></span>
+  <span class="bg-orb orb-2" aria-hidden="true"></span>
+
+  <header>
+    <div class="creation-time" aria-label="Creation timestamp">2025-09-28 02:10:58</div>
+    <h1 class="neon-title" style="margin-top:8px; letter-spacing:.25em;">amirabolfazle</h1>
+    <div class="neon-sub">Neon-animated single-file portfolio</div>
+    <div class="frame" aria-hidden="true" style="height:6px; top:0; bottom:auto; filter: blur(1px);"></div>
+  </header>
+
+  <main>
+    <section aria-label="Projects" style="max-width:1100px;margin:0 auto;">
+      <div class="grid" role="grid">
+        <article class="card" role="button" tabindex="0" aria-label="Project: Neon Trails">
+          <div class="card-face front" role="gridcell">
+            <div>
+              <h3>Neon Trails</h3>
+              <p>Explorations of glow, motion and modular UI components.</p>
+            </div>
+          </div>
+          <div class="card-face back" role="gridcell" aria-label="Project backface">
+            <div>
+              <p>Tech: HTML, CSS, JavaScript • Flip to reveal details</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" role="button" tabindex="0" aria-label="Project: PulseGrid">
+          <div class="card-face front" role="gridcell">
+            <div>
+              <h3>PulseGrid</h3>
+              <p>Dynamic grid with rotating neon accents and hover depth.</p>
+            </div>
+          </div>
+          <div class="card-face back" role="gridcell" aria-label="Project backface">
+            <div>
+              <p>Tech: CSS 3D transforms • interactive demos</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" role="button" tabindex="0" aria-label="Project: Open Neon">
+          <div class="card-face front" role="gridcell">
+            <div>
+              <h3>Open Neon</h3>
+              <p>Minimal open-source showcase with neon aesthetics.</p>
+            </div>
+          </div>
+          <div class="card-face back" role="gridcell" aria-label="Project backface">
+            <div>
+              <p>Tech: HTML • CSS • accessible UI</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" role="button" tabindex="0" aria-label="Project: Autogen Demo">
+          <div class="card-face front" role="gridcell">
+            <div>
+              <h3>Autogen Demo</h3>
+              <p>Inline code generation oriented visuals with glow.</p>
+            </div>
+          </div>
+          <div class="card-face back" role="gridcell" aria-label="Project backface">
+            <div>
+              <p>Tech: HTML • CSS • SVG</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="tag" aria-label="Tag indicating ongoing style">
+        <span class="dot" aria-hidden="true"></span>
+        Neon-inspired, rotate-ready
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner" aria-label="Footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="display:block;">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2-.37-2.53-.49-2.53-.49-.36-.92-.88-1.17-.88-1.17-.72-.49.05-.48.05-.48.8.05 1.22.83 1.22.83.71 1.21 1.87.86 2.33.66.07-.52.28-.87.51-1.07-1.6-.18-3.29-.8-3.29-3.56 0-.79.28-1.44.74-1.95-.07-.18-.32-.93.07-1.93 0 0 .61-.19 2 0a7.7 7.7 0 012-.01c1.39.01 2.8.1 4.11.01 1.39-.11 2-.01 2-.01 .39 1 .13 1.75.07 1.93.46.51.74 1.16.74 1.95 0 2.76-1.69 3.37-3.3 3.54.29.25.55.73.55 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.56.38A8 8 0 118 16c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+      <span class="copyright">Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
