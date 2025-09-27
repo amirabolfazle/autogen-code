@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg-dark: #0a0f14;
+      --fg: #e7f0f5;
+      --muted: #a6b7c2;
+      --card: rgba(255,255,255,0.05);
+      --accent: #7c3aed;
+      --accent2: #18e1d0;
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(124,58,237,0.25) 0%, transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(24,225,208,0.18) 0%, transparent 40%),
+                  linear-gradient(#0b0f14 0%, #0b0f14 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Layout */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(8,12,16,0.85);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: saturate(1.2) blur(6px);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .brand .dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 14px rgba(124,58,237,0.9);
+    }
+    nav a {
+      color: var(--fg); text-decoration: none; margin: 0 10px;
+      padding: 8px 12px; border-radius: 6px;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    nav a:hover { transform: translateY(-1px); background: rgba(255,255,255,0.04); }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    /* Hero / intro */
+    .hero {
+      padding: 72px 0 40px;
+      text-align: left;
+    }
+    .title {
+      font-size: 64px; line-height: 1.05; margin: 0 0 12px;
+      letter-spacing: -1px;
+      text-wrap: balance;
+      text-shadow: 0 6px 24px rgba(0,0,0,0.6);
+      background: linear-gradient(135deg, #e8f0ff 0%, #e0d6ff 40%, #9bf1e8 100%);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      animation: glow 3s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%,100% { text-shadow: 0 0 0 transparent; }
+      50% { text-shadow: 0 0 28px rgba(124,58,237,0.9); }
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 18px; margin-top: 6px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px;
+      background: rgba(124,58,237,0.25);
+      border: 1px solid rgba(124,58,237,0.5);
+      color: #e9d6ff;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      font-size: 13px;
+    }
+
+    /* Sections */
+    section { padding: 60px 0; }
+    h2.section-title { font-size: 28px; margin: 0 0 18px; color: #eaf2ff; }
+    .lead { color: var(--muted); max-width: 70ch; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    .card.visible { transform: translateY(0); opacity: 1; transition: all 0.6s ease-out; }
+    .card h3 { margin: 0 0 6px; font-size: 18px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .chip-line { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .chip { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.06); font-size: 12px; color: #e9f2ff; border: 1px solid rgba(255,255,255,0.08); }
+
+    .section-inner { display: grid; gap: 20px; align-items: start; grid-template-columns: 1.1fr 0.9fr; }
+
+    @media (max-width: 860px) {
+      .title { font-size: 48px; }
+      .section-inner { grid-template-columns: 1fr; }
+    }
+
+    /* Footer */
+    footer {
+      padding: 28px 20px; text-align: center; color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: rgba(8,12,16,0.9);
+    }
+    .footer-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #e8f0ff; text-decoration: none;
+      padding: 8px 12px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.04);
+    }
+    .footer-link:hover { background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+
+    /* Creation time badge position in hero */
+    .creation {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px;
+      background: rgba(0, 180, 255, 0.15);
+      border: 1px solid rgba(0,180,255,0.5);
+      color: #dff9ff; font-family: ui-monspace, SFMono-Regular, monospace;
+      font-size: 12px;
+    }
+
+    /* Simple smooth scrolling for anchors */
+    html { scroll-behavior: smooth; }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand" aria-label="Brand">
+      <span class="dot" aria-hidden="true"></span>
+      <strong style="letter-spacing:1px;">amirabolfazle</strong>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="top" aria-label="Introduction">
+      <div class="creation" title="Creation creation time">
+        Created: 2025-09-27 10:03:24
+      </div>
+      <h1 class="title" style="font-weight:800;">amirabolfazle</h1>
+      <p class="subtitle" style="max-width:800px;">
+        Front-end engineer crafting fast, accessible, and visually striking interfaces.
+        This single-file portfolio demonstrates playful motion, a dark-mode aesthetic, and lightweight interactivity.
+      </p>
+      <div style="margin-top:14px;">
+        <span class="badge" aria-label="Creation timestamp">
+          2025-09-27 10:03:24
+        </span>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" aria-label="About me" class="slide-section">
+      <div class="section-inner">
+        <div class="left">
+          <h2 class="section-title" style="margin-top:0;">About</h2>
+          <p class="lead">
+            I code elegant, performance-minded UI components and tiny, robust apps.
+            I enjoy solving puzzles, shipping fast features, and keeping accessibility front and center.
+          </p>
+          <div class="chip-line" style="margin-top:12px;">
+            <span class="chip">JavaScript</span>
+            <span class="chip">React</span>
+            <span class="chip">CSS Houdini</span>
+            <span class="chip">UI/UX</span>
+          </div>
+        </div>
+        <div class="right" aria-label="Profile snapshot" style="min-height: 120px;">
+          <div class="card visible" style="opacity:1; transform: none;">
+            <h3>Currently</h3>
+            <p>Building fast, accessible interfaces with a focus on delightful micro-interactions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" aria-label="Projects" class="slide-section">
+      <h2 class="section-title">Projects</h2>
+      <p class="lead" style="margin-top:0;">
+        A small collection of experiments and practical UI components.
+      </p>
+      <div class="grid" id="projects-grid">
+        <article class="card slide-up" aria-label="Project 1">
+          <h3>NeonTabs UI</h3>
+          <p>A customizable tab system with fluid transitions and keyboard support.</p>
+          <div class="chip-line">
+            <span class="chip">React</span><span class="chip">A11y</span><span class="chip">CSS</span>
+          </div>
+        </article>
+        <article class="card slide-up" aria-label="Project 2">
+          <h3>Motion Chips</h3>
+          <p>Dynamic chip animations that react to user input and focus state.</p>
+          <div class="chip-line">
+            <span class="chip">CSS</span><span class="chip">Motion</span><span class="chip">UX</span>
+          </div>
+        </article>
+        <article class="card slide-up" aria-label="Project 3">
+          <h3>Dark Mode Dashboard</h3>
+          <p>A tiny dashboard layout with responsive grid and card animations.</p>
+          <div class="chip-line">
+            <span class="chip">Tailwind-like</span><span class="chip">Dark</span><span class="chip">Responsive</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" aria-label="Skills" class="slide-section">
+      <h2 class="section-title">Skills</h2>
+      <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+        <div class="card slide-up" aria-label="Skill 1" style="min-height:110px;">
+          <h3>Frontend Engineering</h3>
+          <p>Architecture, performance, accessibility, and delightful UX.</p>
+        </div>
+        <div class="card slide-up" aria-label="Skill 2">
+          <h3>JavaScript / TypeScript</h3>
+          <p>Modern tooling, clean APIs, and robust type-safety.</p>
+        </div>
+        <div class="card slide-up" aria-label="Skill 3">
+          <h3>UI/UX Design</h3>
+          <p>Frictionless interfaces with thoughtful motion and typography.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" aria-label="Contact" class="slide-section">
+      <h2 class="section-title">Contact</h2>
+      <p class="lead" style="margin-top:0;">
+        Reach out for collaboration, freelance work, or project ideas.
+      </p>
+      <form class="card slide-up" style="max-width: 680px; margin: 0 auto;" onsubmit="return false;">
+        <div style="display:flex; gap:12px; flex-wrap: wrap; padding: 12px;">
+          <input aria-label="Your name" placeholder="Your name" style="flex:1; min-width: 250px; padding:12px; border-radius:8px; border:1px solid var(--border); background:#111; color:#fff;">
+          <input aria-label="Email" type="email" placeholder="Email" style="flex:1; min-width: 250px; padding:12px; border-radius:8px; border:1px solid var(--border); background:#111; color:#fff;">
+        </div>
+        <textarea aria-label="Message" placeholder="Your message" rows="5" style="width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; background:#111; color:#fff; margin: 0 12px 12px;"></textarea>
+        <div style="padding: 0 12px 12px; text-align: right;">
+          <button type="submit" class="footer-link" style="cursor:pointer;">Send message</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <!-- GitHub Icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="vertical-align: middle;">
+        <path d="M12 2C6.477 2 2 6.523 2 12a9.99 9.99 0 0 0 6.838 9.457c.5.092.682-.216.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.341-3.369-1.341-.455-1.157-1.11-1.466-1.11-1.466-.909-.622.069-.609.069-.609 1.005.07 1.532 1.03 1.532 1.03.895 1.53 2.348 1.088 2.919.833.091-.652.349-1.088.634-1.341-2.22-.252-4.555-1.11-4.555-4.943 0-1.09.37-1.985.987-2.684-.099-.252-.428-1.272.093-2.65 0 0 .806-.258 2.646.102A9.234 9.234 0 0 1 12 6.844c.815-.002 1.637.111 2.405.326 1.84-.36 2.645-.102 2.645-.102.522 1.378.192 2.398.094 2.65.62.699.986 1.593.986 2.684 0 3.841-2.338 4.687-4.566 4.934.359.31.679.92.679 1.857 0 1.341-.012 2.421-.012 2.752 0 .268.18.579.688.481A10.01 10.01 0 0 0 22 12c0-5.477-4.477-10-10-10z"/>
+      </svg>
+      autogen-code
+    </a>
+    <div style="margin-top:6px;">
+      Created by amirabolfazle
+    </div>
+  </footer>
+
+  <script>
+    // Simple intersection observer for slide-up animation
+    const slideElems = document.querySelectorAll('.slide-up');
+    const cardElems = document.querySelectorAll('.card');
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // If it's a card, ensure it becomes visible only once
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    slideElems.forEach(el => observer.observe(el));
+    cardElems.forEach(el => observer.observe(el));
+
+    // Optional: ensure projects grid items animate in sequence after load
+    const gridCards = document.querySelectorAll('#projects-grid .card');
+    gridCards.forEach((card, idx) => {
+      card.style.transitionDelay = (idx * 0.08) + 's';
+    });
+  </script>
+</body>
+</html>
