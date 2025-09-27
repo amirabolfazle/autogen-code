@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --glass: rgba(255, 255, 255, 0.16);
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --text: #eef3ff;
+      --muted: rgba(238, 243, 255, 0.8);
+      --accent: rgba(127, 255, 212, 0.9);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 15% -10%, rgba(100, 200, 255, 0.25), transparent 40%),
+                  radial-gradient(circle at 90% 10%, rgba(140, 90, 240, 0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #111522 40%, #0b1020 100%);
+      overflow-x: hidden;
+    }
+
+    /* decorative blobs for glassy vibe */
+    .bg-orb {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    .orb1 { top: -60px; left: -60px; background: #7a5cff; }
+    .orb2 { bottom: -120px; right: -60px; background: #2ee6a6; }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      padding: 48px 20px 40px;
+      gap: 20px;
+      z-index: 1;
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 40px 48px;
+      max-width: 860px;
+      width: 100%;
+      backdrop-filter: blur(16px) saturate(1.2);
+      -webkit-backdrop-filter: blur(16px) saturate(1.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      text-align: center;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 64px;
+      line-height: 1.05;
+      letter-spacing: 1px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transform: translateY(-8px);
+      animation: bounceIn 1s ease-out both;
+    }
+
+    .subtitle {
+      margin: 14px 0 0;
+      font-size: 18px;
+      color: rgba(255,255,255,0.92);
+      opacity: 0.95;
+      line-height: 1.6;
+      animation: bounceIn 1s ease-out both;
+      animation-delay: 0.25s;
+    }
+
+    .cta {
+      margin-top: 22px;
+      display: inline-block;
+      animation: bounceIn 1s ease-out both;
+      animation-delay: 0.5s;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.65);
+      color: #0a0f1a;
+      text-decoration: none;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 6px 20px rgba(0,0,0,0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 10px 26px rgba(0,0,0,0.3);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .creation-time {
+      margin-top: 18px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.85);
+      opacity: 0.95;
+      letter-spacing: .4px;
+    }
+
+    .footer {
+      width: 100%;
+      max-width: 860px;
+      text-align: center;
+      padding: 14px 20px;
+      margin-top: 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #eaf0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+      z-index: 1;
+    }
+
+    .footer a {
+      color: inherit;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .footer a:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.15);
+    }
+
+    .footer .credit {
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
+    /* pesky accessibility for reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .title, .subtitle, .cta, .footer, .creation-time { animation: none !important; transition: none !important; }
+    }
+
+    @keyframes bounceIn {
+      0% {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      60% {
+        transform: translateY(8px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orb orb1" aria-hidden="true"></div>
+  <div class="bg-orb orb2" aria-hidden="true"></div>
+
+  <main class="page" aria-label="Amira landing page">
+    <section class="glass" role="region" aria-label="Intro">
+      <h1 class="title">amirabolfazle</h1>
+      <p class="subtitle">A glassy landing space for ideas, code, and creativity. Bounce into a world of sleek motion and soft depth.</p>
+      <div class="cta">
+        <a class="btn" href="#learn-more" aria-label="Learn more">
+          Explore
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-label="arrow" focusable="false" style="vertical-align: middle;">
+            <path d="M5 12h14" stroke="#0a0f1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13 5l7 7-7 7" stroke="#0a0f1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+      <div class="creation-time" aria-label="Creation time">
+        Creation time: 2025-09-27 08:26:44
+      </div>
+    </section>
+
+    <footer class="footer" role="contentinfo" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="color: #fff;">
+          <path d="M12 .5C5.73.5 0 6.23 0 12.01c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.2-3.37-1.2-.46-1.17-1.12-1.48-1.12-1.48-.92-.63.07-.62.07-.62 1.02.07 1.56 1.05 1.56 1.05.9 1.56 2.36 1.11 2.94.85.09-.66.35-1.11.64-1.37-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.02-2.68-.1-.25-.44-1.28.1-2.67 0 0 .83-.27 2.72 1.02A9.31 9.31 0 0 1 12 6.8c.84-.01 1.68-.11 2.47-.33 1.89-1.29 2.72-1.02 2.72-1.02.54 1.39.21 2.42.1 2.67.64.7 1.02 1.59 1.02 2.68 0 3.85-2.34 4.69-4.57 4.94.36.31.68.93.68 1.88 0 1.36-.01 2.46-.01 2.79 0 .27.18.59.69.49A10.006 10.006 0 0 0 24 12.01C24 6.23 18.27.5 12 .5Z"/>
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </main>
+</body>
+</html>
