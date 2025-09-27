@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #04050a;
+      --bg2: #0b0f1a;
+      --neon-cyan: #00f7ff;
+      --neon-pink: #ff3bda;
+      --neon-blue: #4df0ff;
+      --panel: rgba(10, 14, 28, 0.8);
+    }
+
+    /* Global reset-ish + vibes */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: #e8faff;
+      background: #050711;
+      /* subtle cosmic glow */
+      background: radial-gradient(circle at 20% -10%, rgba(0, 255, 230, 0.10), transparent 40%),
+                  radial-gradient(circle at 90% 20%, rgba(255, 0, 170, 0.10), transparent 40%),
+                  linear-gradient(#04060f, #020812 60%, #020614);
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* Neon grid overlay */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background:
+        linear-gradient(transparent 95%, rgba(0,255,255,.12) 95%),
+        linear-gradient(90deg, transparent 95%, rgba(0,255,255,.12) 95%);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
+      animation: drift 18s linear infinite;
+      opacity: .6;
+    }
+    @keyframes drift {
+      0% { background-position: 0 0, 0 0; }
+      50% { background-position: 20px 20px, 20px 0; }
+      100% { background-position: 0 0, 0 0; }
+    }
+
+    /* Layout container */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 1.25rem 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100dvh;
+    }
+
+    /* Neon title with zoom-in on load */
+    .brand {
+      text-align: center;
+      margin-bottom: 2rem;
+      user-select: none;
+      filter: saturate(1.1);
+    }
+
+    .brand h1 {
+      font-size: clamp(2.6rem, 6vw, 6rem);
+      margin: 0;
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: .04em;
+      background: linear-gradient(90deg, #00f7ff, #a0f, #6af, #00f7ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 8px rgba(0,247,255,.75),
+        0 0 18px rgba(0,247,255,.5);
+      animation: zoomIn 1.05s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @keyframes zoomIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Subheading glow */
+    .brand p {
+      margin: .75rem 0 0;
+      font-size: clamp(1rem, 2.6vw, 1.25rem);
+      color: #d5f5ff;
+      text-shadow: 0 0 8px rgba(0,247,255,.6);
+      opacity: .95;
+    }
+
+    /* Neon panel/card */
+    .panel {
+      width: min(1100px, 92vw);
+      background: linear-gradient(135deg, rgba(5,9,20,.8), rgba(5,9,20,.6) 60%), var(--panel);
+      border: 1px solid rgba(0,255,255,.25);
+      border-radius: 14px;
+      padding: clamp(1rem, 4vw, 2.25rem);
+      box-shadow:
+        0 0 15px rgba(0,255,255,.25),
+        0 0 60px rgba(0,255,255,.15);
+      backdrop-filter: blur(6px);
+      position: relative;
+      overflow: hidden;
+      transform: scale(0.98);
+      animation: panelRise 0.8s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    @keyframes panelRise {
+      to { transform: scale(1); opacity: 1; }
+      from { transform: scale(0.98); opacity: 0; }
+    }
+
+    .panel h2 {
+      margin: 0 0 .5rem;
+      font-size: clamp(1.2rem, 4vw, 1.75rem);
+      letter-spacing: .04em;
+      background: linear-gradient(90deg, #7af9ff, #a56dff, #7affc6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(122,249,255,.6);
+    }
+
+    .panel p {
+      margin: 0;
+      font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+      color: #e8f7ff;
+      line-height: 1.6;
+    }
+
+    /* Creation time badge */
+    .creation {
+      margin-top: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.35);
+      background: rgba(0,0,0,.25);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .85rem;
+      color: #eaffff;
+      text-shadow: 0 0 6px rgba(0,255,255,.5);
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%,100% { box-shadow: 0 0 8px rgba(0,255,255,.25); }
+      50% { box-shadow: 0 0 24px rgba(0,255,255,.8); }
+    }
+
+    /* Footer with GitHub icon and creator text */
+    footer {
+      width: 100%;
+      margin-top: auto;
+      padding: 1.25rem 0;
+      border-top: 1px solid rgba(0,255,255,.25);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      color: #c6fbff;
+      background: rgba(4,6,14,.6);
+      backdrop-filter: blur(2px);
+    }
+
+    .gh-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #a3fff0;
+      text-decoration: none;
+      border: 1px solid rgba(0,255,255,.4);
+      background: rgba(0,0,0,.25);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .gh-link:hover {
+      transform: translateY(-1px);
+      background: rgba(0,255,255,.15);
+    }
+    .gh-icon {
+      width: 20px; height: 20px;
+      display: inline-block;
+      color: #a9fff0;
+    }
+    .credit {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .92rem;
+      color: #d8fbff;
+      opacity: .95;
+    }
+
+    /* Accessibility helpers (hidden text for screen readers) */
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 640px) {
+      .panel { padding: 1.25rem; }
+      .credit { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" aria-label="Amira Bolfazle neon page">
+    <div class="brand" aria-label="Site title">
+      <h1>amirabolfazle</h1>
+      <p>Neon themed, responsive, and animated HTML example</p>
+    </div>
+
+    <section class="panel" aria-label="Introduction panel">
+      <h2>Welcome to the neon page</h2>
+      <p>
+        This page showcases a fully responsive layout with neon glow and zoom effects.
+        It adapts to mobile and desktop while keeping a vibrant visual style.
+      </p>
+      <div class="creation" aria-label="Creation time">
+        Creation time: 2025-09-27 03:54:58
+      </div>
+    </section>
+  </div>
+
+  <footer role="contentinfo" aria-label="Footer">
+    <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository for amirabolfazle">
+      <!-- GitHub icon (inline SVG) -->
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" focusable="false" width="20" height="20">
+        <path d="M12 2C6.477 2 2 6.582 2 12.257c0 4.515 2.865 8.355 6.839 9.732.5.093.682-.217.682-.483 0-.237-.009-.868-.013-1.706-2.782.618-3.369-1.37-3.369-1.37-.454-1.174-1.109-1.49-1.109-1.49-.908-.63.069-.618.069-.618 1.004.07 1.532 1.053 1.532 1.053.895 1.534 2.347 1.093 2.919.836.091-.648.35-1.093.635-1.344-2.221-.254-4.555-1.13-4.555-5.033 0-1.111.39-2.02 1.03-2.731-.103-.255-.447-1.284.098-2.676 0 0 .84-.27 2.75 1.04a9.55 9.55 0 0 1 2.5-.34 9.55 9.55 0 0 1 2.5.34c1.91-1.31 2.75-1.04 2.75-1.04.546 1.393.202 2.421.099 2.676.64.711 1.028 1.62 1.028 2.731 0 3.917-2.337 4.776-4.565 5.027.359.317.681.94.681 1.896 0 1.37-.012 2.472-.012 2.803 0 .268.18.58.688.481C19.141 20.615 22 16.776 22 12.257 22 6.582 17.523 2 12 2z"/>
+      </svg>
+      <span class="sr-only">GitHub</span>
+      <span aria-hidden="true" class="credit-text"></span>
+    </a>
+    <span class="credit" aria-label="Created by author">
+      Created by amirabolfazle
+    </span>
+  </footer>
+</body>
+</html>
