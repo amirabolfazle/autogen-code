@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0b13;
+      --bg2:#0a0a12;
+      --fg:#eaffff;
+      --muted:#9bd3ff;
+      --neon1:#00e6ff;
+      --neon2:#ff4bd8;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% 0%, rgba(0,230,255,.08), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(255,0,208,.08), transparent 40%),
+                  linear-gradient(#050509, #0b0b14 60%, #0b0b14);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Neon heading */
+    .site-header {
+      text-align: center;
+      padding: 40px 16px 0;
+      position: relative;
+      z-index: 2;
+    }
+    .logo {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: clamp(28px, 9vw, 72px);
+      letter-spacing: .04em;
+      margin: 0;
+      color: #b9f3ff;
+      text-shadow:
+        0 0 6px rgba(0, 230, 255, 0.9),
+        0 0 14px rgba(0, 230, 255, 0.8),
+        0 0 28px rgba(0, 255, 200, 0.6);
+      animation: glowPulse 4s ease-in-out infinite;
+      transform-origin: center;
+    }
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 6px rgba(0,230,255,.9), 0 0 14px rgba(0,230,255,.8); }
+      50% { text-shadow: 0 0 14px rgba(0,230,255,.9), 0 0 40px rgba(255,0,208,.8); }
+    }
+    .creation-time {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #9bd3ff;
+      opacity: .95;
+    }
+
+    /* Neon hero with rotating orb */
+    .hero {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 48px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 20px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    @media (max-width: 900px){
+      .hero { grid-template-columns: 1fr; text-align: center; gap: 24px; padding: 12px 16px 28px; }
+    }
+
+    .neon-orb {
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(0,255,230,.95), rgba(0,150,255,.95), rgba(255,0,210,.95), rgba(0,255,230,.95));
+      filter: saturate(1.1);
+      box-shadow: 0 0 40px 12px rgba(0, 230, 255, .75), inset 0 0 40px rgba(0,255,200,.6);
+      animation: spin 16s linear infinite;
+      border: 1px solid rgba(255,255,255,.25);
+      transform-style: preserve-3d;
+    }
+    @keyframes spin {
+      to { transform: rotateY(360deg); }
+    }
+
+    .hero-copy {
+      color: #eaffff;
+    }
+    .hero-copy h2 {
+      margin: 0 0 8px;
+      font-size: clamp(20px, 6vw, 28px);
+      color: #a9eaff;
+      text-shadow: 0 0 8px rgba(0, 255, 255, .8);
+    }
+    .hero-copy p {
+      margin: 0;
+      color: #dbeaff;
+      max-width: 560px;
+    }
+    .cta-row { margin-top: 14px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #031018;
+      background: linear-gradient(135deg, #39ffd5, #1e6aff);
+      box-shadow: 0 0 16px rgba(0, 230, 255, .7);
+      text-decoration: none;
+    }
+    .btn.secondary {
+      background: #14141e;
+      color: #d9e7ff;
+      border: 1px solid #2a2a2a;
+      box-shadow: inset 0 0 12px rgba(0,0,0,.3);
+    }
+
+    /* Portfolio grid with rotate + tilt */
+    .portfolio {
+      padding: 10px 20px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      perspective: 1000px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      position: relative;
+      padding: 18px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #141522, #0b0b14);
+      border: 1px solid #222033;
+      min-height: 180px;
+      color: #eaffff;
+      transform-style: preserve-3d;
+      transform: rotateX(0deg) rotateY(0deg);
+      transition: transform 0.2s ease, box-shadow .2s ease;
+      box-shadow: 0 8px 18px rgba(0,0,0,.4);
+      overflow: hidden;
+    }
+    .card:hover { box-shadow: 0 26px 40px rgba(0,0,0,.6); border-color: rgba(0,255,255,.6); }
+
+    .card .title {
+      font-size: 18px;
+      margin: 6px 0 6px;
+      color: #d9f7ff;
+      text-shadow: 0 0 6px rgba(0, 240, 255, .9);
+    }
+    .card .desc {
+      font-size: 13px;
+      color: #cbdff7;
+      line-height: 1.5;
+    }
+    .chip {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #001018;
+      background: linear-gradient(135deg, #8af7ff, #4bffed);
+      box-shadow: 0 0 12px rgba(0,255,255,.8);
+      margin-top: 8px;
+    }
+
+    .card:before {
+      content:"";
+      position:absolute;
+      top:-20px; left:-20px; right:-20px;
+      height: 12px;
+      background: radial-gradient(circle, rgba(0,255,255,.6), transparent 60%);
+      filter: blur(6px);
+      opacity:.5;
+      pointer-events:none;
+    }
+
+    /* Subtle continuous rotation to give life */
+    @keyframes cardSpin {
+      0% { transform: rotateZ(0deg); }
+      100% { transform: rotateZ(360deg); }
+    }
+    .card {
+      animation: cardSpin 22s linear infinite;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 26px rgba(0,255,255,.9), 0 0 60px rgba(0,200,255,.6);
+      border-color: rgba(0,255,255,.6);
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: 24px;
+      text-align: center;
+      color: #9fbbe8;
+      background: linear-gradient(to top, #0b0b14 0%, rgba(11,11,20,.9) 60%);
+      border-top: 1px solid #1e1e2a;
+    }
+    .site-footer a {
+      color: #9bd3ff;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(150,200,255,.35);
+      background: rgba(14,14,28,.6);
+      box-shadow: 0 0 12px rgba(0,180,255,.4);
+    }
+    .site-footer svg { width: 20px; height: 20px; fill: currentColor; }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Site header">
+    <div class="logo" style="will-change: transform;">amirabolfazle</div>
+    <div class="creation-time" aria-label="creation time">Creation time: 2025-09-28 03:13:10</div>
+  </header>
+
+  <section class="hero" aria-label="Intro">
+    <div class="neon-orb" role="img" aria-label="Rotating neon orbit"></div>
+    <div class="hero-copy">
+      <h2>Neon Portfolio</h2>
+      <p>One-file neon-themed, animated portfolio with rotate effects and a glow-drenched vibe. Scroll to explore.</p>
+      <div class="cta-row">
+        <a href="#portfolio" class="btn" aria-label="Jump to portfolio">View Portfolio</a>
+        <a href="#" class="btn secondary" aria-label="Contact">
+          Contact
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio" class="portfolio" aria-label="Portfolio grid">
+    <article class="card" aria-label="Aurora UI Kit">
+      <div class="title">Aurora UI Kit</div>
+      <div class="desc">A neon-inspired UI component library for rapid prototyping.</div>
+      <span class="chip" aria-label="tag">Neon UI</span>
+    </article>
+
+    <article class="card" aria-label="Hyper Neon Landing">
+      <div class="title">Hyper Neon Landing</div>
+      <div class="desc">Single-page promo with parallax neon visuals and glowing CTAs.</div>
+      <span class="chip" aria-label="tag">Landing</span>
+    </article>
+
+    <article class="card" aria-label="Pulse Tracker">
+      <div class="title">Pulse Tracker</div>
+      <div class="desc">Real-time neon dashboard for streaming data.</div>
+      <span class="chip" aria-label="tag">Dashboard</span>
+    </article>
+
+    <article class="card" aria-label="Glyph Studio">
+      <div class="title">Glyph Studio</div>
+      <div class="desc">A collection of neon SVG icons and glyphs.</div>
+      <span class="chip" aria-label="tag">Icons</span>
+    </article>
+  </section>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-label="GitHub icon" focusable="false" width="20" height="20" fill="currentColor">
+        <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.26.82-.58 0-.287-.01-1.244-.015-2.255-3.338.726-4.042-1.613-4.042-1.613-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.205.084 1.838 1.237 1.838 1.237 1.07 1.835 2.809 1.305 3.495.997.108-.776.42-1.305.764-1.605-2.665-.303-5.466-1.333-5.466-5.932 0-1.31.467-2.381 1.235-3.221-.125-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 0 1 3.003-.404c1.018.005 2.043.138 3.003.404 2.293-1.552 3.301-1.23 3.301-1.23.653 1.653.243 2.873.12 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.803 5.625-5.475 5.921.431.37.815 1.102.815 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.697.825.58C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <script>
+    // Neon tilt interaction for cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.style.transformStyle = 'preserve-3d';
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const rotY = (px - 0.5) * 14; // tilt left-right
+        const rotX = (0.5 - py) * 10; // tilt up-down
+        card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      });
+    });
+  </script>
+</body>
+</html>
