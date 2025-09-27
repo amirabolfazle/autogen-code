@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: rgba(255,255,255,0.08);
+      --card2: rgba(255,255,255,0.12);
+      --txt: #e6e6f5;
+      --glow: 0 8px 30px rgba(0,0,0,.35);
+      --accent: rgba(100, 200, 255, 0.8);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--txt);
+      background: radial-gradient(circle at 20% -10%, rgba(60,120,255,0.25), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(0,180,255,0.25), transparent 40%),
+                  linear-gradient(135deg, #0a0f1e 0%, #0a0f1e 60%, #0b0f1e 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+    header {
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+    }
+    .glass-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+      box-shadow: var(--glow);
+    }
+    .brand-dot {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(90,205,255,.6), rgba(255,255,255,.25));
+      border: 1px solid rgba(255,255,255,.5);
+      display: inline-block;
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    }
+    .brand {
+      font-weight: 800;
+      font-size: clamp(1.6rem, 4vw + 1rem, 3rem);
+      background: linear-gradient(135deg, #fff, #9bd6ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 28px rgba(120,180,255,.6);
+    }
+    .brand-sub {
+      font-size: 0.95rem;
+      color: #dbe7ff;
+      opacity: .92;
+      margin-top: 2px;
+    }
+
+    main {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      display: grid;
+      gap: 28px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 28px;
+      padding: 6px 0 8px;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 3vw + 1rem, 3rem);
+      line-height: 1.07;
+      margin: 0;
+    }
+    .hero p {
+      color: #d8e4ff;
+      opacity: .92;
+      margin: 8px 0 0;
+      font-size: 1rem;
+    }
+    .panel {
+      border-radius: 16px;
+      padding: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      display: grid;
+      gap: 8px;
+    }
+    .time {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      font-size: 0.95rem;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(0,0,0,.15);
+      display: inline-block;
+      color: #e7f0ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      position: relative;
+      padding: 26px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      box-shadow: 0 8px 40px rgba(0,0,0,.25);
+      min-height: 120px;
+      overflow: hidden;
+    }
+    .card h3 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+    }
+    .card p {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: #d9e6ff;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      width: 340px; height: 340px;
+      filter: blur(0);
+      opacity: .25;
+      z-index: 0;
+      animation: spin 14s linear infinite;
+      pointer-events: none;
+    }
+    .shape1 { background: radial-gradient(circle at 30% 30%, rgba(255,160,0,.9), rgba(255,160,0,.0) 60%); top: -120px; left: -120px; }
+    .shape2 { background: radial-gradient(circle at 60% 60%, rgba(0,200,255,.9), rgba(0,200,255,.0) 60%), rgba(20,50,90,.6); width: 420px; height: 420px; right: -180px; bottom: -180px; animation-duration: 20s; }
+
+    @keyframes spin {
+      from { transform: rotate(0deg) translateZ(0); }
+      to { transform: rotate(360deg) translateZ(0); }
+    }
+
+    .footer {
+      padding: 20px;
+      text-align: center;
+      color: #cbdafc;
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(255,255,255,.15);
+      background: rgba(2,6,23,.5);
+    }
+    .footer a {
+      color: #cfe3ff;
+      text-decoration: none;
+      margin-left: 8px;
+    }
+    .icon {
+      width: 1.2em; height: 1.2em; vertical-align: -0.1em;
+      fill: currentColor;
+      display: inline-block;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: left; padding-bottom: 6px; }
+      .shape2 { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .shape { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header aria-label="Site header">
+      <div class="glass-card" role="group" aria-label="Brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <div style="display:flex; flex-direction:column;">
+          <span class="brand" aria-label="Site title">amirabolfazle</span>
+          <span class="brand-sub">Glassmorphism animated, responsive</span>
+        </div>
+      </div>
+    </header>
+
+    <main aria-label="Main content" style="width:100%;">
+      <section class="hero" aria-label="Intro section">
+        <div>
+          <h1>amirabolfazle</h1>
+          <p style="margin-top:6px; color:#d9e6ff;">A fully responsive animated HTML page with glassmorphism and rotate effects.</p>
+        </div>
+
+        <section class="panel" aria-label="Creation time" title="Creation time">
+          <span class="time" id="creation-time" data-time="2025-09-27 03:43:23">Creation time: 2025-09-27 03:43:23</span>
+          <div style="font-size:.92rem; color:#d9e6ff; opacity:.95;">This timestamp is static for demonstration.</div>
+        </section>
+      </section>
+
+      <section class="grid" aria-label="Content grid" style="margin-top:8px;">
+        <div class="card" aria-label="Glass card with decorative shapes" style="min-height:140px;">
+          <div class="shape shape1" aria-hidden="true"></div>
+          <div class="shape shape2" aria-hidden="true"></div>
+          <h3>Glass card with rotate backdrop</h3>
+          <p>The page uses glass-like panels with backdrops and decorative rotating shapes to create depth.</p>
+        </div>
+
+        <div class="card" aria-label="Responsive grid note">
+          <h3>Responsive grid</h3>
+          <p>Elements rearrange gracefully on smaller screens while preserving glassmorphism aesthetics.</p>
+        </div>
+
+        <div class="card" aria-label="Interactive touches">
+          <h3>Interactive touches</h3>
+          <p>Hover the cards to feel the elevation and glow enabled by translucent layers and shadows.</p>
+        </div>
+
+        <div class="card" aria-label="Rotation effects explanation">
+          <h3>Rotation effects</h3>
+          <p>Rotate animations provide motion while preserving readability and accessibility.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Footer">
+      <span style="vertical-align:middle;">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg class="icon" viewBox="0 0 24 24" aria-label="GitHub" role="img">
+            <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.31 6.84 9.66.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.61-3.37-1.22-3.37-1.22-.45-1.16-1.11-1.47-1.11-1.47-.91-.64.07-.63.07-.63 1 .07 1.53 1.04 1.53 1.04 .89 1.55 2.34 1.1 2.91.84.09-.66.35-1.1.64-1.36-2.22-.26-4.56-1.16-4.56-5.17 0-1.14.41-2.07 1.08-2.8-.11-.26-.47-1.3.1-2.7 0 0 .88-.29 2.9 1.07a10.1 10.1 0 0 1 2.64-.37c.89 0 1.78.12 2.62.37 2.03-1.36 2.9-1.07 2.9-1.07.58 1.4.21 2.44.1 2.7.68.73 1.07 1.66 1.07 2.8 0 3.99-2.34 4.9-4.57 5.15.36.31.68.92.68 1.86 0 1.34-.01 2.42-.01 2.75 0 .27.18.59.69.49A10.01 10.01 0 0 0 22 12.26C22 6.58 17.52 2 12 2z" fill="currentColor"/>
+          </svg>
+        </a>
+      </span>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Creation time is static as requested; keep directive simple for static timestamp
+    // If dynamic update is desired, uncomment below:
+    // const el = document.getElementById('creation-time');
+    // el.textContent = 'Creation time: 2025-09-27 03:43:23';
+  </script>
+</body>
+</html>
