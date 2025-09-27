@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --surface: #141a2b;
+      --surface-2: #1e2540;
+      --text: #e9eaf7;
+      --muted: #aab3c7;
+      --accent1: #7c5cff;
+      --accent2: #22d3ee;
+      --card: rgba(255,255,255,0.04);
+      --cardStroke: rgba(255,255,255,0.08);
+      --shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    /* animated soft background layer */
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: #0b1020;
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle at 20% 20%, rgba(124,92,255,0.25), transparent 40%),
+                  radial-gradient(circle at 80% 70%, rgba(34,211,238,0.25), transparent 40%),
+                  linear-gradient(135deg, rgba(2,6,23,0.9), rgba(8,16,40,0.9) 60%, rgba(2,6,23,0.9));
+      filter: saturate(110%);
+      z-index: -2;
+      animation: bgMove 20s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes bgMove {
+      0% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(-6px, 4px, 0) scale(1.02); }
+      100% { transform: translate3d(0,0,0) scale(1); }
+    }
+
+    /* container layout */
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px clamp(16px, 4vw, 48px);
+    }
+
+    header {
+      text-align: center;
+      padding: 28px 0 8px;
+    }
+
+    /* brand name with animated gradient text */
+    .brand {
+      font-weight: 900;
+      font-size: clamp(2.5rem, 6vw, 6rem);
+      line-height: 1;
+      margin: 0;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa, #22d3ee);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 24px rgba(124,92,255,.4);
+      animation: hue 10s linear infinite;
+    }
+
+    @keyframes hue {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(-360deg); }
+      100% { filter: hue-rotate(0deg); }
+    }
+
+    .tagline {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+
+    /* grid of animated cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin: 28px 0 10px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--cardStroke);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: left;
+      box-shadow: var(--shadow);
+      transform: scale(0.97) translateY(8px);
+      opacity: 0;
+      animation: flyIn 0.5s ease-out forwards;
+      will-change: transform, opacity;
+    }
+
+    .card .icon {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      color: #a5b4fc;
+    }
+
+    .card h3 {
+      margin: 6px 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @keyframes flyIn {
+      0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* zoom on hover for cards */
+    .card:hover {
+      transform: scale(1.04);
+      z-index: 1;
+      transition: transform 0.25s ease;
+    }
+
+    /* creation time indicator */
+    .creation {
+      display: inline-block;
+      margin: 10px auto 0;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      background: rgba(124,92,255,.15);
+      border: 1px solid rgba(124,92,255,.3);
+      backdrop-filter: blur(2px);
+    }
+
+    /* footer with GitHub icon and creator text */
+    footer {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 18px 0 28px;
+      text-align: center;
+      color: var(--muted);
+      background: #0b1020;
+      margin-top: 40px;
+    }
+
+    .footer-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .gh {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      background: rgba(0,0,0,.28);
+      transition: transform .25s ease;
+    }
+
+    .gh:hover { transform: scale(1.08); }
+
+    .credit {
+      font-size: 0.95rem;
+      margin-left: 8px;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .brand { font-size: clamp(2rem, 12vw, 4rem); }
+    }
+
+    /* accessibility: reduce motion if requested */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .card { transform: none; opacity: 1; }
+      .brand { animation: none; }
+      body::before { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header aria-label="Site header">
+      <h1 class="brand" style="margin:0 0 6px;">amirabolfazle</h1>
+      <p class="tagline">Fully responsive animated page • dark mode with zoom effects</p>
+    </header>
+
+    <main aria-label="Main content" class="grid-area">
+      <section class="grid" aria-label="Feature cards">
+        <article class="card" style="animation-delay:.15s;">
+          <div class="icon" aria-hidden="true">
+            <!-- SVG: sparkles icon -->
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-label="Sparkles icon">
+              <path d="M12 2l2.2 5.1L19 9l-4.8.9L12 15l-2.2-5.1L5 9l4.8-.9L12 2zM6 18l1.5 2.8L10 22l-1.3-2.2L6 18zm12 0l1.5 2.8L22 22l-2.2-2.2L18 18z"></path>
+            </svg>
+          </div>
+          <h3>Responsive layout</h3>
+          <p>Grid adapts from mobile to desktop with smooth transitions.</p>
+        </article>
+
+        <article class="card" style="animation-delay:.30s;">
+          <div class="icon" aria-hidden="true">
+            <!-- SVG: zoom icon -->
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-label="Zoom icon">
+              <path d="M21.5 20l-5.7-5.7A7 7 0 1010 17a7 7 0 001.7-14 7 7 0 009.8 7H21l3 3-2.5 2.5-3-3zM7 7a4 4 0 118 0 4 4 0 01-8 0z"></path>
+            </svg>
+          </div>
+          <h3>Zoom effects</h3>
+          <p>Hover to gently zoom cards for emphasis.</p>
+        </article>
+
+        <article class="card" style="animation-delay:.45s;">
+          <div class="icon" aria-hidden="true">
+            <!-- SVG: code icon -->
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-label="Code icon">
+              <path d="M8.5 6L3 12l5.5 6V6zm7 0v12L21 12l-5.5-6z"></path>
+            </svg>
+          </div>
+          <h3>Animation on load</h3>
+          <p>Subtle entrance animations create a lively feel.</p>
+        </article>
+
+        <article class="card" style="animation-delay:.60s;">
+          <div class="icon" aria-hidden="true">
+            <!-- SVG: clock icon -->
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-label="Clock icon">
+              <path d="M12 1a11 11 0 100 22 11 11 0 000-22zm1 11V6h-2v6h6v-2h-4z"></path>
+            </svg>
+          </div>
+          <h3>Time awareness</h3>
+          <p>Creation time is surfaced on the page.</p>
+        </article>
+      </section>
+
+      <div class="creation" aria-label="Creation time">
+        Creation Time: 2025-09-27 10:51:15
+      </div>
+    </main>
+
+    <footer aria-label="Footer">
+      <div class="footer-row">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" role="img">
+            <path d="M12 .5C5.73.5 0 5.73 0 12c0 5.08 3.29 9.38 7.84 10.9.57.1.78-.25.78-.55v-1.93c-3.19.69-3.86-1.37-3.86-1.37-.52-1.32-1.27-1.68-1.27-1.68-.99-.69.08-.68.08-.68 1.1.08 1.68 1.04 1.68 1.04.93 1.62 2.43 1.13 3.02.86.09-.67.37-1.13.67-1.39-2.57-.29-5.28-1.29-5.28-5.74 0-1.27.46-2.31 1.22-3.12-.12-.3-.53-1.52.12-3.17 0 0 .98-.32 3.2 1.23a9 9 0 012.92-.39c1.04 0 2.08.14 3.04.39 2.22-1.55 3.18-1.23 3.18-1.23.65 1.66.24 2.87.12 3.18.77.84 1.22 1.91 1.22 3.21 0 4.41-2.69 5.38-5.25 5.69.41.35.77 1.04.77 2.1v3.02c0 .29.19.58.77.49C20.66 21.83 24 17.3 24 12c0-6.27-5.23-11.5-12-11.5z" fill-rule="evenodd"/>
+          </svg>
+        </a>
+        <span class="credit">Created by amirabolfazle</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Gentle stagger for cards if JS is enabled (additional polish)
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((c, i) => {
+        c.style.animationDelay = (0.15 + i * 0.08) + 's';
+      });
+    })();
+  </script>
+</body>
+</html>
