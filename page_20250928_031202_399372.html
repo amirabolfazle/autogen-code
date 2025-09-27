@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1020;
+      --bg2:#1a2a6c;
+      --bg3:#f472b6;
+      --fg:#ffffff;
+    }
+    /* Gradient background that shifts over time for a dynamic look */
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #fff;
+      background: #0b0c1a;
+      overflow-x: hidden;
+    }
+    .grad-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, rgba(17,24,39,0.95) 0%, rgba(2,6,23,0.95) 100%), linear-gradient(135deg, #1e3a8a 0%, #7c3aed 40%, #f472b6 100%);
+      background-size: 300% 300%;
+      animation: bgMove 18s ease infinite;
+      filter: saturate(105%);
+    }
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      text-align: center;
+      padding: 72px 20px 28px;
+    }
+
+    .name {
+      font-weight: 900;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      line-height: 1.05;
+      margin: 0;
+      letter-spacing: .5px;
+      /* gradient text look */
+      background: linear-gradient(135deg, #ffffff 0%, #e8eaf6 40%, #ffffff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-transform: lowercase;
+      text-shadow: 0 6px 40px rgba(0,0,0,.25);
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      font-size: 1.05rem;
+      opacity: .9;
+      letter-spacing: .4px;
+      color: rgba(255,255,255,.92);
+    }
+
+    .creation {
+      margin-top: 12px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: .95rem;
+      color: rgba(255,255,255,.9);
+      opacity: .95;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 20px 60px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 28px 0 16px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      opacity: .95;
+      letter-spacing: .3px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      padding: 6px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transform: scale(0.96);
+      opacity: 0;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .thumb {
+      height: 120px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(99,102,241,.9), rgba(236,72,153,.9));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 40px rgba(255,255,255,.15);
+    }
+    .thumb svg {
+      width: 90%;
+      height: 90%;
+      display: block;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: .2px;
+    }
+    .card p {
+      margin: 0;
+      font-size: .95rem;
+      color: rgba(255,255,255,.92);
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff;
+    }
+
+    /* hover/interaction zoom */
+    .card:hover {
+      transform: scale(1.02);
+      transition: transform 0.25s ease;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 26px 10px;
+      margin-top: 8px;
+      color: #e5e7eb;
+      background: rgba(2,6,23,.5);
+      border-top: 1px solid rgba(255,255,255,.15);
+    }
+
+    footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      color: inherit;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    footer a:hover {
+      transform: translateY(-1px);
+    }
+
+    .credit {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: .95rem;
+      color: #e5e7eb;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .name { font-size: 5.5vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grad-bg" aria-hidden="true"></div>
+
+  <header>
+    <h1 class="name" aria-label="amirabolfazle">amirabolfazle</h1>
+    <div class="subtitle">A cool animated one-file portfolio</div>
+    <div class="creation">Creation time: 2025-09-28 03:11:27</div>
+  </header>
+
+  <main>
+    <h2 class="section-title" style="font-size:1.05rem; margin-top:6px;">Projects</h2>
+    <section class="grid" aria-label="Projects grid">
+      <!-- Card 1 -->
+      <article class="card" style="animation-delay:.04s">
+        <div class="thumb" aria-label="Project thumbnail">
+          <!-- Inline SVG graphic -->
+          <svg viewBox="0 0 200 120" role="img" aria-label="Abstract gradient graphic">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                <stop stop-color="#ffffff" stop-opacity="0.9" offset="0"/>
+                <stop stop-color="#f0f9ff" offset="1"/>
+              </linearGradient>
+              <linearGradient id="grad2" x1="0" x2="1" y1="0" y2="1">
+                <stop stop-color="#7c3aed"/>
+                <stop stop-color="#22d3ee"/>
+              </linearGradient>
+            </defs>
+            <rect width="200" height="120" fill="url(#g1)"/>
+            <circle cx="40" cy="60" r="22" fill="url(#grad2)" opacity="0.9"/>
+            <circle cx="140" cy="40" r="28" fill="#ffffff" opacity="0.55"/>
+            <path d="M60 100 C90 70, 130 70, 170 100" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <h3>Autogen Code Studio</h3>
+        <p>Progressive UI with gradient themes, zoom-in animations, and a single-file portfolio layout.</p>
+        <div class="tags">
+          <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span><span class="tag">Animation</span>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card" style="animation-delay:.08s">
+        <div class="thumb" aria-label="Project thumbnail 2">
+          <svg viewBox="0 0 200 120" role="img" aria-label="Abstract gradient graphic 2">
+            <defs>
+              <linearGradient id="g2" x1="0" x2="1" y1="0" y2="1">
+                <stop stop-color="#22c55e" offset="0"/>
+                <stop stop-color="#0ea5e9" offset="1"/>
+              </linearGradient>
+            </defs>
+            <rect width="200" height="120" fill="url(#g2)"/>
+            <path d="M20 100 C60 60, 140 60, 180 100" fill="none" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Gradient Motion</h3>
+        <p>Fluid gradient backgrounds with subtle motion to keep readers engaged.</p>
+        <div class="tags">
+          <span class="tag">CSS</span><span class="tag">Web animation</span>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card" style="animation-delay:.12s">
+        <div class="thumb" aria-label="Project thumbnail 3">
+          <svg viewBox="0 0 200 120" role="img" aria-label="Abstract shape graphic">
+            <defs>
+              <linearGradient id="g3" x1="0" x2="1" y1="0" y2="1">
+                <stop stop-color="#f472b6" offset="0"/>
+                <stop stop-color="#a78bfa" offset="1"/>
+              </linearGradient>
+            </defs>
+            <rect width="200" height="120" fill="url(#g3)"/>
+            <circle cx="60" cy="60" r="28" fill="white" opacity=".65"/>
+            <circle cx="140" cy="40" r="20" fill="white" opacity=".45"/>
+          </svg>
+        </div>
+        <h3>One-File Portfolio</h3>
+        <p>A single HTML file that showcases an animated gradient portfolio with zoom effects.</p>
+        <div class="tags">
+          <span class="tag">Self-contained</span><span class="tag">Responsive</span><span class="tag">SVG</span>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="card" style="animation-delay:.16s">
+        <div class="thumb" aria-label="Project thumbnail 4">
+          <svg viewBox="0 0 200 120" role="img" aria-label="Abstract waves">
+            <defs>
+              <linearGradient id="g4" x1="0" x2="1" y1="0" y2="1">
+                <stop stop-color="#38bdf8" offset="0"/>
+                <stop stop-color="#a3e635" offset="1"/>
+              </linearGradient>
+            </defs>
+            <rect width="200" height="120" fill="url(#g4)"/>
+            <path d="M0 90 C40 60, 120 60, 200 90" fill="none" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Interactive Cards</h3>
+        <p>Cards with hover zoom and micro-interactions to enhance UX.</p>
+        <div class="tags">
+          <span class="tag">UX</span><span class="tag">CSS</span><span class="tag">JS</span>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" role="img" style="color:#fff;">
+        <path d="M12 .5A12 12 0 0 0 0 12.5a12.05 12.05 0 0 0 7.29 11.07c.53.1.72-.23.72-.51v-1.79c-2.96.64-3.59-1.27-3.59-1.27-.48-1.22-1.17-1.55-1.17-1.55-1-.66.07-.65.07-.65 1.1.08 1.68 1.13 1.68 1.13 0 .99.7 1.7 1.63 2.04.23-.39.91-1.28 1.64-2.01-2.36-.27-4.84-1.18-4.84-5.25 0-1.16.41-2.11 1.09-2.85-.11-.27-.47-1.36.11-2.84 0 0 .89-.29 2.92 1.09a10.1 10.1 0 0 1 5.31 0c2.03-1.38 2.92-1.09 2.92-1.09.58 1.48.22 2.57.11 2.84.68.74 1.09 1.69 1.09 2.85 0 4.08-2.49 4.97-4.86 5.24.94.81 1.78 2.28 1.78 4.6v6.83c0 .28.19.62.72.51A12.02 12.02 0 0 0 24 12.5 12 12 0 0 0 12 .5Z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Reveal cards with a staggered zoom-in effect
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, idx) => {
+        // small stagger
+        setTimeout(() => card.classList.add('visible'), 120 * idx + 40);
+      });
+    });
+  </script>
+</body>
+</html>
