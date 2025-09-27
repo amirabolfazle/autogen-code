@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f9f5fa;
+      --bg2: #f7f7fb;
+      --text: #2a2730;
+      --muted: #6b6470;
+      --accent1: #f6cbd8;
+      --accent2: #c7e6d9;
+      --accent3: #d9e5ff;
+      --card: #ffffff;
+      --shadow: 0 10px 25px rgba(0,0,0,.05);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #f8f3f8 0%, #f7f1f0 40%, #eaf7fb 100%);
+      overflow-x: hidden;
+    }
+
+    /* decorative rotating orbs */
+    .orb {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      filter: blur(0.2px);
+      opacity: .65;
+      mix-blend-mode: multiply;
+      animation: spin 40s linear infinite;
+      pointer-events: none;
+    }
+    .orb1 {
+      left: -60px;
+      top: -60px;
+      background: radial-gradient(circle at 30% 30%, #ffd6e7 0 40%, transparent 41%), #ffd6e7;
+      transform: rotate(0deg);
+    }
+    .orb2 {
+      right: -40px;
+      bottom: -60px;
+      background: radial-gradient(circle at 70% 70%, #c8f0e2 0 40%, transparent 41%), #c8f0e2;
+      animation-duration: 60s;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    header.hero {
+      position: relative;
+      padding: 120px 20px 60px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .brand {
+      font-size: clamp(2.4rem, 5vw, 6rem);
+      line-height: 1.02;
+      margin: 0 0 12px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      background: linear-gradient(135deg, #7f9cff 0%, #f2c6de 40%, #a0e9d8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+      transform: rotate(-2deg);
+      filter: saturate(110%);
+    }
+
+    .tagline {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      color: var(--muted);
+      margin: 0 auto 18px;
+      max-width: 680px;
+      opacity: .95;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 1rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.05);
+      font-size: .85rem;
+      color: #514a59;
+      margin-top: 8px;
+      box-shadow: var(--shadow);
+      transform: rotate(-1.5deg);
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 26px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #1b1b1b;
+      text-decoration: none;
+      background: linear-gradient(135deg, #ffd4e0 0%, #c6e5ff 100%);
+      border: 0;
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .cta:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+    }
+
+    main {
+      padding: 40px 20px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      transition: transform .5s ease, box-shadow .5s ease;
+      transform: rotate(0deg);
+      perspective: 1000px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.25rem;
+    }
+    .card p { margin: 0; color: var(--muted); }
+
+    /* subtle hover tilt / rotation */
+    .rotate-on-hover:hover {
+      transform: rotate(-4deg) translateY(-2px) scale(1.02);
+      box-shadow: 0 16px 28px rgba(0,0,0,.12);
+    }
+
+    /* decorative tiny rotating accents inside cards */
+    .card:after {
+      content: "";
+      position: absolute;
+      width: 60px; height: 60px;
+      right: -18px; bottom: -18px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9) 0 20%, transparent 21%), rgba(255,200,220,.6);
+      border-radius: 50%;
+      filter: blur(.2px);
+      transform: rotate(20deg);
+      opacity: .6;
+      animation: pulse 6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0% { transform: translate(0,0) rotate(0deg); opacity:.6; } 50% { transform: translate(-6px,6px) rotate(25deg); opacity:.9; } 100% { transform: translate(0,0) rotate(0deg); opacity:.6; } }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.25rem;
+      color: var(--muted);
+      margin: 40px 0 18px;
+      letter-spacing: .04em;
+    }
+
+    footer.site-footer {
+      border-top: 1px solid #e5e5e5;
+      padding: 20px;
+      text-align: center;
+      background: #fff;
+    }
+
+    .gh-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #1b1b1b;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #f7f7f7;
+      border: 1px solid #e5e5e5;
+      transition: transform .25s ease;
+    }
+    .gh-link:hover { transform: translateY(-1px); }
+    .gh-icon {
+      width: 20px; height: 20px;
+      display: inline-block;
+    }
+    .footer-text {
+      display: inline-block;
+      font-size: .95rem;
+      color: var(--muted);
+    }
+
+  </style>
+</head>
+<body>
+  <header class="hero" aria-label="Intro">
+    <div class="orb orb1" aria-hidden="true"></div>
+    <div class="orb orb2" aria-hidden="true"></div>
+
+    <h1 class="brand">amirabolfazle</h1>
+    <p class="tagline">Pastel-inspired playground of ideas. Subtle motion, calm typography, and a touch of rotate.</p>
+
+    <div class="creation" aria-label="Creation time">
+      Creation time: 2025-09-27 03:51:50
+    </div>
+
+    <a class="cta" href="#projects" aria-label="Jump to projects">Explore my work</a>
+  </header>
+
+  <main aria-label="Main content">
+    <section class="section-title" id="projects-title">Featured</section>
+    <section class="grid" id="projects" aria-label="Projects grid">
+      <article class="card rotate-on-hover" aria-label="Project highlight 1">
+        <h3>Pastel UI Kit</h3>
+        <p>Soft, accessible components built with a gentle color system and playful motion.</p>
+      </article>
+      <article class="card rotate-on-hover" aria-label="Project highlight 2">
+        <h3>Rotating Motion Demo</h3>
+        <p>A constellation of elements that gracefully rotate and tilt for a tactile feel.</p>
+      </article>
+      <article class="card rotate-on-hover" aria-label="Project highlight 3">
+        <h3>Autogen Code Snips</h3>
+        <p>Tiny, reusable code snippets generated to spark ideas and speed up prototyping.</p>
+      </article>
+      <article class="card rotate-on-hover" aria-label="Project highlight 4" style="grid-column: span 2;">
+        <h3>Creative Exploration</h3>
+        <p>A canvas for experiments where color, motion, and typography meet curiosity.</p>
+      </article>
+      <article class="card rotate-on-hover" aria-label="Project highlight 5">
+        <h3>Typography Playground</h3>
+        <p>Iterative type scales and gradients that stay readable across devices.</p>
+      </article>
+      <article class="card rotate-on-hover" aria-label="Project highlight 6">
+        <h3>Component Library</h3>
+        <p>Composable blocks with tasteful defaults and delightful micro-interactions.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <!-- GitHub inline SVG icon -->
+      <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.58 2 12.27c0 4.5 2.87 8.31 6.84 9.66.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.22-3.37-1.22-.46-1.18-1.12-1.5-1.12-1.5-.92-.64.07-.63.07-.63 1.02.07 1.56 1.05 1.56 1.05.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.15-4.56-5.13 0-1.13.39-2.05 1.03-2.77-.11-.27-.45-1.38.1-2.87 0 0 .84-.27 2.75 1.05a9.4 9.4 0 0 1 2.5-.34c.85 0 1.7.12 2.5.33 1.9-1.32 2.74-1.05 2.74-1.05.56 1.49.21 2.6.11 2.87.64.72 1.02 1.64 1.02 2.77 0 3.99-2.34 4.87-4.57 5.11.36.31.68.92.68 1.86 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12.27C22 6.58 17.52 2 12 2z"/>
+      </svg>
+      <span class="footer-text" style="margin-left:2px;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
