@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg-grad: radial-gradient(circle at 20% -10%, rgba(124, 58, 237, 0.25), transparent 40%), radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.25), transparent 40%), #0b0f14;
+      --fg: #e9eefc;
+      --muted: #a3a6b8;
+      --card: rgba(255,255,255,0.05);
+      --accent: #7c3aed;
+      --accent2: #06b6d4;
+      --glow: 0 0 24px rgba(124, 58, 237, 0.65);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: #0b0f14;
+      background-image: var(--bg-grad);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Layout */
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    header.site-header {
+      padding: 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      letter-spacing: .5px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #eaf2ff;
+    }
+    .brand .logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+      box-shadow: 0 0 12px rgba(124,58,237,.8);
+    }
+    .brand .name {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    /* Hero / Landing */
+    .hero {
+      min-height: 72vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      position: relative;
+      padding: 60px 0 40px;
+    }
+
+    .hero-inner {
+      padding: 28px 28px;
+      border-radius: 20px;
+      background: rgba(8,12,20,0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+      max-width: 860px;
+      width: 100%;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 64px;
+      line-height: 1.04;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #e9eaff 0%, #d9e4ff 60%, #cbdcff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 0 rgba(0,0,0,.2);
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #dbe6fb;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      border: none;
+      font-weight: 700;
+      color: #0b0e14;
+      cursor: pointer;
+      background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+      text-decoration: none;
+      transition: transform .2s ease;
+      box-shadow: var(--glow);
+    }
+    .cta:hover { transform: translateY(-1px); }
+
+    /* Decorative glow orbs */
+    .orb {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), transparent 40%), radial-gradient(circle at 70% 70%, rgba(6,182,212,.75), transparent 40%);
+      filter: blur(1px);
+      opacity: 0.25;
+      pointer-events: none;
+      animation: float 12s ease-in-out infinite;
+    }
+    .orb.one { top: -120px; left: -60px; }
+    .orb.two { bottom: -120px; right: -80px; animation-delay: -6s; width: 520px; height: 520px; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(8px); }
+    }
+
+    /* Features grid */
+    section.features {
+      padding: 60px 0 120px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: left;
+      min-height: 120px;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+    .card p { margin: 0; color: var(--muted); }
+
+    /* Slide-up animation */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    .slide-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    footer.site-footer {
+      padding: 40px 0;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(2,6,23,.5);
+    }
+    .github-link {
+      color: #e3eaff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(135deg, rgba(0,0,0,.2), rgba(0,0,0,.0));
+    }
+    .github-link svg {
+      width: 20px; height: 20px; display: inline-block;
+      fill: currentColor;
+    }
+
+    @media (max-width: 1024px){
+      h1 { font-size: 48px; }
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px){
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 40px; }
+      .hero { padding: 40px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+
+  <header class="site-header container" aria-label="Site header">
+    <a href="#" class="brand" aria-label="Home">
+      <span class="logo" aria-hidden="true"></span>
+      <span class="name">amirabolfazle</span>
+    </a>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Hero">
+      <div class="hero-inner slide-up" style="max-width:900px;">
+        <h1>amirabolfazle</h1>
+        <p class="subtitle">A dark-mode landing experience with slide-up interactions and subtle motion.</p>
+        <span class="creation-time" aria-label="Creation time">Creation time: 2025-09-27 06:53:52</span>
+        <div>
+          <a class="cta" href="#features" aria-label="Explore features">Explore</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="features container grid slide-up" aria-label="Feature highlights" style="gap:22px;">
+      <article class="card" aria-label="Feature one">
+        <h3>Immersive Dark Mode</h3>
+        <p>Elegant, high-contrast visuals designed for focus and comfort in any lighting.</p>
+      </article>
+      <article class="card" aria-label="Feature two">
+        <h3>Slide-Up Interactions</h3>
+        <p>Delightful motion that reveals content as you scroll, without sacrificing performance.</p>
+      </article>
+      <article class="card" aria-label="Feature three">
+        <h3>Accessible & Light</h3>
+        <p>Accessible typography, color contrast, and responsive layout for all devices.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="container" style="display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
+          <path d="M12 .5C5.73.5 0 6.23 0 12.5c0 5.3 3.438 9.8 8.205 11.387.6.111.82-.255.82-.57 0-.28-.01-1.02-.015-2.01-3.344.727-4.045-1.36-4.045-1.36-.547-1.39-1.335-1.76-1.335-1.76-1.09-.745.083-.731.083-.731 1.177.083 1.796 1.21 1.796 1.21 1.07 1.82 2.81 1.295 3.495.99.11-.772.42-1.228.764-1.512-2.665-.305-5.467-1.333-5.467-5.932 0-1.31.468-2.38 1.236-3.22-.125-.304-.536-1.54.118-3.21 0 0 .95-.304 3.11 1.17a11.5 11.5 0 015.66 0c2.16-1.474 3.11-1.17 3.11-1.17.654 1.67.243 2.906.118 3.21.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.62-5.475 5.92.431.37.814 1.1.814 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.214.69.88.57C20.565 22.296 24 18.03 24 12.5 24 6.23 18.27.5 12 .5z" fill="currentColor"></path>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Slide-up animation using IntersectionObserver
+    document.addEventListener('DOMContentLoaded', function() {
+      const toObserve = document.querySelectorAll('.slide-up');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        toObserve.forEach(el => observer.observe(el));
+      } else {
+        // Fallback: reveal all
+        toObserve.forEach(el => el.classList.add('visible'));
+      }
+    });
+  </script>
+</body>
+</html>
