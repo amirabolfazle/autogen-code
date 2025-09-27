@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --card: rgba(255,255,255,0.14);
+      --card-border: rgba(255,255,255,0.25);
+      --text: #eaeaf5;
+      --muted: rgba(234,234,246,0.75);
+      --bg: #0b0e1a;
+      --glow: 0 0 28px rgba(123,223,251,0.6);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(1200px circle at 20% -10%, rgba(123,223,251,0.25), transparent 40%),
+                  radial-gradient(900px circle at 90% 0%, rgba(255,122,199,0.25), transparent 40%),
+                  linear-gradient(#0b0e1a, #0a0b12 60%);
+      overflow-x: hidden;
+    }
+
+    /* Glassy animated background shapes */
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 20% 20%, rgba(123,223,251,.22), transparent 40%),
+                  radial-gradient(circle at 80% 40%, rgba(255,122,199,.18), transparent 40%);
+      filter: blur(0.5px);
+      animation: floatGlow 20s linear infinite;
+    }
+    @keyframes floatGlow {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-10px, 8px) scale(1.02); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    /* Layout */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header {
+      padding: 48px 20px 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .brand {
+      font-weight: 900;
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      line-height: 1.04;
+      margin: 0;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #ffffff 0%, #a6e8ff 60%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 6px 20px rgba(123,223,251,.4));
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: .4px;
+    }
+
+    .creation {
+      margin-top: 14px;
+      font-size: .92rem;
+      color: rgba(230,230,245,.85);
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    main {
+      padding: 16px 0 40px;
+    }
+
+    .grid {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 140px;
+      backdrop-filter: blur(10px) saturate(1.2);
+      -webkit-backdrop-filter: blur(10px) saturate(1.2);
+      box-shadow: 0 8px 28px rgba(0,0,0,.25);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: bounceIn .8s forwards;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      letter-spacing: .4px;
+    }
+
+    .card p {
+      margin: 0;
+      color: rgba(230,230,245,.9);
+      line-height: 1.5;
+      font-size: .95rem;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(40px); opacity: 0; }
+      60% { transform: translateY(-8px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .card:hover {
+      animation: bounce 0.6s;
+      cursor: default;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* Staggered delays for a snappy reveal */
+    .card[data-delay="0"] { animation-delay: 0s; }
+    .card[data-delay="1"] { animation-delay: .08s; }
+    .card[data-delay="2"] { animation-delay: .16s; }
+    .card[data-delay="3"] { animation-delay: .24s; }
+    .card[data-delay="4"] { animation-delay: .32s; }
+
+    footer {
+      padding: 18px 20px;
+      text-align: center;
+      color: rgba(230,230,245,.85);
+      border-top: 1px solid rgba(255,255,255,.12);
+      margin-top: 20px;
+    }
+
+    .gh {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      margin-right: 8px;
+      color: #fff;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    .gh:hover { transform: translateY(-1px) scale(1.02); }
+
+    .footer-content {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .brand { font-size: 2.8rem; }
+      .creation { font-size: .85rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <div class="wrapper">
+    <header aria-label="Intro">
+      <h1 class="brand" id="brand" title="amirabolfazle">amirabolfazle</h1>
+      <div class="subtitle" aria-label="Subtitle">A fancy animated personal page with glassmorphism and bounce effects</div>
+      <div class="creation" aria-label="Creation time">
+        Creation time: 2025-09-27 14:07:24
+      </div>
+    </header>
+
+    <main aria-label="Content grid">
+      <section class="grid" aria-label="Overview cards">
+        <article class="card" data-delay="0" style="--delay:0s;">
+          <h3>About</h3>
+          <p>Hello! I’m amirabolfazle—a curious creator exploring design and code. This page showcases glassy aesthetics with playful motion and smooth interactions.</p>
+        </article>
+
+        <article class="card" data-delay="1">
+          <h3>Projects</h3>
+          <p>Autogenerated snippets, tasteful UI experiments, and tiny tools. All crafted to feel tangible, with subtle motion and depth.</p>
+        </article>
+
+        <article class="card" data-delay="2">
+          <h3>Skills</h3>
+          <p>Frontend engineering, CSS artistry, animation, and user experience. I enjoy blending visuals with performance.</p>
+        </article>
+
+        <article class="card" data-delay="3">
+          <h3>Contact</h3>
+          <p>Reach out for collaboration or just to say hi. I love connecting with fellow builders and explorers.</p>
+        </article>
+
+        <article class="card" data-delay="4">
+          <h3>Resume</h3>
+          <p>Available upon request. If you’re curious about my journey, I’m happy to share highlights and stories behind the work.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-content" aria-label="Footer credits">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:#fff;">
+            <path d="M12 0C5.37 0 0 5.373 0 12a12 12 0 0 0 8.205 11.387c.6.111.82-.261.82-.58 0-.287-.01-1.004-.016-1.973-3.337.727-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.76-1.606-2.665-.303-5.466-1.333-5.466-5.932 0-1.31.469-2.381 1.236-3.221-.125-.304-.536-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.41 11.41 0 0 1 3.003-.404c1.02-.004 2.046-.013 3.003-.101 2.293-1.552 3.3-1.23 3.3-1.23.654 1.653.243 2.873.12 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.804 5.625-5.476 5.921.43.37.814 1.102.814 2.222 0 1.606-.015 2.898-.015 3.293 0 .32.216.692.824.574A12.01 12.01 0 0 0 24 12C24 5.373 18.627 0 12 0Z"/>
+          </svg>
+        </a>
+        <span>Created by amirabolfazle</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
