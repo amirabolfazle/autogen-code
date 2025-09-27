@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0b14;
+      --fg: #e8f0ff;
+      --neon: #00ffd5;
+      --neon2: #ff6bff;
+      --glow: 0 0 12px rgba(0, 255, 213, 0.8), 0 0 36px rgba(0, 255, 213, 0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color:#e6f0ff;
+      background: radial-gradient(circle at 10% 0%, rgba(0,255,213,0.15), transparent 40%), 
+                  radial-gradient(circle at 90% 50%, rgba(255,0,213,0.15), transparent 40%), 
+                  linear-gradient(#0a0b14, #0a0b14 60%, #0a0b14);
+      background-color: #0b0b14;
+      overflow-x:hidden;
+    }
+    /* animated background shapes */
+    .orb {
+      position: absolute;
+      width: 180px; height:180px;
+      border-radius: 50%;
+      filter: blur(0.6px);
+      opacity: 0.5;
+      animation: drift 20s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+    .orb.one { background: radial-gradient(circle at 30% 30%, #00ffd5 0%, #006a7d 40%, transparent 60%), #00ffd5; top: -40px; left: -40px; animation-delay: 0s;}
+    .orb.two { background: radial-gradient(circle at 70% 70%, #ff00f0 0%, #4b0066 60%, transparent 70%), #ff00f0; bottom: -60px; right: -60px; width: 260px; height:260px; animation-delay: 5s;}
+    .orb.three { background: radial-gradient(circle at 40% 60%, #00c9ff 0%, #003b5c 60%, transparent 70%), #00c9ff; top: 40%; left: 50%; width:200px; height:200px; animation-delay: 10s; }
+
+    @keyframes drift {
+      0% { transform: translate(0,0) scale(1); opacity: 0.6; }
+      50% { transform: translate(20px, -20px) scale(1.04); opacity: 0.9; }
+      100% { transform: translate(-10px, 15px) scale(1); opacity: 0.6; }
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      padding: 80px 20px 40px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 88px);
+      line-height: 0.95;
+      margin: 0;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #00ffd5 0%, #00b8ff 40%, #ff6bff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(0, 213, 255, 0.6);
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
+    }
+
+    .tagline {
+      font-size: clamp(16px, 2.6vw, 20px);
+      opacity: 0;
+      color: #b9c8ff;
+      margin-top: 14px;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    .cta {
+      margin-top: 28px;
+      display: inline-flex;
+      gap: 16px;
+      align-items: center;
+      padding: 12px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #04101a;
+      font-weight: 600;
+      letter-spacing: .4px;
+      background: linear-gradient(135deg, #00ffd5 0%, #00b8ff 60%, #ff6bff 100%);
+      box-shadow: 0 6px 20px rgba(0, 255, 213, 0.5);
+      text-shadow: 0 0 8px rgba(0,0,0,0.1);
+      border: 0;
+      cursor: pointer;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.6s;
+      opacity: 0;
+    }
+
+    .cta:hover { filter: saturate(1.2); transform: translateY(-1px); }
+
+    .subtle {
+      font-size: 12px;
+      color: #a7b7ff;
+      margin-top: 10px;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.9s;
+      opacity: 0;
+    }
+
+    /* React to reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .orb { display:none; }
+      h1, .tagline, .cta, .subtle { animation: none; opacity: 1; transform: none; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Neon glow for nav or section borders */
+    .glow-border {
+      height: 2px;
+      width: 60%;
+      max-width: 800px;
+      margin: 16px auto 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #00ffd5, transparent);
+      filter: drop-shadow(0 0 8px #00ffd5);
+      opacity: 0.8;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.8s;
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 40px 20px 80px;
+    }
+
+    .neon-card {
+      display: inline-block;
+      padding: 22px 28px;
+      border-radius: 20px;
+      background: rgba(2,8,23,0.55);
+      border: 1px solid rgba(0,255,213,0.4);
+      box-shadow: 0 0 20px rgba(0,255,213,0.6), inset 0 0 20px rgba(0,255,213,0.15);
+      backdrop-filter: blur(2px);
+      color: #e7f6ff;
+      width: min(90%, 720px);
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.3s;
+      opacity: 0;
+    }
+
+    .neon-card h2 {
+      margin:0 0 8px;
+      font-size: 28px;
+      color: #e6fbff;
+      text-shadow: 0 0 6px rgba(0,255,213,0.9);
+    }
+
+    .neon-card p {
+      margin: 0;
+      color: #d2e6ff;
+    }
+
+    footer {
+      padding: 28px;
+      text-align: center;
+      color: #9fb3ff;
+      background: #0b0b14;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: inset 0 0 12px rgba(0,255,213,0.25);
+    }
+
+    .github {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: #18181f;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 0 12px rgba(0,0,0,0.6);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .github svg { display: block; width: 16px; height: 16px; margin: 0 auto; fill: #fff; }
+
+    .credit { font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+  <div class="orb three" aria-hidden="true"></div>
+
+  <header>
+    <h1 aria-label="amirabolfazle">amirabolfazle</h1>
+    <div class="tagline" role="note">A neon-styled landing page with fade-in effects</div>
+    <a href="#content" class="cta" aria-label="Explore content">
+      Explore
+      <span aria-hidden="true" style="display:inline-block;margin-left:8px;">🔷</span>
+    </a>
+    <div class="glow-border" aria-hidden="true"></div>
+  </header>
+
+  <main id="content">
+    <section class="neon-card" aria-label="Introduction card">
+      <h2>Welcome to amirabolfazle</h2>
+      <p>This page embraces a neon aesthetic with smooth fade-in animations to guide your eyes through the vibe.</p>
+      <p style="margin-top:12px;font-size:12px;color:#a0b8ff;">
+        Creation time: 2025-09-27 10:56:22
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner" aria-label="Footer">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.59 7.59 0 018 4.7c.68-.01 1.37.09 2.01.26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z" />
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
