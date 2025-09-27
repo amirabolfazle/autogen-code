@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #05060a;
+      --bg2: #0b0f1a;
+      --fg: #e9ffff;
+      --cyan: #00f5ff;
+      --magenta: #ff00d4;
+      --blue: #3bd7ff;
+      --glow: 0 0 12px rgba(0,255,255,.9);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: var(--fg);
+      background: radial-gradient(circle at 15% 15%, rgba(0,240,255,.08), transparent 40%),
+                  radial-gradient(circle at 85% 85%, rgba(180,0,255,.08), transparent 40%),
+                  linear-gradient(135deg, #04070d 0%, #0a0b15 40%, #04060d 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Neon header */
+    header.site-header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+    header.site-header h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      margin: 0;
+      letter-spacing: .15em;
+      color: #e0fbff;
+      text-shadow: 0 0 8px rgba(0,255,255,.9), 0 0 20px rgba(0,180,255,.6);
+      display: inline-block;
+      transform: rotate(-2deg);
+      animation: drift 6s ease-in-out infinite;
+    }
+    @keyframes drift {
+      0%,100% { transform: rotate(-2deg); }
+      50% { transform: rotate(4deg); }
+    }
+
+    header.site-header .creation {
+      margin-top: .5rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+      font-size: .95rem;
+      color: #b8f7ff;
+      text-shadow: 0 0 6px rgba(0,255,255,.6);
+    }
+
+    /* Neon stage */
+    .stage {
+      position: relative;
+      width: min(980px, 92vw);
+      height: 420px;
+      margin: 1.5rem auto 2rem;
+      perspective: 1000px;
+      display: grid;
+      place-items: center;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px dashed rgba(0, 255, 255, 0.6);
+      width: 420px;
+      height: 420px;
+      filter: drop-shadow(0 0 14px rgba(0,255,255,.9));
+      animation: spin 26s linear infinite;
+      pointer-events: none;
+    }
+    .ring.r2 {
+      width: 540px;
+      height: 540px;
+      border: 2px dashed rgba(255,0,255,.6);
+      animation: spin 34s linear infinite reverse;
+      top: -60px;
+      left: -60px;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .card {
+      position: relative;
+      width: min(680px, 88%);
+      padding: 40px 32px;
+      border-radius: 18px;
+      background: rgba(2,6,23,.72);
+      border: 1px solid rgba(0,255,255,.55);
+      box-shadow: 0 0 40px rgba(0,255,255,.4);
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(.2,.8,.2,1), box-shadow 0.8s;
+    }
+    .stage:hover .card {
+      transform: rotateY(-12deg) rotateX(6deg);
+      box-shadow: 0 0 60px rgba(0,255,255,.65);
+    }
+    .card h2 {
+      margin: 0 0 .5em;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      color: #baffff;
+      text-shadow: 0 0 10px rgba(0,255,255,.9);
+      letter-spacing: .08em;
+    }
+    .card p {
+      margin: 0;
+      color: #e6fdff;
+      line-height: 1.6;
+    }
+
+    /* Subtle neon grid background inside card */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 18px;
+      padding: 2px;
+      background: conic-gradient(from 90deg at 50% 50%, rgba(0,255,255,.25), rgba(150,0,255,.25), rgba(0,255,255,.25));
+      -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      opacity: .25;
+      filter: blur(0.3px);
+      pointer-events: none;
+    }
+
+    /* Footer with GitHub icon */
+    footer.site-footer {
+      padding: 2rem 1rem 3rem;
+      text-align: center;
+    }
+    .footer-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      color: #c9f7ff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 1rem;
+      text-shadow: 0 0 6px rgba(0,255,255,.6);
+      border-radius: 999px;
+      padding: .4rem .8rem;
+      border: 1px solid rgba(0,255,255,.4);
+      background: rgba(2,6,23,.5);
+    }
+    .footer-icon {
+      display: inline-block;
+      width: 1.4em;
+      height: 1.4em;
+      color: #a6f7ff;
+      filter: drop-shadow(0 0 6px rgba(0,255,255,.8));
+    }
+    a.footer-link {
+      color: #bafcff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    a.footer-link:hover {
+      color: #fff;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 700px) {
+      .ring { width: 320px; height: 320px; }
+      .ring.r2 { width: 420px; height: 420px; top: -40px; left: -40px; }
+      .card { width: 90%; padding: 28px; }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Intro header">
+    <h1>amirabolfazle</h1>
+    <div class="creation" aria-label="Creation time">
+      Creation time: 2025-09-27 03:29:44
+    </div>
+  </header>
+
+  <main class="stage" aria-label="Animated neon stage">
+    <div class="ring" aria-hidden="true"></div>
+    <div class="ring r2" aria-hidden="true"></div>
+
+    <section class="card" aria-label="Intro card">
+      <h2>Welcome to amirabolfazle</h2>
+      <p>
+        A fully responsive, neon-themed, animated HTML page with rotate effects.
+        The page showcases a dynamic, futuristic aesthetic using pure HTML and CSS.
+        Hover to see the 3D rotation and enjoy the glow as elements spin softly in the background.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="footer-inner">
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <!-- GitHub SVG icon -->
+        <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="GitHub">
+          <path fill="currentColor" d="M12 .5A11.5 11.5 0 0 0 .5 12.5c0 5 3.218 9.24 7.68 10.73.56.1.76-.24.76-.54 0-.27-.01-1.02-.02-2.04-3.13.68-3.79-1.34-3.79-1.34-.65-1.65-1.59-2.09-1.59-2.09-1.3-.89.1-.87.1-.87 1.44.1 2.2 1.48 2.2 1.48 1.27 2.18 3.34 1.55 4.15 1.23.13-.95.5-1.55.9-1.9-3.17-.36-6.5-1.58-6.5-7.02 0-1.55.55-2.82 1.45-3.82-.15-.36-.63-1.82.14-3.79 0 0 1.18-.38 3.86 1.45A13.4 13.4 0 0 1 12 5.8c1.19-.01 2.39.16 3.5.48 2.68-1.83 3.86-1.45 3.86-1.45.78 1.97.29 3.43.145 3.79.9 1 .9 2.27.9 3.82 0 5.44-3.34 6.66-6.52 6.99.62.53 1.17 1.57 1.17 3.18 0 2.29-.02 4.13-.02 4.69 0 .38.26.83.98.69A12.5 12.5 0 0 0 24 12.5C24 5.63 18.37.5 12 .5z"/>
+        </svg>
+        GitHub
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
