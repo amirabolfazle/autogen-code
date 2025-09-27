@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-a: #0b1020;
+      --bg-b: #1a1028;
+      --grad-1: #7c3aed;
+      --grad-2: #06b6d4;
+      --grad-3: #f472b6;
+      --text: #f8f8fb;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg-a) 0%, var(--bg-b) 60%, #0b1020 100%);
+      min-height: 100%;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    /* soft glowing gradient ambience */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20% -10% 0 auto;
+      width: 120%;
+      height: 140%;
+      background: radial-gradient(circle at 20% 20%, rgba(124,58,237,.25), transparent 40%),
+                  radial-gradient(circle at 70% 30%, rgba(6,182,212,.25), transparent 40%),
+                  radial-gradient(circle at 50% 70%, rgba(246,213,224,.25), transparent 40%);
+      filter: blur(40px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 90px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+
+    .brand {
+      font-weight: 900;
+      font-size: 72px;
+      line-height: 1;
+      margin: 0;
+      letter-spacing: 3px;
+      background: linear-gradient(92deg, #fff, #dbe2ff 40%, #9dfbd3);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: floaty 6s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,.85);
+      margin-top: 8px;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: linear-gradient(90deg, #e9e7ff, #e6fbff);
+      color: #0d0f1a;
+      justify-content: center;
+      margin: 14px auto 24px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.15);
+    }
+    .creation .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #6c6cff; box-shadow: 0 0 0 6px rgba(108,108,255,.15);
+    }
+
+    .sectionTitle {
+      text-align: center;
+      font-size: 28px;
+      margin: 0 0 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .sep {
+      height: 1px;
+      background: rgba(255,255,255,.15);
+      border: 0;
+      margin: 22px auto;
+      width: 90%;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      .brand { font-size: 60px; }
+    }
+
+    .gradientCard {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.25s ease;
+      position: relative;
+    }
+
+    .card-media {
+      height: 110px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,.25);
+      background-size: 200% 200%;
+      animation: gradientShift 6s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,.92);
+      margin: 0;
+      flex: 1;
+    }
+    .card-actions {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px;
+    }
+    .btn {
+      background: linear-gradient(90deg, #8a2be2, #1e90ff);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+      transition: transform 0.25s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .card:hover { transform: translateY(-4px); }
+
+    .footer {
+      text-align: center;
+      padding: 28px 12px;
+      color: rgba(255,255,255,.85);
+    }
+    .footer a {
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600;
+    }
+    .footer svg { width: 20px; height: 20px; }
+
+    /* subtle on-load stagger for bounce */
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: translateY(60px) scale(.95); }
+      60% { opacity: 1; transform: translateY(-6px) scale(1.01); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .card {
+      animation: bounceIn 0.9s cubic-bezier(.34,.99,.27,1);
+      animation-fill-mode: both;
+    }
+
+    /* small helper for accessibility focus */
+    :focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header" aria-label="Site header">
+      <h1 class="brand" aria-label="Portfolio brand">amirabolfazle</h1>
+      <div class="creation" aria-label="Creation time badge">
+        <span class="dot" aria-hidden="true"></span>
+        Creation time: 2025-09-27 15:28:21
+      </div>
+      <div class="sectionTitle" style="margin-top:6px;">A sleek, animated, single-file portfolio</div>
+      <p class="subtitle" aria-label="Subtitle" style="opacity:.9">Gradient theme, bounce effects, interactive cards, all in one file.</p>
+    </header>
+
+    <hr class="sep" aria-hidden="true" />
+
+    <section aria-label="Projects" class="projects">
+      <h2 class="sectionTitle" style="font-size:22px; margin-top:6px;">Showcase</h2>
+
+      <div class="grid" id="grid">
+        <!-- Card 1 -->
+        <article class="gradientCard card" data-idx="1">
+          <div class="card-media" style="background: linear-gradient(135deg, rgba(255,105,180,.95), rgba(0,206,255,.95));">
+            Aurora UI Kit
+          </div>
+          <h3 class="card-title">Aurora UI Kit</h3>
+          <p class="card-desc">A modular UI design system with motion-first interactions and accessibility baked in.</p>
+          <div class="card-actions">
+            <a href="#" class="btn" aria-label="Open Aurora UI Kit">View</a>
+            <span style="font-size:12px; opacity:.7;">Gradient</span>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="gradientCard card" data-idx="2">
+          <div class="card-media" style="background: linear-gradient(135deg, rgba(100,255,214,.95), rgba(0,120,255,.95));">
+            Pulse Analytics
+          </div>
+          <h3 class="card-title">Pulse Analytics</h3>
+          <p class="card-desc">Interactive dashboards with real-time charts and storytelling visuals.</p>
+          <div class="card-actions">
+            <a href="#" class="btn" aria-label="Open Pulse Analytics">View</a>
+            <span style="font-size:12px; opacity:.7;">Bounce</span>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="gradientCard card" data-idx="3">
+          <div class="card-media" style="background: linear-gradient(135deg, rgba(167,139,250,.95), rgba(0,255,150,.95));">
+            Flux Studio
+          </div>
+          <h3 class="card-title">Flux Studio</h3>
+          <p class="card-desc">Procedural visuals and shader experiments with performance focus.</p>
+          <div class="card-actions">
+            <a href="#" class="btn" aria-label="Open Flux Studio">View</a>
+            <span style="font-size:12px; opacity:.7;">Gradient</span>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="gradientCard card" data-idx="4">
+          <div class="card-media" style="background: linear-gradient(135deg, rgba(255,214,107,.95), rgba(255,105,180,.95));">
+            Motion UI
+          </div>
+          <h3 class="card-title">Bounce Library</h3>
+          <p class="card-desc">A tiny collection of reusable motion components with snappy physics.</p>
+          <div class="card-actions">
+            <a href="#" class="btn" aria-label="Open Bounce Library">View</a>
+            <span style="font-size:12px; opacity:.7;">Bounce</span>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="gradientCard card" data-idx="5">
+          <div class="card-media" style="background: linear-gradient(135deg, rgba(0,199,235,.95), rgba(144,238,144,.95));">
+            Portfolio
+          </div>
+          <h3 class="card-title">One-File Portfolio</h3>
+          <p class="card-desc">A complete, single-file portfolio with modern UI and smooth motion.</p>
+          <div class="card-actions">
+            <a href="#" class="btn" aria-label="Open One-File Portfolio">View</a>
+            <span style="font-size:12px; opacity:.7;">Single-file</span>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="gradientCard card" data-idx="6">
+          <div class="card-media" style="background: linear-gradient(135deg, rgba(123,255,246,.95), rgba(255,20,147,.95));">
+            About Me
+          </div>
+          <h3 class="card-title">Amir Profile</h3>
+          <p class="card-desc">A concise bio with focus on craft, curiosity, and crafted pixels.</p>
+          <div class="card-actions">
+            <a href="#" class="btn" aria-label="Open About">View</a>
+            <span style="font-size:12px; opacity:.7;">Bio</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <hr class="sep" aria-hidden="true" />
+
+    <footer class="footer" aria-label="Site footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <!-- GitHub Icon -->
+        <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.15c-3.34.73-4.04-1.44-4.04-1.44-.55-1.39-1.35-1.76-1.35-1.76-1.1-.75.08-.74.08-.74 1.21.09 1.85 1.25 1.85 1.25 1.08 1.84 2.83 1.31 3.52 1 .11-.78.42-1.31.76-1.62-2.67-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.4 1.25-3.25-.13-.31-.54-1.56.12-3.25 0 0 1.02-.33 3.35 1.24a11.6 11.6 0 0 1 6.1 0c2.33-1.57 3.35-1.24 3.35-1.24.66 1.69.26 2.94.13 3.25.78.85 1.25 1.93 1.25 3.25 0 4.63-2.8 5.66-5.47 5.95.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"></path>
+        </svg>
+        autogen-code
+      </a>
+      <div style="margin-top:6px;">Created by amirabolfazle</div>
+    </footer>
+  </div>
+
+  <script>
+    // Stagger on-load bounce for visual appeal
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, i) => {
+        card.style.animationDelay = (i * 0.08) + 's';
+      });
+    });
+  </script>
+</body>
+</html>
