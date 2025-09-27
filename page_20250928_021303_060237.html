@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --neon-cyan: #00e5ff;
+      --neon-pink: #ff2ddc;
+      --neon-purple: #9a00ff;
+      --bg-dark: #0a0b12;
+      --bg-darker: #05060c;
+    }
+
+    /* Global reset-ish */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    /* Neon, animated background */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color: #e8f0ff;
+      background: radial-gradient(circle at 10% -10%, rgba(0,255,255,.15), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(255,0,210,.15), transparent 40%),
+                  linear-gradient(135deg, var(--bg-dark), var(--bg-darker) 60%, #02040b 100%);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    /* subtle moving glow overlay to enhance neon vibe */
+    .glow-overlay {
+      position: fixed;
+      inset: -20vmax;
+      pointer-events: none;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0,230,255,.15), rgba(255,0,238,.15), rgba(0,230,255,.15));
+      filter: blur(40px);
+      animation: drift 14s linear infinite;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes drift {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Card / page container with zoom animation on load */
+    .neon-card {
+      width: min(92vw, 980px);
+      padding: 48px 48px 72px;
+      border-radius: 28px;
+      border: 2px solid rgba(0, 238, 255, 0.6);
+      background: rgba(4, 6, 12, 0.55);
+      backdrop-filter: blur(6px);
+      box-shadow:
+        0 0 12px rgba(0,255,255,.6),
+        0 0 40px rgba(0,255,255,.25),
+        inset 0 0 40px rgba(0,0,0,.3);
+      transform: scale(0.98);
+      opacity: 0;
+      animation: zoomIn 900ms ease-out forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes zoomIn {
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Subtle animated glow borders */
+    .neon-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      padding: 0;
+      pointer-events: none;
+      box-shadow:
+        0 0 12px rgba(0, 255, 255, 0.8),
+        0 0 40px rgba(0, 0, 0, 0.4);
+      isolation: isolate;
+    }
+
+    .neon-border::before,
+    .neon-border::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      filter: blur(2px);
+      z-index: -1;
+    }
+
+    .neon-border::before {
+      background: linear-gradient(135deg, rgba(0,255,255,.6), rgba(0,0,0,0));
+      animation: borderPulse 4s ease-in-out infinite;
+    }
+
+    .neon-border::after {
+      background: linear-gradient(45deg, rgba(255,0,255,.5), rgba(0,0,0,0));
+      animation: borderPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes borderPulse {
+      0%, 100% { transform: scale(1); opacity: .75; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+
+    /* Header / title styling with neon glow */
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .title {
+      font-family: "Impact", "Arial Black", sans-serif;
+      font-size: 88px;
+      line-height: 0.95;
+      color: var(--neon-cyan);
+      text-shadow:
+        0 0 6px rgba(0,255,255,.9),
+        0 0 14px rgba(0,255,255,.8),
+        0 0 40px rgba(0,255,255,.6);
+      margin: 8px 0 6px;
+      letter-spacing: 2px;
+      user-select: none;
+      transform: translateZ(0);
+    }
+
+    .tagline {
+      font-size: 20px;
+      color: #d6f7ff;
+      text-shadow: 0 0 8px rgba(0,170,255,.6);
+      opacity: 0.95;
+      margin: 0;
+    }
+
+    /* Creation time badge */
+    .creation {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      color: #0ff;
+      border: 1px solid rgba(0,255,255,.6);
+      text-shadow: 0 0 6px rgba(0,255,255,.8);
+      background: rgba(3,6,20,.6);
+      box-shadow: 0 0 12px rgba(0,255,255,.4);
+    }
+
+    /* Content grid */
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: rgba(2, 6, 16, 0.6);
+      border: 1px solid rgba(0, 210, 255, 0.4);
+      border-radius: 20px;
+      padding: 20px;
+      min-height: 120px;
+      color: #e5f7ff;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, .3);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #aafcff;
+      text-shadow: 0 0 8px rgba(0, 230, 255, .8);
+    }
+
+    .card p {
+      margin: 8px 0 0;
+      color: #d6f0ff;
+    }
+
+    /* Footer with GitHub icon + creator text */
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 20px 0 0;
+      color: #c9e9ff;
+      font-family: "Courier New", monospace;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: transform .2s ease;
+    }
+
+    .github-link:hover {
+      transform: scale(1.08);
+    }
+
+    .footer-text {
+      font-size: 14px;
+      color: #bfeaff;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 900px) {
+      .title { font-size: 64px; }
+      .content { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-overlay" aria-hidden="true"></div>
+
+  <main class="neon-card" role="main" aria-label="Personal page for amirabolfazle">
+    <div class="neon-border" aria-hidden="true"></div>
+
+    <header>
+      <div class="title" style="margin-top:6px;">amirabolfazle</div>
+      <p class="tagline">Neon-powered personal space • Neon vibes • Zoom-ready</p>
+      <div class="creation" aria-label="Creation timestamp">
+        Creation time: 2025-09-28 02:12:34
+      </div>
+    </header>
+
+    <section class="content" aria-label="Bio and projects">
+      <section class="card" aria-label="About">
+        <h3>About</h3>
+        <p>Welcome to a neon-styled corner. I craft interactive experiences and delightful UI touches. This page uses neon glow and zoom animations to bring a little sparkle to the keyboard.</p>
+      </section>
+
+      <section class="card" aria-label="Projects">
+        <h3>Projects</h3>
+        <p>Autogen code generator experiments, playful demos, and lightweight utilities. The page itself is a tiny showcase of motion and glow.</p>
+      </section>
+    </section>
+
+    <footer aria-label="Footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <!-- GitHub icon (inline SVG) -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.58 0-.287-.01-1.04-.015-2.04-3.346.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.495.997.108-.775.42-1.31.763-1.61-2.665-.305-5.466-1.342-5.466-5.962 0-1.319.469-2.397 1.237-3.241-.125-.303-.537-1.525.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3-.404c1.018.003 2.042.138 3 .404 2.29-1.552 3.296-1.23 3.296-1.23.656 1.651.244 2.873.12 3.176.77.844 1.235 1.922 1.235 3.241 0 4.632-2.807 5.652-5.476 5.951.431.374.815 1.1.815 2.22 0 1.603-.015 2.896-.015 3.289 0 .324.216.699.825.58C20.565 21.796 24 17.296 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+      </a>
+      <span class="footer-text">Created by amirabolfazle</span>
+    </footer>
+  </main>
+
+  <!-- No external scripts; page is self-contained -->
+</body>
+</html>
