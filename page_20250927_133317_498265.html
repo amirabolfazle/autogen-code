@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f1020;
+      --bg2: #0b1220;
+      --fg: #e9e9f7;
+      --card: rgba(255,255,255,.08);
+    }
+
+    /* Animated gradient background */
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #f6f6f6;
+      background: #0b0b12;
+      overflow-x: hidden;
+    }
+    .gradient {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,94,98,.25), rgba(0,199,255,.25) 50%, rgba(199,255,92,.25));
+      background-size: 400% 400%;
+      filter: saturate(1.2);
+      animation: gradientShift 20s ease infinite;
+      z-index: -1;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Layout */
+    .container {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      padding: clamp(1rem, 3vw, 2rem);
+      gap: 1.5rem;
+    }
+
+    /* Title with gradient text (the page title) */
+    .brand {
+      font-size: clamp(2.5rem, 9vw, 7rem);
+      line-height: 1.04;
+      margin: 0;
+      text-align: center;
+      font-weight: 900;
+      letter-spacing: .04em;
+      background: linear-gradient(90deg, #ffffff 0%, #d8e3ff 40%, #ffffff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 24px rgba(0,0,0,.25);
+      user-select: none;
+      will-change: transform;
+      animation: floaty 8s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .subtitle {
+      text-align: center;
+      opacity: .8;
+      font-size: clamp(12px, 2.5vw, 16px);
+      color: #e9e9f7;
+      margin-top: -6px;
+    }
+
+    /* Card with zoom effect and decorative gradient border */
+    .card {
+      position: relative;
+      width: min(92vw, 860px);
+      padding: clamp(1.75rem, 4vw, 3.5rem);
+      border-radius: 26px;
+      background: rgba(10,10,20,.5);
+      border: 2px solid transparent;
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+      overflow: hidden;
+      color: #f8f8ff;
+      z-index: 1;
+      animation: zoomPulse 8s ease-in-out infinite;
+    }
+    /* gradient border trick */
+    .card:before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      padding: 2px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #ff7e5f, #feb47b, #7c3aed, #5bd1ff);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: -1;
+    }
+    @keyframes zoomPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.025); }
+      100% { transform: scale(1); }
+    }
+
+    .card-content {
+      display: grid;
+      gap: 1rem;
+      text-align: center;
+    }
+    .orb {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 0.75rem;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #ffd6e8 40%, #a0a8ff 60%, #7c3aed 100%);
+      filter: saturate(1.3);
+      box-shadow: 0 0 40px rgba(255, 150, 200, 0.8);
+      animation: orbPulse 6s ease-in-out infinite;
+    }
+    @keyframes orbPulse {
+      0%,100% { transform: scale(1); opacity: 0.95; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    .card p {
+      margin: 0;
+      font-size: clamp(14px, 2.6vw, 18px);
+      line-height: 1.6;
+      color: #f5f7ff;
+    }
+
+    .creation-time {
+      margin-top: 14px;
+      padding: .35rem .75rem;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.88rem;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(2px);
+    }
+
+    /* Footer with GitHub icon and text */
+    .footer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.25rem 1rem;
+      color: #e9e9f7;
+      background: rgba(0,0,0,.15);
+      border-top: 1px solid rgba(255,255,255,.08);
+      gap: 0.5rem;
+    }
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #e9e9f7;
+      text-decoration: none;
+      padding: .25rem .5rem;
+      border-radius: 6px;
+    }
+    .github-link:hover {
+      background: rgba(255,255,255,.08);
+    }
+    .github-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      vertical-align: middle;
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 1.5rem; }
+      .orb { width: 90px; height: 90px; }
+      .brand { font-size: clamp(2.7rem, 12vw, 6rem); }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient" aria-hidden="true"></div>
+
+  <div class="container" role="main">
+    <h1 class="brand" aria-label="amirabolfazle">amirabolfazle</h1>
+    <div class="subtitle" aria-hidden="true">Fully responsive animated HTML with gradient theme and zoom effects</div>
+
+    <section class="card" aria-label="Animated gradient card">
+      <div class="card-content" style="position: relative;">
+        <div class="orb" aria-hidden="true"></div>
+        <p>
+          Welcome to a fully responsive, gradient-driven page with smooth zoom effects. Elements gently animate and scale to create an engaging visual experience that adapts to any device.
+        </p>
+      </div>
+    </section>
+
+    <div class="creation-time" aria-label="creation time indicating when this page was created">
+      Creation time: 2025-09-27 13:32:38
+    </div>
+  </div>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="github-link" aria-label="GitHub repository: amirabolfazle/autogen-code">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+        <path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.207 11.385c.6.111.82-.261.82-.58 0-.287-.01-1.048-.016-2.056-3.338.726-4.043-1.613-4.043-1.613-.546-1.388-1.333-1.758-1.333-1.758-1.089-.745.083-.73.083-.73 1.205.085 1.838 1.238 1.838 1.238 1.07 1.832 2.809 1.304 3.495.997.108-.774.418-1.304.76-1.605-2.665-.303-5.466-1.333-5.466-5.932 0-1.31.468-2.382 1.236-3.222-.124-.303-.536-1.522.117-3.176 0 0 .93-.322 3.3 1.23a11.5 11.5 0 016 0c2.37-1.43 3.3-1.23 3.3-1.23.654 1.654.241 2.873.118 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.804 5.625-5.475 5.921.43.37.815 1.102.815 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.218.696.825.578A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
