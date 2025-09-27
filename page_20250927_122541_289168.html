@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-start: #1a0f2c;
+      --bg-mid: #0f1a3a;
+      --bg-end: #0b1a2b;
+      --fg: #ffffff;
+      --muted: rgba(255,255,255,.8);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #fff;
+      background: #0b1020;
+      overflow-x: hidden;
+    }
+
+    /* Animated gradient background */
+    body {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #1e3c72 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      padding: 40px 20px 80px;
+      position: relative;
+    }
+
+    /* Header / Brand */
+    .header {
+      width: min(1100px, 92%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 8px 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+    }
+    .logo {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #ff4d4d, #ffd33d, #4dffb8, #4d9fff, #ff4d4d);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.25);
+      animation: spin 12s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .brand-title {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      padding-right: 8px;
+    }
+
+    .brand-title h1 {
+      font-size: clamp(28px, 4vw, 48px);
+      margin: 0;
+      line-height: 1;
+      background: linear-gradient(90deg, #fff, #d7eaff, #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: .5px;
+      text-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+
+    .creation-time {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff;
+    }
+
+    /* Hero / intro section with gradient card and rotating orb */
+    .hero {
+      width: min(1100px, 92%);
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 20px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      backdrop-filter: saturate(110%);
+    }
+    .card:hover {
+      transform: rotateX(2deg) rotateY(-2deg);
+      transition: transform .25s ease;
+    }
+
+    .orb {
+      position: absolute;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      top: -90px; right: -90px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.6), rgba(255,255,255,0) 40%),
+                  conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,.15), rgba(0,0,0,.0) 60%);
+      border: 1px solid rgba(255,255,255,.5);
+      filter: blur(.4px);
+      opacity: .25;
+      animation: orbit 18s linear infinite;
+    }
+    @keyframes orbit {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .hero-copy h2 {
+      margin: 0 0 8px;
+      font-size: 1.8rem;
+    }
+    .hero-copy p {
+      margin: 0;
+      color: #e8f0ff;
+      opacity: .95;
+    }
+
+    .btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.4);
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.05));
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+
+    .gradient-sample {
+      display: grid;
+      place-items: center;
+      height: 100%;
+    }
+
+    /* Projects grid cards (decorative) */
+    .grid {
+      width: min(1100px, 92%);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card-ghost {
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      border: 1px dashed rgba(255,255,255,.4);
+      color: #eaf2ff;
+      text-align: center;
+      padding: 16px;
+      animation: floaty 6s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* About section */
+    .card-section {
+      width: min(1100px, 92%);
+      padding: 22px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.15);
+      border: 1px solid rgba(255,255,255,.2);
+    }
+
+    .sep {
+      height: 1px;
+      width: 100%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,.25), transparent);
+      margin: 8px 0 0;
+    }
+
+    /* Footer */
+    .footer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 28px 0;
+      margin-top: 14px;
+      background: rgba(0,0,0,.15);
+      position: sticky;
+      bottom: 0;
+    }
+    .footer-inner {
+      width: min(1100px, 92%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .footer a {
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer svg {
+      width: 20px; height: 20px;
+      fill: currentColor;
+    }
+    .footer .note {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header" aria-label="Site header">
+      <div class="brand" aria-label="Brand">
+        <div class="logo" aria-label="Logo"></div>
+        <div class="brand-title">
+          <h1>amirabolfazle</h1>
+        </div>
+      </div>
+      <div class="creation-time" title="Creation timestamp 2025-09-27 12:25:02">
+        2025-09-27 12:25:02
+      </div>
+    </header>
+
+    <section class="hero" aria-label="Intro">
+      <div class="card" style="min-height:180px;">
+        <div class="orb" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <h2>amirabolfazle — a tiny portfolio in motion</h2>
+          <p>One-file demo showcasing gradients, subtle rotations, and a sprinkle of interactivity. Built as a single HTML file with pure CSS and SVG.</p>
+          <div class="btns">
+            <a class="btn" href="#projects" aria-label="Jump to projects">View Projects</a>
+            <a class="btn" href="#about" aria-label="About me">About</a>
+          </div>
+        </div>
+      </div>
+      <div class="card" aria-label="Highlights" style="min-height:180px;">
+        <div style="position:absolute; right:12px; top:12px; font-size:12px; opacity:.8;">Live gradient</div>
+        <div style="display:flex; align-items:center; justify-content:center; height:100%;">
+          <svg width="180" height="120" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rotating gradient blob">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#4d9fff"/>
+                <stop offset="50%" stop-color="#a55dff"/>
+                <stop offset="100%" stop-color="#4dffb8"/>
+              </linearGradient>
+              <radialGradient id="r" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="white" stop-opacity=".95"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <g transform="translate(10,10)">
+              <ellipse cx="70" cy="40" rx="48" ry="28" fill="url(#g)">
+                <animate attributeName="rx" values="40;60;40" dur="6s" repeatCount="indefinite" />
+                <animate attributeName="ry" values="22;28;22" dur="6s" repeatCount="indefinite" />
+              </ellipse>
+              <ellipse cx="110" cy="60" rx="40" ry="24" fill="url(#g)" opacity=".6">
+                <animateTransform attributeName="transform" type="rotate" from="0 110 60" to="360 110 60" dur="10s" repeatCount="indefinite"/>
+              </ellipse>
+              <circle cx="40" cy="60" r="18" fill="url(#r)"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="grid" aria-label="Projects grid">
+      <div class="card-ghost" style="grid-column: span 1;">
+        Concept exploration
+      </div>
+      <div class="card-ghost" style="grid-column: span 1;">
+        CSS-only interactions
+      </div>
+      <div class="card-ghost" style="grid-column: span 1;">
+        Animated gradients
+      </div>
+      <div class="card-ghost" style="grid-column: span 2;">
+        Hover to tilt cards and reveal layers
+      </div>
+      <div class="card-ghost" style="grid-column: span 1;">
+        Lightweight, single-file
+      </div>
+      <div class="card-ghost" style="grid-column: span 1;">
+        No external libs
+      </div>
+    </section>
+
+    <section id="about" class="card-section" aria-label="About section">
+      <h3 style="margin-top:0;">About this page</h3>
+      <p style="margin:0 0 6px;">
+        A compact, animated showcase created as a single HTML document. Gradient themed, with rotating visuals and responsive layout.
+      </p>
+      <p style="margin:0;">
+        Tech: HTML, CSS—no JS frameworks required. Interactive shapes use CSS animations and inline SVG for crisp visuals.
+      </p>
+    </section>
+
+    <div class="sep" aria-hidden="true"></div>
+
+    <footer class="footer" aria-label="Site footer">
+      <div class="footer-inner" style="gap:8px;">
+        <span class="note" style="opacity:.9;">© amirabolfazle portfolio</span>
+        <span class="note" style="opacity:.9;">Created by amirabolfazle</span>
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub autogen-code">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 0a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.44-4.04-1.44-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.09-.74.09-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48.99.11-.78.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.4 11.4 0 0 1 3-.4c1.02.01 2.05.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.6-2.8 5.61-5.47 5.91.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 0z"/>
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
