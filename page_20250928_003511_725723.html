@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg0: #fdf6f9;
+      --bg1: #f8fbff;
+      --bg2: #fef8f0;
+      --fg: #2b2b2b;
+      --muted: #5a5a5a;
+      --pink: #ffd6e7;
+      --peach: #ffc9a3;
+      --mint: #d6f8e4;
+      --blue: #cfe8ff;
+      --lav: #e3d4ff;
+      --card: rgba(255,255,255,.92);
+      --shadow: 0 6px 20px rgba(0,0,0,.06);
+    }
+
+    /* Reset-ish */
+    *,*:before,*:after{ box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--fg);
+      background: linear-gradient(135deg, #fff8f8 0%, #f7fbff 40%, #f8fff8 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Pastel decorative scene */
+    .scene {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .orb {
+      position: absolute;
+      width: clamp(120px, 22vmin, 260px);
+      height: clamp(120px, 22vmin, 260px);
+      border-radius: 50%;
+      filter: blur(0.5px);
+      opacity: 0.6;
+      mix-blend-mode: screen;
+      animation: spin 60s linear infinite;
+    }
+    .orb.one {
+      top: 6%;
+      left: -8%;
+      background: radial-gradient(circle at 30% 30%, #ffd6e7 0%, #ffc4da 40%, #ffb3c9 70%, #ffd6f0 100%);
+      animation-duration: 70s;
+    }
+    .orb.two {
+      bottom: 8%;
+      right: -6%;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle at 40% 40%, #c8fbff 0%, #aee0ff 60%, #e1d6ff 100%);
+      animation-duration: 90s;
+      opacity: 0.5;
+    }
+    .orb.three {
+      top: 42%;
+      left: 62%;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle at 50% 40%, #e1ffd6 0%, #d6f0ff 40%, #ffd6e7 100%);
+      animation-duration: 110s;
+      opacity: 0.5;
+    }
+    .orb.four {
+      bottom: 14%;
+      left: 14%;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle at 40% 40%, #fff0c6 0%, #ffd9a3 60%, #ffc7c7 100%);
+      animation-duration: 80s;
+      opacity: 0.4;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Layout container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    header.site-header {
+      text-align: center;
+      padding: 40px 0 20px;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0;
+      letter-spacing: .04em;
+      color: #3a1f4c;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+    }
+    .creation-time {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    /* Panels / grid */
+    .panel {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,.05);
+      transition: transform .4s ease, box-shadow .4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,.08);
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      text-align: left;
+      align-items: center;
+      padding: 28px;
+    }
+
+    .intro h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #275c8f;
+    }
+    .intro p {
+      margin: 0;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(0,0,0,.05);
+      transition: transform .3s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .icon {
+      width: 44px;
+      height: 44px;
+      display: inline-block;
+      color: #6b5bd3;
+      align-self: start;
+      animation: spin 6s linear infinite;
+    }
+    .card-title {
+      font-weight: 600;
+      color: #3a2a6a;
+      font-size: 1.05rem;
+    }
+    .card p {
+      margin: 0;
+      color: #555;
+      font-size: .95rem;
+    }
+
+    /* GitHub footer */
+    footer.site-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 26px 10px;
+      margin-top: 40px;
+      border-top: 1px solid rgba(0,0,0,.07);
+      background: rgba(255,255,255,.8);
+      position: relative;
+    }
+    a.github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      color: #333;
+      text-decoration: none;
+      transition: transform .3s ease;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    a.github-link:hover {
+      transform: translateY(-1px) scale(1.05);
+    }
+    .credit-text {
+      font-size: .95rem;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    /* tiny accessibility: reduced motion friendly */
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .icon { animation: none; }
+      .panel { transition: none; }
+    }
+
+    /* Responsive typography tweaks for small screens */
+    @media (max-width: 520px) {
+      header.site-header { padding: 28px 0 12px; }
+      .creation-time { font-size: .92rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <span class="orb one"></span>
+    <span class="orb two"></span>
+    <span class="orb three"></span>
+    <span class="orb four"></span>
+  </div>
+
+  <main class="container">
+    <header class="site-header" aria-label="Site header">
+      <h1>amirabolfazle</h1>
+      <p class="creation-time">Creation time: 2025-09-28 00:34:19</p>
+    </header>
+
+    <section class="panel intro" aria-label="Introduction">
+      <h2>Pastel Animated Canvas</h2>
+      <p>This page demonstrates a fully responsive animated HTML document with a pastel theme and rotate effects. Elements gently rotate and shimmer to create a calm, modern aesthetic.</p>
+    </section>
+
+    <section class="grid" aria-label="Interactive features">
+      <article class="card">
+        <div class="icon" aria-label="Rotating icon 1">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Sparkles">
+            <path d="M12 3l1.8 3.9L18 8l-3 3 .7 4.1L12 12l-3.7 3.1L9 11l-3-0.1 4.2-1.7L12 3z" fill="currentColor" opacity="0.2"/>
+            <path d="M12 3l1.8 3.9L18 8l-3 3 .7 4.1-4.7-1.9L12 3z" fill="none" stroke="currentColor"/>
+          </svg>
+        </div>
+        <div class="card-title">Soft Rotations</div>
+        <p>Icons and shapes rotate gently to create a soothing motion.</p>
+      </article>
+
+      <article class="card">
+        <div class="icon" aria-label="Rotating icon 2">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="Device" role="img" >
+            <rect x="3" y="5" width="18" height="12" rx="2" ry="2" />
+            <path d="M7 17h10" />
+          </svg>
+        </div>
+        <div class="card-title">Responsive Layout</div>
+        <p>Grid auto-fits for mobile and desktop with smooth transitions.</p>
+      </article>
+
+      <article class="card">
+        <div class="icon" aria-label="Rotating icon 3">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="Heart" role="img">
+            <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/>
+          </svg>
+        </div>
+        <div class="card-title">Pastel Glow</div>
+        <p>Subtle color blends add depth to the UI without distraction.</p>
+      </article>
+    </section>
+
+    <footer class="site-footer" aria-label="Footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub" role="img" style="display:block;">
+          <path d="M12 .5C5.73.5.93 5.36.93 11.54c0 4.99 3.22 9.21 7.69 10.69.56.1.76-.24.76-.53v-2.02c-3.12.68-3.78-1.33-3.78-1.33-.51-1.3-1.25-1.64-1.25-1.64-.99-.68.07-.67.07-.67 1.1.08 1.66 1.04 1.66 1.04 0 .64.46 1.3 1.02 1.62-.49.07-1 .24-1.46.47-.03-.76-.45-1.28-.95-1.75 0 0-.66-.6-.66-1.66 0-1.1.9-1.97 2.14-2.08-.03-.27-.1-.67-.1-.92 0-.69.56-1.25 1.25-1.25h7.04c.69 0 1.25.56 1.25 1.25 0 .25-.07.65-.1.92 1.25.11 2.14 0 2.14 2.08 0 1-0.66 1.5-.66 1.5-.5.47-.92 1-.95 1.76-.5-.23-1.01-.4-1.55-.49.56-.32 1.02-.98 1.02-1.62 0 0 .46-.66 1.66-1.04 0 0 .54.14 1.04.17-.5.42-.89 1-.89 1.75 0 1.07.32 2.04.86 3-.24.02-.49.04-.73.04-1.87 0-3.83-.64-5.25-1.77-1.42 1.13-3.38 1.77-5.25 1.77-.24 0-.49-.02-.73-.04.54-.96.86-2 0-3.04-3.06-.56-6.47-1.77-3.83-4.74C2.29 7.18 6.6 5.04 12 5.04c5.4 0 9.71 2.14 10.93 5.9-3.32-.05-6.57-.26-9.83-.26-3.25 0-6.5.21-9.83.26 1.22-3.76 5.53-5.9 10.93-5.9 0 0-2.22-2.39-8.93-2.39z" />
+        </svg>
+      </a>
+      <span class="credit-text">Created by amirabolfazle</span>
+    </footer>
+  </main>
+</body>
+</html>
