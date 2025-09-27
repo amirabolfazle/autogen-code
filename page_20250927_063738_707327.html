@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-start: #0b1020;
+      --bg-end: #0a0a14;
+      --card: rgba(255,255,255,0.06);
+      --text: #e8e8f0;
+      --muted: #a7a7c2;
+      --accent: #7c5cff;
+      --glow: 0 0 20px rgba(124,92,255,0.8);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, rgba(124,92,255,0.15), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(0,200,255,0.12), transparent 40%),
+                  linear-gradient(135deg, var(--bg-start), var(--bg-end) 70%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    .scene {
+      padding: 48px 20px 120px;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+    header.brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 28px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.05);
+      animation: float 6s ease-in-out infinite;
+      transform: translateY(0);
+      overflow: hidden;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .brand-logo {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, #6e3bd3, #0ff);
+      box-shadow: 0 6px 20px rgba(0,0,0,.4);
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    h1 {
+      font-size: 2.8rem;
+      margin: 0;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #fff, #a6a6ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 16px rgba(124,92,255,0.6);
+      animation: bounceIn 1.5s ease forwards;
+    }
+    @keyframes bounceIn {
+      0% { transform: translateY(-40px); opacity: 0; }
+      60% { transform: translateY(8px); opacity: 1; }
+      100% { transform: translateY(0); }
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-top: 6px;
+      animation: fadeIn 2s ease forwards;
+      opacity: 0;
+      animation-delay: 0.4s;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .creation-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px;
+      font-size: 0.92rem;
+      background: rgba(124,92,255,0.25);
+      border: 1px solid rgba(124,92,255,0.6);
+      color: #e9e3ff;
+      margin-top: 6px;
+      animation: pop 0.9s ease both;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .cta {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 999px;
+      margin-top: 14px;
+      font-weight: 600;
+      color: #0b0a0c;
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(6,182,212,0.5);
+      transform: translateZ(0);
+      animation: bounce 1s ease;
+    }
+    .cta:hover { transform: translateY(-2px); }
+    @keyframes bounce {
+      0% { transform: translateY(6px); }
+      60% { transform: translateY(-3px); }
+      100% { transform: translateY(0); }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 18px;
+      min-height: 120px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0);
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+    .card p { margin: 0; color: #d6d6ea; font-size: 0.98rem; }
+    .card .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      display: inline-block; background: #22d3ee; margin-right: 8px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0.8; }
+    }
+    /* decorative orbs with parallax effect */
+    .orb {
+      position: fixed;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      filter: blur(10px);
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #orb1 { top: -40px; left: -40px; background: #7c3aed; animation: drift 18s linear infinite; }
+    #orb2 { bottom: -60px; right: -40px; background: #0ea5e9; animation: drift2 22s linear infinite; }
+    @keyframes drift { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,20px) scale(1.05); } 100% { transform: translate(0,0) scale(1); } }
+    @keyframes drift2 { 0% { transform: translate(0,0) scale(0.95); } 50% { transform: translate(-30px,-20px) scale(1.1); } 100% { transform: translate(0,0) scale(0.95); } }
+
+    footer {
+      margin-top: 60px;
+      padding: 18px 20px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      z-index: 1;
+    }
+    .github {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #e8eaf6; text-decoration: none;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.2s;
+    }
+    .github:hover { transform: translateY(-2px); }
+    .github svg { width: 20px; height: 20px; fill: currentColor; }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="orb1" class="orb" aria-hidden="true"></div>
+  <div id="orb2" class="orb" aria-hidden="true"></div>
+
+  <main class="scene" aria-label="Personal page content">
+    <header class="brand" role="banner">
+      <div class="brand-logo" aria-label="Logo"></div>
+      <div>
+        <h1>amirabolfazle</h1>
+        <div class="sub">Frontend developer • UI tinkerer • lifelong learner</div>
+        <div class="creation-chip" title="Creation timestamp">
+          Creation time: 2025-09-27 06:37:02
+          <span aria-label="clock" style=" display:inline-block; width:8px; height:8px; border-radius:50%; background:#22d3ee; margin-left:6px; box-shadow:0 0 6px #22d3ee;"></span>
+        </div>
+        <a class="cta" href="#projects" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'}); return false;">
+          Explore projects
+        </a>
+      </div>
+    </header>
+
+    <section id="projects" class="grid" aria-label="Projects">
+      <article class="card" style="animation: bounceIn 0.9s ease both;">
+        <span class="dot" aria-hidden="true"></span>
+        <h3>Animated Personal Page</h3>
+        <p>A fancy, dark-mode page with bounce effects and subtle motion.</p>
+      </article>
+      <article class="card" style="animation: bounceIn 1s ease 0.15s both;">
+        <span class="dot" aria-hidden="true" style="background:#f472b6;"></span>
+        <h3>UI Animations</h3>
+        <p>Micro-interactions, smooth transitions, and delight in motion.</p>
+      </article>
+      <article class="card" style="animation: bounceIn 1s ease 0.3s both;">
+        <span class="dot" aria-hidden="true" style="background:#34d399;"></span>
+        <h3>Design Systems</h3>
+        <p>Consistent tokens, scalable components, and accessible defaults.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" aria-label="GitHub" role="img">
+        <path d="M12 2C6.48 2 2 6.58 2 12.29c0 4.5 2.87 8.31 6.84 9.66.5.11.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.24-3.37-1.24-.46-1.25-1.12-1.59-1.12-1.59-.92-.63.07-.62.07-.62 1.02.07 1.56 1.07 1.56 1.07 .9 1.58 2.36 1.12 2.94.86.09-.66.36-1.12.65-1.38-2.22-.26-4.55-1.16-4.55-5.12 0-1.13.41-2.05 1.08-2.77-.11-.27-.47-1.36.1-2.84 0 0 .88-.28 2.88 1.05a9.88 9.88 0 012.63-.36c.89 0 1.79.12 2.63.36 2-1.33 2.87-1.05 2.87-1.05.58 1.48.21 2.57.1 2.84.68.72 1.08 1.64 1.08 2.77 0 3.96-2.34 4.86-4.57 5.1.37.32.7.94.7 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.61.69.51A10.01 10.01 0 0012 2z" fill="currentColor"/>
+      </svg>
+      <span>https://github.com/amirabolfazle/autogen-code</span>
+    </a>
+    <div style="margin-top: 10px;">Created by amirabolfazle</div>
+  </footer>
+
+  <script>
+    // Gentle entrance bounce for sections that might need manual trigger
+    // Optional: we can add a tiny parallax on mouse move to orb elements
+    document.addEventListener('mousemove', (e) => {
+      const scene = document.querySelector('.scene');
+      const ox = (e.clientX / window.innerWidth - 0.5) * 2;
+      const oy = (e.clientY / window.innerHeight - 0.5) * 2;
+      if (scene) {
+        scene.style.transform = `translate3d(${ox*0.5}px, ${oy*0.2}px, 0)`;
+      }
+    });
+  </script>
+</body>
+</html>
