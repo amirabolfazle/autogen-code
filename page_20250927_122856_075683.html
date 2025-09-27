@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-start:#0b1020;
+      --bg-end:#151a30;
+      --glass: rgba(255,255,255,0.14);
+      --border: rgba(255,255,255,0.25);
+      --text: #e9f0ff;
+      --muted: #b8c6e6;
+      --radius: 20px;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    /* animated gradient background for a dynamic feel */
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: radial-gradient(circle at 20% 0%, rgba(99,102,241,0.25), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(236,72,153,0.25), transparent 40%),
+                  linear-gradient(135deg, var(--bg-start), var(--bg-end) 60%);
+      background-attachment: fixed;
+      overflow-y: auto;
+      animation: bgMove 18s linear infinite;
+    }
+
+    @keyframes bgMove {
+      0% { background-position: 0% 0%, 0% 0%; }
+      50% { background-position: 100% 0%, 100% 0%; }
+      100% { background-position: 0% 0%, 0% 0%; }
+    }
+
+    .wrapper {
+      min-height: 100%;
+      display: grid;
+      place-items: start center;
+      padding: 48px 20px 60px;
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      width: min(1100px, 92vw);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+
+    header.hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 8px 6px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      margin: 0;
+      letter-spacing: .4px;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: #f6f8ff;
+    }
+
+    main.projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+      padding: 8px 0 6px;
+    }
+
+    .card {
+      position: relative;
+      height: 180px;
+      padding: 14px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.10));
+      border: 1px solid rgba(255,255,255,0.30);
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      transition: transform 0.25s ease;
+      cursor: default;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
+
+    .card .content {
+      z-index: 1;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: #eaf0ff;
+      opacity: 0.95;
+      font-size: 0.88rem;
+    }
+
+    /* subtle gradient background per card for variety */
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      right: -20%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), transparent 40%);
+      filter: blur(40px);
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .card[data-acc="1"] { background: linear-gradient(135deg, rgba(255,255,255,0.28), rgba(255,255,255,0.08)); }
+    .card[data-acc="2"] { background: linear-gradient(135deg, rgba(236,72,153,0.28), rgba(255,255,255,0.08)); }
+    .card[data-acc="3"] { background: linear-gradient(135deg, rgba(99,102,241,0.28), rgba(255,255,255,0.08)); }
+    .card[data-acc="4"] { background: linear-gradient(135deg, rgba(34,197,94,0.28), rgba(255,255,255,0.08)); }
+    .card[data-acc="5"] { background: linear-gradient(135deg, rgba(14,165,233,0.28), rgba(255,255,255,0.08)); }
+    .card[data-acc="6"] { background: linear-gradient(135deg, rgba(244,163,29,0.28), rgba(255,255,255,0.08)); }
+
+    /* fade-in animation for elements */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* small footer with inline GitHub icon and text */
+    footer.site-footer {
+      margin-top: 28px;
+      padding: 14px 18px;
+      border-top: 1px solid rgba(255,255,255,0.25);
+      text-align: center;
+      color: #eaf0ff;
+      font-size: 0.92rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 0 0 20px 20px;
+      width: 100%;
+    }
+
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      color: #e9f0ff;
+    }
+
+    a.icon-link {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 { font-size: 2.0rem; }
+      .creation-time { font-size: 0.78rem; padding: 7px 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper glass" role="main" aria-label="amirabolfazle portfolio">
+    <header class="hero fade-in" style="animation-delay:0s;">
+      <div class="brand" aria-label="Brand">
+        <h1 aria-label="Site title">amirabolfazle</h1>
+        <span class="sub" aria-label="Subtitle">Glassmorphic animated portfolio</span>
+      </div>
+      <span class="creation-time" aria-label="Creation time badge">Creation time: 2025-09-27 12:28:21</span>
+    </header>
+
+    <main class="projects" aria-label="Projects">
+      <section class="card fade-in" data-acc="1" style="animation-delay:0.1s;">
+        <div class="content">
+          <h3>Autogen Code Studio</h3>
+          <p>A lightweight code generator with smart defaults and clean templates.</p>
+        </div>
+      </section>
+
+      <section class="card fade-in" data-acc="2" style="animation-delay:0.25s;">
+        <div class="content">
+          <h3>Glass Portal UI</h3>
+          <p>Interactive UI components designed with glassmorphism in mind.</p>
+        </div>
+      </section>
+
+      <section class="card fade-in" data-acc="3" style="animation-delay:0.40s;">
+        <div class="content">
+          <h3>Neon Blog</h3>
+          <p>Minimal blog starter with vibrant accents and smooth animations.</p>
+        </div>
+      </section>
+
+      <section class="card fade-in" data-acc="4" style="animation-delay:0.55s;">
+        <div class="content">
+          <h3>Pixel Studio</h3>
+          <p>Portfolio layout templates for creative makers.</p>
+        </div>
+      </section>
+
+      <section class="card fade-in" data-acc="5" style="animation-delay:0.70s;">
+        <div class="content">
+          <h3>Lightbox Gallery</h3>
+          <p>Elegant image gallery with glass panels and soft transitions.</p>
+        </div>
+      </section>
+
+      <section class="card fade-in" data-acc="6" style="animation-delay:0.85s;">
+        <div class="content">
+          <h3>About & Contact</h3>
+          <p>Concise pages to connect with visitors and showcase work.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer fade-in" style="animation-delay:1.0s;">
+      <a class="icon-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <span class="icon" aria-hidden="true">
+          <!-- GitHub inline SVG icon -->
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GitHub">
+            <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.53-.49-.54-1.37-1.32-1.74-1.32-1.74-1.09-.75.08-.74.08-.74 1.21.08 1.85 1.24 1.85 1.24 1.07 1.83 2.8 1.31 3.48 1.01.11-.79.42-1.31.76-1.61-2.77-.31-5.69-1.38-5.69-6.15 0-1.36.48-2.47 1.28-3.34-.13-.32-.56-1.62.12-3.36 0 0 1.05-.34 3.44 1.28a11.9 11.9 0 0 1 6.25 0c2.39-1.62 3.44-1.28 3.44-1.28.68 1.75.26 3.04.13 3.36.8.87 1.28 1.98 1.28 3.34 0 4.78-2.92 5.83-5.69 6.15.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.82.58A12 12 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </span>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Optional: progressively reveal on scroll for a subtle touch
+    (function(){
+      const elements = document.querySelectorAll('.fade-in');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.style.animationPlayState = 'running';
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      elements.forEach(el => {
+        el.style.animationPlayState = 'paused';
+        observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
