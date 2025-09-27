@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: rgba(13, 18, 40, 0.9);
+      --bg2: rgba(255, 255, 255, 0.15);
+      --text: #e8f0ff;
+      --glass: rgba(255, 255, 255, 0.14);
+      --border: rgba(255, 255, 255, 0.25);
+      --shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(12,17,40,.95), rgba(6,12,32,.95) 60%), 
+                  radial-gradient( circle at 20% 10%, rgba(120,180,255,.15), transparent 40%),
+                  radial-gradient( circle at 80% 0%, rgba(0,180,255,.15), transparent 40%);
+      background-attachment: fixed;
+      background-size: cover;
+      overflow-x: hidden;
+    }
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 25% 15%, rgba(120,120,255,.25), transparent 40%),
+                  radial-gradient(circle at 75% 20%, rgba(0,180,255,.25), transparent 40%);
+      filter: blur(60px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 40px 20px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header.brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0 10px;
+    }
+    h1.brand-title {
+      font-size: clamp(28px, 6vw, 72px);
+      margin: 0;
+      letter-spacing: .6px;
+      background: linear-gradient(135deg, #9af 0%, #6af 40%, #4ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 20px rgba(100, 150, 255, 0.4);
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      box-shadow: 0 8px 40px rgba(2,6,23,0.4);
+      padding: 22px;
+      overflow: hidden;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 20px 28px;
+      margin-bottom: 28px;
+    }
+    .hero p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      opacity: .9;
+    }
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      color: #d7e6ff;
+      opacity: 0.95;
+      margin-top: 8px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin: 6px 0 14px;
+      letter-spacing: .6px;
+      color: #e9f0ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: translateZ(0);
+      transition: transform .5s cubic-bezier(.22,.61,.36,1), box-shadow .4s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 16px 50px rgba(0,0,0,.25);
+    }
+    .thumb {
+      height: 120px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      position: relative;
+      background: linear-gradient(135deg, rgba(120,170,255,.5), rgba(120,255,200,.5));
+    }
+    .thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      transform: scale(1.05);
+      transition: transform .6s ease;
+    }
+    .card:hover .thumb img {
+      transform: scale(1.15);
+    }
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+    .card p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-family: ui-monospace, SFMono-Regular;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.3);
+      color: #0a174a;
+    }
+
+    .about {
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 34px;
+      padding: 16px;
+      text-align: center;
+      font-size: 14px;
+      color: #dbe7ff;
+    }
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      margin-right: 8px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.4);
+      color: #0a174a;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-overlay" aria-hidden="true"></div>
+  <div class="container">
+    <header class="brand" aria-label="Site header">
+      <h1 class="brand-title" style="text-align:center; width:100%">amirabolfazle</h1>
+    </header>
+
+    <section class="hero glass" aria-label="Introduction">
+      <p style="margin:0; font-size:16px; opacity:.95;">A cool, animated one-file portfolio with glassmorphism.</p>
+      <div class="creation-time" title="Creation timestamp">Created on: 2025-09-27 09:13:27</div>
+    </section>
+
+    <section class="projects glass" aria-label="Selected works" style="margin-bottom: 20px;">
+      <div class="section-header" style="display:flex; align-items:center; justify-content: space-between; gap:8px;">
+        <h2 class="section-title" style="margin:0;">Selected Projects</h2>
+        <span class="badge" aria-label="Projects count">
+          <span style="width:8px; height:8px; background:#4affc8; border-radius:50%; display:inline-block;"></span>
+          3 highlights
+        </span>
+      </div>
+      <div class="grid" role="list">
+        <article class="card" role="listitem" aria-label="Project 1">
+          <div class="thumb" aria-label="Project 1 preview">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='180'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%2373e6ff' offset='0'/><stop stop-color='%2372ffbd' offset='1'/></linearGradient></defs><rect width='400' height='180' fill='url(%23g)'/><circle cx='60' cy='60' r='40' fill='rgba(255,255,255,.5)'/></svg>" alt="Project 1 thumbnail" />
+          </div>
+          <h3>Projectile UI Kit</h3>
+          <p>Glassmorphic components, responsive breakpoints, and micro-interactions.</p>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project 2">
+          <div class="thumb" aria-label="Project 2 preview">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='180'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%23ffb86c' offset='0'/><stop stop-color='%23f94144' offset='1'/></linearGradient></defs><rect width='400' height='180' fill='url(%23g)'/><rect x='60' y='40' width='280' height='100' rx='12' fill='rgba(255,255,255,.25)'/></svg>" alt="Project 2 thumbnail" />
+          </div>
+          <h3>Realtime Dashboard</h3>
+          <p>Live data visualization with smooth transitions and glass panels.</p>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project 3">
+          <div class="thumb" aria-label="Project 3 preview">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='180'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%2347e8b7' offset='0'/><stop stop-color='%234150ff' offset='1'/></linearGradient></defs><rect width='400' height='180' fill='url(%23g)'/><circle cx='320' cy='60' r='40' fill='rgba(255,255,255,.35)'/></svg>" alt="Project 3 thumbnail" />
+          </div>
+          <h3>Portfolio Animations</h3>
+          <p>Subtle zoom and parallax on elements to enhance depth.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="about glass" aria-label="About" style="margin-bottom:20px;">
+      <h2 class="section-title" style="margin-bottom:8px;">About</h2>
+      <p style="margin:0; line-height:1.6; color:#e6f0ff;">
+        Hi, I’m amirabolfazle — a front-end enthusiast focused on clean UI, accessible design and delightful interactions. This page is a single-file showcase with a glassmorphic aesthetic and zoom-on-hover cards.
+      </p>
+    </section>
+
+    <footer class="footer glass" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg role="img" aria-label="GitHub" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;">
+          <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.54-1.37-1.33-1.74-1.33-1.74-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.5.99.11-.77.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.47 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.57A12 12 0 0012 .5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Subtle parallax tilt on mouse move
+    (function(){
+      const wrapper = document.querySelector('.container');
+      if(!wrapper) return;
+      window.addEventListener('mousemove', (e) => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const x = (e.clientX / w) - 0.5;
+        const y = (e.clientY / h) - 0.5;
+        wrapper.style.transform = 'perspective(1000px) rotateX(' + (-y * 2) + 'deg) rotateY(' + (x * 2) + 'deg)';
+      });
+      window.addEventListener('mouseleave', () => {
+        wrapper.style.transform = 'none';
+      });
+    })();
+  </script>
+</body>
+</html>
