@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0a12;
+      --panel: rgba(0,0,0,.4);
+      --neon-a: #00f5ff;
+      --neon-b: #9d5fff;
+      --neon-c: #ff4dff;
+      --text: #e6ffff;
+    }
+
+    /* Background + subtle animated glow for neon vibe */
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: #040509;
+      background-image: radial-gradient(circle at 20% 20%, rgba(0,255,255,.15), transparent 25%), 
+                        radial-gradient(circle at 80% 50%, rgba(157,95,255,.15), transparent 25%);
+      background-size: 600px 600px, 700px 700px;
+      /* gentle movement for neon environment */
+      animation: drift 20s linear infinite;
+      overflow-x: hidden;
+    }
+    @keyframes drift {
+      0% { background-position: 0 0, 0 0; }
+      50% { background-position: 200px -100px, -120px 60px; }
+      100% { background-position: 0 0, 0 0; }
+    }
+
+    /* Layout & Neon title */
+    header.brand {
+      text-align: center;
+      padding: 48px 20px 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .neon-title {
+      font-weight: 900;
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      line-height: 1.04;
+      letter-spacing: .5px;
+      color: transparent;
+      background: linear-gradient(90deg, var(--neon-a), var(--neon-b), var(--neon-c));
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow: 0 0 8px rgba(0,255,255,.8), 0 0 20px rgba(157,95,255,.6);
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 1.05rem;
+      color: #b6faff;
+      opacity: .9;
+    }
+
+    .badge-creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace,SFMono-Regular,monospace;
+      font-size: .92rem;
+      background: rgba(0,255,255,.15);
+      border: 1px solid rgba(0,255,255,.4);
+      color: #bffcff;
+      text-shadow: 0 0 8px rgba(0,255,255,.6);
+      box-shadow: 0 0 14px rgba(0,255,255,.25);
+    }
+
+    nav.nav {
+      display:flex;
+      justify-content:center;
+      gap: 12px;
+      padding: 8px 12px 20px;
+      flex-wrap: wrap;
+    }
+    nav.nav a {
+      color:#aee8ff;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(0,255,255,.4);
+      transition: transform .25s ease, background .25s ease;
+    }
+    nav.nav a:hover {
+      transform: scale(1.04);
+      background: rgba(0,255,255,.22);
+    }
+
+    section.section { padding: 26px 20px 40px; max-width: 1100px; margin: 0 auto; }
+
+    h2.section-title {
+      text-align:center;
+      font-size: 2rem;
+      margin: 8px 0 18px;
+      background: linear-gradient(90deg, var(--neon-a), var(--neon-b), var(--neon-c));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(0,255,255,.7);
+    }
+
+    .grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(0,255,255,.42);
+      border-radius: 14px;
+      padding: 14px;
+      overflow: hidden;
+      position: relative;
+      transition: transform .28s ease, box-shadow .28s ease;
+      box-shadow: 0 0 14px rgba(0,255,255,.18);
+      isolation: isolate;
+    }
+    .card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 28px rgba(0,255,255,.6);
+    }
+
+    .card-media {
+      height: 140px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(0,255,255,.6), rgba(157,95,255,.6));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,.4);
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* subtle moving highlight to enhance neon feel */
+    .card-media:before {
+      content:"";
+      position:absolute;
+      top:0; left:-40%;
+      width: 40%; height:100%;
+      background: linear-gradient(120deg, rgba(255,255,255,.0), rgba(255,255,255,.35), rgba(255,255,255,.0));
+      transform: skewX(-20deg);
+      animation: sweep 6s linear infinite;
+      opacity:.6;
+    }
+    @keyframes sweep { 0% { left: -40%; } 50% { left: 60%; } 100% { left: -40%; } }
+
+    .card-title { margin: 0 0 6px; font-size: 1.05rem; color:#eaffff; }
+    .card-desc  { margin: 0 0 8px; font-size:.92rem; color:#d6fbff; }
+    .tag { display:inline-block; padding:4px 8px; font-size:.75rem; border-radius:999px; border:1px solid rgba(0,255,255,.5); color:#d7fff7; background: rgba(0,255,255,.15); }
+
+    .footer {
+      text-align:center;
+      padding: 28px 12px;
+      color:#a6f0ff;
+      border-top: 1px solid rgba(0,255,255,.15);
+      margin-top: 12px;
+    }
+    .footer .github-link {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(0,255,255,.4);
+      background: rgba(0,255,255,.15);
+      color:#bff8ff;
+      text-decoration:none;
+      transition: transform .2s ease;
+    }
+    .footer .github-link:hover { transform: scale(1.05); }
+    .footer .credit {
+      display:block;
+      margin-top:8px;
+      font-family: ui-monospace,SFMono-Regular,monospace;
+      font-size:.92rem;
+      letter-spacing:.2px;
+    }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 720px) {
+      .neon-title { font-size: clamp(2rem, 9vw, 3.6rem); }
+      .badge-creation { font-size: .86rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="brand" aria-label="Site header">
+    <div class="neon-title">amirabolfazle</div>
+    <div class="subtitle">Neon-themed one-file portfolio with zoom effects</div>
+    <div class="badge-creation" aria-label="Creation time badge">
+      Creation time: 2025-09-27 16:01:27
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Main navigation">
+    <a href="#projects" title="Projects">Projects</a>
+    <a href="#about" title="About">About</a>
+    <a href="#contact" title="Contact">Contact</a>
+  </nav>
+
+  <section id="projects" class="section" aria-label="Projects">
+    <h2 class="section-title">Projects</h2>
+    <div class="grid">
+      <!-- Card 1 -->
+      <article class="card" aria-label="Project Aurora">
+        <div class="card-media" role="img" aria-label="Aurora project preview">
+          <!-- decorative gradient badge -->
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="opacity:.75">
+            <path d="M12 3l2.5 5 5.7.8-4.1 4.2 1 5.7L12 17l-5.1 2.7 1-5.7L1.8 8.8 7.5 8z"/>
+          </svg>
+        </div>
+        <h3 class="card-title">Aurora UI Kit</h3>
+        <p class="card-desc">A neon-inspired component library with glass panels and animated micro-interactions.</p>
+        <span class="tag" aria-label="Frontend tag">Frontend</span>
+        <span class="tag" aria-label="React tag" style="margin-left:6px;">React</span>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card" aria-label="Project Pulse">
+        <div class="card-media" role="img" aria-label="Pulse project preview">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12h3l3-9 3 18 3-9 3 9" />
+          </svg>
+        </div>
+        <h3 class="card-title">Pulse Analytics</h3>
+        <p class="card-desc">Real-time data dashboards with neon aesthetics and smooth transitions.</p>
+        <span class="tag" aria-label="Data tag">Data</span>
+        <span class="tag" aria-label="WebGL tag" style="margin-left:6px;">WebGL</span>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card" aria-label="Project Nebula">
+        <div class="card-media" role="img" aria-label="Nebula project preview">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a9 9 0 109 9 9 9 0 00-9-9z"/>
+            <path d="M12 6v6l4 2" />
+          </svg>
+        </div>
+        <h3 class="card-title">Nebula Studio</h3>
+        <p class="card-desc">A motion-focused design system for branding with neon energy.</p>
+        <span class="tag" aria-label="Animation tag">Animation</span>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="card" aria-label="Project Flux">
+        <div class="card-media" role="img" aria-label="Flux project preview">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12h18" /><path d="M12 3l-9 9 9 9" />
+          </svg>
+        </div>
+        <h3 class="card-title">Flux Playground</h3>
+        <p class="card-desc">A tiny playground for experimenting with CSS transforms and glow.</p>
+        <span class="tag" aria-label="CSS tag">CSS</span>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="card" aria-label="Project Prism">
+        <div class="card-media" role="img" aria-label="Prism project preview">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12h16" />
+            <path d="M12 4l8 8-8 8-8-8 8-8z" />
+          </svg>
+        </div>
+        <h3 class="card-title">Prism Portal</h3>
+        <p class="card-desc">Multi-theme portal with neon accents and accessible color contrast.</p>
+        <span class="tag" aria-label="Accessibility tag">Accessibility</span>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="card" aria-label="Project Glow">
+        <div class="card-media" role="img" aria-label="Glow project preview">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" /><path d="M12 2v4" /><path d="M12 18v4" /><path d="M4.22 4.22l2.83 2.83" /><path d="M16.95 16.95l2.83 2.83" />
+          </svg>
+        </div>
+        <h3 class="card-title">Glow Grid</h3>
+        <p class="card-desc">A micro-interaction gallery with responsive neon grid layouts.</p>
+        <span class="tag" aria-label="UI tag">UI</span>
+      </article>
+    </div>
+  </section>
+
+  <section id="about" class="section" aria-label="About">
+    <h2 class="section-title" style="margin-top:6px;">About</h2>
+    <p style="max-width: 800px; margin: 0 auto; text-align: center; color:#d7fbff; line-height:1.6;">
+      I’m amirabolfazle — I craft lightweight, visually striking web interfaces with a preference for neon aesthetics and tactile motion.
+      This single-file portfolio demonstrates a few ideas for interactive, animated components without external dependencies.
+    </p>
+  </section>
+
+  <section id="contact" class="section" aria-label="Contact">
+    <h2 class="section-title" style="margin-top:6px;">Contact</h2>
+    <p style="text-align:center; color:#d1fbff;">If you’d like to chat about a project, reach out via GitHub.</p>
+  </section>
+
+  <footer class="footer" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- Simple GitHub icon (inline SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex:0 0 auto;">
+        <path d="M12 .5C5.73.5 2 5.78 2 12.5c0 4.5 2.92 8.34 6.99 9.7.51.1.69-.22.69-.49 0-.24-.01-.87-.01-1.71-2.85.63-3.45-1.19-3.45-1.19-.46-1.17-1.12-1.48-1.12-1.48-.91-.63.07-.62.07-.62 1 .07 1.53 1.02 1.53 1.02.89 1.57 2.34 1.12 2.92.86.09-.66.35-1.12.64-1.38-2.22-.26-4.56-1.13-4.56-4.99 0-1.1.39-2 .98-2.7-.11-.27-.43-1.37.1-2.84 0 0 .84-.27 2.76 1.04a9.59 9.59 0 0 1 5.03 0c1.92-1.31 2.76-1.04 2.76-1.04.54 1.47.21 2.57.1 2.84.6.7 1 1.6 1 2.7 0 4.1-2.34 4.73-4.57 4.98.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .28.18.61.69.49A10.01 10.01 0 0 0 22 12.5C22 5.78 18.27.5 12 .5z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <div class="credit" aria-label="Creator credit">Created by amirabolfazle</div>
+  </footer>
+
+  <script>
+    // Subtle tilt-like glow effect per card-media region on mouse move.
+    document.querySelectorAll('.card-media').forEach(function(el){
+      el.style.setProperty('--x', '50%');
+      el.style.setProperty('--y', '50%');
+      el.addEventListener('mousemove', function(e){
+        const rect = el.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        el.style.setProperty('--x', x + '%');
+        el.style.setProperty('--y', y + '%');
+      });
+      el.addEventListener('mouseleave', function(){
+        el.style.setProperty('--x', '50%');
+        el.style.setProperty('--y', '50%');
+      });
+    });
+  </script>
+</body>
+</html>
