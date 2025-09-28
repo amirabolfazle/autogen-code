@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg-soft: rgba(255,255,255,0.04);
+      --surface: rgba(20, 24, 40, 0.9);
+      --text: #e6eaf3;
+      --muted: #aab4c2;
+      --accent1: #8b5cf6;
+      --accent2: #22d3ee;
+      --accent3: #34d399;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(139,92,246,.15), transparent 40%),
+                  radial-gradient(circle at 100% 0, rgba(2,132,199,.15), transparent 35%),
+                  linear-gradient(#0b0f14, #0b0f14);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* decorative orbs */
+    .orb {
+      position: fixed;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      opacity: .25;
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 20s ease-in-out infinite;
+    }
+    .orb.o1 { background: #7c3aed; left: -60px; top: 8%; }
+    .orb.o2 { background: #0ea5e9; right: -60px; top: 40%; animation-duration: 28s; }
+    .orb.o3 { background: #10b981; left: 20%; bottom: -40px; animation-duration: 26s; }
+
+    @keyframes drift {
+      0%, 100% { transform: translate(0,0) translateZ(0); }
+      50% { transform: translate(-20px, 20px) translateZ(0); }
+    }
+
+    header.hero {
+      position: relative;
+      z-index: 1;
+      min-height: 78vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 4rem 1.25rem 2rem;
+    }
+
+    /* fancy gradient text name with bounce */
+    h1.brand {
+      margin: 0;
+      font-size: clamp(2.6rem, 9vw, 9rem);
+      line-height: 0.95;
+      text-transform: lowercase;
+      letter-spacing: .05em;
+      background: linear-gradient(135deg, #f472b6 0%, #60a5fa 50%, #34d399 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      user-select: none;
+      transform: translateZ(0);
+      animation: glow 6s ease-in-out infinite;
+      /* bounce effect on load */
+      animation-name: bounceName;
+      animation-duration: 1.6s;
+      animation-timing-function: cubic-bezier(.28,.84,.42,1);
+    }
+
+    @keyframes glow {
+      0%, 100% { filter: saturate(1); }
+      50% { filter: saturate(1.15); }
+    }
+
+    @keyframes bounceName {
+      0% { transform: translateY(-20px); opacity: 0; }
+      60% { transform: translateY(6px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .tagline {
+      margin-top: .75rem;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      letter-spacing: .02em;
+      opacity: .95;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .creation-time {
+      margin-top: .75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: .92rem;
+      color: #cbd5e1;
+      opacity: .9;
+      padding: .25rem .6rem;
+      border-radius: 6px;
+      background: rgba(2,6,23,.5);
+      border: 1px solid rgba(99,102,241,.25);
+      display: inline-block;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1.25rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section.section {
+      margin: 2.5rem 0;
+    }
+
+    h2.section-title {
+      font-size: 1.75rem;
+      margin: 0 0 .75rem;
+      color: #e2e8f0;
+    }
+
+    p.lead {
+      color: #cbd5e1;
+      max-width: 60ch;
+      line-height: 1.6;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      background: var(--bg-soft);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 1rem;
+      min-height: 140px;
+      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.45);
+    }
+
+    .card h3 {
+      margin: 0 0 .25rem;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: #d1d5db;
+      font-size: .95rem;
+    }
+
+    .icons-row {
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+      opacity: .9;
+    }
+
+    /* footer */
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
+      padding: 2rem 1rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: #a9b4c2;
+      background: rgba(2,6,23,.6);
+      backdrop-filter: saturate(1.2);
+    }
+
+    footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    footer .credit-text {
+      font-size: .95rem;
+      color: #cbd5e1;
+    }
+
+    /* small screens polish */
+    @media (max-width: 600px) {
+      .creation-time { font-size: .85rem; }
+    }
+
+    /* hide focus outline override for aesthetics but keep accessibility */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid #93c5fd;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <span class="orb o1" aria-hidden="true"></span>
+  <span class="orb o2" aria-hidden="true"></span>
+  <span class="orb o3" aria-hidden="true"></span>
+
+  <header class="hero" aria-label="Intro">
+    <h1 class="brand bounce" style="animation-delay:.05s;">amirabolfazle</h1>
+    <div class="tagline" aria-label="Tagline">
+      A curious maker blending design, code and ideas.
+    </div>
+    <div class="creation-time" title="Creation timestamp">
+      Creation time: 2025-09-28 12:25:41
+    </div>
+  </header>
+
+  <main>
+    <section class="section" aria-labelledby="about-title">
+      <h2 id="about-title" class="section-title">About</h2>
+      <p class="lead">
+        Hello! I’m amirabolfazle, a developer who loves crafting thoughtful interfaces and
+        delightful experiences. This page showcases a few things I enjoy building: clean
+        UI, animated interactions, and accessible design. Feel free to explore the projects below.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="projects-title">
+      <h2 id="projects-title" class="section-title">Projects</h2>
+      <div class="cards" role="list">
+        <article class="card" role="listitem" aria-label="Project one">
+          <div>
+            <h3>Autogen Code Studio</h3>
+            <p>Experimenting with code generation flows and interactive UIs.</p>
+          </div>
+          <div class="icons-row" aria-label="tech icons">
+            <!-- simple inline icons -->
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-label="HTML5 icon">
+              <path d="M1.5 3h21l-1.95 16.5L12 22l-7.95-2.5L1.5 3zm13.5 6.5h-7l.75 6.25 6.25 1.75 0-.25 1.25-1.75L15 9.5z" />
+            </svg>
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-label="CSS3 icon">
+              <path d="M12 2L3 6v6l9 4 9-4V6L12 2zm7 8l-7 3-7-3V6l7-3 7 3v4z" />
+            </svg>
+          </div>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project two">
+          <div>
+            <h3>Design Systems Playground</h3>
+            <p>Exploring tokens, theming, and accessible components.</p>
+          </div>
+          <div class="icons-row" aria-label="tech icons">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-label="Palette icon">
+              <path d="M12 3a9 9 0 100 18 9 9 0 000-18zm-5 9a5 5 0 1110 0A5 5 0 017 12z" />
+            </svg>
+          </div>
+        </article>
+
+        <article class="card" role="listitem" aria-label="Project three">
+          <div>
+            <h3>Interactive Playground</h3>
+            <p>Experiments with motion, physics, and user feedback loops.</p>
+          </div>
+          <div class="icons-row" aria-label="tech icons">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-label="Bolt icon">
+              <path d="M13 2L3 14h6l-1 8 10-12h-6l1-8z" />
+            </svg>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub inline SVG icon -->
+      <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-label="GitHub icon" style="width:24px;height:24px;">
+        <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.44-4.04-1.44-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.08 1.85 1.25 1.85 1.25 1.07 1.84 2.81 1.31 3.49 1.01.11-.79.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.25-3.22-.13-.31-.54-1.57.12-3.27 0 0 1.02-.33 3.35 1.23a11.6 11.6 0 016.1 0c2.33-1.56 3.35-1.23 3.35-1.23.66 1.7.25 2.96.12 3.27.78.84 1.25 1.91 1.25 3.22 0 4.61-2.8 5.62-5.47 5.92.43.38.82 1.12.82 2.26v3.35c0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+      </svg>
+    </a>
+    <span class="credit-text">Created by amirabolfazle</span>
+  </footer>
+
+  <!-- Optional tiny script to add a gentle bounce to cards on load for extra flair -->
+  <script>
+    // Staggered bounce for cards on load (no heavy animation)
+    (function() {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, i) => {
+        card.style.animation = `cardBounce 0.6s ease ${0.08 * i}s both`;
+      });
+    })();
+
+    // Define keyframes via stylesheet injected for broad compatibility
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes cardBounce {
+        from { transform: translateY(12px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
