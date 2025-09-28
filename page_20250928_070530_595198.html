@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #0e122a;
+      --glass: rgba(255,255,255,0.14);
+      --glass-2: rgba(255,255,255,0.22);
+      --text: #e8f0ff;
+      --muted: #d9e4ff;
+      --accent: #74b9ff;
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(116,178,255,0.25), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(100,255,212,0.15), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0a0f2b 60%, #0b1020 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Subtle decorative blobs */
+    .blob {
+      position: fixed;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+      animation: float 12s ease-in-out infinite;
+    }
+    .blob.b1 { background: #5f9cff; top: -40px; left: -40px; animation-delay: 0s; }
+    .blob.b2 { background: #7af1d4; bottom: -60px; right: -60px; animation-delay: -6s; }
+
+    @keyframes float {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(20px, -20px) scale(1.04); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    header.site-header {
+      position: relative;
+      z-index: 1;
+      padding: 48px 20px 8px;
+      text-align: center;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: saturate(180%) blur(6px);
+      -webkit-backdrop-filter: saturate(180%) blur(6px);
+      color: #e8f0ff;
+      font-weight: 600;
+      letter-spacing: .5px;
+      text-transform: none;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
+    .brand:hover { transform: translateY(-1px); }
+
+    h1.title {
+      margin: 0;
+      font-size: clamp(28px, 6vw, 48px);
+      line-height: 1.04;
+      letter-spacing: .5px;
+      color: #f5faff;
+      text-shadow: 0 6px 20px rgba(0,0,0,.25);
+    }
+
+    main.container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 28px auto 80px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      z-index: 1;
+      position: relative;
+    }
+
+    /* Glass panels */
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.10) 100%);
+      border: 1px solid rgba(255,255,255,0.40);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      transition: transform 0.6s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(22px, 5vw, 32px);
+      color: #f6fbff;
+    }
+
+    .hero p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.45);
+      color: #eaf3ff;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      color: #071019;
+      background: linear-gradient(135deg, #a5f3fc 0%, #60a5fa 100%);
+      font-weight: 700;
+      letter-spacing: .4px;
+      box-shadow: 0 6px 20px rgba(96,165,250,.45);
+      transition: transform .25s ease;
+    }
+
+    .cta:hover { transform: translateY(-1px); }
+
+    /* Grid for responsive sections if more content is added */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    @media (min-width: 768px) {
+      .hero { grid-template-columns: 1.1fr 0.9fr; align-items: center; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    footer.site-footer {
+      width: 100%;
+      padding: 20px 16px;
+      text-align: center;
+      color: #d9e6ff;
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(to top, rgba(8,12,25,.95), rgba(8,12,25,.75) 60%, rgba(8,12,25,.95));
+      border-top: 1px solid rgba(255,255,255,.15);
+    }
+
+    .footer-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: #dbefff; text-decoration: none; font-weight: 600;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .footer-link:hover { background: rgba(255,255,255,0.16); }
+
+    .footer-icon {
+      width: 20px; height: 20px;
+      display: inline-block;
+    }
+
+    /* Slide-up animation triggered on visibility */
+    .slide-up { transform: translateY(20px); opacity: 0; }
+    .slide-up.visible { transform: translateY(0); opacity: 1; transition: transform 0.6s ease-out, opacity 0.6s ease-out; }
+
+    /* Ensure reduced motion respects user preference */
+    @media (prefers-reduced-motion: reduce) {
+      .slide-up { transition: none; transform: none; opacity: 1; }
+    }
+
+    /* Accessibility focus for nav elements if added later */
+    a:focus, button:focus { outline: 2px dashed #6ec6ff; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Site header">
+    <div class="brand slide-up" style="justify-content:center;">
+      <span style="width:10px;height:10px;background:#7cdbff;border-radius:50%;display:inline-block;box-shadow:0 0 0 6px rgba(124,219,255,.15);"></span>
+      <span style="font-weight:700;">amirabolfazle</span>
+    </div>
+    <h1 class="title slide-up" style="margin-top:14px;">amirabolfazle</h1>
+  </header>
+
+  <main class="container" aria-label="Main content">
+    <section class="glass hero slide-up" id="intro" aria-label="Introduction panel" style="padding: 28px;">
+      <div>
+        <h2>Welcome</h2>
+        <p>This page demonstrates a fully responsive layout with glassmorphism, slide-up animations, and a clean, modern feel. Scroll to reveal more content, or interact with the elements below.</p>
+      </div>
+      <div class="creation-time" aria-label="Creation time badge" style="justify-content:flex-start;">
+        Creation time: 2025-09-28 07:04:57
+      </div>
+      <button class="cta slide-up" id="demoBtn" style="width:max-content;margin-top:8px;">
+        See an animation
+      </button>
+    </section>
+
+    <section class="glass slide-up" id="features" aria-label="Features panel" style="padding:28px;">
+      <h2 style="margin:0 0 12px; font-size:1.25rem; color:#f0f6ff;">Features</h2>
+      <ul style="margin:0; padding-left:20px; color:#eaf3ff;">
+        <li>Fully responsive glassmorphism UI</li>
+        <li>Slide-up animations on reveal</li>
+        <li>Pure HTML/CSS/JS (no frameworks)</li>
+        <li>Accessible and keyboard-friendly</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+        <path d="M12 .5C5.73.5.9 5.34.9 11.58c0 4.57 2.97 8.43 7.07 9.79.52.1.71-.22.71-.49 0-.24-.01-1.05-.01-1.91-2.87.63-3.48-1.24-3.48-1.24-.47-1.2-1.15-1.52-1.15-1.52-.94-.64.07-.63.07-.63 1.04.08 1.59 1.07 1.59 1.07.93 1.62 2.43 1.15 3.03.88.1-.69.36-1.16.65-1.43-2.17-.25-4.44-1.12-4.44-4.99 0-1.1.39-2 .99-2.7-.1-.25-.43-1.28.09-2.68 0 0 .82-.26 2.69 1.03a9.3 9.3 0 012.45-.32c.83.01 1.67.11 2.45.32 1.87-1.29 2.69-1.03 2.69-1.03.53 1.4.19 2.43.1 2.68.61.7.98 1.6.98 2.7 0 3-.27 4.74-4.41 5.25.37.33.7.98.7 1.98 0 1.43-.01 2.58-.01 2.93 0 .27.18.58.72.48A10.01 10.01 0 0024 11.58C24 5.34 19.27.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <script>
+    // Intersection Observer for slide-up reveal
+    (function(){
+      const options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.15
+      };
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, options);
+
+      document.querySelectorAll('.slide-up').forEach(el => {
+        // Start with elements hidden; reveal when they come into view
+        observer.observe(el);
+      });
+
+      // Demo button interaction
+      const btn = document.getElementById('demoBtn');
+      btn?.addEventListener('click', () => {
+        const msg = [
+          "Slide-up in action!",
+          "Glassmorphism engaged.",
+          "Animation unlocked.",
+          "Smooth as glass."
+        ];
+        const item = msg[Math.floor(Math.random()*msg.length)];
+        btn.textContent = item;
+        btn.style.transition = 'transform 0.25s ease';
+        btn.style.transform = 'translateY(-2px)';
+        setTimeout(() => btn.style.transform = 'translateY(0)', 250);
+      });
+
+      // Respect reduced motion
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.slide-up').forEach(el => {
+          el.style.transition = 'none';
+          el.style.transform = 'none';
+          el.style.opacity = '1';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
