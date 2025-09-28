@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#0b1220;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: #7dd3fc;
+      --accent2: #a78bfa;
+      --card-radius: 16px;
+      --glass-pad: 28px;
+      --text: #e6eef8;
+      --muted: #b3c2d9;
+      --glass-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      --transition: 600ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    /* Background */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 400px at 10% 20%, rgba(167,139,250,0.12), transparent 8%),
+                  radial-gradient(600px 300px at 90% 80%, rgba(125,211,252,0.08), transparent 10%),
+                  linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* floating decorative blobs */
+    .blob{
+      position:fixed;
+      filter: blur(40px);
+      opacity:0.18;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation: float 8s ease-in-out infinite alternate;
+      border-radius:50%;
+      z-index:0;
+    }
+    .blob.b1{ width:420px;height:420px;left:-80px;top:-60px;background:linear-gradient(120deg,var(--accent),transparent);}
+    .blob.b2{ width:360px;height:360px;right:-100px;bottom:-80px;background:linear-gradient(180deg,var(--accent2),transparent); animation-duration:10s;}
+    @keyframes float{
+      from{ transform: translateY(-10px) translateX(0) rotate(0deg);}
+      to{ transform: translateY(18px) translateX(12px) rotate(8deg);}
+    }
+
+    /* layout */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:60px 24px;
+      position:relative;
+      z-index:1;
+    }
+
+    .glass-card{
+      width:100%;
+      max-width:960px;
+      border-radius:var(--card-radius);
+      padding:var(--glass-pad);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      overflow:hidden;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap:28px;
+    }
+
+    @media (max-width:880px){
+      .grid{ grid-template-columns:1fr; }
+      .right-col{ order: -1; }
+    }
+
+    /* left content */
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    .name{
+      font-weight:700;
+      letter-spacing:-0.6px;
+      font-size: clamp(28px, 4.6vw, 40px);
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .name .dot{
+      width:12px;height:12px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 6px 20px rgba(122,95,255,0.22);
+      transform:translateY(-1px);
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:15px;
+      margin-top:4px;
+    }
+
+    .bio{
+      margin-top:8px;
+      color:var(--text);
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+      font-size:14px;
+      border:none;
+      cursor:pointer;
+      color:var(--bg2);
+      background:linear-gradient(90deg, var(--accent), var(--accent2));
+      box-shadow:0 6px 18px rgba(124,58,237,0.12);
+      transition: transform 220ms ease, box-shadow 220ms ease;
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(6px);
+    }
+    .btn:hover{ transform:translateY(-6px); }
+
+    /* right column card */
+    .profile{
+      border-radius:12px;
+      padding:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .avatar{
+      width:84px;height:84px;border-radius:18px;background:linear-gradient(135deg,var(--accent2),var(--accent));
+      display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--bg2);
+      font-size:32px;box-shadow:0 8px 24px rgba(7,12,22,0.6);
+      margin-bottom:12px;
+    }
+    .meta{
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:10px;
+      flex-direction:column;
+    }
+    .stat-row{
+      display:flex;
+      gap:8px;
+      margin-top:12px;
+    }
+    .stat{
+      flex:1;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:10px;
+      padding:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      text-align:center;
+    }
+    .stat b{ display:block; font-size:16px; color:var(--text); }
+    .small{ font-size:12px; color:var(--muted); margin-top:4px; }
+
+    /* footer */
+    footer{
+      margin-top:20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      padding-top:18px;
+      border-top:1px dashed rgba(255,255,255,0.03);
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .gh svg{ width:18px;height:18px;opacity:0.95; filter:drop-shadow(0 4px 12px rgba(0,0,0,0.45)); }
+    .creator{ font-weight:600; color:var(--text); margin-left:8px; font-size:13px; }
+
+    /* creation time badge */
+    .ctime{
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:8px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* slide-up animation */
+    .slide-up {
+      opacity:0;
+      transform: translateY(18px);
+      will-change:transform,opacity;
+    }
+    .loaded .slide-up {
+      animation: slideUp var(--transition) forwards;
+    }
+    @keyframes slideUp{
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    /* staggering using custom property --delay */
+    .slide-up { animation-duration: 520ms; animation-timing-function: cubic-bezier(.2,.9,.3,1); animation-fill-mode: both; animation-delay: var(--delay, 0s); }
+    .slide-up.strong { animation-duration: 680ms; }
+
+    /* subtle underline animated */
+    .underline {
+      position:relative;
+      display:inline-block;
+      overflow:hidden;
+    }
+    .underline::after{
+      content:"";
+      position:absolute;
+      left:0;bottom:-2px;height:3px;width:100%;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      transform: translateX(-102%);
+      transition: transform 480ms cubic-bezier(.2,.9,.3,1);
+      border-radius:3px;
+      opacity:0.9;
+    }
+    .underline:hover::after{ transform: translateX(0%); }
+
+    /* micro interactions */
+    .socials{ display:flex; gap:10px; margin-top:12px; }
+    .icon-btn{
+      width:40px;height:40px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);
+      display:inline-grid;place-items:center;cursor:pointer;color:var(--muted);
+      transition:transform 220ms ease, color 220ms ease;
+    }
+    .icon-btn:hover{ transform:translateY(-6px); color:var(--text); border-color:rgba(255,255,255,0.06);}
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="glass-card" role="main" aria-labelledby="page-title">
+      <div class="grid">
+        <div class="left-col">
+          <div class="hero">
+            <div class="slide-up" style="--delay:0.06s">
+              <div class="name" id="page-title">
+                <span class="dot" aria-hidden="true"></span>
+                amirabolfazle
+              </div>
+              <div class="subtitle">Designer · Developer · Curious maker</div>
+            </div>
+
+            <div class="slide-up" style="--delay:0.18s">
+              <p class="bio">
+                A sleek personal corner on the web. I like clean UI, subtle motion and delightful details — this page is a tiny experiment in glassmorphism and motion design. Explore, poke, and enjoy the little slide-up reveals.
+              </p>
+            </div>
+
+            <div class="slide-up" style="--delay:0.30s">
+              <div class="actions" aria-hidden="false">
+                <button class="btn" onclick="window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'})">Contact</button>
+                <a class="btn secondary" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View Code</a>
+                <div class="ctime" title="creation time">2025-09-28 20:01:59</div>
+              </div>
+            </div>
+
+            <div class="slide-up" style="--delay:0.44s">
+              <div class="socials" aria-label="social links">
+                <a class="icon-btn" href="#" title="Twitter" aria-hidden="false">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 7.5c-.6.3-1.2.5-1.9.6.7-.4 1.2-1 1.4-1.7-.7.4-1.4.6-2.2.8-.6-.7-1.5-1.1-2.5-1.1-1.9 0-3.4 1.8-3 3.6C9 9.6 6.8 8.3 5.4 6.4c-.8 1.4-.3 3 1 3.8-.5 0-1-.2-1.4-.4 0 1.4 1 2.6 2.5 2.9-.5.1-1 .1-1.6.1.4 1.4 1.8 2.5 3.3 2.5-1.2 1-2.7 1.5-4.3 1.5-.3 0-.6 0-.9-.1 1.4.9 3 1.4 4.7 1.4 5.6 0 8.7-4.6 8.7-8.7v-.4c.6-.4 1.2-1 1.6-1.7-.6.3-1.3.6-2 .7z" fill="currentColor"/></svg>
+                </a>
+                <a class="icon-btn" href="#" title="LinkedIn" aria-hidden="false">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zM8 8h4.8v2.2h.1c.7-1.3 2.5-2.6 5.1-2.6 5.5 0 6.5 3.5 6.5 8V24h-5v-7.3c0-1.7 0-3.9-2.4-3.9-2.4 0-2.8 1.8-2.8 3.7V24H8V8z" fill="currentColor"/></svg>
+                </a>
+                <a class="icon-btn" href="#" title="Website" aria-hidden="false">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 2v2a6 6 0 010 12v2a8 8 0 000-16z" fill="currentColor"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="right-col">
+          <div class="profile slide-up" style="--delay:0.16s">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="avatar" aria-hidden="true">AB</div>
+              <div>
+                <div style="font-weight:700;color:var(--text);font-size:15px;">amirabolfazle</div>
+                <div class="small">Frontend & UI enthusiast</div>
+              </div>
+            </div>
+
+            <div class="meta slide-up" style="--delay:0.28s">
+              <div style="margin-top:12px;color:var(--muted);font-size:13px;">
+                Location: Earth · Remote-friendly
+              </div>
+
+              <div class="stat-row slide-up" style="--delay:0.40s">
+                <div class="stat">
+                  <b>42</b>
+                  <div class="small">Projects</div>
+                </div>
+                <div class="stat">
+                  <b>12k</b>
+                  <div class="small">Traffic/mo</div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-up" style="--delay:0.52s">
+              <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 .5C5.73.5.97 5.27.97 11.55c0 4.7 3.03 8.68 7.24 10.08.53.1.72-.23.72-.51 0-.25-.01-.91-.01-1.79-2.95.64-3.58-1.28-3.58-1.28-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.95 1.63 2.5 1.16 3.11.89.1-.7.37-1.16.67-1.43-2.36-.27-4.84-1.18-4.84-5.24 0-1.16.42-2.1 1.11-2.84-.11-.28-.48-1.41.11-2.95 0 0 .9-.29 2.96 1.09A10.22 10.22 0 0112 7.63c.91.01 1.83.12 2.69.35 2.06-1.38 2.96-1.09 2.96-1.09.59 1.54.22 2.67.11 2.95.69.74 1.11 1.68 1.11 2.84 0 4.07-2.48 4.97-4.84 5.23.38.33.72.99.72 2 0 1.44-.01 2.6-.01 2.95 0 .29.19.62.73.51 4.22-1.41 7.24-5.39 7.24-10.08C23.03 5.27 18.27.5 12 .5z"/>
+                </svg>
+                <span class="creator">Created by amirabolfazle</span>
+              </a>
+            </footer>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Trigger cascade slide-up animations after load
+    window.addEventListener('DOMContentLoaded', function(){
+      // add a small timeout to let paint happen
+      setTimeout(function(){
+        document.documentElement.classList.add('loaded');
+      }, 80);
+
+      // accessibility: focus management when "Contact" clicked
+      const contactBtn = document.querySelector('.btn');
+      if(contactBtn){
+        contactBtn.addEventListener('click', function(){
+          contactBtn.setAttribute('aria-pressed','true');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
