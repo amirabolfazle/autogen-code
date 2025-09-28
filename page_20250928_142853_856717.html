@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071029;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.08);
+      --accent: #6EE7B7;
+      --accent-2: #60A5FA;
+      --muted: rgba(255,255,255,0.65);
+      --card-blur: 12px;
+      --card-border: rgba(255,255,255,0.12);
+      --glass-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      --glass-border-glow: 0 6px 30px rgba(96,165,250,0.06);
+      --bounce-ease: cubic-bezier(.36,.07,.19,.97);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(108,99,255,0.12), transparent 8%),
+                  radial-gradient(900px 500px at 90% 85%, rgba(80,200,240,0.06), transparent 10%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#eaf2ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+      overflow:auto;
+    }
+
+    /* floating orbs */
+    .orb{
+      position:fixed;
+      filter: blur(40px) saturate(120%);
+      opacity:0.6;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation: floaty 16s ease-in-out infinite;
+    }
+    .orb.orb-1{width:420px;height:420px;left:-120px;top:-80px;background:linear-gradient(135deg,#7c3aed,#06b6d4); animation-duration:20s;}
+    .orb.orb-2{width:300px;height:300px;right:-80px;bottom:-120px;background:linear-gradient(135deg,#10b981,#60a5fa); animation-duration:18s; animation-delay:2s}
+    @keyframes floaty{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-28px) rotate(8deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    /* main glass panel */
+    .stage{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:start;
+    }
+
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:18px;
+      padding:28px;
+      backdrop-filter: blur(var(--card-blur)) saturate(120%);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--glass-shadow), var(--glass-border-glow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* left: hero & projects */
+    .hero{
+      min-height:380px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .title{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    .avatar{
+      width:92px;height:92px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:28px;color:var(--accent);
+      box-shadow:0 6px 20px rgba(12,18,27,0.6);
+      animation: bounceIn 900ms var(--bounce-ease) both;
+    }
+
+    h1{
+      font-size:36px;margin:0;
+      letter-spacing:-0.6px;
+      line-height:1;
+      display:flex;flex-direction:column;
+      animation: textBounce 1100ms var(--bounce-ease) both;
+    }
+    h1 small{
+      font-weight:600;
+      color:var(--muted);
+      font-size:14px;margin-top:8px;
+      letter-spacing:0.2px;
+    }
+
+    .meta{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:14px;
+      display:flex;gap:14px;flex-wrap:wrap;
+      align-items:center;
+    }
+
+    /* tech chips */
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+    .chip{
+      padding:8px 12px;border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);font-size:13px;
+      display:inline-flex;align-items:center;gap:8px;
+      transform-origin:center;
+      transition:transform 300ms var(--bounce-ease), color 250ms;
+    }
+    .chip:hover{transform:translateY(-6px) scale(1.02); color:#fff;}
+
+    /* right column: card stack */
+    .stack{display:flex;flex-direction:column;gap:18px}
+    .card{
+      padding:18px;border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 30px rgba(6,10,18,0.6);
+      transform-origin:center;
+    }
+    .card h3{margin:0 0 8px 0;font-size:16px}
+    .card p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+
+    /* animated bounce sequence for stacked cards */
+    .card--top{animation: popBounce 1200ms var(--bounce-ease) both;}
+    .card--mid{animation: popBounce 1200ms var(--bounce-ease) 120ms both;}
+    .card--low{animation: popBounce 1200ms var(--bounce-ease) 240ms both;}
+
+    @keyframes popBounce{
+      0%{transform:translateY(28px) scale(0.98); opacity:0}
+      60%{transform:translateY(-10px) scale(1.02); opacity:1}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    @keyframes bounceIn{
+      0%{transform:translateY(40px) scale(.96);opacity:0}
+      60%{transform:translateY(-8px) scale(1.02);opacity:1}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    @keyframes textBounce{
+      0%{transform:translateX(-12px);opacity:0}
+      60%{transform:translateX(6px);opacity:1}
+      100%{transform:translateX(0)}
+    }
+
+    /* quick animated buttons */
+    .actions{display:flex;gap:12px;margin-top:20px}
+    .btn{
+      padding:10px 14px;border-radius:12px;font-weight:600;font-size:14px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.04);
+      color:#fff;text-decoration:none;display:inline-flex;gap:10px;align-items:center;
+      transition:transform 300ms var(--bounce-ease), box-shadow 200ms;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+    }
+    .btn:hover{transform:translateY(-8px);box-shadow: 0 18px 40px rgba(2,6,23,0.6)}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    /* projects grid */
+    .projects{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px;
+    }
+    .project{
+      padding:12px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform 350ms var(--bounce-ease), box-shadow 250ms;
+      cursor:pointer;
+    }
+    .project:hover{transform:translateY(-10px) rotate(-1deg);box-shadow:0 20px 40px rgba(2,6,23,0.6)}
+    .project h4{margin:0;font-size:14px}
+    .project small{color:var(--muted);font-size:12px}
+
+    /* footer */
+    footer{
+      margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.03);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted)
+    }
+    .footer-left{display:flex;gap:12px;align-items:center}
+    .github{
+      display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--muted);
+      transition:transform 250ms var(--bounce-ease), color 200ms;
+      padding:8px;border-radius:8px;
+    }
+    .github:hover{transform:translateY(-6px);color:#fff}
+    .github svg{filter:drop-shadow(0 6px 20px rgba(0,0,0,0.6))}
+
+    /* side info */
+    .info{
+      font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:12px;
+    }
+
+    .time{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;
+      font-size:13px;color:var(--muted);
+      background:linear-gradient(90deg, rgba(255,255,255,0.015), transparent);
+      padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+      display:inline-block;
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .stage{grid-template-columns: 1fr; padding:0}
+      .stack{order:-1}
+      body{padding:28px}
+    }
+
+    /* micro-floating badges */
+    .badge{
+      position:absolute;top:18px;right:22px;padding:8px 12px;border-radius:999px;
+      background:linear-gradient(90deg, rgba(96,165,250,0.12), rgba(110,231,183,0.06));
+      color:#dffcf0;font-weight:700;font-size:12px;border:1px solid rgba(255,255,255,0.04);
+      transform:translateY(-6px);
+      animation: floatBadge 2200ms ease-in-out infinite;
+    }
+    @keyframes floatBadge{
+      0%{transform:translateY(-2px)}
+      50%{transform:translateY(6px)}
+      100%{transform:translateY(-2px)}
+    }
+
+    /* subtle footer small screen alignment */
+    @media (max-width:520px){
+      footer{flex-direction:column;align-items:flex-start}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="main-title">
+    <section class="glass hero" aria-labelledby="main-title">
+      <div class="title">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div>
+          <h1 id="main-title">amirabolfazle
+            <small>Creative developer • UI experiments • electron-friendly</small>
+          </h1>
+          <div class="meta">
+            <span>Design • Frontend • Prototype</span>
+            <span>•</span>
+            <span>Lives in the browser</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="chips" aria-hidden="true">
+          <div class="chip">HTML</div>
+          <div class="chip">CSS</div>
+          <div class="chip">JavaScript</div>
+          <div class="chip">Three.js</div>
+          <div class="chip">React</div>
+        </div>
+
+        <div class="actions" style="margin-top:18px;">
+          <a class="btn" href="#projects" role="button">Explore Projects</a>
+          <a class="btn ghost" href="mailto:hello@amirabolfazle.dev">Say Hello</a>
+        </div>
+
+        <div id="projects" class="projects" style="margin-top:18px;">
+          <div class="project" onclick="alert('Project preview — demo mode');">
+            <h4>Glass UI Kit</h4>
+            <small>Design system with live tokens</small>
+          </div>
+          <div class="project" onclick="alert('Project preview — demo mode');">
+            <h4>Motion Portfolio</h4>
+            <small>A minimal motion-driven showcase</small>
+          </div>
+          <div class="project" onclick="alert('Project preview — demo mode');">
+            <h4>Web Audio Lab</h4>
+            <small>Interactive audio visualizer</small>
+          </div>
+          <div class="project" onclick="alert('Project preview — demo mode');">
+            <h4>AutoGen Tools</h4>
+            <small>Code utilities & experiments</small>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="footer-left">
+          <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub — amirabolfazle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .5C5.73.5.8 5.43.8 11.71c0 4.86 3.14 8.98 7.5 10.43.55.1.75-.24.75-.53 0-.26-.01-1-.02-1.96-3.05.66-3.7-1.47-3.7-1.47-.5-1.28-1.22-1.62-1.22-1.62-.99-.67.08-.66.08-.66 1.09.08 1.67 1.12 1.67 1.12.98 1.68 2.57 1.2 3.2.92.1-.72.38-1.2.69-1.48-2.43-.28-4.98-1.22-4.98-5.43 0-1.2.43-2.18 1.12-2.95-.11-.28-.49-1.42.11-2.95 0 0 .91-.29 2.98 1.11a10.3 10.3 0 0 1 2.71-.37c.92 0 1.85.12 2.71.37 2.06-1.4 2.98-1.11 2.98-1.11.6 1.53.22 2.67.11 2.95.7.77 1.12 1.75 1.12 2.95 0 4.22-2.56 5.15-5 5.42.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.64.76.53 4.36-1.45 7.5-5.57 7.5-10.43C23.2 5.43 18.27.5 12 .5z" fill="currentColor"/>
+            </svg>
+            <span>autogen-code</span>
+          </a>
+          <div style="font-weight:600;color:rgba(255,255,255,0.86)">Created by amirabolfazle</div>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="time" title="Creation time">Created: 2025-09-28 14:28:14</div>
+        </div>
+      </footer>
+    </section>
+
+    <aside class="glass stack" aria-label="Quick info">
+      <div class="badge">LIVE • EXPERIMENT</div>
+
+      <div class="card card--top">
+        <h3>About</h3>
+        <p>Hi — I'm amirabolfazle. I enjoy blending motion, glass-like UI and tiny delightful interactions to make interfaces feel alive. I build small tools and prototypes that scale.</p>
+      </div>
+
+      <div class="card card--mid">
+        <h3>Skills</h3>
+        <p>UI Animation · CSS Architecture · JS Tools · Canvas / WebGL · Prototyping</p>
+      </div>
+
+      <div class="card card--low">
+        <h3>Contact</h3>
+        <p>Email: hello@amirabolfazle.dev<br/>GitHub: github.com/amirabolfazle</p>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // small interactive flourish: floating tilt on mouse move
+    (function(){
+      const stage = document.querySelector('.stage');
+      let timeout;
+      window.addEventListener('mousemove', (e) => {
+        const rect = stage.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dx = (e.clientX - cx) / rect.width;
+        const dy = (e.clientY - cy) / rect.height;
+        const rx = dy * -6;
+        const ry = dx * 10;
+        stage.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        stage.style.transition = 'transform 120ms linear';
+        clearTimeout(timeout);
+        timeout = setTimeout(()=>{ stage.style.transition='transform 600ms cubic-bezier(.2,.8,.2,1)'; stage.style.transform='perspective(900px) rotateX(0deg) rotateY(0deg)'; }, 800);
+      });
+    })();
+  </script>
+</body>
+</html>
