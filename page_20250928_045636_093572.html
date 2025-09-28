@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #0f1220;
+      --fg: #e9eaf6;
+      --muted: #a5a6b8;
+      --card: rgba(255,255,255,0.05);
+      --accent1: #8b5cf6;
+      --accent2: #f472b6;
+      --accent3: #22d3ee;
+    }
+
+    /* Dark mode foundation */
+    html, body {
+      height: 100%;
+      background: radial-gradient(circle at 20% -10%, rgba(139,92,246,.25), transparent 40%), 
+                  radial-gradient(circle at 100% 0%, rgba(244,114,182,.25), transparent 40%), 
+                  linear-gradient(#0b1020 0%, #0b1020 60%, #0a0e1a 100%);
+      color: var(--fg);
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans";
+      overflow-x: hidden;
+    }
+
+    /* Page layout */
+    .wrapper {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1.25rem 1rem;
+      text-align: center;
+    }
+
+    /* Title styling with a glow and color gradient effect */
+    .title {
+      font-size: clamp(2.5rem, 8vw, 7rem);
+      font-weight: 800;
+      letter-spacing: 0.25rem;
+      text-transform: none;
+      margin: 0;
+      background: linear-gradient(90deg, #a78bfa 0%, #f472b6 60%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px rgba(139,92,246,.25);
+      user-select: none;
+    }
+
+    .creation {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    /* Visual stage with rotating/ orbiting shapes */
+    .stage {
+      position: relative;
+      width: 100%;
+      min-height: 60vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    /* Orbit group that revolves around center to create rotate effect */
+    .orbits {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 60vmin;
+      height: 60vmin;
+      transform: translate(-50%, -50%);
+      animation: rotateGroup 40s linear infinite;
+      filter: drop-shadow(0 0 12px rgba(139,92,246,.4));
+    }
+
+    @keyframes rotateGroup {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      opacity: .9;
+      mix-blend-mode: screen;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    /* Individual orbs placed around the center using rotate + translateX */
+    .o1 { width: 12vmin; height: 12vmin; 
+           transform: rotate(0deg) translateX(calc(26vmin)); 
+           background: radial-gradient(circle at 30% 30%, rgba(139,92,246,.95), rgba(139,92,246,.25) 60%);
+    }
+    .o2 { width: 9vmin; height: 9vmin; 
+           transform: rotate(60deg) translateX(calc(22vmin)); 
+           background: radial-gradient(circle at 30% 30%, rgba(2,132,199,.95), rgba(2,132,199,.25) 60%);
+    }
+    .o3 { width: 14vmin; height: 14vmin; 
+           transform: rotate(120deg) translateX(calc(28vmin)); 
+           background: radial-gradient(circle at 30% 30%, rgba(251,191,36,.95), rgba(251,191,36,.25) 60%);
+    }
+    .o4 { width: 11vmin; height: 11vmin; 
+           transform: rotate(180deg) translateX(calc(24vmin)); 
+           background: radial-gradient(circle at 30% 30%, rgba(16,185,129,.9), rgba(16,185,129,.25) 60%);
+    }
+    .o5 { width: 10vmin; height: 10vmin; 
+           transform: rotate(240deg) translateX(calc(20vmin)); 
+           background: radial-gradient(circle at 30% 30%, rgba(99, 102, 241,.95), rgba(99, 102, 241,.25) 60%);
+    }
+    .o6 { width: 8vmin; height: 8vmin; 
+           transform: rotate(300deg) translateX(calc(18vmin)); 
+           background: radial-gradient(circle at 30% 30%, rgba(236,72,153,.95), rgba(236,72,153,.25) 60%);
+    }
+
+    /* Subtle center content that sits above the rotating elements */
+    .center {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(13,15,28,.9), rgba(13,15,28,.6) 60%, rgba(13,15,28,.9));
+      border: 1px solid rgba(255,255,255,.08);
+      max-width: 90vw;
+      backdrop-filter: saturate(1.2) blur(1px);
+    }
+
+    .center h1 {
+      font-size: clamp(2rem, 8vw, 5rem);
+      margin: 0.2rem 0 0.4rem;
+      letter-spacing: .2rem;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0,0,0,.5);
+      text-transform: none;
+    }
+
+    .center .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    /* Footer with GitHub icon and link */
+    footer.site-footer {
+      padding: 1.25rem;
+      text-align: center;
+      background: rgba(2,6,23,.6);
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+
+    footer a.github {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #e9eaf6;
+      text-decoration: none;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      transition: transform .2s ease;
+    }
+
+    footer a.github:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.05);
+    }
+
+    footer svg {
+      width: 1.15em;
+      height: 1.15em;
+      display: inline-block;
+      vertical-align: middle;
+      fill: currentColor;
+    }
+
+    @media (max-width: 720px) {
+      .orbits { width: 70vmin; height: 70vmin; }
+      .o1 { width: 10vmin; height: 10vmin; transform: rotate(0deg) translateX(calc(22vmin)); }
+      .o2 { width: 8vmin; height: 8vmin; transform: rotate(60deg) translateX(calc(18vmin)); }
+      .o3 { width: 12vmin; height: 12vmin; transform: rotate(120deg) translateX(calc(24vmin)); }
+      .o4 { width: 10vmin; height: 10vmin; transform: rotate(180deg) translateX(calc(20vmin)); }
+      .o5 { width: 9vmin; height: 9vmin; transform: rotate(240deg) translateX(calc(16vmin)); }
+      .o6 { width: 7vmin; height: 7vmin; transform: rotate(300deg) translateX(calc(14vmin)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper" aria-label=" Amir Abolfazle animated page">
+    <header>
+      <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+      <div class="creation" aria-live="polite">Creation time: 2025-09-28 04:56:08</div>
+    </header>
+
+    <main class="stage" role="main">
+      <div class="orbits" aria-hidden="true">
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+        <div class="orb o3"></div>
+        <div class="orb o4"></div>
+        <div class="orb o5"></div>
+        <div class="orb o6"></div>
+      </div>
+
+      <section class="center" aria-label="Intro content">
+        <h1 style="font-size: clamp(1.8rem, 8vw, 3.6rem); margin: 0;">
+          amirabolfazle
+        </h1>
+        <p class="subtitle" style="margin-top:.5rem;">
+          A responsive, dark-mode themed page with rotating visuals.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg viewBox="0 0 24 24" aria-label="GitHub icon" role="img" focusable="false" width="24" height="24">
+          <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.55-1.39-1.34-1.75-1.34-1.75-1.09-.75.08-.74.08-.74 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.6-2.8 5.62-5.47 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.82.58A12 12 0 0 0 12 .5z" />
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
