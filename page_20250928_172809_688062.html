@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f2027;
+      --bg2:#203a43;
+      --bg3:#2c5364;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent1:#7b2ff7;
+      --accent2:#2bff88;
+      --text: #e9f0f7;
+    }
+
+    /* Page reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg3));
+      background-size: 300% 300%;
+      animation: gradientShift 18s ease infinite;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      overflow:hidden;
+    }
+
+    @keyframes gradientShift{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    /* Subtle background orbs */
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(40px);
+      opacity:0.25;
+      mix-blend-mode:screen;
+      animation: float 12s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .orb.o1{width:420px;height:420px;left:-120px;top:-60px;background:radial-gradient(circle at 30% 30%, rgba(123,47,247,0.45), transparent 35%), radial-gradient(circle at 70% 70%, rgba(43,255,136,0.18), transparent 30%);}
+    .orb.o2{width:340px;height:340px;right:-140px;bottom:-40px;background:radial-gradient(circle at 20% 30%, rgba(43,255,136,0.28), transparent 36%), radial-gradient(circle at 80% 70%, rgba(123,47,247,0.12), transparent 40%); animation-duration:16s}
+    .orb.o3{width:160px;height:160px;left:20%;bottom:60%;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 40%); animation-duration:10s; opacity:0.12}
+
+    @keyframes float{
+      0%{transform:translateY(0) rotate(0)}
+      50%{transform:translateY(-24px) rotate(8deg)}
+      100%{transform:translateY(0) rotate(0)}
+    }
+
+    /* Card */
+    .card{
+      width:min(980px,95vw);
+      background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border-radius:18px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:36px;
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap:28px;
+      backdrop-filter: blur(8px) saturate(120%);
+      animation: fadeIn 900ms ease both;
+    }
+
+    @media (max-width:900px){
+      .card{grid-template-columns: 1fr; padding:24px}
+      .side{order:2}
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform: translateY(12px) scale(0.996)}
+      to{opacity:1; transform:none}
+    }
+
+    /* Main content */
+    .main-title{
+      font-size:clamp(28px,5vw,44px);
+      font-weight:700;
+      letter-spacing:-0.02em;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      opacity:0;
+      transform:translateY(8px);
+      animation: stagger 700ms ease forwards;
+    }
+
+    .subtitle{
+      color:rgba(233,240,247,0.8);
+      margin-bottom:18px;
+      font-size:15px;
+      opacity:0;
+      transform:translateY(10px);
+      animation: stagger 900ms ease forwards;
+      animation-delay:120ms;
+    }
+
+    @keyframes stagger{
+      to{opacity:1; transform:none}
+    }
+
+    .bio{
+      color:rgba(233,240,247,0.85);
+      line-height:1.6;
+      font-size:15px;
+      margin-bottom:20px;
+      opacity:0;
+      transform:translateY(10px);
+      animation: stagger 1100ms ease forwards;
+      animation-delay:240ms;
+    }
+
+    /* Animated underline accent */
+    .accent{
+      display:inline-block;
+      height:6px;
+      width:140px;
+      margin-top:12px;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      border-radius:999px;
+      box-shadow: 0 6px 18px rgba(43,255,136,0.08), 0 2px 8px rgba(123,47,247,0.08);
+      opacity:0;
+      transform:scaleX(0.86) translateY(6px);
+      transform-origin:left;
+      animation: accentIn 1000ms cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay:420ms;
+    }
+    @keyframes accentIn{
+      to{opacity:1; transform:none}
+    }
+
+    /* Side card */
+    .side{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:20px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:stretch;
+      justify-content:flex-start;
+      min-height:180px;
+      position:relative;
+    }
+
+    .avatar{
+      width:88px;
+      height:88px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:28px;
+      color:#021018;
+      box-shadow: 0 6px 22px rgba(11,20,24,0.45);
+      margin-bottom:6px;
+      flex-shrink:0;
+    }
+
+    .meta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .meta{
+      font-size:13px;
+      color:rgba(233,240,247,0.86);
+    }
+    .muted{color:rgba(233,240,247,0.55);font-size:13px}
+
+    .stats{
+      display:flex;
+      gap:10px;
+      margin-top:4px;
+      flex-wrap:wrap;
+    }
+    .stat{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      font-size:13px;
+      color:var(--text);
+      min-width:88px;
+      text-align:center;
+      box-shadow: 0 4px 18px rgba(2,6,23,0.45);
+    }
+
+    /* Buttons */
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      color:#021018;
+      background:linear-gradient(90deg,var(--accent2),var(--accent1));
+      box-shadow: 0 8px 22px rgba(11,20,24,0.38);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .btn:active{transform:translateY(2px)}
+    .btn.secondary{
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow:none;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:rgba(233,240,247,0.78);
+      font-size:13px;
+      justify-self:start;
+      opacity:0.95;
+    }
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:6px 8px;
+      border-radius:10px;
+      transition:transform .14s ease, background .14s ease;
+    }
+    .github-link:hover{transform:translateY(-4px); background:rgba(255,255,255,0.02)}
+    .gh-icon{width:18px;height:18px;display:inline-block;vertical-align:middle;filter:drop-shadow(0 2px 6px rgba(2,6,23,0.6))}
+
+    /* small utilities */
+    .time{
+      margin-top:6px;
+      font-size:13px;
+      color:rgba(233,240,247,0.62);
+    }
+
+    /* subtle interactive parallax */
+    .card[data-tilt="enabled"]{transform-style:preserve-3d; perspective:800px}
+    .tilt-layer{transition:transform .12s linear; will-change:transform}
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      .meta-row{flex-direction:row; gap:8px}
+      .stat{min-width:72px;padding:8px 10px;font-size:12px}
+      .avatar{width:72px;height:72px;font-size:22px}
+    }
+  </style>
+</head>
+<body>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <main class="card" data-tilt="enabled" id="mainCard" role="main" aria-labelledby="pageTitle">
+    <section class="tilt-layer" style="padding-right:6px;">
+      <h1 id="pageTitle" class="main-title" title="amirabolfazle">
+        amirabolfazle
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:.98">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="#7b2ff7"/>
+              <stop offset="1" stop-color="#2bff88"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="24" height="24" rx="6" fill="url(#g1)" />
+          <path d="M7 13l3 3 7-9" stroke="#021018" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </h1>
+
+      <div class="subtitle">A modern, animated personal page — gradient theme, smooth fade-in, and subtle motion.</div>
+
+      <div class="bio">
+        Hello — this is a clean, animated personal page layout created for "amirabolfazle". It features a moving gradient background, floating orbs, and layered glass-card styling. The right panel highlights quick stats and links. Everything fades in for a refined first impression.
+      </div>
+
+      <span class="accent" aria-hidden="true"></span>
+
+      <div style="margin-top:20px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+        <button class="btn" onclick="document.getElementById('mainCard').scrollIntoView({behavior:'smooth'})" aria-label="Explore">Explore</button>
+        <button class="btn secondary" onclick="alert('Hello — this is amirabolfazle\\'s page.')" aria-label="About">About</button>
+      </div>
+
+      <div style="margin-top:18px;">
+        <div class="muted">Creation time</div>
+        <div class="time" aria-live="polite">2025-09-28 17:27:11</div>
+      </div>
+
+      <footer style="margin-top:18px;">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .297a12 12 0 00-3.797 23.41c.6.112.82-.26.82-.577v-2.17c-3.338.726-4.042-1.61-4.042-1.61-.546-1.39-1.333-1.762-1.333-1.762-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.24 1.84 1.24 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.76-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.469-2.38 1.235-3.22-.123-.303-.536-1.523.116-3.176 0 0 1.007-.322 3.3 1.23a11.52 11.52 0 016 0c2.29-1.553 3.295-1.23 3.295-1.23.653 1.653.242 2.873.12 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.804 5.624-5.475 5.92.43.37.815 1.102.815 2.222v3.293c0 .32.217.694.824.576A12 12 0 0012 .297"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+
+    <aside class="side tilt-layer" aria-label="Profile and actions">
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="display:flex;flex-direction:column;align-items:flex-start;">
+          <div class="avatar" aria-hidden="true">A</div>
+        </div>
+        <div style="flex:1;">
+          <div class="meta-row">
+            <div>
+              <div style="font-weight:700;font-size:15px">amirabolfazle</div>
+              <div class="muted">Frontend • Creator • Experimenter</div>
+            </div>
+          </div>
+
+          <div class="stats" style="margin-top:12px;">
+            <div class="stat">
+              <div style="font-size:12px;opacity:0.85">Repos</div>
+              <div style="font-weight:700;font-size:16px">23</div>
+            </div>
+            <div class="stat">
+              <div style="font-size:12px;opacity:0.85">Stars</div>
+              <div style="font-weight:700;font-size:16px">1.2k</div>
+            </div>
+            <div class="stat">
+              <div style="font-size:12px;opacity:0.85">Followers</div>
+              <div style="font-weight:700;font-size:16px">580</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+        <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View Repo</a>
+        <button class="btn secondary" onclick="navigator.clipboard?.writeText('amirabolfazle')?.then(()=>flash('Copied username to clipboard'))">Copy Username</button>
+      </div>
+
+      <div style="margin-top:auto; font-size:12px; color:rgba(233,240,247,0.64)">
+        Quick notes
+        <div style="margin-top:6px; font-size:13px; color:rgba(233,240,247,0.85)">This page was created on 2025-09-28 17:27:11 and demonstrates animated gradients and fade-in effects.</div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // Small tilt effect for depth
+    (function(){
+      const card = document.getElementById('mainCard');
+      if(!card) return;
+      let rect = null;
+      function updateRect(){ rect = card.getBoundingClientRect() }
+      updateRect();
+      window.addEventListener('resize', updateRect);
+
+      const layer = card.querySelectorAll('.tilt-layer');
+      function onMove(e){
+        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+        const cx = rect.width/2, cy = rect.height/2;
+        const rx = ((y - cy) / cy) * 4; // rotateX
+        const ry = -((x - cx) / cx) * 7; // rotateY
+        layer.forEach((el,i)=>{
+          const depth = (i+1) * 2;
+          el.style.transform = `translateZ(${depth}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+      }
+      function onLeave(){
+        layer.forEach(el=> el.style.transform = 'none');
+      }
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('touchmove', onMove, {passive:true});
+      card.addEventListener('mouseleave', onLeave);
+      card.addEventListener('touchend', onLeave);
+
+      // Flash helper
+      window.flash = function(msg){
+        const t = document.createElement('div');
+        t.textContent = msg;
+        Object.assign(t.style,{
+          position:'fixed', left:'50%', bottom:'8%', transform:'translateX(-50%)',
+          background:'linear-gradient(90deg, rgba(43,255,136,0.12), rgba(123,47,247,0.08))',
+          color:'white', padding:'10px 16px', borderRadius:'10px', border:'1px solid rgba(255,255,255,0.06)',
+          boxShadow:'0 8px 24px rgba(2,6,23,0.6)', zIndex:9999, opacity:0, transition:'opacity .18s ease, transform .18s ease'
+        });
+        document.body.appendChild(t);
+        requestAnimationFrame(()=>{ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(-6px)' });
+        setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(0)' }, 1400);
+        setTimeout(()=> t.remove(), 1800);
+      };
+    })();
+  </script>
+</body>
+</html>
