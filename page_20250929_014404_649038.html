@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1620;
+      --muted:#9aa6b2;
+      --accent:#7c5cff;
+      --accent-2:#2dd4bf;
+      --glass: rgba(255,255,255,0.03);
+      --radius:16px;
+      --max-width:1100px;
+      --ease:cubic-bezier(.2,.9,.2,1);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(45,212,191,0.06), transparent 10%),
+                  var(--bg);
+      color:#e9eef5;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:48px 20px;
+      overflow-x:hidden;
+    }
+
+    .container{
+      max-width:var(--max-width);
+      margin:0 auto;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:40px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:grid;
+      place-items:center;
+      box-shadow: 0 6px 24px rgba(8,12,18,0.6);
+      flex:0 0 56px;
+    }
+
+    .logo svg { filter: drop-shadow(0 6px 18px rgba(120,90,255,0.18)); }
+
+    .brand h1{
+      margin:0;
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:0.4px;
+    }
+    .brand p{margin:0;font-size:12px;color:var(--muted);}
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .btn{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      transition:all 220ms var(--ease);
+      backdrop-filter: blur(6px);
+    }
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      border: none;
+      color:white;
+      box-shadow: 0 8px 30px rgba(124,92,255,0.14);
+    }
+    .btn:hover{transform:translateY(-3px);opacity:0.98;}
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      margin-bottom:56px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow: 0 10px 40px rgba(2,6,10,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .hero-left h2{
+      margin:0 0 12px 0;
+      font-size:38px;
+      line-height:1.02;
+      letter-spacing:-0.6px;
+      background:linear-gradient(90deg,#fff, #cbd7ff 60%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin:0 0 22px 0;
+      font-size:15px;
+    }
+
+    .cta-row{display:flex;gap:12px;align-items:center}
+
+    .glass-list{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    .pill{
+      font-size:13px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02);color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* right panel */
+    .preview{
+      position:relative;
+      overflow:hidden;
+      min-height:260px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .preview .screen{
+      width:100%;
+      height:220px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(10,14,20,0.6), rgba(10,14,20,0.45));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding:14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .mock-top{display:flex;gap:8px;align-items:center}
+    .dot{width:10px;height:10px;border-radius:50%;background:#ff6b6b;box-shadow:0 0 0 6px rgba(255,107,107,0.04) inset}
+    .dot.yellow{background:#ffd166}
+    .dot.green{background:#2fe282}
+    .line{height:10px;background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));border-radius:6px;flex:1}
+
+    .menu{display:flex;gap:8px;align-items:center; margin-top:8px}
+    .menu .item{font-size:13px;color:var(--muted);padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.012)}
+
+    /* features */
+    .features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-bottom:56px;
+    }
+    .feature{
+      padding:18px;border-radius:12px;background:var(--glass);border:1px solid rgba(255,255,255,0.02);
+      transform:translateY(24px);
+      opacity:0;
+      transition:transform 520ms var(--ease),opacity 520ms var(--ease);
+    }
+    .feature.reveal{transform:none;opacity:1;}
+    .feature h3{margin:0;font-size:16px}
+    .feature p{margin:8px 0 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+
+    /* footer */
+    footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-top:28px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .footer-left{display:flex;align-items:center;gap:12px}
+    .github-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;padding:8px;border-radius:10px;}
+    .github-link:hover{color:#fff}
+    .created{opacity:0.9}
+
+    /* reveal animation for hero text */
+    .slide-up{
+      transform:translateY(20px);
+      opacity:0;
+      transition:transform 620ms var(--ease),opacity 620ms var(--ease);
+    }
+    .slide-up.reveal{transform:none;opacity:1;}
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr; padding-bottom:8px}
+      .features{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      header{flex-direction:column;align-items:flex-start;gap:12px}
+      .features{grid-template-columns:1fr}
+      .preview .screen{height:180px}
+    }
+
+    /* tiny decorative animation */
+    .sparkle{
+      position:absolute;
+      width:220px;height:220px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.04), transparent 20%),
+                  radial-gradient(circle at 70% 70%, rgba(124,92,255,0.04), transparent 15%);
+      filter: blur(28px);
+      transform:translate3d(0,0,0);
+      pointer-events:none;
+      mix-blend-mode:overlay;
+      animation: float 8s ease-in-out infinite;
+      opacity:0.9;
+    }
+    .sparkle.right{right:-60px;bottom:-60px}
+    .sparkle.left{left:-80px;top:-60px;opacity:0.7}
+    @keyframes float {0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(6deg)}100%{transform:translateY(0) rotate(0deg)}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" href="#" aria-label="amirabolfazle home">
+        <div class="logo" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12c0-4.97 4.03-9 9-9" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 12c0 4.97-4.03 9-9 9" stroke="rgba(255,255,255,0.9)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="3.2" fill="rgba(255,255,255,0.95)"/>
+          </svg>
+        </div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <p>Modern dark landing • UI experiments</p>
+        </div>
+      </a>
+
+      <nav>
+        <button class="btn" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Features</button>
+        <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</button>
+        <button class="btn primary" onclick="alert('Hello from amirabolfazle!')">Get Started</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="card hero-left">
+          <h2 class="slide-up">Elegant design, engineered for focus.</h2>
+          <p class="subtitle slide-up">A dark mode landing experience crafted for clarity, speed and subtle motion — built to showcase ideas with confidence.</p>
+
+          <div class="cta-row slide-up">
+            <button class="btn primary">Explore</button>
+            <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</button>
+          </div>
+
+          <div class="glass-list slide-up" aria-hidden="true">
+            <div class="pill">Responsive</div>
+            <div class="pill">Accessible</div>
+            <div class="pill">Animated</div>
+            <div class="pill">Lightweight</div>
+          </div>
+        </div>
+
+        <div class="card preview" aria-hidden="true">
+          <div class="sparkle left"></div>
+          <div class="sparkle right"></div>
+
+          <div class="screen" role="img" aria-label="Preview mockup">
+            <div class="mock-top">
+              <div class="dot"></div>
+              <div class="dot yellow"></div>
+              <div class="dot green"></div>
+              <div class="line"></div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:8px;align-items:flex-end;flex:1">
+              <div style="flex:1">
+                <div style="height:22px;background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));border-radius:8px;width:80%"></div>
+                <div style="height:10px;width:60%;margin-top:10px;background:rgba(255,255,255,0.02);border-radius:6px"></div>
+              </div>
+              <div style="width:88px;height:64px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted)">UI</div>
+            </div>
+
+            <div class="menu" style="margin-top:14px">
+              <div class="item">Overview</div>
+              <div class="item">Features</div>
+              <div class="item">Docs</div>
+              <div class="item">Github</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="features">
+        <div class="feature">
+          <h3>Minimal but expressive</h3>
+          <p>Clean layout with thoughtful hierarchy so your content stands out without distractions.</p>
+        </div>
+        <div class="feature">
+          <h3>Smooth slide-up reveals</h3>
+          <p>Subtle motion helps guide the eye. Elements animate into view using performant intersection observers.</p>
+        </div>
+        <div class="feature">
+          <h3>Dark-first palette</h3>
+          <p>Designed for late-night focus — high contrast where needed and gentle accents for personality.</p>
+        </div>
+        <div class="feature">
+          <h3>Responsive ready</h3>
+          <p>Layouts adapt from desktop to mobile with careful spacing and readable type scales.</p>
+        </div>
+        <div class="feature">
+          <h3>Accessible patterns</h3>
+          <p>Buttons and links include clear targets and visible states to help navigation and usability.</p>
+        </div>
+        <div class="feature">
+          <h3>Optimized visuals</h3>
+          <p>Lightweight assets and CSS-first approach keep performance high and interactions crisp.</p>
+        </div>
+      </section>
+
+      <section id="contact" class="card" style="margin-bottom:24px">
+        <h3 style="margin-top:0">Get in touch</h3>
+        <p class="subtitle" style="margin-bottom:18px">Questions, collabs, or a quick hello — drop a line.</p>
+        <form onsubmit="event.preventDefault(); alert('Thanks — message sent (simulated).')">
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <input required placeholder="Your name" style="flex:1;min-width:180px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit">
+            <input required type="email" placeholder="Email" style="flex:1;min-width:180px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit">
+          </div>
+          <textarea required placeholder="Message" rows="4" style="width:100%;margin-top:12px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit"></textarea>
+          <div style="margin-top:12px">
+            <button class="btn primary" type="submit">Send</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display:block" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 .5C5.73.5.87 5.36.87 11.63c0 4.77 3.09 8.8 7.39 10.23.54.1.74-.24.74-.53 0-.26-.01-.95-.01-1.87-3.01.65-3.65-1.46-3.65-1.46-.49-1.25-1.2-1.58-1.2-1.58-.98-.67.08-.66.08-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.65 2.52 1.17 3.14.9.1-.7.38-1.17.69-1.44-2.4-.27-4.94-1.2-4.94-5.33 0-1.18.42-2.14 1.11-2.9-.11-.27-.48-1.36.1-2.84 0 0 .92-.29 3.02 1.1.88-.24 1.82-.36 2.76-.36s1.88.12 2.76.36c2.1-1.39 3.02-1.1 3.02-1.1.58 1.48.21 2.57.1 2.84.69.76 1.11 1.72 1.11 2.9 0 4.14-2.55 5.06-4.98 5.32.39.34.73 1.01.73 2.03 0 1.47-.01 2.65-.01 3.01 0 .29.2.64.75.53 4.3-1.44 7.39-5.46 7.39-10.23C23.13 5.36 18.27.5 12 .5z" fill="currentColor"></path>
+          </svg>
+          <span>autogen-code</span>
+        </a>
+        <div class="created">Created by amirabolfazle</div>
+      </div>
+
+      <div style="text-align:right;color:var(--muted);font-size:13px">
+        <div>Creation time: 2025-09-29 01:43:08</div>
+        <div style="margin-top:6px;color:rgba(255,255,255,0.04);font-size:11px">© amirabolfazle</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up reveals using IntersectionObserver
+    (function(){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('reveal');
+            io.unobserve(e.target);
+          }
+        });
+      }, {threshold:0.12});
+
+      document.querySelectorAll('.feature, .slide-up').forEach(el=>{
+        io.observe(el);
+      });
+
+      // small focus styles for keyboard users
+      document.addEventListener('keyup', function(e){
+        if(e.key === 'Tab'){
+          document.documentElement.classList.add('show-focus');
+        }
+      });
+
+      // subtle floating for preview elements
+      const screen = document.querySelector('.preview .screen');
+      if(screen){
+        screen.addEventListener('mousemove', function(ev){
+          const r = this.getBoundingClientRect();
+          const dx = (ev.clientX - (r.left + r.width/2))/r.width;
+          const dy = (ev.clientY - (r.top + r.height/2))/r.height;
+          this.style.transform = 'translate3d(' + (dx*8) + 'px,' + (dy*8) + 'px,0) rotate(' + (dx*2) + 'deg)';
+        });
+        screen.addEventListener('mouseleave', function(){
+          this.style.transform = 'none';
+        });
+      }
+
+      // small intro animation
+      window.addEventListener('load', ()=>{
+        document.querySelectorAll('.slide-up').forEach((el,i)=>{
+          setTimeout(()=>el.classList.add('reveal'), 120 + i*80);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
