@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0b0f1a;
+    --bg2:#05060a;
+    --neon-cyan:#00f0ff;
+    --neon-pink:#ff2dcb;
+    --neon-purple:#8a2fff;
+    --glass: rgba(255,255,255,0.04);
+    --glass-2: rgba(255,255,255,0.02);
+    --accent: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan) 40%, var(--neon-purple) 100%);
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background: radial-gradient(1200px 400px at 10% 10%, rgba(138,47,255,0.06), transparent 8%),
+                radial-gradient(900px 300px at 90% 80%, rgba(0,240,255,0.03), transparent 8%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#e8faff;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* subtle grid */
+  .grid{
+    position:fixed;
+    inset:0;
+    background-image: linear-gradient(transparent 95%, rgba(255,255,255,0.02) 95%), linear-gradient(90deg, transparent 95%, rgba(255,255,255,0.02) 95%);
+    background-size: 60px 60px, 60px 60px;
+    mix-blend-mode: overlay;
+    pointer-events:none;
+    opacity:0.35;
+    transform:scale(1.05);
+  }
+
+  .wrap{
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6vh 6vw;
+    position:relative;
+    z-index:2;
+  }
+
+  .card{
+    width:100%;
+    max-width:980px;
+    padding:48px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow:
+      0 20px 60px rgba(2,6,23,0.6),
+      0 0 40px rgba(138,47,255,0.06),
+      inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(8px) saturate(120%);
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* neon header */
+  h1{
+    margin:0 0 10px 0;
+    font-size: clamp(32px, 6.2vw, 72px);
+    letter-spacing: -0.02em;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    color:transparent;
+    -webkit-text-stroke: 0.6px rgba(255,255,255,0.06);
+    text-shadow:
+      0 0 6px rgba(0,240,255,0.06),
+      0 0 12px rgba(138,47,255,0.04);
+  }
+
+  /* each letter neon */
+  .neon-letter{
+    display:inline-block;
+    color:var(--neon-cyan);
+    filter: drop-shadow(0 0 10px rgba(0,240,255,0.18)) drop-shadow(0 0 24px rgba(138,47,255,0.06));
+    mix-blend-mode: screen;
+    transform-origin: center;
+    opacity:0;
+    animation: fadePop .9s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+
+  /* gradient glow behind title */
+  .title-glow{
+    position:absolute;
+    inset:auto 8% 55% 8%;
+    height:200px;
+    pointer-events:none;
+    background: radial-gradient(closest-side, rgba(0,240,255,0.06), transparent 40%);
+    filter: blur(40px);
+    z-index:0;
+  }
+
+  .subtitle{
+    margin:0;
+    color: rgba(255,255,255,0.8);
+    font-size:14px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    opacity:0;
+    transform:translateY(8px);
+    animation:fadeInUp .9s .5s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+
+  .intro{
+    margin-top:22px;
+    color: rgba(230,245,255,0.95);
+    line-height:1.5;
+    font-size:16px;
+    max-width:70ch;
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeInUp .9s .8s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+
+  .meta{
+    margin-top:20px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    font-family:var(--mono);
+    font-size:13px;
+    color:rgba(200,245,255,0.9);
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeInUp .9s 1.0s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+
+  .badge{
+    padding:8px 12px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    color: var(--neon-pink);
+    font-weight:600;
+    font-size:13px;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+  .time{
+    color:rgba(180,240,255,0.9);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* footer */
+  footer{
+    margin-top:30px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:flex-end;
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeInUp .9s 1.2s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+  footer a{
+    color:inherit;
+    text-decoration:none;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    padding:8px 12px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.03);
+    transition: transform .18s ease, box-shadow .18s ease;
+    box-shadow: 0 8px 26px rgba(10,12,22,0.45), 0 0 18px rgba(138,47,255,0.02);
+  }
+  footer a:hover{ transform:translateY(-3px); box-shadow: 0 20px 40px rgba(10,12,22,0.6), 0 0 30px rgba(0,240,255,0.06); }
+
+  .github-icon{
+    width:20px;
+    height:20px;
+    display:inline-block;
+    filter: drop-shadow(0 0 6px rgba(0,240,255,0.06));
+  }
+
+  /* animated accent border */
+  .card::before{
+    content:'';
+    position:absolute;
+    inset:-2px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+    padding:2px;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    pointer-events:none;
+  }
+
+  /* floating blobs */
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    filter: blur(60px) saturate(140%);
+    opacity:0.12;
+    pointer-events:none;
+    mix-blend-mode: screen;
+    z-index:0;
+  }
+  .blob.a{ width:260px; height:260px; background:var(--neon-pink); left:-80px; top:-80px; animation:floatX 12s infinite ease-in-out; }
+  .blob.b{ width:360px; height:360px; background:var(--neon-cyan); right:-120px; bottom:-120px; animation:floatY 14s infinite ease-in-out; }
+
+  /* keyframes */
+  @keyframes fadePop{
+    0%{ opacity:0; transform: translateY(12px) scale(0.98) rotateX(6deg); filter: blur(8px); text-shadow:none;}
+    60%{ opacity:1; transform: translateY(-6px) scale(1.02) rotateX(0); filter: blur(0); }
+    100%{ opacity:1; transform: translateY(0) scale(1); }
+  }
+  @keyframes fadeInUp{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0px); }
+  }
+  @keyframes floatX{
+    0%{ transform: translateX(0) translateY(0) scale(1) }
+    50%{ transform: translateX(18px) translateY(-12px) scale(1.06) }
+    100%{ transform: translateX(0) translateY(0) scale(1) }
+  }
+  @keyframes floatY{
+    0%{ transform: translateY(0) translateX(0) scale(1) }
+    50%{ transform: translateY(-18px) translateX(10px) scale(1.04) }
+    100%{ transform: translateY(0) translateX(0) scale(1) }
+  }
+
+  /* fade-in for entire page */
+  .enter{
+    opacity:0;
+    transform: translateY(8px);
+    animation:pageIn .8s ease forwards;
+    animation-delay:.2s;
+  }
+  @keyframes pageIn{
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* responsive */
+  @media (max-width:600px){
+    .card{ padding:28px; border-radius:12px; }
+    .subtitle{ font-size:12px }
+    footer{ justify-content:center; }
+  }
+</style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="card enter" role="main" aria-label="Personal page for amirabolfazle">
+      <div class="title-glow" aria-hidden="true"></div>
+      <div class="blob a" aria-hidden="true"></div>
+      <div class="blob b" aria-hidden="true"></div>
+
+      <h1 id="title" aria-hidden="false" title="amirabolfazle">
+        <!-- letters filled by script for staggered neon -->
+      </h1>
+
+      <p class="subtitle">Neon · Animated · Personal Page</p>
+
+      <p class="intro">
+        Hi — I'm amirabolfazle. This page is a small neon-lit corner of the web, crafted with animated accents and soft glow effects. Tweak, copy, remix, or just enjoy the view.
+      </p>
+
+      <div class="meta">
+        <span class="badge">Creation time</span>
+        <time class="time" datetime="2025-09-28T15:05:52">2025-09-28 15:05:52</time>
+      </div>
+
+      <footer>
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg class="github-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 0.5C5.37 0.5 0 5.87 0 12.5C0 17.84 3.438 22.28 8.205 23.98C8.805 24.09 9.025 23.73 9.025 23.42C9.025 23.15 9.015 22.39 9.01 21.37C5.672 21.99 4.968 19.61 4.968 19.61C4.422 18.14 3.633 17.7 3.633 17.7C2.546 16.94 3.718 16.95 3.718 16.95C4.922 17.04 5.555 18.19 5.555 18.19C6.633 20.07 8.44 19.56 9.11 19.26C9.22 18.48 9.548 17.94 9.914 17.62C7.22 17.32 4.39 16.27 4.39 11.6C4.39 10.29 4.87 9.21 5.635 8.36C5.5 8.06 5.09 6.78 5.75 5.06C5.75 5.06 6.72 4.73 8.995 6.29C9.922 6.03 10.915 5.9 11.905 5.9C12.895 5.9 13.888 6.03 14.816 6.29C17.09 4.73 18.055 5.06 18.055 5.06C18.717 6.78 18.305 8.06 18.17 8.36C18.94 9.21 19.415 10.29 19.415 11.6C19.415 16.28 16.58 17.31 13.88 17.61C14.35 17.99 14.77 18.72 14.77 19.84C14.77 21.48 14.755 22.72 14.755 23.42C14.755 23.73 14.975 24.1 15.585 23.98C20.355 22.28 23.79 17.84 23.79 12.5C23.79 5.87 18.42 0.5 12 0.5Z" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#00f0ff"/>
+                <stop offset="1" stop-color="#ff2dcb"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span style="font-weight:600;color:rgba(200,245,255,0.95);">Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // Build neon title with staggered letters and per-letter delay
+    (function(){
+      const name = 'amirabolfazle';
+      const container = document.getElementById('title');
+      const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)'];
+      for(let i=0;i<name.length;i++){
+        const ch = name[i];
+        const span = document.createElement('span');
+        span.className = 'neon-letter';
+        span.textContent = ch;
+        // stagger delays
+        const delay = 0.06 * i;
+        span.style.animationDelay = (0.08 + delay) + 's';
+        // slight hue shift per letter
+        span.style.color = colors[i % colors.length];
+        span.style.textShadow = `0 0 10px ${getComputedStyle(document.documentElement).getPropertyValue('--neon-cyan')}, 0 0 22px ${getComputedStyle(document.documentElement).getPropertyValue('--neon-pink')}`;
+        container.appendChild(span);
+      }
+    })();
+
+    // simple floating particle canvas background (very light)
+    (function(){
+      const cvs = document.createElement('canvas');
+      cvs.style.position='fixed';
+      cvs.style.left=0; cvs.style.top=0;
+      cvs.style.width='100%'; cvs.style.height='100%';
+      cvs.style.zIndex=0;
+      cvs.style.pointerEvents='none';
+      cvs.style.opacity='0.12';
+      document.body.appendChild(cvs);
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const ctx = cvs.getContext('2d');
+      let W, H;
+      function resize(){
+        W = innerWidth; H = innerHeight;
+        cvs.width = Math.floor(W * dpr);
+        cvs.height = Math.floor(H * dpr);
+        cvs.style.width = W + 'px';
+        cvs.style.height = H + 'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+      addEventListener('resize', resize, {passive:true});
+      resize();
+
+      const particles = [];
+      const count = Math.round((W*H)/75000);
+      for(let i=0;i<count;i++){
+        particles.push({
+          x: Math.random()*W,
+          y: Math.random()*H,
+          r: 0.6 + Math.random()*2.2,
+          vx: (Math.random()-0.5)*0.2,
+          vy: (Math.random()-0.5)*0.15,
+          hue: 180 + Math.random()*120,
+          life: Math.random()*1
+        });
+      }
+
+      function step(){
+        ctx.clearRect(0,0,W,H);
+        for(const p of particles){
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life += 0.002;
+          if(p.x < -10) p.x = W + 10;
+          if(p.x > W + 10) p.x = -10;
+          if(p.y < -10) p.y = H + 10;
+          if(p.y > H + 10) p.y = -10;
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*12);
+          g.addColorStop(0, `hsla(${p.hue},100%,60%,${0.18 * Math.sin(p.life)+0.18})`);
+          g.addColorStop(1, `hsla(${p.hue},90%,40%,0)`);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r*12, 0, Math.PI*2);
+          ctx.fill();
+        }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    })();
+  </script>
+</body>
+</html>
