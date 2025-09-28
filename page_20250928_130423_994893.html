@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#0e1a2a;
+      --glow: rgba(170, 210, 255, 0.6);
+      --glass: rgba(255, 255, 255, 0.15);
+      --border: rgba(255, 255, 255, 0.35);
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+      --text: #eaf3ff;
+      --muted: rgba(234,246,255,.8);
+    }
+
+    /* Page base */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 15% 10%, rgba(120, 90, 230, 0.25), transparent 40%),
+                  radial-gradient(circle at 85% 85%, rgba(20, 210, 210, 0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0a0f1b 100%);
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated backdrop shapes for glassy vibe */
+    .orb {
+      position: fixed;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      filter: blur(40px);
+      z-index: 0;
+      opacity: 0.25;
+      animation: spin 60s linear infinite;
+      pointer-events: none;
+    }
+    .orb.one { background: radial-gradient(circle at 30% 30%, #8bd4ff, transparent 40%), rgba(139, 216, 255, 0.4);
+              top: -60px; left: -60px; }
+    .orb.two { background: radial-gradient(circle at 60% 60%, #ffd1f0, transparent 40%), rgba(255, 200, 250, 0.4);
+              bottom: -100px; right: -100px; animation-duration: 90s; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Layout container */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 48px 20px 96px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    /* Glass card style */
+    .glass {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    header.site-header {
+      width: min(1100px, 92vw);
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header.site-header h1 {
+      font-size: clamp(28px, 4vw, 64px);
+      margin: 8px 0 6px;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      color: #f5faff;
+      text-shadow: 0 2px 16px rgba(0,0,0,.25);
+      transform: rotate(-1deg);
+      transition: transform 0.6s ease;
+    }
+
+    header.site-header:hover h1 { transform: rotate(0deg); }
+
+    .subtitle {
+      margin: 6px 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .creation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #e7f2ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    main.portfolio {
+      width: min(1100px, 92vw);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 8px;
+    }
+
+    .card {
+      position: relative;
+      min-height: 260px;
+      padding: 18px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.25);
+      transition: transform 0.6s cubic-bezier(.22,.61,.36,1), box-shadow .4s;
+      transform-style: preserve-3d;
+      will-change: transform;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 8px 28px rgba(0,0,0,.25);
+    }
+
+    .card:hover {
+      transform: rotateY(8deg) rotateX(4deg);
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    }
+
+    .card .thumb {
+      height: 110px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(135, 180, 255, 0.8), rgba(135, 180, 255, 0.2));
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0a1b3d;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      font-size: 11px;
+      box-shadow: inset 0 0 12px rgba(255,255,255,.4);
+    }
+
+    .card h3 {
+      margin: 6px 0 8px;
+      font-size: 16px;
+      color: #f7fbff;
+    }
+
+    .card p {
+      margin: 0;
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .card .tags {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.15);
+      color: #eaf2ff;
+    }
+
+    /* Footer */
+    footer.site-footer {
+      width: min(1100px, 92vw);
+      margin-top: auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #e8f2ff;
+      font-size: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    footer.site-footer a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px;
+      margin-right: 6px;
+      color: #eaf2ff;
+      text-decoration: none;
+    }
+
+    footer.site-footer svg {
+      width: 22px; height: 22px;
+      fill: currentColor;
+      transition: transform .3s ease;
+    }
+
+    footer.site-footer a:hover svg {
+      transform: rotate(-12deg) scale(1.05);
+    }
+
+    @media (max-width: 720px){
+      header.site-header { padding: 20px 14px; }
+      main.portfolio { grid-template-columns: 1fr 1fr; }
+      .orb { display: none; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="site-header glass" aria-label="Intro header">
+      <h1>amirabolfazle</h1>
+      <div class="subtitle" aria-label="Subtitle">Glassmorphism • Animated Portfolio</div>
+      <div class="creation" aria-label="Creation time">Creation time: 2025-09-28 13:03:53</div>
+    </header>
+
+    <main class="portfolio" aria-label="Portfolio grid">
+      <section class="glass card" tabindex="0" aria-label="Project 1">
+        <div class="thumb">Project</div>
+        <div>
+          <h3>Project Aurora</h3>
+          <p>A sleek, glassy landing page prototype with subtle 3D tilt on hover and soft glow effects.</p>
+          <div class="tags">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">UI</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass card" tabindex="0" aria-label="Project 2">
+        <div class="thumb" style="background: linear-gradient(135deg, rgba(180, 240, 255, 0.9), rgba(180, 240, 180, 0.4));">Demo</div>
+        <div>
+          <h3>Glass Motion Studio</h3>
+          <p>Interactive animations using CSS transforms and perspective for a modern portfolio feel.</p>
+          <div class="tags">
+            <span class="tag">CSS</span><span class="tag">Animation</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass card" tabindex="0" aria-label="Project 3">
+        <div class="thumb" style="background: linear-gradient(135deg, rgba(255,210,150,0.9), rgba(255,150,200,0.5));">Demo</div>
+        <div>
+          <h3>Portfolio Microsite</h3>
+          <p>A compact, one-file portfolio with a focus on glassmorphism aesthetics and responsive layout.</p>
+          <div class="tags">
+            <span class="tag">RESP</span><span class="tag">GLASS</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass card" tabindex="0" aria-label="Project 4">
+        <div class="thumb" style="background: linear-gradient(135deg, rgba(120, 200, 255, 0.95), rgba(120,255,240,0.5));">Code</div>
+        <div>
+          <h3>Autogen Components</h3>
+          <p>Inline, self-contained UI blocks with subtle depth and hover rotation for a playful vibe.</p>
+          <div class="tags">
+            <span class="tag">JS</span><span class="tag">UI</span><span class="tag">WebGL-lite</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass card" tabindex="0" aria-label="Project 5">
+        <div class="thumb" style="background: linear-gradient(135deg, rgba(200,255,210,0.95), rgba(180,200,255,0.5));">Demo</div>
+        <div>
+          <h3>Glyph Gallery</h3>
+          <p>Minimal typography-driven gallery with frosted glass panels and motion on hover.</p>
+          <div class="tags">
+            <span class="tag">Typography</span><span class="tag">CSS</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass card" tabindex="0" aria-label="Project 6">
+        <div class="thumb" style="background: linear-gradient(135deg, rgba(255,210,220,0.95), rgba(210,255,210,0.5));">Demo</div>
+        <div>
+          <h3>Dreamgrid Labs</h3>
+          <p>Concept blocks demonstrating glassy cards with gentle shadows and hover tilt for depth.</p>
+          <div class="tags">
+            <span class="tag">Concept</span><span class="tag">UI</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer glass" aria-label="Footer with credits">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 2C6.477 2 2 6.58 2 12.28c0 4.52 2.87 8.35 6.84 9.71.5.09.69-.22.69-.49 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.27-3.37-1.27-.45-1.2-1.1-1.52-1.1-1.52-.9-.63.07-.62.07-.62 1 .07 1.53 1.04 1.53 1.04.89 1.59 2.34 1.13 2.91.86.09-.66.35-1.13.64-1.39-2.22-.26-4.56-1.16-4.56-5.16 0-1.14.41-2.07 1.09-2.8-.11-.27-.47-1.38.11-2.87 0 0 .89-.29 2.92 1.08a10.13 10.13 0 012.66-.38c.9.01 1.81.12 2.66.38 2.03-1.37 2.92-1.08 2.92-1.08.58 1.49.22 2.6.11 2.87.68.73 1.09 1.66 1.09 2.8 0 4-.34 4.89-4.12 5.13.36.32.68.94.68 1.91 0 1.38-.01 2.49-.01 2.83 0 .27.18.59.7.48A10.01 10.01 0 0022 12.28C22 6.58 17.523 2 12 2z"/>
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <!-- Optional tiny script to subtly enhance hover depth on touch devices -->
+  <script>
+    // Add a tiny tilt effect on touch devices by listening to pointer movement within cards
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        let w = card.clientWidth, h = card.clientHeight;
+        card.addEventListener('pointermove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / w;
+          const y = (e.clientY - rect.top) / h;
+          const rx = (y - 0.5) * -12; // tilt along X
+          const ry = (x - 0.5) * 12;  // tilt along Y
+          card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+          card.style.transition = 'transform 0s';
+        });
+        card.addEventListener('pointerleave', () => {
+          card.style.transform = '';
+          card.style.transition = 'transform 0.6s cubic-bezier(.22,.61,.36,1)';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
