@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg الأولى: #0b0b14;
+      --bg2: #0a0a1a;
+      --cyan: #00eaff;
+      --magenta: #ff00ff;
+      --neon: #00f5ff;
+      --text: #e6faff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(135deg, #050511 0%, #0a0a1a 40%, #040418 100%);
+      color: #eafffe;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      overflow-x: hidden;
+    }
+
+    /* animated neon background grid */
+    .neon-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 0%, rgba(0, 238, 255, 0.08), transparent 40%),
+                  radial-gradient(circle at 80% 15%, rgba(255, 0, 255, 0.08), transparent 40%);
+      animation: pulse 6s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.02); opacity: 1; }
+    }
+
+    /* subtle moving neon grid overlay */
+    .grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,255,0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,255,0.15) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.4;
+      animation: drift 20s linear infinite;
+    }
+    @keyframes drift { 
+      0% { transform: translateZ(0); } 
+      50% { transform: translateX(-20px); } 
+      100% { transform: translateX(0); } 
+    }
+
+    .container {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    /* Neon title with bounce */
+    .title {
+      font-weight: 900;
+      font-size: clamp(48px, 12vw, 128px);
+      line-height: 1.05;
+      letter-spacing: .5px;
+      margin: 0 0 16px 0;
+      background: linear-gradient(90deg, #00eaff 0%, #ff00ff 50%, #00ffa9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 6px rgba(0,255,255,0.9),
+        0 0 14px rgba(0,255,255,0.8),
+        0 0 28px rgba(255,0,255,0.9);
+      animation: bounce 1.6s ease-out;
+    }
+    @keyframes bounce {
+      0%   { transform: translateY(-120px); opacity: 0; }
+      60%  { transform: translateY(8px); opacity: 1; }
+      100% { transform: translateY(0); }
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #d7faff;
+      opacity: 0.95;
+      margin-bottom: 18px;
+      letter-spacing: 0.4px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      color: #021018;
+      background: linear-gradient(135deg, #00f5ff, #8a00ff 70%);
+      box-shadow: 0 6px 20px rgba(0, 245, 255, 0.65), inset 0 0 12px rgba(255,255,255,0.25);
+      transform: translateZ(0);
+      animation: floaty 3s ease-in-out infinite;
+      text-decoration: none;
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .cta:hover {
+      animation: none;
+      transform: scale(1.04);
+      box-shadow: 0 10px 28px rgba(0, 245, 255, 0.9);
+    }
+
+    .creation {
+      display: inline-block;
+      margin-top: 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 13px;
+      color: #a6f6ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.4);
+      background: rgba(0, 255, 255, 0.08);
+    }
+
+    /* footer with GitHub icon and attribution */
+    footer {
+      position: fixed;
+      bottom: 16px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      color: #bceaff;
+      font-size: 14px;
+    }
+    .github {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(0, 255, 255, 0.15);
+      transition: transform 0.2s ease;
+      color: #bfefff;
+    }
+    .github:hover { transform: translateY(-1px); }
+    .footer-text {
+      opacity: 0.95;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .title { font-size: 60px; }
+      .creation { display: inline-block; margin-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="neon-bg" aria-hidden="true"></div>
+  <div class="grid" aria-hidden="true"></div>
+
+  <main class="container" role="main">
+    <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+    <div class="subtitle">Neon landing page with bounce effects</div>
+    <a href="#" class="cta" aria-label="Explore">
+      Explore
+    </a>
+    <div class="creation" aria-label="Creation time">
+      Creation time: 2025-09-28 09:10:57
+    </div>
+  </main>
+
+  <footer role="contentinfo">
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="GitHub">
+        <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.89.57.1.78-.25.78-.56 0-.28-.01-1.02-.02-2.02-3.19.69-3.87-1.37-3.87-1.37-.52-1.32-1.26-1.68-1.26-1.68-.99-.68.08-.66.08-.66 1.1.08 1.68 1.16 1.68 1.16 0 .85.55 1.41 1.07 1.74.08-.23.34-.48.62-.61-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.19a11.1 11.1 0 015.8 0c2.21-1.5 3.18-1.19 3.18-1.19.63 1.59.23 2.76.11 3.05.74.8 1.19 1.82 1.19 3.08 0 4.43-2.68 5.41-5.24 5.69.41.36.78 1.08.78 2.18 0 1.57-.01 2.84-.01 3.23 0 .31.21.65.79.56A10.99 10.99 0 0012 .5z"/>
+      </svg>
+    </a>
+    <span class="footer-text">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
