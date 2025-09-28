@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f2027;
+      --bg2:#203a43;
+      --bg3:#2c5364;
+      --card:#ffffff;
+      --muted:#cbd5e1;
+      --accent-start:#ff7e5f;
+      --accent-end:#feb47b;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.03);
+      --radius:16px;
+      --max-width:1000px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--card);
+      background: radial-gradient(600px 400px at 10% 20%, rgba(255,126,95,0.12), transparent),
+                  linear-gradient(120deg,var(--bg1),var(--bg2) 40%,var(--bg3) 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:var(--max-width);
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:24px;
+      align-items:start;
+      position:relative;
+    }
+
+    header.site{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:12px;
+      padding:18px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.45);
+      backdrop-filter: blur(6px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo{
+      width:54px;
+      height:54px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:white;
+      font-size:18px;
+      box-shadow: 0 6px 18px rgba(255,126,95,0.18);
+      transform: rotate(-6deg);
+    }
+
+    h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.6px;
+      color:var(--card);
+    }
+
+    .meta{
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    main.cards{
+      display:grid;
+      grid-template-columns: repeat( auto-fit, minmax(240px, 1fr) );
+      gap:18px;
+      align-items:start;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.35);
+      border: 1px solid rgba(255,255,255,0.03);
+      min-height:120px;
+      transform-origin:center;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .card .title{
+      font-size:15px;
+      color:var(--card);
+      margin:0 0 8px 0;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
+    }
+
+    .creation{
+      font-family:monospace;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:10px 14px;
+      border-radius:10px;
+      display:inline-block;
+      color:var(--muted);
+      font-size:13px;
+      box-shadow: inset 0 -6px 18px rgba(0,0,0,0.2);
+    }
+
+    footer.site-footer{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      padding:14px 18px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--muted);
+      font-size:14px;
+      margin-top:6px;
+      border: 1px solid rgba(255,255,255,0.02);
+    }
+
+    a.gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:8px;
+      transition: all 220ms ease;
+      background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    a.gh:hover{
+      transform:translateY(-4px);
+      color:white;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    }
+
+    .gh svg{
+      width:20px;
+      height:20px;
+      display:block;
+      fill:var(--card);
+      opacity:0.9;
+    }
+
+    /* Animated float shapes */
+    .float-shape{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(28px);
+      opacity:0.12;
+      pointer-events:none;
+      transform: translate3d(0,0,0);
+    }
+    .shape-a{
+      width:300px;
+      height:300px;
+      right:-80px;
+      top:-100px;
+      background: radial-gradient(circle at 30% 30%, var(--accent-start), transparent 40%);
+      animation: floatA 8s ease-in-out infinite;
+    }
+    .shape-b{
+      width:220px;
+      height:220px;
+      left:-90px;
+      bottom:-80px;
+      background: radial-gradient(circle at 70% 40%, var(--accent-end), transparent 40%);
+      animation: floatB 10s ease-in-out infinite;
+    }
+
+    @keyframes floatA{
+      0%{transform: translateY(0) rotate(0deg)}
+      50%{transform: translateY(-18px) rotate(6deg)}
+      100%{transform: translateY(0) rotate(0deg)}
+    }
+    @keyframes floatB{
+      0%{transform: translateY(0) rotate(0deg)}
+      50%{transform: translateY(22px) rotate(-8deg)}
+      100%{transform: translateY(0) rotate(0deg)}
+    }
+
+    /* Slide-up effect */
+    .slide-up{
+      opacity:0;
+      transform: translateY(20px) scale(0.995);
+      will-change: opacity, transform;
+    }
+    .slide-up.in{
+      animation: slideUpFade 600ms cubic-bezier(.2,.95,.2,1) forwards;
+    }
+
+    @keyframes slideUpFade{
+      0%{opacity:0; transform: translateY(20px) scale(0.995)}
+      60%{opacity:0.9; transform: translateY(-6px) scale(1.002)}
+      100%{opacity:1; transform: translateY(0) scale(1)}
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:640px){
+      header.site{flex-direction:column; align-items:flex-start}
+      .logo{width:48px;height:48px}
+      .creation{font-size:12px}
+      body{padding:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <div class="float-shape shape-a" aria-hidden="true"></div>
+    <div class="float-shape shape-b" aria-hidden="true"></div>
+
+    <header class="site slide-up" data-anim>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">am</div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="meta">
+            <span class="creation">2025-09-29 02:29:51</span>
+            <span aria-hidden="true">•</span>
+            <span>Fully responsive • Gradient theme</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="meta" aria-label="intro">
+        <span class="slide-up" data-anim style="display:inline-block">Slide-up animations</span>
+        <span class="slide-up" data-anim style="display:inline-block">Accessible</span>
+      </nav>
+    </header>
+
+    <main class="cards" aria-live="polite">
+      <section class="card slide-up" data-anim>
+        <h2 class="title">Responsive layout</h2>
+        <p>Grid adapts across devices — cards scale and rearrange smoothly from phones to large screens.</p>
+      </section>
+
+      <section class="card slide-up" data-anim>
+        <h2 class="title">Animated accents</h2>
+        <p>Soft floating gradients and subtle shadows add depth without distracting from content.</p>
+      </section>
+
+      <section class="card slide-up" data-anim>
+        <h2 class="title">Performance-minded</h2>
+        <p>Lightweight CSS animations and a minimal DOM ensure smooth interactions and low CPU cost.</p>
+      </section>
+
+      <section class="card slide-up" data-anim>
+        <h2 class="title">Customizable</h2>
+        <p>Colors, timings and layout are controlled with CSS variables for easy theming.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer slide-up" data-anim>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open amirabolfazle autogen-code on GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.65.5.5 5.66.5 12.02c0 5.09 3.29 9.41 7.86 10.94.57.1.78-.25.78-.55 0-.27-.01-1-.02-1.95-3.2.7-3.87-1.38-3.87-1.38-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.75.4-1.25.72-1.54-2.56-.29-5.26-1.28-5.26-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.48.11-3.08 0 0 .96-.31 3.15 1.18a11.03 11.03 0 0 1 2.87-.39c.97.01 1.95.13 2.87.39 2.18-1.49 3.14-1.18 3.14-1.18.62 1.6.23 2.79.11 3.08.74.81 1.17 1.84 1.17 3.1 0 4.42-2.71 5.39-5.29 5.67.41.35.78 1.05.78 2.12 0 1.53-.02 2.76-.02 3.14 0 .31.2.66.79.55A11.54 11.54 0 0 0 23.5 12.02C23.5 5.66 18.35.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Staggered slide-up on load
+    (function(){
+      const items = Array.from(document.querySelectorAll('[data-anim]'));
+      items.forEach((el,i)=>{
+        el.classList.add('slide-up'); // ensure has base class
+        // stagger delay
+        const delay = 80 * i;
+        el.style.animationDelay = delay + 'ms';
+        // Use requestAnimationFrame to allow CSS to pick up delay before adding 'in'
+        requestAnimationFrame(()=>{
+          setTimeout(()=> el.classList.add('in'), 20 + delay);
+        });
+      });
+
+      // Re-animate on focus = accessibility tweak: if user tabs to content, animate briefly
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Tab'){
+          items.forEach((el,i)=>{
+            el.classList.remove('in');
+            void el.offsetWidth;
+            setTimeout(()=> el.classList.add('in'), 50 + i*60);
+          });
+        }
+      }, {once:true});
+    })();
+  </script>
+</body>
+</html>
