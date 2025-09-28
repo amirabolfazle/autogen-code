@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#071021;
+    --panel:#0f1724;
+    --muted:#9aa6b2;
+    --accent:#6ee7b7;
+    --accent-2:#7c5cff;
+    --glass: rgba(255,255,255,0.03);
+    --glow: 0 6px 30px rgba(124,92,255,0.15), 0 1px 2px rgba(0,0,0,0.6);
+    --radius:14px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(800px 400px at 10% 10%, rgba(124,92,255,0.08), transparent 6%),
+      radial-gradient(700px 300px at 90% 90%, rgba(110,231,183,0.04), transparent 8%),
+      var(--bg);
+    color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    padding:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+  }
+
+  /* container */
+  .card{
+    width:min(1080px,96vw);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius);
+    padding:32px;
+    box-shadow:var(--glow);
+    position:relative;
+    overflow:hidden;
+    backdrop-filter: blur(8px) saturate(120%);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* animated background shapes */
+  .blob{
+    position:absolute;
+    filter:blur(40px) saturate(120%);
+    opacity:0.18;
+    mix-blend-mode:screen;
+    pointer-events:none;
+    transform-origin:center;
+  }
+  .blob.one{width:340px;height:340px;background:radial-gradient(circle at 30% 30%, var(--accent), transparent 40%); left:-80px; top:-80px; animation:floatA 9s ease-in-out infinite;}
+  .blob.two{width:260px;height:260px;background:radial-gradient(circle at 40% 40%, var(--accent-2), transparent 40%); right:-60px; bottom:-80px; animation:floatB 11s ease-in-out infinite; opacity:0.16;}
+  .blob.three{width:160px;height:160px;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 60%); left:50%; top:-40px; transform:translateX(-50%); animation:floatC 8s ease-in-out infinite;}
+
+  @keyframes floatA{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(8deg)}100%{transform:translateY(0) rotate(0deg)}}
+  @keyframes floatB{0%{transform:translateY(0) rotate(6deg)}50%{transform:translateY(20px) rotate(-6deg)}100%{transform:translateY(0) rotate(6deg)}}
+  @keyframes floatC{0%{transform:translateY(0) translateX(-50%) rotate(0deg)}50%{transform:translateY(-12px) translateX(-50%) rotate(4deg)}100%{transform:translateY(0) translateX(-50%) rotate(0deg)}}
+
+  /* layout */
+  header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:18px;
+  }
+  .logo{
+    width:64px;height:64px;border-radius:12px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:20px;color:var(--accent);
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 2px 6px rgba(124,92,255,0.06);
+  }
+  h1{
+    margin:0;
+    font-size:34px;
+    letter-spacing:-0.02em;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .tagline{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+  }
+
+  /* type accent */
+  .accent{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  main{
+    display:grid;
+    grid-template-columns: 1fr 340px;
+    gap:24px;
+    align-items:start;
+  }
+
+  /* left column */
+  .intro{
+    background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+    border-radius:12px;
+    padding:20px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .about{
+    color:var(--muted);
+    line-height:1.6;
+    margin:0 0 14px 0;
+  }
+
+  .chips{
+    display:flex;gap:10px;flex-wrap:wrap;
+  }
+  .chip{
+    background:var(--glass);
+    color:var(--accent);
+    padding:8px 12px;border-radius:999px;font-weight:600;font-size:13px;border:1px solid rgba(255,255,255,0.02);
+    box-shadow:0 4px 18px rgba(0,0,0,0.45);
+  }
+
+  /* project cards */
+  .projects{margin-top:16px;display:grid;gap:12px}
+  .project{
+    display:flex;align-items:center;gap:14px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .p-thumb{
+    width:62px;height:52px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#022;box-shadow:0 8px 30px rgba(124,92,255,0.08);
+  }
+  .p-info{flex:1}
+  .p-title{margin:0;font-size:15px}
+  .p-desc{margin:4px 0 0 0;color:var(--muted);font-size:13px}
+
+  /* right column */
+  aside{
+    position:relative;
+  }
+  .card-stats{
+    padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .stat{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;
+  }
+  .stat strong{font-size:18px}
+  .small{font-size:13px;color:var(--muted)}
+
+  /* footer */
+  footer{
+    margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--muted);font-size:13px;
+  }
+  .gh{
+    display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);background:rgba(255,255,255,0.005)
+  }
+  .gh svg{width:18px;height:18px;display:block;fill:var(--muted)}
+  .gh:hover svg{fill:var(--accent-2)}
+  .gh:hover{color:var(--accent-2)}
+  .created{color:var(--muted)}
+
+  /* fade-in animations */
+  .card, .blob{opacity:0; transform: translateY(6px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.9,.3,1); }
+  body.loaded .card, body.loaded .blob{opacity:1; transform:none;}
+  header, .intro, .projects, .card-stats, footer{opacity:0; transform:translateY(10px); transition: all 700ms cubic-bezier(.2,.9,.3,1); }
+  body.loaded header{opacity:1; transform:none; transition-delay:120ms;}
+  body.loaded .intro{opacity:1; transform:none; transition-delay:240ms;}
+  body.loaded .projects{opacity:1; transform:none; transition-delay:360ms;}
+  body.loaded .card-stats{opacity:1; transform:none; transition-delay:420ms;}
+  body.loaded footer{opacity:1; transform:none; transition-delay:520ms;}
+
+  /* subtle hover effects */
+  .project:hover{transform:translateY(-6px); transition:transform 260ms ease; box-shadow:0 12px 40px rgba(0,0,0,0.5)}
+  .chip:hover{transform:translateY(-4px); transition:transform 220ms ease}
+
+  /* responsive */
+  @media (max-width:880px){
+    main{grid-template-columns:1fr; }
+    aside{order:2}
+  }
+
+  /* small utilities */
+  .muted{color:var(--muted)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .time{font-weight:600;color:var(--muted);font-size:13px}
+
+  /* heading sparkle cursor */
+  .cursor{
+    width:10px;height:24px;background:linear-gradient(180deg,var(--accent-2),var(--accent));
+    margin-left:6px;border-radius:3px;opacity:0.95;animation:blink 1.2s steps(2) infinite;
+    display:inline-block;vertical-align:middle;
+  }
+  @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+</style>
+</head>
+<body>
+  <div class="card" role="main" aria-label="amirabolfazle portfolio single file">
+    <div class="blob one" aria-hidden="true"></div>
+    <div class="blob two" aria-hidden="true"></div>
+    <div class="blob three" aria-hidden="true"></div>
+
+    <header>
+      <div class="logo" aria-hidden="true">aB</div>
+      <div>
+        <h1>
+          <span class="accent">amirabolfazle</span>
+          <span class="cursor" aria-hidden="true"></span>
+        </h1>
+        <div class="tagline">Creative developer • Interactive UIs • Lightweight, fast</div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="time mono">Created on: 2025-09-28 21:34:41</div>
+        <div class="small muted">Single-file animated portfolio</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="aboutHeading">
+        <h2 id="aboutHeading" style="margin:0 0 8px 0">About</h2>
+        <p class="about">I'm amirabolfazle — I build subtle, high-performance experiences with a focus on clean visuals, delightful motion and readable code. I like small bundles, big ideas, and interfaces that feel alive.</p>
+
+        <div style="display:flex;gap:12px;align-items:center;margin-top:14px">
+          <div class="chips" role="list">
+            <div class="chip" role="listitem">JavaScript</div>
+            <div class="chip" role="listitem">UI/UX</div>
+            <div class="chip" role="listitem">HTML · CSS</div>
+            <div class="chip" role="listitem">Animations</div>
+          </div>
+        </div>
+
+        <div class="projects" aria-label="projects">
+          <div class="project" title="Project: Autogen Code">
+            <div class="p-thumb">AC</div>
+            <div class="p-info">
+              <p class="p-title">Autogen Code</p>
+              <p class="p-desc">Small tooling that turns prompts into structured, testable code — minimal, fast, and pragmatic.</p>
+            </div>
+            <div class="small muted mono">2025</div>
+          </div>
+
+          <div class="project" title="Project: Interactive UI Kit">
+            <div class="p-thumb">UI</div>
+            <div class="p-info">
+              <p class="p-title">Interactive UI Kit</p>
+              <p class="p-desc">A component collection designed for motion-forward interfaces and accessibility.</p>
+            </div>
+            <div class="small muted mono">2024</div>
+          </div>
+
+          <div class="project" title="Project: Tiny Animations">
+            <div class="p-thumb">AN</div>
+            <div class="p-info">
+              <p class="p-title">Tiny Animations</p>
+              <p class="p-desc">Library of lightweight, composable CSS/JS motion utilities.</p>
+            </div>
+            <div class="small muted mono">2023</div>
+          </div>
+        </div>
+      </section>
+
+      <aside>
+        <div class="card-stats" aria-label="stats">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div>
+              <div class="small muted">Availability</div>
+              <div style="font-weight:700">Open for work</div>
+            </div>
+            <div style="text-align:right">
+              <div class="small muted">Experience</div>
+              <div style="font-weight:700">7+ yrs</div>
+            </div>
+          </div>
+
+          <div style="height:8px;background:rgba(255,255,255,0.02);border-radius:999px;overflow:hidden;margin:14px 0 18px 0">
+            <div style="width:68%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));"></div>
+          </div>
+
+          <div class="stat"><span class="small muted">Design → Code</span><strong>Pixel-perfect</strong></div>
+          <div class="stat"><span class="small muted">Performance</span><strong>Sub-100KB</strong></div>
+          <div class="stat"><span class="small muted">Motion</span><strong>Smooth & subtle</strong></div>
+
+          <div style="margin-top:14px">
+            <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository autogen-code">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 .5C5.748.5.98 5.27.98 11.52c0 4.67 3.022 8.633 7.217 10.03.527.098.72-.23.72-.51 0-.25-.01-.92-.015-1.8-2.936.64-3.56-1.414-3.56-1.414-.48-1.218-1.172-1.543-1.172-1.543-.958-.655.073-.64.073-.64 1.06.074 1.62 1.088 1.62 1.088.94 1.604 2.468 1.142 3.07.873.096-.68.367-1.142.668-1.405-2.345-.267-4.812-1.175-4.812-5.233 0-1.156.414-2.1 1.09-2.84-.109-.268-.473-1.35.104-2.814 0 0 .887-.284 2.907 1.083a10.06 10.06 0 0 1 2.645-.356c.897.004 1.803.121 2.646.357 2.019-1.367 2.905-1.083 2.905-1.083.579 1.464.215 2.546.106 2.814.678.74 1.088 1.684 1.088 2.84 0 4.07-2.472 4.964-4.826 5.223.378.327.715.97.715 1.956 0 1.411-.013 2.549-.013 2.897 0 .283.19.613.727.51C19.99 20.144 23.01 16.178 23.01 11.52 23.01 5.27 18.246.5 12 .5z"/>
+              </svg>
+              <span>Repository</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="created">Created by amirabolfazle</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub: amirabolfazle/autogen-code">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 .5C5.748.5.98 5.27.98 11.52c0 4.67 3.022 8.633 7.217 10.03.527.098.72-.23.72-.51 0-.25-.01-.92-.015-1.8-2.936.64-3.56-1.414-3.56-1.414-.48-1.218-1.172-1.543-1.172-1.543-.958-.655.073-.64.073-.64 1.06.074 1.62 1.088 1.62 1.088.94 1.604 2.468 1.142 3.07.873.096-.68.367-1.142.668-1.405-2.345-.267-4.812-1.175-4.812-5.233 0-1.156.414-2.1 1.09-2.84-.109-.268-.473-1.35.104-2.814 0 0 .887-.284 2.907 1.083a10.06 10.06 0 0 1 2.645-.356c.897.004 1.803.121 2.646.357 2.019-1.367 2.905-1.083 2.905-1.083.579 1.464.215 2.546.106 2.814.678.74 1.088 1.684 1.088 2.84 0 4.07-2.472 4.964-4.826 5.223.378.327.715.97.715 1.956 0 1.411-.013 2.549-.013 2.897 0 .283.19.613.727.51C19.99 20.144 23.01 16.178 23.01 11.52 23.01 5.27 18.246.5 12 .5z"/>
+          </svg>
+          <span>amirabolfazle/autogen-code</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+<script>
+  // Small boot animation class toggler
+  window.addEventListener('load', function(){
+    requestAnimationFrame(function(){
+      document.body.classList.add('loaded');
+    });
+  });
+</script>
+</body>
+</html>
