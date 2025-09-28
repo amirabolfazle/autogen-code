@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f9f4f9;
+      --card: #ffffff;
+      --text: #2b2b2b;
+      --mint: #b8f7d9;
+      --pink: #ffd9e9;
+      --lav: #d6d6ff;
+      --blue: #cfe0ff;
+      --shadow: 0 6px 18px rgba(0,0,0,.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #fffefb 0%, #f6fbff 60%, #f9f0ff 100%);
+      overflow-x: hidden;
+    }
+
+    /* Subtle pastel floating background elements */
+    .orbs { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 0; }
+    .orb {
+      position: absolute; width: 180px; height: 180px; border-radius: 50%;
+      opacity: 0.85; filter: blur(0.3px);
+      animation: float 14s ease-in-out infinite;
+    }
+    .orb.one { background: #ffd6e6; left: -40px; top: 8%; animation-duration: 16s; }
+    .orb.two { background: #d6f0ff; right: -60px; top: 28%; animation-duration: 20s; animation-direction: reverse; }
+    .orb.three { background: #e3ffd9; left: 25%; bottom: -60px; animation-duration: 18s; }
+    .orb.four { background: #e6e0ff; right: 10%; bottom: 8%; animation-duration: 22s; }
+
+    @keyframes float {
+      0%,100% { transform: translate(0, 0) scale(1); opacity: 0.85; }
+      50% { transform: translate(20px, -40px) scale(1.05); opacity: 1; }
+    }
+
+    /* Layout container */
+    .wrap { position: relative; z-index: 1; min-height: 100%; display: flex; flex-direction: column; }
+
+    header {
+      text-align: center;
+      padding: clamp(2rem, 6vw, 4rem) 1rem 1.5rem;
+    }
+
+    /* Animated title with per-letter bounce */
+    #site-title {
+      font-family: "Trebuchet MS", Tahoma, sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.4rem, 8vw, 5rem);
+      line-height: 1.05;
+      margin: 0;
+      color: #6b4bd6;
+      letter-spacing: .5px;
+      text-transform: none;
+      display: inline-block;
+    }
+    .bounce-letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(-20px);
+      color: #6b4bd6;
+      animation: bounceIn 0.6s forwards;
+    }
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      60% { opacity: 1; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .creation-time {
+      margin-top: .6rem;
+      font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+      color: #555;
+    }
+
+    main.content {
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem 3rem;
+      flex: 1;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: clamp(1.2rem, 4vw, 2.25rem);
+      width: min(860px, 90vw);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 1rem;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .tagline {
+      font-size: clamp(1rem, 3vw, 1.15rem);
+      color: #555;
+      margin: 0;
+    }
+
+    .cta {
+      background: linear-gradient(135deg, #ffd6e6 0%, #b8f0f2 100%);
+      color: #1a1a1a;
+      border: 0;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 6px 14px rgba(0,0,0,.08);
+    }
+    .cta:hover { transform: translateY(-1px) scale(1.02); }
+    .cta:active { transform: translateY(0) scale(0.98); }
+
+    /* Gentle decorative grid in pastel tones for depth */
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(transparent 23px, rgba(0,0,0,.03) 24px),
+                        linear-gradient(90px, transparent 23px, rgba(0,0,0,.03) 24px);
+      background-size: 24px 24px;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.0));
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.0));
+      opacity: .04;
+      pointer-events: none;
+    }
+
+    footer.footer {
+      margin-top: auto;
+      padding: 1.25rem 1rem;
+      text-align: center;
+      background: linear-gradient(135deg, #fffaff 0%, #f7fbff 60%, #fffaf0 100%);
+      border-top: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+    footer .github {
+      display: inline-flex; align-items: center; gap: .5rem;
+      text-decoration: none; color: #333;
+      padding: .4rem .6rem; border-radius: 8px;
+      border: 1px solid rgba(0,0,0,.05);
+      background: #ffffff;
+    }
+    footer .github:hover { background: #f7f7f7; }
+    footer .credit { font-size: .95rem; color: #666; }
+
+    /* Responsive tweaks */
+    @media (max-width: 640px) {
+      .orb { width: 120px; height: 120px; }
+      #site-title { font-size: clamp(2rem, 12vw, 4rem); }
+    }
+  </style>
+</head>
+<body>
+  <div class="orbs" aria-hidden="true">
+    <span class="orb one"></span>
+    <span class="orb two"></span>
+    <span class="orb three"></span>
+    <span class="orb four"></span>
+  </div>
+
+  <div class="wrap">
+    <header aria-label="Site header">
+      <h1 id="site-title" aria-label="amirabolfazle">amirabolfazle</h1>
+      <div class="creation-time" title="Creation timestamp">Creation time: 2025-09-28 05:41:57</div>
+      <div class="grid" aria-hidden="true"></div>
+    </header>
+
+    <main class="content" role="main">
+      <section class="card" aria-label="Intro panel">
+        <p class="tagline" style="margin:0;">
+          A fully responsive animated HTML page with a pastel theme and bounce effects.
+        </p>
+        <button class="cta" onclick="doBounce(this)">Explore</button>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Footer">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <!-- GitHub SVG Icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="vertical-align:-2px;">
+          <path fill-rule="evenodd" d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.5 0-.25-.01-1.09-.02-2.01-2.78.62-3.37-1.22-3.37-1.22-.46-1.18-1.12-1.5-1.12-1.5-.92-.63.07-.62.07-.62 1.02.07 1.56 1.07 1.56 1.07 . Nine.99-2.5 0-2.5 0-.89-.54-.26-1.15-.26-1.15 1.01-.74 2.19-.37 2.79.08.26-.69.75-1.15 1.34-1.41-.23-.24-.42-.63-.42-1.27 0-.72.01-1.31.01-1.49 0-.28.18-.5.52-.52 1.22-.08 2.5-.38 2.5-2.2 0-.95-.03-1.72-.03-1.95 0-.28.18-.54.44-.63C9.77 6.9 11 5.3 11 3.7c0-.99.53-1.92 1.38-2.37C12.99 1.65 13.5 2.1 13.5 3c0 0 0-.01 0-.01C14 3 13.75 2.95 14 2.95 14 2.95 14 2.98 14 2.98l-.5.02z" />
+        </svg>
+        GitHub
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Per-letter bounce animation for the title
+    document.addEventListener('DOMContentLoaded', () => {
+      const title = document.getElementById('site-title');
+      const text = title.textContent;
+      title.textContent = '';
+      text.split('').forEach((ch, i) => {
+        const span = document.createElement('span');
+        span.textContent = ch;
+        span.className = 'bounce-letter';
+        span.style.animationDelay = (i * 60) + 'ms';
+        title.appendChild(span);
+      });
+    });
+
+    // Simple bounce on button click for a playful feel
+    function doBounce(btn){
+      const anim = btn.animate(
+        [
+          { transform: 'translateY(0)' },
+          { transform: 'translateY(-8px)' },
+          { transform: 'translateY(0)' }
+        ],
+        { duration: 520, iterations: 1, easing: 'ease-out' }
+      );
+      // Optional: add a tiny scale bounce on end
+      anim.onfinish = () => {
+        btn.style.transform = '';
+      };
+    }
+  </script>
+</body>
+</html>
