@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0b0f14;
+      --bg2:#071017;
+      --card:#0f1720;
+      --accent:#6ee7b7;
+      --accent-2:#7c5cff;
+      --muted:#9aa4ae;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --fade-duration: 900ms;
+      --ease: cubic-bezier(.2,.9,.3,1);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 6%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(110,231,183,0.08), transparent 6%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      overflow-x:hidden;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      align-items:center;
+    }
+
+    @media (max-width:940px){
+      .container{grid-template-columns:1fr; padding:24px}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%);
+      border-radius:16px;
+      padding:36px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px) saturate(120%);
+      border: 1px solid var(--glass-2);
+      overflow:hidden;
+    }
+
+    header.brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .logo{
+      width:68px;
+      height:68px;
+      border-radius:12px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 18px rgba(124,92,255,0.18);
+      flex:0 0 68px;
+    }
+    .logo svg{width:40px;height:40px;filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35))}
+
+    h1{
+      margin:0;
+      font-size:34px;
+      letter-spacing:-0.02em;
+      line-height:1;
+      color:linear-gradient(90deg,#fff,#dbeafe);
+    }
+    p.lead{
+      margin:12px 0 0 0;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+    }
+
+    .meta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+    }
+
+    .pill{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .cta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:6px;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      color:#04121a;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow: 0 10px 30px rgba(124,92,255,0.12);
+      transition:transform 220ms var(--ease), box-shadow 220ms var(--ease);
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-top:8px;
+    }
+    @media (max-width:560px){ .features{grid-template-columns:1fr} }
+
+    .feature{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .feature svg{opacity:0.92}
+
+    /* right column */
+    .panel{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .preview{
+      height:300px;
+      border-radius:12px;
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .preview .mock{
+      width:88%;
+      height:78%;
+      border-radius:10px;
+      background:linear-gradient(180deg,#071018 0%, #0d1a22 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.01), 0 20px 40px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .stats{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .stat{
+      flex:1;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      padding:12px;
+      border-radius:10px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .stat h3{margin:0;color:var(--accent);font-size:18px}
+    .stat p{margin:6px 0 0 0;color:var(--muted);font-size:13px}
+
+    footer.main-footer{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      border-top:1px dashed rgba(255,255,255,0.02);
+      padding-top:18px;
+      font-size:13px;
+    }
+
+    a.github{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:background 180ms var(--ease), color 180ms var(--ease);
+    }
+    a.github:hover{background:rgba(255,255,255,0.02); color:var(--accent)}
+
+    /* fade in effects */
+    .fade{
+      opacity:0;
+      transform:translateY(8px) scale(0.995);
+      animation:fadeIn var(--fade-duration) var(--ease) forwards;
+    }
+    .fade.delay-1{animation-delay:120ms}
+    .fade.delay-2{animation-delay:240ms}
+    .fade.delay-3{animation-delay:360ms}
+    .fade.delay-4{animation-delay:480ms}
+    .fade.delay-5{animation-delay:600ms}
+    @keyframes fadeIn{
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    /* small decorative */
+    .corner-deco{
+      position:fixed;
+      right:18px;
+      top:18px;
+      width:120px;
+      height:120px;
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(124,92,255,0.06), rgba(110,231,183,0.04));
+      border:1px solid rgba(255,255,255,0.02);
+      filter: blur(18px) saturate(120%);
+      pointer-events:none;
+      opacity:0.8;
+      z-index:0;
+    }
+
+    /* reduced motion preference */
+    @media (prefers-reduced-motion:reduce){
+      .fade{animation:none; opacity:1; transform:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="corner-deco" aria-hidden="true"></div>
+
+  <main class="container" role="main" aria-labelledby="title">
+    <section class="card hero fade delay-1" aria-labelledby="title">
+      <header class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="2" width="44" height="44" rx="10" fill="white" fill-opacity="0.08"/>
+            <path d="M24 14c3.314 0 6 2.686 6 6s-2.686 6-6 6-6-2.686-6-6 2.686-6 6-6z" fill="white" opacity="0.96"/>
+            <path d="M12 36c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="rgba(255,255,255,0.16)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 id="title">amirabolfazle</h1>
+          <p class="lead">A dark-mode landing concept with subtle motion and glassy accents — designed for focus and presence.</p>
+        </div>
+      </header>
+
+      <div class="meta-row" style="margin-top:18px">
+        <div class="pill fade delay-2" title="Creation time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          2025-09-28 17:12:57
+        </div>
+        <div class="pill fade delay-3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 7v10a2 2 0 0 0 2 2h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 7V5a5 5 0 0 1 10 0v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Dark theme</div>
+      </div>
+
+      <div class="cta fade delay-4">
+        <button class="btn" aria-label="Primary action">Get Started</button>
+        <button class="btn ghost" aria-label="Learn more">Learn more</button>
+      </div>
+
+      <div class="features fade delay-5" aria-hidden="false">
+        <div class="feature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v6" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16v6" stroke="#7c5cff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 8.5l3 3" stroke="#9aa4ae" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 13.5l3 3" stroke="#9aa4ae" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Glassy layers & subtle lighting
+        </div>
+        <div class="feature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Lightweight, responsive layout
+        </div>
+        <div class="feature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 20v-6" stroke="#7c5cff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 4v2" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Smooth fade-in interactions
+        </div>
+        <div class="feature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="#9aa4ae" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3v18" stroke="#9aa4ae" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Clean typographic rhythm
+        </div>
+      </div>
+
+      <footer class="main-footer fade delay-5" aria-label="Page footer">
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div style="font-weight:600;color:var(--muted)">Created by amirabolfazle</div>
+          <div style="color:var(--muted);font-size:13px">· Minimal, modern, dark</div>
+        </div>
+        <div style="color:var(--muted);font-size:13px">Built with care — 2025</div>
+      </footer>
+    </section>
+
+    <aside class="card panel fade delay-2" aria-labelledby="asideTitle">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h3 id="asideTitle" style="margin:0">Live Preview</h3>
+          <p style="margin:6px 0 0 0;color:var(--muted);font-size:13px">A compact mockup illustrating the theme and layout.</p>
+        </div>
+        <div style="color:var(--muted);font-size:13px">v1.0</div>
+      </div>
+
+      <div class="preview fade delay-3" aria-hidden="true">
+        <div class="mock">Interactive preview area</div>
+      </div>
+
+      <div class="stats fade delay-4" role="list">
+        <div class="stat" role="listitem">
+          <h3>480ms</h3>
+          <p>Avg. load (simulated)</p>
+        </div>
+        <div class="stat" role="listitem">
+          <h3>3</h3>
+          <p>Primary accents</p>
+        </div>
+        <div class="stat" role="listitem">
+          <h3>100%</h3>
+          <p>Dark mode</p>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+        <div style="color:var(--muted);font-size:13px">Want the code?</div>
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.648.5.75 5.399.75 11.751c0 4.847 3.141 8.957 7.498 10.411.548.102.75-.237.75-.529 0-.261-.01-1.134-.015-2.055-3.048.663-3.69-1.468-3.69-1.468-.498-1.266-1.217-1.604-1.217-1.604-.995-.68.076-.666.076-.666 1.099.078 1.676 1.129 1.676 1.129.977 1.674 2.564 1.19 3.187.91.099-.707.382-1.19.695-1.465-2.434-.278-4.993-1.217-4.993-5.416 0-1.197.427-2.176 1.127-2.944-.114-.278-.49-1.397.107-2.91 0 0 .917-.294 3.005 1.124.872-.243 1.807-.364 2.737-.369.93.005 1.865.126 2.738.369 2.086-1.418 3.002-1.124 3.002-1.124.6 1.513.224 2.632.11 2.91.7.768 1.127 1.747 1.127 2.944 0 4.208-2.564 5.134-5.004 5.403.394.343.744 1.02.744 2.058 0 1.486-.014 2.686-.014 3.05 0 .296.197.637.756.528C19.112 20.701 22.25 16.594 22.25 11.75 22.25 5.399 17.352.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span style="font-size:13px">GitHub</span>
+        </a>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // Small enhancement: add subtle stagger for elements that appear after DOM ready.
+    (function(){
+      const el = document.querySelectorAll('.fade');
+      el.forEach((node,i)=>{
+        // ensure computed delay matches classes; this gently triggers animations on load
+        node.style.willChange = 'opacity, transform';
+      });
+    })();
+  </script>
+</body>
+</html>
