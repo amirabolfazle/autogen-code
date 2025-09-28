@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#050014;
+      --neon-cyan: #00f0ff;
+      --neon-pink: #ff2df7;
+      --neon-purple: #8a2bff;
+      --glass: rgba(255,255,255,0.04);
+      --card: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.06);
+      --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink),var(--neon-purple));
+      --max-width: 1100px;
+    }
+
+    /* Reset & base */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(138,43,255,0.06), transparent 8%),
+                  radial-gradient(900px 600px at 90% 90%, rgba(0,240,255,0.04), transparent 6%),
+                  var(--bg);
+      color:#e9f2ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      padding:40px 20px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      min-height:100vh;
+    }
+
+    /* Neon animated background lines */
+    .neon-grid{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 120px 120px, 120px 120px;
+      mix-blend-mode:overlay;
+      opacity:0.4;
+      transform:translateZ(0);
+      animation: gridShift 30s linear infinite;
+    }
+    @keyframes gridShift{
+      from{background-position:0 0, 0 0}
+      to{background-position:600px 600px, -600px -600px}
+    }
+
+    /* Container */
+    .wrap{
+      width:100%;
+      max-width:var(--max-width);
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* Header / hero */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:28px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(138,43,255,0.06) inset;
+      backdrop-filter: blur(6px) saturate(120%);
+      transform:translateY(24px);
+      opacity:0;
+    }
+
+    .title{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
+    .logo{
+      width:84px;
+      height:84px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, rgba(0,240,255,0.06), rgba(255,45,247,0.04));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 6px 30px rgba(138,43,255,0.06), 0 0 18px rgba(0,240,255,0.06) inset;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .logo::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:conic-gradient(from 120deg, transparent, rgba(255,255,255,0.02), transparent 40%);
+      mix-blend-mode:screen;
+      opacity:0.9;
+    }
+
+    .logo h1{
+      font-size:20px;
+      letter-spacing:0.6px;
+      color:var(--neon-cyan);
+      text-shadow:
+        0 0 6px rgba(0,240,255,0.18),
+        0 0 18px rgba(0,240,255,0.12),
+        0 0 32px rgba(138,43,255,0.06);
+      transform:translateY(2px);
+    }
+
+    .title h2{
+      font-size:34px;
+      letter-spacing:1px;
+      color:transparent;
+      background:var(--accent);
+      -webkit-background-clip:text;
+      background-clip:text;
+      text-shadow:
+        0 6px 20px rgba(138,43,255,0.08),
+        0 0 18px rgba(255,45,247,0.06);
+    }
+
+    .meta{
+      text-align:right;
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+    }
+    .meta .created{
+      display:inline-block;
+      margin-top:10px;
+      font-family:monospace;
+      padding:8px 12px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5), 0 0 24px rgba(138,43,255,0.03) inset;
+      color:rgba(200,240,255,0.95);
+      letter-spacing:0.6px;
+    }
+
+    /* Content grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:20px;
+    }
+
+    .card{
+      padding:20px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      transform:translateY(36px);
+      opacity:0;
+      overflow:hidden;
+      position:relative;
+      min-height:130px;
+    }
+
+    .card .heading{
+      font-weight:600;
+      color:#eafcff;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:16px;
+    }
+
+    .card p{
+      color:rgba(220,235,255,0.82);
+      line-height:1.45;
+      font-size:14px;
+    }
+
+    /* Neon underline accent */
+    .accent-underline{
+      position:absolute;
+      left:0;
+      bottom:0;
+      height:2px;
+      width:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,45,247,0.15), transparent);
+      filter:blur(6px);
+      opacity:0.9;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:10px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      padding:18px 12px;
+      border-radius:12px;
+      color:rgba(220,235,255,0.8);
+      font-size:14px;
+      background:transparent;
+      text-align:center;
+      transform:translateY(36px);
+      opacity:0;
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:inherit;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      transition:transform .18s ease, box-shadow .18s ease;
+      border:1px solid rgba(255,255,255,0.03);
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    }
+    .github-link:hover{ transform:translateY(-4px); box-shadow: 0 8px 40px rgba(138,43,255,0.06) }
+
+    .gh-icon{
+      width:20px;height:20px;display:inline-block;vertical-align:middle;
+      filter:drop-shadow(0 6px 14px rgba(0,0,0,0.6));
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .grid{ grid-template-columns: repeat(2,1fr) }
+      .title h2{ font-size:28px }
+    }
+    @media (max-width:620px){
+      body{ padding:22px 12px }
+      .grid{ grid-template-columns: 1fr }
+      header{ flex-direction:column; align-items:flex-start; gap:14px }
+      .meta{ width:100%; text-align:left }
+      .logo{ width:68px;height:68px }
+      .title h2{ font-size:24px }
+    }
+
+    /* Reveal animations */
+    .reveal { animation: slideUpIn .72s cubic-bezier(.15,.8,.25,1) forwards }
+    .reveal-delay-1 { animation-delay: .08s }
+    .reveal-delay-2 { animation-delay: .18s }
+    .reveal-delay-3 { animation-delay: .28s }
+    .reveal-delay-4 { animation-delay: .36s }
+
+    @keyframes slideUpIn {
+      0%{ transform:translateY(28px); opacity:0; filter:blur(6px) }
+      60%{ transform:translateY(-6px); opacity:1; filter:blur(0) }
+      100%{ transform:translateY(0); opacity:1; filter:blur(0) }
+    }
+
+    /* subtle floating pulse for neon */
+    .neon-pulse{
+      position:absolute;
+      left:-30%;
+      top:-40%;
+      width:160%;
+      height:160%;
+      background: radial-gradient(closest-side, rgba(0,240,255,0.06), transparent 35%),
+                  radial-gradient(circle at 75% 20%, rgba(255,45,247,0.04), transparent 10%);
+      mix-blend-mode:screen;
+      pointer-events:none;
+      animation: floatSlow 10s ease-in-out infinite;
+      opacity:0.9;
+    }
+    @keyframes floatSlow {
+      0%{ transform:translateY(0) rotate(0deg) }
+      50%{ transform:translateY(-8px) rotate(1deg) }
+      100%{ transform:translateY(0) rotate(0deg) }
+    }
+
+    /* small card accent icons */
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      box-shadow: 0 6px 18px rgba(138,43,255,0.08), 0 0 8px rgba(0,240,255,0.06);
+    }
+
+    /* micro interactions */
+    .card:hover{ transform: translateY(-8px); transition: transform .28s cubic-bezier(.2,.9,.3,1) }
+    header:hover{ transform: translateY(-4px) }
+
+  </style>
+</head>
+<body>
+  <div class="neon-grid" aria-hidden="true"></div>
+  <div class="wrap" role="main" aria-labelledby="site-title">
+    <header id="hero" class="reveal reveal-delay-1" aria-describedby="creation-time">
+      <div class="title" role="banner">
+        <div class="logo" aria-hidden="true">
+          <h1>am</h1>
+        </div>
+        <div>
+          <h2 id="site-title">amirabolfazle</h2>
+          <div style="margin-top:6px;color:rgba(220,235,255,0.75);font-size:14px">Neon UI • Interactive • Responsive</div>
+        </div>
+      </div>
+
+      <div class="meta" id="creation-time">
+        <div style="font-weight:600;color:rgba(235,250,255,0.9)">Creation time</div>
+        <div class="created" aria-label="creation timestamp">2025-09-29 01:22:01</div>
+      </div>
+
+      <div class="neon-pulse" aria-hidden="true"></div>
+    </header>
+
+    <section class="grid" aria-label="features">
+      <article class="card reveal reveal-delay-2" tabindex="0">
+        <div class="heading"><span class="dot" style="background:var(--neon-cyan)"></span> Slide-up Entrance</div>
+        <p>Elements slide into view with a smooth, bouncy neon-lit animation. Works on initial load and when content scrolls into view.</p>
+        <div class="accent-underline" aria-hidden="true"></div>
+      </article>
+
+      <article class="card reveal reveal-delay-3" tabindex="0">
+        <div class="heading"><span class="dot" style="background:var(--neon-pink)"></span> Responsive Layout</div>
+        <p>A flexible grid adapts from three columns to a single column on small screens so the design stays crisp on any device.</p>
+        <div class="accent-underline" aria-hidden="true"></div>
+      </article>
+
+      <article class="card reveal reveal-delay-4" tabindex="0">
+        <div class="heading"><span class="dot" style="background:var(--neon-purple)"></span> Neon Theme</div>
+        <p>Bold neon gradients, glow effects and subtle animated backgrounds create a modern cyber-inspired aesthetic.</p>
+        <div class="accent-underline" aria-hidden="true"></div>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="heading"><span class="dot" style="background:linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));"></span> Accessibility</div>
+        <p>High-contrast text, focusable cards and semantic structure help make the page more usable for keyboard and assistive tech users.</p>
+        <div class="accent-underline" aria-hidden="true"></div>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="heading"><span class="dot" style="background:rgba(255,255,255,0.8)"></span> Lightweight</div>
+        <p>No external dependencies. Pure HTML, CSS and a small amount of JS keep the bundle small and performant.</p>
+        <div class="accent-underline" aria-hidden="true"></div>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="heading"><span class="dot" style="background:linear-gradient(90deg,var(--neon-pink),var(--neon-purple));"></span> Animated Details</div>
+        <p>Micro-interactions such as hover lifts, pulsing backgrounds and shimmering grids add polish and depth.</p>
+        <div class="accent-underline" aria-hidden="true"></div>
+      </article>
+    </section>
+
+    <footer class="reveal reveal-delay-3" role="contentinfo" aria-label="footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 .297a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.2.1 1.8 1.3 1.8 1.3 1 .1 1.6-.7 2-1 .1-.7.4-1.1.7-1.4-2.7-.3-5.6-1.3-5.6-5.8 0-1.3.5-2.4 1.2-3.3-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.4 1.3a11.8 11.8 0 016.2 0c2.4-1.6 3.4-1.3 3.4-1.3.6 1.7.2 3 .1 3.3.8.9 1.2 2 1.2 3.3 0 4.5-2.9 5.5-5.7 5.8.4.3.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0012 .297z" fill="url(#g)"></path>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#00F0FF"/>
+              <stop offset="1" stop-color="#FF2DF7"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span style="font-weight:600">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Initial reveal for header and immediate items
+    document.addEventListener('DOMContentLoaded', function () {
+      // Add reveal to header if not already
+      const initial = document.querySelectorAll('.reveal');
+      initial.forEach((el, i) => {
+        // leave as-is; they already have classes for initial reveal delays
+      });
+
+      // Intersection observer for cards to slide up when scrolled into view
+      const opts = {
+        root: null,
+        rootMargin: '0px 0px -8% 0px',
+        threshold: 0.09
+      };
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const el = e.target;
+            if (!el.classList.contains('reveal-applied')) {
+              el.classList.add('reveal');
+              el.classList.add('reveal-applied');
+            }
+            obs.unobserve(el);
+          }
+        });
+      }, opts);
+
+      document.querySelectorAll('.card, footer').forEach((n, idx) => {
+        observer.observe(n);
+      });
+
+      // Accessibility: allow focus reveal
+      document.querySelectorAll('.card').forEach(c => {
+        c.addEventListener('focus', () => {
+          c.classList.add('reveal');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
