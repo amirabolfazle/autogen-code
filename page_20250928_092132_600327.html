@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg2: #0a0f1a;
+      --neon-cyan: #00e5ff;
+      --neon-pink: #ff3bd3;
+      --neon-green: #39ff14;
+      --glow: 0 0 14px rgba(0, 229, 255, 0.9);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #e9feff;
+      background: radial-gradient(circle at 15% 10%, rgba(0,255,200,0.12), transparent 40%),
+                  radial-gradient(circle at 90% 20%, rgba(255,0,200,0.15), transparent 40%),
+                  linear-gradient(135deg, #04060a, #0a0f1a 60%, #04060a 100%), var(--bg);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Neon grid overlay for depth */
+    .neon-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 230, 255, 0.25) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 200, 0.25) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px;
+      mix-blend-mode: screen;
+      filter: saturate(120%);
+      animation: gridPulse 6s linear infinite;
+      z-index: 0;
+    }
+    @keyframes gridPulse {
+      0% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.02); }
+      100% { opacity: 0.5; transform: scale(1); }
+    }
+
+    header.brand {
+      position: relative;
+      z-index: 1;
+      padding: 48px 20px 12px;
+      text-align: center;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: .25em;
+      background: linear-gradient(90deg, #00e5ff 0%, #ff3bd3 50%, #39ff14 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 24px rgba(0,229,255,0.9);
+      animation: hue 8s linear infinite;
+      user-select: none;
+    }
+    @keyframes hue {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .creation-time {
+      margin: 12px auto 0;
+      font-size: 0.92rem;
+      color: #c8f7ff;
+      opacity: 0.95;
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(0, 255, 230, 0.5);
+      box-shadow: 0 0 14px rgba(0, 226, 240, 0.4);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 0 16px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .stage {
+      position: relative;
+      height: clamp(320px, 40vh, 520px);
+      min-height: 320px;
+      border-radius: 26px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      isolation: isolate;
+      background: radial-gradient(circle at 30% 20%, rgba(0, 255, 255, 0.15), transparent 40%),
+                  radial-gradient(circle at 70% 70%, rgba(255, 0, 180, 0.15), transparent 40%),
+                  rgba(5,6,10,0.25);
+      border: 1px solid rgba(0, 255, 240, 0.25);
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .orb {
+      position: absolute;
+      width: clamp(120px, 22vw, 260px);
+      height: clamp(120px, 22vw, 260px);
+      border-radius: 50%;
+      border: 2px solid rgba(0, 255, 230, 0.9);
+      box-shadow: 0 0 28px 6px rgba(0, 255, 230, 0.75),
+                  inset 0 0 18px rgba(0, 255, 230, 0.5);
+      filter: saturate(150%);
+      mix-blend-mode: screen;
+      animation: rotate 22s linear infinite;
+    }
+    .orb.o1 { left: -8%; top: 8%; animation-duration: 18s; animation-direction: normal; }
+    .orb.o2 { right: -12%; top: 18%; animation-duration: 26s; animation-direction: reverse; }
+    .orb.o3 { left: 16%; bottom: -12%; animation-duration: 34s; animation-direction: normal; }
+    .orb.o4 { right: 18%; bottom: 8%; animation-duration: 40s; animation-direction: reverse; border-color: rgba(0, 245, 255, 0.8); box-shadow: 0 0 26px 6px rgba(0, 245, 255, 0.8); }
+    @keyframes rotate {
+      from { transform: rotate(0deg) translateZ(0); }
+      to {   transform: rotate(360deg) translateZ(0); }
+    }
+
+    /* Pulsing center glow halo for depth */
+    .halo {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      border: 2px dashed rgba(0,255,240,0.5);
+      filter: blur(0.2px);
+      animation: haloPulse 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes haloPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.15); opacity: 0.6; }
+    }
+
+    /* Footer with GitHub icon */
+    footer.site-footer {
+      position: relative;
+      z-index: 1;
+      padding: 24px 16px 40px;
+      text-align: center;
+    }
+    .footer-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(0,255,230,0.5);
+      backdrop-filter: blur(4px);
+    }
+    .footer-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      color: #eaffff;
+    }
+    .footer-text {
+      font-size: 0.95rem;
+      color: #d8feff;
+      letter-spacing: .02em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    a:hover .footer-icon {
+      transform: rotate(15deg);
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 700px) {
+      .orb { width: 34vw; height: 34vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="neon-grid" aria-hidden="true"></div>
+
+  <header class="brand" aria-label="Site header">
+    <h1>amirabolfazle</h1>
+    <div class="creation-time" aria-label="Creation time">
+      Creation time: 2025-09-28 09:21:11
+    </div>
+  </header>
+
+  <main>
+    <section class="stage" aria-label="Animated neon stage">
+      <span class="halo" aria-hidden="true" style="left:50%; top:50%; transform: translate(-50%, -50%);"></span>
+
+      <div class="orb o1" style="transform-origin: center;"></div>
+      <div class="orb o2" style="transform-origin: center;"></div>
+      <div class="orb o3" style="transform-origin: center;"></div>
+      <div class="orb o4" style="transform-origin: center;"></div>
+
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="footer-inner">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <!-- GitHub Icon (SVG) -->
+        <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+          <path d="M12 .5C5.73.5.99 5.21.99 11.75c0 4.99 3.22 9.22 7.71 10.69.56.1.76-.24.76-.54 0-.27-.01-1.03-.02-2.02-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-.99-.69.08-.68.08-.68 1.11.08 1.7 1.14 1.7 1.14 1 .86 2.64.6 3.28.46.07-.35.38-.6.68-.74-2.5-.29-5.1-1.28-5.1-5.7 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.17a11.08 11.08 0 0 1 2.9-.39c1.01 0 2.03.14 2.98.41 2.2-1.48 3.16-1.17 3.16-1.17.62 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.63 5.41-5.13 5.67.4.34.76 1.01.76 2.04 0 1.48-.01 2.68-.01 3.04 0 .3.2.64.77.53 4.46-1.48 7.66-5.66 7.66-10.62C23.01 5.21 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span class="footer-text">Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
