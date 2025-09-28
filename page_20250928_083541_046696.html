@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --glass: rgba(255,255,255,0.12);
+      --glass-2: rgba(255,255,255,0.25);
+      --shadow: 0 10px 25px rgba(0,0,0,.25);
+      --glow: 0 0 20px rgba(200,200,255,0.6);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; 
+      background: radial-gradient(circle at 20% -10%, rgba(120,200,255,.15), transparent 40%), 
+                  radial-gradient(circle at 90% 0%, rgba(255,120,180,.15), transparent 40%), #0b1020; color: #e8eaf6; overflow-x:hidden; }
+    .glassy {
+      position: relative;
+      width: min(1100px, 92vw);
+      margin: 6vh auto;
+      padding: 40px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .orb {
+      position: absolute; width: 260px; height: 260px; border-radius: 50%;
+      filter: blur(0.5px); mix-blend-mode: screen; opacity: .55; animation: spin 40s linear infinite; pointer-events: none;
+    }
+    .orb.one { left: -60px; top: -60px; background: radial-gradient(circle at 30% 30%, rgba(91,206,255,0.9), transparent 40%), rgba(125,90,255,0.5); }
+    .orb.two { right: -40px; bottom: -40px; background: radial-gradient(circle at 60% 60%, rgba(255,120,180,0.9), transparent 40%), rgba(0,200,150,0.5); animation-duration: 60s; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    header { display:flex; align-items:center; justify-content: space-between; padding: 0 4px; margin-bottom: 18px; }
+    h1 { font-size: clamp(28px, 5vw, 64px); margin: 0; letter-spacing:.5px;
+         background: linear-gradient(135deg, #fff, #c8d3ff);
+         -webkit-background-clip: text; background-clip: text; color: transparent;
+         text-shadow: 0 2px 14px rgba(0,0,0,.25); transform: translateZ(0); perspective:1000px;
+         transition: transform .6s ease; }
+    .name-tilt { display:inline-block; transform-style: preserve-3d; }
+
+    .card { display:grid; grid-template-columns: 1fr 1.1fr; gap: 28px; align-items: center; }
+    .biography { font-size: 1.05rem; line-height:1.6; color:#e9eafc; padding:8px 12px; border-radius:14px;
+                background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); }
+
+    .avatar { width: 180px; height: 180px; border-radius:50%; border:2px solid rgba(255,255,255,.6);
+              background: conic-gradient(from 120deg, #8bd1ff, #7bffce, #f2a3ff, #8bd1ff);
+              box-shadow: 0 12px 30px rgba(0,0,0,.25); display:flex; align-items:center; justify-content:center;
+              overflow:hidden; position: relative; transition: transform .6s; transform-origin:center; }
+    .avatar:hover { transform: rotate(12deg) scale(1.03); }
+    .avatar img { width:100%; height:100%; object-fit: cover; clip-path: circle(48% at 50% 50%); }
+
+    .glow { position:absolute; inset:-60px; filter: blur(40px);
+            background: radial-gradient(circle at 50% 50%, rgba(180,220,255,.6), transparent 60%);
+            pointer-events:none; animation: pulse 3s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{ opacity:.6; } 50%{ opacity:1; } }
+
+    .tag { display:inline-flex; align-items:center; gap:8px;
+           padding:8px 12px; border-radius:999px; background: rgba(255,255,255,0.14);
+           border:1px solid rgba(255,255,255,0.25); font-size:.92rem; color:#eaf0ff;
+           box-shadow: inset 0 0 12px rgba(255,255,255,.15); transform: rotate(-6deg);
+           transition: transform .3s ease; }
+    .tag:hover { transform: rotate(0deg) translateY(-2px); }
+
+    .section-title { font-weight:700; font-size:1.1rem; letter-spacing:.4px; text-transform:uppercase;
+                     color:#e8eaff; margin-bottom:8px; }
+
+    footer { margin-top:26px; display:flex; align-items:center; justify-content:center;
+             padding:18px; color:#d9d9d9; font-size:.95rem; }
+    .footer-link { display:inline-flex; align-items:center; gap:8px;
+                   color:#d9d9d9; text-decoration:none; padding:6px 10px; border-radius:8px;
+                   border:1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08);
+                   transition: background .3s ease; }
+    .footer-link:hover { background: rgba(255,255,255,.18); }
+    .footer-icon { width:20px; height:20px; display:inline-block; vertical-align:middle; }
+
+    @media (max-width: 900px) {
+      .card { grid-template-columns: 1fr; text-align: center; }
+      .avatar { margin:0 auto; }
+      header { justify-content:center; gap:12px; flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glassy" aria-label="personal page container">
+    <div class="orb one" aria-hidden="true"></div>
+    <div class="orb two" aria-hidden="true"></div>
+
+    <header>
+      <h1 class="name-tilt" aria-label="Title: amirabolfazle">amirabolfazle</h1>
+      <span class="tag" title="Creation time">Creation time: 2025-09-28 08:35:07</span>
+    </header>
+
+    <div class="card" onmousemove="tilt(event)" onmouseleave="resetTilt(this)">
+      <div class="avatar" aria-label="avatar">
+        <div class="glow" aria-hidden="true"></div>
+        <svg width="90" height="90" viewBox="0 0 100 100" aria-label="avatar initials">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop stop-color="#4cc9f0" offset="0"/>
+              <stop stop-color="#4361ee" offset="1"/>
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="50" r="48" fill="url(#g)" stroke="white" stroke-width="2" />
+          <text x="50" y="58" text-anchor="middle" font-family="Arial" font-size="44" fill="white" font-weight="bold">A</text>
+        </svg>
+      </div>
+
+      <section aria-label="about">
+        <div class="section-title">About</div>
+        <p class="biography">
+          Hello! I’m amirabolfazle — a curious builder who loves front-end artistry, glassy interfaces, and tiny interactions that feel delightful. This page demonstrates a fancy, glassmorphic design with subtle rotation and motion.
+        </p>
+        <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:8px;">
+          <span class="tag" style="transform: rotate(-2deg);">Glassmorphism</span>
+          <span class="tag" style="transform: rotate(4deg);">Animation</span>
+          <span class="tag" style="transform: rotate(-4deg);">Rotate</span>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C6.476 2 2 6.584 2 12.275c0 4.52 2.865 8.349 6.839 9.707.5.094.682-.217.682-.483 0-.237-.009-.867-.013-1.703-2.782.62-3.369-1.35-3.369-1.35-.454-1.161-1.11-1.471-1.11-1.471-.908-.63.069-.618.069-.618 1.004.07 1.532 1.038 1.532 1.038.892 1.534 2.341 1.092 2.912.835.091-.651.35-1.093.636-1.345-2.22-.263-4.555-1.136-4.555-5.062 0-1.118.379-2.032 1.0-2.747-.101-.263-.438-1.322.095-2.755 0 0 .836-.266 2.74 1.038A9.47 9.47 0 0 1 12 6.844c.844.004 1.693.114 2.485.335 1.904-1.304 2.739-1.038 2.739-1.038.534 1.433.197 2.492.097 2.755.625.715 1.01 1.63 1.01 2.747 0 3.937-2.338 4.798-4.569 5.05.359.319.679.949.679 1.914 0 1.382-.012 2.494-.012 2.838 0 .269.178.581.688.483C19.138 20.62 22 16.793 22 12.275 22 6.584 17.523 2 12 2z"/>
+        </svg>
+        GitHub
+      </a>
+      <span style="margin-left:10px;">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    const card = document.querySelector('.card');
+    function tilt(e){
+      const bounds = card.getBoundingClientRect();
+      const x = e.clientX - bounds.left;
+      const y = e.clientY - bounds.top;
+      const rx = -(y / bounds.height * 12 - 6);
+      const ry = (x / bounds.width * 12 - 6);
+      card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    }
+    function resetTilt(el){
+      el.style.transform = "rotateX(0deg) rotateY(0deg)";
+    }
+
+    document.addEventListener('scroll', () => {
+      const t = window.scrollY;
+      const h = document.querySelector('h1');
+      if (h) {
+        h.style.transform = `translateZ(0) rotateX(${Math.min(6, t/1000)}deg)`;
+      }
+    });
+  </script>
+</body>
+</html>
