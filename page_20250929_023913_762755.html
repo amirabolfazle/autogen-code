@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.14);
+      --accent-1: rgba(137, 98, 255, 0.25);
+      --accent-2: rgba(0, 230, 255, 0.18);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.65);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(120deg,#0f172a 20%, #05203a 50%, #0b1020 80%);
+      color:var(--text);
+    }
+
+    /* animated background gradient blobs */
+    .bg {
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      z-index:-2;
+    }
+    .blob {
+      position:absolute;
+      width:40vmax;
+      height:40vmax;
+      filter:blur(80px);
+      opacity:0.55;
+      border-radius:50%;
+      mix-blend-mode:screen;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .blob.a{background:radial-gradient(circle at 30% 20%, rgba(137,98,255,0.9), rgba(137,98,255,0.15)); left:-10%; top:-20%; animation-duration:16s;}
+    .blob.b{background:radial-gradient(circle at 70% 80%, rgba(0,230,255,0.9), rgba(0,230,255,0.12)); right:-15%; bottom:-10%; animation-duration:20s; animation-delay:2s;}
+    @keyframes drift{
+      0%{transform:translateY(0) translateX(0) scale(1)}
+      50%{transform:translateY(-6vh) translateX(4vw) scale(1.05)}
+      100%{transform:translateY(0) translateX(-2vw) scale(1)}
+    }
+
+    /* layout */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:3rem 1.25rem;
+      gap:1rem;
+    }
+
+    .card{
+      width:min(680px,94vw);
+      padding:2.2rem;
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      transform-origin:center;
+      animation: popIn 700ms cubic-bezier(.2,.9,.2,1) both;
+      transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms;
+    }
+
+    .card:hover{
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(2,6,23,0.65);
+    }
+
+    @keyframes popIn{
+      from{opacity:0; transform: translateY(10px) scale(.985)}
+      to{opacity:1; transform: translateY(0) scale(1)}
+    }
+
+    h1{
+      margin:0 0 .4rem 0;
+      font-size: clamp(1.6rem, 3.8vw, 2.3rem);
+      letter-spacing: -0.02em;
+      line-height:1;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .title-accent{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background: linear-gradient(135deg,#895eff,#00e6ff);
+      box-shadow: 0 6px 18px rgba(137,98,255,0.2), 0 2px 6px rgba(0,230,255,0.08);
+      transform-origin:center;
+      animation: pulse 2200ms ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(.95)}
+      50%{transform:scale(1.18)}
+      100%{transform:scale(.95)}
+    }
+
+    p.lead{
+      margin:0 0 1.25rem 0;
+      color:var(--muted);
+      font-size:clamp(.95rem,2.2vw,1rem);
+    }
+
+    .meta{
+      display:flex;
+      gap:.75rem;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:.6rem;
+    }
+    .chip{
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:.45rem .65rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);
+      font-size:.88rem;
+      display:inline-flex;
+      gap:.5rem;
+      align-items:center;
+    }
+
+    /* zoom box - interactive */
+    .zoom-box{
+      margin-top:1.2rem;
+      border-radius:12px;
+      padding:1rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      transition: transform 300ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
+      transform-origin:center;
+    }
+    .zoom-box .info{
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .zoom-box .cta{
+      background:linear-gradient(90deg,#895eff,#00e6ff);
+      color:#021025;
+      padding:.6rem .9rem;
+      border-radius:10px;
+      font-weight:600;
+      border:none;
+      cursor:pointer;
+      transform:scale(1);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+      box-shadow: 0 8px 22px rgba(137,98,255,0.14), 0 2px 6px rgba(0,230,255,0.06);
+    }
+    .zoom-box:hover{
+      transform:scale(1.015);
+      box-shadow: 0 18px 60px rgba(2,6,23,0.55);
+    }
+    .zoom-box .cta:hover{ transform:scale(1.04); }
+
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      display:flex;
+      gap:.6rem;
+      align-items:center;
+      background:transparent;
+      color:var(--muted);
+      font-size:.92rem;
+      padding:.35rem .6rem;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    footer a{
+      color:var(--muted);
+      text-decoration:none;
+      display:inline-flex;
+      gap:.5rem;
+      align-items:center;
+      padding:.22rem;
+      border-radius:8px;
+    }
+    .gh{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      transition: transform 180ms ease;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+    }
+    footer a:hover .gh{ transform:scale(1.06) }
+    footer span{opacity:0.95}
+
+    /* small devices tweak */
+    @media (max-width:420px){
+      .card{ padding:1.25rem; border-radius:14px;}
+      .zoom-box{ flex-direction:column; align-items:flex-start; gap:.75rem;}
+      footer{ bottom:12px; font-size:.82rem }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+  </div>
+
+  <div class="wrap">
+    <main class="card" role="main" aria-labelledby="site-title">
+      <h1 id="site-title"><span class="title-accent" aria-hidden="true"></span> amirabolfazle</h1>
+      <p class="lead">A minimal glassmorphism page with subtle animation and zoom effects.</p>
+
+      <div class="meta" aria-hidden="false">
+        <div class="chip" title="Creation time">Created: 2025-09-29 02:38:38</div>
+        <div class="chip">Theme: Glassmorphism</div>
+        <div class="chip">Motion: Gentle</div>
+      </div>
+
+      <div class="zoom-box" style="margin-top:1.2rem" aria-label="Interactive zoom card">
+        <div class="info">
+          Hover to feel the zoom. The card gently pops on load and responds to interaction.
+        </div>
+        <button class="cta" onclick="flash()">Zoom</button>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg class="gh" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 .5C5.7.5.8 5.4.8 11.7c0 4.8 3.1 8.9 7.4 10.3.6.1.8-.2.8-.6v-2.2c-3 .7-3.7-1.4-3.7-1.4-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.6-.7 1.9-1.1.3-.8.9-1.3 1.7-1.6-2.4-.3-4.9-1.2-4.9-5.3 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.5.1-3.1 0 0 .9-.3 3 .9.9-.3 2-.5 3-.5 1 0 2.1.2 3 .5 2.1-1.2 3-1 3-1 .6 1.6.2 2.8.1 3.1.7.8 1.1 1.8 1.1 3 0 4.1-2.5 5-4.9 5.3.6.5 1.1 1.3 1.1 2.6v3.8c0 .4.2.7.8.6 4.3-1.4 7.4-5.5 7.4-10.3C23.2 5.4 18.3.5 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // small interaction: temporary zoom pulse when clicking button
+    function flash(){
+      const box = document.querySelector('.zoom-box');
+      box.animate([
+        { transform: 'scale(1.015)' },
+        { transform: 'scale(1.08)' },
+        { transform: 'scale(1.015)' }
+      ], {
+        duration: 420,
+        easing: 'cubic-bezier(.2,.9,.2,1)'
+      });
+    }
+
+    // reduce motion respect
+    (function(){
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        document.querySelectorAll('.blob').forEach(b=>b.style.animation='none');
+        document.querySelectorAll('.title-accent').forEach(t=>t.style.animation='none');
+        document.querySelectorAll('.card, .zoom-box').forEach(e=>e.style.transition='none');
+      }
+    })();
+  </script>
+</body>
+</html>
