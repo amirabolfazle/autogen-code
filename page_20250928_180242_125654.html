@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071028;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent1: #7dd3fc;
+      --accent2: #a78bfa;
+      --muted: rgba(255,255,255,0.7);
+      --card-w: 880px;
+    }
+
+    /* Reset-ish */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(127,90,250,0.12), transparent),
+                  radial-gradient(900px 400px at 90% 90%, rgba(34,211,238,0.06), transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+    }
+
+    /* Floating decorative blobs */
+    .blob{
+      position:fixed;
+      filter: blur(40px) saturate(120%);
+      opacity:0.65;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation: float 12s ease-in-out infinite;
+      z-index:0;
+    }
+    .blob.b1{width:420px;height:420px;left:-120px;top:-80px;background:linear-gradient(135deg,var(--accent1),rgba(124,58,237,0.45)); animation-duration:18s;}
+    .blob.b2{width:360px;height:360px;right:-100px;bottom:-120px;background:linear-gradient(135deg,var(--accent2),rgba(6,182,212,0.35)); animation-duration:22s; animation-direction:reverse;}
+    .blob.b3{width:220px;height:220px;left:10%;bottom:10%;background:linear-gradient(135deg,rgba(124,58,237,0.45),rgba(34,211,238,0.18)); animation-duration:16s;opacity:0.5;}
+
+    @keyframes float{
+      0%{transform:translateY(0) rotate(0deg) scale(1)}
+      50%{transform:translateY(-24px) rotate(12deg) scale(1.05)}
+      100%{transform:translateY(0) rotate(0deg) scale(1)}
+    }
+
+    /* Card */
+    .wrap{
+      width: min(96vw, var(--card-w));
+      max-width:100%;
+      position:relative;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+      align-items:stretch;
+      animation: containerFade 900ms cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    @keyframes containerFade{
+      from{opacity:0; transform:translateY(18px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:16px;
+      padding:28px;
+      backdrop-filter: blur(10px) saturate(140%);
+      -webkit-backdrop-filter: blur(10px) saturate(140%);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      overflow:hidden;
+    }
+
+    .card-left{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      min-width:0;
+    }
+
+    .avatar{
+      width:86px;
+      height:86px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--accent1);
+      font-size:28px;
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 6px 20px rgba(11,22,45,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      transform:translateY(10px);
+      opacity:0;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.3,1) 120ms both;
+    }
+
+    .meta{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      transform:translateY(10px);
+      opacity:0;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.3,1) 260ms both;
+    }
+
+    h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-0.01em;
+      color: #f8fcff;
+    }
+
+    p.lead{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.25;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      transform:translateY(10px);
+      opacity:0;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.3,1) 400ms both;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:13px;
+      color: #07122a;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      border: none;
+      cursor:pointer;
+      text-decoration:none;
+      box-shadow: 0 6px 18px rgba(14,20,40,0.35);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow:none;
+    }
+
+    .content{
+      margin-top:8px;
+      padding:22px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:18px;
+      align-items:start;
+      transform:translateY(12px);
+      opacity:0;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.3,1) 540ms both;
+    }
+
+    @media(max-width:880px){
+      .content{grid-template-columns: 1fr;}
+      .avatar{width:74px;height:74px}
+    }
+
+    .panel{
+      padding:16px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .about-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .pill{
+      font-size:12px;
+      padding:6px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.03);
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .fade-list{display:flex;flex-direction:column;gap:12px}
+    .fade-item{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .time{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 10px;
+      border-radius:8px;
+      color: #cfeefe;
+      border:1px solid rgba(255,255,255,0.03);
+      font-size:13px;
+    }
+
+    .footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:13px;
+      transform:translateY(12px);
+      opacity:0;
+      animation: fadeUp .9s cubic-bezier(.2,.9,.3,1) 760ms both;
+    }
+
+    .footer a{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .github-icon{width:20px;height:20px;display:inline-block;vertical-align:middle;fill:var(--muted)}
+    .footer .created{font-size:13px;color:var(--muted)}
+
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(8px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    /* small decorative animated lines inside card */
+    .lines{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+      opacity:0.08;
+      mix-blend-mode:screen;
+    }
+    .lines svg{width:100%;height:100%}
+
+    /* reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .blob{animation:none}
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+  <div class="blob b3" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="site-title">
+    <section class="card" aria-label="Profile card - amirabolfazle">
+      <div class="card-left">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div class="meta">
+          <h1 id="site-title">amirabolfazle</h1>
+          <p class="lead">A minimalist glassmorphism page with subtle motion. Responsive, animated, and cozy.</p>
+        </div>
+      </div>
+
+      <div class="actions" role="region" aria-label="actions">
+        <a class="btn" href="#" onclick="return false" aria-label="Explore">
+          Explore
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="filter:drop-shadow(0 2px 6px rgba(7,18,36,0.18))">
+            <path d="M5 12h14" stroke="#07122a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 5l7 7-7 7" stroke="#07122a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a class="btn ghost" href="#" onclick="return false" aria-label="Contact">
+          Contact
+        </a>
+      </div>
+    </section>
+
+    <section class="content" aria-label="Main content">
+      <div class="panel">
+        <div class="about-title">
+          <div style="display:flex;flex-direction:column">
+            <span class="pill">Glassmorphism · Animated</span>
+            <strong style="margin-top:8px;font-size:15px;color:#f8fcff">Welcome</strong>
+          </div>
+          <div style="margin-left:auto" class="time" title="Creation time">
+            2025-09-28 18:01:49
+          </div>
+        </div>
+
+        <div class="fade-list" aria-live="polite">
+          <div class="fade-item">
+            <span>Responsive layout</span>
+            <span style="color:var(--accent1)">Fluid</span>
+          </div>
+          <div class="fade-item">
+            <span>Theme</span>
+            <span style="color:var(--accent2)">Glassmorphism</span>
+          </div>
+          <div class="fade-item">
+            <span>Effects</span>
+            <span style="color:#9be7ff">Fade-in & subtle motion</span>
+          </div>
+          <div class="fade-item">
+            <span>Created</span>
+            <span style="color:var(--muted)">2025-09-28 18:01:49</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel" aria-label="Details & links">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <strong style="display:block;font-size:14px;color:#f8fcff">Quick Links</strong>
+            <nav style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+              <a class="btn ghost" href="#" onclick="return false">About</a>
+              <a class="btn ghost" href="#" onclick="return false">Projects</a>
+              <a class="btn ghost" href="#" onclick="return false">Contact</a>
+            </nav>
+          </div>
+
+          <div>
+            <strong style="display:block;font-size:14px;color:#f8fcff">Status</strong>
+            <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+              <span style="width:10px;height:10px;border-radius:50%;background:#34d399;display:inline-block;box-shadow:0 6px 18px rgba(52,211,153,0.08)"></span>
+              <span style="color:var(--muted)">Live</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="footer" role="contentinfo">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.73.5.99 5.24.99 11.49c0 4.58 2.87 8.46 6.85 9.83.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.79.61-3.38-1.34-3.38-1.34-.45-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.6.07-.6 1.01.07 1.55 1.05 1.55 1.05.9 1.54 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0112 6.84c.85.004 1.71.116 2.51.34 1.9-1.29 2.74-1.02 2.74-1.02.55 1.37.2 2.38.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.69-4.57 4.94.36.31.68.92.68 1.86 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0023 11.49C23 5.24 18.27.5 12 .5z"/>
+        </svg>
+        <span style="font-size:13px;color:var(--muted);margin-left:6px">View on GitHub</span>
+      </a>
+      <div class="created">Created by amirabolfazle</div>
+    </footer>
+
+    <div class="lines" aria-hidden="true">
+      <svg viewBox="0 0 1200 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="white" stroke-width="1" stroke-opacity="0.04" transform="translate(0,20)">
+          <path d="M0 80 C150 10, 350 150, 600 60 C850 -30,1050 120,1200 70" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M0 120 C200 190, 400 10, 600 120 C800 230,1000 40,1200 120" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.02"/>
+        </g>
+      </svg>
+    </div>
+  </main>
+
+  <script>
+    // small interactive flourish: slightly tilt card on pointer move (subtle, respects reduced motion)
+    (function(){
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const wrap = document.querySelector('.wrap');
+      let rect;
+      function updateRect(){ rect = wrap.getBoundingClientRect(); }
+      updateRect();
+      window.addEventListener('resize', updateRect);
+      document.addEventListener('pointermove', (e)=>{
+        if (!rect) return;
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dx = (e.clientX - cx) / rect.width;
+        const dy = (e.clientY - cy) / rect.height;
+        const rx = dy * -6; // tilt x
+        const ry = dx * 10; // tilt y
+        wrap.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      document.addEventListener('pointerleave', ()=> wrap.style.transform = '');
+      // subtle entrance animation for action buttons (stagger)
+      document.querySelectorAll('.fade-item').forEach((el,i)=>{
+        el.style.animation = `fadeUp .7s cubic-bezier(.2,.9,.3,1) ${(i+6)*60}ms both`;
+      });
+    })();
+  </script>
+</body>
+</html>
