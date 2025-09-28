@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0e14;
+      --panel: #11131a;
+      --panel-2: #141a22;
+      --glow: #00e6ff;
+      --glow-2: #7dff00;
+      --text: #e8f0ff;
+      --muted: #aab4d4;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0,255,255,0.15), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(0,255,128,0.12), transparent 40%),
+                  linear-gradient(180deg, #04070a 0%, #0b0f14 100%), #000;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle neon grid overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(0,255,255,0.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,255,255,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
+    }
+
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(6, 10, 20, 0.75);
+      backdrop-filter: saturate(1.2) blur(6px);
+      border-bottom: 1px solid rgba(120, 240, 255, 0.25);
+      box-shadow: 0 6px 22px rgba(0,0,0,0.25);
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: .4px;
+      font-size: 1.05rem;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
+
+    nav a {
+      color: #d8f7ff;
+      text-decoration: none;
+      margin: 0 12px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+      font-size: 0.95rem;
+    }
+    nav a:hover {
+      background: rgba(0, 255, 255, 0.18);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(0,255,255,0.6);
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Neon hero */
+    .hero {
+      display: grid;
+      gap: 18px;
+      align-items: center;
+      justify-items: start;
+      padding: 40px 0 20px;
+    }
+
+    .title {
+      font-size: clamp(38px, 6vw, 88px);
+      line-height: 1.02;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #8affff, #00ffd5 60%, #9bff8a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 14px rgba(0, 255, 255, 0.65);
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 60ch;
+    }
+
+    .neon-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.4);
+      background: rgba(0, 0, 0, 0.25);
+      color: #eaffff;
+      text-shadow: 0 0 6px rgba(0,255,255,.6);
+      box-shadow: 0 0 12px rgba(0,255,255,.6);
+      font-weight: 600;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      padding: 12px 20px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0,255,255,0.9), rgba(0,255,128,0.9));
+      color: #001018;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 0 14px rgba(0,255,255,.75);
+    }
+    .btn:hover { transform: translateY(-1px); }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.92rem;
+      color: #baf6ff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,255,255,.4);
+      background: rgba(0,0,0,.25);
+      box-shadow: inset 0 0 12px rgba(0,255,255,.15);
+    }
+
+    section {
+      padding: 60px 0;
+      border-top: 1px solid rgba(120,240,255,.15);
+    }
+
+    h2.section-title {
+      font-size: clamp(24px, 4vw, 38px);
+      margin: 0 0 10px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      color: #e8fbff;
+      text-shadow: 0 0 14px rgba(0,255,255,.7);
+    }
+
+    .lead {
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(20,26,34,.85), rgba(12,16,26,.85));
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid rgba(0,255,255,.25);
+      box-shadow: 0 6px 18px rgba(0,0,0,.5);
+      position: relative;
+      overflow: hidden;
+      min-height: 120px;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      color: #eaffff;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    /* Slide-up animation hook */
+    .slide-up {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+    }
+    .slide-up.in-view {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer / credits */
+    footer.site-footer {
+      padding: 28px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: .95rem;
+      border-top: 1px solid rgba(120,240,255,.25);
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .footer-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.4);
+      background: rgba(0,0,0,.25);
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      color: #eaffff;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    .github-link:hover { transform: rotate(6deg) scale(1.04); }
+
+    /* Neon glow accents for headings */
+    .glow {
+      text-shadow: 0 0 10px rgba(0,255,255,.8), 0 0 20px rgba(0,255,128,.6);
+    }
+
+    @media (max-width: 700px){
+      .brand { font-size: 1rem; }
+      nav { display: none; }
+      .container { width: min(92%, 100%); padding: 20px 0; }
+      .title { font-size: 64px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Site header">
+    <div class="brand glow" style="font-family:inherit;">amirabolfazle</div>
+    <nav aria-label="Site navigation">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top" class="container" role="main">
+    <section class="hero" aria-label="Hero">
+      <h1 class="title slide-up" style="font-weight:900;">amirabolfazle</h1>
+      <p class="subtitle slide-up" style="max-width: 720px;">
+        A neon-inspired one-file portfolio with slide-up motion and interactive micro-animations.
+      </p>
+      <div class="slide-up" style="display:flex; align-items:center; gap:12px; flex-wrap: wrap;">
+        <button class="btn" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
+          See Projects
+        </button>
+        <span class="creation-time" aria-live="polite">Creation time: 2025-09-28 10:38:42</span>
+      </div>
+    </section>
+
+    <section id="about" aria-label="About me" class="slide-up" style="margin-top: 6px;">
+      <h2 class="section-title">About</h2>
+      <p class="lead" style="max-width: 800px;">
+        I’m Amir, a developer who enjoys building visually striking, fast-loading web experiences.
+        This single-file portfolio demonstrates a neon aesthetic, slide-up transitions, and a clean content flow without external dependencies.
+      </p>
+    </section>
+
+    <section id="projects" aria-label="Projects" class="slide-up" style="margin-top: 6px;">
+      <h2 class="section-title">Projects</h2>
+      <p class="lead" style="max-width: 800px;">
+        A small sample of work that highlights interactive UI, thoughtful typography, and crisp motion trends.
+      </p>
+      <div class="grid" role="list">
+        <article class="card slide-up" role="listitem" aria-label="Project Neon Sketch">
+          <h3> Neon Sketch</h3>
+          <p>Lightweight UI skeleton demonstrating neon glow and slide-up reveals.</p>
+        </article>
+        <article class="card slide-up" role="listitem" aria-label="Project Autogen Code">
+          <h3> Autogen Code</h3>
+          <p>Prototype generation tool with a neon aesthetic and smooth transitions.</p>
+        </article>
+        <article class="card slide-up" role="listitem" aria-label="Project Pulse UI">
+          <h3> Pulse UI</h3>
+          <p>Real-time micro-interactions and performance-conscious CSS animations.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" aria-label="Contact" class="slide-up" style="margin-top: 6px;">
+      <h2 class="section-title">Contact</h2>
+      <p class="lead" style="max-width: 520px;">
+        Have a project in mind? Reach out and let’s talk about how we can bring it to life with a neon flair.
+      </p>
+      <form onsubmit="event.preventDefault();" aria-label="Contact form" style="max-width: 520px;">
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <input aria-label="Name" placeholder="Your name" required style="flex:1 1 180px; padding:12px; border-radius:8px; border:1px solid rgba(0,255,255,.4); background:#0b101a; color:#fff;">
+          <input aria-label="Email" placeholder="Email" type="email" required style="flex:1 1 180px; padding:12px; border-radius:8px; border:1px solid rgba(0,255,255,.4); background:#0b101a; color:#fff;">
+        </div>
+        <textarea aria-label="Message" placeholder="Message" rows="4" style="width:100%; margin-top:12px; padding:12px; border-radius:8px; border:1px solid rgba(0,255,255,.4); background:#0b101a; color:#fff;"></textarea>
+        <button class="btn" style="margin-top:12px;" type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="footer-wrap" style="margin:0 auto;">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="GitHub icon" style="display:block;">
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.205 11.387.6.113.82-.26.82-.58 0-.287-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.204.085 1.84 1.236 1.84 1.236 1.07 1.834 2.807 1.304 3.492.997.108-.775.42-1.304.764-1.603-2.665-.303-5.466-1.333-5.466-5.93 0-1.31.468-2.381 1.235-3.221-.125-.304-.535-1.533.118-3.198 0 0 1.008-.322 3.301 1.23a11.46 11.46 0 0 1 3.003-.403c1.018.005 2.042.138 3.003.403 2.29-1.552 3.297-1.23 3.297-1.23.654 1.665.243 2.894.119 3.198.771.84 1.234 1.911 1.234 3.221 0 4.609-2.804 5.625-5.475 5.921.431.371.815 1.102.815 2.222 0 1.606-.015 2.901-.015 3.293 0 .323.216.698.825.58C20.565 21.796 24 17.297 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Simple reveal-on-scroll for elements with class "slide-up"
+    document.addEventListener('DOMContentLoaded', function() {
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+      };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+
+      document.querySelectorAll('.slide-up').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
