@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1: #fff7fb;
+    --bg-2: #f7fff4;
+    --accent-1: #ffd6e0;
+    --accent-2: #d6ffef;
+    --accent-3: #e6e8ff;
+    --glass: rgba(255,255,255,0.6);
+    --muted: #6b6b7a;
+    --shadow: 0 8px 30px rgba(17,24,39,0.08);
+    --radius: 16px;
+    --speed: 700ms;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, var(--accent-1) 0%, transparent 18%),
+                radial-gradient(1000px 500px at 90% 80%, var(--accent-2) 0%, transparent 20%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#111;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:scroll;
+  }
+
+  /* Floating soft blobs for aesthetic motion */
+  .blob{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(36px);
+    opacity:0.75;
+    pointer-events:none;
+    transform:translate3d(0,0,0);
+    mix-blend-mode: overlay;
+  }
+  .blob.a{width:380px;height:380px;background:linear-gradient(135deg,#ffd6e0,#ffd6e0 60%,#ffefef 100%);left:-80px;top:-60px;animation:floatA 12s ease-in-out infinite;}
+  .blob.b{width:320px;height:320px;background:linear-gradient(135deg,#d6ffef,#eafff7 60%);right:-80px;bottom:-100px;animation:floatB 16s ease-in-out infinite;}
+  .blob.c{width:220px;height:220px;background:linear-gradient(135deg,#e6e8ff,#f2f4ff);left:10%;bottom:10%;animation:floatC 18s ease-in-out infinite;opacity:0.6}
+  @keyframes floatA{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(18px) rotate(6deg)}100%{transform:translateY(0) rotate(0)}}
+  @keyframes floatB{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(-4deg)}100%{transform:translateY(0) rotate(0)}}
+  @keyframes floatC{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(12px) rotate(3deg)}100%{transform:translateY(0) rotate(0)}}
+
+  /* Layout */
+  .wrap{
+    max-width:1000px;
+    margin:48px auto;
+    padding:48px;
+    position:relative;
+  }
+  header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:28px;
+  }
+  .logo{
+    width:84px;height:84px;border-radius:18px;
+    background:linear-gradient(135deg,var(--accent-1),var(--accent-3));
+    box-shadow: var(--shadow);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:28px;color:#333;
+    transform:translateY(0);
+    transition:transform var(--speed) cubic-bezier(.2,.8,.2,1), box-shadow var(--speed);
+  }
+  .logo:hover{transform:translateY(-6px); box-shadow: 0 14px 40px rgba(17,24,39,0.12)}
+
+  h1.title{
+    font-size:36px;margin:0;
+    letter-spacing:-0.6px;
+    color:#222;
+  }
+  p.lead{margin:6px 0 0;color:var(--muted);font-size:14px}
+
+  main.grid{
+    display:grid;
+    grid-template-columns:1fr 360px;
+    gap:24px;
+    align-items:start;
+  }
+
+  /* Card styles */
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+    border-radius: var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+    backdrop-filter: blur(8px) saturate(120%);
+    transform:translateY(24px);
+    opacity:0;
+    transition: transform var(--speed) cubic-bezier(.2,.8,.2,1), opacity var(--speed);
+    will-change:transform,opacity;
+  }
+
+  .card.in-view{transform:none;opacity:1}
+
+  .about{
+    min-height:220px;
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .avatar{
+    width:86px;height:86px;border-radius:14px;
+    background:linear-gradient(135deg,#fff2f6,#fffaf6);
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#333;font-size:28px;flex-shrink:0;box-shadow: 0 8px 20px rgba(17,24,39,0.06);
+  }
+  .meta{flex:1}
+  .meta h2{margin:0;font-size:18px}
+  .meta p{margin:8px 0 0;color:var(--muted);font-size:14px}
+
+  /* Sidebar */
+  .side{
+    position:sticky; top:36px;
+    align-self:start;
+  }
+  .stats{
+    display:flex;gap:12px;
+    margin-bottom:12px;
+  }
+  .stat{
+    background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.75));
+    flex:1;padding:10px;border-radius:12px;text-align:center;
+  }
+  .stat strong{display:block;font-size:18px}
+  .stat span{color:var(--muted);font-size:12px}
+
+  /* sections */
+  section h3{margin-top:0}
+  .skills{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.85),rgba(255,255,255,0.7));font-size:13px;color:#333;box-shadow:0 6px 18px rgba(17,24,39,0.04)}
+
+  /* subtle entrance animation for hero content */
+  .hero-animate{transform:translateY(8px);opacity:0;transition:transform 850ms cubic-bezier(.2,.8,.2,1),opacity 850ms}
+  .hero-animate.show{transform:none;opacity:1}
+
+  footer{
+    margin-top:48px;
+    padding:18px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .footer-link{
+    display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:inherit;
+    background:linear-gradient(180deg,rgba(255,255,255,0.6),rgba(255,255,255,0.5));
+    padding:8px 12px;border-radius:999px;box-shadow:var(--shadow);
+  }
+  .gh-icon{width:20px;height:20px;display:inline-block;vertical-align:middle}
+
+  /* reveal on scroll small delay variants */
+  .card.delay-1{transition-delay:120ms}
+  .card.delay-2{transition-delay:220ms}
+  .card.delay-3{transition-delay:320ms}
+
+  /* responsive */
+  @media (max-width:920px){
+    main.grid{grid-template-columns:1fr}
+    .side{position:static}
+    .wrap{padding:28px}
+  }
+</style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+  <div class="blob c" aria-hidden="true"></div>
+
+  <div class="wrap" id="page">
+    <header>
+      <div class="logo hero-animate" aria-hidden="false" id="logo">am</div>
+      <div>
+        <h1 class="title hero-animate" id="title">amirabolfazle</h1>
+        <p class="lead hero-animate" id="subtitle">a calm pastel corner on the web — personal page & playground</p>
+      </div>
+    </header>
+
+    <main class="grid">
+      <div>
+        <div class="card about delay-1" id="aboutCard" role="region" aria-labelledby="aboutTitle">
+          <div class="avatar" aria-hidden="true">A</div>
+          <div class="meta">
+            <h2 id="aboutTitle">Hello — I'm amirabolfazle</h2>
+            <p>Designer, tinkerer, and code-friendly creative. I like soft colors, smooth motion, and tiny delightful interactions.</p>
+            <p style="margin-top:12px;color:var(--muted);font-size:13px">Created on <time datetime="2025-09-28T21:27:23">2025-09-28 21:27:23</time></p>
+          </div>
+        </div>
+
+        <div class="card delay-2" id="workCard" role="region" aria-labelledby="workTitle" style="margin-top:18px">
+          <h3 id="workTitle">Highlights</h3>
+          <ul style="margin:10px 0 0;padding-left:18px;color:var(--muted);line-height:1.6">
+            <li>Sleek, minimal personal UI with pastel theme</li>
+            <li>Animated slide-up reveals and floating background blobs</li>
+            <li>Responsive layout with sticky sidebar and glass cards</li>
+          </ul>
+        </div>
+
+        <div class="card delay-3" id="skillsCard" role="region" aria-labelledby="skillsTitle" style="margin-top:18px">
+          <h3 id="skillsTitle">Skills & Tools</h3>
+          <div class="skills" style="margin-top:10px">
+            <div class="chip">HTML</div>
+            <div class="chip">CSS</div>
+            <div class="chip">JavaScript</div>
+            <div class="chip">Design Systems</div>
+            <div class="chip">Motion Design</div>
+            <div class="chip">Prototyping</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="card" id="profileCard" role="region" aria-labelledby="profileTitle">
+          <h3 id="profileTitle">At a glance</h3>
+          <div class="stats" style="margin-top:12px">
+            <div class="stat">
+              <strong>8+</strong>
+              <span>Years</span>
+            </div>
+            <div class="stat">
+              <strong>50+</strong>
+              <span>Projects</span>
+            </div>
+          </div>
+
+          <p style="color:var(--muted);font-size:13px;margin:12px 0">A tidy corner to showcase work, notes, and experiments with motion-first polish.</p>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <a href="#contact" style="text-decoration:none"><div class="chip" style="cursor:pointer">Contact</div></a>
+            <a href="#projects" style="text-decoration:none"><div class="chip" style="cursor:pointer">Projects</div></a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <h3>Quick Links</h3>
+          <nav style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+            <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit">
+              <div style="display:flex;gap:10px;align-items:center">
+                <svg class="gh-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.2 1.87.86 2.33.66.07-.52.28-.86.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38C13.71 14.53 16 11.54 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                <span style="color:#333">Repository</span>
+              </div>
+            </a>
+            <a href="#resume" style="text-decoration:none;color:inherit"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:14px">Resume</span></div></a>
+          </nav>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View repository on GitHub">
+        <svg class="gh-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.2 1.87.86 2.33.66.07-.52.28-.86.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38C13.71 14.53 16 11.54 16 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+<script>
+  // Slide-up reveal using IntersectionObserver
+  (function(){
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+        }
+      });
+    }, {threshold: 0.15});
+
+    document.querySelectorAll('.card').forEach(el => observer.observe(el));
+
+    // Hero initial micro-animations
+    window.addEventListener('load', () => {
+      setTimeout(()=> document.querySelectorAll('.hero-animate').forEach(el => el.classList.add('show')), 120);
+    });
+
+    // Smooth appearance when navigating back/forward
+    window.addEventListener('pageshow', (ev) => {
+      if (ev.persisted) {
+        document.querySelectorAll('.card').forEach(el => el.classList.add('in-view'));
+        document.querySelectorAll('.hero-animate').forEach(el => el.classList.add('show'));
+      }
+    });
+
+    // Optional: reduce motion respect
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) {
+      document.querySelectorAll('.blob').forEach(b=>b.style.animation='none');
+      document.querySelectorAll('.card, .hero-animate').forEach(el=>{
+        el.style.transition='none';
+        el.classList.add('in-view','show');
+      });
+    }
+
+    // Tiny interactive tilt for logo
+    const logo = document.getElementById('logo');
+    if (logo) {
+      logo.addEventListener('mousemove', (ev) => {
+        const r = logo.getBoundingClientRect();
+        const dx = (ev.clientX - r.left - r.width/2)/r.width;
+        const dy = (ev.clientY - r.top - r.height/2)/r.height;
+        logo.style.transform = `translateY(-6px) rotateX(${(-dy*6).toFixed(2)}deg) rotateY(${(dx*6).toFixed(2)}deg)`;
+      });
+      logo.addEventListener('mouseleave', () => logo.style.transform = 'translateY(0)');
+    }
+  })();
+</script>
+</body>
+</html>
