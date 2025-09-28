@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#0f1720;
+      --muted:#9aa4b2;
+      --accent:#6ee7b7;
+      --glow:rgba(110,231,183,0.12);
+      --glass: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.06);
+      --card-border-gradient: linear-gradient(135deg, rgba(110,231,183,0.18), rgba(99,102,241,0.12));
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(99,102,241,0.06), transparent),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(14,165,233,0.03), transparent),
+                  var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:4rem 1.25rem;
+      gap:2.5rem;
+      flex-direction:column;
+    }
+
+    header{
+      text-align:center;
+      max-width:1100px;
+      width:100%;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(2.1rem, 4.5vw, 4rem);
+      letter-spacing:-0.02em;
+      line-height:1;
+      display:inline-block;
+      padding:0.35rem 0.6rem;
+      background: linear-gradient(90deg, rgba(110,231,183,0.1), rgba(99,102,241,0.06));
+      border-radius:10px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border:1px solid var(--border);
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      transform-style:preserve-3d;
+      animation: floaty 6s ease-in-out infinite;
+    }
+
+    @keyframes floaty{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+      100%{transform:translateY(0)}
+    }
+
+    .subtitle{
+      margin-top:0.75rem;
+      color:var(--muted);
+      font-size:clamp(0.9rem,2.2vw,1.05rem);
+      display:flex;
+      gap:0.6rem;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .stamp{
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      padding:0.35rem 0.6rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      color:var(--muted);
+      font-size:0.88rem;
+      display:inline-flex;
+      gap:0.5rem;
+      align-items:center;
+      box-shadow: 0 4px 18px var(--glow);
+    }
+
+    /* central stage */
+    .stage{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      gap:2rem;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .card{
+      flex:1 1 420px;
+      min-width:280px;
+      max-width:540px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:1.6rem;
+      border:1px solid var(--card-border-gradient);
+      box-shadow: 0 8px 40px rgba(2,6,23,0.7);
+      position:relative;
+      overflow:hidden;
+      transform-style:preserve-3d;
+      perspective:900px;
+    }
+
+    .orb{
+      position:absolute;
+      inset:auto -20% -40% auto;
+      width:360px;
+      height:360px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(110,231,183,0.12), rgba(99,102,241,0.06));
+      filter: blur(60px);
+      transform: translateZ(-100px);
+      pointer-events:none;
+      z-index:0;
+      animation: spin-slow 24s linear infinite;
+    }
+
+    @keyframes spin-slow{
+      from{transform:translateZ(-100px) rotate(0deg)}
+      to{transform:translateZ(-100px) rotate(360deg)}
+    }
+
+    .scene{
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:1rem;
+      flex-direction:column;
+      min-height:240px;
+    }
+
+    .badge{
+      width:140px;
+      height:140px;
+      border-radius:26px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 40px rgba(2,6,23,0.65);
+      transform-style:preserve-3d;
+      animation: slow-rotate 10s linear infinite;
+      transition:transform 400ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    @keyframes slow-rotate{
+      0%{transform:rotateY(0deg) rotateX(0deg)}
+      50%{transform:rotateY(180deg) rotateX(8deg)}
+      100%{transform:rotateY(360deg) rotateX(0deg)}
+    }
+
+    .badge .logo{
+      width:74px;height:74px;display:inline-block;
+    }
+
+    .info{
+      text-align:center;
+      color:var(--muted);
+      font-size:0.98rem;
+      line-height:1.4;
+      max-width:46ch;
+    }
+
+    .rotate-hint{
+      margin-top:0.6rem;
+      color:var(--muted);
+      font-size:0.85rem;
+      display:flex;
+      gap:0.5rem;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .rotate-hint .dot{
+      width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--accent),#6366f1);
+      box-shadow:0 0 18px rgba(110,231,183,0.18);
+    }
+
+    /* interactive rotation target */
+    .interactive{
+      width: 100%;
+      display:flex;
+      gap:1rem;
+      align-items:center;
+      justify-content:center;
+      padding-top:0.6rem;
+    }
+
+    .panel{
+      flex:1 1 260px;
+      min-width:200px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.012));
+      border-radius:12px;
+      padding:0.85rem;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      gap:0.6rem;
+      align-items:center;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:0.95rem;
+      transform-origin:center;
+      transition: transform 250ms ease, box-shadow 250ms ease;
+    }
+
+    .panel:hover{
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.6);
+    }
+
+    .time{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      color:var(--accent);
+      background:rgba(255,255,255,0.02);
+      padding:0.35rem 0.6rem;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.02);
+      font-weight:600;
+    }
+
+    footer{
+      width:100%;
+      max-width:1100px;
+      margin-top:2.2rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.6rem;
+      color:var(--muted);
+      font-size:0.95rem;
+      padding:0.8rem;
+      border-radius:10px;
+    }
+
+    .gh{
+      display:inline-flex;
+      gap:0.6rem;
+      align-items:center;
+      background:var(--glass);
+      padding:0.45rem 0.7rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      color:inherit;
+      text-decoration:none;
+      transition:transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .gh:hover{ transform:translateY(-4px); box-shadow: 0 12px 30px rgba(2,6,23,0.6); }
+
+    .gh svg{ width:18px; height:18px; display:block; fill:currentColor; opacity:0.95; }
+
+    /* small screens */
+    @media (max-width:720px){
+      .stage{ gap:1rem; padding-top:0.4rem; }
+      .card{ padding:1.1rem; border-radius:14px; }
+      .orb{ display:none; }
+      .badge{ width:120px; height:120px; border-radius:20px;}
+      .subtitle{ font-size:0.95rem;}
+      footer{ padding:0.6rem; }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>amirabolfazle</h1>
+      <div class="subtitle">
+        <span class="stamp">Dark Mode · Animated · Responsive</span>
+        <span class="stamp">Created: <span style="margin-left:0.45rem;font-weight:600;color:var(--accent);">2025-09-28 23:39:52</span></span>
+      </div>
+    </header>
+
+    <main class="stage" aria-labelledby="main-heading">
+      <section class="card" role="region" aria-label="Animated showcase">
+        <div class="orb" aria-hidden="true"></div>
+        <div class="scene">
+          <div class="badge" id="badge" title="amirabolfazle">
+            <!-- A stylized initial/monogram that rotates -->
+            <svg class="logo" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="#6ee7b7"/>
+                  <stop offset="1" stop-color="#6366f1"/>
+                </linearGradient>
+              </defs>
+              <rect width="128" height="128" rx="28" fill="url(#g1)"/>
+              <g transform="translate(12,16)" fill="#071226">
+                <path d="M20 14c8-5 36-12 56 8 18 18 12 46-4 56-18 10-40 6-52-6-10-12-12-46 0-58z" opacity="0.06"/>
+                <path d="M36 18c6-3 28-10 46 8 16 16 10 36-2 44-14 10-34 8-44-2-12-12-12-42 0-50z" fill="#071226"/>
+                <text x="8" y="88" font-size="58" font-family="Inter, sans-serif" fill="white" font-weight="700">A</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="info">
+            <div style="font-weight:600;font-size:1.05rem;color:#dff6ee;margin-bottom:6px;">Interactive rotating badge</div>
+            <div>Move your pointer over the badge or hover the panels below for subtle rotation effects and smooth micro-interactions. The layout adapts to any screen size while keeping a dark, modern aesthetic.</div>
+            <div class="rotate-hint" aria-hidden="true">
+              <span class="dot"></span>
+              <span>Rotate effects · 3D tilt · Animated background</span>
+            </div>
+          </div>
+
+          <div class="interactive" aria-hidden="false">
+            <div class="panel" id="panel-left">
+              <div>Creation time</div>
+              <div class="time">2025-09-28 23:39:52</div>
+            </div>
+
+            <div class="panel" id="panel-right">
+              <div style="display:flex;flex-direction:column;align-items:flex-end">
+                <div style="font-size:0.85rem;color:var(--muted)">Theme</div>
+                <div style="font-weight:700;color:var(--accent)">Dark Mode</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.612-4.042-1.612-.546-1.387-1.333-1.757-1.333-1.757-1.089-.744.083-.729.083-.729 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.469-2.381 1.235-3.221-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.653.243 2.873.12 3.176.77.84 1.233 1.911 1.233 3.221 0 4.61-2.804 5.625-5.476 5.92.43.372.813 1.102.813 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      // Interactive 3D tilt for badge
+      const badge = document.getElementById('badge');
+      let rect = null;
+
+      function handleMove(e){
+        if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if(!rect) rect = badge.getBoundingClientRect();
+        const x = (e.clientX ?? (e.touches && e.touches[0].clientX)) - (rect.left + rect.width/2);
+        const y = (e.clientY ?? (e.touches && e.touches[0].clientY)) - (rect.top + rect.height/2);
+        const max = Math.min(rect.width, rect.height) / 2;
+        const rx = (y / max) * -12; // rotateX
+        const ry = (x / max) * 12;  // rotateY
+
+        badge.style.transition = 'transform 160ms cubic-bezier(.2,.9,.3,1)';
+        badge.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+      }
+
+      function reset(){
+        badge.style.transition = 'transform 600ms cubic-bezier(.2,.9,.3,1)';
+        badge.style.transform = '';
+        rect = null;
+      }
+
+      badge.addEventListener('mousemove', handleMove);
+      badge.addEventListener('touchmove', handleMove, {passive:true});
+      badge.addEventListener('mouseleave', reset);
+      badge.addEventListener('touchend', reset);
+
+      // Mild tilt for panels based on hover
+      const panels = document.querySelectorAll('.panel');
+      panels.forEach(p=>{
+        p.addEventListener('mousemove', e=>{
+          if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          const r = p.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width;
+          const py = (e.clientY - r.top) / r.height;
+          const tx = (py - 0.5) * -6;
+          const ty = (px - 0.5) * 8;
+          p.style.transform = `translateY(-6px) rotateX(${tx}deg) rotateY(${ty}deg) scale(1.01)`;
+        });
+        p.addEventListener('mouseleave', () => {
+          p.style.transform = '';
+        });
+      });
+
+      // Respect reduced motion: remove animations if user prefers it
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        document.documentElement.classList.add('reduced-motion');
+      }
+    })();
+  </script>
+</body>
+</html>
