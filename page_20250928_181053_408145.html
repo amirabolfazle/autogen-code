@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#050507;
+    --neon-pink:#ff2d95;
+    --neon-cyan:#00f0ff;
+    --neon-purple:#8a2fff;
+    --glass: rgba(255,255,255,0.04);
+    --glass-2: rgba(255,255,255,0.02);
+    --accent: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan),var(--neon-purple));
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:#e9eef8;letter-spacing:0.2px}
+  /* rotating neon background */
+  body::before{
+    content:"";position:fixed;inset:-20vmax;z-index:0;
+    background:conic-gradient(from 60deg at 50% 50%, rgba(0,240,255,0.06), rgba(138,47,255,0.06), rgba(255,45,149,0.06), rgba(0,240,255,0.06));
+    filter:blur(80px) saturate(140%);
+    animation: bgRotate 40s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes bgRotate{to{transform:rotate(1turn)}}
+  .wrap{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1;padding:48px 24px}
+  header{display:flex;flex-direction:column;gap:18px;align-items:center;text-align:center;margin-bottom:24px}
+  /* neon title */
+  .title{
+    font-weight:800;font-size: clamp(28px,6vw,72px);line-height:0.9;
+    background:var(--accent);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:
+      0 0 6px rgba(255,45,149,0.18),
+      0 0 18px rgba(0,240,255,0.08),
+      0 8px 30px rgba(0,0,0,0.6);
+    transform-origin:center;
+    animation: slowTilt 8s ease-in-out infinite;
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:10px;
+  }
+  @keyframes slowTilt{
+    0%{transform:rotate(-3deg) skewX(-1deg) scale(1)}
+    50%{transform:rotate(3deg) skewX(1deg) scale(1.02)}
+    100%{transform:rotate(-3deg) skewX(-1deg) scale(1)}
+  }
+  .subtitle{font-size:14px;color:rgba(255,255,255,0.65);max-width:720px}
+  /* neon ring + profile area */
+  .hero{display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:center;max-width:980px;width:100%}
+  @media (max-width:820px){.hero{grid-template-columns:1fr;}}
+  .avatar{
+    width:260px;height:260px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.6), 0 0 30px rgba(138,47,255,0.06);
+    backdrop-filter: blur(6px);
+  }
+  .avatar .ring{
+    position:absolute;inset:-20%;border-radius:999px;z-index:0;filter:blur(14px);
+    background:conic-gradient(from 0deg,var(--neon-pink),var(--neon-cyan),var(--neon-purple),var(--neon-pink));
+    opacity:0.75;mix-blend-mode:screen;
+    animation: ringRotate 10s linear infinite;
+  }
+  @keyframes ringRotate{to{transform:rotate(1turn)}}
+  .avatar .center{
+    z-index:1;width:85%;height:85%;border-radius:14px;background:linear-gradient(135deg, rgba(0,0,0,0.55), rgba(255,255,255,0.02));
+    display:flex;align-items:center;justify-content:center;flex-direction:column;padding:14px;border:1px solid rgba(255,255,255,0.03)
+  }
+  .avatar .initial{
+    font-weight:800;font-size:56px;color:transparent;
+    -webkit-background-clip:text;background-clip:text;background:var(--accent);
+    text-shadow:0 0 10px rgba(255,45,149,0.14),0 3px 18px rgba(0,0,0,0.6);
+  }
+  .info{padding:18px;border-radius:14px;background:linear-gradient(180deg,var(--glass),var(--glass-2));border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 30px rgba(0,0,0,0.6)}
+  .info h3{margin:0;font-size:18px;color:#fff}
+  .info p{margin:6px 0 0;color:rgba(255,255,255,0.7);font-size:14px}
+  .meta{margin-top:10px;font-size:13px;color:rgba(255,255,255,0.6);display:flex;gap:12px;flex-wrap:wrap}
+  .time{
+    background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);
+    color:var(--neon-cyan);font-weight:600;box-shadow:0 4px 18px rgba(0,240,255,0.03);font-size:13px
+  }
+
+  /* feature cards */
+  .cards{display:flex;gap:16px;flex-wrap:wrap;margin-top:20px}
+  .card{
+    flex:1 1 220px;min-width:200px;border-radius:12px;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);position:relative;overflow:hidden;
+    transition:transform .4s cubic-bezier(.2,.9,.2,1), box-shadow .3s;
+    box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  }
+  .card:hover{transform:translateY(-8px) rotate(-1deg);box-shadow:0 24px 60px rgba(0,0,0,0.7)}
+  .card .icon{
+    width:54px;height:54px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;
+    background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    box-shadow:0 6px 20px rgba(0,0,0,0.5), 0 0 20px rgba(138,47,255,0.04);
+    transition:transform .6s cubic-bezier(.2,.9,.2,1);
+  }
+  .card:hover .icon{transform:rotate(16deg) scale(1.06)}
+  .card h4{margin:0 0 6px 0}
+  .card p{margin:0;color:rgba(255,255,255,0.7);font-size:13px}
+  .neon-border{
+    position:absolute;inset:0;border-radius:12px;padding:1px;pointer-events:none;
+    background:linear-gradient(90deg, transparent 5%, rgba(255,45,149,0.08), rgba(0,240,255,0.1), transparent 95%);
+    mix-blend-mode:screen;opacity:0.9;
+  }
+
+  /* actions */
+  .actions{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .btn{
+    padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    color:#eaf7ff;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:transform .25s, box-shadow .25s;
+  }
+  .btn.primary{
+    background:linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    color:#091018;text-shadow:none;box-shadow:0 10px 30px rgba(0,240,255,0.06);
+  }
+  .btn:hover{transform:translateY(-4px)}
+  .btn.icon-only{padding:10px;border-radius:12px}
+
+  /* footer */
+  footer{position:fixed;left:16px;right:16px;bottom:16px;display:flex;align-items:center;justify-content:center;z-index:2}
+  .footer-inner{max-width:1100px;width:100%;display:flex;align-items:center;justify-content:center;gap:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 30px rgba(0,0,0,0.6)}
+  .gh-link{display:inline-flex;align-items:center;gap:10px;color:var(--neon-cyan);text-decoration:none;font-weight:700}
+  .gh-icon{width:20px;height:20px;display:inline-block;filter:drop-shadow(0 6px 14px rgba(0,240,255,0.06));transform-origin:center;transition:transform .4s}
+  .gh-link:hover .gh-icon{transform:rotate(-20deg) scale(1.04)}
+  /* subtle floating orbs */
+  .orb{
+    position:absolute;border-radius:999px;filter:blur(26px);opacity:0.06;mix-blend-mode:screen;pointer-events:none;
+  }
+  .orb.one{width:280px;height:280px;background:radial-gradient(circle at 30% 30%,var(--neon-pink), transparent 40%);top:6%;left:4%;animation: drift 18s ease-in-out infinite}
+  .orb.two{width:360px;height:360px;background:radial-gradient(circle at 70% 70%,var(--neon-cyan), transparent 40%);bottom:10%;right:6%;animation: drift2 22s ease-in-out infinite}
+  @keyframes drift{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(12deg)}100%{transform:translateY(0) rotate(0)}}
+  @keyframes drift2{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(18px) rotate(-12deg)}100%{transform:translateY(0) rotate(0)}}
+  /* small helpers */
+  small.note{display:block;color:rgba(255,255,255,0.45);font-size:12px;margin-top:10px}
+  /* link styles */
+  a{color:inherit}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="orb one" aria-hidden="true"></div>
+    <div class="orb two" aria-hidden="true"></div>
+
+    <header>
+      <div class="title" aria-hidden="false">amirabolfazle</div>
+      <div class="subtitle">Neon-coded micro-portfolio with animated rotate effects. Minimal, single-file, eye-catching — built to show a spark of design and motion.</div>
+    </header>
+
+    <main class="hero" role="main">
+      <div class="avatar" aria-hidden="false">
+        <div class="ring"></div>
+        <div class="center">
+          <div class="initial">A</div>
+          <small style="color:rgba(255,255,255,0.55);margin-top:6px">creative • dev • neon</small>
+        </div>
+      </div>
+
+      <div class="info">
+        <h3>Hi, I'm amirabolfazle</h3>
+        <p>Designer and developer crafting glowing interfaces, micro-animations and lightweight front-end experiences. This single-file portfolio demonstrates neon aesthetics with rotation and motion.</p>
+
+        <div class="meta" style="margin-top:14px">
+          <div class="time">Creation time: 2025-09-28 18:10:10</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);padding:8px 10px;border-radius:10px;background:transparent;border:1px dashed rgba(255,255,255,0.02)">Single-file HTML • Animated</div>
+        </div>
+
+        <div class="actions">
+          <a class="btn primary" href="#work" title="Work">View Work</a>
+          <a class="btn" href="#about" title="About">About</a>
+          <a class="btn" href="#contact" title="Contact">Contact</a>
+        </div>
+
+        <div class="cards" style="margin-top:16px">
+          <div class="card">
+            <div class="icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 12h18" stroke="url(#g1)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 3v18" stroke="url(#g1)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#ff2d95"/><stop offset="1" stop-color="#00f0ff"/></linearGradient></defs>
+              </svg>
+            </div>
+            <h4>Motion-first UI</h4>
+            <p>Micro-interactions and rotating accents that emphasize hierarchy without heavy code.</p>
+            <div class="neon-border" aria-hidden="true"></div>
+          </div>
+
+          <div class="card">
+            <div class="icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="6" stroke="url(#g2)" stroke-width="1.6"/>
+                <path d="M12 6v6l2 2" stroke="url(#g2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs><linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#8a2fff"/><stop offset="1" stop-color="#00f0ff"/></linearGradient></defs>
+              </svg>
+            </div>
+            <h4>Fast & Lightweight</h4>
+            <p>Everything centered on a single HTML file — zero dependencies, maximum visual impact.</p>
+            <div class="neon-border" aria-hidden="true"></div>
+          </div>
+
+          <div class="card">
+            <div class="icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 7h16M4 12h16M4 17h16" stroke="url(#g3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs><linearGradient id="g3" x1="0" x2="1"><stop offset="0" stop-color="#00f0ff"/><stop offset="1" stop-color="#ff2d95"/></linearGradient></defs>
+              </svg>
+            </div>
+            <h4>Responsive</h4>
+            <p>Designed to scale from small screens to wide displays. Neon vibe preserved everywhere.</p>
+            <div class="neon-border" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <small class="note">Tip: hover cards and buttons to see rotate and tilt effects.</small>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-inner" role="contentinfo">
+        <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <span class="gh-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .5C5.73.5.97 5.26.97 11.53c0 4.69 3.04 8.67 7.26 10.07.53.1.72-.23.72-.51 0-.25-.01-.91-.01-1.79-2.95.64-3.57-1.42-3.57-1.42-.48-1.21-1.18-1.53-1.18-1.53-.97-.66.07-.65.07-.65 1.07.08 1.63 1.1 1.63 1.1.95 1.63 2.49 1.16 3.1.89.1-.7.37-1.16.67-1.43-2.36-.27-4.84-1.18-4.84-5.24 0-1.16.41-2.11 1.09-2.86-.11-.27-.47-1.36.1-2.84 0 0 .88-.28 2.88 1.09.83-.23 1.73-.35 2.62-.35.89 0 1.79.12 2.62.35 2-.36 2.88-1.09 2.88-1.09.57 1.48.21 2.57.11 2.84.68.75 1.09 1.7 1.09 2.86 0 4.06-2.49 4.97-4.86 5.23.38.33.72.99.72 2 0 1.44-.01 2.6-.01 2.96 0 .28.19.61.73.51 4.22-1.41 7.25-5.39 7.25-10.07C23.03 5.26 18.27.5 12 .5z" fill="url(#g4)"/>
+              <defs>
+                <linearGradient id="g4" x1="0" x2="1">
+                  <stop offset="0" stop-color="#00f0ff"/>
+                  <stop offset="1" stop-color="#ff2d95"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
