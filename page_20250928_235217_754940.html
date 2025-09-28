@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1: #0b0f13;
+    --bg2: #071021;
+    --card: #0f1720;
+    --accent: #6ee7b7;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.03);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:#e6eef6;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(110,231,183,0.04), transparent 10%),
+                radial-gradient(1000px 500px at 90% 90%, rgba(96,165,250,0.03), transparent 10%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* subtle animated starfield */
+  .sky{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+  }
+  .star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:linear-gradient(90deg,#fff8,#fff0);
+    border-radius:50%;
+    opacity:0.6;
+    transform-origin:center;
+    animation: twinkle linear infinite;
+    filter:blur(.2px);
+  }
+  @keyframes twinkle{
+    0%{opacity:0.15; transform:translateY(0) scale(1)}
+    50%{opacity:0.9; transform:translateY(-8px) scale(1.2)}
+    100%{opacity:0.15; transform:translateY(0) scale(1)}
+  }
+
+  /* Container */
+  .wrap{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:64px 24px;
+  }
+
+  /* Grid */
+  .stage{
+    width:100%;
+    max-width:1200px;
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap:36px;
+    align-items:center;
+  }
+
+  /* Left panel: portrait card */
+  .profile{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+    border-radius:20px;
+    padding:28px;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.03);
+    transform-style:preserve-3d;
+    perspective:800px;
+    transition:transform .6s cubic-bezier(.2,.9,.2,1);
+  }
+
+  .portrait{
+    width:100%;
+    height:300px;
+    border-radius:14px;
+    background:
+      conic-gradient(from 180deg at 50% 50%, rgba(110,231,183,0.06), rgba(96,165,250,0.04), rgba(139,92,246,0.03)),
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--accent);
+    font-weight:700;
+    font-size:56px;
+    letter-spacing:1px;
+    position:relative;
+    overflow:hidden;
+    box-shadow: 0 6px 22px rgba(2,6,23,0.6);
+  }
+
+  .portrait .logo{
+    transform-style:preserve-3d;
+    animation: floaty 6s ease-in-out infinite;
+    text-shadow: 0 6px 20px rgba(110,231,183,0.06);
+  }
+  @keyframes floaty{
+    0%{transform:translateY(0) rotateY(0deg)}
+    50%{transform:translateY(-10px) rotateY(10deg)}
+    100%{transform:translateY(0) rotateY(0deg)}
+  }
+
+  .meta{
+    margin-top:18px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:flex-start;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .meta .dot{
+    width:8px;height:8px;border-radius:50%;background:linear-gradient(180deg,var(--accent),#4ade80);
+    box-shadow:0 0 12px rgba(110,231,183,0.12);
+  }
+
+  .bio{
+    margin-top:14px;
+    color:#cfeef0;
+    font-size:15px;
+    line-height:1.45;
+    opacity:0.95;
+  }
+
+  /* Right panel: projects */
+  .projects{
+    display:grid;
+    gap:18px;
+  }
+
+  .hero{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:6px;
+  }
+  .name{
+    font-size:34px;
+    font-weight:800;
+    letter-spacing:0.6px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .name .spin{
+    display:inline-block;
+    width:56px;
+    height:56px;
+    border-radius:12px;
+    background:linear-gradient(135deg,rgba(110,231,183,0.12),rgba(96,165,250,0.06));
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    transform-origin:center;
+    animation: slowspin 20s linear infinite;
+    box-shadow: 0 6px 24px rgba(2,6,23,0.6), inset 0 -8px 30px rgba(0,0,0,0.25);
+  }
+  @keyframes slowspin{from{transform:rotate(0deg)} to{transform:rotate(360deg)}}
+
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:2px;
+  }
+
+  /* project cards */
+  .grid-cards{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:16px;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:14px;
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.55);
+    transform-style:preserve-3d;
+    transition: transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .3s;
+    will-change:transform;
+    overflow:hidden;
+  }
+
+  .card:hover{
+    transform: translateY(-10px) rotateX(6deg) rotateY(6deg);
+    box-shadow: 0 18px 60px rgba(2,6,23,0.7);
+  }
+
+  .card .c-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .tag{
+    background:linear-gradient(90deg, rgba(110,231,183,0.08), rgba(99,102,241,0.04));
+    color:var(--accent);
+    padding:6px 10px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .rotate-icon{
+    display:inline-block;
+    width:38px;height:38px;border-radius:8px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);
+    transition: transform .8s cubic-bezier(.2,.9,.2,1);
+  }
+  .card:hover .rotate-icon{
+    transform: rotate(360deg);
+    color:var(--accent);
+  }
+
+  .c-body{
+    margin-top:12px;
+  }
+  .title{
+    font-weight:700;
+    font-size:16px;
+    color:#e8f9f0;
+  }
+  .desc{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:6px;
+    line-height:1.4;
+  }
+
+  .badges{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+  .badge{
+    font-size:12px;
+    color:var(--muted);
+    background:rgba(255,255,255,0.02);
+    padding:6px 8px;border-radius:8px;
+  }
+
+  /* creation time */
+  .created{
+    margin-top:8px;
+    font-size:12px;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .clock{
+    width:14px;height:14px;opacity:0.9;
+  }
+
+  /* footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:20px;
+    z-index:3;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    background:rgba(0,0,0,0.28);
+    border-radius:999px;
+    padding:8px 14px;
+    backdrop-filter: blur(6px);
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 24px rgba(2,6,23,0.6);
+  }
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--muted);
+    text-decoration:none;
+    font-size:13px;
+  }
+  .gh svg{display:block;fill:currentColor}
+  .gh:hover{color:var(--accent)}
+
+  /* responsive */
+  @media (max-width:960px){
+    .stage{grid-template-columns:1fr; padding-bottom:120px}
+    .portrait{height:240px}
+    .grid-cards{grid-template-columns:repeat(1, minmax(0,1fr))}
+    footer{left:16px;transform:none}
+  }
+
+  /* reduce motion preference */
+  @media (prefers-reduced-motion: reduce){
+    .star, .logo, .spin, .rotate-icon, .card, .portrait { animation:none; transition:none; transform:none; }
+    .card:hover{transform:none;box-shadow:0 8px 30px rgba(2,6,23,0.55)}
+  }
+</style>
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="stage" role="main">
+      <aside class="profile" aria-labelledby="profile-heading">
+        <div class="portrait" role="img" aria-label="amirabolfazle logo portrait">
+          <div class="logo">amir.</div>
+        </div>
+
+        <div class="meta" aria-hidden="true">
+          <div class="dot" aria-hidden="true"></div>
+          <div>Designer & Developer</div>
+          <div style="opacity:.5">•</div>
+          <div>Dark Mode Enthusiast</div>
+        </div>
+
+        <div class="bio">
+          I build crisp interfaces, playful interactions and tiny performance-minded experiences. This single-file portfolio shows animated rotate effects and a calm, dark aesthetic.
+        </div>
+
+        <div class="created" title="Creation time">
+          <svg class="clock" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.2" opacity="0.9"/>
+          </svg>
+          Created: 2025-09-28 23:51:21
+        </div>
+      </aside>
+
+      <section class="projects" aria-labelledby="projects-heading">
+        <div class="hero">
+          <div>
+            <div class="name">
+              amirabolfazle
+              <div class="spin" aria-hidden="true">◎</div>
+            </div>
+            <div class="subtitle">Interactive portfolio — animated, single-file, dark</div>
+          </div>
+        </div>
+
+        <div class="grid-cards" role="list">
+          <article class="card" role="listitem" aria-label="Project one - Interactive Card">
+            <div class="c-top">
+              <div class="tag">Project</div>
+              <div class="rotate-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 1 0-8.98 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M21 3v6h-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </div>
+            </div>
+            <div class="c-body">
+              <div class="title">Interactive Card System</div>
+              <div class="desc">A small system of rotating cards with 3D hover tilt and subtle float animations. Works well for showcasing micro-projects and experiments.</div>
+              <div class="badges">
+                <span class="badge">HTML</span>
+                <span class="badge">CSS</span>
+                <span class="badge">JS</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card" role="listitem" aria-label="Project two - Animated Header">
+            <div class="c-top">
+              <div class="tag">UI</div>
+              <div class="rotate-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="c-body">
+              <div class="title">Animated Header & Branding</div>
+              <div class="desc">Name mark with a perpetual slow rotation, paired with a radial metallic sheen—great for identity and quick hero sections.</div>
+              <div class="badges">
+                <span class="badge">Branding</span>
+                <span class="badge">Motion</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card" role="listitem" aria-label="Project three - Micro Interactions">
+            <div class="c-top">
+              <div class="tag">Micro</div>
+              <div class="rotate-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h3l3 8 4-16 3 8h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="c-body">
+              <div class="title">Micro Interactions Kit</div>
+              <div class="desc">Tiny, delightful touches: button pops, subtle shadows, and rotate-on-hover icons that add polish without drama.</div>
+              <div class="badges">
+                <span class="badge">UX</span>
+                <span class="badge">Polish</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card" role="listitem" aria-label="Project four - Single File Setup">
+            <div class="c-top">
+              <div class="tag">One-file</div>
+              <div class="rotate-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12h-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="c-body">
+              <div class="title">Single-file Portfolio</div>
+              <div class="desc">Everything contained in a single HTML file: styles, interactions and SVG assets — great for portability and demos.</div>
+              <div class="badges">
+                <span class="badge">Portable</span>
+                <span class="badge">Shareable</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer role="contentinfo">
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5C5.65.5.74 5.41.74 11.76c0 4.86 3.16 8.98 7.56 10.44.55.1.75-.24.75-.52 0-.26-.01-1.12-.02-2.03-3.08.67-3.73-1.48-3.73-1.48-.5-1.28-1.23-1.62-1.23-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.69 2.6 1.2 3.24.92.1-.72.39-1.2.71-1.48-2.46-.28-5.05-1.23-5.05-5.5 0-1.21.43-2.2 1.14-2.98-.11-.28-.5-1.4.11-2.9 0 0 .93-.3 3.05 1.14.89-.25 1.84-.37 2.79-.37.95 0 1.9.12 2.79.37 2.12-1.44 3.05-1.14 3.05-1.14.61 1.5.22 2.62.11 2.9.71.78 1.14 1.77 1.14 2.98 0 4.28-2.6 5.22-5.07 5.5.4.35.76 1.04.76 2.1 0 1.52-.01 2.75-.01 3.13 0 .29.2.63.76.52 4.4-1.46 7.56-5.58 7.56-10.44C23.26 5.41 18.35.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+<script>
+  // Create a few animated stars for the background (positions randomized)
+  (function(){
+    const sky = document.querySelector('.sky');
+    const count = 40;
+    const w = window.innerWidth, h = window.innerHeight;
+    for(let i=0;i<count;i++){
+      const s = document.createElement('div');
+      s.className = 'star';
+      const left = Math.random()*100;
+      const top = Math.random()*100;
+      const size = Math.random()*2 + 1;
+      s.style.width = s.style.height = size + 'px';
+      s.style.left = left + '%';
+      s.style.top = top + '%';
+      s.style.opacity = (Math.random()*0.7+0.1).toFixed(2);
+      s.style.animationDuration = (Math.random()*6+3).toFixed(2) + 's';
+      s.style.animationDelay = (Math.random()*3).toFixed(2)+'s';
+      sky.appendChild(s);
+    }
+  })();
+
+  // Slight interactive tilt for the profile card (desktop only)
+  (function(){
+    const card = document.querySelector('.profile');
+    if(!card) return;
+    let bound = card.getBoundingClientRect();
+    function updateBounds(){ bound = card.getBoundingClientRect(); }
+    window.addEventListener('resize', updateBounds);
+    function handle(e){
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - (bound.left + bound.width/2);
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - (bound.top + bound.height/2);
+      const rx = (y / bound.height) * -10;
+      const ry = (x / bound.width) * 12;
+      card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+    }
+    function reset(){ card.style.transform = ''; }
+    let hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if(!hasTouch){
+      card.addEventListener('mousemove', handle);
+      card.addEventListener('mouseleave', reset);
+    }
+  })();
+</script>
+</body>
+</html>
