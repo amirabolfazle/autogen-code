@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg2: #0e1220;
+      --card: rgba(255, 255, 255, 0.14);
+      --card2: rgba(255,255,255,0.08);
+      --text: #e8e8f0;
+      --muted: #b7b7c9;
+      --glow: 0 8px 32px rgba(0,0,0,.4);
+    }
+    * {box-sizing:border-box}
+    html, body { height:100% ; margin:0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, rgba(120,180,255,.15), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(180,120,255,.15), transparent 40%),
+                  linear-gradient(135deg, #0b0f1a 0%, #0a0f1a 60%, #0b0f1a 100%);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .bg {
+      position: fixed;
+      inset: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="%23ffffff" stop-opacity="0.25"/><stop offset="1" stop-color="%23ffffff" stop-opacity="0"/></linearGradient></defs><rect width="120" height="120" fill="none"/><circle cx="60" cy="60" r="50" fill="url(%23g)" /></svg>');
+      background-size: cover;
+      filter: saturate(120%);
+      animation: pan 40s linear infinite;
+      opacity:.25;
+      pointer-events:none;
+    }
+    @keyframes pan {
+      0% { transform: scale(1) translate3d(0,0,0); }
+      100% { transform: scale(1.05) translate3d(-10px,-5px,0); }
+    }
+    header {
+      position: relative;
+      z-index: 1;
+      padding: 40px 20px 20px;
+      text-align:center;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0;
+      letter-spacing: .2rem;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 6px 24px rgba(0,0,0,.25);
+      transform: translateZ(0);
+      perspective: 1000px;
+    }
+    .subtitle {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .stage {
+      display: grid;
+      place-items: center;
+      padding: 40px 20px 60px;
+    }
+
+    .card {
+      width: min(920px, 92vw);
+      border-radius: 18px;
+      padding: 48px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: var(--glow);
+      backdrop-filter: blur(14px) saturate(1.2);
+      -webkit-backdrop-filter: blur(14px) saturate(1.2);
+      animation: floatIn 900ms ease-out;
+      transform: translateZ(0);
+      transition: transform .4s ease, box-shadow .4s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 18px 50px rgba(0,0,0,.5);
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+    .card p {
+      margin: 0 0 16px;
+      color: rgba(255,255,255,.92);
+      line-height: 1.6;
+    }
+    .badge {
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.4rem .75rem;
+      border-radius:999px;
+      font-size:.8rem;
+      color:#061226;
+      background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
+      border: 1px solid rgba(0,0,0,.1);
+      margin-top: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+      transform: translateZ(0);
+    }
+    .badge .dot {
+      width:8px; height:8px; border-radius:50%;
+      background:#4d9cff;
+      box-shadow:0 0 0 3px rgba(77,156,255,.25);
+    }
+    @keyframes floatIn {
+      from { transform: translateY(12px) scale(.98); opacity:.0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .stack {
+      display:flex;
+      gap:16px;
+      align-items:stretch;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    .panel {
+      flex:1 1 240px;
+      min-width:240px;
+      padding: 18px;
+      border-radius:14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(6px);
+    }
+    .panel h3 { margin: 0 0 8px; font-size:1.1rem; }
+    .panel p { margin:0; color: rgba(255,255,255,.9); font-size:.95rem; }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align:center;
+      color: rgba(255,255,255,.75);
+    }
+    a.github {
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      color: #fff;
+      text-decoration: none;
+      padding:.5rem 0;
+    }
+    a.github:hover { text-decoration: underline; }
+    .icon {
+      width: 1em; height: 1em;
+      display:inline-block;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 768px) {
+      .card { padding: 28px; }
+      .stack { flex-direction: column; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <header>
+    <h1>amirabolfazle</h1>
+    <div class="subtitle">Glassmorphism landing page with zoom interactions</div>
+  </header>
+
+  <main class="stage" aria-label="Hero">
+    <section class="card" aria-label="Intro card">
+      <div class="badge" style="margin-bottom:6px;">
+        <span class="dot"></span>
+        <span>Live</span>
+      </div>
+      <h2>Welcome to amirabolfazle</h2>
+      <p>Crafted with a glassy, frosted aesthetic and subtle zoom effects. Explore delightful micro-interactions as you hover and scroll.</p>
+      <div class="badge" style="margin-top:10px;">
+        <span class="dot" style="background:#7af0a6;"></span>
+        <span>Creation time: 2025-09-28 07:34:27</span>
+      </div>
+
+      <div class="stack" style="margin-top:14px;">
+        <div class="panel">
+          <h3>Feature</h3>
+          <p>Glassmorphic panels with backdrop blur and soft shadows create depth on a dark gradient.</p>
+        </div>
+        <div class="panel">
+          <h3>Interaction</h3>
+          <p>Hover the card to see a gentle zoom and lift. Layout adapts across devices.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <!-- GitHub SVG Icon -->
+      <svg class="icon" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" role="img" style="color:#fff;">
+        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.13 0 0 .67-.21 2.2.82a7.69 7.69 0 012-.27c.68 0 1.37.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.11.16 1.93.08 2.13.51.56.82 1.27.82 2.15 0 3.07-1.87 3.74-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <div style="margin-top:6px;">Created by amirabolfazle</div>
+  </footer>
+</body>
+</html>
