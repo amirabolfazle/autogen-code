@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #071030;
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent1: #7ce7ff;
+      --accent2: #c77bff;
+      --muted: rgba(255,255,255,0.75);
+      --glass-radius: 16px;
+    }
+
+    /* Page background */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(120deg, var(--bg1) 0%, var(--bg2) 60%);
+      color: #eaf2ff;
+      overflow-y:auto;
+    }
+
+    /* Animated gradient orb background */
+    body::before, body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      opacity:0.45;
+      filter:blur(80px);
+      z-index:0;
+    }
+    body::before{
+      background: radial-gradient(circle at 10% 20%, rgba(124,231,255,0.18) 0 8%, transparent 30%),
+                  radial-gradient(circle at 80% 80%, rgba(199,123,255,0.14) 0 8%, transparent 30%);
+      transform: translateZ(0);
+      animation: drift1 16s linear infinite;
+    }
+    body::after{
+      background: radial-gradient(circle at 60% 10%, rgba(199,123,255,0.08) 0 8%, transparent 30%);
+      transform: translateZ(0);
+      animation: drift2 22s linear infinite;
+    }
+    @keyframes drift1{
+      0%{transform:translate(-10px,-10px) scale(1);}
+      50%{transform:translate(10px,15px) scale(1.03);}
+      100%{transform:translate(-10px,-10px) scale(1);}
+    }
+    @keyframes drift2{
+      0%{transform:translate(0px,0px) scale(1);}
+      50%{transform:translate(-18px,10px) scale(1.02);}
+      100%{transform:translate(0px,0px) scale(1);}
+    }
+
+    /* Layout */
+    .wrap{
+      min-height:100dvh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+      position:relative;
+      z-index:1;
+      box-sizing:border-box;
+    }
+
+    /* Glass card */
+    .card{
+      width:min(980px,96%);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      border-radius: var(--glass-radius);
+      box-shadow: 0 8px 40px rgba(3,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      padding:34px;
+      overflow:hidden;
+      position:relative;
+      transform-origin:center;
+      animation: floatCard 10s ease-in-out infinite, fadeInUp 900ms cubic-bezier(.2,.9,.25,1) both;
+    }
+    @keyframes floatCard{
+      0%{transform:translateY(0px) rotate(-0.2deg);}
+      50%{transform:translateY(-8px) rotate(0.2deg);}
+      100%{transform:translateY(0px) rotate(-0.2deg);}
+    }
+
+    /* Header */
+    .header{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .avatar{
+      width:96px;height:96px;border-radius:18px;
+      flex:0 0 96px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;align-items:center;justify-content:center;
+      color:#011025;font-weight:700;font-size:28px;
+      box-shadow:0 6px 20px rgba(124,231,255,0.08), inset 0 -6px 22px rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.12);
+      transform:translateZ(0);
+      animation: fadeInScale 700ms cubic-bezier(.2,.9,.25,1) both;
+    }
+    @keyframes fadeInScale{
+      0%{opacity:0; transform: translateY(12px) scale(.96);}
+      100%{opacity:1; transform: translateY(0) scale(1);}
+    }
+    .title-block{
+      flex:1;
+      overflow:hidden;
+    }
+    h1{
+      margin:0;
+      font-size:34px;
+      letter-spacing:0.6px;
+      color: white;
+      text-shadow: 0 6px 28px rgba(124,231,255,0.06);
+      font-weight:700;
+      line-height:1;
+      animation: fadeInUp 750ms cubic-bezier(.2,.9,.25,1) both;
+    }
+    p.lead{
+      margin:8px 0 0 0;
+      color:var(--muted);
+      font-size:14px;
+      opacity:0.95;
+      animation: fadeInUp 850ms cubic-bezier(.2,.9,.25,1) both;
+    }
+
+    /* Content grid */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:22px;
+      margin-top:20px;
+    }
+    .left{
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .card-section{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      padding:14px;
+      box-shadow:0 6px 18px rgba(3,6,23,0.45);
+      animation: fadeInUp 900ms cubic-bezier(.2,.9,.25,1) both;
+    }
+    .bio{
+      color: #e8f7ff;
+      font-size:15px;
+      line-height:1.5;
+      margin:0;
+      opacity:0.95;
+    }
+    .tags{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .chip{
+      padding:8px 12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Right sidebar */
+    .right{
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .meta{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .meta .time{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .meta strong{ color:#fff; font-weight:600; font-size:13px; }
+
+    /* subtle list with fade */
+    .skills{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .skill{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(90deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      font-size:13px;
+      color:var(--muted);
+    }
+    .bar{
+      height:8px;
+      background: rgba(255,255,255,0.04);
+      border-radius:8px;
+      overflow:hidden;
+      width: 44%;
+      margin-left:12px;
+    }
+    .bar > i{
+      display:block;height:100%;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      border-radius:inherit;
+    }
+
+    /* footer */
+    footer{
+      margin-top:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:13px;
+      color:var(--muted);
+      padding-top:10px;
+      border-top:1px dashed rgba(255,255,255,0.02);
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:999px;
+      transition: all 200ms ease;
+      border:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    }
+    .gh:hover{
+      transform:translateY(-4px);
+      box-shadow: 0 10px 30px rgba(12,18,40,0.45);
+      color: white;
+    }
+    .gh svg{ display:block; width:18px; height:18px; }
+
+    /* animations */
+    @keyframes fadeInUp{
+      0%{opacity:0; transform: translateY(14px) scale(.995);}
+      100%{opacity:1; transform: translateY(0) scale(1);}
+    }
+
+    /* responsive */
+    @media (max-width:880px){
+      .grid{ grid-template-columns: 1fr; }
+      .right{ order:2; }
+    }
+
+    /* small extras (stagger using nth-child) */
+    .left > .card-section { animation-delay: 120ms; }
+    .left > .card-section:nth-child(2){ animation-delay: 220ms; }
+    .right > .card-section{ animation-delay: 180ms; }
+
+    /* creation badge */
+    .creation-badge{
+      position:absolute;
+      top:16px;
+      right:16px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--muted);
+      border-radius:10px;
+      padding:8px 12px;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 20px rgba(3,6,23,0.45);
+      animation: fadeInUp 900ms cubic-bezier(.2,.9,.25,1) both;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <div class="card" aria-labelledby="name-heading">
+      <div class="creation-badge" title="creation time">Created: 2025-09-28 20:29:55</div>
+
+      <header class="header">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div class="title-block">
+          <h1 id="name-heading">amirabolfazle</h1>
+          <p class="lead">Designer, developer and tinkerer — building clean interfaces with subtle motion and soft glass aesthetics.</p>
+        </div>
+      </header>
+
+      <div class="grid">
+        <section class="left" aria-label="about">
+          <div class="card-section" role="region" aria-label="bio">
+            <p class="bio">Hello — welcome to a small personal landing page. This space showcases a glassmorphism theme with refined, soft motion and fade-in effects. Explore, peek around, and enjoy the subtle details.</p>
+            <div class="tags" aria-hidden="false">
+              <span class="chip">UI / UX</span>
+              <span class="chip">Frontend</span>
+              <span class="chip">Animations</span>
+              <span class="chip">Open Source</span>
+            </div>
+          </div>
+
+          <div class="card-section" role="region" aria-label="projects">
+            <strong style="display:block;margin-bottom:8px;color:#fff;">Highlights</strong>
+            <div style="display:grid;gap:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div style="font-size:14px;color:var(--muted)">Autogen Code</div>
+                <div style="font-size:13px;color:#cceaff">Active</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div style="font-size:14px;color:var(--muted)">Design Systems</div>
+                <div style="font-size:13px;color:#ffd6fa">In progress</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div style="font-size:14px;color:var(--muted)">Motion Experiments</div>
+                <div style="font-size:13px;color:#bfffd9">Experimental</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="right" aria-label="sidebar">
+          <div class="card-section meta" role="region" aria-label="meta">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <strong>Contact</strong>
+              <span style="font-size:12px;color:var(--muted)">available</span>
+            </div>
+
+            <div class="time" title="creation time" style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:0.9">
+                <path d="M12 7v6l4 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div style="display:flex;flex-direction:column;">
+                <span style="font-size:12px;color:var(--muted)">Created</span>
+                <strong style="font-size:13px;color:#fff">2025-09-28 20:29:55</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-section" role="region" aria-label="skills">
+            <strong style="display:block;margin-bottom:10px;color:#fff;">Skills</strong>
+            <div class="skills">
+              <div class="skill">
+                <span>HTML / CSS</span>
+                <div style="display:flex;align-items:center;">
+                  <div class="bar" aria-hidden="true"><i style="width:88%"></i></div>
+                  <span style="margin-left:8px;color:var(--muted);font-size:12px">88%</span>
+                </div>
+              </div>
+              <div class="skill">
+                <span>JavaScript</span>
+                <div style="display:flex;align-items:center;">
+                  <div class="bar" aria-hidden="true"><i style="width:76%"></i></div>
+                  <span style="margin-left:8px;color:var(--muted);font-size:12px">76%</span>
+                </div>
+              </div>
+              <div class="skill">
+                <span>Design</span>
+                <div style="display:flex;align-items:center;">
+                  <div class="bar" aria-hidden="true"><i style="width:82%"></i></div>
+                  <span style="margin-left:8px;color:var(--muted);font-size:12px">82%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+
+      <footer>
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.65.5.75 5.4.75 11.75c0 4.8 3.1 8.85 7.4 10.29.54.1.74-.24.74-.52 0-.25-.01-.91-.01-1.78-3.01.66-3.65-1.45-3.65-1.45-.49-1.26-1.2-1.6-1.2-1.6-.98-.67.07-.66.07-.66 1.08.08 1.65 1.12 1.65 1.12.96 1.65 2.52 1.17 3.14.9.1-.7.38-1.17.69-1.44-2.4-.27-4.93-1.2-4.93-5.33 0-1.18.42-2.15 1.11-2.91-.11-.27-.48-1.36.11-2.83 0 0 .93-.3 3.05 1.11a10.6 10.6 0 0 1 2.78-.37c.94.01 1.89.13 2.78.37 2.12-1.41 3.05-1.11 3.05-1.11.59 1.47.22 2.56.11 2.83.69.76 1.11 1.73 1.11 2.91 0 4.14-2.54 5.05-4.96 5.32.39.33.74.98.74 1.98 0 1.43-.01 2.58-.01 2.93 0 .29.2.63.75.52 4.3-1.44 7.4-5.49 7.4-10.29C23.25 5.4 18.35.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
