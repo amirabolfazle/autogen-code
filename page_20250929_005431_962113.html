@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+    :root{
+      --bg:#0b0f12;
+      --panel:#0f1418;
+      --muted:#9aa8b3;
+      --accent:#7ce3d6;
+      --accent-2:#8a7cff;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --radius:14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1000px 400px at 10% 10%, rgba(124,92,255,0.08), transparent 8%),
+        radial-gradient(800px 300px at 90% 90%, rgba(124,226,214,0.06), transparent 10%),
+        linear-gradient(180deg,var(--bg),#030405 80%);
+      color:#d9eef0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:40px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      min-height:100vh;
+      gap:28px;
+    }
+
+    .container{
+      width:980px;
+      max-width:calc(100% - 48px);
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:28px;
+    }
+
+    .brand{
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+
+    .logo{
+      width:68px;
+      height:68px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 30px rgba(124,114,255,0.12), inset 0 -6px 24px rgba(0,0,0,0.25);
+      font-weight:800;
+      color:#071219;
+      font-size:20px;
+      letter-spacing:0.6px;
+    }
+
+    h1.title{
+      margin:0;
+      font-size:28px;
+      letter-spacing:0.6px;
+      font-weight:800;
+      color:linear-gradient(90deg,var(--accent),var(--accent-2));
+    }
+
+    .meta{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .card{
+      background: linear-gradient(180deg,var(--glass),var(--glass-2));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow: 0 6px 30px rgba(2,6,8,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px) saturate(120%);
+      margin-bottom:18px;
+      transform-origin:center;
+      overflow:hidden;
+    }
+
+    /* slide-up base */
+    .slide-up{
+      opacity:0;
+      transform: translateY(28px) scale(0.995);
+      transition: transform 650ms cubic-bezier(.2,.9,.2,1), opacity 500ms ease;
+      will-change:transform,opacity;
+    }
+
+    .slide-up.in-view{
+      opacity:1;
+      transform: translateY(0) scale(1);
+    }
+
+    .hero{
+      display:flex;
+      gap:24px;
+      align-items:center;
+    }
+
+    .hero-left{
+      flex:1;
+    }
+
+    .tagline{
+      color:var(--muted);
+      margin:8px 0 18px 0;
+      font-size:15px;
+    }
+
+    .glow-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      padding:8px 12px;
+      background:linear-gradient(90deg, rgba(124,226,214,0.06), rgba(138,124,255,0.04));
+      border-radius:999px;
+      color:var(--accent);
+      font-weight:600;
+      font-size:13px;
+      border:1px solid rgba(124,226,214,0.06);
+      box-shadow: 0 4px 18px rgba(124,226,214,0.02);
+    }
+
+    .hero-right{
+      width:230px;
+      height:140px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .digital-card{
+      width:88%;
+      height:70%;
+      border-radius:10px;
+      background:linear-gradient(135deg, rgba(124,226,214,0.12), rgba(138,124,255,0.12));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#041317;
+      letter-spacing:0.8px;
+      box-shadow: 0 10px 40px rgba(10,20,24,0.5);
+      transform: rotate(-6deg);
+    }
+
+    /* sections */
+    .section-title{
+      display:flex;
+      gap:12px;
+      align-items:baseline;
+      justify-content:space-between;
+      margin-bottom:14px;
+    }
+
+    .section-title h2{margin:0;font-size:16px; font-weight:700;}
+    .section-title p{margin:0;color:var(--muted);font-size:13px}
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:14px;
+    }
+
+    .project{
+      padding:14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      min-height:110px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .project h3{margin:0;font-size:14px}
+    .project p{margin:6px 0 0 0;color:var(--muted);font-size:13px;flex:1}
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:18px;
+    }
+
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#051419;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(124,114,255,0.14);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .btn.secondary{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--accent);
+      font-weight:600;
+      box-shadow:none;
+    }
+
+    .btn:hover{transform:translateY(-4px);box-shadow:0 18px 46px rgba(124,114,255,0.16)}
+    .btn.secondary:hover{transform:translateY(-3px)}
+
+    footer{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      padding:14px 18px;
+      border-radius:12px;
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    a.github{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      transition: color .18s ease;
+    }
+
+    a.github svg{width:18px;height:18px;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6))}
+
+    a.github:hover{color:var(--accent)}
+
+    /* responsive */
+    @media (max-width:880px){
+      .grid{grid-template-columns: repeat(2,1fr)}
+      .hero{flex-direction:column;align-items:flex-start}
+      .hero-right{width:100%;height:120px}
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns:1fr}
+      .logo{width:56px;height:56px;font-size:18px}
+      header{gap:10px}
+    }
+
+    /* decorative animated lines */
+    .pulse-lines{
+      position:absolute;
+      inset: -40% -40% auto auto;
+      width:600px;
+      height:600px;
+      pointer-events:none;
+      opacity:0.06;
+      filter: blur(28px);
+      transform:translate(10%, -8%);
+    }
+
+    .pulse-lines svg{width:100%;height:100%}
+
+    /* timestamp badge */
+    .ts-badge{
+      padding:8px 12px;
+      background:rgba(255,255,255,0.02);
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* small entrance stagger via CSS var */
+    .slide-up[data-order="1"]{transition-delay:120ms}
+    .slide-up[data-order="2"]{transition-delay:220ms}
+    .slide-up[data-order="3"]{transition-delay:320ms}
+    .slide-up[data-order="4"]{transition-delay:420ms}
+    .slide-up[data-order="5"]{transition-delay:520ms}
+    .slide-up[data-order="6"]{transition-delay:620ms}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand slide-up" data-order="1">
+        <div class="logo">a</div>
+        <div>
+          <h1 class="title">amirabolfazle</h1>
+          <div class="meta">Designer · Builder · Curious mind</div>
+        </div>
+      </div>
+
+      <div class="slide-up" data-order="2" style="display:flex;align-items:center;gap:12px">
+        <div class="ts-badge" title="Creation time">Created: 2025-09-29 00:53:43</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card hero slide-up" data-order="3" aria-labelledby="hero-title">
+        <div class="pulse-lines" aria-hidden="true">
+          <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#7ce3d6"/>
+                <stop offset="1" stop-color="#8a7cff"/>
+              </linearGradient>
+            </defs>
+            <g fill="none" stroke="url(#g1)" stroke-width="1.6" opacity=".9">
+              <path d="M120 300 C200 120 400 120 480 300" stroke-opacity="0.18"/>
+              <path d="M100 360 C180 160 420 160 500 360" stroke-opacity="0.12"/>
+              <path d="M80 420 C220 240 380 240 520 420" stroke-opacity="0.08"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="hero-left">
+          <div id="hero-title" style="display:flex;align-items:center;gap:12px">
+            <h2 style="margin:0;font-size:20px">Hi — I'm amirabolfazle</h2>
+            <span style="color:var(--muted);font-size:13px">Crafting elegant code & interfaces</span>
+          </div>
+
+          <p class="tagline">I build polished apps, experiment with AI, and make things that feel thoughtful. This page is a small showcase with subtle motion and a night-mode vibe.</p>
+
+          <div class="glow-row">
+            <div class="chip">Frontend</div>
+            <div class="chip">Design Systems</div>
+            <div class="chip">AI · Automation</div>
+            <div class="chip">Open Source</div>
+          </div>
+
+          <div class="cta-row">
+            <button class="btn">Explore Projects</button>
+            <button class="btn secondary">Contact</button>
+          </div>
+        </div>
+
+        <div class="hero-right" aria-hidden="true">
+          <div class="digital-card">digital studio</div>
+        </div>
+      </section>
+
+      <section class="card slide-up" data-order="4" aria-labelledby="projects-title">
+        <div class="section-title">
+          <h2 id="projects-title">Selected Projects</h2>
+          <p>Small snapshots — curated</p>
+        </div>
+
+        <div class="grid" role="list">
+          <article class="project" role="listitem">
+            <div>
+              <h3>autogen-code</h3>
+              <p>Code generation and automation tools to speed up development workflows and prototypes.</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <span style="color:var(--muted);font-size:12px">JavaScript · AI</span>
+              <div style="flex:1"></div>
+              <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="autogen-code on GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 00-3.8 23.4c.6.1.8-.2.8-.5v-2c-3.3.7-4-1.4-4-1.4-.6-1.6-1.4-2-1.4-2-1.2-.8.1-.8.1-.8 1.3.1 2 1.4 2 1.4 1.1 2 2.9 1.4 3.6 1 .1-.8.4-1.4.7-1.7-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0C17 4.5 18 4.8 18 4.8c.6 1.7.2 3 .1 3.3.7.8 1.2 1.9 1.2 3.2 0 4.6-2.7 5.6-5.3 5.9.4.4.8 1.1.8 2.2v3.2c0 .3.2.6.8.5A12 12 0 0012 .5z"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project" role="listitem">
+            <div>
+              <h3>UI Kit · Neon</h3>
+              <p>A compact design system for dark-mode dashboards with motion-first components.</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <span style="color:var(--muted);font-size:12px">Design · CSS</span>
+              <div style="flex:1"></div>
+              <span style="color:var(--accent);font-weight:700;font-size:13px">Live</span>
+            </div>
+          </article>
+
+          <article class="project" role="listitem">
+            <div>
+              <h3>Minimal Blog</h3>
+              <p>Fast, markdown-first blog with focus on readability and simple publishing tools.</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <span style="color:var(--muted);font-size:12px">Static · Jamstack</span>
+              <div style="flex:1"></div>
+              <button class="btn secondary" style="padding:8px 10px">Read</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="card slide-up" data-order="5" aria-labelledby="about-title">
+        <div class="section-title">
+          <h2 id="about-title">About</h2>
+          <p>Short — but human</p>
+        </div>
+
+        <div style="display:flex;gap:18px;flex-direction:column">
+          <p style="color:var(--muted)">I enjoy turning messy ideas into tidy products. When I'm not shipping experiments, you'll find me sketching interfaces, reading fiction, or refining a tiny automation that saves five clicks.</p>
+          <p style="color:var(--muted)"><strong>Toolbox:</strong> JavaScript, TypeScript, React, Node, CSS, Figma, a pinch of Python and curiosity.</p>
+        </div>
+      </section>
+
+      <section class="card slide-up" data-order="6" aria-labelledby="contact-title">
+        <div class="section-title">
+          <h2 id="contact-title">Get in touch</h2>
+          <p>Open to collaboration & ideas</p>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <a class="btn" href="mailto:hello@amirabolfazle.com">Email</a>
+          <a class="btn secondary" href="https://github.com/amirabolfazle" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <div style="flex:1"></div>
+          <div style="color:var(--muted);font-size:13px">Page created: 2025-09-29 00:53:43</div>
+        </div>
+      </section>
+
+      <footer class="slide-up" data-order="7" aria-label="Footer">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 .5a12 12 0 00-3.8 23.4c.6.1.8-.2.8-.5v-2c-3.3.7-4-1.4-4-1.4-.6-1.6-1.4-2-1.4-2-1.2-.8.1-.8.1-.8 1.3.1 2 1.4 2 1.4 1.1 2 2.9 1.4 3.6 1 .1-.8.4-1.4.7-1.7-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0C17 4.5 18 4.8 18 4.8c.6 1.7.2 3 .1 3.3.7.8 1.2 1.9 1.2 3.2 0 4.6-2.7 5.6-5.3 5.9.4.4.8 1.1.8 2.2v3.2c0 .3.2.6.8.5A12 12 0 0012 .5z"/>
+          </svg>
+          <span>autogen-code</span>
+        </a>
+
+        <div style="width:10px"></div>
+
+        <div style="color:var(--muted)">Created by amirabolfazle</div>
+      </footer>
+
+    </main>
+  </div>
+
+  <script>
+    // Intersection Observer to add .in-view for slide-up elements
+    (function(){
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if(e.isIntersecting){
+            e.target.classList.add('in-view');
+            // optional: unobserve to keep it simple
+            observer.unobserve(e.target);
+          }
+        });
+      }, {threshold: 0.12});
+
+      document.querySelectorAll('.slide-up').forEach(el => observer.observe(el));
+    })();
+
+    // small accessibility: allow keyboard focus to buttons/links and subtle scale on focus
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Tab'){
+        document.documentElement.style.scrollBehavior = 'smooth';
+      }
+    });
+  </script>
+</body>
+</html>
