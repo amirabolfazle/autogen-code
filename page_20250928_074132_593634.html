@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --grad1: #6a11cb;
+      --grad2: #2575fc;
+      --grad3: #00e0a4;
+      --grad4: #f6d365;
+      --glass: rgba(255,255,255,0.14);
+    }
+
+    /* Animated gradient background */
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: #eef1f8;
+      background: linear-gradient(135deg, rgba(26, 7, 64, 1) 0%, rgba(9, 40, 80, 1) 40%, rgba(0, 122, 119, 1) 100%);
+      background-size: 300% 300%;
+      animation: gradientShift 18s ease infinite;
+      overflow-x: hidden;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Layout */
+    .wrap {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 40px 20px 0;
+      text-align: center;
+    }
+    h1.title {
+      margin: 0;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #ffd166 0%, #06d6a0 40%, #06a6d8 75%, #a855f7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 20px rgba(0,0,0,.25);
+      filter: saturate(1.1);
+    }
+    .sub {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      opacity: .95;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* Hero card with zoom and tilt on hover */
+    .hero {
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+    .card {
+      width: min(100%, 900px);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 22px;
+      padding: 34px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      backdrop-filter: blur(6px);
+      transform: scale(0.98);
+      opacity: 0;
+      animation: popIn 0.8s ease forwards;
+      perspective: 1000px;
+      transition: transform 0.2s ease;
+    }
+    @keyframes popIn { to { transform: scale(1); opacity: 1; } }
+
+    .card:hover {
+      transform: scale(1.04);
+      transition: transform 0.25s ease;
+    }
+
+    /* Tilt on mouse move */
+    .tilt-area {
+      width: 100%;
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.1s ease-out;
+      border-radius: 18px;
+      padding: 0;
+    }
+
+    .tilt-area-inner {
+      transform: translateZ(0);
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .85rem;
+      color: rgba(255,255,255,0.9);
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.25);
+      margin-top: 8px;
+    }
+
+    /* sections below hero with animated tiles */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      width: min(100%, 1000px);
+      margin: 28px auto 60px;
+      padding: 0 8px;
+    }
+    .tile {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 16px;
+      padding: 18px;
+      transition: transform 0.25s ease, background 0.25s ease;
+      transform: scale(0.98);
+      opacity: 0;
+      animation: tileIn 0.6s ease forwards;
+    }
+    @keyframes tileIn { to { transform: scale(1); opacity: 1; } }
+    .tile:hover {
+      transform: scale(1.04);
+      background: rgba(255,255,255,0.18);
+    }
+    .tile h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+
+    /* footer with GitHub icon and credit */
+    footer {
+      color: rgba(235,235,235,.95);
+      text-align: center;
+      padding: 28px 12px;
+      margin-top: auto;
+      border-top: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.15);
+    }
+    .gh {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
+      color: #fff;
+      vertical-align: middle;
+    }
+    .credit {
+      display: inline-block;
+      margin-left: 8px;
+      font-size: .95rem;
+      opacity: .95;
+    }
+
+    /* accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      .card, .tile { animation: none; transition: none; transform: none; }
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      header { padding-top: 20px; }
+      .creation { display: inline-flex; padding: 6px 10px; font-size: .8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header aria-label="Intro">
+      <div class="hero">
+        <div class="tilt-area" id="tiltWrapper">
+          <div class="card tilt-area-inner" id="card">
+            <div class="creation" aria-label="Creation time">
+              Creation time: 2025-09-28 07:41:08
+            </div>
+            <h1 class="title" style="margin-top:6px;">amirabolfazle</h1>
+            <p class="sub">A fancy animated personal page with gradient vibes and smooth zoom. Hover to feel the motion.</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main aria-label="Content">
+      <section class="grid" aria-label="Overview sections">
+        <article class="tile" style="animation-delay:.05s;">
+          <h3>About</h3>
+          <p>Hi, I’m Amir. I love building delightful interfaces, exploring gradients, and crafting tiny animations that feel soulful.</p>
+        </article>
+        <article class="tile" style="animation-delay:.15s;">
+          <h3>Projects</h3>
+          <p>Experimenting with interactive UI components, micro-interactions, and accessible design systems.</p>
+        </article>
+        <article class="tile" style="animation-delay:.25s;">
+          <h3>Experience</h3>
+          <p>Frontend enthusiast with a soft spot for performance, usability, and visual storytelling.</p>
+        </article>
+        <article class="tile" style="animation-delay:.35s;">
+          <h3>Contact</h3>
+          <p>Reach out if you'd like to collaborate on something visually compelling and technically solid.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg class="gh" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub" role="img" width="24" height="24" style="color:#fff;">
+          <path d="M12 .5C5.73.5 0 6.22 0 12.01c0 5.09 3.29 9.39 7.86 10.92.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2.01-3.2.7-3.88-1.37-3.88-1.37-.53-1.37-1.29-1.74-1.29-1.74-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.2 1.77 1.2 1.04 1.77 2.74 1.26 3.41.97.11-.75.41-1.26.75-1.55-2.55-.29-5.23-1.29-5.23-5.74 0-1.27.46-2.31 1.22-3.12-.12-.29-.53-1.46.12-3.04 0 0 .99-.32 3.25 1.2a11.3 11.3 0 0 1 5.92 0c2.26-1.52 3.25-1.2 3.25-1.2.65 1.58.24 2.75.12 3.04.77.81 1.22 1.85 1.22 3.12 0 4.45-2.68 5.44-5.24 5.74.42.36.8 1.08.8 2.18 0 1.57-.01 2.84-.01 3.22 0 .31.21.67.79.56C20.72 21.39 24 17.09 24 12.01 24 6.22 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Simple tilt effect for the hero card
+    (function(){
+      const wrapper = document.getElementById('tiltWrapper');
+      const card = document.getElementById('card');
+      const maxTilt = 6; // degrees
+
+      function handleMove(e){
+        const rect = wrapper.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotY = (x - 0.5) * (2 * maxTilt);
+        const rotX = -(y - 0.5) * (2 * maxTilt);
+        card.style.transform = 'rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(1.02)';
+      }
+
+      function reset(){
+        card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      }
+
+      wrapper.addEventListener('mousemove', handleMove);
+      wrapper.addEventListener('mouseleave', reset);
+      wrapper.addEventListener('mouseenter', function(){ card.style.transition = 'transform 0.1s ease-out'; });
+    })();
+  </script>
+</body>
+</html>
