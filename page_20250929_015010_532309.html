@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#05040a;
+    --neon-pink: #ff2d95;
+    --neon-cyan: #00f0ff;
+    --neon-green: #39ff14;
+    --glass: rgba(255,255,255,0.03);
+    --card-dark: rgba(255,255,255,0.02);
+    --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    background:
+      radial-gradient(600px 400px at 10% 10%, rgba(0,240,255,0.06), transparent 10%),
+      radial-gradient(500px 300px at 90% 90%, rgba(255,45,149,0.05), transparent 10%),
+      var(--bg1);
+    color:#dfefff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:auto;
+    padding:36px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+  }
+
+  .container{
+    width:min(1100px,95%);
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:28px;
+  }
+
+  /* Neon header */
+  header{
+    padding:36px;
+    border-radius:16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,240,255,0.03);
+    backdrop-filter: blur(8px) saturate(120%);
+    overflow:hidden;
+    position:relative;
+    isolation:isolate;
+  }
+
+  .title-wrap{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+
+  h1{
+    margin:0;
+    font-size: clamp(28px,6vw,56px);
+    letter-spacing:0.6px;
+    color: #eaffff;
+    text-shadow:
+      0 0 8px rgba(0,240,255,0.18),
+      0 0 22px rgba(255,45,149,0.08),
+      0 6px 20px rgba(0,0,0,0.6);
+    filter: drop-shadow(0 0 18px rgba(0,240,255,0.06));
+    transform-origin:center left;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float{
+    0%{transform:translateY(0)}
+    50%{transform:translateY(-6px)}
+    100%{transform:translateY(0)}
+  }
+
+  .neon-tag{
+    display:inline-grid;
+    place-items:center;
+    padding:8px 12px;
+    border-radius:999px;
+    font-weight:600;
+    color:var(--neon-cyan);
+    text-shadow:0 0 6px rgba(0,240,255,0.5);
+    background: linear-gradient(90deg, rgba(0,240,255,0.06), rgba(255,45,149,0.03));
+    border:1px solid rgba(0,240,255,0.06);
+    transform:translateZ(0);
+    font-size:13px;
+  }
+
+  .subtitle{
+    margin-top:12px;
+    color:rgba(223,239,255,0.86);
+    opacity:0.95;
+    font-size:15px;
+    max-width:66ch;
+    line-height:1.45;
+  }
+
+  /* animated accent line */
+  .accent-line{
+    height:6px;
+    width:100%;
+    margin-top:22px;
+    border-radius:999px;
+    background:var(--accent);
+    box-shadow: 0 0 30px rgba(0,240,255,0.08), 0 0 24px rgba(255,45,149,0.04);
+    position:relative;
+    overflow:hidden;
+  }
+  .accent-line::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    mix-blend-mode:overlay;
+    opacity:0.25;
+    transform:translateX(-30%);
+    animation: slide 6s linear infinite;
+  }
+  @keyframes slide{to{transform:translateX(130%)}}
+
+  /* Sections grid */
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:18px;
+    margin-top:18px;
+  }
+  @media (max-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:600px){ .grid{grid-template-columns:1fr} }
+
+  .card{
+    padding:18px;
+    border-radius:14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.5), 0 0 18px rgba(0,0,0,0.25);
+    position:relative;
+    overflow:hidden;
+    transform-origin:center;
+    transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 320ms;
+    will-change:transform;
+    min-height:120px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .card:hover{
+    transform:translateY(-8px) scale(1.03);
+    box-shadow: 0 14px 60px rgba(0,0,0,0.6), 0 0 48px rgba(0,240,255,0.06);
+  }
+
+  .card .kicker{
+    font-size:12px;
+    color:rgba(223,239,255,0.7);
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  .kicker .dot{
+    width:10px;height:10px;border-radius:999px;
+    background: linear-gradient(180deg,var(--neon-cyan),var(--neon-pink));
+    box-shadow:0 0 8px rgba(0,240,255,0.2), 0 0 18px rgba(255,45,149,0.06);
+  }
+
+  .card h3{
+    margin:6px 0 0 0;
+    font-size:18px;
+    color:#eaffff;
+    text-shadow:0 0 10px rgba(0,240,255,0.04);
+  }
+
+  .card p{margin:8px 0 0 0; color:rgba(223,239,255,0.72); font-size:13px; line-height:1.45}
+
+  /* zoom-in on scroll */
+  .zoom-item{transform:scale(0.96); opacity:0.0; transition:transform 700ms cubic-bezier(.2,.9,.2,1), opacity 420ms ease-in-out}
+  .zoom-item.in-view{transform:scale(1); opacity:1}
+
+  /* hero visual */
+  .visual{
+    position:absolute;
+    right:32px;
+    top:50%;
+    transform:translateY(-50%);
+    width:220px;
+    height:220px;
+    border-radius:22px;
+    pointer-events:none;
+    display:grid;
+    place-items:center;
+    filter:blur(0.6px) contrast(1.05);
+    mix-blend-mode:screen;
+  }
+  .ring{
+    width:160px;height:160px;border-radius:50%;
+    background:conic-gradient(from 90deg, rgba(0,240,255,0.12), rgba(255,45,149,0.12));
+    box-shadow: 0 0 60px rgba(0,240,255,0.08), 0 0 90px rgba(255,45,149,0.06);
+    animation: spin 12s linear infinite;
+    display:grid;place-items:center;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .avatar{
+    width:96px;height:96px;border-radius:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    display:grid;place-items:center;
+    color:var(--neon-cyan);
+    font-weight:700;
+    font-size:20px;
+    text-shadow:0 0 12px rgba(0,240,255,0.18);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    transform-origin:center;
+    animation: pop 3.6s ease-in-out infinite;
+  }
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+  /* footer */
+  footer{
+    margin-top:22px;
+    padding:14px 18px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+    border:1px solid rgba(255,255,255,0.02);
+    color:rgba(223,239,255,0.82);
+    font-size:13px;
+  }
+  .github-link{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:inherit;
+    padding:8px 12px;
+    border-radius:999px;
+    transition:transform 200ms;
+    background:linear-gradient(90deg, rgba(0,240,255,0.02), rgba(255,45,149,0.02));
+  }
+  .github-link:hover{transform:translateY(-6px) scale(1.02); box-shadow:0 8px 36px rgba(0,0,0,0.45)}
+  .gh-icon{
+    width:20px;height:20px;display:inline-block;
+    filter:drop-shadow(0 0 8px rgba(255,255,255,0.03));
+  }
+
+  .timestamp{
+    opacity:0.9;
+    font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-size:13px;
+    color:rgba(195,235,255,0.9);
+  }
+
+  /* subtle backdrop animated bands */
+  .band{
+    position:fixed;
+    left:-20%;
+    width:140%;
+    height:140px;
+    top:30%;
+    background:linear-gradient(90deg, rgba(0,240,255,0.02), rgba(255,45,149,0.02));
+    transform:skewY(-6deg);
+    pointer-events:none;
+    opacity:0.04;
+    animation: drift 20s linear infinite;
+  }
+  .band.band2{top:60%; transform:skewY(6deg); animation-direction:reverse; opacity:0.03}
+  @keyframes drift{to{transform:translateX(-6%) skewY(-6deg)}}
+
+  /* tiny helper */
+  .muted{color:rgba(223,239,255,0.62); font-size:13px}
+</style>
+</head>
+<body>
+  <div class="band"></div>
+  <div class="band band2"></div>
+
+  <div class="container" role="main">
+    <header class="zoom-item" aria-label="hero">
+      <div class="title-wrap">
+        <div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div class="neon-tag">amirabolfazle</div>
+          </div>
+          <h1>amirabolfazle</h1>
+          <p class="subtitle">Neon-themed interactive portfolio — experiments, projects and snippets with sleek zoom effects and motion. Welcome to a bright corner of the web where ideas glow.</p>
+          <div class="accent-line" aria-hidden="true"></div>
+        </div>
+
+        <div class="visual" aria-hidden="true">
+          <div class="ring">
+            <div class="avatar">AB</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="#projects" style="text-decoration:none">
+          <button style="border:none;background:var(--accent);padding:10px 14px;border-radius:12px;color:#021; font-weight:700; cursor:pointer; box-shadow: 0 8px 34px rgba(0,0,0,0.6);">View Projects →</button>
+        </a>
+        <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" style="background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;color:inherit;cursor:pointer">Contact</button>
+        <div style="margin-left:auto" class="timestamp">2025-09-29 01:49:17</div>
+      </div>
+    </header>
+
+    <section id="projects" class="grid" aria-label="projects">
+      <article class="card zoom-item">
+        <div class="kicker"><span class="dot"></span><span>Featured</span></div>
+        <h3>Autogen Code</h3>
+        <p>Fast prototypes and automation utilities. Neon-styled UI shells and experimental code generators. Click to explore the repo in the footer.</p>
+      </article>
+
+      <article class="card zoom-item">
+        <div class="kicker"><span class="dot"></span><span>Interface</span></div>
+        <h3>Neon UI Kit</h3>
+        <p>Reusable components created with motion-first design: cards, tags, animated accents and responsive layout — all in a single file approach.</p>
+      </article>
+
+      <article class="card zoom-item">
+        <div class="kicker"><span class="dot"></span><span>Experiment</span></div>
+        <h3>Zoom & Parallax</h3>
+        <p>Scroll-based reveal and zoom effects create depth while preserving performance. Lightweight and accessible by design.</p>
+      </article>
+    </section>
+
+    <section style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px">
+      <aside class="card zoom-item">
+        <div class="kicker"><span class="dot"></span><span>About</span></div>
+        <h3>Hi — I'm amirabolfazle</h3>
+        <p class="muted">Designing playful, animated interfaces and building small tools that make creative work smoother. I mix code, motion and a neon palette to craft focused experiences.</p>
+      </aside>
+
+      <aside id="contact" class="card zoom-item">
+        <div class="kicker"><span class="dot"></span><span>Contact</span></div>
+        <h3>Get in touch</h3>
+        <p class="muted">Prefer email, DMs or carrier pigeon? Drop a line at <span style="font-family:ui-monospace,monospace;background:rgba(0,0,0,0.25);padding:4px 8px;border-radius:6px">hello@amirabolfazle.dev</span> or visit the GitHub repo below.</p>
+      </aside>
+    </section>
+
+    <footer>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#00F0FF"/>
+              <stop offset="1" stop-color="#FF2D95"/>
+            </linearGradient>
+          </defs>
+          <path d="M12 0.5C5.65 0.5 0.75 5.4 0.75 11.75c0 4.88 3.16 9.02 7.56 10.48.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.07.67-3.72-1.48-3.72-1.48-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.67 2.54 1.19 3.16.91.1-.71.38-1.19.69-1.46-2.45-.28-5.03-1.22-5.03-5.43 0-1.2.43-2.18 1.14-2.95-.11-.28-.5-1.4.11-2.92 0 0 .93-.3 3.06 1.12a10.66 10.66 0 0 1 2.79-.38c.95.01 1.91.13 2.79.38 2.12-1.42 3.05-1.12 3.05-1.12.62 1.52.23 2.64.12 2.92.71.77 1.13 1.75 1.13 2.95 0 4.22-2.59 5.14-5.05 5.42.39.34.73 1.03.73 2.08 0 1.5-.01 2.7-.01 3.07 0 .29.2.63.76.52 4.39-1.46 7.54-5.6 7.54-10.48C23.25 5.4 18.35.5 12 .5z"
+            stroke="url(#g)" stroke-width="0.6" fill="url(#g)"/>
+        </svg>
+        <span style="font-weight:700;color:var(--neon-cyan)">autogen-code</span>
+      </a>
+
+      <div style="display:flex;flex-direction:column;align-items:flex-end">
+        <div style="font-weight:700">Created by amirabolfazle</div>
+        <div class="muted" style="margin-top:6px">2025-09-29 01:49:17</div>
+      </div>
+    </footer>
+  </div>
+
+<script>
+  // Intersection Observer to add zoom-in reveal
+  (function(){
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting) e.target.classList.add('in-view');
+      });
+    }, {threshold: 0.12});
+    document.querySelectorAll('.zoom-item').forEach(el => obs.observe(el));
+  })();
+
+  // Tiny parallax based on mouse for the visual ring
+  (function(){
+    const visual = document.querySelector('.visual');
+    if(!visual) return;
+    const ring = visual.querySelector('.ring');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth) - 0.5;
+      const y = (e.clientY / window.innerHeight) - 0.5;
+      ring.style.transform = `translate(${x * 6}px, ${y * 6}px) rotate(${x * 20}deg)`;
+    }, {passive:true});
+  })();
+
+  // Small accessibility tweak: prefers-reduced-motion
+  (function(){
+    const mq = window.matchMedia('(prefers-reduced-motion:reduce)');
+    if(mq.matches){
+      document.querySelectorAll('*').forEach(el=>{
+        el.style.animationDuration = '0.001ms';
+        el.style.transitionDuration = '0.001ms';
+      });
+    }
+  })();
+</script>
+</body>
+</html>
