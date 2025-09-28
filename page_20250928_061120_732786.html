@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f1a;
+      --bg-soft: #11172a;
+      --card: #12182a;
+      --fg: #e8f0ff;
+      --muted: #a6b3c9;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --ring: rgba(0,229,255,.25);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--fg);
+      background: radial-gradient( circle at 20% -10%, rgba(0, 194, 255, 0.15), transparent 40% ),
+                  radial-gradient( circle at 100% 0%, rgba(124, 58, 237, 0.15), transparent 40% ),
+                  linear-gradient(#0b0f1a 0%, #0b0f1a 100%);
+      overflow-x: hidden;
+    }
+
+    /* Nice gradient header bar with glow */
+    header.site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      position: sticky;
+      top: 0;
+      background: rgba(11,15,26,.92);
+      backdrop-filter: saturate(0.8) blur(2px);
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand .logo {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #00e5ff, #7c3aed, #00e5ff);
+      box-shadow: 0 0 14px #00e5ff;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: .9; }
+      50% { transform: scale(1.4); opacity: 1; }
+    }
+
+    h1.brand-title {
+      font-size: 1.1rem;
+      margin: 0;
+      letter-spacing: .4px;
+      color: #eaf2ff;
+    }
+
+    /* Hero / intro with a rotating decorative ring */
+    section.hero {
+      position: relative;
+      padding: 64px 20px 40px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .rotor {
+      position: absolute;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      right: -60px;
+      top: -60px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: conic-gradient(from 0deg, rgba(0,229,255,.25), rgba(124,58,237,.25), rgba(0,229,255,.25));
+      animation: spin 16s linear infinite;
+      filter: blur(0.2px);
+      z-index: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .intro {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      padding: 40px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(18,24,42,.92), rgba(18,24,42,.88));
+      border: 1px solid rgba(255,255,255,.08);
+      max-width: 860px;
+      width: 90%;
+      text-align: left;
+    }
+
+    .name {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      margin: 0 0 8px;
+      line-height: 1.05;
+      background: linear-gradient(90deg, #7cfffb, #b792ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: .5px;
+    }
+
+    .tagline {
+      font-size: 1.02rem;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem;
+      color: #cbd5e1;
+      background: rgba(2,6,23,.6);
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    /* Projects grid (3D tilt on hover) */
+    section.projects {
+      padding: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section.projects h2 {
+      text-align: left;
+      font-size: 1.4rem;
+      margin: 12px 6px 16px;
+      color: #eaf2ff;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      padding: 8px;
+      perspective: 1000px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(18,24,42,.98), rgba(12,18,35,.98));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 18px;
+      min-height: 150px;
+      color: #eaf2ff;
+      box-shadow: 0 10px 25px rgba(0,0,0,.45);
+      transform: rotateX(0deg) rotateY(0deg);
+      transform-style: preserve-3d;
+      transition: transform .25s ease;
+      will-change: transform;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: .95rem;
+    }
+
+    .card .tech {
+      margin-top: 10px;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: .75rem;
+      background: rgba(0,229,255,.15);
+      color: #b2f7ff;
+      border: 1px solid rgba(0,229,255,.35);
+      margin-right: 6px;
+    }
+
+    .card:hover { transform: rotateX(8deg) rotateY(6deg); }
+
+    /* Gentle tilt on mouse move for each card */
+    .card[data-tilt="true"] {
+      transition: transform .15s ease;
+    }
+
+    /* Contact / CTA section optional small flare (kept subtle) */
+    section.contact {
+      padding: 28px 20px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    section.contact h2 {
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+      color: #eaf2ff;
+    }
+    section.contact p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* Footer with GitHub icon and label */
+    footer.site-footer {
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: #cbd5e1;
+      background: rgba(2,6,23,.65);
+    }
+
+    a.git-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #cbd5e1;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.08);
+      transition: background .2s ease, color .2s ease;
+    }
+    a.git-link:hover {
+      background: rgba(0,229,255,.15);
+      color: #fff;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 700px) {
+      .rotor { width: 260px; height: 260px; right: -40px; top: -40px; }
+      .intro { padding: 28px; }
+      .name { font-size: 2.6rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Site header">
+    <div class="brand" aria-label="Brand">
+      <span class="logo" aria-hidden="true"></span>
+      <h1 class="brand-title" style="font-weight:600; letter-spacing:.4px;">amirabolfazle</h1>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="Hero section">
+    <div class="rotor" aria-hidden="true"></div>
+
+    <div class="intro">
+      <div class="name" style="display:none;">amirabolfazle</div>
+      <p class="tagline" style="margin:0 0 8px;">
+        A compact, animated, dark-mode portfolio in a single file.
+      </p>
+      <div class="creation-time" title="Creation time">
+        Creation time: 2025-09-28 06:10:40
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" aria-label="Projects">
+    <h2 style="margin:0 0 6px 6px; padding-left:6px;">Projects</h2>
+    <div class="portfolio-grid" role="list">
+      <article class="card" role="listitem" data-tilt="true" aria-label="Project Aurora UI Kit">
+        <div>
+          <h3>Aurora UI Kit</h3>
+          <p>Polished components and micro-interactions for modern UIs.</p>
+          <div class="tech" aria-label="Technologies">
+            <span class="chip">React</span><span class="chip">CSS</span><span class="chip">SVG</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" aria-label="Project Motion Experiments">
+        <div>
+          <h3>Motion Experiments</h3>
+          <p>Playful, performant motion experiments with CSS + JS.</p>
+          <div class="tech">
+            <span class="chip">CSS</span><span class="chip">JS</span><span class="chip">Web Animations</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" aria-label="Project Snippet Playground">
+        <div>
+          <h3>Snippet Playground</h3>
+          <p>Explore tiny code snippets for quick ideas and reuse.</p>
+          <div class="tech">
+            <span class="chip">TS</span><span class="chip">Node</span><span class="chip">Templates</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" aria-label="Project Open Tooling">
+        <div>
+          <h3>Open Tooling</h3>
+          <p>Lightweight tooling snippets to boost workflow.</p>
+          <div class="tech">
+            <span class="chip">CLI</span><span class="chip">Bash</span><span class="chip">Automation</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" aria-label="Project Personal Blog Draft">
+        <div>
+          <h3>Personal Blog Draft</h3>
+          <p>Layout and typography experiments for long-form content.</p>
+          <div class="tech">
+            <span class="chip">CSS Grid</span><span class="chip">Typography</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" role="listitem" aria-label="Project Contact">
+        <div>
+          <h3>Contact & Resume</h3>
+          <p>Ways to reach out and view a concise resume.</p>
+          <div class="tech">
+            <span class="chip">Resume</span><span class="chip">Email</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="contact" aria-label="Contact section">
+    <h2 style="margin:0 6px 6px 6px; padding-left:6px;">Get in touch</h2>
+    <p style="margin:0 6px;">If you want to collaborate or chat about something interesting, say hi.</p>
+  </section>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" class="git-link" aria-label="GitHub repository link">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.89.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.37-3.88-1.37-.53-1.36-1.3-1.72-1.3-1.72-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.74 1.27 3.41.97.11-.75.41-1.27.75-1.56-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.12-3.04 0 0 .97-.31 3.18 1.18a11.07 11.07 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.65 1.58.25 2.75.12 3.04.75.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.26 5.69.42.37.8 1.1.8 2.22 0 1.6-.01 2.89-.01 3.29 0 .31.21.68.8.56C20.72 21.38 24 17.08 24 12 24 5.73 18.27.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <script>
+    // 3D tilt effect for cards on pointer move (desktop)
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.style.willChange = "transform";
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const rx = (y / rect.height - 0.5) * -12;
+          const ry = (x / rect.width - 0.5) * 12;
+          card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+        card.addEventListener('mouseenter', () => {
+          // slight lift on hover for emphasis
+          card.style.transition = 'transform .15s ease';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
