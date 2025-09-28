@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#04040a;
+    --neon-pink: #ff2d95;
+    --neon-cyan: #00f0ff;
+    --neon-purple: #9b5cff;
+    --glass: rgba(255,255,255,0.04);
+    --card-bg: rgba(255,255,255,0.02);
+    --accent: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(0,240,255,0.06), transparent),
+                radial-gradient(800px 400px at 90% 80%, rgba(255,45,149,0.04), transparent),
+                var(--bg1);
+    color:#e8f0ff;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+  }
+
+  .wrap{
+    width:100%;
+    max-width:1100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:16px;
+    padding:28px;
+    backdrop-filter: blur(8px) saturate(120%);
+    box-shadow: 0 10px 40px rgba(3,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.03);
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* animated background streaks */
+  .wrap::before, .wrap::after{
+    content:'';
+    position:absolute;
+    inset:-30% -30% auto -30%;
+    height:180%;
+    background: conic-gradient(from 50deg, rgba(0,240,255,0.03), rgba(155,92,255,0.02), rgba(255,45,149,0.03));
+    filter: blur(40px);
+    transform: rotate(0deg);
+    opacity:0.8;
+    animation: floaty 12s linear infinite;
+    pointer-events:none;
+  }
+  .wrap::after{animation-duration:18s; mix-blend-mode:screen; opacity:0.6}
+
+  @keyframes floaty{
+    0%{transform:rotate(0deg) translateY(0)}
+    50%{transform:rotate(180deg) translateY(-12px)}
+    100%{transform:rotate(360deg) translateY(0)}
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+
+  .logo{
+    width:96px;height:96px;
+    border-radius:12px;
+    display:grid;place-items:center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    box-shadow: 0 6px 30px rgba(155,92,255,0.08), 0 1px 0 rgba(255,255,255,0.02) inset;
+    border: 1px solid rgba(155,92,255,0.12);
+    transform: perspective(600px) rotateX(6deg) rotateY(-6deg);
+    animation: pop 900ms cubic-bezier(.2,.9,.3,1) both;
+  }
+
+  @keyframes pop{
+    from{transform:scale(0.78) rotateX(12deg) rotateY(-10deg); filter:blur(2px); opacity:0}
+    to{transform:scale(1) rotateX(6deg) rotateY(-6deg); filter:blur(0); opacity:1}
+  }
+
+  .logo svg{filter:drop-shadow(0 6px 12px rgba(0,240,255,0.08))}
+
+  h1{
+    font-size:34px;
+    letter-spacing:0.6px;
+    background: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:
+      0 0 6px rgba(255,45,149,0.15),
+      0 0 18px rgba(0,240,255,0.06);
+    display:inline-block;
+    position:relative;
+    animation: neon-flicker 3s infinite;
+  }
+
+  @keyframes neon-flicker{
+    0%,100%{text-shadow:0 0 8px rgba(255,45,149,0.22), 0 0 32px rgba(0,240,255,0.08)}
+    50%{text-shadow:0 0 20px rgba(255,45,149,0.38), 0 0 56px rgba(0,240,255,0.18)}
+  }
+
+  .meta{
+    margin-left:auto;
+    text-align:right;
+    font-size:12px;
+    color:rgba(255,255,255,0.6);
+    letter-spacing:0.4px;
+    line-height:1.2;
+  }
+  .meta .created{
+    color:var(--neon-cyan);
+    font-weight:600;
+    font-size:13px;
+    text-shadow: 0 0 8px rgba(0,240,255,0.08);
+  }
+
+  main{
+    margin-top:22px;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:22px;
+  }
+
+  .hero{
+    padding:20px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    position:relative;
+    overflow:hidden;
+  }
+
+  .hero .intro{
+    font-size:15px;
+    color:#dcecff;
+    margin-bottom:18px;
+    line-height:1.6;
+    max-width:74ch;
+    opacity:0;
+    transform:translateY(10px) scale(0.98);
+    animation: enter 700ms 200ms cubic-bezier(.2,.9,.3,1) forwards;
+  }
+
+  @keyframes enter{
+    to{opacity:1; transform:translateY(0) scale(1)}
+  }
+
+  .feature-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border-radius:10px;
+    padding:14px;
+    border:1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 6px 18px rgba(3,6,23,0.5);
+    transition: transform 420ms cubic-bezier(.2,.9,.3,1), box-shadow 420ms;
+    transform-origin:center;
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+  }
+
+  .card:hover{
+    transform:scale(1.04) translateY(-6px);
+    box-shadow: 0 22px 70px rgba(155,92,255,0.12);
+  }
+
+  .card .title{
+    font-weight:700;
+    color:linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    font-size:14px;
+    margin-bottom:8px;
+    background:var(--accent);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .card .desc{
+    font-size:13px;
+    color:rgba(255,255,255,0.7);
+  }
+
+  /* right column */
+  aside{
+    padding:18px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    border:1px solid rgba(255,255,255,0.02);
+    min-height:240px;
+  }
+  .pulse{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:12px;
+  }
+  .avatar{
+    width:62px;height:62px;border-radius:12px;
+    background:linear-gradient(135deg,var(--neon-pink),var(--neon-cyan));
+    display:grid;place-items:center;color:#041021;font-weight:700;font-size:20px;
+    box-shadow: 0 8px 30px rgba(0,240,255,0.06);
+    transform-origin:center;
+    animation: avatar-zoom 1200ms cubic-bezier(.2,.9,.3,1) both;
+  }
+  @keyframes avatar-zoom{
+    from{transform:scale(0.72) rotate(-6deg); opacity:0}
+    to{transform:scale(1) rotate(0); opacity:1}
+  }
+  .skills{
+    margin-top:8px;
+    display:flex;flex-wrap:wrap;gap:8px;
+  }
+  .chip{
+    padding:8px 10px;border-radius:999px;background:rgba(255,255,255,0.02);font-size:12px;color:#d8f9ff;
+    border:1px solid rgba(255,255,255,0.03); box-shadow: 0 6px 18px rgba(3,6,23,0.25);
+    transition: transform 240ms;
+  }
+  .chip:hover{transform:translateY(-4px) scale(1.03)}
+
+  .projects{
+    margin-top:14px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+
+  .project{
+    padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(255,45,149,0.04), rgba(0,240,255,0.03));
+    border:1px solid rgba(255,255,255,0.02);
+    display:flex;align-items:center;gap:12px;cursor:pointer;
+    transform-origin:left center;
+    transition: transform 360ms cubic-bezier(.2,.9,.3,1), box-shadow 360ms;
+  }
+  .project:hover{
+    transform:translateX(8px) scale(1.02);
+    box-shadow: 0 18px 48px rgba(0,240,255,0.05);
+  }
+  .dot{
+    width:12px;height:12px;border-radius:50%;
+    background:var(--neon-pink);box-shadow:0 0 12px var(--neon-pink);
+  }
+
+  footer{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    color:rgba(255,255,255,0.65);
+    font-size:13px;
+  }
+
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:var(--neon-cyan);
+    padding:8px 12px;border-radius:10px;
+    border:1px solid rgba(0,240,255,0.08);
+    background:linear-gradient(180deg, rgba(0,240,255,0.02), rgba(255,255,255,0.01));
+    transition:transform 220ms;
+  }
+  .gh:hover{transform:translateY(-6px) scale(1.02); box-shadow:0 18px 48px rgba(0,240,255,0.06)}
+
+  /* subtle zoom scene on load */
+  @keyframes page-zoom {
+    0%{transform:scale(0.985); filter:blur(2px); opacity:0.96}
+    100%{transform:scale(1); filter:blur(0); opacity:1}
+  }
+  .wrap{animation: page-zoom 700ms cubic-bezier(.2,.9,.3,1) both;}
+  
+  /* responsive */
+  @media (max-width:900px){
+    main{grid-template-columns:1fr; padding-bottom:0}
+    aside{order:2}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-label="amirabolfazle portfolio">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <svg width="54" height="54" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0.5" y="0.5" width="47" height="47" rx="10" stroke="url(#g)" stroke-opacity="0.9" stroke-width="1"/>
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff2d95"/>
+              <stop offset="1" stop-color="#00f0ff"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(8,7)" fill="white" fill-opacity="0.12">
+            <path d="M10 1 L18 1 L18 7 L10 7 Z" />
+            <path d="M1 9 L27 9 L27 12 L1 12 Z" />
+            <path d="M4 14 L24 14 L24 19 L4 19 Z" />
+          </g>
+        </svg>
+      </div>
+
+      <h1>amirabolfazle</h1>
+
+      <div class="meta">
+        <div style="font-size:12px;color:rgba(255,255,255,0.6)">Portfolio</div>
+        <div class="created">Created: 2025-09-28 17:52:40</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="intro-title">
+        <div id="intro-title" style="display:none">intro</div>
+        <p class="intro">
+          Neon-glow portfolio with kinetic zoom effects and subtle motion — a one-file showcase that pops. Explore highlighted projects, skills and quick links. Hover cards to zoom, click to preview.
+        </p>
+
+        <div class="feature-grid" aria-hidden="false">
+          <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="openDemo('https://github.com/amirabolfazle/autogen-code')">
+            <div class="title">Autogen Code</div>
+            <div class="desc">A code generation playground and automation toolkit. Fast iterations, templates, and handy integrations.</div>
+          </div>
+
+          <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="alert('Demo coming soon ✨')">
+            <div class="title">Neon UI Experiments</div>
+            <div class="desc">Micro-interactions and neon-themed components with high contrast and playful motion.</div>
+          </div>
+
+          <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="alert('Look ma, animations!')">
+            <div class="title">Motion Lab</div>
+            <div class="desc">Procedural animations, timeline choreography, and performance-minded effects for web.</div>
+          </div>
+
+          <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="alert('Contact: amir@example.com')">
+            <div class="title">Contact</div>
+            <div class="desc">Open to collabs, freelance projects, and curious experiments. Say hello 👋</div>
+          </div>
+        </div>
+      </section>
+
+      <aside aria-label="Sidebar with skills and projects">
+        <div class="pulse">
+          <div class="avatar">AB</div>
+          <div>
+            <div style="font-weight:700; font-size:15px; color:#f6f9ff">amirabolfazle</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.6)">Creative coder • UI & animations</div>
+          </div>
+        </div>
+
+        <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:6px">Key skills</div>
+        <div class="skills" aria-hidden="false">
+          <div class="chip">JS / TS</div>
+          <div class="chip">Web Animations</div>
+          <div class="chip">Canvas / WebGL</div>
+          <div class="chip">Design Systems</div>
+          <div class="chip">Node Tools</div>
+        </div>
+
+        <div class="projects" aria-label="Projects">
+          <div style="font-size:13px;color:rgba(255,255,255,0.7)">Recent</div>
+
+          <div class="project" onclick="openDemo('https://github.com/amirabolfazle/autogen-code')">
+            <div class="dot" style="background:var(--neon-cyan); box-shadow:0 0 12px var(--neon-cyan)"></div>
+            <div style="flex:1">
+              <div style="font-weight:700;color:transparent;background:var(--accent);-webkit-background-clip:text">autogen-code</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.6)">Snippet automation & templates</div>
+            </div>
+          </div>
+
+          <div class="project" onclick="alert('Visit portfolio link')">
+            <div class="dot" style="background:var(--neon-pink); box-shadow:0 0 12px var(--neon-pink)"></div>
+            <div style="flex:1">
+              <div style="font-weight:700;color:transparent;background:linear-gradient(90deg,#ff2d95,#9b5cff);-webkit-background-clip:text">neon-ui</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.6)">Component experiments</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="filter:drop-shadow(0 6px 12px rgba(0,0,0,0.4))" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M12 .5C5.73.5.74 5.49.74 11.76c0 4.95 3.2 9.15 7.64 10.63.56.1.76-.24.76-.53 0-.26-.01-.95-.02-1.86-3.11.68-3.77-1.5-3.77-1.5-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.17 1.73 1.17 1.01 1.73 2.65 1.23 3.29.94.1-.73.39-1.23.71-1.52-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.22 1.17-3-.12-.29-.51-1.44.11-3 0 0 .95-.31 3.11 1.16a10.9 10.9 0 012.83-.38c.96.01 1.93.13 2.83.38 2.15-1.48 3.1-1.16 3.1-1.16.62 1.56.23 2.71.12 3 .73.78 1.17 1.78 1.17 3 0 4.29-2.62 5.24-5.11 5.52.4.35.76 1.04.76 2.1 0 1.52-.01 2.74-.01 3.11 0 .29.2.64.77.53C20.07 20.9 23.28 16.7 23.28 11.76 23.28 5.49 18.28.5 12 .5z"/>
+        </svg>
+        <span style="font-weight:700">View on GitHub</span>
+      </a>
+
+      <div style="opacity:0.95; font-size:13px; color:rgba(255,255,255,0.65)">Created by amirabolfazle</div>
+    </footer>
+  </div>
+
+<script>
+  // small interactive helpers
+  function openDemo(url){
+    window.open(url, '_blank', 'noopener');
+  }
+  // keyboard accessibility: activate cards on Enter
+  document.querySelectorAll('.card').forEach(c=>{
+    c.addEventListener('keyup', e=>{
+      if(e.key === 'Enter') c.click();
+    });
+  });
+  // subtle parallax on mouse move
+  const wrap = document.querySelector('.wrap');
+  document.addEventListener('mousemove', e=>{
+    const x = (e.clientX / window.innerWidth - 0.5) * 12;
+    const y = (e.clientY / window.innerHeight - 0.5) * 8;
+    wrap.style.transform = `translateZ(0) rotateX(${ -y }deg) rotateY(${ x }deg)`;
+  });
+  document.addEventListener('mouseleave', ()=> wrap.style.transform = '');
+</script>
+</body>
+</html>
