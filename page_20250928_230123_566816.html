@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --glass-bg: rgba(255,255,255,0.06);
+      --accent: #7c5cff;
+      --accent-2: #00d4ff;
+      --muted: rgba(255,255,255,0.7);
+      --glass-border: rgba(255,255,255,0.12);
+      --glass-radius: 16px;
+      --glass-blur: 10px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:white;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(0,212,255,0.08), transparent 10%),
+                  linear-gradient(180deg, #021027 0%, #071228 50%, #070916 100%);
+      overflow-y:auto;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    /* Animated gradient blobs */
+    .blobs{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .blob{
+      position:absolute;
+      filter:blur(60px) saturate(140%);
+      opacity:0.55;
+      mix-blend-mode:screen;
+      transform:translate3d(0,0,0);
+      animation:float 9s ease-in-out infinite;
+    }
+    .blob.a{width:640px;height:640px;background:linear-gradient(45deg,var(--accent),#a38bff);left:-120px;top:-80px;animation-duration:12s}
+    .blob.b{width:520px;height:520px;background:linear-gradient(45deg,var(--accent-2),#5ff0ff);right:-160px;bottom:-120px;animation-duration:14s;animation-delay:2s}
+    .blob.c{width:380px;height:380px;background:linear-gradient(45deg,#ff8fa3,#ffb86b);left:20%;bottom:10%;opacity:0.18;animation-duration:16s;animation-delay:4s}
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-30px) scale(1.03) rotate(3deg)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    /* Card */
+    .wrap{
+      position:relative;
+      width:min(1100px,96%);
+      z-index:1;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:28px;
+      align-items:start;
+    }
+    @media (max-width:880px){
+      .wrap{grid-template-columns:1fr; padding-bottom:60px;}
+    }
+
+    .glass{
+      background: var(--glass-bg);
+      border-radius: var(--glass-radius);
+      border: 1px solid var(--glass-border);
+      padding:28px;
+      backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+      color:var(--muted);
+      overflow:hidden;
+    }
+
+    header.main{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:18px;
+    }
+    .avatar{
+      width:86px;height:86px;border-radius:16px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:28px;color:white;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+      border:1px solid rgba(255,255,255,0.06);
+      flex-shrink:0;
+    }
+    h1{margin:0;font-size:28px;letter-spacing:0.2px;color:#fff}
+    .subtitle{margin:6px 0 0 0;font-size:13px;color:rgba(255,255,255,0.75)}
+
+    .meta{
+      margin-left:auto;
+      text-align:right;
+      font-size:12px;color:rgba(255,255,255,0.6);
+    }
+    .meta .time{font-weight:600;color:rgba(255,255,255,0.85)}
+
+    /* sections */
+    .content{display:flex;flex-direction:column;gap:18px}
+    .about p{margin:0;color:rgba(255,255,255,0.88);line-height:1.5}
+    .actions{display:flex;gap:12px;margin-top:12px}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);font-weight:600;font-size:13px;text-decoration:none;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .btn:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+
+    /* Project cards */
+    .projects{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media (max-width:720px){.projects{grid-template-columns:1fr}}
+    .proj{
+      padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:8px;
+    }
+    .proj h3{margin:0;font-size:15px;color:white}
+    .proj p{margin:0;font-size:13px;color:rgba(255,255,255,0.75)}
+    .proj .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .tag{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-size:12px;color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.02)}
+
+    /* Right column */
+    .side{display:flex;flex-direction:column;gap:18px}
+    .card-title{font-size:13px;margin-bottom:8px;color:rgba(255,255,255,0.85);font-weight:700}
+
+    .skills{display:flex;flex-wrap:wrap;gap:10px}
+    .skill{padding:8px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);font-size:13px;color:rgba(255,255,255,0.9)}
+
+    .contact .line{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.03)}
+    .contact .line a{color:var(--accent-2);text-decoration:none;font-weight:700}
+
+    /* footer */
+    footer{
+      margin-top:20px;margin-left:auto;margin-right:auto;display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.8);font-size:13px;
+    }
+    .github{
+      display:inline-flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);
+      color:inherit;text-decoration:none;
+      transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .github:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(2,6,23,0.5)}
+
+    /* small animated accents */
+    .accent-line{
+      height:4px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 20px rgba(124,92,255,0.15);
+      width:120px;margin-top:6px;
+    }
+
+    /* fade-in animations */
+    .fade{
+      opacity:0;transform:translateY(12px) scale(.995);
+      animation:fadeInUp .9s cubic-bezier(.2,.9,.3,1) forwards;
+    }
+    .fade.del-1{animation-delay:.12s}
+    .fade.del-2{animation-delay:.24s}
+    .fade.del-3{animation-delay:.36s}
+    .fade.del-4{animation-delay:.48s}
+    .fade.del-5{animation-delay:.62s}
+    @keyframes fadeInUp{
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    /* small helper */
+    .muted{color:rgba(255,255,255,0.65);font-size:13px}
+    .links{display:flex;gap:10px;align-items:center}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 6px 18px rgba(124,92,255,0.12)}
+
+    /* interactive tilt for cards */
+    .tilt{transform:perspective(1000px) translateZ(0); transition:transform .12s linear}
+  </style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <main class="wrap" role="main">
+    <section class="glass fade del-1" style="grid-column:1/2">
+      <header class="main">
+        <div class="avatar">AB</div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="subtitle">Creative full-stack tinkerer — UI, microservices, and playful interactions</div>
+          <div class="accent-line"></div>
+        </div>
+        <div class="meta">
+          <div class="muted">Created on</div>
+          <div class="time">2025-09-28 23:00:34</div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="about fade del-2">
+          <p>Hey — I build clean, animated interfaces and practical backend tools. I like experimenting with visuals, meaningful UX and tiny performance wins. This is a compact showcase with a glassmorphism vibe and subtle motion.</p>
+          <div class="actions" style="margin-top:12px">
+            <a class="btn" href="#projects">Projects</a>
+            <a class="btn" href="#contact">Contact</a>
+            <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">Source</a>
+          </div>
+        </div>
+
+        <div id="projects" class="projects fade del-3" aria-labelledby="projects-title">
+          <div class="proj tilt" data-tilt>
+            <h3>Autogen Code</h3>
+            <p>Tooling and templates for generating robust project scaffolds and API clients with minimal setup.</p>
+            <div class="tags">
+              <span class="tag">Node.js</span><span class="tag">CLI</span><span class="tag">Templates</span>
+            </div>
+          </div>
+
+          <div class="proj tilt" data-tilt>
+            <h3>Glass Studio</h3>
+            <p>A tiny design playground for experimenting with frosted-glass components and motion primitives.</p>
+            <div class="tags">
+              <span class="tag">Web</span><span class="tag">Animation</span><span class="tag">CSS</span>
+            </div>
+          </div>
+
+          <div class="proj tilt" data-tilt>
+            <h3>Beacon API</h3>
+            <p>Lightweight event pipeline for capturing and routing frontend telemetry to storage and analytics.</p>
+            <div class="tags">
+              <span class="tag">Go</span><span class="tag">API</span><span class="tag">Streaming</span>
+            </div>
+          </div>
+
+          <div class="proj tilt" data-tilt>
+            <h3>Palette Kit</h3>
+            <p>Color tools and accessible palettes built for designers to test contrast and theming quickly.</p>
+            <div class="tags">
+              <span class="tag">Design</span><span class="tag">Accessibility</span><span class="tag">Colors</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade del-4" style="margin-top:14px">
+          <div class="card-title">Highlights</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div class="btn">Interactive UI</div>
+            <div class="btn">Clean APIs</div>
+            <div class="btn">Automations</div>
+            <div class="btn">Performance</div>
+          </div>
+        </div>
+
+        <footer class="fade del-5" style="margin-top:18px">
+          <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.36-1.3-1.72-1.3-1.72-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.74-1.56-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.26 1.19-3.06-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.17.92-.26 1.92-.39 2.9-.39.98 0 1.98.13 2.9.39 2.2-1.49 3.17-1.17 3.17-1.17.63 1.59.23 2.76.11 3.05.74.8 1.19 1.81 1.19 3.06 0 4.41-2.69 5.38-5.25 5.66.42.36.79 1.08.79 2.18 0 1.58-.01 2.86-.01 3.25 0 .31.21.68.8.56C20.71 21.39 24 17.08 24 12 24 5.65 18.35.5 12 .5z" fill="currentColor"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </footer>
+      </div>
+    </section>
+
+    <aside class="glass side fade del-2" style="grid-column:2/3">
+      <div>
+        <div class="card-title">Skills</div>
+        <div class="skills">
+          <span class="skill">JavaScript</span>
+          <span class="skill">Node.js</span>
+          <span class="skill">TypeScript</span>
+          <span class="skill">Go</span>
+          <span class="skill">CSS</span>
+          <span class="skill">Design</span>
+          <span class="skill">APIs</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="card-title">Quick Links</div>
+        <div class="links">
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="btn" href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <div id="contact">
+        <div class="card-title">Contact</div>
+        <div class="contact">
+          <div class="line">
+            <div>
+              <div style="font-weight:700">Email</div>
+              <div class="muted">hello@amirabolfazle.dev</div>
+            </div>
+            <a href="mailto:hello@amirabolfazle.dev">Send</a>
+          </div>
+          <div style="height:8px"></div>
+          <div class="line">
+            <div>
+              <div style="font-weight:700">GitHub</div>
+              <div class="muted">github.com/amirabolfazle</div>
+            </div>
+            <a href="https://github.com/amirabolfazle" target="_blank" rel="noopener noreferrer">Open</a>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // Lightweight tilt effect for .tilt elements
+    (function(){
+      const supportsMove = 'ontouchstart' in window === false;
+      if(!supportsMove) return;
+      const tiltEls = document.querySelectorAll('[data-tilt]');
+      tiltEls.forEach(el=>{
+        el.addEventListener('mousemove', e=>{
+          const rect = el.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          const rotY = (x - 0.5) * 14; // -7 to 7 deg
+          const rotX = (0.5 - y) * 10; // -5 to 5 deg
+          el.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(4px)`;
+        });
+        el.addEventListener('mouseleave', ()=>{
+          el.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        });
+      });
+    })();
+
+    // Subtle entrance stagger if user prefers reduced motion: respect reduced motion
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced){
+        document.querySelectorAll('.fade').forEach(el=>{
+          el.style.animationDuration = '0.01s';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
