@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --glass: rgba(255, 255, 255, 0.2);
+      --glass-2: rgba(255, 255, 255, 0.25);
+      --text: #e9f0ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; margin: 0; }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: #0b1020;
+      background: linear-gradient(135deg, #0b1020 0%, #1a1448 40%, #0b1020 100%), 
+                  radial-gradient( circle at 20% -10%, rgba(70,130,180,.25), transparent 40%),
+                  radial-gradient(circle at 90% 110%, rgba(240,180,255,.25), transparent 40%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    .app {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6rem 1rem 4rem;
+      position: relative;
+    }
+
+    .glow {
+      position: fixed;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(100,180,255,.8), rgba(100,180,255,.0) 40%),
+                  radial-gradient(circle at 70% 70%, rgba(255,100,200,.7), rgba(255,100,200,.0) 40%);
+      filter: blur(0.4px);
+      opacity: .25;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      animation: float 14s ease-in-out infinite;
+    }
+    .glow.one { top: -80px; left: -60px; animation-duration: 22s; }
+    .glow.two { bottom: -120px; right: -70px; animation-duration: 26s; }
+
+    @keyframes float {
+      0% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(20px, -20px) rotate(180deg); }
+      100% { transform: translate(0,0) rotate(360deg); }
+    }
+
+    .glass {
+      width: min(1000px, 92vw);
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 22px;
+      padding: 28px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 15px 40px rgba(0,0,0,.25);
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn .6s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-bottom: 6px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand-logo {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.45);
+      color: #fff; font-weight: 700;
+      transform: rotate(-6deg);
+      box-shadow: 0 8px 20px rgba(0,0,0,.25);
+    }
+    .brand-title { font-size: 1.9rem; font-weight: 800; letter-spacing: .5px; }
+    .subtitle { color: #dbe6ff; font-size: .95rem; opacity: .95; }
+
+    .hero { display: grid; gap: 18px; grid-template-columns: 1fr; }
+
+    .intro { font-size: 1.05rem; line-height: 1.6; color: #eaf2ff; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .card {
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 16px;
+      padding: 18px;
+      min-height: 120px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: default;
+    }
+    .card:hover {
+      transform: translateY(-6px) rotate(var(--rot, 0deg));
+      box-shadow: 0 14px 34px rgba(0,0,0,.25);
+    }
+    .card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .card-content { color: #eaf2ff; opacity: .92; line-height: 1.5; }
+    .badge { padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.5); font-size: .75rem; }
+
+    .rotor {
+      position: absolute; width: 120px; height: 120px; border-radius: 50%;
+      top: -40px; right: -40px;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,.25), rgba(255,255,255,.05) 30%, rgba(255,255,255,.25) 60%);
+      border: 1px solid rgba(255,255,255,.4);
+      animation: spin 16s linear infinite;
+      opacity: .5;
+      filter: saturate(0.95);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .section-title { font-size: 1.05rem; font-weight: 700; margin: 8px 0 4px; }
+
+    .footer {
+      margin-top: 28px; padding: 14px 20px;
+      width: min(900px, 92vw);
+      display: flex; justify-content: space-between; align-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.28);
+      backdrop-filter: blur(8px);
+    }
+    .footer a {
+      color: #e9f0ff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      .brand-title { font-size: 1.6rem; }
+      .footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow one" aria-hidden="true" style="left: -60px; top: -60px;"></div>
+  <div class="glow two" aria-hidden="true" style="right: -80px; bottom: -100px;"></div>
+
+  <main class="app" aria-label="Amir Abolfazle personal page">
+    <section class="glass" style="position: relative;">
+      <div class="rotor" aria-hidden="true" style="--rot: 18deg; animation-duration: 22s;"></div>
+
+      <header class="header" style="margin-bottom: 6px;">
+        <div class="brand">
+          <div class="brand-logo" aria-label="logo">A</div>
+          <div>
+            <div class="brand-title">amirabolfazle</div>
+            <div class="subtitle">Personal page • Glassmorphism with rotate effects</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero" aria-label="Intro and sections">
+        <div class="intro">
+          Hello! Welcome to the fancy animated personal page of amirabolfazle. This page explores glassy visuals, subtle rotations, and soft motion to create a modern, immersive feel.
+        </div>
+
+        <div class="grid" aria-label="Overview sections">
+          <div class="card" style="--rot: -6deg;">
+            <div class="card-title">About</div>
+            <div class="card-content">
+              <span class="badge" aria-label="location">Iran</span> Based developer exploring frontend animation, UX motion, and creative coding.
+            </div>
+            <div class="rotor" aria-hidden="true" style="width:90px;height:90px; right:-26px; top:-26px; animation-duration:14s; opacity:.35;"></div>
+          </div>
+
+          <div class="card" style="--rot: 12deg;">
+            <div class="card-title">Creation</div>
+            <div class="card-content">
+              Creation time: 2025-09-28 09:00:33
+            </div>
+            <div class="rotor" aria-hidden="true" style="width:100px;height:100px; left:-26px; top:-26px; animation-duration:18s; opacity:.25;"></div>
+          </div>
+
+          <div class="card" style="--rot: -3deg;">
+            <div class="card-title">Projects</div>
+            <div class="card-content">
+              Open source, front-end experiments, and UI motion showcases.
+            </div>
+            <div class="rotor" aria-hidden="true" style="width:90px;height:90px; left:-26px; bottom:-26px; animation-duration:20s; opacity:.25;"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer" role="contentinfo" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" width="18" height="18" style="color:#e9f0ff;">
+          <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.523 2 12a9.998 9.998 0 0 0 6.838 9.454c.5.092.682-.214.682-.477c0-.236-.008-1.025-.013-1.862-2.782.603-3.369-1.193-3.369-1.193-.455-1.158-1.11-1.467-1.11-1.467-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.531 2.341 1.089 2.909.834.092-.647.35-1.089.635-1.339-2.22-.252-4.555-1.111-4.555-4.943 0-1.091.39-1.985 1.029-2.685-.103-.253-.447-1.276.098-2.663 0 0 .84-.269 2.75 1.026A9.56 9.56 0 0 1 12 6.844c.85.004 1.705.115 2.504.339 1.909-1.295 2.748-1.026 2.748-1.026.546 1.387.203 2.41.1 2.663.64.7 1.028 1.594 1.028 2.685 0 3.841-2.337 4.686-4.565 4.936.359.31.678.923.678 1.865 0 1.347-.012 2.433-.012 2.766 0 .266.18.574.688.476A10 10 0 0 0 22 12c0-5.477-4.477-10-10-10Z"/>
+        </svg>
+        <span style="vertical-align: middle;"> </span>GitHub
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </main>
+</body>
+</html>
