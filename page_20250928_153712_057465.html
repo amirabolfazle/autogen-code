@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --g1: linear-gradient(135deg,#0ea5e9 0%, #7c3aed 35%, #f97316 100%);
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.65);
+      --accent: #fff;
+      --cardGlow: 0 8px 30px rgba(124,58,237,0.25);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;}
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(124,58,237,0.12), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 80%, rgba(14,165,233,0.10), transparent 8%),
+                  var(--bg1);
+      color:var(--accent);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+      gap:24px;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;
+      padding:36px;
+      box-shadow: 0 12px 50px rgba(2,6,23,0.6);
+      border: 1px solid rgba(255,255,255,0.04);
+      overflow:hidden;
+      position:relative;
+    }
+
+    /* animated gradient band */
+    .gradient-strip{
+      position:absolute;
+      left:-20%;
+      right:-20%;
+      height:220px;
+      top:-60px;
+      transform:rotate(-6deg);
+      background:var(--g1);
+      filter:blur(48px) saturate(120%);
+      opacity:0.85;
+      mix-blend-mode:screen;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .content{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+    }
+
+    @media (max-width:920px){
+      .content{grid-template-columns:1fr; padding-bottom:10px;}
+    }
+
+    .hero{
+      padding:28px;
+    }
+    .eyebrow{
+      display:inline-block;
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:18px;
+      letter-spacing:0.6px;
+    }
+
+    .title{
+      font-size:44px;
+      line-height:1.02;
+      font-weight:800;
+      letter-spacing:-1px;
+      margin-bottom:12px;
+      display:flex;
+      gap:12px;
+      align-items:baseline;
+      transform-origin:center left;
+      animation:zoomIn 800ms cubic-bezier(.2,.9,.25,1) both;
+      text-wrap:balance;
+    }
+
+    @keyframes zoomIn{
+      0{opacity:0; transform:scale(0.94) translateY(8px)}
+      100{opacity:1; transform:scale(1) translateY(0)}
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:16px;
+      margin-bottom:22px;
+      max-width:60ch;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:8px;
+    }
+
+    .btn{
+      background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      padding:12px 18px;
+      border-radius:12px;
+      color:var(--accent);
+      font-weight:600;
+      cursor:pointer;
+      transition: transform .28s cubic-bezier(.2,.9,.25,1), box-shadow .28s;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+    }
+
+    .btn.primary{
+      background:var(--g1);
+      box-shadow: var(--cardGlow);
+      color:#071125;
+      border:none;
+      transform:translateZ(0);
+    }
+
+    .btn:hover{ transform:scale(1.03) }
+    .btn.primary:hover{ transform:scale(1.06) }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:14px;
+      margin-top:22px;
+    }
+
+    @media (max-width:680px){
+      .cards{grid-template-columns:1fr}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.016), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,0.035);
+      transition: transform .38s cubic-bezier(.2,.9,.25,1), box-shadow .38s;
+    }
+
+    .card:hover{
+      transform:scale(1.045) translateY(-6px);
+      box-shadow: 0 22px 60px rgba(2,6,23,0.55), 0 6px 20px rgba(124,58,237,0.08);
+    }
+
+    .card .logo{
+      width:56px;height:56px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+      flex-shrink:0;
+      border:1px solid rgba(255,255,255,0.03);
+      font-weight:700;
+      color:var(--accent);
+      font-size:20px;
+    }
+
+    .card h4{font-size:15px;margin-bottom:6px}
+    .card p{font-size:13px;color:var(--muted);line-height:1.4}
+
+    /* side panel */
+    .side{
+      padding:28px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 10px 40px rgba(2,6,23,0.5);
+    }
+
+    .preview{
+      border-radius:12px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(10,11,14,0.6), rgba(255,255,255,0.02));
+      padding:18px;
+    }
+
+    .mock{
+      height:220px;
+      border-radius:10px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+      transform-origin:center;
+      transition: transform 600ms cubic-bezier(.2,.9,.25,1);
+    }
+    .mock:hover{ transform:scale(1.035) }
+
+    .meta{
+      margin-top:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:13px;
+      border-top:1px solid rgba(255,255,255,0.02);
+      padding-top:16px;
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+      color:var(--muted);
+      transition: color .18s, transform .18s;
+      padding:6px 8px;
+      border-radius:8px;
+    }
+    .github-link:hover{ color:#fff; transform:translateY(-3px) }
+    .gh-icon{width:18px;height:18px;display:inline-block;fill:currentColor}
+
+    .created{
+      color:var(--muted);
+    }
+
+    /* tiny shimmer for hero title */
+    .accent-chip{
+      padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;
+      background:linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      color:var(--accent);
+      box-shadow: 0 6px 24px rgba(124,58,237,0.12);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="site-title">
+    <div class="gradient-strip" aria-hidden="true"></div>
+
+    <div class="content">
+      <div class="hero">
+        <div class="eyebrow">Welcome • Portfolio Landing</div>
+        <h1 id="site-title" class="title">
+          amirabolfazle
+          <span class="accent-chip" aria-hidden="true">2025</span>
+        </h1>
+        <p class="subtitle">A sleek, modern landing experience with a gradient-driven aesthetic and subtle zoom interactions to create depth and focus. Explore the highlights and jump into the project repository below.</p>
+
+        <div class="actions" role="group" aria-label="Primary actions">
+          <a class="btn primary" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            View on GitHub
+          </a>
+          <a class="btn" href="#features">Explore features</a>
+        </div>
+
+        <div class="cards" id="features" aria-hidden="false">
+          <div class="card">
+            <div class="logo">UI</div>
+            <div>
+              <h4>Gradient Theme</h4>
+              <p>Colorflow gradients blended with soft glows to highlight content and create a modern visual hierarchy.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="logo">FX</div>
+            <div>
+              <h4>Zoom Effects</h4>
+              <p>Smooth scale transitions on interactive elements add tactile feedback and pleasant motion.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="logo">S</div>
+            <div>
+              <h4>Responsive</h4>
+              <p>Layouts adapt from desktop grids to single-column stacks with consistent spacing and clarity.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="logo">GH</div>
+            <div>
+              <h4>Open Source</h4>
+              <p>Repository-ready structure, linked directly to the GitHub project for exploration and contribution.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side" aria-labelledby="side-title">
+        <div class="preview">
+          <div class="mock" role="img" aria-label="Preview mockup">
+            Interactive Preview — Hover to Zoom
+          </div>
+          <div class="meta">
+            <div>
+              <div style="font-weight:700;color:var(--accent)">amirabolfazle</div>
+              <div style="font-size:12px;color:var(--muted)">Designer & Builder</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:12px;color:var(--muted)">Created at</div>
+              <div style="font-weight:700">2025-09-28 15:36:35</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div class="created">Created by amirabolfazle</div>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 .297a12 12 0 00-3.797 23.393c.6.111.82-.261.82-.579 0-.286-.01-1.043-.016-2.047-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.086 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.304 3.493.997.108-.776.42-1.305.763-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.49 11.49 0 013.003-.404c1.018.005 2.045.137 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.653.243 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.804 5.624-5.476 5.92.431.372.815 1.102.815 2.222 0 1.605-.014 2.898-.014 3.293 0 .321.218.694.825.576A12 12 0 0012 .297z"/>
+        </svg>
+        <span style="font-weight:700">amirabolfazle/autogen-code</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
