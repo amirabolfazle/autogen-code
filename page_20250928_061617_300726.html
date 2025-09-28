@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(255,255,255,0.12);
+      --bg2: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.35);
+      --text: #e6f0ff;
+      --muted: rgba(230,240,255,0.75);
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    /* Page baseline */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0,150,255,0.15), transparent 40%),
+                  radial-gradient(circle at 90% 20%, rgba(255,0,180,0.15), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0b1020 60%, #0a1a2a 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated sheen for depth */
+    .bg-sheen {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 40%);
+      mix-blend-mode: screen;
+      animation: drift 20s linear infinite;
+      z-index: 0;
+    }
+    @keyframes drift { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-20px,20px,0); } }
+
+    /* Layout scaffolding */
+    header.site-header {
+      position: sticky; top: 0; z-index: 5;
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: saturate(1.2) blur(8px);
+      background: linear-gradient(to right, rgba(10,20,40,0.6), rgba(10,20,40,0.2));
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+      font-weight: 700; letter-spacing: .5px;
+    }
+    .brand .dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #66e0ff; box-shadow: 0 0 12px #66e0ff;
+      display: inline-block;
+    }
+
+    main { position: relative; z-index: 1; padding: 40px 20px 120px; max-width: 1100px; margin: 0 auto; }
+
+    h1.title {
+      font-size: clamp(2rem, 4vw + 1rem, 3.6rem);
+      margin: 0 0 8px;
+      letter-spacing: .5px;
+      text-shadow: 0 2px 14px rgba(0,0,0,.25);
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: clamp(0.95rem, 0.8vw + 0.9rem, 1.15rem);
+      margin-bottom: 28px;
+    }
+
+    /* Glass panels (glassmorphism) */
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero {
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 22px;
+      align-items: center;
+      padding: 22px;
+      margin-bottom: 28px;
+    }
+    .hero .intro {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #eaf3ff;
+    }
+    .hero Figure {
+      margin: 0;
+    }
+    .avatar {
+      width: 180px; height: 180px; border-radius: 24px;
+      background: linear-gradient(135deg, rgba(100,180,255,0.8), rgba(100,180,255,0.3));
+      display: block;
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.4);
+      overflow: hidden;
+    }
+    .avatar svg { width: 100%; height: 100%; display: block; }
+
+    .creation-time {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.85rem;
+      color: #eaffff;
+    }
+
+    section.section {
+      margin-top: 18px;
+      padding: 8px;
+    }
+
+    .grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.4);
+      min-height: 140px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: transform .3s ease, box-shadow .3s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 18px 32px rgba(0,0,0,.25); }
+
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card p { margin: 0; color: #dbeaff; font-size: .95rem; opacity: .95; }
+    .card .chip {
+      align-self: start; padding: 6px 10px; border-radius: 999px;
+      font-size: 0.75rem; color: #06111b;
+      background: linear-gradient(135deg, #a7f3d0, #93c5fd);
+      border: 1px solid rgba(255,255,255,.5);
+    }
+
+    a.btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 12px; border-radius: 10px;
+      color: #0a1020; text-decoration: none;
+      background: linear-gradient(135deg, #e2e8f0, #e0e7ff);
+      border: 1px solid rgba(255,255,255,0.9);
+      font-weight: 600;
+      transition: transform .2s ease;
+    }
+    a.btn:hover { transform: translateY(-1px); }
+
+    /* Footer with GitHub icon */
+    footer.site-footer {
+      position: relative;
+      padding: 28px 20px;
+      text-align: center;
+      color: #d8e6ff;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      background: rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px);
+      margin-top: 40px;
+    }
+    .github-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #eaf4ff; text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.08);
+    }
+    .github-link svg { width: 18px; height: 18px; color: #fff; }
+
+    /* Section reveal on scroll (slide-up) */
+    .slide-up { opacity: 0; transform: translateY(40px); transition: all 0.6s ease-out; }
+    .slide-up.in-view { opacity: 1; transform: translateY(0); }
+
+    /* Responsive tweaks */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .avatar { width: 140px; height: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-sheen" aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Site header">
+    <div class="brand" style="gap:12px;">
+      <span class="dot" aria-hidden="true"></span>
+      <span style="font-weight:700;letter-spacing:.5px;">amirabolfazle</span>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="#portfolio" class="creation-time" style="text-decoration:none; color:#eaffff; font-weight:600; padding:6px 12px; border-radius:999px; background: rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,.4);">
+        Portfolio
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="glass hero slide-up" id="top">
+      <div class="intro" style="padding:6px;">
+        <h1 class="title" style="margin:0 0 8px;">amirabolfazle</h1>
+        <p class="tagline" style="margin:0;">
+          A curious builder crafting web experiences with glassmorphism and motion.
+        </p>
+        <div class="creation-time" title="Creation timestamp">
+          Creation time: 2025-09-28 06:15:44
+        </div>
+      </div>
+      <figure aria-label="Avatar" class="avatar" style="justify-self:center;">
+        <!-- Minimalist decorative avatar -->
+        <svg viewBox="0 0 200 200" role="img" aria-label="Avatar">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="#7bdff6"/>
+              <stop offset="100%" stop-color="#6ee7b7"/>
+            </linearGradient>
+          </defs>
+          <circle cx="100" cy="90" r="60" fill="url(#g)" opacity="0.95"/>
+          <rect x="50" y="90" width="100" height="70" rx="18" fill="rgba(2,6,23,.25)"/>
+          <circle cx="85" cy="75" r="8" fill="white" opacity=".9"/>
+          <circle cx="115" cy="75" r="8" fill="white" opacity=".9"/>
+          <path d="M60,120 Q100,150 140,120" stroke="white" stroke-width="6" fill="none" opacity=".6" />
+        </svg>
+      </figure>
+    </section>
+
+    <section id="portfolio" class="section" aria-label="Portfolio projects">
+      <div class="glass" style="padding:18px;">
+        <div class="slide-up" style="margin-bottom:8px;">
+          <h2 style="margin:0 0 6px;">Projects</h2>
+          <p style="margin:0; color:#dbeaff;">
+            A selection of handcrafted UI components and experiments.
+          </p>
+        </div>
+
+        <div class="grid" role="list">
+          <article class="card slide-up" role="listitem" aria-label="Project 1">
+            <div>
+              <span class="chip" aria-label="Tag">UI</span>
+              <h3>Glass Card Studio</h3>
+              <p>Reusable glassmorphic cards with subtle motion and depth.</p>
+            </div>
+            <a href="#" class="btn" aria-label="View project Glass Card Studio">
+              View project
+            </a>
+          </article>
+
+          <article class="card slide-up" role="listitem" aria-label="Project 2">
+            <div>
+              <span class="chip" aria-label="Tag">Animation</span>
+              <h3>Slide-Up Transitions</h3>
+              <p>Declarative motion system with IntersectionObserver hooks.</p>
+            </div>
+            <a href="#" class="btn" aria-label="View project Slide-Up Transitions">
+              View project
+            </a>
+          </article>
+
+          <article class="card slide-up" role="listitem" aria-label="Project 3">
+            <div>
+              <span class="chip" aria-label="Tag">Portfolio</span>
+              <h3>One-File Portfolio</h3>
+              <p>Self-contained, fast-loading, accessible single HTML file.</p>
+            </div>
+            <a href="#" class="btn" aria-label="View project One-File Portfolio">
+              View project
+            </a>
+          </article>
+
+          <article class="card slide-up" role="listitem" aria-label="Project 4">
+            <div>
+              <span class="chip" aria-label="Tag">Tech Demo</span>
+              <h3>Backdrop Blur Playground</h3>
+              <p>Experimenting with blur, translucency, and depth cues.</p>
+            </div>
+            <a href="#" class="btn" aria-label="View project Backdrop Blur Playground">
+              View project
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository for amirabolfazle/autogen-code">
+      <!-- GitHub inline icon (simplified) -->
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="18" height="18">
+        <path d="M12 2C6.477 2 2 6.582 2 12.265c0 4.516 2.865 8.344 6.839 9.726.5.092.682-.217.682-.483 0-.237-.008-1.028-.013-1.867-2.782.607-3.37-1.2-3.37-1.2-.453-1.153-1.11-1.462-1.11-1.462-.908-.63.069-.618.069-.618 1.003.07 1.532 1.038 1.532 1.038.892 1.547 2.341 1.099 2.909.84.091-.659.35-1.099.635-1.353-2.22-.264-4.555-1.134-4.555-5.045 0-1.113.39-2.024 1.03-2.735-.104-.264-.447-1.333.098-2.778 0 0 .84-.269 2.75 1.044A9.42 9.42 0 0 1 12 6.844c.851.004 1.706.119 2.507.352 1.909-1.313 2.748-1.044 2.748-1.044.546 1.445.203 2.514.1 2.778.64.711 1.03 1.622 1.03 2.735 0 3.92-2.338 4.779-4.566 5.034.359.31.678.92.678 1.857 0 1.342-.012 2.42-.012 2.75 0 .268.178.58.688.482C19.137 20.6 22 16.774 22 12.265 22 6.582 17.523 2 12 2z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <div style="margin-top:8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;">
+      Created by amirabolfazle
+    </div>
+  </footer>
+
+  <script>
+    // Simple IntersectionObserver to enable slide-up animations
+    (function(){
+      const faders = document.querySelectorAll('.slide-up');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, {
+        rootMargin: '0px 0px -10% 0px',
+        threshold: 0.15
+      });
+      faders.forEach(el => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>
