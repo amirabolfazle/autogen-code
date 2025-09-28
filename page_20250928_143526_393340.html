@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle — portfolio</title>
+<style>
+  :root{
+    --bg1: #0f1724;
+    --bg2: #071233;
+    --accent: rgba(113, 86, 255, 0.95);
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.12);
+    --muted: rgba(255,255,255,0.75);
+    --glass-glow: 0 8px 40px rgba(113,86,255,0.12);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: radial-gradient(800px 400px at 10% 20%, rgba(113,86,255,0.12), transparent),
+                radial-gradient(700px 350px at 85% 80%, rgba(0,200,255,0.06), transparent),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color: #eaf0ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  /* floating ambient circles */
+  .ambient{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+  }
+  .orb{
+    position:absolute;
+    filter: blur(40px);
+    opacity:0.9;
+    mix-blend-mode:screen;
+    animation: floaty 12s ease-in-out infinite;
+    border-radius:50%;
+    transform-origin:center;
+  }
+  .orb.o1{ width:420px; height:420px; left:-80px; top:-120px; background: linear-gradient(135deg, rgba(113,86,255,0.28), rgba(0,200,255,0.08)); animation-duration:16s;}
+  .orb.o2{ width:300px; height:300px; right:-60px; bottom:-100px; background: linear-gradient(135deg, rgba(0,200,255,0.16), rgba(113,86,255,0.06)); animation-duration:14s; }
+  .orb.o3{ width:160px; height:160px; left:60%; top:10%; background: linear-gradient(90deg, rgba(255,140,140,0.08), rgba(113,86,255,0.08)); animation-duration:10s; }
+
+  @keyframes floaty{
+    0%{ transform: translateY(0px) scale(1); }
+    50%{ transform: translateY(-24px) scale(1.03); }
+    100%{ transform: translateY(0px) scale(1); }
+  }
+
+  /* main glass card */
+  .stage{
+    position:relative;
+    z-index:2;
+    width:min(1040px,92vw);
+    max-width:1040px;
+    min-height:540px;
+    padding:36px;
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap:28px;
+    align-items:center;
+  }
+
+  .glass {
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border-radius:18px;
+    padding:22px;
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-glow), 0 10px 40px rgba(2,6,23,0.6);
+  }
+
+  .profile {
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:center;
+    text-align:center;
+  }
+
+  .avatar {
+    width:180px;
+    height:180px;
+    border-radius:24px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(113,86,255,0.04));
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 12px 30px rgba(2,6,23,0.6), inset 0 -6px 30px rgba(113,86,255,0.06);
+    transform-origin:center;
+    animation: bounceScale 2000ms var(--bounce-ease) infinite;
+  }
+
+  .avatar .logo {
+    width:86%;
+    height:86%;
+    display:block;
+    filter: drop-shadow(0 6px 16px rgba(113,86,255,0.14));
+    transform-origin:center;
+  }
+
+  @keyframes bounceScale{
+    0%{ transform: translateY(0) scale(1); }
+    30%{ transform: translateY(-10px) scale(1.02); }
+    60%{ transform: translateY(2px) scale(0.99); }
+    100%{ transform: translateY(0) scale(1); }
+  }
+
+  .name{
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:0.4px;
+    color:#fff;
+    display:flex;
+    gap:8px;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .tag {
+    font-size:13px;
+    padding:6px 10px;
+    background: linear-gradient(90deg, rgba(113,86,255,0.16), rgba(0,200,255,0.06));
+    border-radius:999px;
+    color:#eaf0ff;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 6px 18px rgba(113,86,255,0.06);
+  }
+
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.4;
+    max-width:300px;
+  }
+
+  /* right column content */
+  .content {
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .hero {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+  }
+
+  .title {
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:-0.4px;
+    margin:0;
+    color:#fff;
+  }
+
+  .time {
+    font-size:13px;
+    padding:8px 12px;
+    border-radius:999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+    color:var(--muted);
+    box-shadow: 0 6px 20px rgba(2,6,23,0.55);
+  }
+
+  .bio {
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:6px;
+  }
+
+  /* projects grid */
+  .projects {
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:14px;
+    margin-top:6px;
+  }
+
+  .card {
+    border-radius:12px;
+    padding:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    transition: transform 320ms cubic-bezier(.2,.9,.3,1), box-shadow 320ms;
+    transform-origin:center;
+    box-shadow: 0 8px 26px rgba(2,6,23,0.45);
+    cursor:pointer;
+  }
+
+  .card:hover{
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 18px 40px rgba(2,6,23,0.6);
+  }
+
+  .card h4{ margin:0; font-size:15px; color:#fff; }
+  .card p{ margin:0; font-size:13px; color:var(--muted); }
+
+  /* bounce chips */
+  .chips {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:6px;
+  }
+
+  .chip{
+    font-size:13px;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(113,86,255,0.14), rgba(0,200,255,0.04));
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 24px rgba(113,86,255,0.06);
+    transform-origin:center;
+    animation: bounce 2200ms cubic-bezier(.2,.8,.3,1) infinite;
+  }
+
+  .chip:nth-child(1){ animation-delay: 0ms; }
+  .chip:nth-child(2){ animation-delay: 180ms; }
+  .chip:nth-child(3){ animation-delay: 360ms; }
+  .chip:nth-child(4){ animation-delay: 540ms; }
+  .chip:nth-child(5){ animation-delay: 720ms; }
+
+  @keyframes bounce {
+    0%{ transform: translateY(0); }
+    18%{ transform: translateY(-8px); }
+    40%{ transform: translateY(4px); }
+    100%{ transform: translateY(0); }
+  }
+
+  /* footer */
+  footer{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:18px 20px;
+    color:var(--muted);
+    font-size:14px;
+    position:relative;
+    z-index:3;
+    margin-top:18px;
+    user-select:none;
+  }
+
+  .github-link{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    text-decoration:none;
+    border-radius:999px;
+    padding:8px 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  .github-icon{
+    width:18px;
+    height:18px;
+    display:inline-block;
+    color:var(--muted);
+    opacity:0.95;
+    filter: drop-shadow(0 4px 10px rgba(2,6,23,0.6));
+  }
+
+  /* responsive */
+  @media (max-width:860px){
+    .stage{ grid-template-columns: 1fr; padding:20px; gap:18px; min-height:640px; }
+    .avatar{ width:140px; height:140px; }
+    .projects{ grid-template-columns: 1fr; }
+    .subtitle{ max-width:none; }
+  }
+
+  /* small flourish hover for stage */
+  .glass:hover { transform: translateY(-6px); transition: transform 420ms cubic-bezier(.2,.9,.3,1); }
+</style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+  </div>
+
+  <main class="stage" role="main" aria-labelledby="portfolio-title">
+    <section class="glass profile" aria-label="profile card">
+      <div class="avatar" title="amirabolfazle">
+        <!-- stylized monogram -->
+        <svg class="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="logo">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="#7d56ff"/>
+              <stop offset="1" stop-color="#00d8ff"/>
+            </linearGradient>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="6" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <rect rx="22" width="120" height="120" fill="url(#g1)" opacity="0.08"/>
+          <g transform="translate(10,12)" filter="url(#glow)">
+            <path d="M16 74C16 74 28 20 60 20C92 20 104 74 104 74" fill="none" stroke="url(#g1)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 84C32 84 48 44 60 44C72 44 88 84 88 84" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="6" y="106" font-family="Inter, Arial" font-weight="700" font-size="20" fill="#ffffff" opacity="0.92">ab</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="name">
+        amirabolfazle
+        <span class="tag">Creative Dev</span>
+      </div>
+
+      <div class="subtitle">
+        Designing subtle motion and crisp UI with glassmorphism. I build playful, fast interfaces that feel alive.
+      </div>
+
+      <div class="chips" aria-hidden="false">
+        <div class="chip" title="HTML/CSS">HTML/CSS</div>
+        <div class="chip" title="JavaScript">JavaScript</div>
+        <div class="chip" title="Animations">Animations</div>
+        <div class="chip" title="UI">UI</div>
+        <div class="chip" title="Design">Design</div>
+      </div>
+    </section>
+
+    <section class="glass content" aria-label="projects and info">
+      <div class="hero">
+        <h1 id="portfolio-title" class="title">amirabolfazle — portfolio</h1>
+        <div class="time" id="creation-time">2025-09-28 14:34:33</div>
+      </div>
+
+      <p class="bio">
+        This single-file animated portfolio showcases glassmorphism, smooth bounce effects and a soft ambient backdrop — all handcrafted in HTML/CSS with subtle JS for interactions. Peek at the projects below or follow the link in the footer to view code.
+      </p>
+
+      <div class="projects" aria-label="projects">
+        <div class="card" role="article" tabindex="0" aria-label="Project - Smooth UI">
+          <h4>Smooth UI Kit</h4>
+          <p>Reusable components, motion-ready and themeable. Built for speed and delight.</p>
+        </div>
+
+        <div class="card" role="article" tabindex="0" aria-label="Project - Micro Animations">
+          <h4>Micro Animations</h4>
+          <p>Small animations that add personality without sacrificing performance.</p>
+        </div>
+
+        <div class="card" role="article" tabindex="0" aria-label="Project - Glass Templates">
+          <h4>Glass Templates</h4>
+          <p>Frosted layouts and templates tuned for readability and depth.</p>
+        </div>
+
+        <div class="card" role="article" tabindex="0" aria-label="Project - Motion Library">
+          <h4>Motion Library</h4>
+          <p>Mini library of bounce and float curves to make interactions pop.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.75 5.4.75 11.75c0 4.84 3.14 8.95 7.5 10.4.55.1.75-.24.75-.53 0-.26-.01-1.13-.02-2.05-3.05.66-3.7-1.47-3.7-1.47-.5-1.3-1.23-1.65-1.23-1.65-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.7 2.6 1.21 3.24.93.1-.73.39-1.21.71-1.49-2.44-.28-5-1.22-5-5.45 0-1.2.43-2.18 1.14-2.95-.11-.28-.5-1.4.11-2.92 0 0 .94-.3 3.08 1.13.89-.25 1.84-.38 2.79-.38.95 0 1.9.13 2.79.38 2.14-1.43 3.08-1.13 3.08-1.13.61 1.52.22 2.64.11 2.92.71.77 1.14 1.75 1.14 2.95 0 4.24-2.57 5.16-5.02 5.43.4.35.76 1.05.76 2.12 0 1.53-.02 2.76-.02 3.14 0 .29.2.64.76.53 4.36-1.45 7.5-5.56 7.5-10.4C23.25 5.4 18.35.5 12 .5z" fill="#eaf0ff"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+<script>
+  // tiny interactive tilt for the main glass card and subtle parallax of orbs
+  (function(){
+    const stage = document.querySelector('.stage');
+    const orbs = document.querySelectorAll('.orb');
+    let rect;
+    function onMove(e){
+      if(!rect) rect = stage.getBoundingClientRect();
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+      const cx = rect.width/2, cy = rect.height/2;
+      const dx = (x - cx)/cx;
+      const dy = (y - cy)/cy;
+      stage.style.transform = `translateY(-6px) rotateX(${dy*4}deg) rotateY(${ -dx*6 }deg)`;
+      orbs.forEach((o,i) => {
+        const speed = 10 + i*6;
+        o.style.transform = `translate3d(${ -dx*speed }px, ${ -dy* (6 + i*8) }px,0)`;
+      });
+    }
+    function onLeave(){
+      stage.style.transform = '';
+      orbs.forEach(o=> o.style.transform='');
+    }
+    window.addEventListener('mousemove', onMove, {passive:true});
+    window.addEventListener('touchmove', onMove, {passive:true});
+    window.addEventListener('mouseleave', onLeave);
+    window.addEventListener('touchend', onLeave);
+  })();
+</script>
+</body>
+</html>
