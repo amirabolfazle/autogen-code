@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0f1a;
+      --card: rgba(255,255,255,0.05);
+      --cardStroke: rgba(180,210,255,0.25);
+      --text: #e6f3ff;
+      --neon-cyan: #00f5d4;
+      --neon-pink: #ff3d94;
+      --neon-blue: #3ec8ff;
+      --glow: 0 0 22px rgba(0,255,212,0.9);
+      --radius: 14px;
+    }
+
+    /* Background with neon-like subtle movement */
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      background: #0a0f1a;
+      overflow-x: hidden;
+    }
+    body::before{
+      content:"";
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,255,212,0.15), transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(255,61,148,0.15), transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(62,200,255,0.15), transparent 40%);
+      background-color: #0a0f1a;
+      background-size: 350px 350px, 420px 420px, 520px 520px;
+      animation: drift 16s linear infinite;
+      z-index: -1;
+      filter: saturate(120%);
+    }
+    @keyframes drift {
+      0% { transform: translate(0,0) rotate(0); }
+      50% { transform: translate(-6px, 6px) rotate(0.5deg); }
+      100% { transform: translate(0,0) rotate(0); }
+    }
+
+    /* Neon header */
+    header.hero {
+      text-align: center;
+      padding: 72px 20px 24px;
+      position: relative;
+    }
+    .neon-title {
+      font-size: clamp(2.4rem, 6vw, 6rem);
+      font-weight: 900;
+      margin: 0 0 12px;
+      line-height: 0.95;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, #00fff3 0%, #6f00ff 40%, #00f5a0 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 8px rgba(0,255,255,0.9),
+        0 0 24px rgba(111,0,255,0.9),
+        0 0 40px rgba(0,255,160,0.6);
+      filter: drop-shadow(0 0 8px rgba(0,255,255,0.8));
+    }
+    .created-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.92rem;
+      color: #cdeaff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(110,180,255,0.35);
+      background: rgba(8,14,24,0.5);
+      box-shadow: inset 0 0 14px rgba(0,0,0,0.25);
+      margin-top: 6px;
+    }
+
+    .hint {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin-top: 6px;
+      color: #cbeaff;
+    }
+
+    /* Portfolio grid */
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 0 0 40px;
+    }
+
+    section#portfolio {
+      padding: 28px 0 0;
+    }
+
+    h2.section-title {
+      font-size: 1.1rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #a3d4ff;
+      margin: 28px 0 14px;
+      text-align: left;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--cardStroke);
+      border-radius: var(--radius);
+      padding: 14px;
+      transition: transform 0.6s cubic-bezier(.22,.61,.36,1), box-shadow 0.6s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      position: relative;
+      overflow: hidden;
+      min-height: 210px;
+    }
+    .card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 20px 60px rgba(0,255,212,0.25);
+    }
+
+    .thumb {
+      height: 120px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0,255,212,0.9), rgba(111,0,255,0.8), rgba(0,255,212,0.9));
+      filter: saturate(130%);
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: inset 0 0 16px rgba(0,0,0,0.25);
+    }
+    .card h3 {
+      margin: 6px 0 6px;
+      font-size: 1.05rem;
+    }
+    .card p {
+      margin: 0;
+      color: #dbeaff;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      opacity: 0.95;
+    }
+    .tags {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #a9d8ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(120,190,255,0.25);
+    }
+
+    /* Footer with GitHub icon */
+    footer.site-footer {
+      text-align: center;
+      padding: 28px 12px 40px;
+      color: #a7dfff;
+    }
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #a9dcff;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(160,210,255,0.4);
+      background: rgba(0,0,0,0.25);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 14px rgba(0,255,212,0.15);
+    }
+    .github-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(0,255,212,0.4);
+    }
+    .github-icon {
+      width: 20px; height: 20px; display: inline-block;
+      fill: currentColor;
+    }
+    .footer-text {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 8px;
+      font-family: ui-monospace,SFMono-Regular,Menlo,Consolas;
+      font-size: 0.95rem;
+      color: #cdeaff;
+      letter-spacing: .02em;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 640px){
+      .neon-title { font-size: clamp(2rem, 12vw, 4.5rem); }
+      .thumb { height: 110px; }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="hero" aria-label="Intro">
+    <div class="neon-title" style="display:inline-block;">amirabolfazle</div>
+    <div class="created-time" aria-label="Creation time badge" style="margin-top:6px; ">
+      Creation time: 2025-09-28 08:13:14
+    </div>
+    <div class="hint" aria-live="polite">
+      Neon-animated portfolio with zoom on hover. Scroll to explore.
+    </div>
+  </header>
+
+  <main class="container" id="portfolio" role="main">
+    <section aria-label="Projects" class="portfolio-section">
+      <h2 class="section-title" style="opacity:.9;">Projects</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="thumb" aria-label="Project thumbnail"></div>
+          <h3>Neon Landing Page</h3>
+          <p>A vivid landing page with parallax neon gradients and responsive design.</p>
+          <span class="tags">HTML • CSS • JS</span>
+        </article>
+
+        <article class="card">
+          <div class="thumb" aria-label="Project thumbnail"></div>
+          <h3>Aurora Dashboard</h3>
+          <p>Modular dashboard with neon widgets and smooth transitions.</p>
+          <span class="tags">HTML • CSS • JS • D3</span>
+        </article>
+
+        <article class="card">
+          <div class="thumb" aria-label="Project thumbnail"></div>
+          <h3>Pulse Gallery</h3>
+          <p>Animated gallery with color-shifting glow and micro-interactions.</p>
+          <span class="tags">HTML • CSS • JS</span>
+        </article>
+
+        <article class="card">
+          <div class="thumb" aria-label="Project thumbnail"></div>
+          <h3>Glow Studio</h3>
+          <p>Creative portfolio template featuring zoom and neon accents.</p>
+          <span class="tags">HTML • CSS • JS</span>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg class="github-icon" viewBox="0 0 24 24" aria-label="GitHub icon" fill="currentColor" role="img">
+        <path d="M12 2C6.477 2 2 6.523 2 12a9.93 9.93 0 0 0 6.839 9.455c.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.704-2.782.603-3.369-1.342-3.369-1.342-.455-1.158-1.11-1.466-1.11-1.466-.909-.62.069-.608.069-.608 1.005.07 1.532 1.033 1.532 1.033.895 1.53 2.341 1.088 2.909.832.091-.647.35-1.088.636-1.338-2.22-.252-4.555-1.11-4.555-4.944 0-1.091.39-1.986 1.03-2.686-.103-.253-.447-1.273.098-2.653 0 0 .84-.269 2.75 1.026A9.573 9.573 0 0 1 12 6.844c.851.004 1.706.115 2.504.337 1.909-1.295 2.748-1.026 2.748-1.026.547 1.38.202 2.4.099 2.653.64.7 1.03 1.595 1.03 2.686 0 3.844-2.338 4.687-4.566 4.935.359.31.679.92.679 1.856 0 1.339-.012 2.419-.012 2.75 0 .268.18.58.688.481A10.003 10.003 0 0 0 22 12c0-5.477-4.477-10-10-10z"/>
+      </svg>
+      <span class="footer-text">GitHub</span>
+    </a>
+    <div style="margin-top: 10px;">
+      <span class="footer-text">Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <!-- No external scripts required; kept minimal for a single-file portfolio -->
+</body>
+</html>
