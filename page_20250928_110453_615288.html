@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: rgba(20, 24, 40, 0.98);
+      --text: #e6f0ff;
+      --muted: #a9b6d4;
+      --accent: #7c5cff;
+      --glow: 0 0 24px rgba(124,92,255,.55);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 10% 20%, rgba(124,92,255,.15), transparent 40%),
+                  radial-gradient(circle at 90% 80%, rgba(56,196,255,.15), transparent 40%), 
+                  var(--bg);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    .scene {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      position: relative;
+      width: min(1100px, 96%);
+      padding: clamp(1.2rem, 2.5vw, 2.4rem);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(18,22,40,.98), rgba(18,22,40,.88));
+      border: 1px solid rgba(124,92,255,.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      overflow: hidden;
+      transform: scale(0.98);
+      animation: zoomIn 800ms cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    @keyframes zoomIn {
+      to { transform: scale(1); }
+    }
+
+    .glow {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow.a {
+      top: -60px; left: -60px;
+      background: radial-gradient(circle, rgba(124,92,255,.6), transparent 40%);
+    }
+    .glow.b {
+      bottom: -70px; right: -70px;
+      background: radial-gradient(circle, rgba(56,196,255,.5), transparent 40%);
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding-top: .25rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw + 1rem, 4rem);
+      letter-spacing: .6px;
+      background: linear-gradient(90deg, #e6eaff, #8bd7ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 14px rgba(124,92,255,.5);
+      user-select: none;
+    }
+
+    .creation {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,monospace;
+      font-size: .85rem;
+      color: #dbe8ff;
+      padding: .25rem .6rem;
+      border-radius: 6px;
+      background: rgba(20,24,40,.75);
+      border: 1px solid rgba(124,92,255,.35);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.4rem;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .lead {
+      font-size: clamp(1rem, 0.6rem + 1.2vw, 1.25rem);
+      line-height: 1.6;
+      color: #eaf2ff;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .tile {
+      padding: 1rem;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(18,22,40,.98), rgba(18,22,40,.92));
+      border: 1px solid rgba(124,92,255,.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+      transition: transform 240ms ease, box-shadow 240ms ease;
+      min-height: 90px;
+    }
+
+    .tile:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+    }
+
+    .tile strong {
+      display: block;
+      margin-bottom: .25rem;
+      color: #eaffff;
+    }
+
+    footer {
+      margin-top: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: #cbd6ff;
+    }
+
+    .github {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      transition: transform 180ms ease;
+      color: #fff;
+      text-decoration: none;
+    }
+    .github:hover { transform: scale(1.08); }
+
+    .footer-text {
+      font-size: .95rem;
+      line-height: 1.2;
+    }
+
+    @media (prefers-color-scheme: light) {
+      body {
+        background: #f6f7fb;
+        color: #0e1020;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid rgba(0,0,0,.08);
+      }
+      .tile {
+        background: #f8faff;
+        border-color: rgba(0,0,0,.08);
+      }
+      .creation { color: #1a2856; background: rgba(230,240,255,.8); border-color: rgba(0,0,0,.08); }
+      header { border-bottom-color: rgba(0,0,0,.08); }
+    }
+
+    @keyframes pulse {
+      0% { transform: translateY(0) scale(1); opacity: 0.95; }
+      50% { transform: translateY(-2px) scale(1.02); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 0.95; }
+    }
+
+    @media (max-width: 720px) {
+      header { align-items: flex-start; gap: .5rem; }
+      h1 { font-size: 2.6rem; }
+      .scene { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <section class="card" aria-label="amirabolfazle animated page">
+      <div class="glow a" aria-hidden="true"></div>
+      <div class="glow b" aria-hidden="true"></div>
+
+      <header>
+        <h1>amirabolfazle</h1>
+        <span class="creation" aria-label="Creation time">2025-09-28 11:04:22</span>
+      </header>
+
+      <main>
+        <p class="lead">
+          A fully responsive, animated HTML page in dark mode. It features subtle zoom effects, a glowing aesthetic, and clean typography to keep the focus on content.
+        </p>
+
+        <div class="grid" aria-label="feature tiles">
+          <div class="tile" style="animation: pulse 2s infinite;">
+            <strong>Responsive</strong>
+            <div>Adapts to any screen size with fluid layouts.</div>
+          </div>
+          <div class="tile" style="animation: pulse 2s infinite 0.1s;">
+            <strong>Animated</strong>
+            <div>Elements gently zoom and glow for depth.</div>
+          </div>
+          <div class="tile" style="animation: pulse 2s infinite 0.2s;">
+            <strong>Dark mode</strong>
+            <div>Designed for comfortable viewing in low light.</div>
+          </div>
+          <div class="tile" style="animation: pulse 2s infinite 0.3s;">
+            <strong>Creation time</strong>
+            <div>Timestamp marks the page's genesis.</div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer" aria-label="page footer">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" class="github" aria-label="GitHub repository">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="GitHub icon" style="color:#fff;">
+            <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.08 3.29 9.38 7.87 10.9.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.38-3.87-1.38-.53-1.35-1.3-1.71-1.3-1.71-1.06-.72.08-.71.08-.71 1.18.08 1.8 1.21 1.8 1.21 1.04 1.79 2.73 1.27 3.39.97.11-.75.41-1.27.74-1.56-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.46-2.29 1.21-3.1-.12-.29-.52-1.46.11-3.04 0 0 .99-.32 3.25 1.18a11.3 11.3 0 0 1 2.96-.4c1.01.01 2.03.14 2.98.41 2.27-1.5 3.25-1.18 3.25-1.18.64 1.58.24 2.75.12 3.04.76.81 1.21 1.84 1.21 3.1 0 4.44-2.69 5.41-5.25 5.69.42.36.8 1.07.8 2.15 0 1.56-.02 2.82-.02 3.2 0 .31.21.68.8.56A11.74 11.74 0 0 0 23.25 11.75C23.25 5.48 18.27.5 12 .5z"/>
+          </svg>
+        </a>
+        <span class="footer-text">Created by amirabolfazle</span>
+      </footer>
+    </section>
+  </div>
+</body>
+</html>
