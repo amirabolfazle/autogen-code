@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #ffe7f0;
+      --bg2: #e8fff4;
+      --bg3: #fff7e6;
+      --accent: #a29bfe;
+      --muted: #6b6b6b;
+      --card: rgba(255,255,255,0.6);
+      --glass: rgba(255,255,255,0.55);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, var(--bg1), transparent 20%),
+                  radial-gradient(1000px 500px at 90% 80%, var(--bg2), transparent 18%),
+                  linear-gradient(135deg, var(--bg3), #ffffff);
+      color:#223;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      min-height:560px;
+      position:relative;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow: 0 20px 50px rgba(34,34,34,0.08);
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    /* Rotating pastel shapes */
+    .shape{
+      position:absolute;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.06));
+      mix-blend-mode: screen;
+      opacity:0.95;
+      transform-origin:center;
+    }
+    .shape.circle{
+      width:360px;
+      height:360px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(162,155,254,0.9), rgba(255,255,255,0.12));
+      left:-80px;
+      top:-80px;
+      animation:rotateSlow 24s linear infinite;
+      z-index:1;
+    }
+    .shape.pill{
+      width:520px;
+      height:160px;
+      border-radius:100px;
+      background: linear-gradient(90deg, rgba(255,231,220,0.95), rgba(232,255,244,0.95));
+      right:-120px;
+      top:40px;
+      transform:rotate(-18deg);
+      animation:rotateRev 32s linear infinite;
+      z-index:1;
+    }
+    .shape.blob{
+      width:300px;
+      height:300px;
+      background: conic-gradient(from 120deg, rgba(254,246,236,0.95), rgba(226,241,255,0.9));
+      left:120px;
+      bottom:-80px;
+      transform:rotate(12deg);
+      animation:float 9s ease-in-out infinite;
+      z-index:1;
+      clip-path:path('M0.4,0.6 C0.15,0.6 0.05,0.35 0.12,0.16 C0.25,-0.13 0.6,-0.03 0.78,0.06 C0.9,0.12 1.04,0.34 0.86,0.52 C0.74,0.65 0.6,0.78 0.45,0.86 C0.42,0.88 0.4,0.9 0.4,0.9 C0.35,0.86 0.52,0.64 0.4,0.6 Z');
+    }
+
+    @keyframes rotateSlow{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+    @keyframes rotateRev{
+      from{transform:rotate(-18deg)}
+      to{transform:rotate(342deg)}
+    }
+    @keyframes float{
+      0%{transform:translateY(0) rotate(12deg)}
+      50%{transform:translateY(-18px) rotate(6deg)}
+      100%{transform:translateY(0) rotate(12deg)}
+    }
+
+    .content{
+      position:relative;
+      z-index:2;
+      display:flex;
+      gap:40px;
+      align-items:center;
+      padding:56px;
+      min-height:560px;
+    }
+
+    .left{
+      flex:1.1;
+      max-width:640px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(162,155,254,0.98), rgba(255,210,210,0.95));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:20px;
+      transform:rotate(-12deg);
+      box-shadow: 0 8px 20px rgba(162,155,254,0.18);
+    }
+    h1{
+      margin:0;
+      font-weight:800;
+      font-size:48px;
+      letter-spacing:-0.02em;
+      color:#241b3a;
+      line-height:1.02;
+    }
+    p.lead{
+      margin-top:14px;
+      color:#3b3b3b;
+      font-size:18px;
+      max-width:56ch;
+    }
+
+    .actions{
+      margin-top:28px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 18px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:600;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+      border:1px solid rgba(0,0,0,0.04);
+      background:var(--card);
+      backdrop-filter: blur(6px);
+      color:#2b2b2b;
+    }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(162,155,254,0.95), rgba(255,210,210,0.9));
+      color:white;
+      box-shadow: 0 10px 30px rgba(162,155,254,0.14);
+    }
+    .btn:hover{transform:translateY(-6px); box-shadow: 0 18px 40px rgba(34,34,34,0.08);}
+    .btn.ghost{background:transparent; border:1px solid rgba(34,34,34,0.06);}
+
+    .right{
+      flex:0.9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    .card{
+      width:100%;
+      max-width:420px;
+      border-radius:18px;
+      padding:28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6));
+      box-shadow: 0 12px 40px rgba(33,33,33,0.06);
+      transform:rotate(6deg);
+      transition:transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .6s;
+    }
+    .card:hover{transform:rotate(0deg) translateY(-8px); box-shadow: 0 28px 80px rgba(33,33,33,0.08);}
+    .card h3{margin:0 0 10px 0; font-size:20px}
+    .meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .meta .pill{
+      background:rgba(0,0,0,0.03);
+      padding:8px 10px;
+      border-radius:999px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* Creation time badge */
+    .created{
+      margin-top:18px;
+      color:#5b5b5b;
+      font-size:13px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(34,34,34,0.02);
+      width:max-content;
+    }
+
+    footer{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:12px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      z-index:3;
+      font-size:14px;
+      color:var(--muted);
+      pointer-events:auto;
+    }
+    .footer-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 12px;
+      border-radius:12px;
+      transition:background .18s;
+    }
+    .footer-link:hover{background:rgba(0,0,0,0.03)}
+    .github-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      vertical-align:middle;
+      filter:grayscale(20%) contrast(90%);
+    }
+
+    /* Responsive */
+    @media (max-width:880px){
+      .content{flex-direction:column; padding:28px; gap:20px}
+      .right{order:2}
+      .left{order:1}
+      .card{transform:none; width:100%}
+      h1{font-size:36px}
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" role="main" aria-labelledby="main-heading">
+    <div class="shape circle" aria-hidden="true"></div>
+    <div class="shape pill" aria-hidden="true"></div>
+    <div class="shape blob" aria-hidden="true"></div>
+
+    <div class="content">
+      <div class="left">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">am</div>
+          <div style="line-height:1">
+            <div style="font-size:12px; color:var(--muted); font-weight:600; letter-spacing:1px; text-transform:uppercase">Landing</div>
+            <div style="font-size:13px; color:var(--muted)">Pastel · Rotations · Calm</div>
+          </div>
+        </div>
+
+        <h1 id="main-heading">amirabolfazle</h1>
+
+        <p class="lead">A clean, artistic landing experience with soft pastels and subtle motion. Shapes rotate and float to guide attention—calm by design, playful in motion.</p>
+
+        <div class="actions" role="group" aria-label="Primary actions">
+          <a class="btn primary" href="#" onclick="event.preventDefault()">
+            Explore
+          </a>
+          <a class="btn ghost" href="#" onclick="event.preventDefault()">
+            Learn more
+          </a>
+          <span class="created" title="Creation time">
+            Created: 2025-09-29 03:08:49
+          </span>
+        </div>
+      </div>
+
+      <div class="right" aria-hidden="false">
+        <div class="card" role="region" aria-label="Preview card">
+          <h3>Soft UI Preview</h3>
+          <div class="meta" style="margin-bottom:12px">
+            <div class="pill">Pastel palette</div>
+            <div class="pill">Rotate effects</div>
+            <div class="pill">Responsive</div>
+          </div>
+
+          <p style="color:var(--muted); margin:0 0 14px">This card demonstrates subtle depth, tilt and hover dynamics. The layout adapts smoothly from desktop to mobile while keeping the friendly pastel identity intact.</p>
+
+          <div style="display:flex; gap:10px; margin-top:18px">
+            <div style="flex:1; background:linear-gradient(90deg,#fff7f7,#fff); padding:10px; border-radius:8px; text-align:center; font-weight:700">A</div>
+            <div style="flex:1; background:linear-gradient(90deg,#f7fff9,#fff); padding:10px; border-radius:8px; text-align:center; font-weight:700">B</div>
+            <div style="flex:1; background:linear-gradient(90deg,#fffaf1,#fff); padding:10px; border-radius:8px; text-align:center; font-weight:700">C</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .297a12 12 0 00-3.79 23.4c.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.34.726-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.757-1.334-1.757-1.09-.744.082-.729.082-.729 1.205.085 1.84 1.24 1.84 1.24 1.07 1.835 2.807 1.305 3.49.998.108-.776.418-1.305.76-1.605-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 016 0c2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.624-5.475 5.92.43.372.815 1.102.815 2.222 0 1.604-.015 2.896-.015 3.293 0 .32.216.697.825.578A12 12 0 0012 .297"/>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Small interactive flourish: subtle parallax on mouse move
+    (function(){
+      const stage = document.querySelector('.stage');
+      const shapes = document.querySelectorAll('.shape');
+      let bounds = stage.getBoundingClientRect();
+
+      function onMove(e){
+        const x = ((e.clientX || e.touches?.[0]?.clientX) - bounds.left) / bounds.width - 0.5;
+        const y = ((e.clientY || e.touches?.[0]?.clientY) - bounds.top) / bounds.height - 0.5;
+        shapes.forEach((el, i) => {
+          const depth = (i+1) * 6;
+          el.style.transform = el.style.transform.replace(/translate3d\([^)]*\)/,'') + ` translate3d(${x*depth}px,${y*depth}px,0)`;
+        });
+      }
+
+      function refresh() { bounds = stage.getBoundingClientRect(); }
+      window.addEventListener('mousemove', onMove, {passive:true});
+      window.addEventListener('resize', refresh);
+      window.addEventListener('touchmove', onMove, {passive:true});
+    })();
+  </script>
+</body>
+</html>
