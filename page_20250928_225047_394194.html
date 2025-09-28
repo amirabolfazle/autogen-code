@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#071026;
+    --neon-pink:#ff2d95;
+    --neon-cyan:#00e6ff;
+    --neon-lime:#7cff5f;
+    --glass: rgba(255,255,255,0.04);
+    --fade-duration: 900ms;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,230,255,0.06), transparent 10%),
+                radial-gradient(900px 500px at 90% 90%, rgba(255,45,149,0.04), transparent 10%),
+                var(--bg);
+    font-family:var(--font-sans);
+    color:#e6f7ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* Subtle animated grid overlay */
+  .grid {
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 160px 160px, 160px 160px;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+    opacity:0.08;
+    animation: drift 20s linear infinite;
+  }
+  @keyframes drift{
+    0%{ transform: translate3d(0,0,0); }
+    50%{ transform: translate3d(-40px,20px,0); }
+    100%{ transform: translate3d(0,0,0); }
+  }
+
+  /* Layout */
+  .wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 32px;
+    box-sizing:border-box;
+    z-index:1;
+    position:relative;
+  }
+  .card {
+    width:100%;
+    max-width:1100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:18px;
+    padding:28px;
+    box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    position:relative;
+    overflow:hidden;
+    backdrop-filter: blur(6px) saturate(1.1);
+  }
+
+  /* Neon accents - animated border */
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    background: linear-gradient(90deg, rgba(0,230,255,0.06), rgba(255,45,149,0.06), rgba(124,255,95,0.04));
+    filter: blur(18px);
+    z-index:0;
+    pointer-events:none;
+    animation: hue 8s linear infinite;
+  }
+  @keyframes hue{
+    0%{ transform: rotate(0deg) translate3d(0,0,0); }
+    50%{ transform: rotate(180deg) translate3d(0,0,0); }
+    100%{ transform: rotate(360deg) translate3d(0,0,0); }
+  }
+
+  .top {
+    display:flex;
+    align-items:center;
+    gap:20px;
+    z-index:2;
+    position:relative;
+  }
+  .logo {
+    width:96px;
+    height:96px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg, rgba(0,230,255,0.06), rgba(255,45,149,0.06));
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 30px rgba(0,230,255,0.06);
+    flex:0 0 96px;
+    position:relative;
+    overflow:hidden;
+  }
+  .logo .mark{
+    font-weight:800;
+    font-size:28px;
+    letter-spacing:1px;
+    color:var(--neon-cyan);
+    text-shadow:
+      0 0 8px rgba(0,230,255,0.45),
+      0 0 24px rgba(0,230,255,0.15);
+    transform:translateY(-2px);
+  }
+
+  h1{
+    margin:0;
+    font-size:36px;
+    line-height:1;
+    color:#fff;
+    text-shadow:
+      0 0 6px rgba(255,255,255,0.04),
+      0 6px 18px rgba(0,0,0,0.6);
+  }
+  .tagline{
+    margin-top:6px;
+    font-size:14px;
+    color:rgba(230,247,255,0.85);
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .neon-title {
+    font-family:monospace;
+    font-weight:700;
+    color:var(--neon-pink);
+    text-shadow:
+      0 0 6px rgba(255,45,149,0.6),
+      0 0 18px rgba(255,45,149,0.18);
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:8px;
+    background: linear-gradient(180deg, rgba(255,45,149,0.02), rgba(255,45,149,0.01));
+    transform-origin: left center;
+    animation: pop 1.2s cubic-bezier(.22,.9,.35,1) both;
+  }
+  @keyframes pop{
+    0%{ transform: scale(.95) translateY(6px); opacity:0; }
+    60%{ transform: scale(1.02) translateY(-2px); opacity:1; }
+    100%{ transform: scale(1) translateY(0); }
+  }
+
+  .meta {
+    margin-left:auto;
+    text-align:right;
+    font-size:13px;
+    color:rgba(230,247,255,0.7);
+  }
+  .creation {
+    font-family:monospace;
+    background: rgba(255,255,255,0.02);
+    padding:6px 10px;
+    border-radius:8px;
+    display:inline-block;
+    color:var(--neon-cyan);
+    text-shadow: 0 0 8px rgba(0,230,255,0.08);
+  }
+
+  /* Sections */
+  .content{
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:20px;
+    margin-top:22px;
+    z-index:2;
+    position:relative;
+  }
+
+  .left {
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-radius:12px;
+    padding:18px;
+    min-height:320px;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .right {
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-radius:12px;
+    padding:18px;
+    min-height:320px;
+    border:1px solid rgba(255,255,255,0.03);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .section-title{
+    font-size:13px;
+    letter-spacing:1px;
+    color:rgba(230,247,255,0.9);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .pill{
+    display:inline-block;
+    padding:6px 8px;
+    border-radius:8px;
+    background:linear-gradient(90deg, rgba(0,230,255,0.04), rgba(255,45,149,0.03));
+    color:var(--neon-lime);
+    font-weight:700;
+    font-size:12px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  .bio{
+    font-size:15px;
+    line-height:1.6;
+    color:rgba(230,247,255,0.92);
+    margin:0;
+  }
+
+  .projects{
+    display:grid;
+    gap:12px;
+    margin-top:12px;
+  }
+
+  .proj {
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding:12px;
+    border-radius:10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border:1px solid rgba(255,255,255,0.03);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .proj:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 18px 50px rgba(2,6,23,0.6);
+  }
+  .proj .thumb{
+    width:72px;
+    height:56px;
+    border-radius:8px;
+    background:linear-gradient(135deg, rgba(0,230,255,0.06), rgba(255,45,149,0.04));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:rgba(255,255,255,0.85);
+    font-size:13px;
+    border:1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  }
+  .proj h4{
+    margin:0;
+    font-size:16px;
+  }
+  .proj p{
+    margin:6px 0 0 0;
+    font-size:13px;
+    color:rgba(230,247,255,0.85);
+  }
+
+  .skills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:8px;
+  }
+  .skill{
+    font-size:13px;
+    padding:8px 10px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(0,230,255,0.03), rgba(124,255,95,0.02));
+    border:1px solid rgba(255,255,255,0.02);
+    color:rgba(230,247,255,0.95);
+  }
+
+  .contact-btn {
+    margin-top:auto;
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .btn{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    text-decoration:none;
+    padding:10px 14px;
+    border-radius:10px;
+    background:linear-gradient(90deg, rgba(0,230,255,0.06), rgba(255,45,149,0.06));
+    color:#fff;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    transition: transform .18s ease;
+    font-weight:700;
+  }
+  .btn:active{ transform: translateY(1px); }
+  .ghost{
+    background:transparent;
+    border:1px dashed rgba(255,255,255,0.06);
+    padding:8px 12px;
+    color:rgba(230,247,255,0.9);
+  }
+
+  /* Footer */
+  footer{
+    margin-top:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    z-index:2;
+    position:relative;
+  }
+  .footer-left{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .github-link{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    color:rgba(230,247,255,0.95);
+    text-decoration:none;
+    font-weight:700;
+    padding:8px 10px;
+    border-radius:8px;
+    background:linear-gradient(90deg, rgba(0,230,255,0.02), rgba(255,45,149,0.02));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .gh-icon{
+    width:20px;
+    height:20px;
+    display:inline-block;
+    filter: drop-shadow(0 0 6px rgba(0,230,255,0.08));
+  }
+  .created-by{
+    font-size:13px;
+    color:rgba(230,247,255,0.85);
+  }
+
+  /* Fade-in items */
+  .fade-item{
+    opacity:0;
+    transform: translateY(12px) scale(.997);
+    will-change: opacity, transform;
+    transition: opacity var(--fade-duration) cubic-bezier(.2,.9,.3,1), transform var(--fade-duration) cubic-bezier(.2,.9,.3,1);
+  }
+  .fade-item.show{
+    opacity:1;
+    transform: none;
+  }
+
+  /* small screens */
+  @media (max-width:880px){
+    .content{ grid-template-columns: 1fr; }
+    .meta{ display:none; }
+    .card{ padding:18px; }
+    .logo{ width:72px; height:72px; flex:0 0 72px; }
+    h1{ font-size:28px; }
+  }
+
+  /* little floating accent dots */
+  .float-dots{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+  }
+  .dot{
+    position:absolute;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--neon-cyan);
+    filter: blur(6px) saturate(1.2);
+    opacity:0.06;
+    animation: bob 6s ease-in-out infinite;
+  }
+  .dot.p2{ background:var(--neon-pink); animation-duration:8s; opacity:0.05; }
+  .dot.p3{ background:var(--neon-lime); animation-duration:12s; opacity:0.04; }
+  @keyframes bob{
+    0%{ transform: translateY(0) scale(1); }
+    50%{ transform: translateY(-20px) scale(1.1); }
+    100%{ transform: translateY(0) scale(1); }
+  }
+
+  /* small utility */
+  .muted{ color:rgba(230,247,255,0.7); font-size:13px; }
+</style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="card" role="main">
+      <div class="float-dots" aria-hidden="true">
+        <div class="dot" style="left:8%; top:12%; animation-delay:0s"></div>
+        <div class="dot p2" style="left:22%; top:78%; animation-delay:1s"></div>
+        <div class="dot p3" style="left:68%; top:28%; animation-delay:2s"></div>
+        <div class="dot p2" style="left:84%; top:62%; animation-delay:3s"></div>
+        <div class="dot" style="left:48%; top:46%; animation-delay:4s"></div>
+      </div>
+
+      <div class="top">
+        <div class="logo fade-item" data-order="0">
+          <div class="mark">AB</div>
+        </div>
+
+        <div class="fade-item" data-order="1" style="min-width:0">
+          <h1 class="neon-title">amirabolfazle</h1>
+          <div class="tagline">
+            <div class="muted">Neon UI • Creative Code • Design Systems</div>
+            <div style="width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));box-shadow:0 0 8px rgba(0,230,255,0.15),0 0 16px rgba(255,45,149,0.08)"></div>
+          </div>
+        </div>
+
+        <div class="meta fade-item" data-order="2">
+          <div class="muted">Created</div>
+          <div class="creation">2025-09-28 22:49:51</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="left fade-item" data-order="3">
+          <div class="section-title">
+            <span class="pill">About</span>
+            <span class="muted">A quick snapshot</span>
+          </div>
+          <p class="bio">
+            Hello — I'm amirabolfazle. I build glowing, interactive interfaces and playful web experiences that mix design with code. I like small delightful animations, compact UI systems, and neon color palettes that feel alive.
+          </p>
+
+          <div class="section-title" style="margin-top:16px">
+            <span class="pill">Projects</span>
+            <span class="muted">Selected works</span>
+          </div>
+
+          <div class="projects">
+            <div class="proj" role="article">
+              <div class="thumb">AG</div>
+              <div>
+                <h4>Autogen UI Kit</h4>
+                <p>Design system and components for rapid prototyping with neon themes and motion-first tokens.</p>
+              </div>
+            </div>
+
+            <div class="proj" role="article">
+              <div class="thumb">VS</div>
+              <div>
+                <h4>VisSynth</h4>
+                <p>Generative visualization toolkit for audio-reactive graphics and experimental UIs.</p>
+              </div>
+            </div>
+
+            <div class="proj" role="article">
+              <div class="thumb">PD</div>
+              <div>
+                <h4>PulseDashboard</h4>
+                <p>Compact analytics dashboard with delightful micro-interactions and neon data states.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="right fade-item" data-order="4" aria-labelledby="sideTitle">
+          <div>
+            <div class="section-title" id="sideTitle">
+              <span class="pill">Skills</span>
+              <span class="muted">Tools & tech</span>
+            </div>
+            <div class="skills">
+              <div class="skill">HTML</div>
+              <div class="skill">CSS / GSAP</div>
+              <div class="skill">JavaScript</div>
+              <div class="skill">Canvas / WebGL</div>
+              <div class="skill">Design Systems</div>
+              <div class="skill">Figma</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title" style="margin-top:12px">
+              <span class="pill">Contact</span>
+              <span class="muted">Let's collaborate</span>
+            </div>
+            <div class="muted" style="margin-bottom:8px">Shoot a message or explore the code repo.</div>
+            <div class="contact-btn">
+              <a class="btn" href="mailto:hello@amirabolfazle.dev" title="Email">
+                Email
+              </a>
+              <a class="btn ghost" href="https://github.com/amirabolfazle/autogen-code" title="GitHub">
+                View Repo
+              </a>
+            </div>
+          </div>
+
+          <div style="margin-top:14px">
+            <div class="section-title">
+              <span class="pill">Status</span>
+              <span class="muted">Live</span>
+            </div>
+            <div class="muted">Open to freelancing, collaborations, and creative experiments.</div>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="fade-item" data-order="5">
+        <div class="footer-left">
+          <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.648.5.5 5.649.5 12.001c0 5.09 3.292 9.406 7.868 10.938.576.106.787-.25.787-.556 0-.274-.01-1-.015-1.963-3.199.696-3.875-1.543-3.875-1.543-.523-1.331-1.277-1.686-1.277-1.686-1.044-.713.08-.699.08-.699 1.155.081 1.763 1.187 1.763 1.187 1.026 1.758 2.692 1.251 3.345.957.103-.744.402-1.251.731-1.538-2.554-.29-5.238-1.277-5.238-5.686 0-1.256.448-2.281 1.184-3.088-.118-.289-.513-1.454.113-3.031 0 0 .966-.31 3.165 1.18.917-.255 1.9-.383 2.878-.388.977.005 1.96.133 2.879.388 2.197-1.49 3.162-1.18 3.162-1.18.627 1.577.232 2.742.114 3.031.737.807 1.183 1.832 1.183 3.088 0 4.42-2.689 5.392-5.251 5.673.413.356.78 1.058.78 2.132 0 1.538-.014 2.778-.014 3.156 0 .309.209.667.792.554C20.71 21.404 24 17.09 24 12.001 24 5.649 18.351.5 12 .5z" fill="url(#g)"/>
+              <defs>
+                <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="#00E6FF"/>
+                  <stop offset="1" stop-color="#FF2D95"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span>GitHub</span>
+          </a>
+          <div class="created-by">Created by amirabolfazle</div>
+        </div>
+
+        <div class="muted">Made with neon, code, and late-night coffee.</div>
+      </footer>
+    </div>
+  </div>
+
+<script>
+  // Staggered fade-in
+  window.addEventListener('load', function(){
+    const items = Array.from(document.querySelectorAll('.fade-item'));
+    items.sort((a,b)=> (Number(a.dataset.order)||0) - (Number(b.dataset.order)||0));
+    items.forEach((el, i) => {
+      setTimeout(()=> el.classList.add('show'), i * 140 + 120);
+    });
+
+    // tiny interactive hover glow for logo
+    const logo = document.querySelector('.logo');
+    logo && logo.addEventListener('mousemove', e=>{
+      const r = logo.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      logo.style.boxShadow = `${(x-0.5)*20}px ${(y-0.5)*20}px 40px rgba(0,230,255,0.08)`;
+    });
+    logo && logo.addEventListener('mouseleave', ()=> logo.style.boxShadow = '');
+  });
+
+  // small keyboard easter egg: press "n" to toggle neon pulse
+  let pulsing = true;
+  window.addEventListener('keydown', (e)=>{
+    if(e.key.toLowerCase() === 'n'){
+      pulsing = !pulsing;
+      document.documentElement.style.setProperty('--hue-pulse', pulsing ? '1' : '0');
+      document.querySelectorAll('.neon-title').forEach(el=>{
+        el.style.opacity = pulsing ? '1' : '0.85';
+        el.style.transition = 'opacity 300ms';
+      });
+    }
+  });
+</script>
+</body>
+</html>
