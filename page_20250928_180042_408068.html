@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#04060a;
+      --neon-cyan:#00f7ff;
+      --neon-magenta:#ff2dd4;
+      --neon-yellow:#ffd400;
+      --glass: rgba(255,255,255,0.04);
+      --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-magenta));
+    }
+    html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    body{
+      background:
+        radial-gradient(600px 300px at 10% 20%, rgba(0,247,255,0.06), transparent 8%),
+        radial-gradient(500px 300px at 90% 80%, rgba(255,45,212,0.05), transparent 7%),
+        var(--bg);
+      color:#dfefff;
+      -webkit-font-smoothing:antialiased;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+      overflow:hidden;
+    }
+
+    /* Floating neon shapes */
+    .neon-blob{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(30px);
+      opacity:0.85;
+      mix-blend-mode:screen;
+      animation: float 8s ease-in-out infinite;
+    }
+    .blob1{width:420px;height:420px;left:-60px;top:-100px;background:radial-gradient(circle at 30% 30%, rgba(0,247,255,0.45), transparent 30%), rgba(0,247,255,0.06); animation-duration:12s;}
+    .blob2{width:360px;height:360px;right:-80px;bottom:-120px;background:radial-gradient(circle at 70% 60%, rgba(255,45,212,0.4), transparent 30%), rgba(255,45,212,0.04); animation-duration:10s; animation-delay:1s;}
+    .blob3{width:200px;height:200px;left:40%;top:10%;background:radial-gradient(circle at 50% 50%, rgba(255,212,0,0.28), transparent 30%), rgba(255,212,0,0.02); animation-duration:9s; animation-delay:0.4s;}
+
+    @keyframes float{
+      0%{transform:translateY(0) translateX(0);}
+      25%{transform:translateY(-18px) translateX(12px);}
+      50%{transform:translateY(0) translateX(0);}
+      75%{transform:translateY(12px) translateX(-8px);}
+      100%{transform:translateY(0) translateX(0);}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:2;
+      width:min(980px,96%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:48px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.4) inset;
+      border:1px solid rgba(255,255,255,0.04);
+      overflow:hidden;
+      backdrop-filter: blur(6px) saturate(110%);
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo-badge{
+      width:64px;height:64px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(0,247,255,0.08), rgba(255,45,212,0.06));
+      border:1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 6px 30px rgba(0,247,255,0.06), 0 0 18px rgba(255,45,212,0.04);
+      transform:translateY(0);
+      animation: bounce 4s cubic-bezier(.2,.9,.3,1) infinite;
+    }
+    .logo-mark{
+      width:38px;height:38px;border-radius:8px;
+      background:conic-gradient(from 120deg, var(--neon-cyan), var(--neon-magenta), var(--neon-yellow));
+      box-shadow: 0 0 18px rgba(0,247,255,0.18), 0 0 30px rgba(255,45,212,0.12);
+    }
+
+    h1{
+      font-size: clamp(36px,6vw,72px);
+      margin:0;
+      letter-spacing:0.02em;
+      color: #e8fbff;
+      text-shadow:
+        0 0 10px rgba(0,247,255,0.12),
+        0 0 30px rgba(255,45,212,0.05),
+        0 6px 40px rgba(0,0,0,0.6);
+      display:inline-block;
+      transform-origin:center;
+      animation: neonPulse 3.8s ease-in-out infinite;
+      padding:6px 8px;
+      border-radius:6px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.15), rgba(255,255,255,0.01));
+      box-decoration-break: clone;
+    }
+
+    @keyframes neonPulse{
+      0%,100%{ text-shadow: 0 0 6px rgba(0,247,255,0.08), 0 0 30px rgba(0,247,255,0.14), 0 0 60px rgba(255,45,212,0.08); transform: translateY(0); }
+      50%{ text-shadow: 0 0 12px rgba(0,247,255,0.16), 0 0 60px rgba(255,45,212,0.12), 0 0 90px rgba(255,212,0,0.06); transform: translateY(-6px); }
+    }
+
+    .subtitle{
+      color: #bfefff;
+      opacity:0.88;
+      margin:6px 0 0 0;
+      font-size:clamp(14px,2.4vw,18px);
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:center;
+    }
+
+    .intro{
+      padding:18px 6px 10px 6px;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius:12px;
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6);
+    }
+
+    .blurb{
+      font-size:16px;
+      line-height:1.5;
+      color:#cfeeff;
+      margin-bottom:20px;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+    }
+
+    .btn-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+    .btn{
+      display:inline-grid;
+      place-items:center;
+      padding:12px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      color:#071019;
+      letter-spacing:0.02em;
+      text-decoration:none;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      border: none;
+    }
+    .btn-primary{
+      background: var(--accent);
+      color:#061017;
+      box-shadow: 0 8px 30px rgba(0,247,255,0.08), 0 0 24px rgba(255,45,212,0.06);
+      animation: bounce 3.2s cubic-bezier(.2,.9,.3,1) infinite;
+    }
+    .btn-ghost{
+      background: transparent;
+      color: #bfe9ff;
+      border:1px solid rgba(191,233,255,0.08);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      animation: bounce 4s cubic-bezier(.2,.9,.3,1) infinite;
+    }
+
+    @keyframes bounce{
+      0%{ transform: translateY(0); }
+      20%{ transform: translateY(-8px); }
+      40%{ transform: translateY(0); }
+      60%{ transform: translateY(-4px); }
+      100%{ transform: translateY(0); }
+    }
+
+    .sidebar{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:stretch;
+    }
+    .stat{
+      background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.02));
+      border-radius:12px;
+      padding:16px;
+      color:#dffbff;
+      font-weight:700;
+      text-align:center;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .stat .num{font-size:28px;display:block;}
+    .stat .label{font-size:12px;opacity:0.8;margin-top:6px;font-weight:600;}
+
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
+    .badge{
+      font-size:12px;padding:8px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(0,247,255,0.06), rgba(255,45,212,0.04));color:#cfefff;border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .meta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:14px;
+      color:#bdefff;
+      font-size:13px;
+      opacity:0.9;
+    }
+    .time{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      background: linear-gradient(90deg, rgba(0,247,255,0.04), rgba(255,45,212,0.03));
+      padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);
+      box-shadow: inset 0 -12px 60px rgba(0,0,0,0.18);
+    }
+
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .footer-left{color:#9fdfff;opacity:0.92; font-size:13px;}
+    .github-link{
+      display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;text-decoration:none;color:#dffbff;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+    .github-icon{width:20px;height:20px;display:inline-block;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
+
+    /* Responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr;}
+      .sidebar{order:2}
+      .intro{order:1}
+      header{flex-direction:column;align-items:flex-start;gap:8px}
+      .logo-badge{width:54px;height:54px}
+    }
+  </style>
+</head>
+<body>
+  <div class="neon-blob blob1" aria-hidden="true"></div>
+  <div class="neon-blob blob2" aria-hidden="true"></div>
+  <div class="neon-blob blob3" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="site-title">
+    <header>
+      <div class="logo" aria-hidden="false">
+        <div class="logo-badge" title="amirabolfazle mark">
+          <div class="logo-mark" aria-hidden="true"></div>
+        </div>
+        <div>
+          <h2 id="site-title" style="margin:0;font-size:18px;color:#e5fbff;">amirabolfazle</h2>
+          <div class="subtitle">Neon playground · Interactive landing</div>
+        </div>
+      </div>
+      <nav aria-label="Primary">
+        <a class="btn btn-ghost" href="#about" role="button">About</a>
+        <a class="btn btn-ghost" href="#projects" role="button">Projects</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="intro card">
+        <h1 id="hero-heading">amirabolfazle</h1>
+        <p class="blurb">
+          A neon-first landing crafted with glow, motion and personality. Bounce effects bring the interface to life — energetic, modern and a little electric.
+        </p>
+
+        <div class="btn-row" role="group" aria-label="Actions">
+          <a class="btn btn-primary" href="#projects" role="button" style="box-shadow: 0 16px 48px rgba(0,247,255,0.08), 0 0 40px rgba(255,45,212,0.06);">Explore Projects</a>
+          <a class="btn btn-ghost" href="#contact" role="button">Get in touch</a>
+        </div>
+
+        <div class="meta" style="margin-top:18px;">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v2" stroke="#9fdfff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 20v2" stroke="#9fdfff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.93 4.93l1.41 1.41" stroke="#9fdfff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.66 17.66l1.41 1.41" stroke="#9fdfff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h2" stroke="#9fdfff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12h2" stroke="#9fdfff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.93 19.07l1.41-1.41" stroke="#9fdfff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.66 6.34l1.41-1.41" stroke="#9fdfff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span style="font-size:13px;color:#bfefff;">Vibrant UI · Motion-first</span>
+          </div>
+
+          <div class="time" title="Creation time">2025-09-28 17:59:48</div>
+        </div>
+      </div>
+
+      <aside class="sidebar" aria-label="Highlights">
+        <div class="stat card" aria-hidden="false">
+          <span class="num">Neon</span>
+          <span class="label">Theme</span>
+          <div class="badge-row" style="justify-content:center;margin-top:12px;">
+            <span class="badge">Glow</span>
+            <span class="badge">Bounce</span>
+            <span class="badge">Responsive</span>
+          </div>
+        </div>
+
+        <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:13px;color:#bfefff;font-weight:700;">Live Preview</div>
+            <div style="font-size:12px;color:#9fdfff;opacity:0.9;">Interactive</div>
+          </div>
+          <div style="height:120px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.24), rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.02);">
+            <div style="width:72px;height:72px;border-radius:50%;background:conic-gradient(var(--neon-cyan),var(--neon-magenta),var(--neon-yellow));box-shadow:0 6px 36px rgba(0,247,255,0.08), 0 0 32px rgba(255,45,212,0.06); animation: float 3.6s ease-in-out infinite;"></div>
+            <div style="position:absolute;right:10px;bottom:10px;font-size:11px;color:#bfefff;opacity:0.9;">demo</div>
+          </div>
+        </div>
+
+      </aside>
+    </section>
+
+    <footer>
+      <div class="footer-left">Created by amirabolfazle</div>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg class="github-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C7.58 2 4 5.58 4 10c0 3.54 2.29 6.54 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.57 7.57 0 0112 6.8c.68.003 1.36.092 2 .27 1.52-1.03 2.19-.82 2.19-.82.45 1.1.17 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0020 10c0-4.42-3.58-8-8-8z" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#00f7ff"/>
+              <stop offset="1" stop-color="#ff2dd4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span style="font-weight:700;color:#dffbff;">GitHub</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Subtle hover glow on the title (enhancement)
+    const title = document.querySelector('h1');
+    title.addEventListener('mouseenter', ()=> title.style.transform = 'translateY(-8px) scale(1.02)');
+    title.addEventListener('mouseleave', ()=> title.style.transform = 'translateY(0) scale(1)');
+  </script>
+</body>
+</html>
