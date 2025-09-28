@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#071127;
+    --accent: rgba(138, 92, 255, 0.85);
+    --glass: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --muted: rgba(255,255,255,0.65);
+    --glass-highlight: rgba(255,255,255,0.02);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(88, 50, 255, 0.12), transparent),
+                radial-gradient(1000px 500px at 90% 80%, rgba(0, 210, 255, 0.06), transparent),
+                linear-gradient(180deg,var(--bg1),var(--bg2) 60%);
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* animated blobs */
+  .blob{
+    position:fixed;
+    filter: blur(36px);
+    opacity:0.28;
+    mix-blend-mode:screen;
+    border-radius:50%;
+    transform-origin:center;
+    animation: drift 12s ease-in-out infinite alternate;
+    pointer-events:none;
+  }
+  .blob.b1{ width:520px; height:520px; left:-10%; top:-8%; background: linear-gradient(135deg,#5e4bff, #2fd3ff); animation-duration:18s; opacity:0.22; }
+  .blob.b2{ width:420px; height:420px; right:-6%; bottom:-6%; background: linear-gradient(120deg,#ff7ab6,#6be6c1); animation-duration:16s; opacity:0.18; }
+
+  @keyframes drift{
+    to{ transform: translateY(-36px) translateX(28px) scale(1.06); }
+  }
+
+  /* center layout */
+  .wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
+    box-sizing:border-box;
+  }
+
+  /* glass card */
+  .card{
+    width:clamp(280px,55vw,720px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border: 1px solid var(--glass-border);
+    border-radius:20px;
+    padding:34px;
+    box-shadow: 0 8px 40px rgba(2,6,23,0.6);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    position:relative;
+    overflow:hidden;
+    transition: transform 350ms cubic-bezier(.2,.9,.25,1), box-shadow 250ms;
+    transform-origin:center;
+    animation: appear 650ms cubic-bezier(.2,.9,.25,1) both,
+               floaty 6s ease-in-out infinite;
+  }
+
+  @keyframes appear{
+    from { transform: translateY(14px) scale(.985); opacity:0; }
+    to { transform: translateY(0) scale(1); opacity:1; }
+  }
+
+  @keyframes floaty{
+    0%{ transform: translateY(0) scale(1); }
+    50%{ transform: translateY(-8px) scale(1.01); }
+    100%{ transform: translateY(0) scale(1); }
+  }
+
+  .card:hover{
+    transform: scale(1.04) translateY(-8px);
+    box-shadow: 0 24px 80px rgba(2,6,23,0.7);
+  }
+
+  .title{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:6px 0 8px;
+  }
+
+  .logo{
+    width:56px;
+    height:56px;
+    flex:0 0 56px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(255,255,255,0.06);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 6px 18px rgba(90,60,255,0.08);
+    transition: transform 280ms ease;
+  }
+  .card:hover .logo{ transform: rotate(-8deg) scale(1.02); }
+
+  .name{
+    font-size:20px;
+    letter-spacing:0.2px;
+    font-weight:600;
+    color: #fff;
+  }
+
+  .meta{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.3;
+  }
+
+  .controls{
+    margin-top:22px;
+    display:flex;
+    gap:12px;
+  }
+
+  .btn{
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:13px;
+    color:#fff;
+    background: linear-gradient(90deg, rgba(138,92,255,0.12), rgba(47,211,255,0.08));
+    border: 1px solid rgba(255,255,255,0.04);
+    cursor:pointer;
+    transition: transform 220ms ease, box-shadow 220ms;
+  }
+
+  .btn:active{ transform: scale(.98); }
+
+  /* footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    font-size:13px;
+    background: rgba(255,255,255,0.02);
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 6px 24px rgba(2,6,23,0.45);
+  }
+
+  footer a{ color:inherit; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
+  .gh{
+    width:18px;height:18px; display:inline-block; transition: transform 180ms ease;
+    fill:var(--muted);
+  }
+  .gh-wrap{ display:inline-flex; align-items:center; gap:8px; }
+  footer a:hover .gh{ transform: scale(1.14); fill: #fff; }
+
+  /* small responsive tweaks */
+  @media (max-width:420px){
+    .card{ padding:20px; border-radius:16px; }
+    .logo{ width:48px; height:48px; flex:0 0 48px; }
+    .name{ font-size:18px; }
+    footer{ bottom:12px; }
+  }
+
+  /* subtle zoom-in pulse on focal text */
+  .pulse{
+    display:inline-block;
+    animation: pulse 2400ms ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%{ transform: scale(1); opacity:1; }
+    50%{ transform: scale(1.01); opacity:0.98; }
+    100%{ transform: scale(1); opacity:1; }
+  }
+</style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="card" role="region" aria-label="amirabolfazle card">
+      <div class="title">
+        <div class="logo" aria-hidden="true">
+          <!-- simple monogram -->
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1.5" y="1.5" width="21" height="21" rx="5" stroke="rgba(255,255,255,0.06)" stroke-width="1.5" fill="none"/>
+            <path d="M6 16v-8l6 4 6-4v8" stroke="url(#g)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop offset="0" stop-color="#8A5CFF"/>
+                <stop offset="1" stop-color="#2FD3FF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <div class="name">amirabolfazle</div>
+          <div class="meta">Minimal animated glassmorphism — zoom & motion</div>
+        </div>
+      </div>
+
+      <p class="meta" style="margin-top:18px;">
+        Created on
+        <span class="pulse" aria-hidden="true">•</span>
+        <time datetime="2025-09-29T02:46:11">2025-09-29 02:46:11</time>
+      </p>
+
+      <div class="controls" style="margin-top:18px;">
+        <button class="btn" onclick="animateZoom()">Zoom me</button>
+        <button class="btn" onclick="toggleFloat()">Toggle float</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="gh-wrap" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="gh" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 .5C5.73.5.78 5.45.78 11.72c0 4.8 3.11 8.86 7.44 10.3.54.1.74-.24.74-.52 0-.26-.01-1-.02-1.96-3.03.66-3.67-1.46-3.67-1.46-.5-1.28-1.22-1.62-1.22-1.62-.99-.67.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.42-.28-4.97-1.21-4.97-5.38 0-1.19.42-2.16 1.11-2.92-.11-.28-.48-1.42.11-2.97 0 0 .9-.29 2.95 1.11a10.18 10.18 0 0 1 2.69-.36c.91.01 1.83.12 2.69.36 2.05-1.4 2.95-1.11 2.95-1.11.59 1.55.22 2.69.11 2.97.69.76 1.11 1.73 1.11 2.92 0 4.18-2.56 5.09-5 5.36.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .28.2.62.75.51 4.33-1.45 7.44-5.51 7.44-10.31C23.22 5.45 18.27.5 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+<script>
+  const card = document.querySelector('.card');
+  let floating = true;
+
+  function animateZoom(){
+    card.animate([
+      { transform: getComputedStyle(card).transform || 'none', filter: 'none' },
+      { transform: 'scale(1.12)', filter: 'brightness(1.04)' },
+      { transform: getComputedStyle(card).transform || 'none', filter: 'none' }
+    ], {
+      duration: 520,
+      easing: 'cubic-bezier(.2,.9,.25,1)'
+    });
+  }
+
+  function toggleFloat(){
+    floating = !floating;
+    if(floating){
+      card.style.animation = "appear 650ms cubic-bezier(.2,.9,.25,1) both, floaty 6s ease-in-out infinite";
+    } else {
+      card.style.animation = "appear 650ms cubic-bezier(.2,.9,.25,1) both";
+    }
+  }
+
+  // subtle entrance zoom on load
+  window.addEventListener('load', () => {
+    document.body.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.007)' }, { transform: 'scale(1)' }], { duration: 900, easing: 'ease-out' });
+  });
+</script>
+</body>
+</html>
