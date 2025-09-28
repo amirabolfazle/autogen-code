@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0b0f14;
+    --bg2:#071023;
+    --accent:#7c5cff;
+    --glass: rgba(255,255,255,0.04);
+    --muted: rgba(255,255,255,0.55);
+  }
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; background:radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent), radial-gradient(1000px 500px at 90% 90%, rgba(5,200,255,0.04), transparent), linear-gradient(180deg,var(--bg1),var(--bg2)); color:#e7eef8; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+  /* animated starfield */
+  .stars { position:fixed; inset:0; pointer-events:none; background-image: radial-gradient(#ffffff10 1px, transparent 1px), radial-gradient(#ffffff08 1px, transparent 1px), radial-gradient(#ffffff05 1px, transparent 1px); background-size: 200px 200px, 400px 400px, 800px 800px; opacity:0.6; mix-blend-mode:screen; animation: drift 60s linear infinite; }
+  @keyframes drift { from{ transform:translateY(0) } to{ transform:translateY(-1200px) } }
+
+  .stage{
+    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:48px; perspective:1200px; overflow:hidden;
+  }
+
+  .card{
+    width:900px; max-width:94vw; display:grid; grid-template-columns: 320px 1fr; gap:28px; align-items:center;
+    background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border-radius:22px; padding:28px; transform-style:preserve-3d;
+    transform: translateZ(0) scale(0.96); opacity:0;
+    animation: entrance 900ms cubic-bezier(.2,.9,.28,1) forwards;
+  }
+  @keyframes entrance {
+    to { transform: translateZ(24px) scale(1); opacity:1; }
+  }
+
+  .left{
+    display:flex; flex-direction:column; align-items:center; gap:18px;
+  }
+
+  .avatar{
+    width:220px; height:220px; border-radius:28px; background:
+      conic-gradient(from 160deg at 50% 50%, rgba(124,92,255,0.18), rgba(5,200,255,0.09), rgba(124,92,255,0.12));
+    display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+    transition:transform 380ms cubic-bezier(.2,.9,.28,1), box-shadow 380ms;
+    box-shadow: 0 10px 30px rgba(7,12,20,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  .avatar::after{
+    content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    pointer-events:none;
+  }
+
+  .initial{
+    font-size:96px; font-weight:700; letter-spacing:-2px; color:var(--accent); text-shadow: 0 6px 24px rgba(124,92,255,0.14);
+    transform-origin:center; transition:transform 380ms cubic-bezier(.2,.9,.28,1);
+  }
+
+  .avatar:hover{ transform: scale(1.06) rotate(-2deg); box-shadow: 0 18px 60px rgba(7,12,20,0.7); }
+  .avatar:hover .initial{ transform: translateY(-6px) scale(1.02); }
+
+  .meta{
+    text-align:center; color:var(--muted); font-size:14px;
+  }
+
+  .name{
+    font-size:42px; font-weight:700; color:#fff; letter-spacing:-0.6px; margin:0;
+    display:flex; gap:10px; align-items:baseline;
+  }
+
+  .badge{
+    font-size:12px; padding:6px 10px; border-radius:999px; background:linear-gradient(90deg, rgba(124,92,255,0.14), rgba(5,200,255,0.06)); color:var(--accent); border:1px solid rgba(124,92,255,0.12);
+    box-shadow: 0 6px 20px rgba(124,92,255,0.04);
+  }
+
+  .right{
+    padding:18px 6px; display:flex; flex-direction:column; gap:14px;
+  }
+
+  .tagline{ color:#d6e6ff; font-size:16px; margin:0 0 6px 0; opacity:0.95; }
+  .desc{ color:var(--muted); line-height:1.55; font-size:15px; margin:0 0 6px 0; }
+
+  .links{ display:flex; gap:12px; margin-top:6px; flex-wrap:wrap; }
+  .pill{
+    padding:10px 14px; border-radius:12px; background:var(--glass); border:1px solid rgba(255,255,255,0.02); color:var(--muted); font-size:13px; text-decoration:none;
+    display:inline-flex; gap:8px; align-items:center; transition:transform 220ms, background 220ms, box-shadow 220ms;
+  }
+  .pill:hover{ transform: translateY(-6px) scale(1.02); background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); box-shadow: 0 10px 30px rgba(2,6,23,0.6); color:#eaf1ff; }
+
+  .zoom-area { margin-top:12px; overflow:hidden; border-radius:12px; position:relative; background:linear-gradient(90deg, rgba(124,92,255,0.03), rgba(5,200,255,0.02)); padding:6px; border:1px solid rgba(255,255,255,0.02); }
+  .preview{
+    height:160px; border-radius:8px; background: linear-gradient(120deg, rgba(124,92,255,0.16), rgba(5,200,255,0.06));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-weight:600; font-size:18px;
+    transition: transform 700ms cubic-bezier(.2,.9,.28,1);
+  }
+  .zoom-area:hover .preview{ transform: scale(1.06) translateZ(40px); filter:brightness(1.03); }
+
+  .time{
+    color:#9fb1d6; font-size:13px; margin-top:6px; display:inline-flex; gap:10px; align-items:center;
+  }
+
+  /* footer */
+  footer{
+    position:fixed; left:0; right:0; bottom:18px; display:flex; justify-content:center; align-items:center; gap:12px; pointer-events:auto;
+    z-index:60;
+  }
+  .footer-inner{
+    backdrop-filter: blur(6px); background: rgba(6,10,18,0.45); border:1px solid rgba(255,255,255,0.03); color:var(--muted);
+    padding:10px 14px; border-radius:999px; display:flex; gap:12px; align-items:center; box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+  }
+  .gh{
+    width:36px; height:36px; display:inline-grid; place-items:center; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    transition:transform 200ms;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .gh:hover{ transform:translateY(-6px) scale(1.03); box-shadow: 0 12px 36px rgba(7,12,20,0.6); }
+  .gh svg{ width:20px; height:20px; fill:transparent; stroke: #cfe5ff; stroke-width:1.6; }
+  .footer-text{ color:#dbeafc; font-size:14px; font-weight:600; letter-spacing:0.1px; }
+
+  /* small screens */
+  @media (max-width:720px){
+    .card{ grid-template-columns: 1fr; gap:18px; padding:18px; }
+    .avatar{ width:160px; height:160px; border-radius:18px; }
+    .initial{ font-size:64px; }
+    .name{ font-size:28px; }
+    .preview{ height:120px; }
+  }
+
+  /* tiny hover sparkle */
+  .sparkle { position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:0.9; }
+  .sparkle > i { position:absolute; width:8px;height:8px;border-radius:50%; background:linear-gradient(90deg,#fff,#7c5cff); filter:blur(6px); animation: pop 2000ms linear infinite; }
+  .sparkle > i:nth-child(2){ left:12%; top:24%; animation-delay:200ms; width:6px; height:6px; opacity:0.7; }
+  .sparkle > i:nth-child(3){ left:72%; top:44%; animation-delay:450ms; width:5px; height:5px; }
+  .sparkle > i:nth-child(4){ left:44%; top:76%; animation-delay:880ms; width:7px; height:7px; }
+  .sparkle > i:nth-child(5){ left:82%; top:18%; animation-delay:1200ms; width:6px; height:6px; opacity:0.85; }
+  @keyframes pop{ 0%{ transform:scale(.4) translateY(0); opacity:0 } 10%{ opacity:1 } 50%{ transform:scale(1.1) translateY(-6px) } 100%{ transform:scale(.6) translateY(-18px); opacity:0 } }
+
+</style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+
+  <main class="stage">
+    <section class="card" id="card" role="region" aria-label="amirabolfazle personal card">
+      <div class="left">
+        <div class="avatar" id="avatar" title="amirabolfazle">
+          <div class="initial">A</div>
+          <div class="sparkle" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+
+        <div class="meta">
+          <h1 class="name">amirabolfazle <span class="badge">creator</span></h1>
+          <div class="time" aria-hidden="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:.85"><path d="M12 7v6l4 2" stroke="#9fb1d6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="8" stroke="#9fb1d6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Created: 2025-09-28 16:48:00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <p class="tagline">Design-minded developer who likes subtle motion and clean interactions.</p>
+        <p class="desc">I craft small experiences with big polish — interfaces, micro-interactions, and playful visuals tuned for dark mode. Hover, move your cursor, or scroll to feel the tiny zooms and parallax.</p>
+
+        <div class="links" aria-hidden="false">
+          <a class="pill" href="#" onclick="alert('Pretend this opens a portfolio.')" role="button">Portfolio</a>
+          <a class="pill" href="#" onclick="alert('Pretend this is a resume.')" role="button">Resume</a>
+          <a class="pill" href="#" onclick="alert('Pretend this starts a chat.')" role="button">Say hi</a>
+        </div>
+
+        <div class="zoom-area" aria-hidden="true">
+          <div class="preview" id="preview">Interactive preview — hover to zoom</div>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div style="flex:1;">
+            <small style="color:var(--muted);font-size:13px;">Current vibe: nocturnal, curious, slightly animated</small>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub: amirabolfazle/autogen-code">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5.98 5.25.98 11.52c0 4.62 3 8.53 7.16 9.91.52.1.71-.23.71-.5 0-.25-.01-.91-.02-1.79-2.91.63-3.53-1.4-3.53-1.4-.47-1.18-1.15-1.5-1.15-1.5-.94-.64.07-.63.07-.63 1.04.07 1.59 1.07 1.59 1.07.92 1.58 2.42 1.12 3.01.86.09-.66.36-1.12.65-1.38-2.33-.27-4.78-1.17-4.78-5.2 0-1.15.41-2.08 1.07-2.81-.11-.27-.47-1.36.1-2.84 0 0 .88-.28 2.9 1.06a10.05 10.05 0 012.64-.36c.9 0 1.81.12 2.64.36 2.02-1.34 2.89-1.06 2.89-1.06.58 1.48.22 2.57.11 2.84.67.73 1.07 1.66 1.07 2.81 0 4.04-2.46 4.93-4.8 5.19.37.32.69.94.69 1.9 0 1.37-.01 2.48-.01 2.82 0 .28.19.61.72.5 4.16-1.39 7.15-5.3 7.15-9.92C23.02 5.25 18.27.5 12 .5z"/></svg>
+      </a>
+      <div class="footer-text">Created by amirabolfazle</div>
+    </div>
+  </footer>
+
+<script>
+  // subtle parallax tilt for the card
+  (function(){
+    const card = document.getElementById('card');
+    const avatar = document.getElementById('avatar');
+    const preview = document.getElementById('preview');
+    const win = window;
+    let rect = card.getBoundingClientRect();
+
+    function onMove(e){
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+      const cx = rect.width/2, cy = rect.height/2;
+      const dx = (x - cx) / cx;
+      const dy = (y - cy) / cy;
+      const rx = dy * 6; // rotateX
+      const ry = -dx * 8; // rotateY
+      card.style.transform = `translateZ(24px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.01)`;
+      avatar.style.transform = `translateZ(36px) rotateY(${ry*0.6}deg) rotateX(${rx*0.4}deg)`;
+      preview.style.transform = `translateZ(12px) scale(${1 + Math.min(Math.abs(dx*0.03)+Math.abs(dy*0.03),0.06)})`;
+    }
+
+    function reset(){
+      card.style.transform = 'translateZ(24px) rotateX(0deg) rotateY(0deg) scale(1)';
+      avatar.style.transform = '';
+      preview.style.transform = '';
+    }
+
+    function updateRect(){ rect = card.getBoundingClientRect(); }
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, {passive:true});
+    window.addEventListener('mouseleave', reset);
+    window.addEventListener('resize', updateRect);
+    // small idle animation
+    setInterval(()=>{
+      card.style.transform += ' translateY(-2px)';
+      setTimeout(()=>{ card.style.transform = card.style.transform.replace(' translateY(-2px)',''); }, 600);
+    }, 4500);
+  })();
+
+  // keyboard accessible: press "z" to zoom preview
+  (function(){
+    const preview = document.getElementById('preview');
+    window.addEventListener('keydown', (e)=>{
+      if(e.key.toLowerCase()==='z'){
+        preview.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}], {duration:700, easing:'cubic-bezier(.2,.9,.28,1)'});
+      }
+    });
+  })();
+</script>
+</body>
+</html>
