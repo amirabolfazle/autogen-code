@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1:#050007;
+    --bg-2:#0e0226;
+    --neon-1:#00f6ff;
+    --neon-2:#ff2dff;
+    --neon-3:#7eff6a;
+    --card-bg: rgba(255,255,255,0.03);
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.06);
+    --accent: #9bffea;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,246,255,0.06), transparent 8%),
+                radial-gradient(900px 400px at 90% 80%, rgba(255,45,255,0.05), transparent 10%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#e6f7ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* subtle animated background blobs */
+  .glow-orb{
+    position:fixed;
+    filter:blur(40px) saturate(150%);
+    opacity:0.45;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    animation: floaty 12s infinite ease-in-out;
+  }
+  .orb-1{width:520px;height:520px;background:linear-gradient(45deg,var(--neon-1), rgba(0,246,255,0.08)); left:-10%; top:10%; transform:translateZ(0);}
+  .orb-2{width:420px;height:420px;background:linear-gradient(45deg,var(--neon-2), rgba(255,45,255,0.06)); right:-8%; bottom:10%; animation-duration:14s;}
+  @keyframes floaty{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-30px) scale(1.03)}
+    100%{transform:translateY(0) scale(1)}
+  }
+
+  header{
+    max-width:1100px;
+    margin:48px auto 20px;
+    padding:28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    position:relative;
+    z-index:5;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+
+  .logo {
+    width:72px;
+    height:72px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border:1px solid var(--glass-border);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 24px rgba(0,246,255,0.06);
+    position:relative;
+    overflow:hidden;
+  }
+
+  .logo::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg, rgba(0,246,255,0.06), rgba(255,45,255,0.04));
+    mix-blend-mode: screen;
+    opacity:0.8;
+  }
+
+  .logo svg{width:48px;height:48px;filter:drop-shadow(0 4px 16px rgba(0,246,255,0.12));}
+
+  h1{
+    font-size:28px;
+    margin:0;
+    letter-spacing:0.6px;
+    color:var(--neon-1);
+    text-shadow:
+      0 0 8px rgba(0,246,255,0.18),
+      0 0 24px rgba(0,246,255,0.08);
+    font-weight:700;
+    animation: neon-flicker 3s infinite;
+  }
+
+  @keyframes neon-flicker{
+    0%,100%{text-shadow:0 0 8px rgba(0,246,255,0.18), 0 0 24px rgba(0,246,255,0.08);}
+    50%{text-shadow:0 0 18px rgba(0,246,255,0.32), 0 0 48px rgba(0,246,255,0.12);}
+    20%,77%{text-shadow:0 0 6px rgba(0,246,255,0.14);}
+  }
+
+  nav{display:flex; gap:12px; align-items:center;}
+  .nav-link{
+    color:rgba(230,247,255,0.7);
+    font-weight:600;
+    padding:8px 12px;
+    border-radius:10px;
+    text-decoration:none;
+    transition:all .25s ease;
+    backdrop-filter: blur(6px);
+  }
+  .nav-link:hover{color:white; transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,246,255,0.06)}
+
+  main{
+    max-width:1100px;
+    margin:0 auto 88px;
+    padding:20px;
+    position:relative;
+    z-index:3;
+  }
+
+  .hero{
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:28px;
+    align-items:center;
+    margin-top:20px;
+  }
+
+  .intro{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:16px;
+    padding:28px;
+    border:1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+  }
+
+  .intro h2{
+    margin:0 0 8px;
+    font-size:20px;
+    color:var(--neon-2);
+    letter-spacing:0.4px;
+  }
+  .intro p{
+    margin:0 0 18px;
+    color:rgba(230,247,255,0.86);
+    line-height:1.5;
+  }
+
+  .meta{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    padding:8px 12px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    font-weight:700;
+    color:var(--accent);
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  }
+
+  .creation-time{
+    margin-top:14px;
+    font-family:var(--mono);
+    color:rgba(230,247,255,0.65);
+    font-size:13px;
+    padding:10px 12px;
+    border-radius:10px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.02);
+    display:inline-block;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  .panel{
+    border-radius:16px;
+    padding:18px;
+    background:var(--card-bg);
+    border:1px solid var(--glass-border);
+    box-shadow: 0 8px 30px rgba(3,6,20,0.6);
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.03);
+    transition:transform .36s cubic-bezier(.2,.9,.2,1), box-shadow .36s;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    color:rgba(230,247,255,0.9);
+  }
+
+  .card:hover{transform:translateY(-10px) scale(1.02); box-shadow:0 18px 40px rgba(0,0,0,0.6);}
+
+  .project-title{
+    font-weight:700;
+    color:var(--neon-1);
+    letter-spacing:0.3px;
+  }
+
+  .tags{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .tag{font-size:12px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);color:rgba(230,247,255,0.75);}
+
+  /* bounce animations */
+  .bounce {
+    animation: bounce 2.2s infinite;
+    transform-origin:center bottom;
+  }
+  .bounce.slow{animation-duration:3.4s}
+  .bounce.fast{animation-duration:1.6s}
+  @keyframes bounce{
+    0%{transform:translateY(0) scaleY(1)}
+    20%{transform:translateY(-12px) scaleY(0.98)}
+    50%{transform:translateY(0) scaleY(1)}
+    70%{transform:translateY(-6px) scaleY(0.99)}
+    100%{transform:translateY(0) scaleY(1)}
+  }
+
+  .projects-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:18px;
+  }
+
+  .project-card{
+    position:relative;
+    overflow:hidden;
+  }
+
+  .neon-accent{
+    color:var(--neon-3);
+    text-shadow:0 0 10px rgba(126,255,106,0.14), 0 0 30px rgba(126,255,106,0.06);
+  }
+
+  footer{
+    max-width:1100px;
+    margin:28px auto;
+    padding:18px 20px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    color:rgba(230,247,255,0.6);
+    font-size:14px;
+    border:1px solid rgba(255,255,255,0.02);
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+    position:relative;
+    z-index:6;
+  }
+
+  .footer-left{display:flex;align-items:center;gap:12px}
+  .github-link{
+    display:inline-grid;
+    grid-auto-flow:column;
+    gap:10px;
+    align-items:center;
+    padding:8px;
+    border-radius:10px;
+    transition:transform .2s ease;
+    background:linear-gradient(90deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    text-decoration:none;
+  }
+
+  .github-link:hover{transform:translateY(-6px); box-shadow:0 12px 36px rgba(0,0,0,0.6)}
+
+  .github-icon{width:22px;height:22px;display:block; fill:var(--neon-1); filter:drop-shadow(0 6px 16px rgba(0,246,255,0.06))}
+
+  .legal{color:rgba(230,247,255,0.55); font-size:13px;}
+
+  /* responsive */
+  @media (max-width:920px){
+    .hero{grid-template-columns:1fr; padding:0}
+    .projects-grid{grid-template-columns:1fr}
+    header{padding:18px}
+  }
+</style>
+</head>
+<body>
+  <div class="glow-orb orb-1" aria-hidden="true"></div>
+  <div class="glow-orb orb-2" aria-hidden="true"></div>
+
+  <header>
+    <div class="brand">
+      <div class="logo" title="amirabolfazle">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#00f6ff"/>
+              <stop offset="1" stop-color="#ff2dff"/>
+            </linearGradient>
+          </defs>
+          <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#g1)"/>
+          <path d="M14 32c4-7 11-16 20-16" stroke="#030014" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9"/>
+          <circle cx="20" cy="18" r="2.8" fill="#030014" opacity="0.85"/>
+        </svg>
+      </div>
+      <div>
+        <h1>amirabolfazle</h1>
+        <div style="font-size:13px;color:rgba(230,247,255,0.6)">Neon portfolio lab • UI experiments & small builds</div>
+      </div>
+    </div>
+
+    <nav aria-label="Main navigation">
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="#projects">Projects</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="intro panel bounce slow">
+        <h2 id="hero-heading" class="neon-accent">Hey, I'm amirabolfazle</h2>
+        <p>Designer-developer exploring neon UI aesthetics, motion, and compact creative builds. I love small interactive projects that feel alive — with playful bounce and glow.</p>
+
+        <div class="meta">
+          <div class="chip">UI / Motion</div>
+          <div class="chip">Frontend</div>
+          <div class="chip">Creative Code</div>
+        </div>
+
+        <div class="creation-time" aria-label="Creation time">
+          Created: 2025-09-29 00:08:58
+        </div>
+      </div>
+
+      <aside class="panel bounce fast" aria-labelledby="side-title">
+        <h3 id="side-title" style="margin:0 0 8px;color:var(--neon-2)">Quick Links</h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <a class="card" href="#projects" style="text-decoration:none; color:inherit;">
+            <div>
+              <div class="project-title">Live experiments</div>
+              <div style="font-size:13px;color:rgba(230,247,255,0.7)">Playful UI demos & micro-interactions</div>
+            </div>
+            <div class="tag">Explore</div>
+          </a>
+
+          <a class="card" href="#contact" style="text-decoration:none; color:inherit;">
+            <div>
+              <div class="project-title">Say hi</div>
+              <div style="font-size:13px;color:rgba(230,247,255,0.7)">Let's collaborate or chat about ideas</div>
+            </div>
+            <div class="tag">Contact</div>
+          </a>
+        </div>
+      </aside>
+    </section>
+
+    <section id="about" style="margin-top:28px;">
+      <div class="panel">
+        <h3 style="margin:0 0 6px;color:var(--neon-1)">About this page</h3>
+        <p style="margin:0;color:rgba(230,247,255,0.85)">This single-file neon portfolio demonstrates animated UI elements, bounce motion, and subtle neon glow — all encapsulated in one HTML document for portability. Colors and motion are tuned for a moody, electric aesthetic.</p>
+      </div>
+    </section>
+
+    <section id="projects" style="margin-top:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+        <h3 style="margin:0;color:var(--neon-2)">Projects</h3>
+        <div style="color:rgba(230,247,255,0.65)">A few highlights — hover to bounce</div>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card panel bounce">
+          <div class="card" style="align-items:flex-start">
+            <div>
+              <div class="project-title">Neon UI Kit</div>
+              <div style="font-size:13px;color:rgba(230,247,255,0.75)">A small collection of neon components, buttons, and motion presets.</div>
+              <div class="tags" style="margin-top:8px">
+                <span class="tag">CSS</span><span class="tag">Design</span>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="tag">Live</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card panel bounce slow">
+          <div class="card" style="align-items:flex-start">
+            <div>
+              <div class="project-title">BounceLab</div>
+              <div style="font-size:13px;color:rgba(230,247,255,0.75)">Micro-interaction playground to prototype bounces and rhythms.</div>
+              <div class="tags" style="margin-top:8px">
+                <span class="tag">Motion</span><span class="tag">JS</span>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="tag">Demo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card panel bounce fast">
+          <div class="card" style="align-items:flex-start">
+            <div>
+              <div class="project-title">Autogen Code</div>
+              <div style="font-size:13px;color:rgba(230,247,255,0.75)">Small code generation utilities and templates for fast prototyping.</div>
+              <div class="tags" style="margin-top:8px">
+                <span class="tag">Tools</span><span class="tag">Scripts</span>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="tag">Repo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card panel bounce">
+          <div class="card" style="align-items:flex-start">
+            <div>
+              <div class="project-title">Mini Portfolio Builder</div>
+              <div style="font-size:13px;color:rgba(230,247,255,0.75)">A one-file starter portfolio with neon styles and subtle animations.</div>
+              <div class="tags" style="margin-top:8px">
+                <span class="tag">Template</span><span class="tag">HTML</span>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="tag">Starter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:22px;">
+      <div class="panel">
+        <h3 style="margin:0 0 6px;color:var(--neon-3)">Contact</h3>
+        <p style="margin:0 0 12px;color:rgba(230,247,255,0.85)">If you'd like to collaborate or see source, ping via GitHub or drop an email — always open to creative experiments.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="chip" href="mailto:hello@amirabolfazle.example" style="text-decoration:none;color:inherit">hello@amirabolfazle.example</a>
+          <a class="chip" href="#projects" style="text-decoration:none;color:inherit">See projects</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-left">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+        <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <path d="M12 .5C5.73.5.9 5.34.9 11.6c0 4.62 3 8.54 7.18 9.94.53.1.72-.22.72-.5 0-.25-.01-.92-.01-1.8-2.92.64-3.54-1.4-3.54-1.4-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.6 2.46 1.14 3.06.87.09-.68.37-1.14.67-1.4-2.33-.27-4.78-1.17-4.78-5.22 0-1.15.41-2.09 1.08-2.83-.11-.27-.47-1.36.1-2.83 0 0 .88-.28 2.88 1.08a9.9 9.9 0 012.62-.35c.89.01 1.79.12 2.62.35 2-.36 2.88-1.08 2.88-1.08.57 1.47.21 2.56.1 2.83.67.74 1.08 1.67 1.08 2.83 0 4.05-2.46 4.95-4.8 5.2.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.61.73.5C20.1 20.13 23.1 16.21 23.1 11.6 23.1 5.34 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <div>
+        <div style="font-weight:700;color:white">Created by amirabolfazle</div>
+        <div class="legal">Single-file neon portfolio • 2025</div>
+      </div>
+    </div>
+
+    <div class="legal">Made with motion, neon & a sprinkle of code</div>
+  </footer>
+
+  <script>
+    // Small decorative script to randomize bounce phase for organic motion
+    (function(){
+      const bouncers = document.querySelectorAll('.bounce');
+      bouncers.forEach((el,i)=>{
+        const delay = (Math.random()*1.4).toFixed(2)+'s';
+        el.style.animationDelay = delay;
+      });
+
+      // Smooth scroll for internal links
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', e=>{
+          const href = a.getAttribute('href');
+          if(href.length>1){
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if(target) target.scrollIntoView({behavior:'smooth', block:'center'});
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
