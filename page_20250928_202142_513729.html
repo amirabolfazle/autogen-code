@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.08);
+    --accent1: 56,189,248; /* sky-400 */
+    --accent2: 139,92,246; /* purple-600 */
+    --muted: rgba(255,255,255,0.65);
+    --card-w: 320px;
+  }
+  /* reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(var(--accent1),0.10), transparent 8%),
+                radial-gradient(900px 500px at 90% 90%, rgba(var(--accent2),0.10), transparent 10%),
+                linear-gradient(180deg,#071029 0%, #0b1020 50%, #071028 100%);
+    color: #eaf2ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding:28px;
+    overflow:hidden;
+  }
+
+  /* floating colorful blobs */
+  .blob{
+    position:fixed;
+    filter:blur(60px) saturate(120%);
+    opacity:0.65;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    animation: float 12s ease-in-out infinite;
+    border-radius:50%;
+  }
+  .blob.a{width:520px;height:520px;left:-120px;top:-80px;background:linear-gradient(135deg, rgba(var(--accent1),0.22), rgba(var(--accent2),0.18)); animation-duration:14s;}
+  .blob.b{width:380px;height:380px;right:-100px;bottom:-90px;background:linear-gradient(135deg, rgba(var(--accent2),0.20), rgba(var(--accent1),0.16)); animation-duration:10s; animation-delay:2s;}
+
+  @keyframes float{
+    0%{transform: translateY(0) rotate(0deg)}
+    50%{transform: translateY(-28px) rotate(6deg)}
+    100%{transform: translateY(0) rotate(0deg)}
+  }
+
+  /* main frame */
+  .stage{
+    width:min(1100px,100%);
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:28px;
+    align-items:start;
+    z-index:2;
+    animation:pop .9s cubic-bezier(.2,.9,.3,1) both;
+    transform-origin:center;
+  }
+  @keyframes pop{
+    from{opacity:0; transform:translateY(20px) scale(.98)}
+    to{opacity:1; transform:translateY(0) scale(1)}
+  }
+
+  /* left panel - glass card */
+  .panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius:20px;
+    padding:28px;
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    box-shadow: 0 10px 30px rgba(3,8,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    min-height:420px;
+    transform-style:preserve-3d;
+    transition:transform .25s ease;
+  }
+
+  .panel:hover{transform:translateZ(20px) scale(1.01)}
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .logo{
+    width:64px;height:64px;border-radius:14px;
+    background:linear-gradient(135deg, rgba(var(--accent1),0.18), rgba(var(--accent2),0.20));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;color:white;font-size:22px;letter-spacing:0.6px;
+    box-shadow: 0 6px 18px rgba(8,12,30,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+    transform:translateZ(30px);
+  }
+  .title{
+    display:flex;flex-direction:column;
+  }
+  .title h1{
+    font-size:20px;line-height:1;color:#fff;margin-bottom:2px;
+    letter-spacing:0.6px;
+  }
+  .subtitle{color:var(--muted); font-size:13px}
+
+  .meta{
+    margin-top:4px;color:var(--muted);font-size:13px;
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  }
+  .time{
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);
+    font-family:monospace;font-size:13px;color:var(--muted);
+    display:inline-flex;gap:8px;align-items:center;
+    box-shadow:0 6px 20px rgba(12,18,36,0.5);
+  }
+
+  .intro{
+    margin-top:8px;color:rgba(234,242,255,0.9);font-size:15px;line-height:1.42;
+  }
+
+  /* cards grid */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+    margin-top:6px;
+  }
+  .card{
+    width:100%;
+    min-height:96px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.012));
+    border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,0.03);
+    display:flex;flex-direction:column;gap:8px;
+    transform:translateZ(0);
+    transition:transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .28s ease;
+    cursor:pointer;
+  }
+  .card:hover{transform: translateY(-8px) scale(1.03); box-shadow: 0 18px 40px rgba(3,8,23,0.6)}
+  .card h3{font-size:14px}
+  .card p{font-size:12px;color:var(--muted)}
+
+  /* right panel - showcase */
+  .showcase{
+    height:100%;
+    border-radius:20px;
+    padding:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(8px);
+    display:flex;flex-direction:column;gap:16px;
+    align-items:center;justify-content:center;
+  }
+  .mock{
+    width:100%;
+    max-width:360px;
+    height:340px;
+    border-radius:16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 12px 30px rgba(3,8,23,0.6);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+    position:relative; overflow:hidden;
+    transform-origin:center;
+    transition:transform .35s cubic-bezier(.2,.9,.3,1);
+  }
+  .mock:before{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(120deg, rgba(var(--accent1),0.08), rgba(var(--accent2),0.06));
+    mix-blend-mode:overlay; opacity:0.9;
+  }
+  .screen{
+    width:88%;height:76%;border-radius:12px;background:rgba(2,6,23,0.65);
+    border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;padding:12px;gap:10px;
+    transform:translateZ(40px);
+  }
+  .screen .row{display:flex;gap:8px;align-items:center}
+  .chip{width:8px;height:8px;border-radius:3px;background:rgba(255,255,255,0.12)}
+  .bar{height:8px;border-radius:6px;background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));flex:1}
+  .screenshot{flex:1;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+
+  .mock:hover{transform:scale(1.02) translateZ(12px)}
+
+  /* footer */
+  footer{
+    position:fixed;left:50%;transform:translateX(-50%);bottom:18px;
+    display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);
+    padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    color:var(--muted);font-size:13px;z-index:4;
+    box-shadow:0 10px 30px rgba(3,8,23,0.6);
+  }
+  .gh{
+    width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;
+    fill:currentColor;color:var(--muted);opacity:0.95;
+  }
+  .gh-link{display:inline-flex;gap:8px;align-items:center;color:var(--muted);text-decoration:none}
+  .gh-link:hover{color:rgba(255,255,255,0.95)}
+
+  /* responsive */
+  @media (max-width:980px){
+    .stage{grid-template-columns:1fr; padding-bottom:120px}
+    .showcase{order:-1}
+  }
+</style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+
+  <main class="stage" id="stage">
+    <section class="panel" id="panel" aria-labelledby="hdr">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">am</div>
+        <div class="title">
+          <h1 id="hdr">amirabolfazle</h1>
+          <div class="subtitle">Designer • Developer • Experimenter</div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="time" title="Creation time">⏱️ 2025-09-28 20:20:54</div>
+        <div style="color:var(--muted);font-size:13px">Animated glass portfolio</div>
+      </div>
+
+      <p class="intro">A compact, animated one-file portfolio demonstrating glassmorphism, subtle motion and interactive zoom effects. Hover cards, tilt the mock to feel depth, or move your mouse for parallax.</p>
+
+      <div class="cards" role="list" aria-label="projects">
+        <article class="card" role="listitem" tabindex="0">
+          <h3>Interactive UI Experiments</h3>
+          <p>Micro-interactions and motion-driven components built with CSS & JS.</p>
+        </article>
+
+        <article class="card" role="listitem" tabindex="0">
+          <h3>Generative Artwork</h3>
+          <p>Procedural visuals exploring color, form and animated composition.</p>
+        </article>
+
+        <article class="card" role="listitem" tabindex="0">
+          <h3>Design Systems</h3>
+          <p>Component libraries and tokens for scalable front-end design.</p>
+        </article>
+
+        <article class="card" role="listitem" tabindex="0">
+          <h3>Open Source Utilities</h3>
+          <p>Small tools and scripts for everyday developer ergonomics.</p>
+        </article>
+      </div>
+    </section>
+
+    <aside class="showcase" aria-label="showcase">
+      <div class="mock" id="mock" aria-hidden="false" title="Interactive mock">
+        <div class="screen" id="screen">
+          <div class="row">
+            <div class="chip" style="background:linear-gradient(90deg,#fff,#fff, rgba(255,255,255,0.4));"></div>
+            <div class="chip" style="background:linear-gradient(90deg,#fff,#fff, rgba(255,255,255,0.25));"></div>
+            <div class="bar" style="width:40%"></div>
+            <div class="bar" style="width:22%"></div>
+          </div>
+          <div class="screenshot" id="shot">Live preview • Hover & tilt me</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;color:var(--muted);font-size:13px">
+        <div style="width:10px;height:10px;border-radius:50%;background:rgba(var(--accent1),0.9)"></div>
+        <div>Zoom & parallax demo</div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub repository">
+      <svg class="gh" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5.9 5.34.9 11.6c0 4.74 3.07 8.76 7.33 10.18.54.1.74-.24.74-.52 0-.26-.01-.94-.01-1.85-2.98.65-3.61-1.42-3.61-1.42-.49-1.23-1.2-1.56-1.2-1.56-.98-.67.07-.66.07-.66 1.08.08 1.65 1.12 1.65 1.12.96 1.65 2.53 1.17 3.15.9.1-.7.38-1.17.69-1.44-2.38-.27-4.88-1.19-4.88-5.29 0-1.17.42-2.12 1.12-2.86-.11-.27-.49-1.35.11-2.82 0 0 .92-.3 3.02 1.1a10.4 10.4 0 0 1 2.76-.37c.94.01 1.88.13 2.76.37 2.1-1.4 3.02-1.1 3.02-1.1.6 1.47.22 2.55.11 2.82.7.74 1.12 1.69 1.12 2.86 0 4.11-2.5 5.02-4.88 5.29.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.05 0 .28.2.62.75.51 4.26-1.42 7.33-5.44 7.33-10.18C23.1 5.34 18.27.5 12 .5z"/></svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+<script>
+  // subtle parallax on mouse move for stage and blobs
+  (function(){
+    const stage = document.getElementById('stage');
+    const blobA = document.querySelector('.blob.a');
+    const blobB = document.querySelector('.blob.b');
+    const mock = document.getElementById('mock');
+
+    window.addEventListener('mousemove', e => {
+      const w = window.innerWidth, h = window.innerHeight;
+      const cx = (e.clientX - w/2) / (w/2);
+      const cy = (e.clientY - h/2) / (h/2);
+
+      const tiltX = cy * 6;
+      const tiltY = cx * -8;
+
+      stage.style.transform = `translateZ(0) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      blobA.style.transform = `translate(${cx * 18}px, ${cy * 8}px) rotate(${cx*8}deg)`;
+      blobB.style.transform = `translate(${cx * -18}px, ${cy * -12}px) rotate(${cy*6}deg)`;
+
+      // mock tilt (3D card)
+      mock.style.transform = `perspective(900px) translateZ(0) rotateX(${tiltX/2}deg) rotateY(${tiltY/2}deg) scale(1.01)`;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      stage.style.transform = '';
+      blobA.style.transform = '';
+      blobB.style.transform = '';
+      mock.style.transform = '';
+    });
+
+    // keyboard focus zoom for accessibility
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('focus', () => {
+        card.style.transform = 'translateY(-10px) scale(1.04)';
+        card.style.boxShadow = '0 20px 50px rgba(3,8,23,0.6)';
+      });
+      card.addEventListener('blur', () => {
+        card.style.transform = '';
+        card.style.boxShadow = '';
+      });
+    });
+
+    // small interactive demo cycle text
+    const shot = document.getElementById('shot');
+    const messages = [
+      'Live preview • Hover & tilt me',
+      'Glassmorphism • Blur & Frost',
+      'Zoom effects • Scale & Float',
+      'Responsive • Single-file demo'
+    ];
+    let idx=0;
+    setInterval(()=> {
+      idx = (idx+1)%messages.length;
+      shot.style.opacity=0;
+      setTimeout(()=>{ shot.textContent = messages[idx]; shot.style.opacity = 1; },220);
+    }, 2800);
+
+    // smooth initial zoom in animation for mock
+    mock.animate([
+      { transform: 'scale(.96) translateZ(-6px)', opacity: 0 },
+      { transform: 'scale(1) translateZ(0)', opacity: 1 }
+    ], { duration: 700, easing: 'cubic-bezier(.2,.9,.3,1)', fill:'forwards' });
+
+  })();
+</script>
+</body>
+</html>
