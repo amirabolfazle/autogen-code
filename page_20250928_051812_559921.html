@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --neon-blue: #00e5ff;
+      --neon-pink: #ff00d1;
+      --glow: 0 0 20px rgba(0, 229, 255, 0.8), 0 0 40px rgba(255, 0, 209, 0.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: #eaffff;
+      background: radial-gradient(circle at 20% 0%, rgba(0,255,255,.08), transparent 40%), 
+                  radial-gradient(circle at 100% 100%, rgba(255,0,208,.08), transparent 40%), 
+                  linear-gradient(#0b1020, #040508 60%, #0b0f19);
+      overflow-x: hidden;
+    }
+
+    /* subtle neon grid in the background */
+    .grid {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(0,255,255,.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,0,208,.05) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px;
+      pointer-events: none;
+      filter: saturate(120%);
+      z-index: 0;
+      animation: drift 20s linear infinite;
+      mix-blend-mode: screen;
+    }
+    @keyframes drift {
+      0% { transform: translate3d(0,0,0); }
+      100% { transform: translate3d(-10px,-10px,0); }
+    }
+
+    header.hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .glow-title {
+      font-size: clamp(2.5rem, 6vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: .15em;
+      text-transform: lowercase;
+      color: #e9faff;
+      text-shadow:
+        0 0 6px rgba(0,255,255,.5),
+        0 0 14px rgba(0,255,255,.4),
+        0 0 34px rgba(255,0,208,.6);
+      animation: fadeIn 2s ease forwards;
+      opacity: 0;
+      mix-blend-mode: screen;
+    }
+
+    .glow-sub {
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      opacity: 0;
+      color: #d8faff;
+      margin-top: .75rem;
+      text-shadow: 0 0 8px rgba(0,255,255,.6);
+      animation: fadeIn 2s ease forwards;
+      animation-delay: .5s;
+    }
+
+    .cta {
+      display: inline-flex;
+      gap: .5rem;
+      padding: .75rem 1.25rem;
+      margin-top: 1.5rem;
+      border-radius: 999px;
+      color: #051018;
+      background: linear-gradient(135deg, #58fff2, #8a00ff);
+      border: 0;
+      cursor: default;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(88,255,242,.6);
+      animation: fadeIn 2s ease forwards;
+      animation-delay: 1s;
+      user-select: none;
+      visibility: hidden;
+    }
+
+    .fab {
+      position: absolute;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(0,255,255,.8), transparent 40%),
+                  radial-gradient(circle at 70% 70%, rgba(255,0,208,.8), transparent 40%);
+      filter: blur(0.2px);
+      opacity: .6;
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+    .fab.one { left: -80px; top: 100px; width: 260px; height: 260px; animation-delay: .2s; }
+    .fab.two { right: -100px; bottom: 140px; width: 320px; height: 320px; animation-delay: .6s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-14px) translateX(6px); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    main.content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      justify-items: center;
+      padding: 2rem 1rem 6rem;
+    }
+
+    .panel {
+      width: min(900px, 92vw);
+      background: rgba(7,11,20,.6);
+      border: 1px solid rgba(0,255,255,.25);
+      box-shadow: 0 0 60px rgba(0,255,255,.15);
+      padding: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+      animation: fadeIn 1.8s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+      text-align: left;
+    }
+
+    h2.section {
+      margin-top: 0;
+      font-size: 1.6rem;
+      color: #eafffb;
+      text-transform: none;
+      letter-spacing: .15em;
+      text-shadow: 0 0 8px rgba(0,255,255,.8);
+      border-bottom: 1px solid rgba(0,255,255,.25);
+      padding-bottom: .5rem;
+    }
+
+    p {
+      color: #d2f7ff;
+      line-height: 1.6;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: .25rem .75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.5);
+      color: #eaffff;
+      margin-right: .5rem;
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .2em;
+      background: linear-gradient(135deg, rgba(0,255,255,.15), rgba(138,0,255,.15));
+      box-shadow: inset 0 0 10px rgba(0,255,255,.25);
+    }
+
+    footer {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      text-align: center;
+      color: #b9eaff;
+      font-size: .95rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .github-link {
+      display: inline-flex; align-items: center; gap: .5rem;
+      color: #bfeaff;
+      text-decoration: none;
+      border-radius: 6px;
+      padding: .25rem .5rem;
+      border: 1px solid rgba(0,255,255,.4);
+      transition: transform .15s ease;
+    }
+    .github-link:hover { transform: translateY(-1px); }
+
+    .github-icon {
+      width: 1.2em; height: 1.2em;
+      display: inline-block;
+      vertical-align: middle;
+      fill: #bfeaff;
+      filter: drop-shadow(0 0 6px rgba(0,255,255,.8));
+    }
+
+    @media (max-width: 700px) {
+      .panel { padding: 1.2rem; }
+      .glow-title { font-size: 4.5rem; }
+      .fab { display: none; }
+      header.hero { padding: 2rem 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <header class="hero" aria-label="Neon personal page header">
+    <div class="fab one" aria-hidden="true"></div>
+    <div class="fab two" aria-hidden="true"></div>
+
+    <h1 class="glow-title" style="margin:0; text-transform: lowercase;">
+      amirabolfazle
+    </h1>
+    <div class="glow-sub" style="font-variant-numeric: tabular-nums;">
+      Neon-styled personal page with fade-in effects
+    </div>
+    <button class="cta" aria-label="Dummy call to action" style="visibility:hidden;">Get Started</button>
+  </header>
+
+  <main class="content" role="main">
+    <section class="panel" aria-labelledby="about">
+      <span class="tag" style="background: rgba(0,255,255,.25); color:#eaffff;">Creation</span>
+      <span class="tag" style="background: rgba(138,0,255,.25); color:#eaffff;">Neon</span>
+      <span class="tag" style="background: rgba(0,255,128,.25); color:#eaffff;">Fade-in</span>
+
+      <h2 id="about" class="section" style="margin-top:.5rem;">About Amir</h2>
+      <p>This is a fancy, animated personal page designed with a neon theme and smooth fade-in effects. It showcases a clean, immersive intro and a dedicated creation timestamp that marks when the page was generated.</p>
+
+      <p style="margin-top:1rem;">
+        Creation time: <strong>2025-09-28 05:17:37</strong>
+      </p>
+    </section>
+
+    <section class="panel" aria-labelledby="footer-note">
+      <h2 id="footer-note" class="section" style="margin-top:0;">Notes</h2>
+      <p>Access the source and related autogenerated code through the footer below.</p>
+    </section>
+  </main>
+
+  <footer role="contentinfo" aria-label="Site footer">
+    <hr style="border:0; height:1px; background: rgba(0,255,255,.25); margin: 1rem auto; width: 60%; opacity:.8;">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <!-- GitHub SVG Icon -->
+      <svg class="github-icon" viewBox="0 0 24 24" aria-label="GitHub icon" role="img">
+        <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.34 6.84 9.69.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.61-3.37-1.23-3.37-1.23-.45-1.18-1.11-1.5-1.11-1.5-.92-.64.07-.63.07-.63 1.02.07 1.56 1.07 1.56 1.07.9 1.58 2.36 1.12 2.93.86.09-.66.36-1.12.65-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.41-2.03 1.09-2.75-.11-.27-.47-1.38.11-2.87 0 0 .89-.29 2.92 1.04a10.1 10.1 0 012.66-.37 10.1 10.1 0 012.66.37c2.04-1.33 2.93-1.04 2.93-1.04.58 1.49.23 2.6.12 2.87.68.72 1.09 1.63 1.09 2.75 0 3.94-2.34 4.8-4.57 5.04.37.32.7.95.7 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49A10.01 10.01 0 0014 14.26C18.57 15.95 22 12.17 22 7.26 22 3.24 19.06 2 12 2z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+</body>
+</html>
