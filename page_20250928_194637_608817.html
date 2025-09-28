@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #f8fafc;
+      --pastel-1: #ffd1dc; /* pink */
+      --pastel-2: #c7f9cc; /* green */
+      --pastel-3: #cfe8ff; /* blue */
+      --pastel-4: #fff5c2; /* yellow */
+      --accent: #6b5b95;
+      --muted: #6b7280;
+      --glass: rgba(255,255,255,0.6);
+      --card-radius: 14px;
+      --max-width: 1100px;
+    }
+
+    /* layout */
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(800px 400px at 10% 10%, var(--pastel-1)22%, transparent 15%),
+        radial-gradient(700px 350px at 90% 90%, var(--pastel-3)22%, transparent 15%),
+        linear-gradient(180deg, var(--bg-1), #fcfeff 60%);
+      color: #0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      box-sizing:border-box;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:var(--max-width);
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.56));
+      box-shadow: 0 8px 30px rgba(13,20,30,0.08);
+      border-radius:22px;
+      padding:28px;
+      box-sizing:border-box;
+      backdrop-filter: blur(6px) saturate(110%);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    header{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:22px;
+    }
+
+    .brand{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      min-width:0;
+    }
+
+    .logo{
+      width:72px;
+      height:72px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--accent);
+      background: linear-gradient(135deg, rgba(107,91,149,0.12), rgba(255,255,255,0.12));
+      box-shadow: 0 6px 18px rgba(107,91,149,0.06), inset 0 -6px 18px rgba(255,255,255,0.12);
+      transform-origin:center;
+      animation: bounceIn 900ms cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .logo span{
+      font-size:18px;
+      letter-spacing:0.6px;
+    }
+
+    h1{
+      margin:0;
+      font-size:28px;
+      line-height:1;
+      color:var(--accent);
+      letter-spacing:0.4px;
+      white-space:nowrap;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:6px;
+    }
+
+    .meta{
+      text-align:right;
+      min-width:180px;
+    }
+
+    .ctime{
+      background:linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      padding:8px 12px;
+      border-radius:12px;
+      font-size:13px;
+      color:#394053;
+      box-shadow: 0 4px 10px rgba(12,15,20,0.04);
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    main{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+      border-radius:var(--card-radius);
+      padding:18px;
+      box-shadow: 0 6px 16px rgba(16,24,40,0.04);
+      min-height:120px;
+      transition: transform 420ms cubic-bezier(.22,.9,.3,1), box-shadow 300ms;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      will-change:transform;
+      transform-origin:center;
+      border:1px solid rgba(0,0,0,0.03);
+    }
+
+    .card:hover{
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 18px 40px rgba(16,24,40,0.08);
+      animation: bounce 700ms both;
+    }
+
+    .card .cap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .swatch{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      flex-shrink:0;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+    }
+
+    .card h3{
+      margin:0;
+      font-size:16px;
+      color:#233041;
+    }
+
+    .card p{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    .grid-foot{
+      grid-column: 1 / -1;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-top:4px;
+    }
+
+    /* footer */
+    footer{
+      margin-top:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding-top:14px;
+      border-top:1px dashed rgba(12,20,30,0.03);
+    }
+
+    .gh{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--accent);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:12px;
+      transition:transform 260ms ease, box-shadow 260ms ease;
+      background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      box-shadow: 0 8px 20px rgba(107,91,149,0.04);
+      border:1px solid rgba(107,91,149,0.06);
+    }
+
+    .gh:hover{
+      transform: translateY(-6px) rotate(-2deg);
+      box-shadow: 0 18px 40px rgba(107,91,149,0.08);
+      animation: bounce 700ms both;
+    }
+
+    .gh svg{display:block}
+
+    .creator{
+      color: #394053;
+      font-size:13px;
+    }
+
+    /* swatches for cards */
+    .sw-pink{ background: linear-gradient(135deg, var(--pastel-1), #ffdff0); }
+    .sw-green{ background: linear-gradient(135deg, var(--pastel-2), #e8ffe6); }
+    .sw-blue{ background: linear-gradient(135deg, var(--pastel-3), #eaf6ff); }
+    .sw-yellow{ background: linear-gradient(135deg, var(--pastel-4), #fffaf0); }
+
+    /* animations */
+    @keyframes bounceIn{
+      0%{ transform: scale(.8) translateY(20px); opacity:0 }
+      60%{ transform: scale(1.08) translateY(-6px); opacity:1 }
+      100%{ transform: scale(1) translateY(0); }
+    }
+
+    @keyframes float{
+      0%{ transform: translateY(0) }
+      50%{ transform: translateY(-6px) }
+      100%{ transform: translateY(0) }
+    }
+
+    @keyframes bounce{
+      0%{ transform: translateY(0) }
+      30%{ transform: translateY(-10px) }
+      50%{ transform: translateY(0) }
+      70%{ transform: translateY(-6px) }
+      100%{ transform: translateY(0) }
+    }
+
+    /* responsive */
+    @media (max-width:1000px){
+      main{ grid-template-columns: repeat(2, 1fr); }
+      .meta{ text-align:left; margin-top:10px; width:100%;}
+      header{align-items:flex-start;}
+    }
+
+    @media (max-width:680px){
+      .logo{ width:56px; height:56px; }
+      h1{ font-size:22px; }
+      main{ grid-template-columns: 1fr; }
+      .meta{ text-align:left; min-width:0; }
+      .ctime{ width:100%; justify-content:flex-start; }
+      footer{ padding-top:18px; }
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-label="amirabolfazle page">
+    <header>
+      <div class="brand" aria-hidden="false">
+        <div class="logo" title="amirabolfazle">
+          <span>ab</span>
+        </div>
+        <div style="min-width:0">
+          <h1>amirabolfazle</h1>
+          <div class="subtitle">a pastel playground with subtle bounce — responsive & animated</div>
+        </div>
+      </div>
+
+      <div class="meta" aria-hidden="false">
+        <div class="ctime" aria-label="Creation time">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 7V12L15 14" stroke="#394053" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#394053" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div style="display:flex;flex-direction:column;line-height:1">
+            <strong style="font-size:13px;color:#2b3b4a">Created</strong>
+            <span style="font-size:12px;color:#51606f">2025-09-28 19:45:46</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card" aria-labelledby="card-1">
+        <div class="cap">
+          <div class="swatch sw-pink" aria-hidden="true"></div>
+          <div>
+            <h3 id="card-1">Soft Palette</h3>
+            <p>Pastel tones designed to soothe and bring warmth without overpowering the content.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="card-2">
+        <div class="cap">
+          <div class="swatch sw-green" aria-hidden="true"></div>
+          <div>
+            <h3 id="card-2">Responsive</h3>
+            <p>Grid and flex-powered layout adapts across devices, from wide desktop to narrow phones.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="card-3">
+        <div class="cap">
+          <div class="swatch sw-blue" aria-hidden="true"></div>
+          <div>
+            <h3 id="card-3">Animated</h3>
+            <p>Gentle entrance and hover bounce effects add playful motion while staying subtle.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="card-4">
+        <div class="cap">
+          <div class="swatch sw-yellow" aria-hidden="true"></div>
+          <div>
+            <h3 id="card-4">Accessible</h3>
+            <p>Reduced motion preferences are respected. High-contrast accents for legibility.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="card-5">
+        <div class="cap">
+          <div class="swatch sw-pink" aria-hidden="true"></div>
+          <div>
+            <h3 id="card-5">Lightweight</h3>
+            <p>No external libs — pure HTML & CSS delivering a crisp, responsive experience.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="card-6">
+        <div class="cap">
+          <div class="swatch sw-blue" aria-hidden="true"></div>
+          <div>
+            <h3 id="card-6">Playful Details</h3>
+            <p>Micro-interactions and layered shadows create depth and tactile feedback.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid-foot">
+        <div style="display:flex;flex-direction:column">
+          <strong style="font-size:14px;color:#2b3b4a">Curated components</strong>
+          <span style="font-size:12px;color:var(--muted)">mix-and-match for quick prototypes</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub: amirabolfazle/autogen-code">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .5C5.75.5.999 5.25.999 11.5c0 4.63 3.004 8.56 7.173 9.95.525.1.717-.23.717-.512 0-.25-.009-.912-.014-1.79-2.915.635-3.53-1.407-3.53-1.407-.477-1.208-1.164-1.53-1.164-1.53-.952-.652.073-.639.073-.639 1.052.075 1.606 1.08 1.606 1.08.935 1.601 2.454 1.14 3.053.872.095-.677.366-1.14.666-1.403-2.329-.265-4.775-1.164-4.775-5.18 0-1.145.41-2.08 1.082-2.814-.108-.266-.472-1.335.102-2.78 0 0 .882-.282 2.892 1.077A9.98 9.98 0 0112 6.845c.895.004 1.797.121 2.64.355 2.01-1.36 2.892-1.077 2.892-1.077.574 1.445.21 2.514.103 2.78.673.734 1.082 1.669 1.082 2.814 0 4.03-2.45 4.912-4.784 5.176.376.33.712.985.712 1.985 0 1.432-.013 2.585-.013 2.936 0 .286.19.62.722.513C20.998 20.058 24.002 16.131 24.002 11.5 24.002 5.25 18.251.5 12 .5z" fill="#6B5B95"/>
+            </svg>
+            <span class="creator">Created by amirabolfazle</span>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.75.5.999 5.25.999 11.5c0 4.63 3.004 8.56 7.173 9.95.525.1.717-.23.717-.512 0-.25-.009-.912-.014-1.79-2.915.635-3.53-1.407-3.53-1.407-.477-1.208-1.164-1.53-1.164-1.53-.952-.652.073-.639.073-.639 1.052.075 1.606 1.08 1.606 1.08.935 1.601 2.454 1.14 3.053.872.095-.677.366-1.14.666-1.403-2.329-.265-4.775-1.164-4.775-5.18 0-1.145.41-2.08 1.082-2.814-.108-.266-.472-1.335.102-2.78 0 0 .882-.282 2.892 1.077A9.98 9.98 0 0112 6.845c.895.004 1.797.121 2.64.355 2.01-1.36 2.892-1.077 2.892-1.077.574 1.445.21 2.514.103 2.78.673.734 1.082 1.669 1.082 2.814 0 4.03-2.45 4.912-4.784 5.176.376.33.712.985.712 1.985 0 1.432-.013 2.585-.013 2.936 0 .286.19.62.722.513C20.998 20.058 24.002 16.131 24.002 11.5 24.002 5.25 18.251.5 12 .5z" fill="#6B5B95"/>
+          </svg>
+          <span class="creator">Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
