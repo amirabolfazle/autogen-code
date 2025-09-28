@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#06070a;
+      --panel:#0e1116;
+      --muted:#9aa4b2;
+      --accent:#6ee7f4;
+      --glass: rgba(255,255,255,0.04);
+      --card:#0b0d10;
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --radius:14px;
+      --ff-sans:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--ff-sans);
+      background:
+        radial-gradient(1000px 600px at 10% 10%, rgba(110,231,244,0.06), transparent 10%),
+        radial-gradient(900px 500px at 90% 90%, rgba(138,79,255,0.04), transparent 12%),
+        var(--bg);
+      color:#dfe7ee;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      padding:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+    }
+
+    /* animated subtle nebula */
+    .nebula{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      mix-blend-mode:screen;
+      opacity:0.6;
+      filter:blur(60px) saturate(120%);
+      transform:translateZ(0);
+    }
+    .nebula span{
+      position:absolute;
+      width:420px;
+      height:420px;
+      border-radius:50%;
+      background:linear-gradient(135deg, rgba(110,231,244,0.12), rgba(138,79,255,0.12));
+      animation: drift 18s infinite ease-in-out;
+      transform-origin:center;
+      mix-blend-mode:screen;
+    }
+    .nebula span:nth-child(1){left:5%; top:10%; animation-duration:22s;}
+    .nebula span:nth-child(2){right:10%; bottom:5%; animation-duration:20s; background:linear-gradient(135deg, rgba(138,79,255,0.12), rgba(110,231,244,0.08));}
+    .nebula span:nth-child(3){left:40%; top:50%; width:520px; height:520px; animation-duration:26s; background:linear-gradient(135deg, rgba(110,231,244,0.08), rgba(79,255,177,0.06));}
+    @keyframes drift{
+      0% {transform:translateY(0) rotate(0deg) scale(1)}
+      50% {transform:translateY(-30px) rotate(14deg) scale(1.05)}
+      100% {transform:translateY(0) rotate(0deg) scale(1)}
+    }
+
+    /* layout */
+    .panel{
+      position:relative;
+      z-index:1;
+      width:min(1100px,96vw);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:calc(var(--radius) + 6px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      padding:34px;
+    }
+
+    @media (max-width:880px){
+      .panel{grid-template-columns:1fr; padding:22px;}
+    }
+
+    .left{
+      padding:6px 4px;
+    }
+    .right{
+      padding:6px 4px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    /* hero */
+    .hero{
+      padding:30px;
+      border-radius:12px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+      box-shadow: 0 6px 20px rgba(2,6,23,0.5);
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+    .avatar{
+      width:104px;
+      height:104px;
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(110,231,244,0.12), rgba(138,79,255,0.08));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:28px;
+      color:var(--accent);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.6), inset 0 -6px 18px rgba(0,0,0,0.25);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:700;
+      letter-spacing:0.6px;
+      margin:0 0 6px 0;
+      color:#fff;
+    }
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .meta{
+      margin-left:auto;
+      text-align:right;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* cards */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:12px;
+      padding:16px;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 8px 24px rgba(4,10,20,0.5);
+    }
+    .about p{color:var(--muted); margin:8px 0 0 0; line-height:1.5}
+    .skills{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .skill{
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px);
+    }
+
+    .projects{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width:520px){ .projects{grid-template-columns:1fr} }
+
+    .proj{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      padding:12px;
+      border-radius:10px;
+      transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .proj:hover{
+      transform:translateY(-6px);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.6);
+      border-color: rgba(110,231,244,0.12);
+    }
+    .proj h4{margin:0 0 6px 0}
+    .proj p{margin:0; color:var(--muted); font-size:13px}
+
+    .contact{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+    }
+    .btn{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(110,231,244,0.06), rgba(110,231,244,0.03));
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:600;
+      border:1px solid rgba(110,231,244,0.09);
+      box-shadow:0 8px 24px rgba(110,231,244,0.03);
+      transition:transform .18s ease;
+      font-size:14px;
+    }
+    .btn:active{transform:translateY(1px)}
+
+    /* right column content */
+    .stats{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .stat{
+      flex:1;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      padding:12px;
+      border-radius:10px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .stat h3{margin:0; font-size:20px}
+    .stat p{margin:6px 0 0 0; color:var(--muted); font-size:13px}
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      justify-content:space-between;
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:background .18s ease, color .18s ease;
+      border:1px solid rgba(255,255,255,0.02);
+      background:transparent;
+    }
+    .gh:hover{ background: rgba(255,255,255,0.02); color:var(--accent) }
+    .gh svg{filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6))}
+
+    /* fade-in system */
+    .fade{
+      opacity:0;
+      transform:translateY(12px) scale(0.998);
+      transition:opacity .9s cubic-bezier(.2,.9,.3,1), transform .9s cubic-bezier(.2,.9,.3,1);
+      will-change:opacity,transform;
+    }
+    .fade.show{opacity:1; transform:translateY(0) scale(1)}
+    .stagger-1{transition-delay:.06s}
+    .stagger-2{transition-delay:.12s}
+    .stagger-3{transition-delay:.18s}
+    .stagger-4{transition-delay:.24s}
+    .stagger-5{transition-delay:.30s}
+
+    @media (prefers-reduced-motion:reduce){
+      .nebula, .proj:hover, .btn, .fade{transition:none; animation:none}
+      .fade{opacity:1; transform:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="nebula" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+
+  <main class="panel" role="main" aria-labelledby="portfolio-title">
+    <section class="left">
+      <div class="hero card fade" id="hero">
+        <div class="avatar">AM</div>
+        <div style="flex:1;">
+          <h1 class="title" id="portfolio-title">amirabolfazle</h1>
+          <p class="subtitle">Creative developer • UI animations • full-stack tinkerer</p>
+        </div>
+        <div class="meta">
+          <div style="font-weight:600; color:#bfeef6">Created</div>
+          <div style="font-size:13px; margin-top:6px;">2025-09-28 15:45:23</div>
+        </div>
+      </div>
+
+      <div class="card about fade stagger-1" id="about" style="margin-top:18px">
+        <h3 style="margin:0 0 8px 0">About</h3>
+        <p>Hi — I build clean, interactive experiences on the web. I enjoy blending crisp UI with subtle animations to make interfaces feel alive. I code both front-end and back-end and love turning ideas into pixel-perfect, performant products.</p>
+
+        <div class="skills" style="margin-top:12px">
+          <span class="skill">JavaScript</span>
+          <span class="skill">TypeScript</span>
+          <span class="skill">React</span>
+          <span class="skill">Node.js</span>
+          <span class="skill">CSS</span>
+          <span class="skill">Design Systems</span>
+        </div>
+
+        <div class="contact" style="margin-top:16px">
+          <a class="btn" href="mailto:amirabolfazle@example.com">Email</a>
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+
+      <div class="card projects fade stagger-2" id="projects">
+        <div class="proj">
+          <h4>Autogen Code</h4>
+          <p>Tools and helpers for automated code generation and developer workflows. (repo link in footer)</p>
+        </div>
+        <div class="proj">
+          <h4>UI Motion Kit</h4>
+          <p>A small library of lightweight motion primitives and CSS-driven components.</p>
+        </div>
+        <div class="proj">
+          <h4>Portfolio Playground</h4>
+          <p>Interactive demos and experiments with creative coding.</p>
+        </div>
+        <div class="proj">
+          <h4>API Boilerplate</h4>
+          <p>Fast, minimal templates for building RESTful services and serverless endpoints.</p>
+        </div>
+      </div>
+    </section>
+
+    <aside class="right">
+      <div class="card fade stagger-3" id="stats">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <h2 style="margin:0;color:#fff">Selected</h2>
+            <p style="margin:6px 0 0 0; color:var(--muted); font-size:13px">Work & highlights</p>
+          </div>
+        </div>
+
+        <div class="stats" style="margin-top:14px">
+          <div class="stat">
+            <h3>12+</h3>
+            <p>Projects</p>
+          </div>
+          <div class="stat">
+            <h3>6</h3>
+            <p>Open-source</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade stagger-4" id="contact">
+        <h3 style="margin:0 0 8px 0">Quick contact</h3>
+        <p style="margin:0 0 12px 0; color:var(--muted)">Prefer short notes — I'm often available for collaboration, consulting, or a friendly code chat.</p>
+        <a class="btn" href="mailto:amirabolfazle@example.com">Say hello</a>
+      </div>
+
+      <footer class="card fade stagger-5" style="margin-top:auto; display:flex; align-items:center; gap:12px">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.6 7.6 0 018 4.6c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>autogen-code</span>
+        </a>
+        <div style="margin-left:auto; color:var(--muted); font-size:13px">Created by amirabolfazle</div>
+      </footer>
+    </aside>
+  </main>
+
+  <script>
+    (function(){
+      // Staggered reveal for .fade elements
+      const fades = Array.from(document.querySelectorAll('.fade'));
+      // sort by vertical position for natural order
+      fades.sort((a,b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+      let delay = 80;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        fades.forEach(el => el.classList.add('show'));
+        return;
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        fades.forEach((el, i) => {
+          setTimeout(() => el.classList.add('show'), delay * (i+1));
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
