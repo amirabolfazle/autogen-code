@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0b14;
+      --panel: #141522;
+      --fg: #e7f7ff;
+      --cyan: #00e5ff;
+      --magenta: #ff3bdc;
+      --lime: #a6ff00;
+      --glow: 0 0 14px rgba(0, 229, 255, 0.75);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(0, 229, 255, 0.08), transparent 40%),
+                  radial-gradient(circle at 90% 15%, rgba(255, 0, 212, 0.08), transparent 40%),
+                  linear-gradient(#0b0b14, #0b0b14 60%, #05050d 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated neon backdrop dots (non-intrusive) */
+    .neon-dots {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .dot {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 229, 255, 0.9);
+      filter: saturate(120%);
+      animation: float 12s linear infinite;
+      opacity: 0.6;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0.7; }
+      50% { transform: translateY(-40px) translateX(20px); opacity: 0.95; }
+      100% { transform: translateY(0) translateX(-20px); opacity: 0.6; }
+    }
+
+    header.site-header {
+      position: relative;
+      z-index: 1;
+      padding: 40px 20px 20px;
+      text-align: center;
+    }
+
+    /* Neon title
+       gradient-fill look with glow */
+    .brand {
+      font-size: clamp(28px, 9vw, 106px);
+      font-weight: 900;
+      letter-spacing: .4px;
+      text-transform: lowercase;
+      margin: 0;
+      line-height: 1.0;
+      background: linear-gradient(90deg, #00e5ff 0%, #ff00d4 50%, #7aff00 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 6px rgba(0,255,255,.85), 0 0 20px rgba(0,255,255,.5);
+      filter: drop-shadow(0 0 8px rgba(0,255,255,.6));
+      user-select: none;
+    }
+
+    .tagline {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #d5f3ff;
+      opacity: .9;
+      letter-spacing: .5px;
+      text-shadow: 0 0 6px rgba(0,255,255,.4);
+    }
+
+    /* Neon underline bar */
+    .neon-bar {
+      height: 4px;
+      width: 180px;
+      margin: 18px auto 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0,255,255,.9), transparent);
+      filter: blur(0.2px);
+      animation: bar 6s linear infinite;
+    }
+    @keyframes bar {
+      0% { background-position: 0% 0; }
+      100% { background-position: 100% 0; }
+    }
+
+    nav.main-nav {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      padding: 12px 10px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #eaffff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.5);
+      background: rgba(0,255,255,.08);
+      transition: transform .2s ease, background .2s ease;
+      box-shadow: 0 0 8px rgba(0,255,255,.25);
+    }
+    nav a:hover {
+      transform: translateY(-2px);
+      background: rgba(0,255,255,.18);
+      box-shadow: 0 0 14px rgba(0,255,255,.45);
+    }
+
+    main.container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 28px auto 60px;
+      padding: 0 20px;
+    }
+
+    section.section {
+      margin: 56px 0;
+      padding: 28px;
+      border-radius: 14px;
+      background: rgba(18, 18, 28, 0.65);
+      border: 1px solid rgba(0, 255, 255, 0.25);
+      box-shadow: 0 8px 40px rgba(0,0,0,.25);
+      backdrop-filter: blur(2px);
+    }
+
+    /* fade-in effect */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.9s ease forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.30s; }
+    .delay-3 { animation-delay: 0.45s; }
+
+    h2.section-title {
+      margin: 0 0 12px;
+      font-size: 1.6rem;
+      letter-spacing: .6px;
+      color: #eaffff;
+      text-shadow: 0 0 10px rgba(0,255,255,.6);
+    }
+
+    p.lead {
+      margin: 0;
+      color: #d7f3ff;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(0, 255, 255, 0.25);
+      border-radius: 12px;
+      padding: 14px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 6px 22px rgba(0,255,255,.15);
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 40px rgba(0,255,255,.32);
+    }
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      color: #eaffff;
+    }
+    .card p {
+      margin: 0;
+      color: #cfeaff;
+      font-size: 0.95rem;
+    }
+
+    /* footer with GitHub icon and text */
+    footer.site-footer {
+      text-align: center;
+      padding: 28px 12px 40px;
+      color: #cbdff6;
+      opacity: .95;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.5);
+      background: rgba(0,255,255,.08);
+      box-shadow: 0 0 14px rgba(0,255,255,.25);
+    }
+    .footer-row a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      color: #eaffff;
+      text-decoration: none;
+    }
+    .footer-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.95rem;
+      color: #e6f7ff;
+    }
+
+    /* subtle responsive tweaks */
+    @media (max-width: 700px) {
+      .brand { font-size: 64px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="neon-dots" aria-hidden="true">
+    <span class="dot" style="left: 6%; top: 12%; animation-duration: 14s;"></span>
+    <span class="dot" style="left: 42%; top: 28%; width: 10px; height: 10px; animation-duration: 18s; background: #7aff00;"></span>
+    <span class="dot" style="left: 78%; top: 8%; width: 7px; height: 7px; animation-duration: 20s; background: #ff3bdc;"></span>
+    <span class="dot" style="left: 26%; top: 60%; width: 9px; height: 9px; animation-duration: 16s; background: #00e5ff;"></span>
+    <span class="dot" style="left: 70%; top: 40%; width: 8px; height: 8px; animation-duration: 22s; background: #ffd000;"></span>
+  </div>
+
+  <header class="site-header" aria-label="Intro">
+    <div class="brand" style="text-align:center;">
+      amirabolfazle
+    </div>
+    <div class="tagline" aria-label="Subtitle">
+      Neon-tinged portfolio showcasing creations with fade-in flair
+    </div>
+    <div class="neon-bar" aria-hidden="true"></div>
+
+    <nav class="main-nav" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+    </nav>
+  </header>
+
+  <main class="container" role="main">
+
+    <section id="about" class="section fade-in delay-1" style="animation-delay:0.15s;">
+      <h2 class="section-title" style="font-weight:800; letter-spacing:.6px;">About</h2>
+      <p class="lead" style="max-width: 760px;">
+        I’m amirabolfazle — a creator who enjoys building interactive experiences with clean, fast, and visually striking UI. This one-file portfolio is designed to be quick to load, easy to customize, and visually electric with neon glow and fade-in reveals.
+      </p>
+      <p class="lead" style="max-width: 760px; margin-top:10px;">
+        Creation time: 2025-09-28 06:37:47
+      </p>
+    </section>
+
+    <section id="projects" class="section fade-in delay-2" style="animation-delay:0.3s;">
+      <h2 class="section-title">Projects</h2>
+      <div class="grid" aria-label="Projects grid">
+        <article class="card" style="min-height: 120px;">
+          <div>
+            <h3>Neon Landing UI</h3>
+            <p>A minimal yet vivid landing page with neon accents and subtle motion.</p>
+          </div>
+        </article>
+
+        <article class="card" style="min-height: 120px;">
+          <div>
+            <h3>Realtime Canvas Glow</h3>
+            <p>Interactive canvas that reacts to user input with glow effects.</p>
+          </div>
+        </article>
+
+        <article class="card" style="min-height: 120px;">
+          <div>
+            <h3>Aurora Widgets</h3>
+            <p>Modular UI widgets powered by lightweight CSS and JS.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="section fade-in delay-3" style="animation-delay:0.45s;">
+      <h2 class="section-title">Skills & Focus</h2>
+      <p class="lead" style="max-width: 760px;">
+        Frontend engineering, UI/UX aesthetics, motion design, and clean code. I value performance, accessibility, and expressive visuals that don’t compromise usability.
+      </p>
+      <div class="grid" style="margin-top: 12px;">
+        <div class="card" aria-label="Skill: HTML & CSS">
+          <h3>HTML & CSS</h3>
+          <p>Semantic markup, CSS animations, responsive layouts.</p>
+        </div>
+        <div class="card" aria-label="Skill: JavaScript">
+          <h3>JavaScript</h3>
+          <p>Interaction, state, and lightweight UI logic.</p>
+        </div>
+        <div class="card" aria-label="Skill: Design">
+          <h3>Design</h3>
+          <p>Color theory, typography, and visual rhythm.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo" aria-label="Footer">
+    <div class="footer-row" style="gap:10px;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <!-- GitHub Icon (inline SVG) -->
+        <svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor" style="display:block" aria-hidden="true" focusable="false">
+          <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 4.75c.68-.01 1.36-.09 2-.26 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.28.82 2.15 0 3.07-1.87 3.74-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.92-.01 2.18 0 .21.15.46.56.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+      <span class="footer-text" aria-label="Created by">Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <!-- No external dependencies. A tiny script to respect reduced motion preferences. -->
+  <script>
+    (function() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (prefersReduced && prefersReduced.matches) {
+        // If reduced motion is preferred, remove animations
+        document.querySelectorAll('.fade-in').forEach(el => {
+          el.style.opacity = 1;
+          el.style.transform = 'none';
+          el.style.animation = 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
