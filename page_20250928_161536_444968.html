@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#071021;
+    --card:#0b1220cc;
+    --accent:#6ee7b7;
+    --muted:#9aa4b2;
+    --glass: rgba(255,255,255,0.03);
+    --zoom: 1;
+  }
+
+  /* Reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(110,231,183,0.06), transparent 8%),
+                linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow: auto;
+  }
+
+  /* Animated background blobs */
+  .blobs{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+  }
+  .blob{
+    position:absolute;
+    width:40vmax;
+    height:40vmax;
+    filter:blur(80px) saturate(120%);
+    opacity:0.12;
+    border-radius:50%;
+    transform-origin:center;
+    animation:float 14s ease-in-out infinite;
+    mix-blend-mode:screen;
+  }
+  .b1{background:linear-gradient(135deg,#3ddc97,#00aaff); top:-10%; left:-8%; animation-delay:0s;}
+  .b2{background:linear-gradient(120deg,#6ee7b7,#7c3aed); bottom:-18%; right:-6%; animation-delay:4s; animation-duration:18s}
+  .b3{background:linear-gradient(90deg,#00d4ff,#7ef3c1); top:20%; right:20%; animation-delay:8s; animation-duration:20s}
+
+  @keyframes float{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-6%) scale(1.08)}
+    100%{transform:translateY(0) scale(1)}
+  }
+
+  /* Layout */
+  .wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6vh 6vw;
+    z-index:1;
+    position:relative;
+    transform: translateZ(0) scale(var(--zoom));
+    transition:transform 280ms cubic-bezier(.2,.9,.3,1);
+  }
+
+  .card{
+    width:min(1100px,96vw);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius:18px;
+    padding:clamp(20px,3.5vw,44px);
+    box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:28px;
+    align-items:center;
+    backdrop-filter: blur(8px) saturate(120%);
+    overflow:hidden;
+  }
+
+  @media (max-width:880px){
+    .card{grid-template-columns:1fr; padding:20px}
+    .side{order:2}
+  }
+
+  .main{
+    padding-right:10px;
+  }
+
+  h1{
+    font-size:clamp(28px,4.6vw,48px);
+    line-height:1.02;
+    margin-bottom:8px;
+    letter-spacing:-0.02em;
+    color:linear-gradient(90deg,#fff,#cfeffd);
+    transform-origin:center;
+    animation:pop 700ms cubic-bezier(.2,.9,.3,1) both;
+  }
+  @keyframes pop{0%{opacity:0;transform:translateY(12px) scale(.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
+
+  .tagline{
+    color:var(--muted);
+    font-size:clamp(14px,1.8vw,18px);
+    margin-bottom:18px;
+  }
+
+  .meta{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+    margin-top:10px;
+  }
+
+  .chip{
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,0.03);
+    color:var(--muted);
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:13px;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  .clock{
+    font-variant-numeric: tabular-nums;
+    color:#dbeefe;
+    font-weight:600;
+  }
+
+  .description{
+    margin-top:20px;
+    color:#cfe3ef;
+    line-height:1.6;
+    font-size:15px;
+  }
+
+  /* Side panel */
+  .side{
+    background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(0,0,0,0.02));
+    border-radius:12px;
+    padding:18px;
+    border:1px solid rgba(255,255,255,0.03);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:stretch;
+  }
+
+  .zoom-control{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .zoom-visual{
+    height:120px;
+    background:linear-gradient(90deg, rgba(110,231,183,0.06), rgba(0,170,255,0.03));
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:0.04em;
+    font-size:18px;
+    border:1px solid rgba(255,255,255,0.02);
+    transition:transform 280ms ease;
+  }
+
+  input[type="range"]{
+    -webkit-appearance:none;
+    appearance:none;
+    width:100%;
+    background:transparent;
+  }
+  input[type="range"]::-webkit-slider-runnable-track{
+    height:8px;
+    background:linear-gradient(90deg,#1b2633,#071021);
+    border-radius:999px;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:20px;height:20px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 2px 8px rgba(110,231,183,0.18);
+    margin-top:-6px;
+  }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    margin-top:6px;
+  }
+  .btn{
+    padding:10px 12px;
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.04);
+    color:#e6f9f0;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    transition:transform 180ms ease, background 180ms ease;
+  }
+  .btn:hover{transform:translateY(-4px) scale(1.02); background:rgba(255,255,255,0.02)}
+  .btn:active{transform:translateY(-1px)}
+
+  /* Animated elements in content */
+  .ticker{
+    margin-top:18px;
+    overflow:hidden;
+    height:28px;
+    color:var(--muted);
+    font-size:14px;
+    position:relative;
+  }
+  .ticker > div{
+    position:absolute;
+    white-space:nowrap;
+    animation:slide 10s linear infinite;
+    left:100%;
+  }
+  @keyframes slide{
+    0%{transform:translateX(0)}
+    100%{transform:translateX(-120%)}
+  }
+
+  /* Footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    background:rgba(7,12,20,0.6);
+    padding:8px 12px;
+    border-radius:999px;
+    backdrop-filter: blur(6px);
+    border:1px solid rgba(255,255,255,0.03);
+    z-index:5;
+  }
+  footer a{display:inline-flex;align-items:center;gap:8px;color:#cfe3ef;text-decoration:none;font-weight:600}
+  .gh{
+    width:20px;height:20px;display:inline-block;vertical-align:middle;fill:#cfe3ef;opacity:0.95;
+    transition:transform 220ms ease;
+  }
+  footer a:hover .gh{transform:scale(1.08)}
+
+  /* Small helpers */
+  .muted{color:var(--muted)}
+  .accent{color:var(--accent); font-weight:700}
+  .logo{
+    width:68px;height:68px;border-radius:14px;background:linear-gradient(135deg,#07203a,#072232);
+    display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.03);
+    font-weight:800;color:var(--accent);font-size:20px;
+  }
+
+  /* Hover zoom effects for interactive elements */
+  .card:hover .zoom-visual{transform:scale(1.02)}
+  .card .logo:hover{transform:scale(1.06); transition:transform 260ms ease}
+</style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <div class="wrap" id="root" role="main">
+    <section class="card" aria-labelledby="title">
+      <div class="main">
+        <div style="display:flex;gap:14px;align-items:center;">
+          <div class="logo" aria-hidden="true">A</div>
+          <div>
+            <h1 id="title">amirabolfazle</h1>
+            <div class="tagline">A compact responsive animated page — dark mode, zoom and subtle motion.</div>
+            <div class="meta">
+              <div class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.9"><path d="M12 2v20" stroke="#9aa4b2" stroke-width="1.6" stroke-linecap="round"/></svg><span class="muted">Created:</span> <span class="clock">2025-09-28 16:14:47</span></div>
+              <div class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.9"><circle cx="12" cy="12" r="3" stroke="#9aa4b2" stroke-width="1.4"/></svg><span class="muted">Mode:</span> <span class="accent">Dark</span></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="description">This page showcases fluid motion, responsive layout and a user-controlled zoom for quick previews. Hover, drag the zoom slider, or use your mouse to explore the subtle parallax and animated accents.</p>
+
+        <div class="ticker" aria-hidden="true">
+          <div>• Smooth gradient blobs • Glass card • Accessibility-minded contrasts • Lightweight animations •</div>
+        </div>
+      </div>
+
+      <aside class="side" aria-label="controls">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-weight:700">Zoom</div>
+          <div class="muted" id="zoomValue">100%</div>
+        </div>
+
+        <div class="zoom-control">
+          <div style="flex:1">
+            <input id="zoomRange" type="range" min="70" max="140" value="100" />
+          </div>
+        </div>
+
+        <div class="zoom-visual" id="zoomVisual" aria-hidden="true">Preview</div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+          <div style="font-size:13px;color:var(--muted)">Quick actions</div>
+          <div class="actions">
+            <button class="btn" id="resetBtn">Reset</button>
+            <button class="btn" id="zoomInBtn">Zoom +</button>
+            <button class="btn" id="zoomOutBtn">Zoom −</button>
+          </div>
+        </div>
+
+      </aside>
+    </section>
+  </div>
+
+  <footer role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+      <svg class="gh" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.7 3 8.7 7.2 10.1.5.1.7-.2.7-.5v-2c-2.9.6-3.6-1.2-3.6-1.2-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.6-.7 1.9-1.1.3-.9.9-1.4 1.6-1.7-2.3-.3-4.7-1.2-4.7-5.3 0-1.2.4-2.2 1.1-3 .1-.3-.5-1.4.1-2.8 0 0 .9-.3 3 1.1.9-.3 1.8-.5 2.8-.5 1 0 1.9.2 2.8.5 2.2-1.4 3-1.1 3-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.8 1.1 3 0 4.1-2.4 5-4.7 5.3.6.5 1.1 1.3 1.1 2.6v3.8c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10.1C23.1 5.3 18.3.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+<script>
+  // Zoom control via CSS variable
+  const root = document.documentElement;
+  const range = document.getElementById('zoomRange');
+  const zoomValue = document.getElementById('zoomValue');
+  const zoomVisual = document.getElementById('zoomVisual');
+  const resetBtn = document.getElementById('resetBtn');
+  const inBtn = document.getElementById('zoomInBtn');
+  const outBtn = document.getElementById('zoomOutBtn');
+  const wrap = document.getElementById('root');
+
+  function setZoom(percent){
+    const scale = Math.max(0.7, Math.min(1.4, percent/100));
+    root.style.setProperty('--zoom', scale);
+    zoomValue.textContent = Math.round(percent) + '%';
+    zoomVisual.style.transform = 'scale(' + (1 + (scale-1)/6) + ')';
+  }
+
+  range.addEventListener('input', e => setZoom(e.target.value));
+  resetBtn.addEventListener('click', () => { range.value = 100; setZoom(100); });
+  inBtn.addEventListener('click', () => { range.value = Math.min(140, +range.value + 10); setZoom(range.value); });
+  outBtn.addEventListener('click', () => { range.value = Math.max(70, +range.value - 10); setZoom(range.value); });
+
+  // Initialize
+  setZoom(range.value);
+
+  // Subtle parallax based on mouse movement
+  const blobs = document.querySelector('.blobs');
+  document.addEventListener('mousemove', (e) => {
+    const w = window.innerWidth, h = window.innerHeight;
+    const nx = (e.clientX / w - 0.5) * 2; // -1..1
+    const ny = (e.clientY / h - 0.5) * 2;
+    blobs.style.transform = `translate3d(${nx * 6}px, ${ny * 6}px, 0)`;
+  }, {passive:true});
+
+  // Respect reduced motion preference
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.blob').forEach(b => b.style.animation = 'none');
+    document.querySelectorAll('*').forEach(n => n.style.transition = 'none');
+  }
+</script>
+</body>
+</html>
