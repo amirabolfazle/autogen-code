@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#020617;
+      --bg2:#071026;
+      --neon-cyan:#00f0ff;
+      --neon-pink:#ff2dcb;
+      --neon-purple:#9b5cff;
+      --glass: rgba(255,255,255,0.03);
+      --muted:#9aa7b2;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(0,240,255,0.04), transparent),
+                  radial-gradient(800px 400px at 90% 90%, rgba(255,45,203,0.03), transparent),
+                  linear-gradient(120deg,var(--bg1),var(--bg2));
+      color: #e6f7ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    /* subtle moving gradient overlay */
+    .aurora{
+      position:fixed;
+      inset:-20%;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(0,240,255,0.04), rgba(155,92,255,0.04), rgba(255,45,203,0.04), rgba(0,240,255,0.04));
+      filter: blur(60px) saturate(120%);
+      animation: rotateAurora 25s linear infinite;
+      pointer-events:none;
+      mix-blend-mode: screen;
+      opacity:0.9;
+    }
+    @keyframes rotateAurora{ to{ transform: rotate(360deg) } }
+
+    .wrap{
+      text-align:center;
+      padding:48px;
+      border-radius:16px;
+      backdrop-filter: blur(6px) saturate(120%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6), 0 0 80px rgba(0,240,255,0.03);
+      max-width:900px;
+      width:calc(100% - 80px);
+    }
+
+    h1{
+      font-size:clamp(36px,8vw,88px);
+      line-height:0.9;
+      margin:10px 0 14px;
+      letter-spacing:0.02em;
+      color:var(--neon-cyan);
+      text-transform:lowercase;
+      text-shadow:
+        0 0 6px rgba(0,240,255,0.9),
+        0 0 18px rgba(0,240,255,0.25),
+        0 0 36px rgba(155,92,255,0.08);
+      display:inline-block;
+      padding:8px 18px;
+      border-radius:10px;
+      transform-origin:center;
+      animation: neonPulse 3.6s ease-in-out infinite, zoomFloat 6s ease-in-out infinite;
+    }
+    @keyframes neonPulse{
+      0%,100%{ filter:brightness(1); text-shadow:0 0 6px rgba(0,240,255,0.85),0 0 18px rgba(0,240,255,0.25),0 0 36px rgba(155,92,255,0.08) }
+      40%{ filter:brightness(1.15); text-shadow:0 0 12px rgba(0,240,255,1),0 0 32px rgba(155,92,255,0.18),0 0 64px rgba(255,45,203,0.06) }
+    }
+    @keyframes zoomFloat{
+      0%{ transform: translateY(0) scale(1) }
+      50%{ transform: translateY(-6px) scale(1.02) }
+      100%{ transform: translateY(0) scale(1) }
+    }
+
+    .subtitle{
+      font-size:16px;
+      color:var(--muted);
+      margin-bottom:18px;
+      display:block;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+
+    .time{
+      margin:14px 0 22px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      color:#bfefff;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:10px 14px;
+      border-radius:10px;
+      display:inline-block;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+      transform-origin:center;
+      transition: transform .18s ease;
+    }
+    .time:hover{ transform: scale(1.03) }
+
+    /* small animated neon dots */
+    .dots{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:18px;
+      opacity:0.9;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      box-shadow:0 0 8px currentColor, 0 0 18px currentColor;
+      animation: blink 2.8s infinite;
+      opacity:0.88;
+    }
+    .dot.c1{ background:var(--neon-cyan); color:var(--neon-cyan); animation-delay:0s }
+    .dot.c2{ background:var(--neon-pink); color:var(--neon-pink); animation-delay:.4s }
+    .dot.c3{ background:var(--neon-purple); color:var(--neon-purple); animation-delay:.8s }
+    @keyframes blink{
+      0%,100%{ transform:scale(1); opacity:0.9 }
+      50%{ transform:scale(1.6); opacity:1 }
+    }
+
+    footer{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:14px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,0.02);
+    }
+
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--neon-cyan);
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:8px;
+      transition: transform .16s ease, box-shadow .16s ease;
+      box-shadow: 0 6px 18px rgba(0,240,255,0.04);
+      background: linear-gradient(90deg, rgba(0,240,255,0.02), rgba(155,92,255,0.01));
+    }
+    .gh:hover{ transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 48px rgba(0,240,255,0.08); }
+
+    .gh svg{ filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
+
+    /* responsive spacing */
+    @media (max-width:520px){
+      .wrap{ padding:28px }
+      footer{ flex-direction:column; gap:8px }
+    }
+  </style>
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="wrap" role="main" aria-labelledby="site-title">
+    <div class="subtitle">neon portfolio</div>
+    <h1 id="site-title" aria-live="polite">amirabolfazle</h1>
+    <div class="time" title="creation time">Created: 2025-09-28 21:01:40</div>
+
+    <div class="dots" aria-hidden="true">
+      <div class="dot c1"></div>
+      <div class="dot c2"></div>
+      <div class="dot c3"></div>
+    </div>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.1 0 0 .67-.21 2.2.82a7.55 7.55 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.09.16 1.9.08 2.1.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span style="font-weight:600;color:inherit;">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+</body>
+</html>
