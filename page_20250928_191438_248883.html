@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#f8f7ff;
+    --pastel-1: #ffd6e0;
+    --pastel-2: #d9f7e9;
+    --pastel-3: #e7e5ff;
+    --accent:#9aa8ff;
+    --muted:#7b7272;
+    --card-glass: rgba(255,255,255,0.55);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg,var(--bg), #fff 60%);
+    color:#122;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* Pastel animated blobs */
+  .blobs{
+    position:fixed;
+    left:50%;
+    top:10%;
+    width:160vmax;
+    height:160vmax;
+    transform:translateX(-50%);
+    pointer-events:none;
+    z-index:0;
+    filter:blur(60px) saturate(120%);
+    opacity:0.9;
+  }
+  .blob{
+    position:absolute;
+    border-radius:48%;
+    mix-blend-mode:screen;
+    opacity:0.9;
+    transform-origin:center;
+    animation:float 12s linear infinite;
+  }
+  .b1{
+    width:38%;
+    height:38%;
+    left:-6%;
+    top:-8%;
+    background: radial-gradient(circle at 30% 20%, var(--pastel-1) 0%, transparent 40%), linear-gradient(135deg, var(--pastel-1), #ffe0f0 60%);
+    animation-duration:18s; animation-direction:alternate;
+  }
+  .b2{
+    width:42%;
+    height:42%;
+    right:-10%;
+    top:6%;
+    background: radial-gradient(circle at 70% 30%, var(--pastel-2) 0%, transparent 45%), linear-gradient(110deg, #d7ffe9, var(--pastel-2));
+    animation-duration:16s; animation-direction:alternate-reverse;
+  }
+  .b3{
+    width:44%;
+    height:44%;
+    left:18%;
+    bottom:-10%;
+    background: radial-gradient(circle at 40% 60%, var(--pastel-3) 0%, transparent 40%), linear-gradient(220deg, #eaeaff, var(--pastel-3));
+    animation-duration:20s;
+  }
+  @keyframes float{
+    0%{transform:translateY(0) rotate(0deg) scale(1)}
+    50%{transform:translateY(-6vh) rotate(12deg) scale(1.05)}
+    100%{transform:translateY(0) rotate(0deg) scale(1)}
+  }
+
+  /* Layout */
+  .wrap{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:48px 20px 120px;
+    gap:28px;
+  }
+
+  header{
+    width:100%;
+    max-width:1100px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .logo{
+    width:64px;height:64px;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.25));
+    box-shadow: 0 6px 24px rgba(17,20,30,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
+    transform:rotate(-8deg);
+    transition:transform .45s cubic-bezier(.2,.9,.2,1);
+  }
+  .logo:hover{transform:rotate(0deg) scale(1.05)}
+  .logo svg{width:44px;height:44px;filter:drop-shadow(0 6px 10px rgba(0,0,0,0.06))}
+
+  h1{
+    margin:0;
+    font-size:28px;
+    letter-spacing:0.4px;
+    color:#1a2230;
+  }
+  .meta{
+    font-size:13px;
+    color:var(--muted);
+    background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+    padding:8px 12px;
+    border-radius:999px;
+    box-shadow:0 6px 18px rgba(17,20,30,0.04);
+  }
+
+  main{
+    width:100%;
+    max-width:1100px;
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    gap:26px;
+    align-items:start;
+  }
+
+  /* Left column - cards */
+  .cards{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:18px;
+  }
+  .card{
+    position:relative;
+    background: linear-gradient(180deg, var(--card-glass), rgba(255,255,255,0.35));
+    border-radius:14px;
+    padding:18px;
+    min-height:120px;
+    box-shadow: 0 8px 26px rgba(17,20,30,0.06);
+    backdrop-filter: blur(8px) saturate(105%);
+    overflow:hidden;
+    transition:transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .3s;
+    transform-origin:center;
+  }
+  .card:hover{
+    transform:translateY(-8px) rotate(0deg) scale(1.02);
+    box-shadow: 0 20px 46px rgba(17,20,30,0.12);
+  }
+
+  /* rotate offsets for the playful look */
+  .card:nth-child(1){ transform:rotate(-6deg); }
+  .card:nth-child(2){ transform:rotate(4deg); }
+  .card:nth-child(3){ transform:rotate(-3deg); }
+  .card:nth-child(4){ transform:rotate(5deg); }
+
+  .card .title{
+    font-weight:600;
+    margin:0 0 8px 0;
+    color:#18212f;
+  }
+  .card p{margin:0;color:#3b4855;font-size:14px;line-height:1.45}
+
+  .projects{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .proj{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px;
+    border-radius:10px;
+    transition:transform .35s, background .35s;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+  }
+  .proj:hover{transform:translateX(8px)}
+  .dot{
+    width:44px;height:44px;border-radius:10px;display:grid;place-items:center;font-weight:700;
+    color:#fff;
+    box-shadow:0 8px 20px rgba(17,20,30,0.06);
+  }
+  .dot.p1{background:linear-gradient(135deg,#ffb4d2,#ffdfef)}
+  .dot.p2{background:linear-gradient(135deg,#c5ffd8,#b5fff1)}
+  .dot.p3{background:linear-gradient(135deg,#d3d7ff,#f0ecff)}
+
+  aside{
+    align-self:start;
+    border-radius:14px;
+    padding:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+    box-shadow:0 10px 30px rgba(17,20,30,0.06);
+    min-height:220px;
+  }
+  .about{
+    font-size:14px;
+    color:#2a3945;
+    line-height:1.5;
+  }
+
+  .time{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--muted);
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background: rgba(255,255,255,0.55);
+    padding:8px 14px;
+    border-radius:999px;
+    box-shadow:0 10px 30px rgba(17,20,30,0.08);
+    backdrop-filter: blur(6px);
+    font-size:13px;
+    color:#28323b;
+  }
+  .gh{
+    display:inline-grid;
+    place-items:center;
+    width:36px;height:36px;border-radius:10px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+    transition:transform .18s;
+  }
+  .gh:hover{transform:scale(1.06)}
+  .gh svg{width:20px;height:20px;display:block;fill:#111827}
+
+  /* Responsive */
+  @media (max-width:900px){
+    main{grid-template-columns:1fr; padding-bottom:60px}
+    .cards{grid-template-columns:1fr}
+    header{flex-direction:column;align-items:flex-start;gap:12px}
+    footer{left:12px;transform:none}
+  }
+</style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- abstract A monogram -->
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="amirabolfazle logo">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#ffd6e0"/>
+                <stop offset="1" stop-color="#d9f7e9"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="64" height="64" rx="12" fill="url(#g)"/>
+            <path d="M16 44 L28 16 L40 44 L34 44 L32 36 L24 36 L22 44 Z" fill="#ffffff" opacity="0.92"/>
+            <circle cx="46" cy="18" r="4" fill="#9aa8ff" opacity="0.95"/>
+          </svg>
+        </div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="meta">designer • developer • maker</div>
+        </div>
+      </div>
+
+      <div class="meta" title="Creation time">Creation time: 2025-09-28 19:13:44</div>
+    </header>
+
+    <main>
+      <section>
+        <div class="cards" aria-live="polite">
+          <article class="card">
+            <h3 class="title">About</h3>
+            <p class="about">Hello — I'm amirabolfazle. I build calm, colorful interfaces and small tools that make daily work more delightful. I enjoy playful motion, thoughtful typography, and code that runs lean.</p>
+          </article>
+
+          <article class="card">
+            <h3 class="title">Featured Project</h3>
+            <p>Autogen-Code — a small toolkit to scaffold projects with opinionated defaults. Lightweight, scriptable, and friendly for experimentation.</p>
+          </article>
+
+          <article class="card">
+            <h3 class="title">Skills</h3>
+            <p>HTML • CSS • JavaScript • UI Design • Prototyping • Small-Scale Tooling</p>
+          </article>
+
+          <article class="card">
+            <h3 class="title">Philosophy</h3>
+            <p>Design for clarity, build for joy. Small wins stack — a tiny improvement today saves effort tomorrow.</p>
+          </article>
+        </div>
+
+        <div style="margin-top:18px">
+          <h3 style="margin:0 0 10px 0;color:#243142">Projects</h3>
+          <div class="projects">
+            <a class="proj" href="#" style="text-decoration:none;color:inherit" aria-label="Project one">
+              <div class="dot p1">A</div>
+              <div>
+                <div style="font-weight:600">Autogen-Code</div>
+                <div style="font-size:13px;color:var(--muted)">Scaffold and generate consistent project setups</div>
+              </div>
+            </a>
+
+            <a class="proj" href="#" style="text-decoration:none;color:inherit" aria-label="Project two">
+              <div class="dot p2">UI</div>
+              <div>
+                <div style="font-weight:600">Pastel UI</div>
+                <div style="font-size:13px;color:var(--muted)">A tiny CSS utility for playful pastel palettes</div>
+              </div>
+            </a>
+
+            <a class="proj" href="#" style="text-decoration:none;color:inherit" aria-label="Project three">
+              <div class="dot p3">Toy</div>
+              <div>
+                <div style="font-weight:600">Tiny Tools</div>
+                <div style="font-size:13px;color:var(--muted)">Command-line helpers for repetitive tasks</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <aside>
+        <h3 style="margin-top:0">Contact</h3>
+        <p style="margin:6px 0 0 0;color:#34414a">Open to small collaborations, short gigs, and friendly chats about design systems or tiny automation. Ping me and let's see what we can make together.</p>
+
+        <div class="time" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" style="opacity:.85"><path fill="currentColor" d="M12 1A11 11 0 1 0 23 12 11.013 11.013 0 0 0 12 1Zm1 12.59V7a1 1 0 0 0-2 0v6a1 1 0 0 0 .553.894l3.5 1.75a1 1 0 0 0 .894-1.788Z"/></svg>
+          <div>2025-09-28 19:13:44</div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <footer>
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub: amirabolfazle/autogen-code">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.45-3.88-1.45-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.72-1.54-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.07 0 0 .96-.31 3.14 1.18a10.87 10.87 0 0 1 2.86-.38c.97 0 1.95.13 2.86.38 2.18-1.5 3.14-1.18 3.14-1.18.62 1.6.23 2.78.11 3.07.73.81 1.18 1.84 1.18 3.1 0 4.44-2.71 5.42-5.29 5.7.41.36.78 1.08.78 2.18 0 1.58-.01 2.86-.01 3.25 0 .3.21.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+      </svg>
+    </a>
+    <div>Created by amirabolfazle</div>
+  </footer>
+</body>
+</html>
