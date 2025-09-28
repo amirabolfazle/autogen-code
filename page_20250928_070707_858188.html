@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0a14;
+      --bg2: #0b0e1a;
+      --fg: #e9eafc;
+      --neon1: #00e5ff;
+      --neon2: #ff3d81;
+      --neon3: #8a2be2;
+      --card: rgba(13, 13, 28, 0.9);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--fg);
+      background: #06070d;
+      background-image:
+        radial-gradient(circle at 20% 0%, rgba(0, 229, 255, 0.08), transparent 40%),
+        radial-gradient(circle at 85% 0%, rgba(138, 43, 226, 0.08), transparent 40%),
+        linear-gradient(#06070d, #04040f 60%, #06070d);
+      overflow-x: hidden;
+    }
+
+    /* Neon glow overlay grid */
+    body:before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,0,208,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header.hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 72px 16px 40px;
+      overflow: hidden;
+    }
+
+    /* Neon title */
+    .logo {
+      font-weight: 900;
+      font-size: clamp(40px, 8vw, 92px);
+      letter-spacing: 2px;
+      margin: 0.2em 0 0.25em;
+      background: linear-gradient(90deg, var(--neon2), var(--neon1), var(--neon3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 6px rgba(255, 61, 129, 0.9),
+        0 0 16px rgba(0,229,255,.8),
+        0 0 40px rgba(138,43,226,.6);
+      user-select: none;
+    }
+
+    .tagline {
+      font-size: 1.05rem;
+      color: #dbe6ff;
+      opacity: 0.92;
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      display: inline-block;
+      padding: .25em 0;
+      text-shadow: 0 0 6px rgba(0, 229, 255, 0.6);
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin-top: 14px;
+      border: 1px solid rgba(0,255,255,0.25);
+      background: rgba(2, 6, 23, 0.5);
+      color: #b9eaff;
+      text-shadow: 0 0 8px rgba(0,255,255,0.8);
+    }
+
+    .creation .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--neon1);
+      box-shadow: 0 0 10px var(--neon1);
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.9; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.9; }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      padding: 40px 20px 80px;
+    }
+
+    section { max-width: 1100px; margin: 0 auto; padding: 28px 14px; }
+
+    h2 {
+      font-size: 1.6rem;
+      margin: 0 0 12px;
+      color: #e8faff;
+      text-shadow: 0 0 12px rgba(0,255,255,.6);
+    }
+
+    p { color: #d9e6ff; line-height: 1.6; }
+
+    /* Cards grid for projects */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(0,255,255,.25);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 170px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 26px rgba(0,255,255,.12);
+    }
+
+    .card .thumb {
+      height: 8px;
+      width: 100%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
+      filter: saturate(1.1);
+      box-shadow: 0 0 12px rgba(0,255,255,.8);
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0,255,255,.8);
+    }
+    .card p { margin: 0; color: #cbdfff; }
+
+    /* Skill list */
+    .skills { 
+      display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 8px 0 0;
+      list-style: none;
+    }
+    .skills li {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.3);
+      background: rgba(0, 0, 0, 0.25);
+      color: #eaffff;
+      font-size: 0.92rem;
+      box-shadow: 0 2px 8px rgba(0,255,255,.15);
+    }
+
+    /* Footer with neon GitHub icon and creator text */
+    footer.footer {
+      text-align: center;
+      padding: 28px 12px 60px;
+      margin-top: 20px;
+      color: #b9eaff;
+      border-top: 1px solid rgba(0,255,255,.15);
+      background: linear-gradient(to top, rgba(2,6,23,.8), rgba(2,6,23,.4), rgba(2,6,23,0.0));
+    }
+
+    .footer a.git {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 8px;
+      color: #b9eaff;
+      margin-right: 8px;
+      transition: transform .2s ease;
+      text-decoration: none;
+      border: 1px solid rgba(0,255,255,.4);
+      background: rgba(0,0,0,.25);
+      box-shadow: 0 0 12px rgba(0,255,255,.4);
+    }
+    .footer a.git:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 0 16px rgba(0,255,255,.8); }
+
+    /* Neon glow for headings and sections when in view */
+    .glow {
+      text-shadow: 0 0 14px rgba(0,255,255,.7),
+                   0 0 28px rgba(138,43,226,.5);
+    }
+
+    /* Slide-up animation on reveal */
+    .slide {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .slide.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Subtle responsive tweaks */
+    @media (max-width: 600px) {
+      header.hero { padding: 48px 12px 28px; }
+      .logo { font-size: 52px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero slide" aria-label="Intro">
+    <div class="creation-dot" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">Creation timestamp</div>
+    <div class="logo" title="amirabolfazle">amirabolfazle</div>
+    <div class="tagline glow" aria-label="Designer tagline">Neon portfolio • Interactive UI</div>
+    <div class="creation" style="margin-top:14px;">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Created: 2025-09-28 07:06:39</span>
+    </div>
+  </header>
+
+  <main>
+    <section id="about" class="slide" aria-labelledby="about-title">
+      <h2 id="about-title" class="glow">About</h2>
+      <p>
+        I’m a frontend developer exploring bold neon aesthetics and playful interactions.
+        This single-file portfolio showcases experiments in motion, glow, and clean code.
+      </p>
+    </section>
+
+    <section id="projects" class="slide" aria-labelledby="projects-title">
+      <h2 id="projects-title" class="glow">Projects</h2>
+      <div class="grid" role="list">
+        <article class="card" role="listitem">
+          <div class="thumb"></div>
+          <h3>AutoGen Studio (Demo)</h3>
+          <p>A single-file demo that generates boilerplate scaffolds with neon flair.</p>
+        </article>
+        <article class="card" role="listitem">
+          <div class="thumb"></div>
+          <h3>Pulse UI Kit</h3>
+          <p>Composable components with glow and slide-up interactions.</p>
+        </article>
+        <article class="card" role="listitem">
+          <div class="thumb"></div>
+          <h3>Neon Transitions</h3>
+          <p>Micro-interactions and motion curves that feel alive.</p>
+        </article>
+        <article class="card" role="listitem">
+          <div class="thumb"></div>
+          <h3>Live Playground</h3>
+          <p>Experiment with CSS and JS to push the neon aesthetic further.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="slide" aria-labelledby="skills-title">
+      <h2 id="skills-title" class="glow">Skills</h2>
+      <ul class="skills" aria-label="Skills list">
+        <li>HTML & semantic structure</li>
+        <li>CSS with custom properties and transitions</li>
+        <li>JavaScript for interactivity</li>
+        <li>Accessible UI patterns</li>
+        <li>Performance-conscious design</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer slide" aria-label="Footer">
+    <a class="git" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" title="GitHub repository">
+      <!-- GitHub Icon (SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub" role="img" style="display:block;">
+        <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.06-.02-2.09-3.34.73-4.04-1.61-4.04-1.61-.55-1.41-1.34-1.79-1.34-1.79-1.09-.74.08-.72.08-.72 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.4 1.24-3.25-.12-.31-.54-1.56.12-3.25 0 0 1-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.69.24 2.94.12 3.25.77.85 1.23 1.93 1.23 3.25 0 4.62-2.8 5.65-5.47 5.95.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.69.83.57C18.7 22.5 24 17.69 24 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple intersection observer for slide-up reveal
+    (function(){
+      const observers = [];
+      const elements = document.querySelectorAll('.slide');
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+      };
+
+      const onIntersect = (entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('visible');
+          }
+        });
+      };
+
+      const observer = new IntersectionObserver(onIntersect, options);
+      elements.forEach(el => observer.observe(el));
+      // In case some elements are already in view (e.g., on load)
+      window.addEventListener('load', () => {
+        elements.forEach(el => {
+          if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+            el.classList.add('visible');
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
