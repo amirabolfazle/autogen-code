@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: rgba(255,255,255,0.15);
+      --bg2: rgba(255,255,255,0.08);
+      --blur: 16px;
+      --text: #eaf2ff;
+      --soft: rgba(255,255,255,0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #eaf2ff;
+      background: linear-gradient(135deg, #0f1020 0%, #1a1030 40%, #0b1f2d 100%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="%2311111f" offset="0"/><stop stop-color="%23444466" offset="1"/></linearGradient></defs><rect width="100%" height="100%" fill="%230b1f2d"/><circle cx="200" cy="240" r="180" fill="url(%23g)" fill-opacity="0.25"/><circle cx="980" cy="520" r="260" fill="url(%23g)" fill-opacity="0.25"/></svg>');
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    @media (prefers-color-scheme: light) {
+      body { color: #111; background: #f7f7fb; }
+    }
+    .app {
+      min-height: 100%;
+      padding: 40px 20px 100px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .container {
+      width: min(100%, 980px);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      animation: fadeIn 1s ease forwards;
+      opacity: 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand .avatar {
+      width: 46px; height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.3));
+      display: grid;
+      place-items: center;
+      color: #0b1f2d;
+      font-weight: 700;
+      font-size: 20px;
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
+      backdrop-filter: blur(2px);
+    }
+    .brand h1 {
+      font-size: 26px;
+      margin: 0;
+      letter-spacing: .5px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn {
+      appearance: none;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.25);
+      border: 1px solid rgba(255,255,255,0.6);
+      color: #0b1f2d;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+      backdrop-filter: blur(6px);
+    }
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.35); }
+    .hero {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+    }
+    .card {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 26px;
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      animation: fadeInUp 1s ease both;
+      opacity: 0;
+    }
+    .card h2 { margin-top: 0; font-size: 22px; }
+    .card p { color: #e6f0ff; line-height: 1.6; }
+    .kbd {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.25);
+      color: #e8f0ff;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .brand-name {
+      font-weight: 800;
+      font-size: 54px;
+      line-height: 1.05;
+      margin: 0 0 8px;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #e6f1ff, #d8c9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      animation: glow 3s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%,100% { text-shadow: 0 0 0 rgba(0,0,0,0); }
+      50% { text-shadow: 0 0 18px rgba(120, 180, 255, 0.8); }
+    }
+    .subtitle {
+      font-size: 16px; color: #dbeaff;
+      opacity: 0.95;
+    }
+    .creation-time {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.5);
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono";
+      font-size: 13px;
+    }
+    .creation-time .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #64d6ff; box-shadow: 0 0 8px #64d6ff;
+    }
+    .avatar-circle {
+      width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.2) 40%), linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.15));
+      display: grid; place-items: center;
+      color: #0b1f2d; font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: inset 0 8px 20px rgba(0,0,0,0.07);
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .right {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .right .glass {
+      width: 100%; max-width: 420px;
+      padding: 26px;
+    }
+    .section { margin-top: 14px; }
+    .info-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px;
+    }
+    .info {
+      padding: 12px 12px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 12px;
+    }
+    .info small { display:block; color: #dbeaff; opacity: 0.9; }
+    .info strong { display:block; margin-top: 6px; font-size: 14px; color: #fff; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .header { flex-wrap: wrap; }
+      .avatar-circle { width: 140px; height: 140px; }
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .footer {
+      margin-top: 40px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 18px;
+    }
+    .footer a { color: inherit; text-decoration: none; }
+    .github {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.5);
+      transition: transform 0.2s ease;
+    }
+    .github:hover { transform: translateY(-1px); background: rgba(255,255,255,0.28); }
+    .github svg { width: 20px; height: 20px; fill: currentColor; color: #0b1f2d; }
+    .footer .credit {
+      margin-left: 12px;
+      font-size: 14px;
+      color: #cbdafc;
+    }
+    .brand-gradient {
+      background: linear-gradient(135deg, #a6e4ff 0%, #ffb0f0 50%, #a6ffde 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="container">
+      <header class="header" aria-label="Site header">
+        <div class="brand" >
+          <div class="avatar" aria-label="avatar" style="display:none"></div>
+          <div class="avatar-circle" aria-label="avatar circle" style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.2) 40%), linear-gradient(135deg, rgba(0,0,0,0.05), rgba(255,255,255,0.15));">
+            AA
+          </div>
+          <div>
+            <h1 class="brand-name" style="margin:0; font-size: clamp(28px, 5vw, 54px);">amirabolfazle</h1>
+            <div class="subtitle" aria-label="subtitle" style="font-size:12.5px; letter-spacing:.4px;">personal page</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn" aria-label="download resume">Resume</button>
+          <button class="btn" aria-label="contact">Contact</button>
+        </div>
+      </header>
+
+      <section class="hero" aria-label="Introduction">
+        <div class="card hero-left" style="animation-delay:.05s;">
+          <div class="creation-time" title="Creation time">
+            <span class="dot" aria-hidden="true"></span>
+            Created at 2025-09-28 06:27:30
+          </div>
+          <h2 style="margin-top:6px; font-size: 26px; letter-spacing:.4px; color:#fff;">Hello, I’m amirabolfazle</h2>
+          <p class="subtitle" style="font-size: 14px; margin-bottom: 8px; color:#e8f0ff;">
+            I’m a curious explorer of code, design and ideas. I craft small experiences with a glassy touch.
+          </p>
+
+          <div class="section" aria-label="quick-stats" style="margin-top:8px;">
+            <div class="info-grid">
+              <div class="info" aria-label="location">
+                <small>Location</small>
+                <strong>Remote</strong>
+              </div>
+              <div class="info" aria-label="status">
+                <small>Status</small>
+                <strong>Open to projects</strong>
+              </div>
+              <div class="info" aria-label="tech">
+                <small>Tech</small>
+                <strong>JS, TS, Python</strong>
+              </div>
+              <div class="info" aria-label="hobbies">
+                <small>Hobbies</small>
+                <strong>Photography, UI/UX</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right" aria-label="profile-panel">
+          <div class="glass card" style="padding:0; overflow:hidden; display:flex; align-items:center; justify-content:center; height: 100%; min-height: 210px;">
+            <div class="avatar-circle" style="width:160px; height:160px; border-radius:50%; font-size:48px; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.25) 40%), linear-gradient(135deg, rgba(180,230,255,0.9), rgba(230, 180, 255, 0.6)); color:#0b1f2d;">
+              AA
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-label="about">
+        <div class="card" style="animation-delay:.15s;">
+          <h2>About</h2>
+          <p>Hi, I’m amirabolfazle. This section is a little window into my journey—focused on clean code, thoughtful UX, and small, delightful details.</p>
+          <p>Typical projects lean toward web apps, tooling, and thoughtful UI components. I like to prototype with quick feedback loops and celebrate clever, simple solutions.</p>
+        </div>
+      </section>
+
+      <section class="section" aria-label="skills">
+        <div class="card" style="animation-delay:.25s;">
+          <h2>Skills</h2>
+          <div class="info-grid" style="grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));">
+            <div class="info"><strong>JavaScript</strong><br/><small>ES6+ / TS</small></div>
+            <div class="info"><strong>React</strong><br/><small>Hooks, UX</small></div>
+            <div class="info"><strong>Python</strong><br/><small>Data, scripting</small></div>
+            <div class="info"><strong>CSS</strong><br/><small>Glassmorphism</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-label="projects">
+        <div class="card" style="animation-delay:.35s;">
+          <h2>Projects</h2>
+          <p>Open-source snippets and autogen code snippets. Quick, clean, and reusable.</p>
+          <ul style="margin:6px 0 0 18px; padding:0;">
+            <li>Autogenerated code utilities</li>
+            <li>UI components library experiments</li>
+            <li>Small tooling for faster prototyping</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer" aria-label="site footer">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.69.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.61-3.37-1.26-3.37-1.26-.45-1.15-1.11-1.46-1.11-1.46-.91-.63.07-.62.07-.62 1.01.07 1.54 1.08 1.54 1.08.9 1.58 2.37 1.12 2.95.86.09-.66.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.04 0-1.12.4-2.04 1.04-2.76-.11-.26-.46-1.31.1-2.73 0 0 .85-.28 2.8 1.04a9.35 9.35 0 012.55-.37c.87.01 1.75.12 2.57.37 1.95-1.32 2.8-1.04 2.8-1.04.56 1.42.21 2.47.1 2.73.65.72 1.04 1.64 1.04 2.76 0 3.91-2.34 4.77-4.57 5.04.36.32.69.95.69 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49A10.01 10.01 0 0022 12.26C22 6.58 17.52 2 12 2z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <span class="credit">Created by amirabolfazle</span>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
