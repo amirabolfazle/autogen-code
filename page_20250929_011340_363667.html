@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --accent1: 48, 198, 255; /* cyan */
+      --accent2: 163, 102, 255; /* purple */
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --muted: rgba(255,255,255,0.7);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(var(--accent2)/0.10) 0%, transparent 12%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(var(--accent1)/0.10) 0%, transparent 12%),
+                  linear-gradient(180deg,#031026 0%, #071227 25%, #0b1830 100%);
+      color: #fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* animated ambient background */
+    .ambient{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:visible;
+      z-index:0;
+    }
+    .blob{
+      position:absolute;
+      filter: blur(60px) saturate(140%);
+      opacity:0.65;
+      mix-blend-mode:screen;
+      border-radius:50%;
+      transform-origin:center;
+      animation: float 8s ease-in-out infinite;
+      will-change: transform;
+    }
+    .blob.a{width:420px;height:420px;left:-8%;top:10%;background:linear-gradient(135deg, rgba(var(--accent1)/1), rgba(var(--accent2)/0.85)); animation-duration:12s; animation-delay:0s;}
+    .blob.b{width:360px;height:360px;right:-6%;bottom:2%;background:linear-gradient(45deg, rgba(var(--accent2)/0.95), rgba(var(--accent1)/0.75)); animation-duration:10s; animation-delay:2s;opacity:0.6}
+    .blob.c{width:180px;height:180px;left:50%;top:60%;background:linear-gradient(90deg, rgba(255,200,120,0.9), rgba(var(--accent1)/0.6)); animation-duration:14s; animation-delay:4s; opacity:0.45}
+
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      25%{transform:translateY(-24px) scale(1.05)}
+      50%{transform:translateY(6px) scale(0.98)}
+      75%{transform:translateY(-12px) scale(1.02)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    /* Card */
+    .stage{
+      position:relative;
+      z-index:5;
+      width:min(960px, 92vw);
+      margin:40px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:20px;
+      align-items:center;
+      justify-items:center;
+    }
+
+    .card{
+      width:100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      padding:28px;
+      backdrop-filter: blur(12px) saturate(140%);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      text-align:center;
+      transition:transform .4s cubic-bezier(.2,.9,.3,1), box-shadow .3s;
+      transform-origin:center;
+      overflow:hidden;
+    }
+
+    .card:hover{
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.72);
+    }
+
+    h1{
+      margin:6px 0 0 0;
+      font-weight:800;
+      font-size:clamp(28px,6.5vw,56px);
+      letter-spacing:-0.03em;
+      line-height:1;
+      background: linear-gradient(90deg, rgba(var(--accent1),1), rgba(var(--accent2),1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      display:inline-block;
+      animation: bounce 1.8s cubic-bezier(.2,.9,.3,1) infinite;
+      will-change:transform;
+      text-shadow: 0 6px 24px rgba(11,23,48,0.6);
+    }
+
+    @keyframes bounce{
+      0%{transform:translateY(0)}
+      16%{transform:translateY(-18px)}
+      34%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+      66%{transform:translateY(0)}
+      100%{transform:translateY(0)}
+    }
+
+    .sub{
+      color:var(--muted);
+      font-weight:500;
+      font-size:clamp(13px,2.2vw,16px);
+      margin:0;
+      max-width:720px;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .pill{
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+      transform-origin:center;
+      animation: subtle-bounce 3.6s ease-in-out infinite;
+    }
+
+    @keyframes subtle-bounce{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+      margin-top:6px;
+    }
+
+    .btn{
+      --grad: linear-gradient(90deg, rgba(var(--accent1),1), rgba(var(--accent2),0.95));
+      padding:12px 18px;
+      border-radius:12px;
+      border: none;
+      cursor:pointer;
+      font-weight:600;
+      color:white;
+      background:var(--grad);
+      box-shadow: 0 8px 24px rgba(12,20,40,0.45);
+      transition:transform .18s ease, box-shadow .18s ease, opacity .18s;
+      font-size:14px;
+    }
+    .btn:active{transform:translateY(2px) scale(.997)}
+    .ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.08);
+      color:var(--muted);
+      box-shadow:none;
+    }
+
+    .bounce-dots{
+      display:flex;
+      gap:8px;
+      margin-top:12px;
+      align-items:flex-end;
+      height:18px;
+    }
+    .bounce-dots span{
+      width:8px;
+      height:8px;
+      background:rgba(255,255,255,0.9);
+      border-radius:50%;
+      display:inline-block;
+      animation: dot-bounce 1.2s infinite ease-in-out;
+      opacity:0.9;
+      transform-origin:center bottom;
+      box-shadow: 0 6px 14px rgba(2,6,23,0.45);
+    }
+    .bounce-dots span:nth-child(2){animation-delay:0.12s; background:linear-gradient(90deg, rgba(var(--accent1),1), rgba(var(--accent2),1))}
+    .bounce-dots span:nth-child(3){animation-delay:0.24s;background:linear-gradient(90deg, rgba(var(--accent2),1), rgba(var(--accent1),0.9))}
+    @keyframes dot-bounce{
+      0%{transform:translateY(0) scaleY(1)}
+      40%{transform:translateY(-12px) scaleY(1.25)}
+      70%{transform:translateY(0) scaleY(1)}
+      100%{transform:translateY(0)}
+    }
+
+    .creation{
+      margin-top:6px;
+      font-size:13px;
+      color:rgba(255,255,255,0.65);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    /* Footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      z-index:9;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+    }
+    footer a{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      font-size:13px;
+    }
+    .gh{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      transition:transform .18s cubic-bezier(.2,.9,.3,1);
+      filter: drop-shadow(0 6px 18px rgba(11,23,48,0.6));
+    }
+    footer a:hover .gh{transform:translateY(-4px) scale(1.02)}
+    footer a:hover{color:white}
+
+    /* Responsive tweaks */
+    @media (min-width:880px){
+      .stage{grid-template-columns: 1fr;}
+      .card{padding:36px;}
+    }
+    @media (max-width:420px){
+      .card{padding:18px;border-radius:14px}
+      footer{bottom:12px;padding:8px 10px}
+      .pill{padding:6px 10px}
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <main class="stage" role="main">
+    <section class="card" aria-labelledby="page-title">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <svg width="54" height="54" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0;">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="rgb(48,198,255)"/>
+              <stop offset="1" stop-color="rgb(163,102,255)"/>
+            </linearGradient>
+          </defs>
+          <rect x="0.5" y="0.5" width="23" height="23" rx="6.5" stroke="rgba(255,255,255,0.06)"></rect>
+          <path d="M6 12c1.8-5 10.2-5 12 0-5.2 2.6-8.8 2.6-12 0z" fill="url(#g1)" opacity="0.95"></path>
+          <circle cx="12" cy="9" r="2.4" fill="white" opacity="0.95"></circle>
+        </svg>
+        <div style="text-align:left">
+          <h1 id="page-title">amirabolfazle</h1>
+          <p class="sub">A responsive glassmorphism demo with lively bounce animations and subtle ambient motion.</p>
+        </div>
+      </div>
+
+      <div class="meta" role="status" aria-live="polite">
+        <div class="pill" aria-hidden="true">Glassmorphism</div>
+        <div class="pill">Animated • Responsive</div>
+        <div class="pill">Bounce Effects</div>
+      </div>
+
+      <div class="cta-row" aria-hidden="false">
+        <button class="btn" onclick="document.body.classList.toggle('alt');" aria-pressed="false" title="Play with vibe">Toggle Vibe</button>
+        <a class="btn ghost" href="#creation" role="button">View Creation Time</a>
+      </div>
+
+      <div class="bounce-dots" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+
+      <div id="creation" class="creation" aria-label="Creation time">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.9">
+          <path d="M12 7v5l3 3" stroke="rgba(255,255,255,0.85)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.06)" stroke-width="1.6" fill="rgba(255,255,255,0.02)"></circle>
+        </svg>
+        <div style="font-variant:tabular-nums">Creation time: 2025-09-29 01:12:54</div>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository amirabolfazle/autogen-code">
+      <svg class="gh" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.75 5.4.75 11.78c0 4.82 3.11 8.9 7.42 10.34.54.1.74-.24.74-.52 0-.26-.01-1-.01-1.92-3.02.66-3.66-1.46-3.66-1.46-.5-1.28-1.22-1.62-1.22-1.62-.99-.67.08-.65.08-.65 1.09.08 1.67 1.12 1.67 1.12.97 1.65 2.54 1.17 3.16.9.1-.7.38-1.17.69-1.44-2.41-.28-4.95-1.21-4.95-5.38 0-1.19.43-2.16 1.12-2.92-.11-.28-.49-1.41.11-2.94 0 0 .92-.3 3.02 1.12.88-.24 1.82-.36 2.76-.36.94 0 1.88.12 2.76.36 2.1-1.42 3.02-1.12 3.02-1.12.6 1.53.22 2.66.12 2.94.7.76 1.11 1.73 1.11 2.92 0 4.18-2.55 5.09-4.98 5.36.39.34.74 1.02.74 2.06 0 1.49-.01 2.69-.01 3.05 0 .29.2.63.75.52C20.14 20.68 23.25 16.6 23.25 11.78 23.25 5.4 18.35.5 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // small interaction: toggle a subtle alternative vibe
+    (function(){
+      const btn = document.querySelector('.btn');
+      btn.addEventListener('click', function(){
+        const pressed = btn.getAttribute('aria-pressed') === 'true';
+        btn.setAttribute('aria-pressed', String(!pressed));
+      });
+
+      // optional: reduce motion respect
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced){
+        document.documentElement.style.setProperty('animation-duration','0s');
+        document.querySelectorAll('*').forEach(el=>{
+          el.style.animationDuration = '0s';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
