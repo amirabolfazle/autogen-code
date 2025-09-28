@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0b14;
+      --fg: #e6f7ff;
+      --muted: #a6f3ff;
+      --neon: #00f5ff;
+      --neon2: #ff00c8;
+      --glow: 0 0 25px rgba(0,255,255,.6);
+      --glow-2: 0 0 40px rgba(255,0,200,.6);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% -10%, rgba(0,255,255,.08), transparent 40%),
+                  radial-gradient(circle at 80% 10%, rgba(255,0,200,.08), transparent 40%),
+                  #0b0b14;
+      background-color: #0b0b14;
+      overflow-x: hidden;
+    }
+    a { color: var(--muted); text-decoration: none; }
+    a:hover { color: #9effff; text-decoration: underline; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    /* Neon header */
+    header.site-header {
+      padding: 40px 0 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand {
+      text-align: left;
+    }
+
+    .name {
+      font-size: clamp(48px, 12vw, 120px);
+      line-height: 0.95;
+      font-weight: 900;
+      margin: 0;
+      background: linear-gradient(90deg, #00eaff, #ff00c8 60%, #00ffd1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(0,255,255,.8), 0 0 24px rgba(0,255,255,.6);
+      letter-spacing: .5px;
+      filter: drop-shadow(0 0 6px rgba(0,255,255,.5));
+    }
+
+    .tagline {
+      font-size: 14px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #9efcff;
+      margin: 8px 0 0;
+      display: inline-block;
+    }
+
+    .creation-meta {
+      margin-top: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #a4fbff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.4);
+      background: rgba(0,255,255,.08);
+      text-shadow: 0 0 6px rgba(0,255,255,.4);
+      box-shadow: var(--glow);
+    }
+
+    nav.primary-nav {
+      margin-top: 18px;
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    nav.primary-nav a {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.25);
+      color: #aeefff;
+      transition: all .25s ease;
+    }
+
+    nav.primary-nav a:hover {
+      color: #fff;
+      background: rgba(0,255,255,.25);
+      box-shadow: 0 0 14px rgba(0,255,255,.6);
+      transform: translateY(-1px);
+    }
+
+    /* Sections */
+    section.section {
+      padding: 76px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .8s ease-out, transform .8s ease-out;
+    }
+    section.section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section h2 {
+      font-size: clamp(28px, 6vw, 44px);
+      margin: 0 0 12px;
+      background: linear-gradient(90deg, #00eaff, #ff00c8, #9effff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(0,255,255,.6);
+    }
+
+    .section p { color: #c8f3ff; line-height: 1.7; }
+
+    /* Projects grid (neon cards) */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(8, 8, 20, 0.6);
+      border: 1px solid rgba(0, 255, 255, .25);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: inset 0 0 12px rgba(0,255,255,.08),
+                  0 0 20px rgba(0,255,255,.25);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 24px rgba(0,255,255,.45);
+    }
+
+    .card h3 {
+      margin: 6px 0 8px;
+      font-size: 1.1rem;
+      color: #eaffff;
+      text-shadow: 0 0 6px rgba(0,255,255,.6);
+    }
+
+    .card p { margin: 0; color: #ccfbff; font-size: 0.95rem; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.3);
+      color: #bffaff;
+      background: rgba(0,255,255,.15);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.4);
+      color: #eaffff;
+      background: linear-gradient(135deg, rgba(0,255,255,.2), rgba(255,0,200,.2));
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+
+    /* Footer with GitHub icon and attribution */
+    footer.site-footer {
+      padding: 28px 0;
+      margin-top: 40px;
+      border-top: 1px solid rgba(0,255,255,.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      color: #a5fbff;
+      font-size: 14px;
+    }
+
+    .gh-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #aeefff;
+      text-decoration: none;
+    }
+
+    .gh-link:hover { color: #fff; text-decoration: none; }
+
+    .gh-icon {
+      width: 22px; height: 22px;
+      color: #aeefff;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 720px) {
+      .container { padding: 0 14px; }
+      header.site-header { padding-top: 20px; }
+      .name { font-size: 64px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header fade-in" style="--delay:0ms;">
+    <div class="container brand">
+      <h1 class="name" aria-label="amirabolfazle">amirabolfazle</h1>
+      <div class="tagline" aria-label="Neon portfolio tag">Neon Portfolio</div>
+      <div class="creation-meta" aria-label="Creation time">
+        Creation time: 2025-09-28 07:08:16
+      </div>
+
+      <nav class="primary-nav" aria-label="Main">
+        <a href="#about" >About</a>
+        <a href="#projects" >Projects</a>
+        <a href="#contact" >Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="about" class="section fade-in" aria-labelledby="about-title">
+      <div class="container">
+        <h2 id="about-title">About</h2>
+        <p>
+          I’m amirabolfazle, a frontend developer who loves clean motion, glowing interfaces, and delightfully fast web experiences.
+          I gravitate toward small, thoughtful interactions, accessible design, and bold color systems inspired by neon aesthetics.
+        </p>
+        <p>
+          Skills: HTML, CSS, JavaScript, UI/UX, animation, performance tuning, and problem-solving. I enjoy turning ideas into
+          polished, accessible interfaces that feel alive.
+        </p>
+      </div>
+    </section>
+
+    <section id="projects" class="section fade-in" aria-labelledby="projects-title">
+      <div class="container">
+        <h2 id="projects-title">Projects</h2>
+        <div class="grid" aria-label="Projects grid">
+          <article class="card fade-in" aria-labelledby="proj-autogen-title" style="animation-delay:0.05s;">
+            <h3 id="proj-autogen-title">autogen-code</h3>
+            <p>A lightweight, single-file code-generation demo inspired by AI prompts. A sparkly showcase of a neon-themed portfolio generator in one file.</p>
+            <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="Open autogen-code on GitHub">
+              View on GitHub
+              <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <!-- Additional placeholder project to emphasize the single-file theme -->
+          <article class="card fade-in" aria-labelledby="proj-demo-title" style="animation-delay:0.1s;">
+            <h3 id="proj-demo-title">neon-landing</h3>
+            <p>Demo section illustrating neon glow effects, fade-in transitions, and responsive layout in a single HTML file.</p>
+            <a class="btn" href="#" aria-label="Demo link">
+              Learn more
+              <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="card fade-in" aria-labelledby="proj-spark-title" style="animation-delay:0.15s;">
+            <h3 id="proj-spark-title">motion-icosa</h3>
+            <p>Playful micro-interactions and edge-case motion design for accessible, high-energy UI states.</p>
+            <a class="btn" href="#" aria-label="Demo link">
+              Explore
+              <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section fade-in" aria-labelledby="contact-title">
+      <div class="container">
+        <h2 id="contact-title">Contact</h2>
+        <p>
+          Want to chat about a project or collaboration? Reach me on GitHub or send a message through your preferred channel.
+        </p>
+        <p>
+          GitHub: <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">@amirabolfazle/autogen-code</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub icon (inline SVG) -->
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" role="img" width="22" height="22" focusable="false" >
+        <path d="M12 .5C5.73.5 2 5.75 2 12.28c0 4.52 2.87 8.37 6.84 9.71.5.09.68-.22.68-.49 0-.24-.01-.87-.02-1.71-2.78.63-3.37-1.35-3.37-1.35-.46-1.17-1.11-1.49-1.11-1.49-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.08 2.92.83.09-.65.36-1.08.64-1.33-2.22-.26-4.56-1.15-4.56-4.99 0-1.1.39-2.01 1.03-2.71-.11-.26-.45-1.32.1-2.75 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0112 6.84c.85-.005 1.71-.137 2.51-.392 1.91-1.324 2.74-1.05 2.74-1.05.55 1.542.28 2.508.14 2.77.64.7 1.02 1.596 1.02 2.69 0 3.84-2.33 4.68-4.56 4.93.37.32.71.96.71 1.93 0 1.4-.01 2.53-.01 2.86 0 .27.18.58.68.48C19.13 20.64 22 16.79 22 12.28 22 6.58 17.523 2 12 2z"/>
+      </svg>
+      GitHub
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple fade-in on scroll using IntersectionObserver
+    document.addEventListener('DOMContentLoaded', function () {
+      const faders = document.querySelectorAll('.fade-in');
+      const io = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      faders.forEach(el => io.observe(el));
+
+      // If some elements are already in view on load, reveal them after a short delay
+      setTimeout(() => {
+        faders.forEach(el => el.classList.add('visible'));
+      }, 400);
+    });
+  </script>
+</body>
+</html>
