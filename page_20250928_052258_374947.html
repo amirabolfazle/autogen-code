@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #0f1020;
+      --bg2: #1a1f36;
+      --glass: rgba(255, 255, 255, 0.15);
+      --glow: rgba(255, 255, 255, 0.45);
+      --text: #eaf4ff;
+      --muted: rgba(234, 246, 255, 0.8);
+      --accent: #7ce0ff;
+    }
+
+    /* Global reset-ish */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(124,224,255,0.25), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(72, 61, 139, 0.25), transparent 40%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2) 60%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated gradient sheen */
+    @keyframes hueShift {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(20deg); }
+      100% { filter: hue-rotate(0deg); }
+    }
+    .sheen {
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(124,224,255,.15), rgba(0,0,0,.0), rgba(124,224,255,.15));
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      animation: hueShift 18s infinite linear;
+      z-index: 0;
+    }
+
+    /* Glass containers */
+    .glass {
+      background: var(--glass);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    header.hero {
+      padding: 72px 20px 48px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    header .brand {
+      display: inline-block;
+      padding: 18px 28px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(8px);
+      color: #eaffff;
+      text-transform: none;
+      font-weight: 700;
+      letter-spacing: .5px;
+      font-size: 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    header h1 {
+      margin: 18px 0 8px;
+      font-size: clamp(42px, 6vw, 86px);
+      line-height: 1.05;
+      letter-spacing: .5px;
+      text-shadow: 0 2px 20px rgba(0,0,0,.25);
+      color: #eaf6ff;
+      text-transform: none;
+    }
+
+    header .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: clamp(14px, 2.5vw, 18px);
+    }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 28px 0 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    nav.site-nav {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 14px auto 28px;
+      padding: 12px 14px;
+      width: max-content;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.15);
+    }
+
+    nav.site-nav a {
+      color: #eaffff;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform .2s ease;
+    }
+    nav.site-nav a:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.25);
+    }
+
+    section {
+      margin: 26px 0;
+      padding: 28px;
+    }
+
+    section h2 {
+      margin-top: 0;
+      font-size: 28px;
+      letter-spacing: .4px;
+    }
+
+    .lead {
+      color: #e6f4ff;
+      opacity: .95;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .card {
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #eaf6ff;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,.15);
+    }
+
+    footer {
+      padding: 22px 16px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    footer a {
+      color: #eaffff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+
+    footer svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* Slide-up animation (staggered) */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 0.6s ease forwards;
+    }
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.45s; }
+    .delay-4 { animation-delay: 0.6s; }
+    .delay-5 { animation-delay: 0.75s; }
+
+    /* Focus visibility for accessibility */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid #7ce0ff;
+      outline-offset: 2px;
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .slide-up { animation: none; opacity: 1; transform: none; }
+    }
+
+    /* Creation time badge styling within hero */
+    .creation-time {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #e7fbff;
+      background: rgba(124,224,255,.25);
+      border: 1px solid rgba(124,224,255,.6);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Minor responsive tweaks */
+    @media (max-width: 700px) {
+      header { padding: 40px 12px; }
+      nav.site-nav { width: auto; padding: 8px; }
+      nav.site-nav a { padding: 8px 12px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sheen" aria-hidden="true"></div>
+
+  <header class="hero slide-up" style="padding-bottom: 12px;">
+    <div class="brand glass" style="margin: 0 auto 14px; display: inline-block;">amirabolfazle</div>
+    <h1 class="slide-up delay-2" style="margin:0; font-weight: 800;">amirabolfazle</h1>
+    <p class="subtitle slide-up delay-3" style="margin: 6px auto 0; max-width: 760px;">
+      A crafted space for ideas, code and glassy aesthetics.
+    </p>
+    <span class="creation-time slide-up delay-4" aria-label="Creation time">
+      Creation time: 2025-09-28 05:22:36
+    </span>
+  </header>
+
+  <nav class="site-nav glass slide-up delay-5" aria-label="Site navigation">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main class="container" aria-label="Main content">
+    <section id="about" class="glass slide-up delay-1" style="padding: 24px;">
+      <h2>About</h2>
+      <p class="lead" style="margin-top: 8px;">
+        This space presents a modern landing page built with a glassmorphism aesthetic and subtle slide-up transitions.
+      </p>
+      <p class="lead" style="margin-top: 8px;">
+        It emphasizes clarity, depth and a touch of motion to guide your eye through the content.
+      </p>
+    </section>
+
+    <section id="projects" class="glass slide-up delay-2" style="padding: 24px;">
+      <h2>Projects</h2>
+      <div class="grid" aria-label="Project gallery">
+        <div class="card">Autogen Code Snippets</div>
+        <div class="card">UI Components Explorer</div>
+        <div class="card">Glassmorphic Demos</div>
+        <div class="card">Interaction Micro-Experiments</div>
+      </div>
+    </section>
+
+    <section id="contact" class="glass slide-up delay-3" style="padding: 24px 24px 40px;">
+      <h2>Contact</h2>
+      <p class="lead" style="margin-top: 8px;">
+        Reach out with ideas, questions or collaboration opportunities.
+      </p>
+      <p style="margin-top: 8px;">
+        Email: hello@example.com
+      </p>
+    </section>
+  </main>
+
+  <footer class="glass" role="contentinfo" style="margin: 0 auto; width: min(1100px, 92vw); padding: 18px;">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository: autogen-code">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.523 2 12c0 4.418 2.867 8.168 6.839 9.49.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.457-1.162-1.118-1.472-1.118-1.472-.914-.624.069-.611.069-.611 1.01.07 1.54 1.038 1.54 1.038.898 1.537 2.355 1.094 2.93.837.091-.651.35-1.094.636-1.346-2.22-.252-4.555-1.11-4.555-4.943 0-1.091.39-1.985 1.029-2.685-.103-.253-.447-1.274.098-2.656 0 0 .84-.269 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.851.004 1.705.115 2.504.338 1.909-1.295 2.748-1.026 2.748-1.026.547 1.382.203 2.403.1 2.656.64.7 1.028 1.594 1.028 2.685 0 3.842-2.338 4.686-4.565 4.934.359.31.679.923.679 1.862 0 1.345-.012 2.428-.012 2.762 0 .268.18.58.688.481C19.134 20.164 22 16.417 22 12c0-5.477-4.477-10-10-10z"/>
+      </svg>
+      <span style="font-weight: 700;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+</body>
+</html>
