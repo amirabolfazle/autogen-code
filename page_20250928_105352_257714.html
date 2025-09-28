@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-alt: #111428;
+      --card: rgba(20, 26, 43, 0.92);
+      --text: #e9eaf6;
+      --muted: #a7b0d0;
+      --accent: #7c3aed;
+      --accent-2: #22d3ee;
+      --shadow: 0 12px 30px rgba(0,0,0,.45);
+      --radius: 14px;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI";
+      color: var(--text);
+      background: #0b1020;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated gradient glow for dark theme */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20vmax;
+      background: radial-gradient(circle at 20% 20%, rgba(124,58,237,.25), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(34,211,238,.25), transparent 40%),
+                  linear-gradient(135deg, rgba(8,8,16,.9), rgba(8,8,16,.95) 60%, rgba(8,8,16,.9));
+      z-index: -1;
+      filter: saturate(120%);
+      animation: glow 20s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes glow {
+      0% { transform: translate3d(0,0,0); opacity: 0.95; }
+      50% { transform: translate3d(-6px,6px,0); opacity: 1; }
+      100% { transform: translate3d(0,0,0); opacity: 0.95; }
+    }
+
+    /* Layout */
+    .wrapper {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header.hero {
+      padding: 52px 22px 40px;
+      text-align: center;
+    }
+
+    .brand {
+      font-size: 72px;
+      line-height: 0.95;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #e0e7ff, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(0,0,0,.3);
+      margin: 0 0 8px;
+      user-select: none;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 18px;
+      margin: 0 auto 22px;
+      max-width: 720px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 6px 16px rgba(124,58,237,.5);
+      border: 0;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .cta:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(124,58,237,.6); }
+
+    .hero-visual {
+      margin-top: 28px;
+      width: min(900px, 90vw);
+      height: 260px;
+      border-radius: var(--radius);
+      margin-left: auto;
+      margin-right: auto;
+      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(34,211,238,.25) 60%), rgba(16,18,38,.9);
+      border: 1px solid rgba(124,58,237,.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), transparent 40%);
+      filter: blur(20px);
+      transform: translate(-40%, -20%);
+      opacity: .75;
+    }
+
+    .hero-glow.two {
+      width: 320px; height: 320px; right: -60px; top: -60px;
+      background: radial-gradient(circle at 70% 70%, rgba(34,211,238,.9), transparent 40%);
+      transform: translate(20%, 0);
+    }
+
+    main#content {
+      padding: 40px 20px 60px;
+      display: grid;
+      gap: 28px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.06);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+      backdrop-filter: saturate(110%);
+      min-height: 120px;
+      position: relative;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      letter-spacing: .4px;
+    }
+
+    .panel p {
+      margin: 0;
+      color: #d6d9f8;
+      line-height: 1.6;
+    }
+
+    .cards {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .card {
+      background: rgba(2,6,23,.6);
+      border: 1px solid rgba(124,58,237,.4);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13px;
+      color: #e7eaff;
+    }
+
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(124,58,237,.25);
+      color: #eaf0ff;
+      font-weight: 600;
+      font-family: inherit;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 28px 16px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: #0a0f22;
+    }
+
+    .github {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      transition: transform .2s ease;
+    }
+    .github:hover { transform: translateY(-1px); }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    /* Slide-up animation */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation-name: slideUp;
+      animation-duration: 700ms;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-out;
+    }
+
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 700px) {
+      .brand { font-size: 48px; }
+      .hero { padding: 28px 16px; }
+      .hero-visual { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header class="hero slide-up" style="animation-delay:0s;">
+      <h1 class="brand" aria-label="amirabolfazle">amirabolfazle</h1>
+      <p class="tagline">A dark-mode landing experience with smooth slide-up reveals, clean typography, and a focus on subtle, immersive aesthetics.</p>
+      <a href="#content" class="cta" aria-label="Scroll to content">Explore</a>
+
+      <div class="hero-visual" aria-label="Visual decoration">
+        <span class="hero-glow" aria-hidden="true"></span>
+        <span class="hero-glow two" aria-hidden="true"></span>
+        <span style="position:absolute; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#dbe4ff; font-weight:600; opacity:.9;">
+          Welcome
+        </span>
+      </div>
+    </header>
+
+    <main id="content" aria-label="Main content" class="slide-up" style="animation-delay:0.15s;">
+      <section class="panel" style="animation-delay:0.15s;">
+        <h2>About</h2>
+        <p>This landing page demonstrates a dark-mode aesthetic with motion that gently guides the eye. It’s designed to feel premium and calm, with a focus on readability and contrast.</p>
+      </section>
+
+      <section class="panel" style="animation-delay:0.30s;">
+        <h2>Features</h2>
+        <ul style="margin:0; padding-left:20px; color:#dbe6ff;">
+          <li>Dark theme with accessible contrast</li>
+          <li>Slide-up reveal animations</li>
+          <li>Responsive grid layout</li>
+        </ul>
+      </section>
+
+      <section class="panel" style="animation-delay:0.45s;">
+        <h2>Showcase</h2>
+        <div class="cards" aria-label="Example cards">
+          <div class="card">Card A</div>
+          <div class="card">Card B</div>
+          <div class="card">Card C</div>
+          <div class="card">Card D</div>
+        </div>
+      </section>
+
+      <section class="panel" style="animation-delay:0.60s;">
+        <span class="creation-time" aria-label="Creation time">Creation time: 2025-09-28 10:53:28</span>
+      </section>
+    </main>
+
+    <footer class="footer slide-up" style="animation-delay:0.75s;">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" class="github" aria-label="GitHub repository">
+        <!-- GitHub SVG Icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:#e5e7eb;">
+          <path d="M12 2C6.48 2 2 6.58 2 12.27c0 4.5 2.87 8.32 6.84 9.68.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.28-3.37-1.28-.45-1.16-1.1-1.46-1.1-1.46-.91-.63.07-.62.07-.62 1.01.07 1.54 1.04 1.54 1.04.9 1.57 2.36 1.12 2.94.86.09-.68.35-1.12.63-1.38-2.22-.26-4.56-1.13-4.56-5.02 0-1.11.38-2.02 1.01-2.72-.1-.26-.44-1.29.1-2.69 0 0 .83-.27 2.72 1.04a9.39 9.39 0 012.48-.34c.84.01 1.68.11 2.47.32 1.89-1.31 2.72-1.04 2.72-1.04.55 1.4.21 2.43.11 2.69.63.7 1.01 1.61 1.01 2.72 0 3.89-2.34 4.76-4.57 5.01.36.31.69.92.69 1.86 0 1.34-.01 2.42-.01 2.75 0 .27.18.59.69.49A10.005 10.005 0 0022 12.27C22 6.58 17.52 2 12 2z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
