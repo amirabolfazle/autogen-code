@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg1:#071021;
+      --bg2:#0b1320;
+      --card:#0f1724;
+      --accent:#7c5cff;
+      --accent-2:#00d4ff;
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.03);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(124,92,255,0.12), transparent 8%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(0,212,255,0.06), transparent 6%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2) 60%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+    }
+
+    /* Container */
+    .wrap{
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius:20px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      padding:48px;
+      align-items:center;
+    }
+
+    /* Left column */
+    .hero{
+      padding-right:12px;
+    }
+    h1{
+      font-size:48px;
+      letter-spacing: -0.02em;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+      width:64px;height:64px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:inline-grid;place-items:center;
+      color:#071021;font-weight:700;font-size:20px;
+      box-shadow: 0 6px 18px rgba(124,92,255,0.18), inset 0 -6px 18px rgba(255,255,255,0.06);
+      transform-origin:center;
+      animation: gentle-bounce 3s ease-in-out infinite;
+    }
+
+    p.lead{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.6;
+      max-width:60ch;
+      margin-bottom:22px;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .pill{
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:999px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .cta-row{
+      margin-top:26px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      padding:12px 16px;
+      border-radius:12px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      cursor:pointer;
+      border: none;
+      font-weight:600;
+      font-size:14px;
+    }
+    .btn-primary{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#041026;
+      box-shadow: 0 8px 30px rgba(124,92,255,0.18);
+      transform-origin:center;
+      animation: pop-bounce 2.2s infinite;
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--accent-2);
+      border:1px solid rgba(0,212,255,0.12);
+    }
+
+    /* Right column card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius:14px;
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      color:#cfe9ff;
+    }
+    .card h3{margin-bottom:8px;font-size:16px}
+    .stats{display:flex;gap:12px;flex-wrap:wrap}
+    .stat{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      padding:12px;border-radius:10px;flex:1 1 120px;border:1px solid rgba(255,255,255,0.02);
+      min-width:120px;
+    }
+    .stat .num{font-size:20px;font-weight:700;color:white;}
+    .stat .lbl{font-size:12px;color:var(--muted);margin-top:6px}
+
+    /* Floating shapes */
+    .float-shape{
+      position:absolute;
+      border-radius:12px;
+      mix-blend-mode:screen;
+      filter:blur(16px);
+      opacity:0.9;
+    }
+    .shape-a{
+      width:180px;height:180px;
+      left:-30px;top:-40px;
+      background:linear-gradient(135deg, rgba(124,92,255,0.14), rgba(0,212,255,0.06));
+      animation: float1 6s ease-in-out infinite;
+    }
+    .shape-b{
+      width:120px;height:120px;border-radius:50%;
+      right:-40px;bottom:-40px;
+      background:linear-gradient(135deg, rgba(0,212,255,0.08), rgba(124,92,255,0.08));
+      animation: float2 7.5s ease-in-out infinite;
+    }
+
+    /* Footer */
+    footer{
+      border-top:1px solid rgba(255,255,255,0.02);
+      padding:14px 48px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .gh svg{filter:drop-shadow(0 2px 8px rgba(2,6,23,0.6));}
+    .created{
+      color:var(--muted);
+    }
+
+    /* Animations */
+    @keyframes float1{
+      0%{transform: translateY(0) rotate(0deg) scale(1)}
+      50%{transform: translateY(-18px) rotate(8deg) scale(1.03)}
+      100%{transform: translateY(0) rotate(0deg) scale(1)}
+    }
+    @keyframes float2{
+      0%{transform: translateY(0) rotate(0deg) scale(1)}
+      50%{transform: translateY(20px) rotate(-6deg) scale(0.98)}
+      100%{transform: translateY(0) rotate(0deg) scale(1)}
+    }
+    @keyframes gentle-bounce{
+      0%{transform: translateY(0)}
+      50%{transform: translateY(-6px)}
+      100%{transform: translateY(0)}
+    }
+    @keyframes pop-bounce{
+      0%{transform: translateY(0) scale(1)}
+      40%{transform: translateY(-6px) scale(1.02)}
+      100%{transform: translateY(0) scale(1)}
+    }
+
+    /* Responsive */
+    @media (max-width:920px){
+      .grid{grid-template-columns:1fr; padding:28px}
+      footer{padding:12px 28px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="title">
+    <div class="float-shape shape-a" aria-hidden="true"></div>
+    <div class="float-shape shape-b" aria-hidden="true"></div>
+
+    <div class="grid">
+      <section class="hero" aria-labelledby="title">
+        <h1 id="title">
+          <span class="logo" aria-hidden="true">am</span>
+          amirabolfazle
+        </h1>
+
+        <p class="lead">Crafting clean, modern interfaces and delightful interactions. Dark-mode native, motion-friendly, and built to showcase ideas with personality.</p>
+
+        <div class="meta">
+          <div class="pill" title="Creation time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span style="font-size:13px;color:#d6e8ff">Created: 2025-09-28 14:22:21</span>
+          </div>
+
+          <div class="pill" title="Status">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span style="font-size:13px;color:var(--muted)">Ready & interactive</span>
+          </div>
+        </div>
+
+        <div class="cta-row" role="group" aria-label="Primary actions">
+          <button class="btn btn-primary" onclick="openDemo()">Explore demo</button>
+          <button class="btn btn-ghost" onclick="copyTime()">Copy timestamp</button>
+        </div>
+      </section>
+
+      <aside class="card" aria-labelledby="statsTitle">
+        <h3 id="statsTitle">Snapshot</h3>
+        <div class="stats" role="list">
+          <div class="stat" role="listitem">
+            <div class="num">Dark mode</div>
+            <div class="lbl">Theme: native</div>
+          </div>
+          <div class="stat" role="listitem">
+            <div class="num">Motion</div>
+            <div class="lbl">Bounce + float effects</div>
+          </div>
+          <div class="stat" role="listitem">
+            <div class="num">Timestamp</div>
+            <div class="lbl">2025-09-28 14:22:21</div>
+          </div>
+          <div class="stat" role="listitem">
+            <div class="num">Repo</div>
+            <div class="lbl">amirabolfazle/autogen-code</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer role="contentinfo">
+      <div class="created">Created by amirabolfazle</div>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.98 5.25.98 11.52c0 4.66 3.02 8.62 7.21 10.02.53.1.72-.23.72-.51 0-.25-.01-.92-.01-1.8-2.94.64-3.56-1.41-3.56-1.41-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.64.07-.64 1.06.08 1.61 1.09 1.61 1.09.94 1.6 2.47 1.14 3.07.87.09-.68.37-1.14.67-1.4-2.35-.27-4.82-1.18-4.82-5.25 0-1.16.41-2.11 1.09-2.86-.11-.27-.47-1.36.11-2.85 0 0 .88-.28 2.9 1.09a10.05 10.05 0 0 1 2.64-.36c.9.01 1.81.12 2.64.36 2.02-1.37 2.9-1.09 2.9-1.09.58 1.49.22 2.58.11 2.85.68.75 1.09 1.7 1.09 2.86 0 4.08-2.48 4.98-4.84 5.24.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.61.73.51 4.2-1.4 7.22-5.36 7.22-10.02C23.02 5.25 18.27.5 12 .5z" fill="currentColor"></path>
+        </svg>
+        <span>Repository</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    function openDemo(){
+      // playful demo action: scroll a small animation into view
+      alert("Welcome! Timestamp: 2025-09-28 14:22:21");
+    }
+    function copyTime(){
+      const txt = "2025-09-28 14:22:21";
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(txt).then(()=> {
+          flash("Timestamp copied");
+        }, ()=> {
+          flash("Copy failed");
+        });
+      } else {
+        flash("Clipboard not supported");
+      }
+    }
+    function flash(msg){
+      const el = document.createElement('div');
+      el.textContent = msg;
+      Object.assign(el.style,{
+        position:'fixed',left:'50%',top:'16px',transform:'translateX(-50%)',
+        background:'linear-gradient(90deg, rgba(124,92,255,0.16), rgba(0,212,255,0.12))',
+        color:'#e8f6ff',padding:'10px 14px',borderRadius:'10px',boxShadow:'0 8px 30px rgba(2,6,23,0.6)',zIndex:9999,fontWeight:600
+      });
+      document.body.appendChild(el);
+      setTimeout(()=> el.style.opacity='0',1400);
+      setTimeout(()=> el.remove(),1800);
+    }
+  </script>
+</body>
+</html>
