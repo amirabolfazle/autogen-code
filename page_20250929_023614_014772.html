@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --card:#0f1720;
+    --muted:#98a0aa;
+    --accent1:#7c5cff;
+    --accent2:#00d4ff;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.08), transparent 8%),
+                radial-gradient(900px 400px at 90% 90%, rgba(0,212,255,0.04), transparent 10%),
+                var(--bg);
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:auto;
+    padding:40px 28px;
+    min-height:100vh;
+  }
+
+  /* floating ambient shapes */
+  .ambient{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+  }
+  .blob{
+    position:absolute;
+    filter:blur(36px) saturate(120%);
+    opacity:0.14;
+    mix-blend-mode:screen;
+    transform-origin:center;
+    will-change:transform,opacity;
+  }
+  .blob.a{ width:420px; height:420px; background:linear-gradient(135deg,var(--accent1),transparent 40%); left:-80px; top:-60px; animation:floatA 10s ease-in-out infinite; }
+  .blob.b{ width:320px; height:320px; background:linear-gradient(45deg,var(--accent2),transparent 40%); right:-60px; bottom:-80px; animation:floatB 12s ease-in-out infinite; opacity:0.11; }
+  .blob.c{ width:220px; height:220px; background:linear-gradient(140deg, rgba(124,92,255,0.18), rgba(0,212,255,0.04)); left:20%; top:50%; transform:translate(-50%,-50%); animation:floatC 14s ease-in-out infinite; opacity:0.07; }
+
+  @keyframes floatA{ 0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-26px) rotate(8deg)}100%{transform:translateY(0) rotate(0)}}
+  @keyframes floatB{ 0%{transform:translateY(0) rotate(0)}50%{transform:translateY(30px) rotate(-6deg)}100%{transform:translateY(0) rotate(0)}}
+  @keyframes floatC{ 0%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-56%) scale(1.04)}100%{transform:translate(-50%,-50%) scale(1)}}
+
+  /* container */
+  .wrap{
+    position:relative;
+    max-width:1100px;
+    margin:0 auto;
+    z-index:2;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:28px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .logo{
+    width:68px;
+    height:68px;
+    border-radius:12px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:20px;
+    color:var(--accent1);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  h1{
+    font-size:22px;
+    margin:0;
+    letter-spacing:0.4px;
+  }
+  p.lead{
+    margin:4px 0 0 0;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .meta{
+    margin-left:auto;
+    text-align:right;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .time{
+    display:block;
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.02);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  }
+
+  main{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:22px;
+  }
+
+  .panel{
+    background: linear-gradient(180deg,var(--glass), var(--glass-2));
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.03);
+    padding:18px;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    overflow:hidden;
+  }
+
+  .about{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .avatar{
+    min-width:108px;
+    height:108px;
+    border-radius:16px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:36px;
+    color:var(--accent2);
+    box-shadow: 0 6px 16px rgba(2,6,23,0.6);
+  }
+  .about p{ color:var(--muted); margin:8px 0 0 0; line-height:1.5; font-size:14px; }
+
+  /* projects */
+  .projects-grid{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:14px;
+  }
+  @media (max-width:920px){ .projects-grid{ grid-template-columns: repeat(2,1fr);} }
+  @media (max-width:640px){ .projects-grid{ grid-template-columns: 1fr;} .about{flex-direction:column; align-items:stretch} .meta{margin-top:10px; text-align:left} }
+
+  .card{
+    padding:14px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border:1px solid rgba(255,255,255,0.03);
+    transition:transform .36s cubic-bezier(.2,.9,.2,1), box-shadow .36s;
+    transform:translateY(0);
+  }
+  .card:hover{
+    transform:translateY(-8px) rotate(-0.3deg) scale(1.01);
+    box-shadow: 0 18px 40px rgba(2,6,23,0.6);
+  }
+  .card h3{ margin:0 0 6px 0; font-size:15px; }
+  .card p{ margin:0; color:var(--muted); font-size:13px; }
+
+  /* contact */
+  .contact-grid{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:8px 12px;
+    border-radius:999px;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.02);
+    font-size:13px;
+  }
+
+  footer{
+    margin-top:22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .footer-left{ display:flex; align-items:center; gap:12px; }
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:inherit;
+    padding:8px 12px;
+    border-radius:10px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border:1px solid rgba(255,255,255,0.02);
+    transition:transform .22s ease, box-shadow .22s ease;
+  }
+  .gh:hover{ transform:translateY(-6px); box-shadow: 0 12px 30px rgba(2,6,23,0.6); }
+  .gh svg{ width:18px; height:18px; display:block; fill:currentColor; }
+
+  /* slide-up reveal */
+  .reveal{ opacity:0; transform: translateY(18px); transition: transform .64s cubic-bezier(.22,.95,.25,1), opacity .48s ease; will-change:transform,opacity; }
+  .reveal.in{ opacity:1; transform: translateY(0); }
+  .reveal[data-delay="1"]{ transition-delay:0.06s }
+  .reveal[data-delay="2"]{ transition-delay:0.12s }
+  .reveal[data-delay="3"]{ transition-delay:0.18s }
+  .reveal[data-delay="4"]{ transition-delay:0.24s }
+  .reveal[data-delay="5"]{ transition-delay:0.3s }
+
+  /* little accent underline */
+  .tagline{
+    display:inline-block;
+    position:relative;
+    padding-bottom:6px;
+  }
+  .tagline:after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:56%;
+    height:3px;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    border-radius:6px;
+    opacity:0.9;
+    transform-origin:left center;
+  }
+
+  /* small utilities */
+  .muted{ color:var(--muted); font-size:13px; }
+  a.external{ color:var(--accent2); text-decoration:none; border-bottom:1px dashed rgba(0,212,255,0.12); padding-bottom:2px; }
+</style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <div class="wrap">
+    <header class="reveal" data-delay="1">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <p class="lead tagline">crafting clean interfaces & playful micro-interactions</p>
+        </div>
+      </div>
+
+      <div class="meta">
+        <span class="muted">Created on</span>
+        <div class="time">2025-09-29 02:35:28</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel about reveal" data-delay="2" aria-labelledby="about-heading">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div class="avatar" aria-hidden="true">AB</div>
+          <div style="flex:1">
+            <h2 id="about-heading" style="margin:0 0 6px 0;">About</h2>
+            <p>I'm amirabolfazle — a designer-developer hybrid who loves turning ideas into crisp, delightful UIs. I focus on small details, smooth motion, and clear code. I build interfaces that feel as good to use as they look.</p>
+            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+              <div class="chip">UI / UX</div>
+              <div class="chip">Frontend</div>
+              <div class="chip">Animations</div>
+              <div class="chip">Web Apps</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel reveal" data-delay="3" aria-labelledby="projects-heading">
+        <h2 id="projects-heading" style="margin:0 0 12px 0;">Selected Projects</h2>
+        <div class="projects-grid">
+          <article class="card reveal" data-delay="4" style="--i:1;">
+            <h3>Autogen Code</h3>
+            <p class="muted">A nimble assistant for generating starter code and snippets with instant previews.</p>
+          </article>
+
+          <article class="card reveal" data-delay="5" style="--i:2;">
+            <h3>Glowboard UI</h3>
+            <p class="muted">A component kit with expressive colors, motion primitives and accessibility built in.</p>
+          </article>
+
+          <article class="card reveal" data-delay="1" style="--i:3;">
+            <h3>Motion Lab</h3>
+            <p class="muted">Playground for micro-interactions, physics-based transitions and interactive demos.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel reveal" data-delay="2" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" style="margin:0 0 12px 0;">Get in touch</h2>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+          <a class="gh" href="mailto:amirabolfazle@example.com">Email</a>
+          <a class="gh" href="https://twitter.com/" target="_blank" rel="noopener">Twitter</a>
+          <a class="gh" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+          <div class="muted" style="margin-left:auto;">Open to collaboration & freelance</div>
+        </div>
+      </section>
+
+      <footer class="reveal" data-delay="3">
+        <div class="footer-left">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5A12 12 0 0 0 0 12.7c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.5-4-1.5-.5-1.2-1.3-1.6-1.3-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.6-.7 2-1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.3 1.1a11 11 0 0 1 6 0c2.3-1.4 3.3-1.1 3.3-1.1.6 1.6.2 3 .1 3.3.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.5.4.9 1 .9 2v3c0 .3.2.7.8.6C20.6 22.5 24 18 24 12.7 24 5.6 18.4.6 12 .5z"></path></svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </div>
+
+        <div class="muted" style="text-align:right;">Made with care • Lightweight single-file portfolio</div>
+      </footer>
+    </main>
+  </div>
+
+<script>
+  // Intersection observer for slide-up reveals
+  (function(){
+    const opts = { threshold: 0.08 };
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, opts);
+
+    document.querySelectorAll('.reveal').forEach((el)=>{
+      el.classList.add('reveal'); // ensure
+      io.observe(el);
+    });
+  })();
+
+  // Small keyboard shortcut to bounce ambient for fun: press "b"
+  (function(){
+    const ambient = document.querySelector('.ambient');
+    if(!ambient) return;
+    let anim;
+    const bounce = ()=>{
+      ambient.style.transition = 'transform 0.6s cubic-bezier(.22,.9,.25,1)';
+      ambient.style.transform = 'translateY(-8px)';
+      clearTimeout(anim);
+      anim = setTimeout(()=> ambient.style.transform = '', 600);
+    };
+    window.addEventListener('keydown', (e)=>{
+      if(e.key.toLowerCase() === 'b') bounce();
+    });
+  })();
+</script>
+</body>
+</html>
