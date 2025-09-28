@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --glass:rgba(255,255,255,0.03);
+      --neon-cyan: #00f0ff;
+      --neon-magenta: #ff4ddd;
+      --neon-yellow: #fff06a;
+      --text:#eaf6ff;
+      --muted:#8aa3b3;
+      --glass-2: rgba(255,255,255,0.02);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(800px 400px at 10% 10%, rgba(0,240,255,0.03), transparent 8%),
+        radial-gradient(600px 300px at 90% 80%, rgba(255,77,221,0.03), transparent 8%),
+        var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:36px 20px;
+      min-height:100vh;
+    }
+
+    /* Neon header */
+    header{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:28px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .logo{
+      width:72px;
+      height:72px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(0,240,255,0.12), rgba(255,77,221,0.08));
+      display:grid;
+      place-items:center;
+      box-shadow:0 8px 40px rgba(0,240,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03);
+      transform:translateZ(0);
+      filter:drop-shadow(0 6px 24px rgba(0,240,255,0.08));
+      position:relative;
+      overflow:hidden;
+    }
+    .logo svg{width:46px;height:46px;mix-blend-mode:screen;filter:drop-shadow(0 6px 18px rgba(0,240,255,0.18));}
+    h1{
+      font-size: clamp(20px, 4vw, 36px);
+      letter-spacing:0.6px;
+      margin:0;
+      line-height:1;
+      color:var(--text);
+      text-shadow:
+        0 0 8px rgba(0,240,255,0.18),
+        0 0 28px rgba(255,77,221,0.06);
+    }
+    .tag{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:6px;
+    }
+
+    /* Hero card */
+    .hero{
+      width:100%;
+      max-width:1100px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      padding:28px;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      box-shadow:0 12px 40px rgba(2,6,23,0.6);
+      position:relative;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+    }
+    .hero .left{
+      flex:1 1 420px;
+    }
+    .hero .right{
+      width:220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .intro-title{
+      font-size: clamp(20px, 3.6vw, 28px);
+      margin:0 0 8px 0;
+      color:var(--neon-cyan);
+      text-shadow:
+        0 0 8px rgba(0,240,255,0.2),
+        0 0 28px rgba(0,240,255,0.06);
+    }
+    .intro-desc{
+      margin:0 0 14px 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.5;
+    }
+    .time-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      background:linear-gradient(90deg, rgba(0,240,255,0.04), rgba(255,77,221,0.03));
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--neon-yellow);
+      font-weight:600;
+      font-size:13px;
+      box-shadow:0 6px 20px rgba(255,240,106,0.03);
+    }
+
+    /* Neon sphere */
+    .neon-orb{
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(0,240,255,0.12), rgba(255,77,221,0.06) 45%, rgba(10,12,16,0.6) 60%);
+      box-shadow:
+        0 0 40px rgba(0,240,255,0.12),
+        0 0 100px rgba(255,77,221,0.04),
+        inset 0 6px 20px rgba(255,255,255,0.02);
+      position:relative;
+      transition:transform 0.6s cubic-bezier(.2,.9,.3,1);
+      transform:translateZ(0);
+    }
+
+    /* Cards grid */
+    .grid{
+      width:100%;
+      max-width:1100px;
+      margin-top:22px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      min-height:110px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      overflow:hidden;
+    }
+    .card h3{margin:0 0 6px 0;color:var(--neon-magenta);text-shadow:0 0 10px rgba(255,77,221,0.08)}
+    .card p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+
+    /* Footer */
+    footer{
+      width:100%;
+      max-width:1100px;
+      margin-top:auto;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 18px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);
+    }
+    .footer-left{display:flex;gap:10px;align-items:center}
+    .footer-left a{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--text);
+      text-decoration:none;
+      background:transparent;
+    }
+    .gh-icon{width:20px;height:20px;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6))}
+    .created-text{font-size:14px;color:var(--muted)}
+
+    /* Animations */
+    .fade {
+      opacity:0;
+      transform: translateY(18px);
+      transition: opacity 700ms cubic-bezier(.2,.9,.3,1), transform 700ms cubic-bezier(.2,.9,.3,1);
+    }
+    .loaded .fade {opacity:1;transform:none}
+    /* Stagger via nth-child inside grid/hero */
+    .hero .fade{transition-delay:120ms}
+    .grid .card{transition:opacity 700ms, transform 700ms; opacity:0; transform:translateY(18px)}
+    .loaded .grid .card{opacity:1;transform:none}
+    .grid .card:nth-child(1){transition-delay:160ms}
+    .grid .card:nth-child(2){transition-delay:240ms}
+    .grid .card:nth-child(3){transition-delay:320ms}
+    .grid .card:nth-child(4){transition-delay:400ms}
+    .grid .card:nth-child(5){transition-delay:480ms}
+    .grid .card:nth-child(6){transition-delay:560ms}
+
+    /* Floating accents */
+    .float{
+      position:absolute;
+      border-radius:999px;
+      opacity:0.08;
+      backdrop-filter: blur(6px);
+      pointer-events:none;
+      animation: floaty 6s ease-in-out infinite;
+    }
+    .float.one{width:260px;height:260px;right:-60px;top:-50px;background:linear-gradient(135deg,var(--neon-magenta),transparent)}
+    .float.two{width:200px;height:200px;left:-80px;bottom:-60px;background:linear-gradient(135deg,var(--neon-cyan),transparent);animation-duration:5.5s;opacity:0.06}
+    @keyframes floaty{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(8deg)}100%{transform:translateY(0) rotate(0)}}
+
+    /* Orb hover */
+    .neon-orb:hover{transform:scale(1.04) rotate(-6deg)}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .hero{flex-direction:column;align-items:flex-start}
+      .hero .right{width:100%}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:560px){
+      header{flex-direction:column;align-items:flex-start}
+      .grid{grid-template-columns:1fr}
+      .hero{padding:18px}
+      footer{flex-direction:column;align-items:flex-start;gap:6px}
+      .right{display:none}
+    }
+
+    /* subtle pulse for title */
+    @keyframes neonPulse{
+      0%{text-shadow:0 0 6px rgba(0,240,255,0.12)}
+      50%{text-shadow:0 0 18px rgba(0,240,255,0.22),0 0 28px rgba(255,77,221,0.06)}
+      100%{text-shadow:0 0 6px rgba(0,240,255,0.12)}
+    }
+    .intro-title{animation:neonPulse 3.8s ease-in-out infinite}
+  </style>
+</head>
+<body>
+  <div class="float one" aria-hidden="true"></div>
+  <div class="float two" aria-hidden="true"></div>
+
+  <header>
+    <div class="brand fade">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#00f0ff"/>
+              <stop offset="1" stop-color="#ff4ddd"/>
+            </linearGradient>
+          </defs>
+          <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#g)" opacity="0.12"/>
+          <path d="M20 42c6-6 18-6 24 0" stroke="#00f0ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 30c6-6 18-6 24 0" stroke="#ff4ddd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <circle cx="22" cy="22" r="3" fill="#fff" opacity="0.7"/>
+        </svg>
+      </div>
+      <div>
+        <h1>amirabolfazle</h1>
+        <div class="tag">Neon UI • Animated • Responsive</div>
+      </div>
+    </div>
+
+    <div class="fade" style="text-align:right;">
+      <div class="time-badge" aria-label="creation time">
+        Created: 2025-09-28 20:47:07
+      </div>
+    </div>
+  </header>
+
+  <main style="width:100%;display:flex;flex-direction:column;align-items:center;">
+    <section class="hero">
+      <div class="left">
+        <h2 class="intro-title fade">Minimal neon playground for amirabolfazle</h2>
+        <p class="intro-desc fade">A responsive, animated HTML prototype showcasing neon styling, soft-glass surfaces and subtle motion. Resize the window to see layout shifts, hover the orb for a little sparkle.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="time-badge fade" style="cursor:default">Static stamp</button>
+          <button class="time-badge fade" id="stamp" style="background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));cursor:default">2025-09-28 20:47:07</button>
+        </div>
+      </div>
+      <div class="right">
+        <div class="neon-orb fade" role="img" aria-label="neon orb"></div>
+      </div>
+    </section>
+
+    <section class="grid" role="list" aria-label="features">
+      <article class="card" role="listitem">
+        <h3>Responsive</h3>
+        <p>Layouts adapt fluidly from large screens to phones using CSS grid and flexbox.</p>
+      </article>
+      <article class="card" role="listitem">
+        <h3>Animated</h3>
+        <p>Staggered fade-ins and floating accents create a lively but gentle motion language.</p>
+      </article>
+      <article class="card" role="listitem">
+        <h3>Neon theme</h3>
+        <p>High-contrast colors and glowing shadows deliver a vivid neon aesthetic.</p>
+      </article>
+      <article class="card" role="listitem">
+        <h3>Accessible</h3>
+        <p>Readable contrast, semantic structure, and visible focus affordances for keyboard navigation.</p>
+      </article>
+      <article class="card" role="listitem">
+        <h3>Lightweight</h3>
+        <p>No external libraries — pure HTML, CSS and a couple lines of JavaScript for polish.</p>
+      </article>
+      <article class="card" role="listitem">
+        <h3>Extensible</h3>
+        <p>Drop in your own links, replace the SVG icon, or expand the grid to fit your content.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-left">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill="#cbdff3" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012.01-.27c.68 0 1.37.09 2.01.27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span style="color:var(--neon-cyan);font-weight:600">amirabolfazle</span>
+      </a>
+      <div class="created-text">Created by amirabolfazle</div>
+    </div>
+    <div style="color:var(--muted);font-size:13px">Made on 2025-09-28 • 20:47:07</div>
+  </footer>
+
+  <script>
+    // Entrance animations trigger
+    document.addEventListener('DOMContentLoaded', function(){
+      requestAnimationFrame(function(){
+        document.documentElement.classList.add('loaded');
+        document.body.classList.add('loaded');
+      });
+    });
+
+    // small interactive tilt for orb on pointer move
+    (function(){
+      const orb = document.querySelector('.neon-orb');
+      if(!orb) return;
+      let rect = orb.getBoundingClientRect();
+      function onMove(e){
+        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - (rect.left + rect.width/2);
+        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - (rect.top + rect.height/2);
+        const rx = (y / rect.height) * 8;
+        const ry = (x / rect.width) * -8;
+        orb.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`;
+      }
+      function reset(){ orb.style.transform = ''; rect = orb.getBoundingClientRect(); }
+      orb.addEventListener('pointermove', onMove);
+      orb.addEventListener('pointerleave', reset);
+      window.addEventListener('resize', reset);
+    })();
+  </script>
+</body>
+</html>
