@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0e12;
+      --card:#0f1720aa;
+      --glass: rgba(255,255,255,0.03);
+      --accent:#7cf7ff;
+      --accent-2:#8a79ff;
+      --muted:#9aa6b2;
+      --glass-border: rgba(255,255,255,0.04);
+      --shadow: 0 10px 30px rgba(2,6,23,0.7);
+    }
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      min-height:100vh;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(122,90,255,0.07), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(31,213,255,0.04), transparent 10%),
+                  var(--bg);
+      color: #e6eef6;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:36px;
+      overflow:hidden;
+    }
+
+    /* Animated background gloss */
+    .bg-animate{
+      position:fixed;
+      inset:-40%;
+      pointer-events:none;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(138,121,255,0.06), rgba(124,247,255,0.06), rgba(138,121,255,0.06));
+      mix-blend-mode: overlay;
+      animation: spin 18s linear infinite;
+      filter: blur(80px) saturate(120%);
+      opacity:0.9;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Container */
+    .wrap{
+      width:100%;
+      max-width:980px;
+      z-index:2;
+      display:flex;
+      gap:28px;
+      align-items:stretch;
+      justify-content:center;
+      flex-wrap:wrap;
+      transform-origin:center;
+      transition:transform 420ms cubic-bezier(.18,.9,.32,1), filter 300ms;
+    }
+
+    /* Zoom states controlled by JS (click to zoom) */
+    .wrap.zoomed{transform:scale(1.03) translateY(-6px); filter:drop-shadow(var(--shadow));}
+
+    /* Main card */
+    .card{
+      flex:1 1 560px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      padding:34px;
+      box-shadow: var(--shadow);
+      border:1px solid var(--glass-border);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      backdrop-filter: blur(8px) saturate(120%);
+      transition:transform 420ms cubic-bezier(.18,.9,.32,1), box-shadow 320ms;
+      transform-origin:center;
+      will-change:transform;
+    }
+    .card:hover{transform:translateY(-8px) scale(1.01); box-shadow: 0 20px 50px rgba(0,0,0,0.7);}
+
+    /* Title */
+    .title{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    .logo{
+      width:72px;height:72px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 24px rgba(124,247,255,0.08), inset 0 -6px 20px rgba(255,255,255,0.03);
+      transform-origin:center;
+      animation: float 6s ease-in-out infinite;
+      flex-shrink:0;
+    }
+    @keyframes float{
+      0%{transform:translateY(0) rotate(-4deg)}
+      50%{transform:translateY(-8px) rotate(4deg)}
+      100%{transform:translateY(0) rotate(-4deg)}
+    }
+    .logo svg{filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
+
+    h1{
+      font-size: clamp(24px, 3.6vw, 36px);
+      letter-spacing: -0.02em;
+      color: linear-gradient(90deg,var(--accent),var(--accent-2));
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:clamp(13px, 1.6vw, 15px);
+      margin-top:3px;
+    }
+
+    /* Hero content */
+    .hero{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .meta{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:12px 14px;
+      border-radius:12px;
+      color:var(--muted);
+      font-size:14px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    /* Action area */
+    .actions{margin-left:auto;display:flex;gap:10px;align-items:center;}
+    .btn{
+      padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+      background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));
+      color:var(--accent);
+      cursor:pointer;
+      font-weight:600;
+      transition:transform 200ms, box-shadow 200ms, background 200ms, color 200ms;
+      display:inline-flex;gap:8px;align-items:center;
+    }
+    .btn:active{transform:translateY(1px) scale(.995)}
+    .btn.secondary{color:var(--muted); border:1px dashed rgba(255,255,255,0.03)}
+    .btn-zoom{background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#021025; box-shadow:0 8px 30px rgba(124,247,255,0.12);}
+
+    /* Info grid */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:6px;
+    }
+    .card-item{
+      background:var(--glass);
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .card-item b{color:var(--accent); font-size:13px}
+    .muted{color:var(--muted); font-size:13px}
+
+    /* Footer area inside card */
+    .card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:12px;flex-wrap:wrap}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* Floating panels on the right */
+    .side{
+      width:320px;
+      max-width:40%;
+      min-width:220px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-self:flex-start;
+    }
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 10px 30px rgba(3,6,23,0.6);
+      transform-origin:center;
+      transition:transform 400ms cubic-bezier(.2,.9,.3,1);
+    }
+    .panel:hover{transform:translateY(-8px)}
+
+    /* Footer at bottom of page */
+    footer{
+      margin-top:24px;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      padding:18px 8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:var(--muted);
+      border-radius:10px;
+      padding:8px 10px;
+      transition:background 180ms, color 180ms, transform 150ms;
+    }
+    .gh svg{width:18px;height:18px;filter:drop-shadow(0 4px 14px rgba(0,0,0,0.6))}
+    .gh:hover{background:rgba(255,255,255,0.02); color:var(--accent)}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .wrap{gap:18px}
+      .side{width:100%;max-width:100%}
+      .card{flex-basis:100%}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      footer{flex-direction:column; gap:8px}
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns:repeat(1,1fr)}
+      .title{gap:12px}
+      .logo{width:60px;height:60px}
+    }
+
+    /* little zoom pulse for hero name */
+    .name{
+      display:inline-block;
+      font-weight:700;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      background-image: linear-gradient(90deg,var(--accent),var(--accent-2));
+      animation: namePulse 4s ease-in-out infinite;
+      font-size: clamp(20px, 3.4vw, 30px);
+      letter-spacing:-0.02em;
+    }
+    @keyframes namePulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.02)}
+      100%{transform:scale(1)}
+    }
+
+    /* subtle decorative particle dots */
+    .particles{position:fixed;inset:0;pointer-events:none;opacity:0.12;mix-blend-mode:screen;}
+    .particle{position:absolute;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.4));filter:blur(0.6px)}
+  </style>
+</head>
+<body>
+  <div class="bg-animate" aria-hidden="true"></div>
+  <div class="particles" aria-hidden="true">
+    <div class="particle" style="left:6%;top:12%;transform:translateY(0);animation: drift 20s linear infinite;"></div>
+    <div class="particle" style="left:80%;top:8%;transform:translateY(0);animation: drift 26s linear infinite;"></div>
+    <div class="particle" style="left:46%;top:86%;transform:translateY(0);animation: drift 24s linear infinite;"></div>
+    <div class="particle" style="left:12%;top:56%;transform:translateY(0);animation: drift 18s linear infinite;"></div>
+    <div class="particle" style="left:88%;top:54%;transform:translateY(0);animation: drift 22s linear infinite;"></div>
+  </div>
+
+  <main style="width:100%;max-width:1200px">
+    <div class="wrap" id="wrap">
+      <section class="card" role="region" aria-labelledby="main-heading">
+        <div class="title">
+          <div class="logo" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="40" height="40" rx="10" fill="white" fill-opacity="0.06"/>
+              <path d="M14 30c0-6 6-12 9-12s9 6 9 12" stroke="white" stroke-opacity="0.95" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17 22h14" stroke="white" stroke-opacity="0.85" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h1 id="main-heading"><span class="name">amirabolfazle</span></h1>
+            <div class="subtitle">Animated responsive dark-page with zoom effects and subtle motion</div>
+          </div>
+
+          <div class="actions" aria-hidden="true">
+            <button class="btn" id="toggleZoom" title="Toggle zoom (click)">Zoom</button>
+            <button class="btn btn-zoom" id="pulseZoom" title="Pulse zoom">Pulse</button>
+          </div>
+        </div>
+
+        <div class="hero">
+          <div class="meta" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.95" xmlns="http://www.w3.org/2000/svg"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Created: <strong style="color:var(--accent);margin-left:6px">2025-09-28 19:47:45</strong></span>
+          </div>
+
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-left:auto">
+            <div class="meta">Dark theme • Animated</div>
+            <div class="meta">Responsive • Zoom</div>
+          </div>
+        </div>
+
+        <div class="grid" role="list" aria-label="features">
+          <div class="card-item" role="listitem">
+            <b>Responsive</b>
+            <span class="muted">Layouts adapt across devices</span>
+          </div>
+          <div class="card-item" role="listitem">
+            <b>Animated</b>
+            <span class="muted">Background, icon float, name pulse</span>
+          </div>
+          <div class="card-item" role="listitem">
+            <b>Zoom Effects</b>
+            <span class="muted">Click to zoom and pulse interactions</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="small">Minimal, performant, and easy to customize.</div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 .5C5.73.5.75 5.48.75 11.77c0 4.9 3.18 9.07 7.59 10.54.56.1.76-.24.76-.53 0-.26-.01-.96-.01-1.88-3.09.67-3.74-1.5-3.74-1.5-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.07-.67.07-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.47-.28-5.07-1.24-5.07-5.49 0-1.21.44-2.19 1.16-2.96-.12-.28-.5-1.42.11-2.96 0 0 .95-.3 3.12 1.13a10.8 10.8 0 0 1 2.84-.38c.97 0 1.95.13 2.84.38 2.16-1.43 3.11-1.13 3.11-1.13.61 1.54.23 2.68.11 2.96.72.77 1.15 1.75 1.15 2.96 0 4.26-2.61 5.21-5.09 5.48.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.19.64.77.53 4.41-1.48 7.58-5.64 7.58-10.54C23.25 5.48 18.27.5 12 .5z"/>
+              </svg>
+              <span style="font-size:13px">GitHub</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side" aria-label="extra panels">
+        <div class="panel" role="note">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="color:var(--muted);font-size:13px">Status</div>
+              <div style="font-weight:700;margin-top:6px">Stable • Lightweight</div>
+            </div>
+            <div style="text-align:right;color:var(--muted);font-size:12px">v1.0</div>
+          </div>
+        </div>
+
+        <div class="panel" role="note">
+          <div style="display:flex;gap:12px;align-items:center">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M12 2v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M20 12h-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 20v-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M4 12h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <div>
+              <div style="color:var(--muted);font-size:13px">Interact</div>
+              <div style="font-weight:700;margin-top:6px">Click "Zoom" or "Pulse" to try effects</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.77c0 4.9 3.18 9.07 7.59 10.54.56.1.76-.24.76-.53 0-.26-.01-.96-.01-1.88-3.09.67-3.74-1.5-3.74-1.5-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.07-.67.07-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.47-.28-5.07-1.24-5.07-5.49 0-1.21.44-2.19 1.16-2.96-.12-.28-.5-1.42.11-2.96 0 0 .95-.3 3.12 1.13a10.8 10.8 0 0 1 2.84-.38c.97 0 1.95.13 2.84.38 2.16-1.43 3.11-1.13 3.11-1.13.61 1.54.23 2.68.11 2.96.72.77 1.15 1.75 1.15 2.96 0 4.26-2.61 5.21-5.09 5.48.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.19.64.77.53 4.41-1.48 7.58-5.64 7.58-10.54C23.25 5.48 18.27.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Simple interactivity: toggle zoom and pulse animation on wrap
+    const wrap = document.getElementById('wrap');
+    const toggle = document.getElementById('toggleZoom');
+    const pulseBtn = document.getElementById('pulseZoom');
+
+    toggle.addEventListener('click', () => {
+      wrap.classList.toggle('zoomed');
+      toggle.textContent = wrap.classList.contains('zoomed') ? 'Zoomed' : 'Zoom';
+    });
+
+    pulseBtn.addEventListener('click', () => {
+      wrap.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.06)' },
+        { transform: 'scale(1)' }
+      ], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)'});
+    });
+
+    // drift animation for particles (randomized subtle motion)
+    const particles = document.querySelectorAll('.particles .particle');
+    particles.forEach((p,i)=>{
+      const dx = (Math.random()*20 - 10);
+      const dy = (Math.random()*40 - 20);
+      const dur = 15000 + Math.random()*20000;
+      p.animate([
+        { transform: 'translateY(0px) translateX(0px)'},
+        { transform: `translateY(${dy}px) translateX(${dx}px)`},
+        { transform: 'translateY(0px) translateX(0px)'}
+      ], { duration: dur, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out', delay: i*300 });
+    });
+
+    // Accessibility: keyboard support for buttons
+    [toggle, pulseBtn].forEach(btn=>{
+      btn.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+      });
+    });
+  </script>
+</body>
+</html>
