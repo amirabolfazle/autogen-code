@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(15,18,38,0.9);
+      --bg2: rgba(25, 40, 85, 0.75);
+      --glass: rgba(255,255,255,0.14);
+      --border: rgba(255,255,255,0.25);
+      --text: #e9f0ff;
+      --muted: rgba(233,240,255,0.75);
+    }
+
+    /* animated gradient background */
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #0b1020 0%, #1b1e3a 40%, #0b1020 100%);
+      background-size: 400% 400%;
+      animation: gradient 16s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* subtle decorative floating shapes (pure CSS) */
+    .decor {
+      position: fixed;
+      pointer-events: none;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.25;
+      background: radial-gradient(circle at 30% 30%, #8bdcff, transparent 40%),
+                  radial-gradient(circle at 70% 70%, #9d5cff, transparent 40%);
+      animation: float 16s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translate(-20px, -20px); }
+      50% { transform: translate(20px, 40px); }
+      100% { transform: translate(-20px, -20px); }
+    }
+    .decor.second { right: -10%; top: 0; width: 800px; height: 800px; animation-duration: 20s; }
+
+    /* layout */
+    header {
+      position: relative;
+      z-index: 1;
+    }
+
+    nav.glass {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      max-width: 1100px;
+      margin: 20px auto;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+      color: #fff;
+    }
+    nav.glass a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.92;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: .4px;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .hero {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 60px 16px 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .glow {
+      font-weight: 900;
+      font-size: clamp(48px, 9vw, 110px);
+      line-height: 1.05;
+      margin: 6px 0 6px;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #fff, #a6e1ff, #8bf6ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 40px rgba(0,0,0,.25);
+      filter: drop-shadow(0 6px 20px rgba(0,0,0,.25));
+    }
+    .tag {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .9rem;
+      color: #e6f0ff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      margin-top: 8px;
+    }
+
+    main {
+      width: 100%;
+      display: grid;
+      place-items: center;
+      padding-bottom: 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .grid {
+      display: grid;
+      gap: 22px;
+      width: min(1100px, 92%);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform .4s ease;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .card p {
+      margin: 0;
+      color: #e9f0ffcc;
+      font-size: .95rem;
+    }
+
+    /* slide up animation on scroll */
+    .slide-up {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.65s ease, opacity 0.65s ease;
+    }
+    .slide-up.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    footer {
+      width: 100%;
+      padding: 28px 16px;
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      background: rgba(0,0,0,0.18);
+      border-top: 1px solid rgba(255,255,255,.25);
+      position: relative;
+      z-index: 1;
+    }
+
+    .git {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    .git:hover { transform: translateY(-1px); }
+    .credit {
+      color: #e9f0ff;
+      font-size: .95rem;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 640px){
+      .brand { font-size: 1rem; }
+      .hero { padding: 40px 12px 28px; }
+      .creation { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="decor" aria-hidden="true"></div>
+  <div class="decor second" aria-hidden="true"></div>
+
+  <header>
+    <nav class="glass" aria-label="Main navigation">
+      <div class="brand" style="gap:12px;">
+        <span style="width:10px;height:10px;border-radius:50%;background:#7bdfff; display:inline-block;"></span>
+        <span>amirabolfazle</span>
+      </div>
+      <div style="display:flex;gap:18px;">
+        <a href="#about" aria-label="About section">About</a>
+        <a href="#projects" aria-label="Projects section">Projects</a>
+        <a href="#contact" aria-label="Contact section">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero" aria-label="Intro">
+    <div class="creation" title="Creation time">
+      Creation time: 2025-09-28 11:35:16
+    </div>
+    <h1 class="glow" aria-label="amirabolfazle">
+      amirabolfazle
+    </h1>
+    <div class="tag" style="max-width:720px;">
+      A sleek, glassmorphic, one-file portfolio featuring slide-up interactions and a modern aesthetic.
+    </div>
+    <div class="creation" style="margin-top:14px;">
+      single-file showcase • glassmorphism • animated slide-up
+    </div>
+  </section>
+
+  <main>
+    <section id="about" class="grid" aria-labelledby="about-title">
+      <div class="card slide-up" style="grid-column:1 / -1;">
+        <h3 id="about-title" style="margin:0 0 6px; font-size:1.15rem;">About</h3>
+        <p>
+          Front-end developer with a passion for clean UI, motion, and thoughtful UX.
+          This is a compact, self-contained portfolio built in a single file using CSS glassmorphism,
+          subtle blur, and scroll-triggered slide-up animations.
+        </p>
+      </div>
+
+      <div class="card slide-up" aria-label="Contact info">
+        <h3 style="margin:0 0 6px;">Contact</h3>
+        <p>Email: your.email@example.com</p>
+        <p>Location: Remote</p>
+      </div>
+
+      <div class="card slide-up" aria-label="Tech stack">
+        <h3 style="margin:0 0 6px;">Stack</h3>
+        <p>HTML, CSS (Glassmorphism), vanilla JS, accessibility-first semantics.</p>
+      </div>
+    </section>
+
+    <section id="projects" class="grid" aria-labelledby="projects-title">
+      <div class="card slide-up" aria-label="Project 1" style="min-height:120px;">
+        <h3>Autogen Code Studio</h3>
+        <p>A lightweight code generator with a focused UI and modern glass styling.</p>
+      </div>
+
+      <div class="card slide-up" aria-label="Project 2">
+        <h3>Portfolio Playground</h3>
+        <p>Experimenting with motion, typography, and layout in a single HTML file.</p>
+      </div>
+
+      <div class="card slide-up" aria-label="Project 3">
+        <h3>UI Kit Sketch</h3>
+        <p>Component snippets and glassy cards for rapid prototyping.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="grid" aria-labelledby="contact-title" style="margin-bottom:40px;">
+      <div class="card slide-up" style="grid-column:1 / -1;">
+        <h3 id="contact-title" style="margin:0 0 6px;">Let's connect</h3>
+        <p>Interested in collaborating or just saying hi? Reach out and I’ll respond shortly.</p>
+        <div style="margin-top:8px;">
+          <a class="git" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+            <!-- GitHub Icon (inline SVG) -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex:0 0 auto;">
+              <path d="M12 .5C5.73.5 0 6.23 0 12.5c0 5.3 3.438 9.8 8.205 11.387.6.11.82-.26.82-.58 0-.29-.01-1-.02-1.97-3.346.73-4.045-1.43-4.045-1.43-.546-1.39-1.333-1.76-1.333-1.76-1.089-.745.084-.745.084-.745 1.204.086 1.84 1.238 1.84 1.238 1.075 1.836 2.818 1.306 3.506.999.11-.776.42-1.304.764-1.604-2.666-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.237-3.22-.125-.304-.536-1.54.117-3.21 0 0 1-.324 3.3 1.23a11.5 11.5 0 016 0c2.3-1.554 3.3-1.23 3.3-1.23.653 1.67.243 2.906.118 3.21.772.84 1.235 1.91 1.235 3.22 0 4.6-2.804 5.625-5.475 5.92.43.37.81 1.1.81 2.23 0 1.61-.015 2.9-.015 3.29 0 .32.218.69.824.57C20.565 21.99 24 17.5 24 12.5 24 6.23 18.27.5 12 .5z"/>
+            </svg>
+            <span>Visit GitHub</span>
+          </a>
+        </div>
+        <div class="credit" style="margin-top:8px;">Created by amirabolfazle</div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Site footer">
+    <!-- Keeping footer simple with the GitHub link and creator text as requested -->
+  </footer>
+
+  <script>
+    // Simple IntersectionObserver to add slide-up appearance
+    (function(){
+      const els = document.querySelectorAll('.slide-up');
+      const observer = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+          }
+        }
+      }, { threshold: 0.15 });
+
+      els.forEach(el => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>
