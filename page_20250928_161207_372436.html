@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --accent1:#7f5af0;
+      --accent2:#4ade80;
+      --accent3:#06b6d4;
+      --card:#0b1220cc;
+      --glass:rgba(255,255,255,0.04);
+      --glass-2:rgba(255,255,255,0.02);
+      --text:#e6eef8;
+      --muted:#9fb0c8;
+    }
+
+    /* Animated gradient background */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 600px at 10% 10%, rgba(127,90,240,0.12), transparent 12%),
+                  radial-gradient(600px 500px at 90% 90%, rgba(6,182,212,0.08), transparent 14%),
+                  linear-gradient(120deg, #071226 0%, #071226 50%, #08101a 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    .canvas{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      position:relative;
+      isolation:isolate;
+    }
+
+    /* moving gradient overlay */
+    .canvas::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(127,90,240,0.12), rgba(6,182,212,0.10), rgba(74,222,128,0.08), rgba(127,90,240,0.12));
+      mix-blend-mode:overlay;
+      opacity:0.8;
+      animation: rotateBG 18s linear infinite;
+      pointer-events:none;
+    }
+
+    @keyframes rotateBG{
+      from{transform:rotate(0deg);}
+      to{transform:rotate(360deg);}
+    }
+
+    /* Main card */
+    .card{
+      position:relative;
+      width:min(1100px,95%);
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:28px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:18px;
+      padding:28px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.7);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:hidden;
+    }
+
+    /* Fade-in children */
+    .fade {
+      opacity:0;
+      transform: translateY(18px) scale(0.995);
+      animation: fadeInUp 900ms cubic-bezier(.2,.9,.3,1) forwards;
+    }
+    .fade.delay-1{ animation-delay:120ms; }
+    .fade.delay-2{ animation-delay:260ms; }
+    .fade.delay-3{ animation-delay:420ms; }
+    .fade.delay-4{ animation-delay:580ms; }
+    .fade.delay-5{ animation-delay:760ms; }
+
+    @keyframes fadeInUp{
+      to{ opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    /* Left column */
+    .profile{
+      padding:18px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(127,90,240,0.06), rgba(6,182,212,0.04));
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .avatar{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      color:white;
+      font-size:44px;
+      box-shadow: 0 8px 30px rgba(79,70,229,0.24);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .name{
+      font-size:20px;
+      font-weight:700;
+      letter-spacing:0.4px;
+    }
+    .handle{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .meta{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+    }
+
+    .meta small{ color:var(--muted); font-size:12px; }
+    .meta strong{ font-size:14px; color:var(--text); }
+
+    /* Right column */
+    .content{
+      padding:10px 6px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .hero{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:800;
+      line-height:1.05;
+      background:linear-gradient(90deg,var(--accent1), var(--accent3));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:6px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent1),var(--accent3));
+      color:white;
+      font-weight:600;
+      font-size:13px;
+      border:none;
+      cursor:pointer;
+      box-shadow:0 8px 24px rgba(99,102,241,0.16);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .btn:active{ transform:translateY(1px) scale(.997); }
+    .ghost{
+      padding:10px 12px;
+      border-radius:10px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--text);
+      font-weight:600;
+      font-size:13px;
+      cursor:pointer;
+    }
+
+    /* Cards inside content */
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .panel h4{ margin:0; font-size:15px; color:var(--text); }
+    .panel p{ margin:0; color:var(--muted); font-size:13px; }
+
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      padding:8px 10px;
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* Projects grid */
+    .projects{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:12px;
+    }
+
+    .project{
+      padding:12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(6,182,212,0.04), rgba(127,90,240,0.03));
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s;
+    }
+    .project:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(6,182,212,0.06); }
+
+    .project h5{ margin:0 0 6px 0; font-size:14px; }
+    .project small{ color:var(--muted); font-size:12px; }
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding-top:6px;
+      border-top:1px dashed rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .gh-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--text);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform .15s, box-shadow .15s;
+    }
+    .gh-link:hover{ transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,0.5); }
+
+    /* small responsive */
+    @media (max-width:880px){
+      .card{ grid-template-columns: 1fr; }
+      .hero{ flex-direction:column; align-items:flex-start; gap:8px; }
+      .actions{ align-self:stretch; justify-content:space-between; }
+    }
+
+    /* decorative animated accent blobs */
+    .blob{
+      position:absolute;
+      filter: blur(36px) saturate(140%);
+      opacity:0.55;
+      z-index:0;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation: floatBlob 8s ease-in-out infinite;
+    }
+    .blob.b1{ width:320px; height:320px; left:-60px; top:-50px; background:radial-gradient(circle at 30% 30%, rgba(127,90,240,0.35), rgba(127,90,240,0.09) 40%, transparent 60%); animation-duration:12s; }
+    .blob.b2{ width:260px; height:260px; right:-40px; bottom:-40px; background:radial-gradient(circle at 70% 60%, rgba(6,182,212,0.28), rgba(74,222,128,0.12) 45%, transparent 70%); animation-duration:10s; transform:translateY(0); }
+    @keyframes floatBlob{
+      0%{ transform:translateY(0) rotate(0deg); }
+      50%{ transform:translateY(-18px) rotate(12deg); }
+      100%{ transform:translateY(0) rotate(0deg); }
+    }
+
+    /* subtle focus outline for keyboard users */
+    a:focus, button:focus { outline:3px solid rgba(99,102,241,0.18); outline-offset:3px; }
+
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+
+    <main class="card" role="main" aria-labelledby="profile-title">
+      <aside class="profile fade delay-1" aria-label="profile sidebar">
+        <div class="avatar" aria-hidden="true">am</div>
+        <div>
+          <div class="name" id="profile-title">amirabolfazle</div>
+          <div class="handle">@amirabolfazle</div>
+        </div>
+
+        <div class="meta" title="creation-time">
+          <div>
+            <small>Creation time</small>
+            <div><strong>2025-09-28 16:11:14</strong></div>
+          </div>
+          <div style="text-align:right;">
+            <small>Role</small>
+            <div><strong>Creator · Developer</strong></div>
+          </div>
+        </div>
+
+        <div style="width:100%;">
+          <div class="panel fade delay-2" style="flex-direction:column; align-items:flex-start;">
+            <h4>About</h4>
+            <p style="color:var(--muted); margin-top:6px; font-size:13px;">
+              Passionate about crafting focused, animated single-file experiences. I like gradients, clean micro-interactions and fast UIs.
+            </p>
+          </div>
+
+          <div class="panel fade delay-3" style="margin-top:12px; flex-direction:column;">
+            <h4>Contact</h4>
+            <p style="color:var(--muted); margin-top:6px; font-size:13px;">hello@amirabolfazle.dev</p>
+            <div style="margin-top:8px;" class="chips">
+              <div class="chip">JavaScript</div>
+              <div class="chip">HTML</div>
+              <div class="chip">CSS</div>
+              <div class="chip">Design</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="content" aria-label="main content">
+        <div class="hero fade delay-1">
+          <div>
+            <div class="title">Beautiful, single-file portfolio</div>
+            <div class="subtitle">A small, animated showcase built with pure HTML/CSS. Gradient theme, subtle motion, and crisp microcopy.</div>
+          </div>
+
+          <div class="actions">
+            <button class="btn fade delay-2" onclick="scrollToProjects()" aria-label="See projects">See projects</button>
+            <a class="ghost fade delay-3" href="#contact" aria-label="Contact">Contact</a>
+          </div>
+        </div>
+
+        <div class="panel fade delay-3" style="justify-content:space-between; align-items:center;">
+          <div>
+            <h4 style="margin:0;">Highlights</h4>
+            <p style="margin:6px 0 0 0;" class="subtitle">Design systems, animated UI, tiny performance-first builds.</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div style="text-align:center;">
+              <small class="subtitle">Projects</small>
+              <div style="font-weight:700; font-size:18px;">6</div>
+            </div>
+            <div style="text-align:center;">
+              <small class="subtitle">Years</small>
+              <div style="font-weight:700; font-size:18px;">4+</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+          <h3 style="margin:0; font-size:16px;">Selected Projects</h3>
+          <div style="color:var(--muted); font-size:13px;">Animated • Lightweight • Single-file</div>
+        </div>
+
+        <div id="projects" class="projects fade delay-4" aria-live="polite">
+          <article class="project" aria-labelledby="p1">
+            <h5 id="p1">Aurora UI kit</h5>
+            <small>Design tokens and micro interactions in one file.</small>
+          </article>
+
+          <article class="project" aria-labelledby="p2">
+            <h5 id="p2">Glide Landing</h5>
+            <small>Fast landing page with animated gradient hero.</small>
+          </article>
+
+          <article class="project" aria-labelledby="p3">
+            <h5 id="p3">Microblog</h5>
+            <small>Markdown-first microblog interface with neat cards.</small>
+          </article>
+
+          <article class="project" aria-labelledby="p4">
+            <h5 id="p4">Spectrum Tools</h5>
+            <small>Color systems and contrast testing, lightweight UI.</small>
+          </article>
+        </div>
+
+        <footer class="fade delay-5" role="contentinfo">
+          <div style="display:flex; flex-direction:column;">
+            <div style="color:var(--muted); font-size:13px;">Creation time: <strong style="color:var(--text); font-weight:600;">2025-09-28 16:11:14</strong></div>
+            <div style="color:var(--muted); font-size:12px; margin-top:6px;">Hand-crafted single-file portfolio — animated with CSS</div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:12px;">
+            <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+              <!-- GitHub icon (inline SVG) -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0.5C5.37 0.5 0 5.87 0 12.5C0 17.84 3.438 22.32 8.205 23.98C8.805 24.09 9.025 23.72 9.025 23.4C9.025 23.12 9.015 22.33 9.01 21.28C5.672 21.98 4.968 19.78 4.968 19.78C4.421 18.36 3.633 18.01 3.633 18.01C2.545 17.2 3.717 17.22 3.717 17.22C4.922 17.3 5.56 18.45 5.56 18.45C6.63 20.24 8.33 19.72 9.005 19.41C9.11 18.63 9.42 18.06 9.765 17.72C7.12 17.39 4.344 16.33 4.344 11.66C4.344 10.33 4.82 9.27 5.59 8.44C5.47 8.1 5.06 6.83 5.69 5.14C5.69 5.14 6.69 4.79 9.01 6.34C9.95 6.06 10.95 5.92 11.95 5.92C12.95 5.92 13.95 6.06 14.89 6.34C17.21 4.79 18.21 5.14 18.21 5.14C18.84 6.83 18.43 8.1 18.31 8.44C19.08 9.27 19.55 10.33 19.55 11.66C19.55 16.35 16.77 17.39 14.12 17.72C14.56 18.12 14.95 18.9 14.95 20.08C14.95 21.76 14.94 22.97 14.94 23.4C14.94 23.72 15.15 24.1 15.76 23.98C20.52 22.32 24 17.84 24 12.5C24 5.87 18.63 0.5 12 0.5Z" fill="white"/>
+              </svg>
+              <span style="font-weight:600; font-size:13px;">Created by amirabolfazle</span>
+            </a>
+          </div>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // small helper for CTA
+    function scrollToProjects(){
+      const el = document.getElementById('projects');
+      if(!el) return;
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      // subtle pulse to indicate target
+      el.style.transition = 'box-shadow .5s';
+      el.style.boxShadow = '0 18px 34px rgba(99,102,241,0.12)';
+      setTimeout(()=> el.style.boxShadow = '', 800);
+    }
+
+    // accessibility: prefer-reduced-motion support
+    (function(){
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        document.querySelectorAll('.blob, .canvas::before').forEach(()=>{});
+        // disable animations by removing classes that animate
+        document.querySelectorAll('.fade').forEach(el=>{
+          el.style.animation = 'none';
+          el.style.opacity = 1;
+          el.style.transform = 'none';
+        });
+        document.querySelectorAll('.blob').forEach(b=> b.style.animation = 'none');
+        document.documentElement.style.animation = 'none';
+      }
+    })();
+  </script>
+</body>
+</html>
