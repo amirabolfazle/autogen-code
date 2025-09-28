@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(10,14,25,1);
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-stroke: rgba(255,255,255,0.12);
+      --accent: rgba(130, 95, 255, 0.9);
+      --accent-2: rgba(0, 210, 255, 0.9);
+      --card-radius: 18px;
+      color-scheme: dark;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Ubuntu Mono", monospace;
+      --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100%;
+      font-family: var(--ui);
+      background:
+        radial-gradient(1200px 600px at 10% 20%, rgba(130,95,255,0.08), transparent 8%),
+        radial-gradient(1000px 500px at 95% 80%, rgba(0,210,255,0.06), transparent 10%),
+        linear-gradient(180deg, var(--bg1) 0%, #041025 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* rotating decorative shapes behind */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(34px) saturate(120%);
+      mix-blend-mode: screen;
+      opacity: 0.85;
+      animation: slow-rotate 30s linear infinite;
+      pointer-events:none;
+    }
+    .orb.o1{width:520px;height:520px; left:-200px; top:-120px;background:radial-gradient(circle at 30% 30%, var(--accent), transparent 40%);}
+    .orb.o2{width:420px;height:420px; right:-140px; bottom:-120px;background:radial-gradient(circle at 70% 70%, var(--accent-2), transparent 45%); animation-duration:38s; animation-direction:reverse; filter: blur(36px) contrast(120%);}
+    .orb.o3{width:200px;height:200px; left:40%; top:-50px;background:conic-gradient(from 90deg, rgba(255,255,255,0.02), rgba(255,255,255,0)); animation-duration:48s; opacity:0.6;}
+
+    @keyframes slow-rotate{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+    /* Main glass card */
+    .wrap{
+      position:relative;
+      width:100%;
+      max-width:1100px;
+      min-height:540px;
+      display:grid;
+      grid-template-columns: 380px 1fr;
+      gap:28px;
+      align-items:center;
+      z-index:2;
+    }
+
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:var(--card-radius);
+      padding:28px;
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid var(--glass-stroke);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      position:relative;
+      overflow:hidden;
+      transition:transform .45s cubic-bezier(.2,.9,.28,1), box-shadow .25s ease;
+    }
+
+    .glass:hover{ transform: translateY(-6px) rotate(-1deg); box-shadow: 0 18px 60px rgba(2,6,23,0.65); }
+
+    /* left panel */
+    .left{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      text-align:center;
+    }
+
+    .avatar {
+      width:150px;
+      height:150px;
+      border-radius:30px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: var(--mono);
+      font-size:40px;
+      color:rgba(255,255,255,0.92);
+      letter-spacing:0.6px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      transform-origin:center;
+      animation: avatar-tilt 6s ease-in-out infinite;
+    }
+
+    @keyframes avatar-tilt{
+      0%{ transform: rotate(-6deg) translateY(0) }
+      50%{ transform: rotate(6deg) translateY(-6px) }
+      100%{ transform: rotate(-6deg) translateY(0) }
+    }
+
+    .name{
+      font-size:22px;
+      font-weight:700;
+      color:linear-gradient(90deg,#fff,#ddd);
+      letter-spacing:0.6px;
+    }
+
+    .subtitle{
+      font-size:13px;
+      color:rgba(255,255,255,0.65);
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+      margin-top:6px;
+    }
+    .tag{
+      font-size:12px;
+      padding:6px 10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      color:rgba(255,255,255,0.85);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(3px);
+    }
+
+    /* right panel */
+    .content{
+      padding:8px 6px 8px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .hdr{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .title {
+      font-size:34px;
+      font-weight:800;
+      margin:0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip:text;
+      color: transparent;
+      letter-spacing:-0.6px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .rotator{
+      width:48px;height:48px;border-radius:12px;
+      display:inline-grid;place-items:center;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      animation: rotate-360 6s linear infinite;
+      transform-origin:center;
+    }
+    @keyframes rotate-360{
+      from{transform:rotate(0deg)} to{transform:rotate(360deg)}
+    }
+
+    .bio{
+      color:rgba(255,255,255,0.9);
+      font-size:14px;
+      line-height:1.55;
+      margin:0;
+    }
+
+    .projects{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+    .card-mini{
+      padding:12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 20px rgba(2,6,23,0.45);
+      transition:transform .28s ease, box-shadow .28s ease;
+      cursor:default;
+    }
+    .card-mini:hover{ transform: translateY(-6px) rotate(-1deg); box-shadow: 0 18px 40px rgba(2,6,23,0.6); }
+
+    .project-title{
+      font-size:13px;
+      font-weight:700;
+      color:rgba(255,255,255,0.96);
+      margin-bottom:6px;
+    }
+    .project-desc{
+      font-size:12px;
+      color:rgba(255,255,255,0.68);
+    }
+
+    .meta-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:6px;
+    }
+    .pill{
+      padding:6px 8px;
+      font-size:12px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius:999px;
+      color:rgba(255,255,255,0.78);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* creation time highlight */
+    .created-time{
+      margin-top:10px;
+      font-family:var(--mono);
+      display:inline-block;
+      padding:8px 12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:10px;
+      color:rgba(255,255,255,0.7);
+      font-size:12px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      z-index:9;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    footer a{ display:inline-flex; align-items:center; gap:8px; color:inherit; text-decoration:none; }
+    .gh-icon{
+      width:22px;height:22px; display:inline-block; vertical-align:middle;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
+      transition:transform .18s ease;
+    }
+    footer a:hover .gh-icon{ transform:translateY(-4px) scale(1.05); }
+
+    /* responsive */
+    @media (max-width:920px){
+      .wrap{ grid-template-columns: 1fr; max-width:760px; padding:14px; }
+      .left{ flex-direction:row; text-align:left; gap:14px; align-items:center; justify-content:flex-start; }
+      .content{ padding-left:6px }
+      .avatar{ width:110px; height:110px; border-radius:14px; font-size:28px }
+      .title{ font-size:26px }
+      .projects{ grid-template-columns: 1fr; }
+    }
+
+    /* tiny flourish line */
+    .accent-line{
+      height:3px;
+      width:86px;
+      border-radius:999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 6px 18px rgba(130,95,255,0.12), 0 6px 28px rgba(0,210,255,0.06);
+      margin-left:4px;
+    }
+
+    /* small shimmer for titles */
+    .shimmer{
+      position:relative;
+      overflow:hidden;
+    }
+    .shimmer::after{
+      content:"";
+      position:absolute;
+      left:-60%;
+      top:0;
+      height:100%;
+      width:60%;
+      transform:skewX(-18deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0.00), rgba(255,255,255,0.06), rgba(255,255,255,0.00));
+      animation: shimmer 4.4s linear infinite;
+    }
+    @keyframes shimmer{
+      from{ left:-60% } to{ left:140% }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-label="amirabolfazle portfolio">
+    <section class="glass left" aria-label="profile panel">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;">
+        <div class="avatar" title="amirabolfazle">ab</div>
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="name">amirabolfazle</div>
+          <div class="subtitle">Creator • Engineer • Builder of neat things</div>
+        </div>
+
+        <div class="tags" aria-hidden="true">
+          <div class="tag">Web</div>
+          <div class="tag">Automation</div>
+          <div class="tag">AI</div>
+          <div class="tag">Open Source</div>
+        </div>
+
+        <div class="created-time" title="Creation timestamp">Created: 2025-09-28 21:44:47</div>
+      </div>
+    </section>
+
+    <section class="glass content" aria-label="content panel">
+      <div class="hdr">
+        <h1 class="title shimmer" style="margin:0">amirabolfazle</h1>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="rotator" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2v4" stroke="white" stroke-opacity="0.9" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M20 12h-4" stroke="white" stroke-opacity="0.9" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M12 20v-4" stroke="white" stroke-opacity="0.9" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M4 12h4" stroke="white" stroke-opacity="0.9" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="accent-line" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <p class="bio">A compact showcase with a glassmorphism vibe and subtle motion. I explore building tools, automations and polished UI experiences — blending design and code to ship things that feel alive. This portfolio is intentionally minimal and single-file: fast to load, easy to share.</p>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div class="pill">Location: Remote</div>
+        <div class="pill">Stack: JS · Python · Node</div>
+        <div class="pill">Focus: Automation · AI</div>
+      </div>
+
+      <div style="margin-top:6px;font-size:13px;color:rgba(255,255,255,0.78);font-weight:700">Selected projects</div>
+
+      <div class="projects" style="margin-top:8px;">
+        <div class="card-mini">
+          <div class="project-title">autogen-code</div>
+          <div class="project-desc">A toolkit for generating and iterating code with automation-friendly workflows.</div>
+          <div class="meta-row">
+            <div class="pill">GitHub</div>
+            <div class="pill">TypeScript</div>
+          </div>
+        </div>
+
+        <div class="card-mini">
+          <div class="project-title">toolchain-ai</div>
+          <div class="project-desc">Composable pipelines to integrate models into developer tooling.</div>
+          <div class="meta-row">
+            <div class="pill">Python</div>
+            <div class="pill">APIs</div>
+          </div>
+        </div>
+
+        <div class="card-mini">
+          <div class="project-title">ui-playground</div>
+          <div class="project-desc">Micro-interactions and components for vivid product UIs.</div>
+          <div class="meta-row">
+            <div class="pill">Design</div>
+            <div class="pill">Animations</div>
+          </div>
+        </div>
+
+        <div class="card-mini">
+          <div class="project-title">deploy-helper</div>
+          <div class="project-desc">Scripts and helpers to make CI/CD less boring and more reliable.</div>
+          <div class="meta-row">
+            <div class="pill">DevOps</div>
+            <div class="pill">Automation</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div style="color:rgba(255,255,255,0.6);font-size:12px;">Want to collaborate? Ping me — I enjoy quick prototypes that become real products.</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <a class="pill" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open autogen-code on GitHub">Explore repo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo" aria-label="footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.54-3.88-1.54-.53-1.36-1.29-1.72-1.29-1.72-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.72 1.27 3.38.97.11-.76.41-1.27.75-1.56-2.55-.29-5.24-1.28-5.24-5.71 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.45.11-3.02 0 0 .97-.31 3.18 1.17a11.05 11.05 0 012.9-.39c.98.01 1.97.13 2.9.39 2.2-1.49 3.17-1.17 3.17-1.17.63 1.56.24 2.72.12 3.02.74.81 1.19 1.84 1.19 3.1 0 4.44-2.7 5.42-5.27 5.7.42.36.8 1.08.8 2.18 0 1.58-.01 2.86-.01 3.25 0 .31.21.68.8.56A10.52 10.52 0 0023.5 12C23.5 5.65 18.35.5 12 .5z" fill="white" fill-opacity="0.95"/>
+      </svg>
+    </a>
+    <div style="font-size:13px;color:rgba(255,255,255,0.82);">Created by amirabolfazle</div>
+  </footer>
+
+  <script>
+    // small interactive flourish: tilt card based on pointer
+    (function(){
+      const wrap = document.querySelector('.wrap');
+      const glassElems = document.querySelectorAll('.glass');
+      let rect;
+      function updateRect(){ rect = wrap.getBoundingClientRect(); }
+      updateRect();
+      window.addEventListener('resize', updateRect);
+
+      window.addEventListener('pointermove', (e)=>{
+        if(!rect) updateRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dx = e.clientX - cx;
+        const dy = e.clientY - cy;
+        const max = Math.min(18, rect.width/20);
+        const rx = (-dy/rect.height) * max;
+        const ry = (dx/rect.width) * max;
+        glassElems.forEach((el,i)=>{
+          const depth = i===0 ? 1.2 : 0.6;
+          el.style.transform = `translateY(${ -6 * depth }px) rotateX(${rx*depth}deg) rotateY(${ry*depth}deg)`;
+        });
+      });
+
+      window.addEventListener('pointerleave', ()=>{
+        glassElems.forEach((el)=> el.style.transform = '');
+      });
+
+    })();
+  </script>
+</body>
+</html>
