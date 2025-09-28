@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-deep: #0a0a1a;
+      --bg-dusk: #050516;
+      --neon-cyan: #00e5ff;
+      --neon-pink: #ff2d95;
+      --neon-purple: #8a2be2;
+      --fg: #e8f7ff;
+      --card: rgba(255,255,255,0.08);
+    }
+
+    /* Global reset-ish */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--fg);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      background: linear-gradient(135deg, var(--bg-deep) 0%, #0a0d1a 60%, var(--bg-dusk) 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+      /* subtle animated neon backdrop */
+      position: relative;
+    }
+
+    /* animated neon gradient overlay layer */
+    .neon-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 20% 0%, rgba(0,229,255,.15), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(255,45,149,.15), transparent 40%),
+                  radial-gradient(circle at 50% 100%, rgba(128,0,255,.15), transparent 40%);
+      filter: saturate(1.2);
+      mix-blend-mode: screen;
+      animation: glowPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%,100% { transform: translateZ(0); opacity: .9; }
+      50% { opacity: 1; transform: translateZ(0) scale(1.02); }
+    }
+
+    /* decorative neon lines across the page */
+    .neon-lines {
+      position: fixed;
+      left: -10%;
+      right: -10%;
+      top: 0;
+      height: 100%;
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(0, 229, 255, 0.15) 0 2px,
+        transparent 2px 12px
+      );
+      filter: blur(0.3px);
+      pointer-events: none;
+      animation: slide 18s linear infinite;
+      mix-blend-mode: screen;
+      opacity: .6;
+    }
+    @keyframes slide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-40px); }
+    }
+
+    main {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 4rem 1rem;
+    }
+
+    .card {
+      text-align: center;
+      padding: clamp(1.5rem, 6vw, 4rem);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04) 60%);
+      box-shadow: 0 0 0 1px rgba(0,255,255,.15) inset, 0 20px 60px rgba(0,0,0,.4);
+      max-width: 980px;
+      width: 90%;
+      backdrop-filter: saturate(1.2) blur(2px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* glow rings around the card */
+    .card::before, .card::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      pointer-events: none;
+      filter: blur(6px);
+    }
+    .card::before {
+      border: 1px solid rgba(0, 229, 255, 0.6);
+      background: radial-gradient(circle at 50% 0, rgba(0,229,255,.3), transparent 40%);
+      z-index: -1;
+    }
+    .card::after {
+      border: 1px solid rgba(255, 45, 149, 0.6);
+      background: radial-gradient(circle at 50% 100%, rgba(255,45,149,.25), transparent 40%);
+      z-index: -2;
+    }
+
+    .neon-title {
+      font-family: inherit;
+      font-weight: 800;
+      font-size: clamp(2.5rem, 10vw, 6rem);
+      line-height: 1.05;
+      margin: 0 0 .75rem;
+      text-transform: lowercase;
+      letter-spacing: .04em;
+      /* gradient text with neon glow */
+      background: linear-gradient(90deg, #00e5ff, #ff2d95, #7aff8f);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 8px rgba(0,229,255,.9),
+        0 0 16px rgba(0,229,255,.8),
+        0 0 40px rgba(255,45,149,.8);
+      animation: hueShift 16s linear infinite;
+    }
+
+    @keyframes hueShift {
+      0% { filter: saturate(1); }
+      50% { filter: saturate(1.4); }
+      100% { filter: saturate(1); }
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.95rem;
+      color: #d8f7ff;
+      opacity: .95;
+      padding: .25rem 0;
+      border-radius: 8px;
+      display: inline-block;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(0,255,255,.25);
+      box-shadow: 0 0 20px rgba(0,255,255,.25);
+      animation: fadeIn 1s ease-out;
+      text-shadow: 0 0 8px rgba(0,255,255,.6);
+    }
+
+    .footer {
+      width: 100%;
+      padding: 1.25rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      color: #cdefff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .95rem;
+      background: linear-gradient(to top, rgba(0,0,0,.25), rgba(0,0,0,.0));
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      color: #e8fbff;
+      transition: transform .25s ease, box-shadow .25s ease;
+      text-decoration: none;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(0,255,255,.25);
+      box-shadow: 0 0 16px rgba(0,255,255,.25);
+    }
+    .github-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(0,255,255,.6);
+    }
+
+    .credit-text {
+      margin-left: .5rem;
+      color: #ccf3ff;
+      opacity: .95;
+    }
+
+    /* utility: fade-in stagger for elements */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 1.2s ease forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 700px) {
+      .credit-text { display: block; margin-left: 0; margin-top: .25rem; }
+      .footer { flex-direction: column; gap: .4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="neon-overlay" aria-hidden="true"></div>
+  <div class="neon-lines" aria-hidden="true"></div>
+
+  <main role="main" aria-label="Amirabolfazle landing">
+    <section class="card fade-in" style="animation-delay:0s;">
+      <h1 class="neon-title" aria-label="Site title">amirabolfazle</h1>
+      <div class="creation-time" style="animation-delay:0.2s;">
+        Creation time: 2025-09-28 04:59:33
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" aria-label="GitHub repository">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5C5.73.5 0 6.23 0 12c0 5.04 3.29 9.31 7.86 10.82.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.38-3.88-1.38-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.18.08 1.8 1.18 1.8 1.18 1.04 1.77 2.72 1.26 3.38.96.11-.75.41-1.26.74-1.55-2.55-.29-5.23-1.28-5.23-5.66 0-1.25.45-2.27 1.19-3.07-.12-.29-.52-1.46.12-3.04 0 0 .97-.31 3.18 1.17a11.12 11.12 0 0 1 5.8 0c2.21-1.48 3.18-1.17 3.18-1.17.65 1.58.24 2.75.12 3.04.74.8 1.18 1.82 1.18 3.07 0 4.39-2.69 5.36-5.25 5.65.36.31.69.92.69 1.86 0 1.34-.01 2.42-.01 2.75 0 .31.21.66.79.55C20.71 21.32 24 17.04 24 12c0-5.77-5.73-11.5-12-11.5z"/>
+      </svg>
+    </a>
+    <span class="credit-text">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
