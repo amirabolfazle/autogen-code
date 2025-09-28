@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071129;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent1: #7c5cff;
+      --accent2: #00e0c6;
+      --muted: rgba(255,255,255,0.75);
+      --glass-shadow: 0 8px 32px rgba(2,6,23,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(800px 400px at 10% 10%, rgba(124,92,255,0.14), transparent 8%),
+                  radial-gradient(700px 350px at 90% 90%, rgba(0,224,198,0.08), transparent 12%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color: #e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* ambient floating orbs */
+    .orb{
+      position:fixed;
+      border-radius:50%;
+      filter: blur(36px);
+      mix-blend-mode: screen;
+      opacity:0.9;
+      pointer-events:none;
+    }
+    .orb.orb1{ width:480px; height:480px; left:-8%; top:-6%; background: linear-gradient(45deg, rgba(124,92,255,0.45), rgba(0,224,198,0.15)); }
+    .orb.orb2{ width:380px; height:380px; right:-6%; bottom:-8%; background: linear-gradient(45deg, rgba(0,224,198,0.28), rgba(124,92,255,0.06)); }
+
+    /* container */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      width:min(1100px,96%);
+      border-radius:18px;
+      padding:48px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* header */
+    .header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+      margin-bottom:22px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(124,92,255,0.95), rgba(0,224,198,0.85));
+      box-shadow: 0 6px 18px rgba(124,92,255,0.16), inset 0 -6px 16px rgba(0,0,0,0.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:white;
+      font-size:26px;
+      letter-spacing:0.6px;
+      transform:skewX(-8deg);
+    }
+
+    .title{
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+
+    .title h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:0.4px;
+      color: #fff;
+    }
+    .title p{
+      margin:2px 0 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* hero content */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:center;
+    }
+
+    @media (max-width:900px){
+      .hero{ grid-template-columns: 1fr; }
+      .header{ gap:12px; }
+    }
+
+    .lead{
+      color:#eaf3ff;
+      font-size:20px;
+      margin:0 0 18px 0;
+    }
+    .desc{
+      color:rgba(230,238,255,0.86);
+      margin:0 0 20px 0;
+      line-height:1.5;
+    }
+
+    .cta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.36);
+      transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s;
+    }
+    .btn:active{ transform: translateY(2px) scale(.995); }
+    .muted-btn{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.08);
+      color:var(--muted);
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    /* info panel (glass cards) */
+    .panel{
+      padding:18px;
+      border-radius:14px;
+      background:var(--glass-bg);
+      border:1px solid var(--glass-border);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .panel .meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .time{
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .stats{
+      display:flex;
+      gap:8px;
+      margin-top:6px;
+      flex-wrap:wrap;
+    }
+    .stat{
+      flex:1 1 120px;
+      min-width:100px;
+      padding:10px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .stat strong{ color:#fff; display:block; font-size:15px; margin-bottom:6px; }
+
+    /* features */
+    .features{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:16px;
+      margin-top:26px;
+    }
+    @media (max-width:900px){ .features{ grid-template-columns: repeat(1,1fr); } }
+    .feature{
+      padding:16px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      color:var(--muted);
+    }
+    .feature h3{ margin:0 0 8px 0; color:#fff; font-size:15px; }
+    .feature p{ margin:0; font-size:13px; line-height:1.45; }
+
+    /* footer */
+    .footer{
+      margin-top:26px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-top:1px dashed rgba(255,255,255,0.03);
+      padding-top:18px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .footer a{
+      color:var(--muted);
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .github-icon{
+      width:20px; height:20px; display:inline-block;
+      transform:translateY(-1px);
+    }
+
+    /* slide-up reveal mechanics */
+    .reveal-on-scroll{
+      opacity:0;
+      transform: translateY(28px);
+      transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 600ms ease;
+      will-change: transform, opacity;
+    }
+    .reveal-on-scroll.visible{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* small flourish */
+    .spark{
+      position:absolute;
+      right:-120px;
+      top:-80px;
+      width:240px;
+      height:240px;
+      border-radius:50%;
+      background: conic-gradient(from 140deg, rgba(124,92,255,0.14), rgba(0,224,198,0.08));
+      filter: blur(28px);
+      pointer-events:none;
+      opacity:0.9;
+    }
+
+    /* micro-interactions */
+    .feature:hover{ transform: translateY(-6px); transition: transform .28s cubic-bezier(.2,.9,.2,1); box-shadow: 0 10px 30px rgba(2,6,23,0.45); }
+
+    /* small text color fixes */
+    .muted { color:var(--muted); }
+
+    /* utility */
+    .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+  <div class="orb orb1" aria-hidden="true"></div>
+  <div class="orb orb2" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="card" role="region" aria-label="amirabolfazle landing" >
+      <div class="spark" aria-hidden="true"></div>
+
+      <header class="header reveal-on-scroll" data-delay="0">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">am</div>
+          <div class="title">
+            <h1>amirabolfazle</h1>
+            <p>Glass-themed landing — subtle, modern, and animated.</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="btn reveal-on-scroll" data-delay="80">Get Started</button>
+          <button class="muted-btn reveal-on-scroll" data-delay="120">Explore</button>
+        </div>
+      </header>
+
+      <div class="hero">
+        <div>
+          <p class="lead reveal-on-scroll" data-delay="160">Crafting elegant interfaces with a glassmorphism aesthetic and smooth slide-up motion.</p>
+          <p class="desc reveal-on-scroll" data-delay="200">This demo showcases a frosted-glass layout, soft gradients, and micro-animations that slide content into view. Designed to be responsive and atmospheric — a beautiful base for portfolios or product landing pages.</p>
+
+          <div class="cta reveal-on-scroll" data-delay="240">
+            <button class="btn">Discover</button>
+            <button class="muted-btn">View Source</button>
+          </div>
+
+          <div class="features reveal-on-scroll" data-delay="320" style="margin-top:22px;">
+            <div class="feature">
+              <h3>Glassmorphism</h3>
+              <p>Backdrop blur, subtle borders and gradients create depth while keeping content legible.</p>
+            </div>
+            <div class="feature">
+              <h3>Motion</h3>
+              <p>Slide-up reveal animations bring attention and delight without overwhelming users.</p>
+            </div>
+            <div class="feature">
+              <h3>Responsive</h3>
+              <p>Layouts adapt gracefully from wide screens to mobile while preserving the aesthetic.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel reveal-on-scroll" data-delay="280" aria-hidden="false">
+          <div class="meta">
+            <div>
+              <div style="font-size:14px; color:#fff; font-weight:700;">Snapshot</div>
+              <div class="time"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v6l4 2" stroke="white" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9.25" stroke="white" stroke-opacity="0.06" stroke-width="1.5"/></svg> 2025-09-28 18:46:27</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:13px; color:var(--muted);">Status</div>
+              <div style="color:#c7fff2; font-weight:700; margin-top:4px;">Active</div>
+            </div>
+          </div>
+
+          <div class="stats" style="margin-top:12px;">
+            <div class="stat">
+              <strong>Design</strong>
+              Frosted glass, gradients, and depth
+            </div>
+            <div class="stat">
+              <strong>Motion</strong>
+              Slide-up reveals & subtle hovers
+            </div>
+            <div class="stat">
+              <strong>Use</strong>
+              Portfolio, product demo, or hero section
+            </div>
+          </div>
+
+          <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+            <button class="btn" style="flex:1">Preview</button>
+            <button class="muted-btn" style="width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14" stroke="white" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/><path d="M5 12h14" stroke="white" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="footer reveal-on-scroll" data-delay="380">
+        <div class="muted">Creation time: <strong style="color:#fff; margin-left:8px;">2025-09-28 18:46:27</strong></div>
+
+        <div>
+          <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg class="github-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012.01-.27c.68.003 1.36.09 2.01.27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            <span style="font-weight:600; color:#fff;">Created by amirabolfazle</span>
+          </a>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // Progressive reveal with staggered delays
+    document.addEventListener('DOMContentLoaded', function () {
+      const revealItems = Array.from(document.querySelectorAll('.reveal-on-scroll'));
+      // Apply inline delays from data-delay for initial staggering
+      revealItems.forEach(item => {
+        const d = parseInt(item.getAttribute('data-delay') || 0, 10);
+        item.style.transitionDelay = (d/1000) + 's';
+      });
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            // Once visible, unobserve to avoid repeated triggers
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealItems.forEach(el => io.observe(el));
+
+      // small accessibility: keyboard focus reveals
+      revealItems.forEach(el => {
+        el.addEventListener('focusin', () => el.classList.add('visible'));
+      });
+    });
+  </script>
+</body>
+</html>
