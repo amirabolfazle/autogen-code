@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --bg2: #071025;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: rgba(120, 180, 255, 0.9);
+      --muted: rgba(255,255,255,0.7);
+      --glass-blur: 10px;
+      --radius: 14px;
+      --card-w: min(720px, 92vw);
+      --ease: cubic-bezier(.2,.9,.2,1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(80,110,160,0.08), transparent 8%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(120,80,160,0.06), transparent 8%),
+                  linear-gradient(180deg,var(--bg1), var(--bg2));
+      color: #eaf0ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      overflow-x:hidden;
+    }
+
+    /* subtle moving gradient layer */
+    .bg-anim{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      opacity:0.14;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(120,180,255,0.12), rgba(170,120,255,0.08), rgba(120,180,255,0.12));
+      mask: radial-gradient(ellipse at center, rgba(0,0,0,1), rgba(0,0,0,0.5) 40%, transparent 70%);
+      animation: rotate 18s linear infinite;
+      filter: blur(40px);
+    }
+
+    @keyframes rotate{ to{ transform: rotate(360deg) } }
+
+    .card{
+      position:relative;
+      width:var(--card-w);
+      padding:36px;
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+      box-shadow: 0 8px 30px rgba(4,8,20,0.6);
+      z-index:1;
+      overflow:hidden;
+      transform: translateY(28px);
+      opacity:0;
+      transition: transform .7s var(--ease), opacity .7s var(--ease);
+    }
+
+    .card.show{
+      transform: translateY(0);
+      opacity:1;
+    }
+
+    .header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .avatar{
+      width:68px;
+      height:68px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--accent);
+      font-size:20px;
+      box-shadow: inset 0 -6px 24px rgba(0,0,0,0.35);
+      transform: translateY(18px);
+      opacity:0;
+      transition: transform .6s var(--ease) .12s, opacity .6s var(--ease) .12s;
+    }
+
+    .avatar.show{ transform: translateY(0); opacity:1; }
+
+    h1{
+      margin:0;
+      font-size: clamp(20px, 4.5vw, 28px);
+      letter-spacing: -0.02em;
+      line-height:1;
+      color: #eaf3ff;
+      transform: translateY(18px);
+      opacity:0;
+      transition: transform .6s var(--ease) .18s, opacity .6s var(--ease) .18s;
+    }
+
+    h1.show{ transform: translateY(0); opacity:1; }
+
+    p.lead{
+      margin:14px 0 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
+      transform: translateY(18px);
+      opacity:0;
+      transition: transform .6s var(--ease) .24s, opacity .6s var(--ease) .24s;
+    }
+
+    p.lead.show{ transform: translateY(0); opacity:1; }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:18px;
+      color:rgba(230,240,255,0.72);
+      font-size:13px;
+      transform: translateY(18px);
+      opacity:0;
+      transition: transform .6s var(--ease) .3s, opacity .6s var(--ease) .3s;
+    }
+
+    .meta.show{ transform: translateY(0); opacity:1; }
+
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      font-size:12px;
+      color:var(--muted);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .accent-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background: linear-gradient(180deg,var(--accent), #6fb3ff);
+      box-shadow: 0 6px 18px rgba(90,140,220,0.18);
+    }
+
+    /* footer */
+    footer.site-footer{
+      position:fixed;
+      left:50%;
+      transform: translateX(-50%) translateY(20px);
+      bottom:18px;
+      z-index:2;
+      background: rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:8px 12px;
+      border-radius:999px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      backdrop-filter: blur(8px);
+      color:var(--muted);
+      font-size:13px;
+      box-shadow: 0 6px 24px rgba(2,6,18,0.6);
+      transform-origin:center;
+      opacity:0;
+      transition: transform .6s var(--ease) .36s, opacity .6s var(--ease) .36s;
+    }
+
+    footer.site-footer.show{ transform: translateX(-50%) translateY(0); opacity:1; }
+
+    footer a{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+
+    .gh-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      color:var(--muted);
+      opacity:0.95;
+      transition: transform .18s ease, color .18s ease;
+      flex:0 0 18px;
+    }
+
+    a:hover .gh-icon{ transform: translateY(-2px); color:var(--accent); filter:drop-shadow(0 6px 16px rgba(70,120,220,0.14)); }
+
+    /* small responsive spacing */
+    @media (max-width:420px){
+      .card{ padding:22px; border-radius:12px; }
+      .avatar{ width:56px; height:56px; font-size:18px; border-radius:12px; }
+      footer.site-footer{ padding:8px 10px; font-size:12px; bottom:12px; }
+    }
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .bg-anim{ animation:none }
+      .card, .avatar, h1, p.lead, .meta, footer.site-footer{ transition:none !important; animation:none !important; transform:none !important; opacity:1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-anim" aria-hidden="true"></div>
+
+  <main role="main" style="width:100%;max-width:1200px;z-index:1;">
+    <section class="card" id="card" aria-labelledby="main-title">
+      <div class="header" style="align-items:flex-start;">
+        <div class="avatar" id="avatar" aria-hidden="true">am</div>
+        <div style="flex:1;">
+          <h1 id="main-title">amirabolfazle</h1>
+          <p class="lead" id="lead">Minimal glassmorphism landing — subtle motion, slide-up reveal, and calm vibes.</p>
+          <div class="meta" id="meta">
+            <div class="pill" title="Creation time">
+              <span class="accent-dot" aria-hidden="true"></span>
+              <time datetime="2025-09-28T23:11:36">2025-09-28 23:11:36</time>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.58.11.79-.25.79-.56 0-.28-.01-1.02-.01-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.35-1.29-1.71-1.29-1.71-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.74-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.28 1.19-3.08-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.04 11.04 0 0 1 2.9-.39c.98.01 1.97.13 2.9.39 2.21-1.49 3.18-1.18 3.18-1.18.64 1.59.24 2.77.12 3.06.74.8 1.19 1.82 1.19 3.08 0 4.43-2.71 5.4-5.29 5.68.42.37.79 1.11.79 2.24 0 1.62-.01 2.93-.01 3.33 0 .31.21.67.79.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // reveal with slide-up effects, respecting reduced motion
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced){
+        document.getElementById('card').classList.add('show');
+        document.getElementById('avatar').classList.add('show');
+        document.getElementById('main-title').classList.add('show');
+        document.getElementById('lead').classList.add('show');
+        document.getElementById('meta').classList.add('show');
+        document.getElementById('footer').classList.add('show');
+        return;
+      }
+
+      // staggers
+      const card = document.getElementById('card');
+      const avatar = document.getElementById('avatar');
+      const title = document.getElementById('main-title');
+      const lead = document.getElementById('lead');
+      const meta = document.getElementById('meta');
+      const footer = document.getElementById('footer');
+
+      // Entrance timeline
+      setTimeout(()=> card.classList.add('show'), 80);
+      setTimeout(()=> avatar.classList.add('show'), 220);
+      setTimeout(()=> title.classList.add('show'), 300);
+      setTimeout(()=> lead.classList.add('show'), 420);
+      setTimeout(()=> meta.classList.add('show'), 540);
+      setTimeout(()=> footer.classList.add('show'), 680);
+
+      // tiny parallax on mouse move for subtle depth
+      let root = document.documentElement;
+      window.addEventListener('mousemove', (e)=>{
+        const x = (e.clientX / innerWidth - 0.5) * 12;
+        const y = (e.clientY / innerHeight - 0.5) * 12;
+        root.style.setProperty('--mx', x + 'deg');
+        root.style.setProperty('--my', y + 'px');
+        // use transform on card for subtle tilt
+        card.style.transform = `translateY(0) perspective(900px) rotateX(${y/18}deg) rotateY(${x/18}deg)`;
+        footer.style.transform = `translateX(-50%) translateY(0) translateZ(0)`;
+      }, {passive:true});
+
+      // restore on leave
+      window.addEventListener('mouseleave', ()=>{
+        card.style.transform = '';
+      }, {passive:true});
+
+    })();
+  </script>
+</body>
+</html>
