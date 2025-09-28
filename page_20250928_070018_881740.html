@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --surface: #11161c;
+      --card: rgba(255,255,255,0.04);
+      --text: #e9f0f5;
+      --muted: #a6b3c2;
+      --accent: #7bd1ff;
+      --accent2: #8a7dff;
+      --ring: rgba(123,209,255,.6);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color:var(--text);
+      background:
+        radial-gradient( circle at 20% -10%, rgba(123,209,255,.15), transparent 40% ),
+        radial-gradient( circle at 100% 0%, rgba(138,125,255,.15), transparent 40% ),
+        linear-gradient(135deg, #0b0f14 0%, #0b0f14 60%, #0a0f15 100%);
+      background-attachment: fixed;
+      overflow-x:hidden;
+    }
+
+    /* animated subtle background stripes */
+    body::before{
+      content:"";
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.03) 2px,
+        transparent 2px,
+        transparent 6px
+      );
+      pointer-events:none;
+      mix-blend-mode: overlay;
+      opacity:.6;
+      animation: drift 20s linear infinite;
+    }
+    @keyframes drift{
+      0%{transform: translate3d(0,0,0)}
+      100%{transform: translate3d(-20px, -20px, 0)}
+    }
+
+    header.hero{
+      padding: 54px 20px 28px;
+      text-align:center;
+      position:relative;
+      z-index:1;
+    }
+
+    .brand{
+      font-size: clamp(38px, 8vw, 110px);
+      line-height: .95;
+      margin:0 0 14px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #7bf0ff 0%, #8a7dff 55%, #ff8bd1 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 2px 20px rgba(123,209,255,.4));
+      text-transform: lowercase;
+    }
+    .brand span{ text-transform: uppercase; font-weight:900; letter-spacing:2px; opacity:.9; }
+
+    .tagline{
+      color:var(--muted);
+      font-size: clamp(14px, 2.5vw, 18px);
+      margin:0 auto;
+      max-width: 720px;
+    }
+
+    .creation-time{
+      display:inline-block;
+      margin-top:14px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      font-size:12px;
+      color:#0b0f14;
+      background: linear-gradient(135deg, #8af1ff, #a18aff);
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+
+    main{ padding: 28px 20px 60px; max-width:1100px; margin:0 auto; }
+
+    .section{ margin: 48px 0; padding: 0 12px; }
+    .section-title{
+      font-size: clamp(20px, 4vw, 28px);
+      margin:0 0 14px;
+      letter-spacing:.3px;
+      color:#eaf4ff;
+      display:flex; align-items:center; gap:12px;
+    }
+    .section-title .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--ring);
+      display:inline-block;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse{
+      0%{ transform: scale(1); opacity: .9 }
+      50%{ transform: scale(1.4); opacity:.4 }
+      100%{ transform: scale(1); opacity: .9 }
+    }
+
+    .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+
+    .card{
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:16px;
+      min-height:110px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.25);
+      transition: transform .3s ease, box-shadow .3s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .card:hover{ transform: translateY(-4px); box-shadow: 0 14px 28px rgba(0,0,0,.4); }
+
+    .card h3{ margin:0 0 8px; font-size:18px; }
+    .card p{ margin:0; color:var(--muted); font-size:14px; }
+
+    /* fade-up animation hook */
+    .fade-up{ opacity:0; transform: translateY(20px); transition: opacity .6s ease-out, transform .6s ease-out; }
+    .fade-up.visible{ opacity:1; transform: translateY(0); }
+
+    /* about blur hero accent line */
+    .glow-line{
+      height:2px; width:180px; background: linear-gradient(90deg, transparent, rgba(123,209,255,.8), transparent);
+      margin:14px auto 0; border-radius:2px;
+      filter: drop-shadow(0 0 6px rgba(123,209,255,.8));
+      animation: glow 4s ease-in-out infinite;
+    }
+    @keyframes glow{
+      0%,100%{ transform: scaleX(0.9); opacity:.9 }
+      50%{ transform: scaleX(1.1); opacity:1 }
+    }
+
+    .skills{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+    .chip{
+      padding:6px 10px; border-radius:999px;
+      background: rgba(123,209,255,.15);
+      border: 1px solid rgba(123,209,255,.35);
+      font-size:12px; color:#dff2ff;
+    }
+
+    footer{
+      padding: 28px 20px; text-align:center; color:var(--muted);
+      border-top:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.15);
+      position:relative;
+      margin-top: 40px;
+    }
+
+    .footer-inner{ display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border-radius:999px; background: rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.08); }
+    .footer-icon{ width:20px; height:20px; color:#e8f6ff; display:inline-block; vertical-align:middle; }
+
+    a{ color:inherit; text-decoration:none; }
+    a:hover{ text-decoration: underline; }
+
+    /* responsive tweaks */
+    @media (max-width: 600px){
+      header.hero{ padding: 32px 12px 18px; }
+      .brand{ font-size: 72px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" aria-label="Hero header">
+    <h1 class="brand" style="margin:0;">
+      amira<b>bolfazle</b>
+    </h1>
+    <div class="tagline" aria-label="Subtitle">
+      Creative Front-end Developer • Designer • Pixel-perfect UI
+    </div>
+    <div class="creation-time" aria-label="Creation time">
+      Creation time: 2025-09-28 06:59:47
+    </div>
+    <div class="glow-line" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <section class="section fade-up" id="about" aria-labelledby="about-title">
+      <h2 class="section-title" id="about-title"><span class="dot" aria-hidden="true"></span>About</h2>
+      <div class="grid" style="align-items:stretch;">
+        <div class="card fade-up" style="grid-column:span 2;">
+          <p style="margin:0; color:var(--muted);">
+            I craft accessible, fast and visually compelling web experiences. Passionate about React, motion design, and making complex ideas feel simple. This portfolio showcases a few interactive experiments you can spin through in a single file.
+          </p>
+        </div>
+        <div class="card fade-up" aria-label="Contact card">
+          <h3 style="margin:0 0 6px;">Contact</h3>
+          <p style="margin:0; color:var(--muted);">Email: hello@amirabolfazle.dev</p>
+          <p style="margin:0; color:var(--muted);">Location: Remote</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="work-title">
+      <h2 class="section-title" id="work-title"><span class="dot" aria-hidden="true"></span>Projects</h2>
+      <div class="grid">
+        <article class="card fade-up" aria-label="Project One">
+          <h3>Project One: Neon Dashboard</h3>
+          <p>Modular dashboard with real-time charts and subtle 3D micro-interactions.</p>
+        </article>
+        <article class="card fade-up" aria-label="Project Two">
+          <h3>Project Two: Aurora Animations</h3>
+          <p>Lightweight animation library with easing presets for delightful transitions.</p>
+        </article>
+        <article class="card fade-up" aria-label="Project Three">
+          <h3>Project Three: Aurora UI Kit</h3>
+          <p>Accessible component library with focus management and keyboard navigation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="skills-title">
+      <h2 class="section-title" id="skills-title"><span class="dot" aria-hidden="true"></span>Skills</h2>
+      <div class="skills" aria-label="Skills chips">
+        <span class="chip">React</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">CSS/Sass</span>
+        <span class="chip">Animation</span>
+        <span class="chip">UI/UX</span>
+        <span class="chip">Accessibility</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner" aria-label="GitHub link">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" title="GitHub repository">
+        <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="20" height="20" focusable="false" style="vertical-align:middle;">
+          <path fill-rule="evenodd" d="M12 .5C5.73.5 0 6.226 0 12.001c0 5.099 3.292 9.408 7.862 10.94.575.11.785-.25.785-.557 0-.275-.01-1.003-.015-1.97-3.198.693-3.875-1.376-3.875-1.376-.524-1.333-1.28-1.687-1.28-1.687-1.05-.718.08-.703.08-.703 1.16.082 1.771 1.19 1.771 1.19 1.032 1.77 2.71 1.26 3.375.963.105-.753.403-1.264.731-1.555-2.554-.29-5.238-1.277-5.238-5.686 0-1.254.45-2.278 1.188-3.08-.119-.291-.515-1.468.113-3.063 0 0 .964-.31 3.161 1.183a11.03 11.03 0 0 1 2.881-.389c1.001 0 2.008.134 2.94.395 2.195-1.493 3.154-1.183 3.154-1.183.629 1.596.234 2.772.115 3.062.74.802 1.185 1.826 1.185 3.08 0 4.42-2.69 5.392-5.25 5.682.412.356.779 1.058.779 2.132 0 1.54-.014 2.779-.014 3.156 0 .31.208.668.788.556C20.708 21.404 24 17.099 24 12.001 24 6.226 18.27.5 12 .5z" clip-rule="evenodd"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Fade-in on scroll for elements with .fade-up
+    document.addEventListener('DOMContentLoaded', () => {
+      const faders = document.querySelectorAll('.fade-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px 20px 0px', threshold: 0.15 });
+
+      faders.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
