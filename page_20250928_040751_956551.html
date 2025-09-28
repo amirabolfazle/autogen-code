@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: rgba(255,255,255,0.08);
+      --text: #eaf0f7;
+      --muted: #b9c3d9;
+      --glass: rgba(255,255,255,0.14);
+      --shadow: 0 20px 40px rgba(0,0,0,.4);
+      --blur: 20px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; color: var(--text); background: radial-gradient(circle at 20% -10%, rgba(99,102,241,.25), transparent 40%), radial-gradient(circle at 100% 0%, rgba(236,72,153,.25), transparent 40%), linear-gradient(135deg, #0b1020 0%, #0b1220 100%); font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
+    .app { min-height: 100vh; padding: 40px 20px 80px; }
+    .header {
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 16px; padding: 18px 22px; border-radius: 18px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      box-shadow: var(--shadow); max-width: 1000px; margin: 0 auto 28px auto;
+    }
+    .brand { display:flex; align-items:center; gap:14px; }
+    .brand .logo {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(99,102,241,.6), rgba(236,72,153,.6));
+      display:flex; align-items:center; justify-content:center; color:white; font-weight:700;
+      box-shadow: inset 0 0 20px rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.6);
+    }
+    .brand h1 { margin:0; font-size: 1.4rem; letter-spacing:.5px; }
+    .brand small { color: var(--muted); }
+
+    .nav { display:flex; gap:8px; align-items:center; }
+    .btn {
+      padding: 10px 14px; border-radius: 999px; border:1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.08); color: #fff; text-decoration:none;
+      font-weight:600; font-size:.9rem; transition: all .3s ease;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    }
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.14); }
+
+    .main { max-width: 1000px; margin: 0 auto; display: grid; gap: 18px; }
+    .hero {
+      padding: 28px; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.25); backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px); box-shadow: var(--shadow);
+      overflow: hidden; position: relative;
+    }
+    .hero h2 { margin:0 0 8px; font-size: 2rem; }
+    .hero p { margin:0; color: #eaeff7; opacity:.95; }
+    .kudos { display:flex; gap:12px; margin-top:14px; flex-wrap: wrap; }
+    .pill { padding: 8px 12px; border-radius:999px; background: rgba(0,0,0,.25); color:#fff;
+      border:1px solid rgba(255,255,255,.25); font-size:.85rem; }
+    .section { margin-top: 8px; }
+    .section h2 { margin:0 0 12px; font-size:1.4rem; }
+
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:14px; }
+    .card {
+      padding:16px; border-radius:16px;
+      background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22);
+      min-height: 120px; backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur));
+      position: relative; overflow: hidden; opacity: 0; transform: translateY(20px);
+      transition: all .6s ease;
+    }
+    .card.visible { opacity: 1; transform: translateY(0); }
+    .card h3 { margin:0 0 6px; font-size:1.05rem; }
+    .card p { margin:0; color:#dde6f2; font-size:.92rem; }
+    .card .badge { position: absolute; top: 12px; right: 12px; padding:6px 10px; border-radius:999px;
+      font-size:.75rem; background: rgba(99,102,241,.9); color:white; box-shadow: 0 6px 14px rgba(0,0,0,.25); }
+
+    .footer { margin-top: 40px; padding: 14px 20px; text-align:center; color: #cbd5e1; }
+    .footer a { color: #fff; text-decoration: none; margin-left:6px; display:inline-flex; align-items:center; gap:6px; }
+    .footer .icon { width: 20px; height: 20px; vertical-align: middle; fill: currentColor; }
+
+    @media (max-width: 600px) {
+      .header { flex-wrap: wrap; justify-content: center; text-align: center; }
+      .nav { justify-content: center; width: 100%; margin-top: 8px; }
+    }
+
+    .fade-in { animation: fadeIn 0.9s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header fade-in" aria-label="Site header">
+      <div class="brand">
+        <div class="logo" aria-label="logo">A</div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <small>Glassmorphism portfolio</small>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Main">
+        <a class="btn" href="#projects" onclick="scrollToSection('projects')">Projects</a>
+        <a class="btn" href="#about" onclick="scrollToSection('about')">About</a>
+        <a class="btn" href="#contact" onclick="scrollToSection('contact')">Contact</a>
+      </nav>
+    </header>
+
+    <main class="main" role="main">
+      <section class="hero fade-in" id="home" aria-label="Intro">
+        <h2>Hi, I’m amirabolfazle</h2>
+        <p>Designer and developer crafting glassy interfaces and animated experiences. This is a single-file portfolio with fade-in effects and a glass-like aesthetic.</p>
+        <div class="kudos">
+          <span class="pill">CSS-only animations</span>
+          <span class="pill">One-file</span>
+          <span class="pill">Glass UI</span>
+        </div>
+        <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+          <span class="pill" id="creationTime"></span>
+        </div>
+      </section>
+
+      <section id="projects" class="section fade-in" aria-label="Projects">
+        <h2>Projects</h2>
+        <div class="grid" role="list">
+          <article class="card fade-in" role="listitem" aria-label="Project 1">
+            <span class="badge" aria-label="Project type">UI</span>
+            <h3>Glass UI Kit</h3>
+            <p>A minimal glassmorphic UI components library with subtle motion.</p>
+          </article>
+          <article class="card fade-in" role="listitem" aria-label="Project 2">
+            <span class="badge" aria-label="Project type">Web</span>
+            <h3>Animated Portfolio</h3>
+            <p>One-file portfolio with fade-in sections and glass effects.</p>
+          </article>
+          <article class="card fade-in" role="listitem" aria-label="Project 3">
+            <span class="badge" aria-label="Project type">Tool</span>
+            <h3>Glass Blur Playground</h3>
+            <p>Experimenting with backdrop-filter and layered glass surfaces.</p>
+          </article>
+          <article class="card fade-in" role="listitem" aria-label="Project 4">
+            <span class="badge" aria-label="Project type">Snippet</span>
+            <h3>Auto Animations</h3>
+            <p>Small cues that bring static content to life with CSS.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="section fade-in" aria-label="About">
+        <h2>About</h2>
+        <p>My work focuses on clarity, motion, and tactile feedback. I enjoy building fast, accessible interfaces that feel alive without overwhelming the user.</p>
+      </section>
+
+      <section id="contact" class="section fade-in" aria-label="Contact">
+        <h2>Contact</h2>
+        <p>Feel free to reach out for collaboration or freelance opportunities.</p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <a class="btn" href="mailto:hello@amirabolfazle.design?subject=Hello" aria-label="Email">Email</a>
+          <a class="btn" href="https://github.com/amirabolfazle" target="_blank" rel="noreferrer" aria-label="GitHub profile">GitHub</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noreferrer" aria-label="GitHub">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+          <path d="M12 2C6.477 2 2 6.58 2 12.262c0 4.523 2.865 8.354 6.839 9.682.5.092.682-.218.682-.486 0-.24-.01-1.04-.015-1.906-2.782.606-3.37-1.37-3.37-1.37-.456-1.187-1.114-1.504-1.114-1.504-.912-.633.07-.62.07-.62 1.01.072 1.54 1.04 1.54 1.04.897 1.59 2.355 1.132 2.93.865.092-.67.351-1.132.638-1.393-2.22-.254-4.555-1.13-4.555-5.033 0-1.113.386-2.024 1.02-2.735-.102-.256-.443-1.293.098-2.693 0 0 .836-.271 2.741 1.04a9.219 9.219 0 012.5-.342c.847.004 1.702.115 2.5.343 1.904-1.311 2.739-1.04 2.739-1.04.542 1.4.201 2.437.099 2.693.637.711 1.02 1.622 1.02 2.735 0 3.913-2.337 4.775-4.565 5.026.361.313.684.93.684 1.879 0 1.356-.012 2.452-.012 2.785 0 .271.18.584.688.485C19.141 20.61 22 16.78 22 12.262 22 6.58 17.523 2 12 2z" fill="currentColor"/>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Set creation time
+    const creationEl = document.getElementById('creationTime');
+    const creation = '2025-09-28 04:07:16';
+    creationEl.textContent = 'Creation time: ' + creation;
+
+    // IntersectionObserver for fade-in elements
+    const faders = document.querySelectorAll('.fade-in');
+    const revealOnScroll = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver(revealOnScroll, { threshold: 0.15 });
+      faders.forEach(el => obs.observe(el));
+    } else {
+      faders.forEach(el => el.classList.add('visible'));
+    }
+
+    // Smooth scroll helper
+    window.scrollToSection = function(id){
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    // Light initialization: ensure hero/sections animate on load
+    window.addEventListener('load', ()=> {
+      document.querySelectorAll('.hero, .section').forEach(el => {
+        el.style.opacity = '1';
+      });
+      // Also reveal any cards already in view
+      document.querySelectorAll('.card').forEach(card => {
+        if (card.getBoundingClientRect().top < window.innerHeight) {
+          card.classList.add('visible');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
