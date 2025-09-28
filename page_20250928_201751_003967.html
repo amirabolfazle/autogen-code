@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root{
+      --bg:#020204;
+      --neon-1:#00f5ff;
+      --neon-2:#ff2d95;
+      --neon-3:#9dff6b;
+      --glass: rgba(255,255,255,0.03);
+      --muted: rgba(255,255,255,0.08);
+      --card-bg: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      --radius:16px;
+      --max-width:1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100%;
+      font-family: Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial;
+      background:
+        radial-gradient(800px 400px at 10% 10%, rgba(0,128,255,0.06), transparent 8%),
+        radial-gradient(600px 300px at 90% 90%, rgba(255,45,149,0.05), transparent 6%),
+        var(--bg);
+      color:#e9f8ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:40px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:28px;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+      align-items:stretch;
+    }
+
+    /* neon header */
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:36px;
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      gap:20px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .hero:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(90deg, rgba(0,245,255,0.02), transparent 30%, rgba(157,255,107,0.015));
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+
+    .title{
+      font-size: clamp(28px, 4.6vw, 56px);
+      line-height:1;
+      margin:0;
+      letter-spacing: -0.02em;
+      z-index:1;
+      color:var(--neon-1);
+      text-shadow:
+        0 0 6px rgba(0,245,255,0.15),
+        0 0 18px rgba(0,245,255,0.06),
+        0 10px 30px rgba(0,0,0,0.7);
+      font-weight:700;
+      filter: drop-shadow(0 0 12px rgba(0,245,255,0.12));
+      transform: translateY(24px);
+      opacity:0;
+      animation: slideUp .9s cubic-bezier(.2,.9,.2,1) .12s forwards;
+    }
+
+    .subtitle{
+      font-size: clamp(12px,1.2vw,16px);
+      color: #bfeef7;
+      margin:6px 0 0 0;
+      z-index:1;
+      transform: translateY(28px);
+      opacity:0;
+      animation: slideUp .9s cubic-bezier(.2,.9,.2,1) .18s forwards;
+    }
+
+    .meta{
+      margin-left:auto;
+      text-align:right;
+      color: #9ee7ff;
+      font-size:13px;
+      z-index:1;
+      transform: translateY(36px);
+      opacity:0;
+      animation: slideUp .9s cubic-bezier(.2,.9,.2,1) .26s forwards;
+    }
+
+    .meta time{
+      display:block;
+      font-weight:600;
+      letter-spacing:0.02em;
+      color:var(--neon-3);
+      text-shadow: 0 0 8px rgba(157,255,107,0.08);
+    }
+
+    /* cards area */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+    }
+
+    .card{
+      background: var(--card-bg);
+      padding:20px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 26px rgba(2,6,23,0.55);
+      transform: translateY(36px);
+      opacity:0;
+      transition: transform .45s cubic-bezier(.2,.9,.2,1), opacity .45s;
+    }
+    .card.in-view{
+      transform: translateY(0);
+      opacity:1;
+    }
+
+    .card h3{
+      margin:0 0 8px 0;
+      font-size:16px;
+      color:var(--neon-2);
+      text-shadow: 0 0 10px rgba(255,45,149,0.06);
+    }
+    .card p{
+      margin:0;
+      color:#c9f7ff;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .cta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      background: linear-gradient(90deg, rgba(0,245,255,0.12), rgba(255,45,149,0.06));
+      color:#e8fbff;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      transition: transform .18s ease, box-shadow .18s;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+    .btn:hover{ transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.65); }
+
+    /* footer with github */
+    footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 18px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.02);
+      color:#a6f0ff;
+    }
+    .footer-left{display:flex;gap:12px;align-items:center;}
+    .gh{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:#dffaff;
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.01);
+      border:1px solid rgba(255,255,255,0.02);
+      transition: transform .15s ease, box-shadow .15s;
+    }
+    .gh:hover{ transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
+
+    .gh svg{ filter: drop-shadow(0 0 8px rgba(0,0,0,0.6)); display:block; }
+    .footer-text{ font-weight:600; color:#bffaff; }
+
+    /* responsive */
+    @media (max-width:900px){
+      .grid{ grid-template-columns: repeat(2, 1fr); }
+      .meta{ margin-left:0; text-align:left; width:100%; }
+    }
+    @media (max-width:600px){
+      body{ padding:20px; }
+      .grid{ grid-template-columns: 1fr; }
+      .hero{ padding:20px; gap:8px; }
+      footer{ flex-direction:column; align-items:flex-start; gap:10px}
+    }
+
+    /* animations */
+    @keyframes slideUp{
+      from{ transform: translateY(28px); opacity:0; }
+      to{ transform: translateY(0); opacity:1; }
+    }
+
+    /* subtle neon flicker on header text */
+    @keyframes neonFlicker {
+      0%{ text-shadow: 0 0 6px rgba(0,245,255,0.18), 0 0 22px rgba(0,245,255,0.08); }
+      40%{ text-shadow: 0 0 4px rgba(0,245,255,0.12), 0 0 12px rgba(0,245,255,0.05); }
+      70%{ text-shadow: 0 0 10px rgba(0,245,255,0.2), 0 0 26px rgba(0,245,255,0.1); }
+      100%{ text-shadow: 0 0 6px rgba(0,245,255,0.18), 0 0 22px rgba(0,245,255,0.08); }
+    }
+    .title{ animation: neonFlicker 3.8s infinite ease-in-out, slideUp .9s cubic-bezier(.2,.9,.2,1) .12s forwards; }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .title, .subtitle, .meta, .card{ animation:none !important; transition:none !important; transform:none !important; opacity:1 !important; }
+    }
+
+    /* decorative floating orbs */
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(36px);
+      opacity:0.08;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation: floaty 8s ease-in-out infinite;
+    }
+    .orb.a{ width:260px; height:260px; left:-60px; top:-50px; background: linear-gradient(90deg,var(--neon-1), transparent); animation-duration:9s; }
+    .orb.b{ width:180px; height:180px; right:-40px; bottom:-60px; background: linear-gradient(90deg,var(--neon-2), transparent); animation-duration:11s; }
+    @keyframes floaty{
+      0%{ transform: translateY(0) scale(1); }
+      50%{ transform: translateY(-18px) scale(1.02); }
+      100%{ transform: translateY(0) scale(1); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="orb a" aria-hidden="true"></div>
+      <div class="orb b" aria-hidden="true"></div>
+
+      <div style="min-width:220px;flex:1 1 320px;">
+        <h1 id="hero-title" class="title">amirabolfazle</h1>
+        <p class="subtitle">Neon portfolio UI • Responsive & animated • Slide-up reveals</p>
+      </div>
+
+      <div class="meta" aria-hidden="false">
+        <div style="font-size:12px;opacity:0.9">Creation time</div>
+        <time datetime="2025-09-28T20:17:04">2025-09-28 20:17:04</time>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Showcase cards">
+      <article class="card" data-index="1">
+        <h3>Interactive Reveal</h3>
+        <p>Elements glide up as you scroll thanks to a lightweight observer. Smooth, subtle and performant on desktop and mobile.</p>
+        <div class="cta">
+          <button class="btn" aria-label="Learn more">Explore</button>
+        </div>
+      </article>
+
+      <article class="card" data-index="2">
+        <h3>Neon Styling</h3>
+        <p>Glowing headings, pastel neon accents and dark glass surfaces create a futuristic look that stays readable and modern.</p>
+        <div class="cta">
+          <button class="btn" aria-label="Demo">Demo</button>
+        </div>
+      </article>
+
+      <article class="card" data-index="3">
+        <h3>Responsive Layout</h3>
+        <p>Grid collapses elegantly to two and single columns. Buttons and text scale using clamp() for consistent proportions.</p>
+        <div class="cta">
+          <button class="btn" aria-label="Get started">Get started</button>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <div class="footer-left">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open amirabolfazle on GitHub">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.91 3.18 9.08 7.61 10.56.56.1.76-.24.76-.53 0-.26-.01-.95-.01-1.87-3.09.67-3.74-1.49-3.74-1.49-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.07-.67.07-.67 1.09.08 1.66 1.12 1.66 1.12.97 1.66 2.54 1.18 3.16.9.1-.7.38-1.18.69-1.45-2.47-.28-5.07-1.24-5.07-5.52 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.4.11-2.9 0 0 .95-.31 3.12 1.16a10.78 10.78 0 0 1 2.84-.38c.96.01 1.93.13 2.84.38 2.17-1.48 3.12-1.16 3.12-1.16.61 1.49.23 2.62.11 2.9.72.78 1.16 1.78 1.16 3 0 4.29-2.61 5.24-5.09 5.52.39.33.73.98.73 1.98 0 1.43-.01 2.58-.01 2.93 0 .29.2.64.77.53 4.43-1.49 7.6-5.65 7.6-10.56C23.25 5.48 18.27.5 12 .5z" fill="#bffaff"/>
+          </svg>
+          <span style="font-size:13px;color:#cfffef;font-weight:700">GitHub</span>
+        </a>
+        <div style="display:flex;flex-direction:column">
+          <span class="footer-text">Created by amirabolfazle</span>
+          <span style="font-size:12px;color:var(--muted);margin-top:4px;">Lightweight • Smooth animations</span>
+        </div>
+      </div>
+
+      <div style="font-size:12px;color: #9ee7ff;opacity:0.95">© 2025</div>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up reveal using IntersectionObserver
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      if ('IntersectionObserver' in window) {
+        let io = new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){
+              entry.target.classList.add('in-view');
+              // optional: unobserve after reveal
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.13 });
+        cards.forEach((c,i)=> io.observe(c));
+      } else {
+        // fallback
+        cards.forEach(c => c.classList.add('in-view'));
+      }
+    })();
+
+    // tiny faux neon pulse for orbs
+    (function(){
+      const orbs = document.querySelectorAll('.orb');
+      orbs.forEach((o, idx) => {
+        const dur = 7000 + (idx*1700);
+        o.animate([
+          { opacity: 0.06, transform: 'scale(1)' },
+          { opacity: 0.12, transform: 'scale(1.06)' },
+          { opacity: 0.06, transform: 'scale(1)' }
+        ], { duration: dur, iterations: Infinity, easing: 'ease-in-out' });
+      });
+    })();
+  </script>
+</body>
+</html>
