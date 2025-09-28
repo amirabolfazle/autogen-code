@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="description" content="Fully responsive animated dark-mode page with zoom effects and creation time." />
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #11172a;
+      --card: rgba(20,26,43,.9);
+      --surface: rgba(25,32,70,.95);
+      --text: #e9eaff;
+      --muted: #a8b6e8;
+      --accent: #7c5cff;
+      --glow: 0 0 28px rgba(124,92,255,.6);
+      --radius: 14px;
+      --shadow: 0 10px 28px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, rgba(124,92,255,.15), transparent 40%),
+                  radial-gradient(circle at 80% -10%, rgba(0,255,214,.12), transparent 40%),
+                  linear-gradient(#0b1020 0%, #0b1020 100%);
+      overflow-x: hidden;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11,16,32,.9);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 0.75rem 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .brand-mark {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: linear-gradient(135deg, #7cffea, #a28bff);
+      box-shadow: 0 0 12px rgba(124,255,234,.9);
+    }
+
+    .brand-name {
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #eaf0ff;
+      font-size: 0.88rem;
+    }
+
+    main.scene {
+      position: relative;
+      min-height: calc(100vh - 160px);
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      perspective: 1000px;
+      overflow: hidden;
+    }
+
+    /* Orb visuals that give a zoom-like parallax glow */
+    .orb {
+      position: absolute;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 25% 25%, rgba(255,255,255,.9), rgba(255,255,255,.14) 40%),
+                  radial-gradient(circle at 70% 70%, rgba(0,180,255,.6), rgba(0,0,0,.0) 60%);
+      filter: blur(0.2px);
+      opacity: .75;
+      mix-blend-mode: screen;
+      animation: float 12s ease-in-out infinite;
+    }
+
+    .orb.orb-2 { width: 260px; height: 260px; opacity:.55; animation-duration: 18s; }
+    .orb.orb-3 { width: 140px; height: 140px; opacity:.6; animation-duration: 10s; }
+
+    @keyframes float {
+      0% { transform: translate(-20px, -20px) scale(0.95) rotate(0deg); }
+      50% { transform: translate(40px, 20px) scale(1.04) rotate(180deg); }
+      100% { transform: translate(-20px, -20px) scale(0.95) rotate(360deg); }
+    }
+
+    /* Subtle zoom pulse via a pseudo-overlay to simulate zooming without conflicting transforms */
+    .orb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.8), rgba(255,255,255,0) 40%),
+                  radial-gradient(circle at 65% 65%, rgba(180,240,255,.5), rgba(120,120,255,0) 60%);
+      mix-blend-mode: screen;
+      transform: scale(0.92);
+      animation: zoomPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes zoomPulse {
+      0%,100% { transform: scale(0.92); opacity: .9; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    /* Center content that scales slightly for a zoom effect on hover */
+    .center-shell {
+      text-align: center;
+      max-width: 900px;
+      padding: 2rem;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(10,12,30,.9), rgba(18,22,55,.9));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      transform: translateZ(0);
+      transition: transform 0.6s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Zoom effect when hovering the scene (without breaking the 3D tilt) */
+    .scene:hover .center-shell {
+      transform: scale(1.03);
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0 0 0.5rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #a6b8ff, #7cffea, #ffd1a6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 24px rgba(124,92,255,.6);
+      animation: glow 3.5s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 18px rgba(124,92,255,.6)); }
+      50% { filter: drop-shadow(0 0 28px rgba(0,255,230,.8)); }
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 1rem;
+      margin: 0 auto 0.75rem;
+    }
+
+    .creation {
+      display: inline-block;
+      padding: .45rem .8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.04);
+      color: #eaf0ff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem;
+      letter-spacing: .04em;
+    }
+
+    footer.footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .5rem;
+      padding: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: #0b1020;
+    }
+
+    .footer a {
+      display: inline-flex; align-items: center; gap: .5rem;
+      color: #9bd1ff;
+      text-decoration: none;
+    }
+
+    .footer svg { width: 20px; height: 20px; fill: currentColor; }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .orb { width: 140px; height: 140px; }
+      .orb.orb-2 { width: 190px; height: 190px; }
+      .hero-title { font-size: clamp(2.2rem, 12vw, 3.8rem); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .orb::after, .center-shell { animation: none !important; transform: none !important; }
+      .scene:hover .center-shell { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header aria-label="Site header">
+    <div class="brand" style="display:flex; align-items:center; gap:.5rem; padding:.25rem 0;">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name" aria-label="Site brand text">amirabolfazle</span>
+    </div>
+  </header>
+
+  <main class="scene" aria-label="Animated scene with dark theme and zoom effects">
+    <div class="orb" style="left: -40px; top: 18%;"></div>
+    <div class="orb orb-2" style="right: -70px; top: 40%;"></div>
+    <div class="orb orb-3" style="left: 22%; bottom: 12%;"></div>
+
+    <section class="center-shell" aria-label="Main content">
+      <h1 class="hero-title" style="margin:0 auto 0.25rem;">amirabolfazle</h1>
+      <p class="sub" style="margin:0 auto; max-width: 640px;">
+        A fully responsive animated page, styled in a dark theme with zoom-like visual effects.
+      </p>
+      <p class="creation" aria-label="Creation time">Creation time: 2025-09-28 13:52:13</p>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub Icon -->
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.44-4.04-1.44-.55-1.4-1.34-1.77-1.34-1.77-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48.99.11-.77.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1 .32 3.3 1.23a11.5 11.5 0 016 0c2.3-.9 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.62-5.47 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0012 .5z" />
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span style="color:#dbe6ff; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Optional light interaction: gentle tilt with mouse movement
+    (function(){
+      const scene = document.querySelector('.scene');
+      const shell = document.querySelector('.center-shell');
+      if(!scene) return;
+
+      scene.addEventListener('mousemove', (e) => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const dx = (e.clientX - w/2) / (w/2);
+        const dy = (e.clientY - h/2) / (h/2);
+        const rotateX = (-dy * 6).toFixed(2);
+        const rotateY = (dx * 6).toFixed(2);
+        // Apply a 3D tilt to the shell content (keeps the orb animations intact)
+        if (shell) {
+          shell.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        }
+      });
+
+      scene.addEventListener('mouseleave', () => {
+        if (shell) shell.style.transform = 'none';
+      });
+    })();
+  </script>
+</body>
+</html>
