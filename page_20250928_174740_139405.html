@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root{
+      --bg:#07070a;
+      --panel:#0f1115;
+      --accent-1:#7c5cff;
+      --accent-2:#00e5a8;
+      --muted:#9aa3b2;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.06), transparent),
+                  radial-gradient(900px 450px at 90% 90%, rgba(0,229,168,0.04), transparent),
+                  var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow:hidden;
+    }
+
+    /* rotating ambient layer */
+    .ambient{
+      position:fixed;
+      inset:-20%;
+      pointer-events:none;
+      z-index:0;
+      opacity:0.12;
+      animation:ambient-rotate 30s linear infinite;
+      background:
+        conic-gradient(from 90deg at 50% 50%, rgba(124,92,255,0.18), rgba(0,229,168,0.14), rgba(124,92,255,0.18));
+      filter:blur(60px) saturate(140%);
+      mix-blend-mode:screen;
+    }
+
+    @keyframes ambient-rotate{
+      from{transform:rotate(0deg) scale(1)}
+      to{transform:rotate(360deg) scale(1)}
+    }
+
+    .container{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 380px 1fr;
+      gap:28px;
+      align-items:stretch;
+      min-height:calc(100vh - 80px);
+    }
+
+    /* responsive */
+    @media (max-width:880px){
+      .container{grid-template-columns:1fr; padding:0 10px}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:16px;
+      padding:26px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      backdrop-filter: blur(8px);
+    }
+
+    /* left panel */
+    .left{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+      min-height:320px;
+    }
+
+    .orb-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+
+    .orb{
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 25%, rgba(124,92,255,0.18), rgba(0,0,0,0.12)),
+                  linear-gradient(135deg, rgba(124,92,255,0.06), rgba(0,229,168,0.04));
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transform-style:preserve-3d;
+      animation:orb-tilt 8s ease-in-out infinite;
+      transition:transform .4s cubic-bezier(.2,.9,.3,1);
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 12px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .orb:hover{transform:scale(1.03) rotateY(6deg) rotateX(-6deg)}
+
+    .orb::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:50%;
+      padding:3px;
+      background: conic-gradient(from 0deg, rgba(124,92,255,0.45), rgba(0,229,168,0.35), rgba(124,92,255,0.45));
+      -webkit-mask: radial-gradient(circle at center, rgba(0,0,0,1) 60%, transparent 61%);
+      mask: radial-gradient(circle at center, rgba(0,0,0,1) 60%, transparent 61%);
+      filter:blur(8px);
+      opacity:0.85;
+      animation:spin 18s linear infinite;
+      z-index:0;
+    }
+
+    @keyframes spin{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+    @keyframes orb-tilt{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-6px) rotate(3deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    .orb-inner{
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      background:linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      letter-spacing:2px;
+      color:var(--accent-1);
+      font-size:18px;
+      text-transform:lowercase;
+      z-index:2;
+      transform:translateZ(30px);
+      box-shadow: inset 0 2px 8px rgba(255,255,255,0.02);
+    }
+
+    .info{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      padding:6px 10px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .title h1{
+      margin:0;
+      font-size:24px;
+      color: #eaf1ff;
+      letter-spacing:1px;
+      text-transform:lowercase;
+    }
+
+    .badge{
+      padding:6px 10px;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      color:#071018;
+      font-weight:600;
+      border-radius:999px;
+      font-size:12px;
+      box-shadow:0 6px 18px rgba(124,92,255,0.14);
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .pill{
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* right panel */
+    .right{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .panel-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .panel-title h2{
+      margin:0;
+      font-size:20px;
+      color:#f3f8ff;
+      letter-spacing:0.4px;
+    }
+
+    .clock{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    @media (max-width:720px){
+      .content{grid-template-columns:1fr}
+      .orb{width:180px;height:180px}
+      .orb-inner{width:130px;height:130px;font-size:16px}
+    }
+
+    .tile{
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:16px;
+      border:1px solid rgba(255,255,255,0.02);
+      min-height:110px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:8px;
+      transition:transform .45s cubic-bezier(.16,.84,.3,1), box-shadow .2s;
+      cursor:default;
+    }
+
+    .tile:hover{
+      transform:translateY(-8px) rotate(-1deg);
+      box-shadow: 0 16px 50px rgba(2,6,23,0.6);
+    }
+
+    .tile h3{margin:0;font-size:15px;color:#e8f3ff}
+    .tile p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+
+    /* rotating accent strip */
+    .accent-strip{
+      height:8px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      margin-top:6px;
+      animation:strip-move 6s linear infinite;
+      box-shadow:0 8px 30px rgba(0,0,0,0.6), 0 0 30px rgba(124,92,255,0.06);
+    }
+
+    @keyframes strip-move{
+      0%{filter:hue-rotate(0deg)}
+      50%{filter:hue-rotate(90deg)}
+      100%{filter:hue-rotate(0deg)}
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:20px;
+      z-index:3;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      background:var(--glass-2);
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.02);
+      backdrop-filter:blur(6px);
+      box-shadow:0 6px 24px rgba(2,6,23,0.6);
+      font-size:13px;
+    }
+
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:inherit;
+      text-decoration:none;
+      padding:6px;
+      border-radius:8px;
+      transition:background .18s, transform .18s;
+    }
+
+    .github-link:hover{background:rgba(255,255,255,0.02); transform:translateY(-3px)}
+
+    .gh-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      fill:var(--muted);
+      transition:fill .18s;
+    }
+
+    .github-link:hover .gh-icon{fill:var(--accent-1)}
+
+    /* small label / creation time */
+    .created{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    /* subtle rotating cards in background */
+    .orbit-deco{
+      position:absolute;
+      inset:auto;
+      right:-120px;
+      top:-120px;
+      width:420px;
+      height:420px;
+      border-radius:50%;
+      z-index:0;
+      pointer-events:none;
+      opacity:0.06;
+      animation:deco 28s linear infinite;
+      background: conic-gradient(from 30deg, rgba(124,92,255,0.26), rgba(0,229,168,0.2));
+      filter: blur(40px);
+    }
+
+    @keyframes deco{
+      from{transform:rotate(0deg) translate(0,0)}
+      to{transform:rotate(360deg) translate(0,0)}
+    }
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .ambient, .orb::before, .orb, .accent-strip, .orbit-deco {animation:none}
+      .tile:hover{transform:none}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="container" role="main" aria-label="amirabolfazle page">
+    <div class="card left" role="region" aria-label="profile panel">
+      <div class="orb-wrap" aria-hidden="false">
+        <div class="orb" aria-hidden="true">
+          <div class="orb-inner">amirabolfazle</div>
+        </div>
+      </div>
+
+      <div class="info">
+        <div class="title">
+          <h1>amirabolfazle</h1>
+          <div class="badge">dark mode</div>
+        </div>
+
+        <div class="meta" aria-hidden="false">
+          <div class="pill">Theme: Dark / Neon</div>
+          <div class="pill">Animated: Rotate & Motion</div>
+          <div class="pill">Responsive: Mobile & Desktop</div>
+        </div>
+
+        <div class="created" title="creation time">
+          <svg width="16" height="16" viewBox="0 0 24 24" style="opacity:0.9" aria-hidden="true"><path fill="currentColor" d="M12 1a11 11 0 1 0 11 11A11.013 11.013 0 0 0 12 1Zm1 12.59V7.5a1 1 0 0 0-2 0v6a1 1 0 0 0 .29.71l4 4a1 1 0 0 0 1.42-1.42Z"/></svg>
+          <div>Creation: 2025-09-28 17:46:57</div>
+        </div>
+
+        <div class="accent-strip" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="card right" role="region" aria-label="details panel">
+      <div class="panel-title">
+        <h2>Overview</h2>
+        <div class="clock" aria-hidden="false">Created on 2025-09-28 at 17:46:57</div>
+      </div>
+
+      <div class="content" role="list">
+        <div class="tile" role="listitem" aria-label="skills">
+          <h3>Rotate Effects</h3>
+          <p>Multiple rotating layers, ambient conic gradients and 3D-tilt interactions create depth and motion.</p>
+        </div>
+
+        <div class="tile" role="listitem" aria-label="responsive">
+          <h3>Fully Responsive</h3>
+          <p>Layouts adapt across widths with grid and flex. Mobile-first adjustments keep clarity and spacing balanced.</p>
+        </div>
+
+        <div class="tile" role="listitem" aria-label="dark">
+          <h3>Dark Mode Theme</h3>
+          <p>Deep backgrounds with neon accents for contrast and readability in low-light environments.</p>
+        </div>
+
+        <div class="tile" role="listitem" aria-label="animations">
+          <h3>Animated & Accessible</h3>
+          <p>Continuous, subtle animations with respect for prefers-reduced-motion and smooth transitions for interactions.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:18px; color:var(--muted); font-size:13px;">
+        Tip: hover the orb and tiles to see additional rotation and lift effects.
+      </div>
+    </div>
+
+    <div class="orbit-deco" aria-hidden="true"></div>
+  </div>
+
+  <footer>
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+      <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .5A11.5 11.5 0 0 0 .5 12.03c0 5.07 3.29 9.36 7.86 10.87.57.1.78-.25.78-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.47-3.88-1.47-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.24 3.32.95.1-.74.4-1.24.73-1.53-2.56-.29-5.26-1.28-5.26-5.72 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.8 10.8 0 0 1 5.73 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.12 3.04.73.81 1.18 1.83 1.18 3.09 0 4.45-2.71 5.43-5.29 5.72.41.36.77 1.08.77 2.18 0 1.58-.01 2.85-.01 3.24 0 .31.21.67.79.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
