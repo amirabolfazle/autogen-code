@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f13;
+      --bg-2:#071018;
+      --card:#0f1720;
+      --accent-1:#6ef3d6;
+      --accent-2:#8b6cff;
+      --muted:#9aa6b2;
+      --glass: rgba(255,255,255,0.03);
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(139,108,255,0.06), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(110,243,214,0.04), transparent),
+                  linear-gradient(180deg,var(--bg),var(--bg-2));
+      color:#e6eef3;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* Subtle animated backdrop shapes */
+    .orb{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(48px) saturate(120%);
+      opacity:0.14;
+      mix-blend-mode:screen;
+      pointer-events:none;
+      transform-origin:center;
+      animation:slow-rotate 24s linear infinite;
+    }
+    .orb.one{
+      width:560px;height:560px;
+      left:-120px;top:-80px;
+      background:linear-gradient(135deg,var(--accent-2),transparent 60%);
+      animation-duration:28s;
+    }
+    .orb.two{
+      width:420px;height:420px;
+      right:-100px;bottom:-120px;
+      background:linear-gradient(225deg,var(--accent-1),transparent 60%);
+      animation-direction:reverse;
+      animation-duration:34s;
+    }
+    @keyframes slow-rotate{
+      from{transform:rotate(0deg) translateZ(0);}
+      to{transform:rotate(360deg) translateZ(0);}
+    }
+
+    .container{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 28px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      width:100%;
+      max-width:1100px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:16px;
+      padding:28px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:24px;
+      box-shadow: 0 12px 40px rgba(3,6,10,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px) saturate(120%);
+      position:relative;
+      overflow:visible;
+    }
+
+    .left{
+      padding:18px 10px;
+    }
+    h1{
+      margin:0 0 10px 0;
+      font-size:44px;
+      letter-spacing:-0.02em;
+      line-height:1.02;
+      color:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .title-wrap{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .logo{
+      width:62px;height:62px;
+      background:conic-gradient(from 210deg at 50% 50%, var(--accent-1), var(--accent-2));
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 20px rgba(98,66,255,0.14);
+      transform: rotate(-12deg) translateZ(0);
+      transition:transform 360ms cubic-bezier(.2,.9,.3,1);
+    }
+    .logo:hover{ transform: rotate(0deg) scale(1.04); }
+    .logo svg{ filter: drop-shadow(0 4px 16px rgba(0,0,0,0.45)); }
+
+    .heading{
+      font-weight:700;
+      font-size:36px;
+      margin:0;
+      color:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+    }
+    .subtitle{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:15px;
+      max-width:60ch;
+      line-height:1.6;
+    }
+
+    .features{
+      display:flex;
+      gap:12px;
+      margin-top:20px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,0.028);
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      backdrop-filter: blur(6px);
+    }
+
+    .rotate-scene{
+      perspective:1200px;
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    /* Right column: rotating cards stack */
+    .stack{
+      width:100%;
+      max-width:420px;
+      display:grid;
+      place-items:center;
+      padding:8px;
+    }
+
+    .card-item{
+      width:320px;
+      height:220px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 18px 40px rgba(3,6,10,0.6);
+      transform-style:preserve-3d;
+      transition:transform 480ms cubic-bezier(.2,.9,.3,1);
+      display:flex;
+      flex-direction:column;
+      padding:18px;
+      gap:10px;
+      position:absolute;
+      left:20px;
+    }
+
+    .card-item h3{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-0.01em;
+    }
+    .card-item p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .c1{ transform: translateZ(-30px) rotateY(-18deg) rotateX(6deg) translateX(-40px); }
+    .c2{ transform: translateZ(10px) rotateY(6deg) rotateX(-6deg); }
+    .c3{ transform: translateZ(60px) rotateY(18deg) rotateX(8deg) translateX(30px); }
+
+    /* gentle hover tilt on stack container */
+    .stack:hover .card-item{ transform: translateZ(30px) rotateY(0deg) rotateX(0deg) translateX(0px); }
+    .stack:hover .c1{ transform: translateZ(0px) rotateY(-8deg) rotateX(4deg) translateX(-18px); }
+    .stack:hover .c3{ transform: translateZ(80px) rotateY(8deg) rotateX(0deg) translateX(18px); }
+
+    /* small rotating accent on card tops */
+    .spin{
+      width:12px;height:12px;border-radius:50%;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      box-shadow: 0 6px 20px rgba(107,93,255,0.18);
+      animation:spin 3.6s linear infinite;
+    }
+    @keyframes spin{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    .meta{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* CTA area */
+    .actions{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      padding:11px 16px;
+      border-radius:12px;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      color:#06141a;
+      font-weight:600;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 8px 30px rgba(107,93,255,0.16);
+      transition:transform 200ms ease, box-shadow 200ms ease, opacity 200ms;
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow:none;
+    }
+    .btn:active{ transform:translateY(1px) scale(0.998); }
+
+    footer{
+      margin-top:18px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:13px;
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px;
+      border-radius:8px;
+      transition:background 180ms, color 180ms, transform 180ms;
+    }
+    .gh:hover{ background: rgba(255,255,255,0.02); color:var(--accent-1); transform:translateY(-4px); }
+
+    /* small responsive */
+    @media (max-width:980px){
+      .card{ grid-template-columns:1fr; padding:20px; }
+      .stack{ margin-top:10px; position:relative; order:2; }
+      .left{ order:1; }
+      .card-item{ position:relative; left:0; margin:8px 0; width:100%; max-width:420px; }
+    }
+
+    /* subtle floating for hero text */
+    .float{
+      display:inline-block;
+      animation:float 6.8s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%{ transform:translateY(0px) }
+      50%{ transform:translateY(-8px) }
+      100%{ transform:translateY(0px) }
+    }
+
+    /* small helper for creation time badge */
+    .time-badge{
+      margin-left:auto;
+      background:rgba(255,255,255,0.02);
+      padding:8px 12px;
+      border-radius:10px;
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+
+  <main class="container" role="main">
+    <section class="card" aria-labelledby="site-title">
+      <div class="left">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="logo" aria-hidden="true">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12C3 8 6 5 10 5c1.3 0 2.6.4 3.6 1.1C15.4 6.4 16.7 6 18 6c4 0 7 3 7 7s-3 7-7 7c-1.3 0-2.6-.4-3.6-1.1C12.6 19.6 11.3 20 10 20c-4 0-7-3-7-7z" fill="white" opacity="0.06"/>
+              <path d="M7.5 12.2c.22-1.76 1.2-2.62 2.7-3.08.32-.1.66-.16 1-.16s.68.05 1 .16c1.5.46 2.48 1.32 2.7 3.08.09.7-.14 1.18-.62 1.54-.52.39-1.48.58-2.5.58s-1.98-.19-2.5-.58c-.48-.36-.71-.84-.62-1.54z" fill="white"/>
+            </svg>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <h1 id="site-title" class="float" style="font-size:20px;margin:0;">amirabolfazle</h1>
+              <div class="time-badge" aria-hidden="true">Created: 2025-09-28 18:13:17</div>
+            </div>
+            <div style="color:var(--muted);font-size:13px;margin-top:6px;">Dark mode landing • rotating visuals • subtle glass</div>
+          </div>
+        </div>
+
+        <h2 class="heading" style="margin-top:18px;font-size:34px;">
+          Design. Code. Rotate.
+        </h2>
+
+        <p class="subtitle">
+          A minimal, elegant landing page to showcase the signature of amirabolfazle — blending kinetic motion with dark aesthetics. Explore rotating cards, glowing accents, and a calm, focused layout designed for clarity and atmosphere.
+        </p>
+
+        <div class="features" aria-hidden="true">
+          <span class="chip">Dark Mode</span>
+          <span class="chip">Rotate Effects</span>
+          <span class="chip">Glass UI</span>
+          <span class="chip">Accessible</span>
+        </div>
+
+        <div class="meta" role="status" aria-live="polite">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="spin" aria-hidden="true"></div>
+            <div style="font-weight:600;color:#dffbf3">Live Preview</div>
+          </div>
+          <div style="margin-left:12px;color:var(--muted)">Creation time: 2025-09-28 18:13:17</div>
+        </div>
+
+        <div class="actions" style="margin-top:18px;">
+          <button class="btn" onclick="navigator.clipboard?.writeText(location.href)">Get Link</button>
+          <a class="btn secondary" href="#about" style="text-decoration:none;color:inherit;border-radius:12px;padding:10px 14px;display:inline-flex;align-items:center;">About</a>
+        </div>
+
+        <footer style="margin-top:20px;">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="opacity:0.95;">
+              <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.92.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.35-1.3-1.71-1.3-1.71-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.75-1.56-2.56-.29-5.25-1.28-5.25-5.72 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.45.11-3.02 0 0 .97-.31 3.18 1.18a11.08 11.08 0 0 1 2.9-.39c.98.01 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.57.23 2.73.11 3.02.74.81 1.19 1.84 1.19 3.1 0 4.45-2.7 5.42-5.27 5.7.42.37.79 1.11.79 2.24 0 1.62-.01 2.92-.01 3.32 0 .31.2.68.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </footer>
+      </div>
+
+      <div class="stack rotate-scene" aria-hidden="false" id="about">
+        <div class="card-item c1" style="z-index:10;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3>Motion Layer</h3>
+            <div class="spin" aria-hidden="true"></div>
+          </div>
+          <p>Animated orbs and stacked cards give a sense of depth. Hover to calm the motion — move to animate.</p>
+        </div>
+
+        <div class="card-item c2" style="z-index:20;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3>Neon Accent</h3>
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--accent-2);box-shadow:0 6px 18px rgba(139,108,255,0.16)"></div>
+          </div>
+          <p>Color accents guide the eye without overwhelming the content, maintaining focus and readability.</p>
+        </div>
+
+        <div class="card-item c3" style="z-index:30;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3>Glass Card</h3>
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--accent-1);box-shadow:0 6px 18px rgba(110,243,214,0.12)"></div>
+          </div>
+          <p>Frosted surfaces and subtle borders create tactile layers that feel modern and refined.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Parallax rotation based on pointer for subtle interactivity
+    (function(){
+      const scene = document.querySelector('.rotate-scene');
+      if(!scene) return;
+      const items = document.querySelectorAll('.card-item');
+      let bounds = scene.getBoundingClientRect();
+
+      function onMove(e){
+        const x = (e.clientX - bounds.left) / bounds.width - 0.5;
+        const y = (e.clientY - bounds.top) / bounds.height - 0.5;
+        items.forEach((el, i) => {
+          const depth = (i - 1) * 18;
+          const rx = (y * 12) + (i - 1) * 2;
+          const ry = (x * 18) + (i - 1) * -3;
+          el.style.transform = `translateZ(${30 + depth}px) rotateX(${rx}deg) rotateY(${ry}deg) translateX(0px)`;
+        });
+      }
+
+      function onLeave(){
+        items.forEach((el, i) => {
+          if(i===0) el.className = 'card-item c1';
+          if(i===1) el.className = 'card-item c2';
+          if(i===2) el.className = 'card-item c3';
+        });
+      }
+
+      window.addEventListener('resize', ()=> bounds = scene.getBoundingClientRect());
+      scene.addEventListener('pointermove', onMove);
+      scene.addEventListener('pointerleave', onLeave);
+      scene.addEventListener('touchmove', (e)=> onMove(e.touches[0]), {passive:true});
+    })();
+  </script>
+</body>
+</html>
