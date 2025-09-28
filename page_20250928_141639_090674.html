@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#04040b;
+      --neon-pink: #ff2d95;
+      --neon-cyan: #00f0ff;
+      --neon-purple: #9b63ff;
+      --glass: rgba(255,255,255,0.04);
+      --card-bg: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      --accent-glow: 0 0 24px rgba(156, 86, 255, 0.12), 0 0 48px rgba(0,240,255,0.06);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      color-scheme: dark;
+    }
+
+    /* Background */
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(0,240,255,0.06), transparent 6%),
+        radial-gradient(900px 400px at 90% 90%, rgba(255,45,149,0.05), transparent 8%),
+        linear-gradient(180deg, #02020a 0%, #05050c 100%);
+      min-height:100%;
+      color:#dfe7ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* Animated moving gradient overlay */
+    .bg-animate{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      background:
+        conic-gradient(from 180deg at 50% 50%, rgba(0,240,255,0.04), rgba(155,99,255,0.03), rgba(255,45,149,0.03), rgba(0,240,255,0.04));
+      mix-blend-mode:screen;
+      opacity:0.9;
+      animation: spin 18s linear infinite;
+      filter:blur(40px) contrast(1.05);
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Container */
+    .wrap{
+      position:relative;
+      z-index:2;
+      max-width:1100px;
+      margin:48px auto;
+      padding:40px;
+      box-sizing:border-box;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:36px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .logo{
+      width:72px;
+      height:72px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, rgba(0,240,255,0.12), rgba(255,45,149,0.10));
+      box-shadow: var(--accent-glow);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .logo svg{width:44px;height:44px;filter:drop-shadow(0 0 14px rgba(155,99,255,0.15))}
+
+    .title{
+      font-size:28px;
+      line-height:1;
+      font-weight:700;
+      letter-spacing:0.6px;
+      color:var(--neon-cyan);
+      text-shadow:
+        0 0 8px rgba(0,240,255,0.14),
+        0 0 28px rgba(155,99,255,0.06);
+    }
+
+    .subtitle{
+      font-size:12px;
+      color:rgba(223,231,255,0.6);
+      letter-spacing:0.6px;
+    }
+
+    /* Neon header with flicker */
+    .neon-title{
+      font-family: var(--mono);
+      font-size:44px;
+      font-weight:700;
+      color:var(--neon-pink);
+      text-transform:lowercase;
+      letter-spacing:1px;
+      margin:28px 0 6px;
+      line-height:1;
+      text-shadow:
+        0 0 6px rgba(255,45,149,0.9),
+        0 0 18px rgba(255,45,149,0.6),
+        0 0 36px rgba(155,99,255,0.18);
+      display:inline-block;
+      animation: flicker 3.6s infinite;
+    }
+    @keyframes flicker{
+      0%,5%,10%,100%{opacity:1; filter:drop-shadow(0 0 16px rgba(255,45,149,0.8))}
+      6%{opacity:0.85; filter:brightness(0.9)}
+      7%{opacity:0.6; filter:brightness(0.8)}
+      8%{opacity:1; filter:drop-shadow(0 0 18px rgba(255,45,149,0.9))}
+    }
+
+    /* Cards and sections */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .card{
+      grid-column: span 12;
+      background: var(--card-bg);
+      padding:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.028);
+      box-shadow: 0 6px 30px rgba(2,2,6,0.6), var(--accent-glow);
+      backdrop-filter: blur(6px) saturate(120%);
+      overflow:hidden;
+    }
+
+    @media(min-width:760px){
+      .card.half{grid-column: span 6;}
+      .card.third{grid-column: span 4;}
+    }
+
+    .muted{color:rgba(223,231,255,0.55);font-size:13px}
+
+    /* slide-up effect */
+    .slide-up{
+      transform:translateY(28px);
+      opacity:0;
+      transition: transform 650ms cubic-bezier(.16,.84,.24,1), opacity 520ms ease;
+      will-change:transform,opacity;
+    }
+    .slide-up.in-view{
+      transform:none;
+      opacity:1;
+    }
+
+    /* project list */
+    .projects{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .project{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform 280ms ease, box-shadow 280ms ease;
+    }
+    .project:hover{
+      transform:translateY(-6px);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.6), 0 0 36px rgba(155,99,255,0.06);
+    }
+    .p-badge{
+      min-width:44px;
+      height:44px;
+      display:grid;
+      place-items:center;
+      border-radius:10px;
+      background:linear-gradient(135deg, rgba(0,240,255,0.06), rgba(255,45,149,0.06));
+      color:var(--neon-cyan);
+      font-weight:700;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+      font-family:var(--mono);
+    }
+    .p-meta{flex:1}
+    .p-title{font-weight:700;color:#fff}
+    .p-desc{font-size:13px;color:rgba(223,231,255,0.64)}
+
+    /* CTA and buttons */
+    .cta{
+      display:inline-flex;
+      gap:12px;
+      margin-top:12px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,45,149,0.12), rgba(0,240,255,0.08));
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.04);
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.6);
+      transition:transform 180ms ease, box-shadow 180ms ease;
+    }
+    .btn:hover{transform:translateY(-4px); box-shadow: 0 22px 44px rgba(2,2,6,0.6), var(--accent-glow)}
+
+    /* footer */
+    footer{
+      margin-top:36px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px 10px 10px;
+      color:rgba(223,231,255,0.6);
+      font-size:13px;
+    }
+    .footer-left{display:flex;gap:12px;align-items:center}
+    .gh-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--neon-cyan);
+      text-decoration:none;
+      background:transparent;
+      border-radius:8px;
+      padding:6px 8px;
+      transition: transform 160ms ease;
+    }
+    .gh-link:hover{transform:translateY(-4px)}
+    .gh-link svg{width:18px;height:18px;filter:drop-shadow(0 0 8px rgba(0,240,255,0.14))}
+
+    .created-by{color:rgba(223,231,255,0.84); font-weight:600}
+
+    /* small helpers */
+    .time{
+      font-family: var(--mono);
+      font-size:12px;
+      color:rgba(223,231,255,0.6);
+      background:rgba(255,255,255,0.02);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 6px 20px rgba(2,2,6,0.5);
+    }
+
+    /* tiny responsive tweaks */
+    @media(max-width:520px){
+      .neon-title{font-size:34px}
+      .logo{width:56px;height:56px}
+      .wrap{padding:18px}
+      header{flex-direction:column;align-items:flex-start;gap:8px}
+      footer{flex-direction:column;align-items:flex-start;gap:6px}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animate" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- stylized A monogram -->
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop offset="0" stop-color="#00F0FF"/>
+                <stop offset="1" stop-color="#FF2D95"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="100" height="100" rx="18" fill="url(#g)" opacity="0.08"/>
+            <path d="M20 80 L50 20 L80 80 H60 L50 60 L40 80 Z" fill="url(#g)"/>
+          </svg>
+        </div>
+        <div>
+          <div class="title">amirabolfazle</div>
+          <div class="subtitle">neon portfolio • front-end playbook</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+        <div class="time" title="creation time">2025-09-28 14:15:39</div>
+        <div class="muted" style="font-size:12px">single-file, animated, neon</div>
+      </div>
+    </header>
+
+    <section class="intro slide-up" id="intro">
+      <h1 class="neon-title">amirabolfazle</h1>
+      <p class="muted" style="max-width:72ch">
+        A compact portfolio that glows. Scroll to reveal projects with smooth slide-up motion and neon highlights. Built as a single file for portability and showmanship.
+      </p>
+      <div class="cta slide-up" style="margin-top:12px">
+        <a class="btn" href="#projects" role="button">View Projects</a>
+        <a class="btn" href="#contact" role="button">Contact</a>
+      </div>
+    </section>
+
+    <section class="grid" style="margin-top:22px">
+      <article class="card half slide-up" id="about" aria-labelledby="about-title">
+        <h3 id="about-title" style="margin:0 0 8px;color:var(--neon-purple)">About</h3>
+        <p class="muted" style="margin:0 0 14px">
+          I'm amirabolfazle — I craft interfaces with an eye for motion and color. This page showcases a neon-first aesthetic and subtle micro-interactions.
+        </p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div class="time" style="font-size:13px">Creation time: 2025-09-28 14:15:39</div>
+          <div class="muted" style="padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.01)">
+            Skills: HTML · CSS · JS · UI Motion
+          </div>
+        </div>
+      </article>
+
+      <article class="card half slide-up" id="stats" aria-labelledby="stats-title">
+        <h3 id="stats-title" style="margin:0 0 8px;color:var(--neon-cyan)">Quick Stats</h3>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="min-width:120px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);text-align:center">
+            <div style="font-weight:800;font-size:20px;color:#fff">12+</div>
+            <div class="muted">Projects</div>
+          </div>
+          <div style="min-width:120px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);text-align:center">
+            <div style="font-weight:800;font-size:20px;color:#fff">6</div>
+            <div class="muted">Animations</div>
+          </div>
+          <div style="min-width:120px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);text-align:center">
+            <div style="font-weight:800;font-size:20px;color:#fff">1</div>
+            <div class="muted">Single-file</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card slide-up" id="projects" aria-labelledby="projects-title">
+        <h3 id="projects-title" style="margin:0 0 12px;color:var(--neon-pink)">Projects</h3>
+        <div class="projects">
+          <a class="project" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <div class="p-badge">AC</div>
+            <div class="p-meta">
+              <div class="p-title">autogen-code</div>
+              <div class="p-desc">Automated code generation tools — prototypes, templates, and utilities (GitHub repo).</div>
+            </div>
+            <div class="muted" style="white-space:nowrap">JS · CLI</div>
+          </a>
+
+          <div class="project">
+            <div class="p-badge">UI</div>
+            <div class="p-meta">
+              <div class="p-title">Neon UI Kit</div>
+              <div class="p-desc">A small component set focused on neon theming and motion primitives for rapid prototyping.</div>
+            </div>
+            <div class="muted">CSS · Animations</div>
+          </div>
+
+          <div class="project">
+            <div class="p-badge">GL</div>
+            <div class="p-meta">
+              <div class="p-title">Visualizer</div>
+              <div class="p-desc">Audio-reactive visual experiments using canvas and shader-inspired gradients.</div>
+            </div>
+            <div class="muted">Canvas · WebAudio</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card slide-up" id="contact" aria-labelledby="contact-title">
+        <h3 id="contact-title" style="margin:0 0 8px;color:var(--neon-cyan)">Contact</h3>
+        <p class="muted" style="margin:0 0 12px">Want to collaborate, ask about a project, or just say hi? Reach out via GitHub or open an issue in the repo.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            View Repo
+            <svg viewBox="0 0 24 24" fill="none" style="width:14px;height:14px" aria-hidden="true">
+              <path d="M12 2C7.589 2 4 5.589 4 10c0 3.525 2.293 6.514 5.475 7.566.4.074.547-.174.547-.387 0-.19-.007-.693-.01-1.36-2.225.484-2.695-1.074-2.695-1.074-.364-.926-.889-1.173-.889-1.173-.726-.498.055-.488.055-.488.803.057 1.226.825 1.226.825.714 1.223 1.873.87 2.33.665.073-.516.279-.87.507-1.071-1.776-.202-3.644-.888-3.644-3.955 0-.874.312-1.589.823-2.149-.083-.203-.357-1.02.078-2.124 0 0 .672-.215 2.2.821a7.6 7.6 0 012-.269c.68.003 1.366.092 2 .269 1.526-1.036 2.196-.821 2.196-.821.437 1.105.163 1.922.08 2.124.513.56.822 1.275.822 2.149 0 3.075-1.872 3.75-3.654 3.948.287.247.543.735.543 1.483 0 1.071-.01 1.936-.01 2.199 0 .215.144.465.55.386C17.709 16.512 20 13.522 20 10c0-4.411-3.589-8-8-8z" fill="currentColor"/>
+            </svg>
+          </a>
+          <div class="muted" style="align-self:center">Email: hello@amirabolfazle.dev</div>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <div class="footer-left">
+        <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C7.58 2 4 5.58 4 10c0 3.54 2.29 6.53 5.47 7.58.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.43-.49-2.58-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.86 2.33.66.07-.52.28-.86.51-1.06-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.48 7.48 0 012-.27c.68.003 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38C17.71 16.53 20 13.54 20 10c0-4.42-3.58-8-8-8z" fill="currentColor"/>
+          </svg>
+          <span style="font-weight:700">autogen-code</span>
+        </a>
+        <div style="display:flex;flex-direction:column">
+          <span class="created-by">Created by amirabolfazle</span>
+          <span class="muted" style="font-size:12px;margin-top:4px">2025-09-28 14:15:39</span>
+        </div>
+      </div>
+
+      <div class="muted" style="font-size:12px">Made with CSS neon & JS motion</div>
+    </footer>
+  </main>
+
+  <script>
+    // Slide-up on scroll using IntersectionObserver
+    (function(){
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) e.target.classList.add('in-view');
+        });
+      },{root:null,rootMargin:'0px 0px -10% 0px',threshold:0.08});
+
+      document.querySelectorAll('.slide-up').forEach(el=>{
+        obs.observe(el);
+      });
+
+      // small accessible enhancement: smooth anchor scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', function(e){
+          const t = document.querySelector(this.getAttribute('href'));
+          if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+        });
+      });
+
+      // Subtle initial reveal for header elements
+      window.addEventListener('load', ()=>{
+        document.querySelectorAll('.slide-up').forEach((el,i)=>{
+          setTimeout(()=> el.classList.add('in-view'), 120 + i*80);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
