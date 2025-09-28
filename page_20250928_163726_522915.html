@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(25, 42, 86, 1);
+      --accent1: rgba(99, 102, 241, 0.85);
+      --accent2: rgba(16, 185, 129, 0.85);
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --muted: rgba(255,255,255,0.7);
+      --card-w: 520px;
+    }
+
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(99,102,241,0.12), transparent 8%),
+                  radial-gradient(1000px 500px at 85% 80%, rgba(16,185,129,0.08), transparent 6%),
+                  linear-gradient(180deg, var(--bg1) 0%, #0b1220 100%);
+      color: white;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      overflow:hidden;
+    }
+
+    /* Background animated shapes */
+    .bg-shapes{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .shape{
+      position:absolute;
+      filter: blur(28px) saturate(140%);
+      opacity:0.92;
+      mix-blend-mode: screen;
+      transform-origin:50% 50%;
+      will-change: transform;
+    }
+    .shape.s1{width:600px;height:600px;background:linear-gradient(135deg,var(--accent1),transparent);left:-10%;top:-10%;animation:slow-rotate 28s linear infinite;}
+    .shape.s2{width:420px;height:420px;background:linear-gradient(225deg,var(--accent2),transparent);right:-5%;bottom:-5%;animation:slow-rotate-rev 36s linear infinite;}
+    .shape.s3{width:220px;height:220px;background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));left:60%;top:30%;animation:float 8s ease-in-out infinite;}
+
+    @keyframes slow-rotate{from{transform:rotate(0deg) translateZ(0)} to{transform:rotate(360deg) translateZ(0)}}
+    @keyframes slow-rotate-rev{from{transform:rotate(360deg)} to{transform:rotate(0deg)}}
+    @keyframes float{0%{transform:translateY(-8px)}50%{transform:translateY(6px)}100%{transform:translateY(-8px)}}
+
+    /* Main container */
+    .wrap{
+      position:relative;
+      z-index:2;
+      width:min(96%, var(--card-w));
+      max-width:960px;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+    }
+
+    /* Glass card */
+    .glass{
+      width:100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      border-radius:16px;
+      padding:28px;
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      transform-style:preserve-3d;
+      transition:transform 400ms cubic-bezier(.2,.9,.2,1), box-shadow 200ms;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .glass:hover{
+      transform: translateY(-6px) rotateX(2deg) rotateY(-3deg);
+      box-shadow: 0 20px 50px rgba(2,6,23,0.7);
+    }
+
+    /* Rotating halo border */
+    .glass::before{
+      content:'';
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(60deg, rgba(99,102,241,0.18), rgba(16,185,129,0.12), rgba(99,102,241,0.14));
+      z-index:-1;
+      filter: blur(24px) opacity(.9);
+      transform: rotate(0deg);
+      animation: halo-rotate 12s linear infinite;
+      border-radius:20px;
+    }
+    @keyframes halo-rotate{from{transform:rotate(0deg)} to{transform:rotate(360deg)}}
+
+    .content{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex:1;
+      min-width:0;
+    }
+
+    .logo{
+      width:88px;
+      height:88px;
+      border-radius:16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:22px;
+      color:var(--muted);
+      flex-shrink:0;
+      transform-origin:center;
+      animation: logo-tilt 8s ease-in-out infinite;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    @keyframes logo-tilt{0%{transform:rotateY(0deg)}25%{transform:rotateY(10deg)}50%{transform:rotateY(0deg)}75%{transform:rotateY(-10deg)}100%{transform:rotateY(0deg)}}
+
+    .meta{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(18px,3.4vw,28px);
+      letter-spacing:0.6px;
+      color:#fff;
+      font-weight:700;
+      line-height:1.05;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:clamp(12px,1.9vw,14px);
+      opacity:0.95;
+    }
+
+    /* Rotating mini-cards below */
+    .panels{
+      margin-top:20px;
+      width:100%;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius:12px;
+      padding:14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:76px;
+      transition: transform 350ms cubic-bezier(.2,.9,.2,1);
+      transform-origin:center;
+      backdrop-filter: blur(8px);
+    }
+    .panel:hover{ transform: translateY(-8px) rotate(-2deg) scale(1.02); }
+
+    .panel .dot{
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      box-shadow: 0 8px 20px rgba(2,6,23,0.45);
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:white;
+      transform-origin:center;
+      animation:tiny-rotate 8s linear infinite;
+    }
+    @keyframes tiny-rotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+    .panel .pmeta{display:flex;flex-direction:column}
+    .panel .title{font-size:13px;font-weight:700;margin:0}
+    .panel .sub{font-size:12px;color:var(--muted); margin-top:4px}
+
+    /* footer */
+    footer{
+      margin-top:22px;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      padding:12px 14px;
+      border-radius:12px;
+      backdrop-filter: blur(8px);
+    }
+    .footer-left{display:flex;align-items:center;gap:10px}
+    .created-time{font-weight:600;color:rgba(255,255,255,0.92); font-size:13px}
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:8px;
+      transition: transform 180ms, background 180ms;
+    }
+    .github-link:hover{transform:translateY(-4px); color:white}
+    .github-icon{width:20px;height:20px;display:inline-block;fill:currentColor;opacity:0.95}
+
+    /* Responsive */
+    @media (max-width:720px){
+      .wrap{padding-bottom:14px}
+      .glass{flex-direction:column;align-items:flex-start;padding:18px}
+      .content{width:100%}
+      .panels{grid-template-columns:repeat(2, 1fr)}
+      footer{flex-direction:column;align-items:flex-start;gap:8px}
+      .glass::before{display:block}
+    }
+    @media (max-width:420px){
+      .panels{grid-template-columns:1fr}
+      .logo{width:68px;height:68px;font-size:18px}
+      .panel{min-height:64px;padding:10px}
+    }
+
+    /* Respect prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce){
+      .shape, .glass::before, .logo, .panel .dot { animation: none !important; }
+      .glass:hover, .panel:hover, .github-link:hover { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+    <div class="shape s3"></div>
+  </div>
+
+  <main class="wrap" role="main">
+    <section class="glass" aria-labelledby="site-title">
+      <div class="content">
+        <div class="logo" aria-hidden="true">ab</div>
+        <div class="meta">
+          <h1 id="site-title">amirabolfazle</h1>
+          <p class="lead">A subtle glassmorphism demo with rotating effects — responsive and animated.</p>
+          <p class="lead" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.75)">Creation time: <span style="font-weight:700">2025-09-28 16:36:49</span></p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;min-width:0">
+        <div style="font-size:12px;color:var(--muted);opacity:0.95">Status</div>
+        <div style="background:linear-gradient(90deg,var(--accent2),var(--accent1));padding:6px 12px;border-radius:999px;font-weight:700;font-size:12px;box-shadow:0 8px 20px rgba(2,6,23,0.45)">Live</div>
+      </div>
+    </section>
+
+    <div class="panels" role="region" aria-label="features">
+      <div class="panel" title="Interactive rotation">
+        <div class="dot">R</div>
+        <div class="pmeta">
+          <div class="title">Rotate Effects</div>
+          <div class="sub">3D tilts and continuous spins</div>
+        </div>
+      </div>
+
+      <div class="panel" title="Glass style">
+        <div class="dot">G</div>
+        <div class="pmeta">
+          <div class="title">Glassmorphism</div>
+          <div class="sub">Translucent panels and blurred backdrop</div>
+        </div>
+      </div>
+
+      <div class="panel" title="Responsive">
+        <div class="dot">R</div>
+        <div class="pmeta">
+          <div class="title">Fully Responsive</div>
+          <div class="sub">Adaptive layout for all screens</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-left">
+        <div class="created-time">Created by amirabolfazle</div>
+        <div style="font-size:12px;color:var(--muted);margin-left:6px">•</div>
+        <div style="font-size:12px;color:var(--muted);margin-left:6px">2025-09-28 16:36:49</div>
+      </div>
+
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 .297a12 12 0 00-3.797 23.403c.6.111.82-.261.82-.58v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.205.084 1.84 1.24 1.84 1.24 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.304.76-1.604-2.665-.304-5.466-1.333-5.466-5.93 0-1.31.468-2.381 1.235-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.48 11.48 0 016.006 0c2.29-1.552 3.296-1.23 3.296-1.23.653 1.652.242 2.873.119 3.176.77.84 1.233 1.911 1.233 3.221 0 4.61-2.804 5.624-5.476 5.92.43.371.814 1.102.814 2.222v3.293c0 .322.216.697.825.579A12.004 12.004 0 0012 .297"></path>
+        </svg>
+        <span style="font-weight:600">GitHub</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Small interactive flourish: tilt page with pointer on larger screens
+    (function(){
+      const wrap = document.querySelector('.wrap');
+      let enabled = window.matchMedia && window.matchMedia('(pointer:fine) and (prefers-reduced-motion: no-preference)').matches;
+      if(!enabled) return;
+      let lastX=0,lastY=0;
+      document.addEventListener('pointermove', e=>{
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const cx = w/2, cy = h/2;
+        const dx = (e.clientX - cx)/cx; // -1..1
+        const dy = (e.clientY - cy)/cy;
+        const rx = dy * 4; // tilt
+        const ry = dx * -6; // tilt
+        wrap.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        lastX = rx; lastY = ry;
+      });
+      document.addEventListener('pointerleave', ()=>{
+        wrap.style.transform = '';
+      });
+    })();
+  </script>
+</body>
+</html>
