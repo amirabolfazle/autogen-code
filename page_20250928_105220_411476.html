@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --surface: #121721;
+      --text: #e6f0f8;
+      --muted: #a9b6c9;
+      --accent: #7c5cff;
+      --accent2: #5affd6;
+      --card: rgba(255,255,255,0.04);
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: #0b0f14;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(124, 92, 255, 0.08), transparent 25%),
+        radial-gradient(circle at 80% 60%, rgba(90, 255, 214, 0.10), transparent 25%),
+        linear-gradient(135deg, #0b0f14 0%, #0b0f14 100%);
+    }
+
+    /* Subtle animated background orbs */
+    #bg-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      opacity: 0.65;
+      mix-blend-mode: screen;
+      transform: translateZ(0);
+      /* each orb will override size/pos/dur via inline style */
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(0.92); opacity: 0.65; }
+      50% { transform: translate(var(--dx, 20px), calc(-1 * var(--dy, 20px))) scale(1.15); opacity: 0.9; }
+      100% { transform: translate(0, 0) scale(0.92); opacity: 0.65; }
+    }
+
+    /* Layout */
+    .scene {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 6rem 1.25rem;
+    }
+
+    .title {
+      font-weight: 900;
+      font-size: clamp(2.6rem, 10vw, 6rem);
+      line-height: 1.04;
+      margin: 0;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #7c5cff, #5affd6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 28px rgba(124,92,255,.45);
+      opacity: 0;
+      transform: scale(0.92);
+      animation: titleZoomIn 0.8s ease-out forwards;
+      animation-delay: 0.08s;
+    }
+    @keyframes titleZoomIn {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .subtitle {
+      margin-top: 0.6rem;
+      color: #d6e2f2;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      opacity: 0.95;
+    }
+
+    .creation-time {
+      margin-top: 1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Segoe UI Mono";
+      color: #a5b4fc;
+      font-size: .95rem;
+      letter-spacing: .3px;
+      background: rgba(2,6,23,.6);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      display: inline-block;
+      border: 1px solid rgba(165, 180, 252, 0.25);
+    }
+
+    /* Footer with GitHub icon */
+    .site-footer {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(2,6,23,.75);
+      padding: 0.75rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+    }
+    .site-footer a {
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .site-footer svg {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    /* Responsive tweaks for very small screens */
+    @media (max-width: 520px) {
+      .creation-time { font-size: 0.85rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <div id="bg-orbs" aria-hidden="true"></div>
+
+  <div class="scene" role="main">
+    <section class="container">
+      <h1 class="title" aria-label="Site title">amirabolfazle</h1>
+      <p class="subtitle" style="opacity:.95">Fully responsive animated HTML with dark mode and zoom effects</p>
+      <div class="creation-time" aria-label="Creation time">
+        Creation time: 2025-09-28 10:51:47
+      </div>
+    </section>
+
+    <footer class="site-footer" role="contentinfo">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" width="20" height="20">
+          <path d="M12 0C5.37 0 0 5.373 0 12a12 12 0 008.21 11.41c.6.11.82-.26.82-.58 0-.29-.01-1.04-.01-2.04-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.21.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.56.12-3.25 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.39c1.02.01 2.05.14 3 .39 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.83 1.23 1.91 1.23 3.23 0 4.6-2.8 5.63-5.47 5.92.43.37.81 1.1.81 2.2 0 1.6-.01 2.87-.01 3.25 0 .32.22.69.83.57C19.57 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <script>
+    // Create animated background orbs for depth
+    (function() {
+      const container = document.getElementById('bg-orbs');
+      const count = 8; // number of orbs
+      const eases = [
+        {dx: 40, dy: 20},
+        {dx: -40, dy: 25},
+        {dx: 25, dy: -35},
+        {dx: -20, dy: -22},
+        {dx: 60, dy: 15},
+        {dx: -50, dy: 10},
+        {dx: 30, dy: 40},
+        {dx: -35, dy: -40}
+      ];
+      for (let i = 0; i < count; i++) {
+        const orb = document.createElement('span');
+        orb.className = 'orb';
+        const size = 40 + Math.random() * 120; // px
+        const left = Math.random() * 100; // %
+        const top = Math.random() * 100;  // %
+        const duration = (12 + Math.random() * 26).toFixed(1) + 's';
+        const delay = (-Math.random() * 30).toFixed(1) + 's';
+        // set style
+        orb.style.width = size + 'px';
+        orb.style.height = size + 'px';
+        orb.style.left = left + '%';
+        orb.style.top = top + '%';
+        // color tint
+        const tint = [
+          '#7c5cff',
+          '#5affd6',
+          '#ffd166',
+          '#66e',
+          '#8affc1',
+          '#ff6b8a'
+        ];
+        const color = tint[i % tint.length];
+        orb.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), ${color}40 40%, transparent 70%)`;
+        orb.style.animationName = 'float';
+        orb.style.animationDuration = duration;
+        orb.style.animationDelay = delay;
+        orb.style.setProperty('--dx', eases[i % eases.length].dx + 'px');
+        orb.style.setProperty('--dy', eases[i % eases.length].dy + 'px');
+        container.appendChild(orb);
+      }
+      // optional: remove if user disables animations
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.orb').forEach(o => o.style.animation = 'none');
+      }
+    })();
+  </script>
+</body>
+</html>
