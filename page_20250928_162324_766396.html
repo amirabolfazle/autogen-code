@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: 18,18,23;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent-a: 145,92,255;
+      --accent-b: 18,255,200;
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.65);
+      --card-w: 760px;
+    }
+
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(var(--accent-a),0.12), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 80%, rgba(var(--accent-b),0.10), transparent 6%),
+                  linear-gradient(180deg, rgba(3,6,23,1) 0%, rgba(12,10,25,1) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      overflow:hidden;
+    }
+
+    /* Floating ambient blobs */
+    .ambient{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+    }
+    .blob{
+      position:absolute;
+      filter: blur(60px) saturate(120%);
+      opacity:0.6;
+      transform-origin:center;
+      mix-blend-mode:screen;
+      animation: float 12s ease-in-out infinite;
+      will-change:transform;
+    }
+    .blob.a{width:520px;height:520px;left:-10%;top:5%;background:linear-gradient(135deg, rgba(var(--accent-a),0.18), rgba(var(--accent-b),0.04));animation-duration:18s}
+    .blob.b{width:420px;height:420px;right:-5%;bottom:-5%;background:linear-gradient(120deg, rgba(var(--accent-b),0.14), rgba(var(--accent-a),0.03));animation-duration:16s;animation-delay:2s}
+    @keyframes float{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-30px) rotate(12deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    /* Main glass card */
+    .stage{
+      position:relative;
+      z-index:2;
+      width: min(92%, var(--card-w));
+      max-width:calc(var(--card-w));
+      transform-style:preserve-3d;
+      perspective:1200px;
+    }
+
+    .glass-card{
+      position:relative;
+      padding:38px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      transform: rotateX(6deg) rotateY(-6deg) translateZ(0);
+      transition: transform 0.9s cubic-bezier(.2,.8,.2,1), box-shadow 0.6s;
+      overflow:hidden;
+    }
+
+    .glass-card:hover{
+      transform: rotateX(0deg) rotateY(0deg) translateZ(20px) scale(1.01);
+      box-shadow: 0 30px 80px rgba(2,6,23,0.7);
+    }
+
+    /* Subtle rotating ring */
+    .ring{
+      position:absolute;
+      inset:auto;
+      right:-120px;
+      top:-120px;
+      width:420px;height:420px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,0.03);
+      background: conic-gradient(from 120deg at 50% 50%, rgba(var(--accent-a),0.09), transparent 12%, rgba(var(--accent-b),0.06));
+      transform-origin: center;
+      animation: slow-rotate 16s linear infinite;
+      pointer-events:none;
+    }
+
+    @keyframes slow-rotate{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+    /* Header content */
+    header{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+    .avatar{
+      width:92px;height:92px;border-radius:18px;
+      background:linear-gradient(135deg, rgba(var(--accent-a),0.9), rgba(var(--accent-b),0.85));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:28px;color:rgba(255,255,255,0.95);
+      box-shadow: 0 6px 18px rgba(78,46,180,0.18), inset 0 -6px 20px rgba(255,255,255,0.03);
+      transform: translateZ(30px);
+    }
+    h1{
+      font-size:clamp(28px,4.2vw,44px);
+      letter-spacing:-0.02em;
+      margin-bottom:6px;
+    }
+    p.lead{
+      margin:0;color:var(--muted);font-size:14px;
+    }
+
+    /* Content area */
+    .content{
+      display:flex;
+      gap:26px;
+      margin-top:22px;
+      align-items:flex-start;
+      transform: translateZ(20px);
+    }
+
+    .panel{
+      flex:1;
+      min-width:0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:18px;border-radius:14px;
+      backdrop-filter: blur(6px) saturate(110%);
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
+    }
+    .panel:hover{transform: translateY(-8px) scale(1.01)}
+
+    .stat{
+      display:flex;align-items:center;gap:12px;
+      font-weight:600;color:var(--text);
+      font-size:16px;
+    }
+    .muted{color:var(--muted);font-weight:500;font-size:13px;margin-top:8px}
+
+    /* Creation time badge */
+    .time-badge{
+      display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+      border:1px solid rgba(255,255,255,0.04);
+      font-size:13px;color:var(--muted);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    }
+    .time-badge svg{opacity:0.9;transform:translateY(-1px)}
+
+    /* Footer */
+    footer{
+      margin-top:22px;
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      color:var(--muted);font-size:13px;padding-top:6px;
+    }
+    .github-link{
+      display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:inherit;
+      padding:8px 12px;border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform .25s, box-shadow .25s;
+    }
+    .github-link:hover{transform:translateY(-6px);box-shadow: 0 18px 44px rgba(2,6,23,0.5)}
+    .github-icon{width:18px;height:18px;display:inline-block;fill:var(--text)}
+
+    /* Small screen tweaks */
+    @media (max-width:720px){
+      .content{flex-direction:column}
+      .ring{display:none}
+      .avatar{width:78px;height:78px;font-size:22px}
+      .glass-card{padding:24px;border-radius:14px}
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .blob, .ring, .glass-card, .panel{animation:none;transition:none}
+      .glass-card{transform:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="blob a" role="presentation"></div>
+    <div class="blob b" role="presentation"></div>
+  </div>
+
+  <main class="stage" role="main" aria-labelledby="title">
+    <section class="glass-card" role="region" aria-label="amirabolfazle personal card">
+      <div class="ring" aria-hidden="true"></div>
+
+      <header>
+        <div class="avatar" aria-hidden="true">a</div>
+        <div>
+          <h1 id="title">amirabolfazle</h1>
+          <p class="lead">fancy animated personal page • glassmorphism • subtle 3D rotation</p>
+          <div style="margin-top:10px;">
+            <span class="time-badge" title="Creation time"> 
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+                <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+              </svg>
+              2025-09-28 16:22:37
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div class="content" aria-hidden="false" style="margin-top:20px;">
+        <div class="panel" aria-label="About">
+          <div class="stat">About</div>
+          <p class="muted" style="margin-top:10px">
+            A sleek personal showcase built with glassmorphism visuals, animated accents and gentle rotation effects. Thoughtfully minimal, visually rich.
+          </p>
+        </div>
+
+        <div class="panel" aria-label="Details">
+          <div class="stat">Quick details</div>
+          <p class="muted" style="margin-top:10px">
+            Title: amirabolfazle • Created: 2025-09-28 16:22:37
+          </p>
+        </div>
+      </div>
+
+      <footer>
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.73.5.75 5.48.75 11.77c0 4.93 3.2 9.11 7.64 10.59.56.1.76-.24.76-.54 0-.27-.01-1-.01-1.96-3.11.67-3.77-1.5-3.77-1.5-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 .17 1.62-.75 1.62-.75.9-1.55 2.36-1.1 2.94-.84.09-.66.35-1.1.64-1.35-2.48-.28-5.09-1.24-5.09-5.53 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.4.11-2.92 0 0 .95-.31 3.12 1.16.9-.25 1.86-.37 2.82-.38.96.01 1.92.13 2.82.38 2.17-1.47 3.12-1.16 3.12-1.16.61 1.52.23 2.64.12 2.92.72.78 1.16 1.78 1.16 3 0 4.3-2.61 5.24-5.1 5.52.36.31.68.92.68 1.85 0 1.33-.01 2.41-.01 2.74 0 .3.2.64.77.53C19.05 20.88 22.25 16.7 22.25 11.77 22.25 5.48 17.27.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span style="font-weight:600">Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // Small enhancement: tiny tilt effect following pointer for depth (respects reduced motion)
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced) return;
+      const card = document.querySelector('.glass-card');
+      const limit = 12; // degrees
+      function onMove(e){
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const rx = (-y * limit).toFixed(2);
+        const ry = (x * limit).toFixed(2);
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(20px) scale(1.01)`;
+      }
+      function reset(){ card.style.transform = ''; }
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', reset);
+      card.addEventListener('touchstart', reset, {passive:true});
+    })();
+  </script>
+</body>
+</html>
