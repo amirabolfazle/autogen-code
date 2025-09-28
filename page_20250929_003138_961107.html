@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1: #0f172a;
+    --g1: #7f00ff;
+    --g2: #e100ff;
+    --g3: #00d4ff;
+    --card: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.04);
+    --accent: #ffffff;
+    --muted: rgba(255,255,255,0.7);
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(127,0,255,0.12), transparent),
+                radial-gradient(1000px 500px at 90% 80%, rgba(0,212,255,0.08), transparent),
+                linear-gradient(180deg, var(--bg1) 0%, #071024 100%);
+    color:var(--accent);
+    overflow-x:hidden;
+  }
+
+  /* animated gradient overlay */
+  .gradient-mesh{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    opacity:0.9;
+    background: conic-gradient(from 180deg at 50% 50%, rgba(127,0,255,0.12), rgba(225,0,255,0.08), rgba(0,212,255,0.06), rgba(127,0,255,0.12));
+    filter:blur(60px);
+    animation: spin 20s linear infinite;
+    z-index:0;
+  }
+  @keyframes spin{
+    to{ transform:rotate(360deg); }
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+    box-sizing:border-box;
+  }
+  .card{
+    width:100%;
+    max-width:1100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:18px;
+    padding:36px;
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+    border: 1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px) saturate(120%);
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap:28px;
+    align-items:start;
+  }
+
+  /* profile column */
+  .profile{
+    position:relative;
+    padding:18px;
+    border-radius:12px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    min-height:240px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    transform-style:preserve-3d;
+    transition:transform 0.6s cubic-bezier(.2,.9,.2,1);
+    perspective:1000px;
+  }
+
+  .avatar{
+    width:120px;
+    height:120px;
+    border-radius:20px;
+    align-self:center;
+    background: linear-gradient(135deg, var(--g1), var(--g2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:42px;
+    color:white;
+    box-shadow: 0 6px 30px rgba(127,0,255,0.18), inset 0 -6px 24px rgba(0,0,0,0.18);
+    transform: rotate(-10deg);
+    transition:transform 600ms cubic-bezier(.2,.9,.2,1);
+  }
+
+  .profile:hover .avatar{ transform: rotate(10deg) scale(1.02); }
+  .profile:hover{ transform: rotateY(-6deg) translateZ(10px); }
+
+  h1{
+    margin:0;
+    font-size:28px;
+    letter-spacing:0.6px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .name-rot{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:8px;
+    color:white;
+    font-weight:700;
+    background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    transform-origin:center;
+    animation: floatRotate 12s ease-in-out infinite;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+  @keyframes floatRotate{
+    0%{ transform: rotate(-6deg) translateY(0px); }
+    50%{ transform: rotate(6deg) translateY(-6px); }
+    100%{ transform: rotate(-6deg) translateY(0px); }
+  }
+
+  .meta{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.4;
+  }
+
+  .stats{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:auto;
+  }
+  .stat{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:10px 12px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:13px;
+    color:var(--accent);
+    border:1px solid rgba(255,255,255,0.03);
+    text-align:center;
+    min-width:84px;
+  }
+
+  /* main column */
+  .main{
+    padding:18px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    min-height:260px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .headline{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .headline .title{
+    font-size:20px;
+    margin:0;
+    color:var(--accent);
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  .rot-icon{
+    width:46px;height:46px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--g3),var(--g1));
+    box-shadow: 0 6px 20px rgba(0,212,255,0.12);
+    transform-origin:center;
+    animation: rotateForever 8s linear infinite;
+  }
+  @keyframes rotateForever{ to{ transform: rotate(360deg); } }
+
+  .tags{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .tag{
+    padding:8px 10px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    font-size:13px;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  .projects{
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+  }
+  .proj{
+    padding:12px;
+    border-radius:12px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    transform:translateZ(0);
+    transition:transform .4s cubic-bezier(.2,.9,.2,1), box-shadow .4s;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .proj:hover{
+    transform: translateY(-8px) rotate(-1deg) scale(1.02);
+    box-shadow: 0 14px 40px rgba(2,6,23,0.6);
+  }
+  .proj .p-title{ font-weight:700; font-size:15px; color:var(--accent); }
+  .proj .p-desc{ font-size:13px; color:var(--muted); line-height:1.3; }
+
+  .creation{
+    font-size:13px;
+    color:var(--muted);
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
+  /* footer */
+  footer{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .footer-inner{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:var(--muted);
+    padding:8px 10px;
+    border-radius:10px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    transition:transform .25s;
+  }
+  .gh svg{ display:block; filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6)); }
+  .gh:hover{ transform:translateY(-6px) scale(1.02); color:var(--accent); }
+
+  @media (max-width:880px){
+    .card{ grid-template-columns: 1fr; padding:22px; }
+    .profile{ flex-direction:row; gap:16px; align-items:center; min-height:unset; }
+    .avatar{ width:96px;height:96px;font-size:34px; }
+    .stats{ justify-content:flex-start; margin-top:0; }
+    .creation{ justify-content:flex-start; font-size:12px; }
+    footer{ flex-direction:column; align-items:flex-start; gap:8px; }
+  }
+
+  /* subtle floating decorative orbs */
+  .orb{
+    position:absolute;
+    width:220px;height:220px;border-radius:50%;
+    filter:blur(45px);
+    opacity:0.7;
+    z-index:0;
+    pointer-events:none;
+  }
+  .orb.one{ left:-60px; top:-60px; background:radial-gradient(circle at 30% 30%, rgba(127,0,255,0.28), transparent 40%); animation: drift1 14s linear infinite; }
+  .orb.two{ right:-80px; bottom:-80px; background:radial-gradient(circle at 70% 70%, rgba(0,212,255,0.22), transparent 40%); animation: drift2 18s linear infinite; }
+  @keyframes drift1{ 0%{transform:translateY(0) rotate(0)} 50%{transform:translateY(20px) rotate(90deg)} 100%{transform:translateY(0) rotate(180deg)} }
+  @keyframes drift2{ 0%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-24px) rotate(-90deg)} 100%{transform:translateY(0) rotate(-180deg)} }
+
+  /* small accessibility: reduce motion respect */
+  @media (prefers-reduced-motion: reduce){
+    .gradient-mesh, .rot-icon, .name-rot, .orb, .proj, .avatar{ animation:none; transition:none; transform:none; }
+  }
+
+</style>
+</head>
+<body>
+<div class="gradient-mesh" aria-hidden="true"></div>
+<div class="orb one" aria-hidden="true"></div>
+<div class="orb two" aria-hidden="true"></div>
+
+<div class="wrap">
+  <main class="card" role="main" aria-labelledby="site-title">
+    <section class="profile" aria-label="Profile">
+      <div class="avatar" aria-hidden="true">A</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <h1 id="site-title"><span class="name-rot">amirabolfazle</span></h1>
+        <div class="meta">Creative coder & portfolio maker. I design playful UI experiments, compact tools, and thoughtful interactions.</div>
+        <div style="height:8px"></div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="tags">
+            <span class="tag">Web Animations</span>
+            <span class="tag">UI/UX</span>
+            <span class="tag">Frontend</span>
+            <span class="tag">Design Systems</span>
+          </div>
+          <div style="height:6px"></div>
+          <div class="stats" role="list">
+            <div class="stat" role="listitem"><div style="font-size:12px;color:var(--muted)">Projects</div><div style="font-size:16px">12</div></div>
+            <div class="stat" role="listitem"><div style="font-size:12px;color:var(--muted)">Years</div><div style="font-size:16px">6</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="main" aria-label="Main content">
+      <div class="headline">
+        <div class="title">
+          <div style="display:flex;flex-direction:column;">
+            <div style="font-size:13px;color:var(--muted)">Welcome to my animated portfolio</div>
+            <div style="font-weight:800;font-size:18px">Small experiments with big motion</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="rot-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2v4M12 18v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M2 12h4M18 12h4M4.2 19.8l2.8-2.8M17 7l2.8-2.8" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:18px;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="font-weight:700;">Featured Projects</div>
+          <div class="creation">Creation time: <strong style="color:var(--accent);margin-left:8px">2025-09-29 00:30:54</strong></div>
+        </div>
+
+        <div class="projects" aria-label="Projects list">
+          <article class="proj" tabindex="0" role="article" aria-labelledby="p1">
+            <div class="p-title" id="p1">Aurora UI Kit</div>
+            <div class="p-desc">A tiny design system with animated tokens and reusable motion primitives for modern interfaces.</div>
+          </article>
+
+          <article class="proj" tabindex="0" role="article" aria-labelledby="p2">
+            <div class="p-title" id="p2">Orbit Loader</div>
+            <div class="p-desc">High-performance CSS loader with 3D rotation and gradient trails — built for micro-interactions.</div>
+          </article>
+
+          <article class="proj" tabindex="0" role="article" aria-labelledby="p3">
+            <div class="p-title" id="p3">Type Motion</div>
+            <div class="p-desc">Playful typography experiments that combine physics-inspired easing and responsive scaling.</div>
+          </article>
+
+          <article class="proj" tabindex="0" role="article" aria-labelledby="p4">
+            <div class="p-title" id="p4">Palette Explorer</div>
+            <div class="p-desc">Interactive gradient builder with live previews and export-ready CSS variables.</div>
+          </article>
+        </div>
+      </div>
+
+      <footer>
+        <div class="footer-inner">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.648.5.75 5.397.75 11.75c0 4.79 3.102 8.846 7.41 10.277.542.1.741-.235.741-.52 0-.256-.01-.935-.015-1.836-3.012.655-3.647-1.452-3.647-1.452-.492-1.252-1.2-1.586-1.2-1.586-.98-.67.074-.657.074-.657 1.083.077 1.653 1.11 1.653 1.11.963 1.648 2.526 1.172 3.142.896.098-.697.377-1.173.686-1.443-2.404-.273-4.932-1.202-4.932-5.347 0-1.182.423-2.148 1.116-2.906-.112-.274-.484-1.376.106-2.869 0 0 .91-.292 2.98 1.106A10.26 10.26 0 0 1 12 6.845c.922.004 1.852.125 2.72.366 2.068-1.398 2.976-1.106 2.976-1.106.592 1.494.22 2.596.108 2.869.695.758 1.114 1.724 1.114 2.906 0 4.156-2.533 5.07-4.944 5.336.388.338.734.999.734 2.013 0 1.453-.013 2.624-.013 2.978 0 .286.197.625.75.519 4.304-1.433 7.404-5.489 7.404-10.28C23.25 5.397 18.352.5 12 .5z" fill="white"/>
+            </svg>
+            <span style="font-weight:600">amirabolfazle</span>
+          </a>
+        </div>
+
+        <div style="color:var(--muted)">Created by amirabolfazle</div>
+      </footer>
+    </section>
+  </main>
+</div>
+
+</body>
+</html>
