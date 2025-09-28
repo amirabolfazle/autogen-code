@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1: #f8f3ff;
+    --bg-2: #fffaf0;
+    --accent-1: #ffd6e0;
+    --accent-2: #d6f5e1;
+    --accent-3: #e8f0ff;
+    --muted: #6b6b6b;
+    --card: #ffffffcc;
+    --glass: rgba(255,255,255,0.6);
+    --shadow: 0 8px 30px rgba(23,23,23,0.08);
+    --radius: 14px;
+  }
+
+  /* Reset & base */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 20%, var(--accent-1) 0%, transparent 20%),
+                radial-gradient(900px 500px at 85% 80%, var(--accent-2) 0%, transparent 20%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#101010;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+  }
+
+  .container{
+    width:100%;
+    max-width:1100px;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+    align-items:stretch;
+  }
+
+  header.card{
+    background: linear-gradient(135deg, var(--card), rgba(255,255,255,0.5));
+    border-radius: var(--radius);
+    padding:28px;
+    box-shadow: var(--shadow);
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:20px;
+    overflow:visible;
+    position:relative;
+  }
+
+  .logo {
+    width:86px;
+    height:86px;
+    min-width:86px;
+    border-radius:18px;
+    display:grid;
+    place-items:center;
+    background: linear-gradient(135deg, var(--accent-3), var(--accent-1));
+    box-shadow: 0 6px 18px rgba(15,15,15,0.06), inset 0 -6px 18px rgba(255,255,255,0.35);
+    transform-origin:center;
+    animation:pop 900ms cubic-bezier(.17,.67,.3,1.12) both;
+  }
+
+  @keyframes pop{
+    0%{transform:scale(.6) translateY(30px); opacity:0}
+    60%{transform:scale(1.08) translateY(-6px)}
+    100%{transform:scale(1) translateY(0); opacity:1}
+  }
+
+  .logo svg{width:48px;height:48px;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.06));}
+
+  .title-wrap{
+    flex:1;
+    min-width:0;
+  }
+
+  h1{
+    margin:0;
+    font-size:clamp(22px,5.2vw,36px);
+    letter-spacing:0.6px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+  }
+
+  /* Bouncy letters */
+  .word{
+    display:inline-flex;
+    gap:6px;
+    align-items:center;
+    flex-wrap:nowrap;
+  }
+  .char{
+    display:inline-block;
+    background:linear-gradient(180deg, rgba(255,255,255,0.6), transparent);
+    padding:6px 8px;
+    border-radius:10px;
+    font-weight:700;
+    color:#2a2a2a;
+    transform-origin:center bottom;
+    animation:letter-bounce 1400ms cubic-bezier(.22,1,.36,1) both;
+  }
+
+  /* Stagger using nth-child */
+  .char:nth-child(1){animation-delay:0s}
+  .char:nth-child(2){animation-delay:.05s}
+  .char:nth-child(3){animation-delay:.09s}
+  .char:nth-child(4){animation-delay:.14s}
+  .char:nth-child(5){animation-delay:.19s}
+  .char:nth-child(6){animation-delay:.24s}
+  .char:nth-child(7){animation-delay:.28s}
+  .char:nth-child(8){animation-delay:.33s}
+  .char:nth-child(9){animation-delay:.38s}
+  .char:nth-child(10){animation-delay:.42s}
+  .char:nth-child(11){animation-delay:.47s}
+  .char:nth-child(12){animation-delay:.52s}
+  .char:nth-child(13){animation-delay:.57s}
+  .char:nth-child(14){animation-delay:.62s}
+  .char:nth-child(15){animation-delay:.67s}
+
+  @keyframes letter-bounce{
+    0%{transform:translateY(24px) scale(.85); opacity:0}
+    60%{transform:translateY(-10px) scale(1.06)}
+    100%{transform:translateY(0) scale(1); opacity:1}
+  }
+
+  .subtitle{
+    margin-top:8px;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .meta{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-left:auto;
+    color:var(--muted);
+    font-size:13px;
+    padding-left:12px;
+  }
+
+  .badge{
+    background:linear-gradient(180deg, rgba(255,255,255,0.7), transparent);
+    padding:8px 12px;
+    border-radius:999px;
+    box-shadow: 0 4px 12px rgba(10,10,10,0.04);
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  main{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:18px;
+  }
+
+  .card{
+    background:var(--glass);
+    border-radius:14px;
+    padding:18px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(6px) saturate(120%);
+    min-height:110px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    transition:transform .28s ease, box-shadow .28s ease;
+  }
+
+  .card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(15,15,15,0.08)}
+
+  .icon {
+    width:54px;
+    height:54px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg, rgba(255,255,255,0.7), transparent);
+    box-shadow: inset 0 -6px 18px rgba(255,255,255,0.45);
+    transform-origin:center;
+    animation:float 3.8s ease-in-out infinite;
+  }
+
+  .icon svg{width:28px;height:28px; opacity:0.95}
+
+  @keyframes float{
+    0%{transform:translateY(0) rotate(-2deg)}
+    50%{transform:translateY(-10px) rotate(2deg)}
+    100%{transform:translateY(0) rotate(-2deg)}
+  }
+
+  .card .content{
+    flex:1;
+    min-width:0;
+  }
+  .card h3{margin:0;font-size:16px}
+  .card p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.35}
+
+  /* Responsive */
+  @media (max-width:920px){
+    main{grid-template-columns: repeat(2, 1fr)}
+  }
+  @media (max-width:620px){
+    body{padding:28px 14px}
+    header.card{flex-direction:column;align-items:flex-start}
+    .meta{margin-left:0; margin-top:6px}
+    main{grid-template-columns: 1fr}
+  }
+
+  footer{
+    margin-top:6px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:18px 6px;
+  }
+
+  .gh{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    text-decoration:none;
+    color:inherit;
+    padding:8px 12px;
+    border-radius:999px;
+    transition:transform .18s ease, box-shadow .18s ease;
+    background:transparent;
+  }
+  .gh:hover{transform:translateY(-6px); box-shadow: 0 10px 30px rgba(15,15,15,0.06)}
+  .gh svg{width:18px;height:18px; display:block}
+
+  /* subtle decorative blobs */
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    filter: blur(40px);
+    opacity:.62;
+    pointer-events:none;
+  }
+  .blob.a{width:220px;height:220px; background:linear-gradient(90deg,#ffd6e0,#e8f0ff); left:-40px; top:-60px;}
+  .blob.b{width:180px;height:180px; background:linear-gradient(90deg,#d6f5e1,#fff1d6); right:-30px; bottom:-40px;}
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion:reduce){
+    .logo,.char,.icon{animation:none}
+    .card:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="main-title">
+    <header class="card" aria-hidden="false">
+      <div class="logo" aria-hidden="true">
+        <!-- subtle monogram -->
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.8"/>
+              <stop offset="1" stop-color="#ffefef" stop-opacity="0.9"/>
+            </linearGradient>
+          </defs>
+          <rect x="6" y="6" width="88" height="88" rx="16" fill="url(#g1)"/>
+          <g transform="translate(16,22)" fill="#3a3a3a" font-family="Arial, Helvetica, sans-serif">
+            <text x="6" y="48" font-size="44" font-weight="700">a</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="title-wrap">
+        <h1 id="main-title" aria-label="amirabolfazle">
+          <span class="word" aria-hidden="true">
+            <!-- Each letter is a bouncing block -->
+            <span class="char">a</span>
+            <span class="char">m</span>
+            <span class="char">i</span>
+            <span class="char">r</span>
+            <span class="char">a</span>
+            <span class="char">b</span>
+            <span class="char">o</span>
+            <span class="char">l</span>
+            <span class="char">f</span>
+            <span class="char">a</span>
+            <span class="char">z</span>
+            <span class="char">l</span>
+            <span class="char">e</span>
+          </span>
+        </h1>
+        <div class="subtitle">A pastel-themed responsive demo with bounce effects.</div>
+      </div>
+
+      <div class="meta" aria-hidden="true">
+        <div class="badge" title="Creation time">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6v6l4 2" stroke="#6b6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="9" stroke="#6b6b6b" stroke-width="1.6" fill="none"/>
+          </svg>
+          <span style="font-size:13px;color:var(--muted)">Created: 2025-09-28 23:56:29</span>
+        </div>
+      </div>
+
+      <div class="blob a" aria-hidden="true"></div>
+      <div class="blob b" aria-hidden="true"></div>
+    </header>
+
+    <main>
+      <section class="card" aria-labelledby="card-1">
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="3.2" stroke="#6b6b6b" stroke-width="1.4" fill="#fff"/>
+            <path d="M4 20c0-3.6 3.6-6.5 8-6.5s8 2.9 8 6.5" stroke="#6b6b6b" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="content">
+          <h3 id="card-1">Responsive by design</h3>
+          <p>Layouts adjust across devices while keeping pastel visuals and lively motion.</p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="card-2">
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="#6b6b6b" stroke-width="1.4" fill="#fff"/>
+            <path d="M7 8h10M7 12h6" stroke="#6b6b6b" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="content">
+          <h3 id="card-2">Gentle animations</h3>
+          <p>Bounce and float animations bring elements to life without overwhelming the page.</p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="card-3">
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 12c2-4 8-7 12-4 3 2.5 3 7 0 9-4 2.5-10 0.5-12-5z" stroke="#6b6b6b" stroke-width="1.3" fill="#fff"/>
+            <circle cx="9" cy="11" r="1.2" fill="#6b6b6b"/>
+          </svg>
+        </div>
+        <div class="content">
+          <h3 id="card-3">Pastel palette</h3>
+          <p>Soft colors and glassy panels create a calm, modern aesthetic.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 .5C5.73.5.83 5.4.83 11.66c0 4.85 3.14 8.97 7.52 10.44.55.1.75-.24.75-.53 0-.26-.01-.96-.02-1.88-3.06.67-3.71-1.47-3.71-1.47-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.1.08 1.69 1.13 1.69 1.13.97 1.66 2.55 1.18 3.18.9.1-.7.38-1.18.69-1.45-2.44-.28-5-1.22-5-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.42.11-2.97 0 0 .93-.3 3.05 1.13a10.6 10.6 0 012.78-.37c.94 0 1.89.13 2.78.37 2.12-1.43 3.05-1.13 3.05-1.13.6 1.55.22 2.69.11 2.97.7.77 1.13 1.75 1.13 2.95 0 4.22-2.56 5.15-5 5.42.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .3.2.64.76.53 4.38-1.48 7.51-5.6 7.51-10.44C23.17 5.4 18.27.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Small interactive flourish: click title to replay letter animations
+    (function(){
+      const title = document.getElementById('main-title');
+      const chars = title.querySelectorAll('.char');
+      if(!chars.length) return;
+      let replay = ()=> {
+        chars.forEach((c,i)=>{
+          c.style.animation = 'none';
+          // force reflow
+          void c.offsetWidth;
+          c.style.animation = '';
+        });
+      };
+      title.addEventListener('click', replay);
+      // accessibility: allow Enter/Space to trigger replay when focused
+      title.setAttribute('tabindex','0');
+      title.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); replay(); }
+      });
+    })();
+  </script>
+</body>
+</html>
