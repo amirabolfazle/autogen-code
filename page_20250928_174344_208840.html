@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#06060a;
+      --neon-pink: #ff2d95;
+      --neon-blue: #2de0ff;
+      --neon-green:#7cffc7;
+      --glass: rgba(255,255,255,0.04);
+      --fade-duration: 1.2s;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(45,224,255,0.06), transparent 6%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(255,45,149,0.05), transparent 8%),
+                  var(--bg);
+      color:#e9f8ff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      gap:28px;
+      position:relative;
+      flex-direction:column;
+    }
+
+    .card{
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding: clamp(24px, 4vw, 48px);
+      border-radius:16px;
+      box-shadow:
+        0 10px 40px rgba(2,6,23,0.6),
+        0 0 40px rgba(45,224,255,0.03) inset;
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(6px) saturate(120%);
+      animation: fadeUp var(--fade-duration) cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0; transform: translateY(18px)}
+      to{opacity:1; transform: translateY(0)}
+    }
+
+    h1{
+      margin:0 0 8px 0;
+      font-size: clamp(28px, 6vw, 64px);
+      line-height:1;
+      letter-spacing:-0.02em;
+      font-weight:800;
+      color:var(--neon-pink);
+      text-shadow:
+        0 0 6px rgba(255,45,149,0.36),
+        0 0 18px rgba(255,45,149,0.12),
+        0 8px 30px rgba(45,224,255,0.03);
+      display:inline-block;
+      position:relative;
+      padding:6px 12px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(255,45,149,0.03), rgba(45,224,255,0.02));
+      animation: neonFlicker 3.4s infinite;
+    }
+
+    @keyframes neonFlicker{
+      0%{filter:drop-shadow(0 0 6px rgba(255,45,149,0.45))}
+      6%{filter:drop-shadow(0 0 14px rgba(255,45,149,0.65))}
+      12%{filter:none}
+      20%{filter:drop-shadow(0 0 8px rgba(255,45,149,0.5))}
+      30%{filter:drop-shadow(0 0 18px rgba(45,224,255,0.35))}
+      100%{filter:drop-shadow(0 0 10px rgba(255,45,149,0.45))}
+    }
+
+    .subtitle{
+      margin:0;
+      color:var(--neon-blue);
+      font-weight:600;
+      font-size:clamp(14px,2.2vw,18px);
+      opacity:0.95;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:14px;
+      text-shadow: 0 2px 18px rgba(45,224,255,0.06);
+    }
+
+    .meta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      font-size:13px;
+      color: rgba(255,255,255,0.7);
+      margin-top:6px;
+      flex-wrap:wrap;
+    }
+
+    .time-badge{
+      background: linear-gradient(90deg, rgba(124,255,199,0.06), rgba(45,224,255,0.04));
+      border:1px solid rgba(124,255,199,0.06);
+      color:var(--neon-green);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:13px;
+      box-shadow: 0 6px 30px rgba(44,200,180,0.03), inset 0 -6px 20px rgba(124,255,199,0.01);
+    }
+
+    .visual{
+      margin-top:18px;
+      width:100%;
+      height: clamp(180px, 28vw, 360px);
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(400px 120px at 10% 10%, rgba(45,224,255,0.06), transparent 6%),
+        linear-gradient(135deg, rgba(45,224,255,0.02), rgba(255,45,149,0.02));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* Animated orb lines */
+    .orb{
+      width:140%;
+      height:140%;
+      position:absolute;
+      left:-20%;
+      top:-20%;
+      background:
+        conic-gradient(from 120deg at 40% 60%, rgba(255,45,149,0.06), rgba(45,224,255,0.06), rgba(124,255,199,0.06), rgba(255,45,149,0.06));
+      mix-blend-mode:screen;
+      filter:blur(28px);
+      opacity:0.85;
+      animation: rotateOrb 18s linear infinite;
+    }
+
+    @keyframes rotateOrb{
+      from{transform: rotate(0deg)}
+      to{transform: rotate(360deg)}
+    }
+
+    .glow-lines{
+      position:absolute;
+      inset:0;
+      display:block;
+      pointer-events:none;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,0.6));
+    }
+
+    .glow-lines:before, .glow-lines:after{
+      content:"";
+      position:absolute;
+      width:220%;
+      height:2px;
+      left:-10%;
+      top:25%;
+      background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+      filter: blur(8px);
+      opacity:0.7;
+      transform:translateZ(0);
+      animation: slide 6s linear infinite;
+    }
+    .glow-lines:after{
+      top:65%;
+      background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
+      animation-duration: 8s;
+      animation-direction: reverse;
+    }
+
+    @keyframes slide{
+      0%{transform: translateX(-8%)}
+      50%{transform: translateX(8%)}
+      100%{transform: translateX(-8%)}
+    }
+
+    .floating{
+      position:absolute;
+      border-radius:12px;
+      filter: blur(8px);
+      opacity:0.18;
+      mix-blend-mode:screen;
+      animation: floaty 9s ease-in-out infinite;
+    }
+
+    .floating.one{width:90px;height:90px;left:6%;top:20%; background:linear-gradient(45deg,var(--neon-pink),var(--neon-blue))}
+    .floating.two{width:120px;height:120px;right:6%;bottom:14%; background:linear-gradient(45deg,var(--neon-green),var(--neon-blue)); animation-duration:12s}
+    .floating.three{width:60px;height:60px;right:20%;top:18%; background:linear-gradient(45deg,var(--neon-pink),var(--neon-green)); animation-duration:11s}
+
+    @keyframes floaty{
+      0%{transform: translateY(0) rotate(0deg)}
+      50%{transform: translateY(-18px) rotate(12deg)}
+      100%{transform: translateY(0) rotate(0deg)}
+    }
+
+    .content{
+      position:relative;
+      z-index:3;
+    }
+
+    .btn-row{
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+      letter-spacing:0.02em;
+      border:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:#e7fbff;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s;
+      box-shadow: 0 6px 18px rgba(6,10,20,0.5);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size:14px;
+    }
+    .btn:active{transform:translateY(2px) scale(.996)}
+    .btn.glow{
+      background: linear-gradient(90deg, rgba(45,224,255,0.06), rgba(255,45,149,0.06));
+      border:1px solid rgba(45,224,255,0.14);
+      box-shadow: 0 8px 40px rgba(45,224,255,0.06), 0 0 28px rgba(255,45,149,0.02);
+    }
+
+    footer{
+      margin-top:18px;
+      width:100%;
+      max-width:980px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 18px;
+      border-radius:12px;
+      color:rgba(255,255,255,0.66);
+      font-size:13px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      animation: fadeUp var(--fade-duration) cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    .footer-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:rgba(255,255,255,0.8);
+    }
+
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:inherit;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform .15s ease;
+    }
+    .github-link:hover{transform:translateY(-4px); box-shadow: 0 10px 30px rgba(45,224,255,0.03)}
+
+    .gh-icon{
+      width:20px;height:20px;display:inline-block;flex:0 0 20px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    }
+
+    .cred{
+      opacity:0.9;
+      font-weight:600;
+      color:var(--neon-blue);
+    }
+
+    /* Small screens */
+    @media (max-width:620px){
+      .card{padding:18px}
+      footer{flex-direction:column; align-items:flex-start}
+      .footer-left{width:100%; justify-content:space-between}
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .orb, .glow-lines:before, .glow-lines:after, .floating, h1{animation:none}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="title">
+      <div class="orb" aria-hidden="true"></div>
+      <div class="glow-lines" aria-hidden="true"></div>
+      <div class="floating one" aria-hidden="true"></div>
+      <div class="floating two" aria-hidden="true"></div>
+      <div class="floating three" aria-hidden="true"></div>
+
+      <div class="content">
+        <h1 id="title">amirabolfazle</h1>
+        <p class="subtitle">neon playground · animated · responsive</p>
+
+        <div class="meta" aria-hidden="false">
+          <div class="time-badge" title="Creation time">Created: 2025-09-28 17:43:02</div>
+          <div style="opacity:.85">A small neon-flavored demo page with soft glows, floating gradients and subtle motion. Resize the window to see responsive scaling.</div>
+        </div>
+
+        <div class="visual" role="img" aria-label="Animated neon visual">
+          <!-- Decorative lines and shapes inside visual -->
+          <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" style="position:relative;z-index:2">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#ff2d95" stop-opacity="0.9"/>
+                <stop offset="1" stop-color="#2de0ff" stop-opacity="0.9"/>
+              </linearGradient>
+              <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="18" result="b"/>
+                <feBlend in="SourceGraphic" in2="b"/>
+              </filter>
+            </defs>
+            <g filter="url(#blur)">
+              <path d="M100 420 C240 200, 420 200, 600 360 S980 520, 1100 320" fill="none" stroke="url(#g1)" stroke-width="6" stroke-linecap="round" opacity="0.18">
+                <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="9s" repeatCount="indefinite" />
+              </path>
+              <circle cx="260" cy="200" r="80" fill="#2de0ff" opacity="0.06"/>
+              <circle cx="860" cy="320" r="110" fill="#ff2d95" opacity="0.06"/>
+              <circle cx="520" cy="260" r="40" fill="#7cffc7" opacity="0.06"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="btn-row" role="toolbar" aria-label="Actions">
+          <button class="btn glow" onclick="pulse()">Pulse</button>
+          <button class="btn" onclick="toggleMotion()"><span id="motionText">Pause Motion</span></button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-left">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg class="gh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 .198a8 8 0 00-2.53 15.59c.4.074.547-.174.547-.388 0-.19-.007-.693-.01-1.36-2.226.483-2.695-1.073-2.695-1.073-.364-.926-.89-1.173-.89-1.173-.727-.497.055-.487.055-.487.804.057 1.227.826 1.227.826.715 1.224 1.875.87 2.33.665.072-.517.28-.87.508-1.07-1.777-.202-3.644-.888-3.644-3.952 0-.873.312-1.588.824-2.148-.083-.203-.357-1.018.078-2.122 0 0 .672-.215 2.2.82a7.66 7.66 0 012.003-.27c.68.003 1.366.092 2.003.27 1.526-1.035 2.197-.82 2.197-.82.437 1.104.163 1.919.08 2.122.513.56.823 1.275.823 2.148 0 3.073-1.87 3.747-3.652 3.943.288.25.543.744.543 1.5 0 1.083-.01 1.956-.01 2.223 0 .216.144.466.55.387A8.001 8.001 0 008 .198z" fill="url(#ghgrad)"/>
+            <defs>
+              <linearGradient id="ghgrad" x1="0" x2="1">
+                <stop offset="0" stop-color="#2de0ff"/>
+                <stop offset="1" stop-color="#ff2d95"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span style="font-weight:700">autogen-code</span>
+        </a>
+        <div style="display:flex;flex-direction:column">
+          <div class="cred">Created by amirabolfazle</div>
+          <div style="opacity:.6;font-size:12px;margin-top:4px">Creation time: 2025-09-28 17:43:02</div>
+        </div>
+      </div>
+
+      <div style="opacity:.78;font-size:13px">Made with neon & a pinch of motion</div>
+    </footer>
+  </main>
+
+  <script>
+    // Simple interactivity: pulse effect and toggle motion
+    const root = document.documentElement;
+    const motionText = document.getElementById('motionText');
+    let motionEnabled = true;
+
+    function pulse(){
+      const el = document.querySelector('h1');
+      el.animate([
+        { transform: 'scale(1)', filter: 'drop-shadow(0 0 8px rgba(255,45,149,0.45))' },
+        { transform: 'scale(1.06)', filter: 'drop-shadow(0 0 24px rgba(45,224,255,0.6))' },
+        { transform: 'scale(1)', filter: 'drop-shadow(0 0 8px rgba(255,45,149,0.45))' }
+      ], { duration: 600, easing: 'cubic-bezier(.2,.9,.3,1)'});
+    }
+
+    function toggleMotion(){
+      motionEnabled = !motionEnabled;
+      const motionEls = document.querySelectorAll('.orb, .glow-lines:before, .glow-lines:after, .floating, h1, .glow-lines, svg path animate');
+      if(!motionEnabled){
+        document.querySelectorAll('*').forEach(n => {
+          n.style.animationPlayState = 'paused';
+        });
+        motionText.textContent = 'Resume Motion';
+        // stop SVG animations
+        document.querySelectorAll('animate').forEach(a => a.pauseAnimations && a.pauseAnimations());
+      } else {
+        document.querySelectorAll('*').forEach(n => {
+          n.style.animationPlayState = '';
+        });
+        motionText.textContent = 'Pause Motion';
+        document.querySelectorAll('animate').forEach(a => a.unpauseAnimations && a.unpauseAnimations());
+      }
+    }
+
+    // Gentle entrance fade for whole page
+    window.addEventListener('load', () => {
+      document.body.style.opacity = 1;
+    });
+
+    // Accessibility: if reduced motion, keep buttons consistent
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduce){
+      document.querySelectorAll('*').forEach(n => n.style.animation = 'none');
+    }
+  </script>
+</body>
+</html>
