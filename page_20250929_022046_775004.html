@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle — Portfolio</title>
+  <style>
+    :root{
+      --bg1: #0f1723;
+      --bg2: #081124;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: #7ee7c8;
+      --accent-2: #a78bfa;
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.7);
+      --card-radius: 16px;
+    }
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      min-height:100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 10%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(7,89,133,0.10), transparent 10%),
+                  linear-gradient(180deg,var(--bg1), var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+      overflow-x:hidden;
+    }
+
+    /* floating blobs */
+    .blob {
+      position:fixed;
+      filter: blur(36px) saturate(130%);
+      opacity:0.25;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation: float 12s ease-in-out infinite;
+      border-radius:50%;
+      transform-origin:center;
+    }
+    .blob.one{width:420px;height:420px;left:-120px;top:-60px;background:linear-gradient(135deg,var(--accent),var(--accent-2)); animation-duration:14s}
+    .blob.two{width:320px;height:320px;right:-80px;bottom:-80px;background:linear-gradient(135deg,#60a5fa,#7c3aed); animation-duration:18s;opacity:0.18}
+
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-24px) scale(1.05)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    /* Layout */
+    .stage{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:28px;
+      align-items:start;
+      z-index:2;
+    }
+
+    header.glass {
+      padding:28px;
+      border-radius:var(--card-radius);
+      background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      backdrop-filter: blur(12px) saturate(120%);
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .title-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    h1{
+      font-size:clamp(24px,3.6vw,40px);
+      letter-spacing:-0.02em;
+      margin:0;
+      line-height:1;
+    }
+    .sub{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .meta{
+      text-align:right;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .intro{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      margin-top:6px;
+    }
+    .avatar{
+      width:86px;height:86px;border-radius:14px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--text);
+      font-size:22px;
+      border:1px solid rgba(255,255,255,0.06);
+      flex:0 0 86px;
+      backdrop-filter: blur(8px);
+    }
+    .bio{
+      font-size:15px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+    @media (max-width:880px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:560px){
+      .stage{padding-bottom:84px}
+      .grid{grid-template-columns:1fr}
+      .intro{flex-direction:column;align-items:flex-start}
+    }
+
+    .card{
+      padding:18px;
+      border-radius:12px;
+      background:var(--glass-bg);
+      border:1px solid var(--glass-border);
+      backdrop-filter:blur(10px) saturate(120%);
+      box-shadow: 0 6px 20px rgba(2,6,23,0.45);
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      transform:translateY(18px);
+      opacity:0;
+      transition: transform .7s cubic-bezier(.2,.9,.2,1), opacity .7s ease;
+    }
+
+    .card.in{transform:none;opacity:1}
+
+    .card h3{margin:0;font-size:16px}
+    .card p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
+
+    .actions{margin-top:8px;display:flex;gap:8px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--text);text-decoration:none;font-size:13px;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 2px 10px rgba(2,6,23,0.45);
+    }
+    .btn:hover{transform:translateY(-4px);box-shadow: 0 8px 30px rgba(0,0,0,0.5)}
+
+    /* Nice little tag */
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+    /* footer */
+    footer{
+      margin-top:6px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:13px;
+      opacity:0.95;
+    }
+    .gh{
+      display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--muted);
+      padding:8px 12px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)
+    }
+    .gh svg{width:18px;height:18px;display:block;fill:var(--muted)}
+
+    /* Reveal staggering */
+    .reveal{will-change:transform,opacity;transform:translateY(22px);opacity:0}
+    .reveal.in{transform:none;opacity:1}
+
+    /* small decorative line */
+    .accent-line{
+      height:3px;width:120px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow: 0 6px 24px rgba(124,58,237,0.12);
+    }
+
+    /* subtle hover on header */
+    header.glass:hover{transform:translateY(-6px);transition:transform .35s cubic-bezier(.2,.9,.2,1)}
+  </style>
+</head>
+<body>
+  <div class="blob one" aria-hidden="true"></div>
+  <div class="blob two" aria-hidden="true"></div>
+
+  <main class="stage" role="main">
+    <header class="glass reveal" data-reveal>
+      <div class="title-row">
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="sub">Creative developer • UI experiments • Web animations</div>
+        </div>
+        <div class="meta">Creation time<br><strong>2025-09-29 02:20:00</strong></div>
+      </div>
+
+      <div class="intro">
+        <div class="avatar" aria-hidden="true">a</div>
+        <div>
+          <div class="bio">
+            Hello — I'm amirabolfazle. I build slick UI, playful animations, and tiny tools that make everyday web things feel premium. This page is a compact single-file portfolio with a glassmorphism aesthetic and slide-up reveals.
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:12px;align-items:center">
+            <div class="accent-line" aria-hidden="true"></div>
+            <div style="font-size:13px;color:var(--muted)">Simple. Fast. Elegant.</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="grid" aria-label="projects and highlights">
+      <article class="card reveal" data-reveal>
+        <h3>Autogen Code</h3>
+        <p>Small CLI and web utilities for generating structured code and snippets. Focused on developer ergonomics and predictable output.</p>
+        <div class="actions">
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+          <a class="btn" href="#" onclick="alert('Demo coming soon — imagine smooth micro-interactions ✨');return false">Live demo</a>
+        </div>
+        <div style="margin-top:10px" class="tags"><span class="tag">JS</span><span class="tag">CLI</span><span class="tag">Automation</span></div>
+      </article>
+
+      <article class="card reveal" data-reveal>
+        <h3>Micro UI Library</h3>
+        <p>Tiny collection of components with motion-first behavior. Designed for speed and composability — mix-and-match friendly.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="alert('Open-sourcing soon — stay tuned!');return false">Explore</a>
+        </div>
+        <div style="margin-top:10px" class="tags"><span class="tag">Design Systems</span><span class="tag">Animation</span></div>
+      </article>
+
+      <article class="card reveal" data-reveal>
+        <h3>UI Experiments</h3>
+        <p>Playground for glassmorphism, colorful gradients, and motion patterns. Lots of micro-interactions and responsive tweaks.</p>
+        <div class="actions">
+          <a class="btn" href="#" onclick="alert('Open experiment — enjoy the particles.');return false">Open</a>
+        </div>
+        <div style="margin-top:10px" class="tags"><span class="tag">CSS</span><span class="tag">Motion</span></div>
+      </article>
+    </section>
+
+    <section style="display:grid;grid-template-columns:1fr 1fr;gap:18px" aria-label="about and contact">
+      <div class="card reveal" data-reveal style="grid-column:span 1">
+        <h3>About</h3>
+        <p>I enjoy refining interactions and polishing interfaces until they feel right. Mostly focused on web animation, minimal tooling, and thoughtful defaults.</p>
+        <div class="tags" style="margin-top:10px"><span class="tag">Focus: UX</span><span class="tag">Performance</span></div>
+      </div>
+
+      <div class="card reveal" data-reveal style="grid-column:span 1">
+        <h3>Contact</h3>
+        <p>Want to collaborate or ask about a project? Drop a line: <a href="mailto:amirabolfazle@example.com" style="color:var(--accent);text-decoration:none">amirabolfazle@example.com</a></p>
+        <div style="margin-top:10px">
+          <a class="btn" href="mailto:amirabolfazle@example.com">Email</a>
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub link">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.415-4.042-1.415-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.332-5.466-5.931 0-1.31.47-2.382 1.236-3.222-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.289-1.552 3.295-1.23 3.295-1.23.655 1.652.243 2.873.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.807 5.624-5.48 5.921.43.372.823 1.102.823 2.222 0 1.604-.014 2.896-.014 3.289 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Slide-up reveal with IntersectionObserver + initial stagger
+    (function(){
+      const reveals = Array.from(document.querySelectorAll('[data-reveal]'));
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.12});
+
+      // initial stagger for elements already on top
+      reveals.forEach((el,i)=>{
+        el.style.transitionDelay = (i * 80) + 'ms';
+        observer.observe(el);
+      });
+
+      // also support dynamic reveal class on elements with .reveal
+      const others = Array.from(document.querySelectorAll('.reveal'));
+      others.forEach((el,i)=>{
+        // small safety: if not observed yet
+        if(!el.hasAttribute('data-reveal')) observer.observe(el);
+      });
+
+      // subtle entrance animation on load for those visible
+      window.addEventListener('load', ()=> {
+        // nothing extra needed; observer will handle
+      });
+    })();
+  </script>
+</body>
+</html>
