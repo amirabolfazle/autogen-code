@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #0a0f1a;
+      --cyan: #00e5ff;
+      --pink: #ff00d4;
+      --green: #7aff7f;
+      --text: #e8f0ff;
+      --panel: rgba(2,6,23,.8);
+    }
+
+    html, body { height: 100%; }
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0,229,255,.12), transparent 25%),
+                  radial-gradient(circle at 80% 0%, rgba(208,0,255,.10), transparent 25%),
+                  linear-gradient(135deg, #050813 0%, #0b1020 60%, #0b1020 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle neon vibe decorations */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(transparent 60%, rgba(0,235,255,.05) 60%),
+        linear-gradient(90deg, rgba(255,0,214,.05), rgba(0,235,255,.05));
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
+    }
+
+    /* Layout helpers */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      backdrop-filter: saturate(1.2) blur(3px);
+      background: rgba(2,6,23,.75);
+      border-bottom: 1px solid rgba(0,255,255,.25);
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+    }
+    .brand-mini {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: .5px;
+      font-size: 1.05rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: conic-gradient(from 0deg, #00e5ff, #ff00d4, #00e5ff);
+      box-shadow: 0 0 10px #00e5ff;
+    }
+    ul.nav {
+      list-style: none;
+      display: flex;
+      gap: 18px;
+      margin: 0;
+      padding: 0;
+    }
+    ul.nav a {
+      color: #d6f0ff;
+      text-decoration: none;
+      font-size: .95rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all .25s ease;
+      border: 1px solid transparent;
+    }
+    ul.nav a:hover {
+      border-color: rgba(0,255,255,.5);
+      background: rgba(0,255,255,.08);
+      text-shadow: 0 0 8px rgba(0,255,255,.6);
+    }
+
+    /* Sections + Neon styling */
+    .hero {
+      padding: 90px 0 60px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      font-family: ui-sans-serif;
+      font-weight: 900;
+      font-size: clamp(48px, 9vw, 120px);
+      line-height: 0.9;
+      margin: 0;
+      background: linear-gradient(90deg, #00f5ff 20%, #ff00d4 50%, #7aff7f 85%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 12px rgba(0,245,255,.9),
+        0 0 32px rgba(0,255,255,.6);
+      letter-spacing: .5px;
+    }
+
+    .subtitle {
+      margin-top: 14px;
+      font-size: clamp(14px, 2.5vw, 20px);
+      color: #d8eaff;
+      opacity: .95;
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: .9rem;
+      color: #bfefff;
+      border: 1px solid rgba(0,255,255,.5);
+      background: rgba(0,255,255,.08);
+      box-shadow: 0 0 20px rgba(0,255,255,.55);
+    }
+
+    .section {
+      padding: 60px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.9rem;
+      margin: 0 0 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      padding: 20px;
+      border-radius: 14px;
+      background: rgba(2,6,23,.72);
+      border: 2px solid rgba(0,255,255,.6);
+      color: #eaf7ff;
+      box-shadow: 0 0 22px rgba(0,255,255,.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .card h3 { margin: 0 0 8px; }
+    .card p { margin: 0; color: #cfe8ff; }
+
+    /* soft neon glow overlay for cards */
+    .card:after {
+      content:"";
+      position:absolute;
+      left:-2px; right:-2px; bottom:-2px; top:-2px;
+      border-radius: 14px;
+      background: conic-gradient(from 90deg, rgba(0,255,255,.0), rgba(0,255,255,.45), rgba(255,0,214,.25), rgba(0,255,255,.0));
+      filter: blur(8px);
+      z-index: -1;
+      opacity: .5;
+      pointer-events: none;
+    }
+
+    .card:hover { transform: translateY(-4px); transition: transform .25s ease; }
+
+    /* slide-up on scroll intro */
+    .slide-up { opacity: 0; transform: translateY(40px); transition: all 700ms cubic-bezier(.22,.61,.36,1); }
+    .slide-up.in-view { opacity: 1; transform: translateY(0); }
+
+    footer.footer {
+      padding: 24px 0 40px;
+      text-align: center;
+      border-top: 1px solid rgba(0,255,255,.25);
+      background: rgba(2,6,23,.92);
+      color: #bfefff;
+      position: relative;
+      z-index: 1;
+    }
+    .github {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 34px; height: 34px;
+      margin-right: 8px;
+      color: #bfefff;
+    }
+    .github svg { width: 22px; height: 22px; display: inline-block; vertical-align: middle; fill: currentColor; }
+    .credit { font-size: .95rem; }
+
+    /* Responsive niceties */
+    @media (max-width: 700px){
+      .brand { font-size: 64px; }
+      .creation-time { display: inline-block; margin-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" aria-label="Site header">
+      <nav>
+        <a href="#home" class="brand-mini" aria-label="Go to home">
+          <span class="brand-dot" aria-hidden="true"></span>
+          amirabolfazle
+        </a>
+        <ul class="nav" role="navigation" aria-label="Main">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero container slide-up" aria-label="Intro">
+      <h1 class="brand" style="margin:0 auto;">amirabolfazle</h1>
+      <p class="subtitle">Frontend Developer • UI/UX Explorer • Neon Aficionado</p>
+      <div class="creation-time" aria-label="Creation time">
+        Creation time: 2025-09-28 14:00:55
+      </div>
+    </section>
+
+    <section id="projects" class="section container slide-up" aria-label="Projects">
+      <h2 class="section-title">Selected Works</h2>
+      <div class="grid" role="list">
+        <article class="card" role="listitem">
+          <h3>Neon Pulse Dashboard</h3>
+          <p>A modular admin UI with live neon theming and slide-up micro-interactions.</p>
+        </article>
+        <article class="card" role="listitem">
+          <h3>GlowKit Landing</h3>
+          <p>Marketing page illustrating vibrant gradients, glassy panels and smooth scrolling.</p>
+        </article>
+        <article class="card" role="listitem">
+          <h3>Lyra Editor</h3>
+          <p>In-browser editor with real-time collaboration aesthetics and keyboard-first UX.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section container slide-up" aria-label="About">
+      <h2 class="section-title">About</h2>
+      <p style="max-width: 720px; margin: 0 auto; color:#dbefff;">
+        I build interactive interfaces with a focus on feel, motion, and readability. I enjoy crafting
+        playful, performant experiences that pop in dark/light modes. When I’m not coding, I’m sketching neon
+        concepts or exploring how micro-interactions shape user perception.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5C5.73.5.84 5.4.84 11.68c0 4.6 3.01 8.49 7.19 9.86.53.1.72-.23.72-.51 0-.25-.01-1-.02-1.95-2.93.64-3.55-1.27-3.55-1.27-.48-1.24-1.18-1.57-1.18-1.57- .96-.66.07-.65.07-.65 1.06.08 1.62 1.07 1.62 1.07.94 1.61 2.46 1.15 3.06.88.09-.68.37-1.16.67-1.43-2.34-.27-4.79-1.17-4.79-5.21 0-1.15.41-2.09 1.08-2.83-.11-.27-.47-1.37.1-2.86 0 0 .87-.28 2.85 1.07a9.85 9.85 0 015.19 0C9.16 3.49 9.96 3.81 9.96 3.81c.59-1.58 2.13-1.72 3.18-.2 0 0 1.13-.62 3.02 0 0 0 1.04-1.08 2.93-.61 0 0 1.04.56 0 2.86 0 0 1.06-.57 2.93-.12-1.28 6.18-8.03 7.48-12.93 7.48-4.9 0-11.65-1.3-11.65-7.75 0-4.12 2.95-7.44 6.97-8.12-.72-1.42-2.8-4.37 0-6.1 0 0 2.58-.82 6.72 2.52 1.95-1.1 4.26-1.1 6.21 0 4.14-3.34 6.72-2.52 6.72-2.52 2.17 1.73 1.04 4.68 0 6.1 4.03.68 6.97 4 6.97 8.12 0 6.45-6.75 7.75-11.65 7.75-4.9 0-11.65-1.3-11.65-7.75 0-3.6 2.52-6.34 6.08-7.37-.66-1.04-2.44-3.05 0-6.01 0 0 3.14-1.08 9.96 4.28 0 0 6.28-4.28 9.96-4.28 0 0 2.66 4.46 0 7.56-4.13 4.23-9.96 4.28-9.96 4.28z" fill="currentColor"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple on-scroll slide-up animation
+    (function(){
+      const toReveal = document.querySelectorAll('.slide-up');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      toReveal.forEach(el => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>
