@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #FFFBF2;
+      --bg-2: #F7FFF8;
+      --accent-1: #FFD6E0;
+      --accent-2: #C6F7E2;
+      --accent-3: #E8DFFF;
+      --muted: #6b6b7a;
+      --glass: rgba(255,255,255,0.6);
+      --card-shadow: 0 10px 30px rgba(18,23,36,0.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--accent-1) 0%, transparent 18%),
+                  radial-gradient(900px 400px at 90% 90%, var(--accent-2) 0%, transparent 18%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      overflow-x:hidden;
+    }
+
+    /* floating pastel shapes */
+    .blob {
+      position:absolute;
+      filter: blur(18px);
+      opacity:0.65;
+      transform: translateZ(0);
+      mix-blend-mode: multiply;
+      pointer-events:none;
+      animation: float 8s ease-in-out infinite;
+      border-radius:50%;
+    }
+    .blob.b1{ width:360px;height:360px; left:-80px; top: -60px; background: linear-gradient(135deg,#ffd6e0,#ffe9f0);}
+    .blob.b2{ width:260px;height:260px; right:-60px; bottom:-40px; background: linear-gradient(135deg,#c6f7e2,#e6fff6); animation-duration:10s; animation-delay:2s}
+    .blob.b3{ width:200px;height:200px; left:50%; top:30%; transform:translateX(-60%); background: linear-gradient(135deg,#e8dfff,#fff1ff); animation-duration:12s; animation-delay:1.5s}
+    @keyframes float {
+      0%{ transform: translateY(0) scale(1); }
+      50%{ transform: translateY(-18px) scale(1.03); }
+      100%{ transform: translateY(0) scale(1); }
+    }
+
+    .wrap{
+      width:100%;
+      max-width:980px;
+      position:relative;
+      z-index:2;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:22px;
+    }
+    .avatar{
+      width:86px;
+      height:86px;
+      border-radius:18px;
+      background: linear-gradient(135deg,#ffffff80,rgba(255,255,255,0.25));
+      box-shadow: var(--card-shadow);
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      font-family:Poppins, Inter;
+      color:#7b4b9b;
+      font-size:28px;
+      letter-spacing:0.6px;
+      border:1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+    }
+
+    h1{
+      margin:0;
+      font-family:Poppins, Inter;
+      font-weight:700;
+      font-size:34px;
+      background: linear-gradient(90deg,#5b21b6,#ec4899);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      line-height:1;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:6px;
+      font-weight:500;
+    }
+
+    .card{
+      margin-top:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      border-radius:18px;
+      padding:22px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:18px;
+    }
+    @media (max-width:880px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .section{
+      padding:16px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.35));
+      border:1px solid rgba(0,0,0,0.03);
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .time-stamp{
+      font-weight:600;
+      color:#5b5b6a;
+      background: rgba(255,255,255,0.5);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 4px 12px rgba(11,12,20,0.03);
+      font-family:monospace;
+      font-size:13px;
+    }
+
+    .reveal{
+      transform: translateY(22px);
+      opacity:0;
+    }
+
+    .reveal.visible{
+      animation: slideUp 600ms cubic-bezier(.2,.9,.3,1) forwards;
+    }
+    @keyframes slideUp{
+      from{ transform: translateY(22px); opacity:0; }
+      to{ transform: translateY(0); opacity:1; }
+    }
+
+    /* stagger utility */
+    .reveal[data-delay="0"]{ animation-delay:0.05s; }
+    .reveal[data-delay="1"]{ animation-delay:0.12s; }
+    .reveal[data-delay="2"]{ animation-delay:0.19s; }
+    .reveal[data-delay="3"]{ animation-delay:0.26s; }
+    .reveal[data-delay="4"]{ animation-delay:0.33s; }
+    .reveal[data-delay="5"]{ animation-delay:0.40s; }
+
+    /* lists, projects */
+    .about p{ margin:0 0 10px 0; color:#3d3d48; line-height:1.5; font-size:15px; }
+    .badges{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .badge{
+      font-size:13px;
+      padding:8px 10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,0.04);
+      color:#5b5b6a;
+      box-shadow: 0 6px 18px rgba(12,14,26,0.02);
+    }
+
+    .projects .project{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:12px;
+      padding:10px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.45));
+      border:1px solid rgba(0,0,0,0.03);
+    }
+    .project .left{max-width:70%}
+    .project h4{ margin:0 0 6px 0; font-size:15px;}
+    .project p{ margin:0; color:var(--muted); font-size:13px; }
+    .project a{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      font-weight:600;
+      font-size:13px;
+      color:#5b2167;
+      background:linear-gradient(90deg,#ffeef8,#fff);
+      border:1px solid rgba(123,75,155,0.08);
+    }
+
+    footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding-top:14px;
+      border-top:1px dashed rgba(0,0,0,0.04);
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      color:var(--muted);
+      font-weight:600;
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.5);
+      border:1px solid rgba(0,0,0,0.03);
+      transition: all 180ms ease;
+    }
+    .github-link:hover{ transform:translateY(-3px); box-shadow: 0 8px 20px rgba(16,24,40,0.06); color:#2e1a4f }
+
+    .gh-icon{ width:18px;height:18px; display:inline-block; vertical-align:middle; fill:currentColor; opacity:0.95 }
+
+    /* small flourish */
+    .tagline{ color:#4a4a5a; font-size:14px; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+  <div class="blob b3" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <header>
+      <div class="avatar reveal" data-delay="0" aria-hidden="true">A</div>
+      <div>
+        <h1 class="reveal" data-delay="1">amirabolfazle</h1>
+        <div class="sub reveal" data-delay="2">creative tinkerer · code & design · pastel vibes</div>
+      </div>
+      <div style="margin-left:auto" class="reveal" data-delay="3">
+        <div class="time-stamp" title="creation time">2025-09-29 02:44:14</div>
+      </div>
+    </header>
+
+    <section class="card reveal" data-delay="4" aria-labelledby="intro">
+      <div class="grid">
+        <div class="section about">
+          <div class="meta">
+            <strong id="intro">Hello — I'm amirabolfazle</strong>
+            <div class="meta-right" style="display:flex;gap:10px;align-items:center;">
+              <span style="font-size:13px;color:var(--muted)">Based on the web</span>
+            </div>
+          </div>
+
+          <p class="reveal" data-delay="5">I build thoughtful experiments that blend code, design and playful interaction. This personal page is a pastel little showcase with smooth slide-up animations and cozy vibes.</p>
+
+          <div class="badges reveal" data-delay="3" aria-hidden="true">
+            <span class="badge">JavaScript</span>
+            <span class="badge">UI/UX</span>
+            <span class="badge">Open Source</span>
+            <span class="badge">Design Systems</span>
+          </div>
+
+          <div class="tagline reveal" data-delay="4">Slide up, breathe out. Small interactions that make software feel alive.</div>
+        </div>
+
+        <aside class="section reveal" data-delay="5" aria-label="projects">
+          <h3 style="margin:0 0 10px 0;">Featured</h3>
+
+          <div class="projects">
+            <div class="project reveal" data-delay="2">
+              <div class="left">
+                <h4>autogen-code</h4>
+                <p>Tools and helpers to accelerate code generation workflows.</p>
+              </div>
+              <div>
+                <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">Repo</a>
+              </div>
+            </div>
+
+            <div class="project reveal" data-delay="3">
+              <div class="left">
+                <h4>soft-pastel-ui</h4>
+                <p>A tiny pastel UI kit for cozy dashboards and landing pages.</p>
+              </div>
+              <div>
+                <a href="#" onclick="event.preventDefault()">Preview</a>
+              </div>
+            </div>
+
+          </div>
+        </aside>
+      </div>
+
+      <footer>
+        <div style="display:flex;align-items:center;gap:12px">
+          <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path fill-rule="evenodd"
+                d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.2 1.87.86 2.33.66.07-.52.28-.86.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.13 0 0 .67-.21 2.2.82A7.6 7.6 0 018 4.6c.68.003 1.36.092 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.11.16 1.93.08 2.13.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.001 8.001 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            Created by amirabolfazle
+          </a>
+        </div>
+
+        <div style="color:var(--muted);font-size:13px">Made with code & pastel energy</div>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // Reveal animation with stagger
+    document.addEventListener('DOMContentLoaded', function(){
+      const reveals = Array.from(document.querySelectorAll('.reveal'));
+      // sort by data-delay if present
+      reveals.sort((a,b)=>{
+        const da = parseInt(a.getAttribute('data-delay')||0);
+        const db = parseInt(b.getAttribute('data-delay')||0);
+        return da - db;
+      });
+      reveals.forEach((el, i) => {
+        const delay = (parseFloat(el.getAttribute('data-delay')) || 0) * 60 + (i * 40);
+        setTimeout(() => el.classList.add('visible'), delay);
+      });
+    });
+
+    // small accessibility: focus outline for keyboard users
+    (function(){
+      function handleFirstTab(e) {
+        if (e.key === 'Tab') {
+          document.body.classList.add('user-is-tabbing');
+          window.removeEventListener('keydown', handleFirstTab);
+        }
+      }
+      window.addEventListener('keydown', handleFirstTab);
+    })();
+  </script>
+</body>
+</html>
