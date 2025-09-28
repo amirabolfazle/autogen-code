@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bgA: rgba(255,255,255,.14);
+      --bgB: rgba(255,255,255,.08);
+      --txt: #eaf0ff;
+      --muted: #cbd5e1;
+      --accent: #a5b4fc;
+      --glass-border: rgba(255,255,255,.25);
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--txt);
+      background: #0b1020;
+      overflow-x: hidden;
+    }
+
+    /* animated backdrop */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(139,92,246,.25), transparent 40%),
+                  radial-gradient(circle at 80% 60%, rgba(56,189,248,.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0b1020 60%, #1a1a2e 100%);
+      z-index: -1;
+      filter: saturate(110%);
+      animation: bg-pan 18s ease-in-out infinite;
+    }
+    @keyframes bg-pan {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    header.brand {
+      padding: 28px 20px 6px;
+    }
+
+    /* top row with brand and creation date */
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 14px 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      transform: translateZ(0);
+      animation: floatIn 800ms ease forwards;
+      opacity: 0;
+    }
+    @keyframes floatIn {
+      to { opacity: 1; transform: translateY(0); }
+      0% { opacity: 0; transform: translateY(6px); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #041220;
+      background: linear-gradient(135deg, #8be9fd, #60a5fa);
+      white-space: nowrap;
+      letter-spacing: .4px;
+    }
+
+    .brand-title {
+      color: #eaf0ff;
+      font-weight: 700;
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      letter-spacing: .4px;
+    }
+
+    .creation-date {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      color: #e5e7eb;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      font-size: .85rem;
+    }
+
+    /* main glass card */
+    .stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100dvh - 180px);
+      padding: 20px 0 40px;
+    }
+
+    .card {
+      width: min(980px, 92%);
+      padding: 22px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.08) 60%);
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 12px 40px rgba(0,0,0,.25);
+      color: #fff;
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      transform: scale(0.98);
+      opacity: 0;
+      animation: cardIn 900ms ease forwards;
+      animation-delay: 120ms;
+      overflow: hidden;
+    }
+    @keyframes cardIn {
+      to { opacity: 1; transform: scale(1); }
+    }
+    .card:hover {
+      transform: scale(1.02);
+      transition: transform .25s ease;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: 12px;
+    }
+
+    .glass {
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      text-align: center;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      font-weight: 600;
+    }
+
+    footer {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      color: var(--muted);
+    }
+    footer a {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .creation-date { font-size: .75rem; padding: 6px 10px; }
+      .brand-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="brand" aria-label="Site Brand">
+    <div class="brand-bar" role="group" aria-label="Brand and creation date">
+      <div class="brand-left" style="display:flex; align-items:center; gap:12px;">
+        <span class="badge" aria-label="brand badge" style="font-size:.9rem;">amirabolfazle</span>
+        <span class="brand-title">Glassmorphism Demo</span>
+      </div>
+      <div class="creation-date" aria-label="creation date">2025-09-28 04:16:31</div>
+    </div>
+
+    <div class="stage" aria-label="Main stage">
+      <section class="card" aria-label="Intro card" style="width:100%; max-width:860px;">
+        <h1 style="margin:6px 0 8px 0; font-size: clamp(1.4rem, 4vw, 2rem); color:#fff; letter-spacing:.4px;">
+          amirabolfazle
+        </h1>
+        <p style="margin: 0; color: #e9eaff; line-height: 1.6;">
+          A fully responsive, animated page with glassmorphism and subtle zoom effects. Hover to feel the depth, watch the background glow, and enjoy a clean, modern aesthetic.
+        </p>
+
+        <div class="grid" aria-label="Feature grid" style="margin-top:14px;">
+          <div class="glass">Responsive layout</div>
+          <div class="glass">Animated backdrop</div>
+          <div class="glass">Glassmorphism UI</div>
+          <div class="glass">Zoom interactions</div>
+        </div>
+      </section>
+    </div>
+  </header>
+
+  <footer aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" style="color:#e5e7eb;">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.92.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.38-3.88-1.38-.53-1.33-1.29-1.69-1.29-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.2 1.77 1.2 1.03 1.76 2.7 1.25 3.36.96.11-.75.41-1.25.74-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.89-.39c.98 0 1.97.13 2.89.39 2.21-1.49 3.18-1.18 3.18-1.18.63 1.58.23 2.75.12 3.04.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.25 5.69.42.36.81 1.07.81 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.68.8.56A10.507 10.507 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/>
+      </svg>
+      <span style="color:#e5e7eb; margin-left:6px; font-weight:600;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
