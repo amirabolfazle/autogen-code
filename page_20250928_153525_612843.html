@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f0724;
+      --bg2:#081226;
+      --neon-pink: #ff48b8;
+      --neon-cyan: #3bf0ff;
+      --neon-purple: #a86bff;
+      --glass: rgba(255,255,255,0.04);
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(60% 60% at 10% 10%, rgba(58,10,70,0.25), transparent 10%),
+                  radial-gradient(50% 50% at 90% 90%, rgba(3,40,66,0.25), transparent 10%),
+                  linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:#e9eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* Neon animated grid lines */
+    .neon-grid {
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(0deg, rgba(58,10,70,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(3,40,66,0.06) 1px, transparent 1px);
+      background-size: 120px 120px, 120px 120px;
+      mix-blend-mode:overlay;
+      opacity:0.9;
+      z-index:0;
+      animation:float 12s linear infinite;
+      filter:blur(8px) saturate(140%);
+    }
+    @keyframes float{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-8px) rotate(0.2deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    .container{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      width:min(980px,96%);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 60px rgba(0,0,0,0.6), 0 0 40px rgba(168,107,255,0.06);
+      padding:48px;
+      border-radius:18px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:30px;
+      align-items:center;
+      overflow:hidden;
+    }
+
+    @media (max-width:900px){
+      .card{ grid-template-columns:1fr; padding:36px; gap:18px; }
+    }
+
+    .brand{
+      display:flex;
+      gap:18px;
+      align-items:flex-start;
+      animation:fadeInUp .9s cubic-bezier(.2,.9,.3,1) both;
+      --delay:0s;
+      animation-delay:var(--delay);
+    }
+
+    .logo {
+      width:86px;
+      height:86px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, rgba(255,72,184,0.16), rgba(59,240,255,0.06));
+      box-shadow: 0 6px 30px rgba(95,12,106,0.18), 0 0 28px rgba(59,240,255,0.04);
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px) saturate(120%);
+      flex-shrink:0;
+    }
+
+    .logo svg{ filter:drop-shadow(0 6px 18px rgba(168,107,255,0.18)); }
+
+    h1{
+      margin:0;
+      font-size:44px;
+      line-height:1;
+      letter-spacing:-0.02em;
+      color:transparent;
+      -webkit-background-clip:text;
+      background-clip:text;
+      background-image:linear-gradient(90deg, var(--neon-pink), var(--neon-purple) 40%, var(--neon-cyan));
+      text-shadow:
+        0 6px 18px rgba(71,6,99,0.24),
+        0 0 18px rgba(255,72,184,0.14),
+        0 0 28px rgba(59,240,255,0.06);
+      font-weight:800;
+    }
+
+    .tagline{
+      margin-top:8px;
+      color:rgba(233,238,248,0.78);
+      font-size:15px;
+      max-width:54ch;
+    }
+
+    .hero-details{
+      animation:fadeInUp 1.1s cubic-bezier(.2,.9,.3,1) both;
+      animation-delay:.12s;
+      --delay:0.12s;
+    }
+
+    .neon-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.012));
+      border-radius:12px;
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 12px 50px rgba(12,8,35,0.6);
+      animation:fadeInUp 1.3s cubic-bezier(.2,.9,.3,1) both;
+      animation-delay:.2s;
+    }
+
+    .glow-line{
+      height:4px;
+      width:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+      box-shadow: 0 0 20px rgba(59,240,255,0.12), 0 0 40px rgba(168,107,255,0.06);
+      opacity:0.95;
+    }
+
+    .btn-row{
+      display:flex;
+      gap:12px;
+      margin-top:6px;
+      flex-wrap:wrap;
+    }
+
+    .cta{
+      appearance:none;
+      border:0;
+      background:linear-gradient(90deg,var(--neon-pink),var(--neon-purple));
+      color:#0d0421;
+      padding:12px 18px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 8px 30px rgba(168,107,255,0.14), 0 0 24px rgba(255,72,184,0.06);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .cta:active{ transform:translateY(1px) scale(.996); }
+    .ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:rgba(233,238,248,0.88);
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      backdrop-filter: blur(6px);
+    }
+
+    .right-panel{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:stretch;
+      justify-content:center;
+      animation:fadeInUp 1.5s cubic-bezier(.2,.9,.3,1) both;
+      animation-delay:.28s;
+    }
+
+    .preview {
+      background: linear-gradient(135deg, rgba(58,10,70,0.18), rgba(3,40,66,0.14));
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      padding:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      box-shadow: 0 10px 40px rgba(7,8,18,0.6), 0 0 30px rgba(168,107,255,0.04);
+    }
+
+    .preview-left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .avatar{
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      background:linear-gradient(180deg,var(--neon-purple),var(--neon-pink));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#0d0421;
+      font-weight:800;
+      font-size:20px;
+      box-shadow: 0 8px 30px rgba(168,107,255,0.12);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .meta{
+      color:rgba(233,238,248,0.86);
+      font-size:13px;
+      line-height:1.2;
+    }
+
+    .meta small{
+      display:block;
+      color:rgba(233,238,248,0.58);
+      margin-top:6px;
+      font-size:12px;
+    }
+
+    footer{
+      margin-top:22px;
+      border-top:1px dashed rgba(255,255,255,0.03);
+      padding-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:rgba(233,238,248,0.68);
+      font-size:13px;
+    }
+
+    .footer-left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:rgba(233,238,248,0.94);
+      text-decoration:none;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform .16s ease, box-shadow .16s ease;
+    }
+    .github-link:hover{ transform:translateY(-4px); box-shadow: 0 18px 60px rgba(59,240,255,0.04); }
+
+    .github-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      filter:drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+      flex-shrink:0;
+    }
+
+    .creation {
+      font-size:12px;
+      color:rgba(233,238,248,0.5);
+      text-align:right;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(14px) scale(.995); }
+      to { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    /* subtle animated neon sparks */
+    .spark{
+      position:absolute;
+      width:6px;height:6px;
+      border-radius:999px;
+      background:var(--neon-cyan);
+      box-shadow:0 0 18px var(--neon-cyan), 0 0 34px var(--neon-purple);
+      opacity:.12;
+      animation: drift 8s linear infinite;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .spark.s2{ background:var(--neon-pink); box-shadow:0 0 18px var(--neon-pink), 0 0 30px var(--neon-purple); animation-duration:10s; opacity:.14; }
+    @keyframes drift {
+      0%{ transform:translateY(0) translateX(0) scale(1); opacity:.12; }
+      50%{ transform:translateY(-36px) translateX(18px) scale(1.18); opacity: .22; }
+      100%{ transform:translateY(0) translateX(0) scale(1); opacity:.12; }
+    }
+  </style>
+</head>
+<body>
+  <div class="neon-grid" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="card" role="main" aria-labelledby="main-title">
+      <div>
+        <div class="brand">
+          <div class="logo" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="60" height="60" rx="12" stroke="url(#g1)" stroke-width="3" fill="rgba(0,0,0,0.08)"/>
+              <path d="M20 44C24 36 32 34 40 30C46 27 46 20 40 18" stroke="white" stroke-opacity="0.9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#FF48B8"/>
+                  <stop offset="0.5" stop-color="#A86BFF"/>
+                  <stop offset="1" stop-color="#3BF0FF" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <div>
+            <h1 id="main-title">amirabolfazle</h1>
+            <p class="tagline">Neon-crafted landing — bold glow, soft glass, and motion that whispers. Welcome to a modern visual identity.</p>
+
+            <div class="hero-details" style="margin-top:18px;">
+              <div class="neon-card">
+                <div class="glow-line" aria-hidden="true"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+                  <div style="flex:1;">
+                    <div style="font-weight:700;font-size:16px;color:var(--neon-pink);">Live Preview</div>
+                    <div style="color:rgba(233,238,248,0.78);font-size:13px;margin-top:6px;">A compact neon-themed snapshot with animated accents and a glass surface.</div>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <button class="cta" aria-label="Get started">Get started</button>
+                    <button class="ghost" aria-label="Explore">Explore</button>
+                  </div>
+                </div>
+                <div style="display:flex;gap:12px;margin-top:10px;align-items:center;justify-content:flex-end;">
+                  <small style="color:rgba(233,238,248,0.58)">Version</small>
+                  <div style="background:linear-gradient(90deg,var(--neon-cyan),var(--neon-purple));padding:6px 10px;border-radius:8px;color:#0b0b10;font-weight:700;font-size:12px;">1.0.0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:22px; animation:fadeInUp 1.6s cubic-bezier(.2,.9,.3,1) both; animation-delay:.36s;">
+          <p style="max-width:70ch;color:rgba(233,238,248,0.78);line-height:1.6;font-size:15px;">
+            This page showcases a neon aesthetic with layered glows, soft glass surfaces, and gentle motion. Elements elegantly fade and rise into view using subtle staggered animations to create a premium first impression.
+          </p>
+        </div>
+      </div>
+
+      <aside class="right-panel" aria-label="Highlights and info">
+        <div class="preview" role="region" aria-label="Profile preview">
+          <div class="preview-left">
+            <div class="avatar">AB</div>
+            <div>
+              <div style="font-weight:700;color:var(--neon-cyan)">amirabolfazle</div>
+              <div class="meta">Creative developer · Neon & UI enthusiast
+                <small>Creation time: 2025-09-28 15:34:35</small>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:13px;color:rgba(233,238,248,0.88);font-weight:700">Ready</div>
+            <div style="font-size:12px;color:rgba(233,238,248,0.48);margin-top:6px">Interactive • Responsive • Shareable</div>
+          </div>
+        </div>
+
+        <div class="neon-card" style="padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-weight:800;color:var(--neon-purple);font-size:14px;">Design Tokens</div>
+              <div style="color:rgba(233,238,248,0.7);font-size:13px;margin-top:6px">Gradient-driven accents, high-contrast typography, and glass panels.</div>
+            </div>
+            <div style="text-align:right;font-size:13px;color:rgba(233,238,248,0.6)">Neon</div>
+          </div>
+        </div>
+
+        <footer>
+          <div class="footer-left">
+            <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+              <svg class="github-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 .5C5.73.5.5 5.73.5 12.02c0 5.12 3.32 9.47 7.94 11.01.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.23.7-3.91-1.56-3.91-1.56-.53-1.36-1.3-1.72-1.3-1.72-1.06-.72.08-.71.08-.71 1.18.08 1.81 1.22 1.81 1.22 1.04 1.78 2.72 1.27 3.38.97.11-.76.41-1.27.75-1.56-2.58-.29-5.29-1.29-5.29-5.77 0-1.28.46-2.32 1.22-3.14-.12-.3-.53-1.51.12-3.14 0 0 .99-.32 3.25 1.2a11.3 11.3 0 012.96-.4c1.01.01 2.03.14 2.98.4 2.25-1.52 3.24-1.2 3.24-1.2.66 1.63.25 2.84.12 3.14.76.82 1.21 1.86 1.21 3.14 0 4.49-2.72 5.47-5.31 5.76.42.36.8 1.08.8 2.18 0 1.57-.01 2.83-.01 3.22 0 .31.21.68.8.56A11.53 11.53 0 0023.5 12.02C23.5 5.73 18.27.5 12 .5z" fill="url(#ghg)"/>
+                <defs>
+                  <linearGradient id="ghg" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#A86BFF"/>
+                    <stop offset="1" stop-color="#3BF0FF"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <span style="font-weight:700;">GitHub</span>
+            </a>
+            <div style="font-size:13px;color:rgba(233,238,248,0.76);margin-left:6px;">Created by amirabolfazle</div>
+          </div>
+
+          <div class="creation" aria-hidden="true">Created: 2025-09-28 15:34:35</div>
+        </footer>
+      </aside>
+    </div>
+  </div>
+
+  <div class="spark" style="left:12%;top:18%;"></div>
+  <div class="spark s2" style="left:82%;top:24%;"></div>
+  <div class="spark" style="left:38%;top:70%;"></div>
+  <div class="spark s2" style="left:66%;top:58%;"></div>
+
+</body>
+</html>
