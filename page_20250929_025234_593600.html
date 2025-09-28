@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #0f172a;
+      --bg-2: #071032;
+      --glass: rgba(255,255,255,0.07);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent-1: rgba(99,102,241,0.85);
+      --accent-2: rgba(139,92,246,0.85);
+      --text: #e6eef8;
+      --muted: rgba(230,238,248,0.65);
+    }
+
+    html,body{height:100%;}
+    *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{
+      margin:0;
+      min-height:100%;
+      background: radial-gradient(1200px 600px at 10% 15%, rgba(99,102,241,0.12), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 85%, rgba(139,92,246,0.10), transparent 8%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      overflow:hidden;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      perspective:1200px;
+    }
+
+    /* floating animated orbs */
+    .orb{
+      position: absolute;
+      filter: blur(40px) saturate(140%);
+      opacity:0.85;
+      transform-origin:center;
+      mix-blend-mode:screen;
+      will-change:transform;
+      border-radius:50%;
+    }
+    .orb.o1{width:520px;height:520px;left:-10%;top:-8%;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));animation:slow-rotate 28s linear infinite;}
+    .orb.o2{width:360px;height:360px;right:-8%;bottom:-12%;background:linear-gradient(45deg,rgba(34,211,238,0.12),rgba(59,130,246,0.12));animation:slow-rotate 36s linear reverse infinite;}
+    .orb.o3{width:220px;height:220px;left:60%;top:20%;background:linear-gradient(120deg,rgba(99,102,241,0.14),rgba(99,102,241,0.05));animation:slow-rotate 24s linear infinite;}
+
+    @keyframes slow-rotate{
+      from{transform:rotate(0deg) translateZ(0);}
+      to{transform:rotate(360deg) translateZ(0);}
+    }
+
+    /* main glass card */
+    .stage{
+      position:relative;
+      width:min(920px,94vw);
+      margin:2rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:2;
+    }
+
+    .glass-card{
+      position:relative;
+      width:100%;
+      padding:48px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(10px) saturate(140%);
+      -webkit-backdrop-filter: blur(10px) saturate(140%);
+      border:1px solid rgba(255,255,255,0.06);
+      transform-style:preserve-3d;
+      transition:transform 400ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms;
+      overflow:hidden;
+      display:flex;
+      gap:28px;
+      align-items:center;
+    }
+
+    .glass-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:linear-gradient(120deg, rgba(255,255,255,0.02), transparent 25%, rgba(255,255,255,0.01));
+      mix-blend-mode:overlay;
+    }
+
+    .avatar{
+      width:160px;height:160px;border-radius:22px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.5);
+      transform:translateZ(60px) rotateY(-8deg);
+      transition:transform 350ms cubic-bezier(.2,.9,.3,1);
+    }
+    .avatar svg{width:86px;height:86px;opacity:0.95;filter:drop-shadow(0 6px 18px rgba(99,102,241,0.14));}
+
+    .content{
+      flex:1;
+      transform:translateZ(60px);
+    }
+    h1{
+      margin:0;
+      font-weight:800;
+      letter-spacing:-0.02em;
+      font-size: clamp(28px, 5vw, 44px);
+      color:var(--text);
+      display:flex;gap:12px;align-items:center;
+    }
+    .badge{
+      font-size:12px;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      color:white;font-weight:700;box-shadow:0 6px 20px rgba(139,92,246,0.18);
+    }
+
+    p.lead{
+      margin:12px 0 18px 0;color:var(--muted);font-size:15px;line-height:1.5;
+    }
+
+    .meta{
+      display:flex;gap:12px;flex-wrap:wrap;
+    }
+    .chip{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      color:var(--text);
+      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);
+      display:inline-flex;gap:10px;align-items:center;font-weight:600;font-size:13px;
+      box-shadow:0 6px 16px rgba(2,6,23,0.45);
+    }
+
+    .rotate-ring{
+      position:absolute;right: -120px;top: -120px;
+      width:340px;height:340px;border-radius:50%;
+      background:conic-gradient(from 180deg at 50% 50%, rgba(139,92,246,0.08), transparent 40%, rgba(99,102,241,0.07));
+      filter:blur(20px);
+      transform:translateZ(0);
+      animation:spin-slow 18s linear infinite;
+      z-index:0;
+      pointer-events:none;
+    }
+    @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+    /* hover/tilt interactions */
+    .glass-card:hover{
+      box-shadow: 0 18px 70px rgba(2,6,23,0.72), inset 0 1px 0 rgba(255,255,255,0.025);
+    }
+    .glass-card:hover .avatar{transform:translateZ(80px) rotateY(0deg) scale(1.01)}
+    .glass-card:hover h1{transform:translateZ(80px)}
+
+    /* footer */
+    footer{
+      position:fixed;left:0;right:0;bottom:18px;display:flex;align-items:center;justify-content:center;gap:12px;
+      z-index:5;pointer-events:auto;
+    }
+    .footer-inner{
+      display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);font-weight:600;font-size:14px;
+      backdrop-filter: blur(6px);
+    }
+    .footer-inner a{display:inline-flex;align-items:center;color:var(--muted);text-decoration:none;gap:8px}
+    .gh-icon{width:18px;height:18px;fill:var(--muted);opacity:0.95;transition:transform 220ms, fill 220ms;}
+    .footer-inner a:hover .gh-icon{transform:translateY(-2px);fill:var(--text);opacity:1}
+
+    /* responsive tweaks */
+    @media (max-width:740px){
+      .glass-card{flex-direction:column;align-items:flex-start;padding:28px;border-radius:14px;}
+      .avatar{width:120px;height:120px;border-radius:16px;}
+      .rotate-ring{display:none}
+    }
+
+    /* tiny flourish underline animation */
+    .name-underline{
+      position:relative;height:6px;margin-left:6px;margin-top:-4px;width:48px;border-radius:6px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      transform-origin:left center;animation:pulse 2.6s ease-in-out infinite;
+      box-shadow:0 6px 18px rgba(139,92,246,0.14);
+    }
+    @keyframes pulse{
+      0%{transform:scaleX(0.92)}
+      50%{transform:scaleX(1)}
+      100%{transform:scaleX(0.92)}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <main class="stage" role="main">
+    <section class="glass-card" id="card" aria-labelledby="page-title">
+      <div class="avatar" aria-hidden="true">
+        <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#6366f1"/>
+              <stop offset="1" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+          <rect rx="24" width="256" height="256" fill="url(#g)"/>
+          <g transform="translate(48,48)" fill="#fff" opacity="0.95">
+            <path d="M64 16a24 24 0 1 0 0 48 24 24 0 1 0 0-48z"/>
+            <path d="M8 112c0-30.928 25.072-56 56-56h40c30.928 0 56 25.072 56 56v8H8v-8z"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="content">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <h1 id="page-title">amirabolfazle <span class="badge">Creator</span></h1>
+        </div>
+
+        <div style="height:8px"></div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div class="name-underline" aria-hidden="true"></div>
+          <div style="color:var(--muted);font-size:13px;font-weight:600">Glassmorphism • Animated • Rotate effects</div>
+        </div>
+
+        <p class="lead">A sleek personal page showcasing glassmorphism, soft neon orbs, and subtle rotation animations. Hover and move for tiny 3D parallax effects.</p>
+
+        <div class="meta" role="group" aria-label="meta">
+          <div class="chip" title="Creation time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.92"><path d="M12 7v6l4 2" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            2025-09-29 02:51:42
+          </div>
+
+          <div class="chip" title="Skills">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.92"><path d="M12 2v6" stroke="white" stroke-width="1.6" stroke-linecap="round"/><path d="M5 11h14" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+            HTML · CSS · JS
+          </div>
+
+          <div class="chip" title="Vibe">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.92"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Futuristic · Minimal
+          </div>
+        </div>
+      </div>
+
+      <div class="rotate-ring" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner" role="contentinfo">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+        <svg class="gh-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.9 3.18 9.06 7.59 10.53.56.1.77-.24.77-.54 0-.27-.01-1.16-.01-2.11-3.09.67-3.75-1.49-3.75-1.49-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 .17 1.56.86 1.56.86.99 1.69 2.6 1.2 3.24.92.1-.72.39-1.2.71-1.48-2.47-.28-5.07-1.24-5.07-5.54 0-1.22.44-2.22 1.16-3.01-.12-.28-.5-1.4.11-2.91 0 0 .95-.3 3.12 1.16.9-.25 1.86-.38 2.82-.38.96 0 1.92.13 2.82.38 2.17-1.46 3.12-1.16 3.12-1.16.61 1.51.23 2.63.11 2.91.72.79 1.16 1.79 1.16 3.01 0 4.31-2.6 5.26-5.08 5.54.4.35.76 1.05.76 2.12 0 1.53-.01 2.76-.01 3.13 0 .3.21.65.78.54 4.41-1.47 7.59-5.63 7.59-10.53C23.25 5.48 18.27.5 12 .5z"/>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // tiny 3D tilt effect for the card based on mouse position
+    (function(){
+      const card = document.getElementById('card');
+      const bounds = {w: window.innerWidth, h: window.innerHeight};
+      function onMove(e){
+        const rect = card.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const x = (e.clientX - cx) / rect.width; // -0.5 .. 0.5
+        const y = (e.clientY - cy) / rect.height;
+        const rx = (-y * 10).toFixed(2);
+        const ry = (x * 10).toFixed(2);
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+      }
+      function onLeave(){ card.style.transform = 'rotateX(0deg) rotateY(0deg)'; }
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      // reduce motion for users who prefer reduced motion
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (mq.matches){
+        card.removeEventListener('mousemove', onMove);
+        card.removeEventListener('mouseleave', onLeave);
+      }
+    })();
+  </script>
+</body>
+</html>
