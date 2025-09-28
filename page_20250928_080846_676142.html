@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg2: #0a0f1a;
+      --fg: #e6e9ff;
+      --muted: #a6b3ff;
+      --card: rgba(255,255,255,0.04);
+      --accent: #7aa2ff;
+      --glow: 0 0 22px rgba(122,162,255,0.6);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--fg);
+      background: radial-gradient(circle at 20% 20%, rgba(122,162,255,0.15), transparent 40%),
+                  radial-gradient(circle at 80% 60%, rgba(0,230,255,0.15), transparent 40%),
+                  linear-gradient(#0b1020 0%, #0a0f1a 60%, #0b1020 100%);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+      position: relative;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      font-size: clamp(2rem, 5vw, 4rem);
+      margin: 0;
+      background: linear-gradient(135deg, #a6b8ff 0%, #7af0ff 60%, #ffd0ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 6px 18px rgba(122,162,255,.35));
+    }
+
+    .creation {
+      margin-top: .5rem;
+      font-size: .95rem;
+      color: var(--muted);
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+
+    /* Animated scene: rotating ring with orbiting dots */
+    .scene {
+      width: min(92vw, 980px);
+      display: grid;
+      place-items: center;
+      gap: 1.5rem;
+    }
+
+    .ring {
+      position: relative;
+      width: min(60vmin, 520px);
+      height: min(60vmin, 520px);
+      border-radius: 50%;
+      /* subtle glassy card around the ring for depth on dark background */
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04),
+                  0 10px 40px rgba(0,0,0,.5);
+      display: grid;
+      place-items: center;
+      animation: spin 22s linear infinite;
+    }
+
+    .ring:hover { animation-play-state: paused; }
+
+    .dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(var(--a)) translateX(var(--r));
+      /* color comes from currentColor; allow per-dot color with inline style if desired */
+      background: currentColor;
+      box-shadow: 0 0 12px currentColor;
+      will-change: transform;
+    }
+
+    /* eight orbiting dots around the center with varying radii and angles */
+    .dot.d1  { --a: 0deg;   --r: 210px; }
+    .dot.d2  { --a: 45deg;  --r: 190px; }
+    .dot.d3  { --a: 90deg;  --r: 170px; }
+    .dot.d4  { --a: 135deg; --r: 210px; }
+    .dot.d5  { --a: 180deg; --r: 200px; }
+    .dot.d6  { --a: 225deg; --r: 190px; }
+    .dot.d7  { --a: 270deg; --r: 200px; }
+    .dot.d8  { --a: 315deg; --r: 180px; }
+
+    /* individual colors for variety */
+    .d1 { background: #7aa2ff; color: #7aa2ff; }
+    .d2 { background: #5bffd5; color: #5bffd5; }
+    .d3 { background: #ffd56b; color: #ffd56b; }
+    .d4 { background: #ff7ab5; color: #ff7ab5; }
+    .d5 { background: #7affc4; color: #7affc4; }
+    .d6 { background: #a07aff; color: #a07aff; }
+    .d7 { background: #7bd8ff; color: #7bd8ff; }
+    .d8 { background: #ff8c8c; color: #ff8c8c; }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* footer */
+    footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.25);
+    }
+
+    footer a {
+      color: #9ec9ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer svg {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ring { animation: none; }
+      .dot { transform: translate(-50%, -50%) rotate(0) translateX(var(--r)); }
+    }
+
+    /* responsive tweaks for very small devices */
+    @media (max-width: 520px) {
+      .scene { padding: 0 1rem; }
+      .ring { width: 72vmin; height: 72vmin; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="brand" aria-label="amirabolfazle">amirabolfazle</h1>
+    <div class="creation" aria-live="polite">Creation time: 2025-09-28 08:08:11</div>
+  </header>
+
+  <main>
+    <section class="scene" aria-label="Animated decorative scene">
+      <div class="ring" role="img" aria-label="Rotating ring of orbiting dots">
+        <span class="dot d1" style="--a:0deg; --r:210px; background: #7aa2ff;"></span>
+        <span class="dot d2" style="--a:45deg; --r:190px; background: #5bffd5;"></span>
+        <span class="dot d3" style="--a:90deg; --r:170px; background: #ffd56b;"></span>
+        <span class="dot d4" style="--a:135deg; --r:210px; background: #ff7ab5;"></span>
+        <span class="dot d5" style="--a:180deg; --r:200px; background: #7affc4;"></span>
+        <span class="dot d6" style="--a:225deg; --r:190px; background: #a07aff;"></span>
+        <span class="dot d7" style="--a:270deg; --r:200px; background: #7bd8ff;"></span>
+        <span class="dot d8" style="--a:315deg; --r:180px; background: #ff8c8c;"></span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="20" height="20">
+        <path d="M12 .296C5.373.296 0 5.669 0 12.297c0 5.302 3.438 9.8 8.205 11.385.6.111.82-.261.82-.58 0-.287-.01-1.244-.015-2.184-3.338.726-4.042-1.415-4.042-1.415-.546-1.387-1.333-1.757-1.333-1.757-1.089-.746.083-.731.083-.731 1.205.084 1.84 1.237 1.84 1.237 1.07 1.835 2.809 1.305 3.495.997.108-.776.418-1.306.762-1.606-2.665-.304-5.466-1.334-5.466-5.93 0-1.31.469-2.381 1.235-3.221-.124-.303-.535-1.522.117-3.176 0 0 1.008-.322 3.301 1.23a11.47 11.47 0 013-.404c1.02-.005 2.042-.138 3-.403 2.291-1.552 3.298-1.23 3.298-1.23.654 1.654.242 2.875.118 3.176.769.84 1.232 1.91 1.232 3.221 0 4.609-2.809 5.625-5.48 5.92.43.37.814 1.102.814 2.225 0 1.606-.015 2.902-.015 3.293 0 .319.217.69.824.571C20.565 21.094 24 16.597 24 12.297 24 5.669 18.627.296 12 .296z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
