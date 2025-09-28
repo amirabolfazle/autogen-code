@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: rgba(255, 255, 255, 0.18);
+      --bg2: rgba(255, 255, 255, 0.06);
+      --txt: #e8f0ff;
+      --muted: rgba(232, 246, 255, 0.85);
+      --border: rgba(255, 255, 255, 0.4);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--txt);
+      background: #0b1020;
+      overflow-x: hidden;
+    }
+    /* layered glassy background */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(120,160,255,0.25), transparent 40%),
+                  radial-gradient(circle at 80% 60%, rgba(180,120,255,0.25), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0a0b1a 100%);
+      z-index: -1;
+    }
+    .scene {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      perspective: 1000px;
+    }
+
+    .card {
+      position: relative;
+      width: min(1000px, 92vw);
+      padding: 2.6rem;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      transform: rotate(-2deg);
+      transition: transform 0.6s ease;
+      overflow: hidden;
+    }
+    .card:hover { transform: rotate(0deg) scale(1.01); }
+
+    .content {
+      display: grid;
+      gap: 1.6rem;
+      text-align: center;
+      align-items: center;
+      justify-items: center;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      margin: 0;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, #dbe8ff 0%, #a6e0ff 60%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 4px 24px rgba(60, 90, 180, 0.3);
+    }
+
+    p.tagline {
+      margin: 0;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      color: var(--muted);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      padding: 0.85rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,0.28);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      font-weight: 600;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cta:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
+
+    .creation-time {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.92rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(2, 6, 23, 0.25);
+      color: #e1f1ff;
+      margin-top: 0.6rem;
+    }
+
+    .orb {
+      position: absolute;
+      width: 240px; height: 240px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0) 40%),
+                  rgba(100, 180, 255, 0.25);
+      filter: blur(0.5px);
+      border: 1px solid rgba(255,255,255,0.4);
+      animation: spin360 60s linear infinite;
+      opacity: 0.65;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    .orb.one { top: -60px; left: -60px; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0) 40%), rgba(120, 160, 255, 0.35); animation-duration: 120s; }
+    .orb.two { bottom: -40px; right: -40px; width: 260px; height: 260px; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0) 40%), rgba(180, 120, 255, 0.25); animation-duration: 90s; }
+
+    @keyframes spin360 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    footer {
+      margin-top: 2.2rem;
+      text-align: center;
+      padding: 1.5rem;
+      color: #dbeafe;
+    }
+    .footer-row {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .4rem .6rem; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+    }
+    .footer-row a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: .4rem; }
+    .footer-icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; }
+
+    @media (max-width: 600px) {
+      .orb { display: none; }
+      .card { padding: 2rem; border-radius: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="scene">
+    <section class="card" aria-label="amirabolfazle landing card">
+      <span class="orb one" aria-hidden="true"></span>
+      <span class="orb two" aria-hidden="true"></span>
+
+      <div class="content">
+        <h1>amirabolfazle</h1>
+        <p class="tagline">A shimmering space for ideas, code, and creativity. Glassy, rotating, and bold.</p>
+        <a href="#learn-more" class="cta" role="button" aria-label="Learn more">
+          <span>Explore</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <div class="creation-time" aria-label="Creation time">
+          Creation time: 2025-09-28 04:12:58
+        </div>
+      </div>
+    </section>
+
+    <footer aria-label="Footer">
+      <div class="footer-row">
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg class="footer-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.58 2 12.25c0 4.5 2.87 8.32 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.3-3.37-1.3-.45-1.16-1.11-1.47-1.11-1.47-.91-.64.07-.63.07-.63 1.01.07 1.54 1.05 1.54 1.05.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.64-1.38-2.22-.25-4.56-1.14-4.56-5.04 0-1.11.38-2.01 1.01-2.71-.1-.25-.44-1.27.1-2.65 0 0 .83-.27 2.73 1.05a9.36 9.36 0 012.49-.34c.84 0 1.68.11 2.47.32 1.9-1.32 2.73-1.05 2.73-1.05.54 1.38.2 2.4.1 2.65.63.7 1.01 1.6 1.01 2.71 0 3.9-2.34 4.79-4.57 5.03.36.31.68.93.68 1.88 0 1.36-.01 2.46-.01 2.79 0 .27.18.6.69.48A10.25 10.25 0 0022 12.25C22 6.58 17.523 2 12 2z"></path>
+          </svg>
+          GitHub
+        </a>
+      </div>
+      <div style="margin-top:.4rem; font-size: .95rem;">Created by amirabolfazle</div>
+    </footer>
+  </div>
+</body>
+</html>
