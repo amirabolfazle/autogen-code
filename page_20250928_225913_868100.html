@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="color-scheme" content="dark">
+  <style>
+    :root{
+      --bg:#071021;
+      --card:#0c1724cc;
+      --muted:#9aa7b9;
+      --accent1:#6EE7F3;
+      --accent2:#7C5CFF;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --radius:16px;
+      --maxw:980px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      font-family: Inter,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans",sans-serif;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 8%),
+        radial-gradient(900px 500px at 85% 90%, rgba(110,231,243,0.06), transparent 8%),
+        var(--bg);
+      color:#e6eef6;
+      overflow-y:scroll;
+    }
+
+    .stage{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      position:relative;
+    }
+
+    /* floating orbs */
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(36px);
+      opacity:.6;
+      mix-blend-mode:screen;
+      animation:float 10s ease-in-out infinite;
+    }
+    .orb.a{ width:420px;height:420px; left:-80px; top:-60px; background:linear-gradient(45deg,var(--accent2), transparent 60%); transform:translateY(0); animation-duration:16s;}
+    .orb.b{ width:320px;height:320px; right:-100px; bottom:-80px; background:linear-gradient(45deg,var(--accent1), transparent 60%); opacity:.45; animation-duration:20s; animation-delay:2s;}
+    @keyframes float{ 0%{transform:translateY(0) scale(1)} 50%{transform:translateY(-28px) scale(1.03)} 100%{transform:translateY(0) scale(1)} }
+
+    .container{
+      width:100%;
+      max-width:var(--maxw);
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:28px;
+      z-index:2;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      border-radius:var(--radius);
+      padding:32px;
+      overflow:hidden;
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    .hero{
+      display:flex;
+      gap:24px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .avatar{
+      flex:0 0 120px;
+      width:120px;
+      height:120px;
+      border-radius:20px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-family:var(--mono);
+      font-size:34px;
+      color:#041722;
+      box-shadow: 0 6px 30px rgba(123,88,255,0.25), inset 0 -6px 24px rgba(0,0,0,0.15);
+    }
+
+    .meta{
+      flex:1;
+      min-width:220px;
+    }
+
+    h1{
+      margin:0;
+      font-size:34px;
+      letter-spacing: -0.02em;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .title-underline{
+      height:6px;
+      width:96px;
+      border-radius:999px;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      box-shadow: 0 6px 22px rgba(124,92,255,0.18);
+      transform-origin:left;
+    }
+
+    p.lead{
+      margin:12px 0 0 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    .details{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* content blocks */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap:20px;
+    }
+
+    @media (max-width:920px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      padding:20px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.0));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin:0 0 12px 0;
+      color:var(--muted);
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+    }
+
+    .bio{
+      color: #dfeaf6;
+      margin:0;
+      line-height:1.6;
+    }
+
+    /* slide-up effect */
+    .slide-up{
+      opacity:0;
+      transform:translateY(28px) scale(.996);
+      transition: transform .68s cubic-bezier(.2,.9,.3,1), opacity .52s ease;
+      will-change:transform,opacity;
+    }
+    .slide-up.in-view{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    /* small animated code snippet */
+    .code-mock{
+      background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.5));
+      border-radius:10px;
+      padding:14px;
+      font-family:var(--mono);
+      font-size:13px;
+      color:#9ad7ff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      overflow:auto;
+    }
+    .code-line{ opacity:0.9; display:block; margin:2px 0; }
+    .k{ color:#7C5CFF } .s{ color:#6EE7F3 } .c{ color:#9aa7b9 } .n{ color:#dbeeff }
+
+    /* footer */
+    footer{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      margin-top:18px;
+      justify-content:center;
+      padding-top:10px;
+    }
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .gh svg{ filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6)); }
+
+    /* small sparkle animation over title */
+    .spark{
+      display:inline-block;
+      width:8px;height:8px;
+      border-radius:2px;
+      background:linear-gradient(45deg,#fff6,#fff);
+      box-shadow: 0 8px 22px rgba(124,92,255,0.35);
+      transform:translateY(-2px) rotate(20deg) scale(.9);
+      animation:blink 2.6s infinite;
+      opacity:0.9;
+    }
+    @keyframes blink{
+      0%, 40%{ transform:translateY(-2px) scale(.9) rotate(20deg); opacity:0.9 }
+      50%{ transform:translateY(-8px) scale(1.2) rotate(10deg); opacity:1 }
+      100%{ transform:translateY(-2px) scale(.9) rotate(20deg); opacity:0.9 }
+    }
+
+    /* subtle bounce on link hover */
+    a.fancy{
+      color:var(--accent1);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(110,231,243,0.12);
+      transition:transform .18s ease, color .18s ease;
+    }
+    a.fancy:hover{ transform:translateY(-3px); color:var(--accent2); }
+
+    /* timestamp styling */
+    .ts{ font-family:var(--mono); background:var(--glass-2); padding:6px 10px; border-radius:8px; color:var(--muted); font-size:13px; display:inline-block; border:1px solid rgba(255,255,255,0.02); }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="orb a" aria-hidden="true"></div>
+    <div class="orb b" aria-hidden="true"></div>
+
+    <main class="container" role="main">
+      <section class="card slide-up in-view" id="hero">
+        <div class="hero">
+          <div class="avatar slide-up in-view" style="transition-delay:.05s">am</div>
+          <div class="meta">
+            <h1>
+              amirabolfazle
+              <span class="spark" aria-hidden="true"></span>
+            </h1>
+            <div style="margin-top:12px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+              <span class="title-underline" aria-hidden="true"></span>
+              <span class="chip">Dark mode • Animated</span>
+              <span class="chip">Slide-up effects</span>
+            </div>
+            <p class="lead">A minimal, elegant personal page with a dark theme and smooth motion. Built to make a small impression with tasteful animations.</p>
+
+            <div class="details">
+              <div class="chip">Location: Global</div>
+              <div class="chip">Role: Creative dev</div>
+              <div class="chip ts">Created: 2025-09-28 22:58:33</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="panel slide-up" data-delay="120">
+          <h3 class="section-title">About</h3>
+          <p class="bio">Hi — I’m amirabolfazle. I enjoy building tidy interfaces and playful micro-interactions. This page showcases a calm, focused visual style with motion that helps guide the eye without overwhelming it.</p>
+
+          <div style="height:12px;"></div>
+
+          <h4 class="section-title">Snippet</h4>
+          <div class="code-mock" aria-hidden="true">
+            <span class="code-line"><span class="c">// simple reveal animation</span></span>
+            <span class="code-line"><span class="k">const</span> <span class="n">els</span> <span class="c">=</span> <span class="k">document</span>.<span class="n">querySelectorAll</span>(<span class="s">'.slide-up'</span>);</span>
+            <span class="code-line"><span class="n">observer</span>.<span class="n">observe</span>(<span class="n">el</span>);</span>
+            <span class="code-line"><span class="c">// smooth, simple, delightful.</span></span>
+          </div>
+        </article>
+
+        <aside class="panel slide-up" data-delay="220">
+          <h3 class="section-title">Contact</h3>
+          <p style="margin:0 0 12px 0; color:var(--muted)">Reach me on GitHub or explore the repository.</p>
+
+          <div style="display:flex; gap:10px; align-items:center; margin-bottom:14px;">
+            <a class="fancy" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">View repo</a>
+            <a class="fancy" href="mailto:hello@amirabolfazle.dev">Email</a>
+          </div>
+
+          <div style="margin-top:20px; color:var(--muted); font-size:13px;">
+            Quick links
+            <ul style="margin:8px 0 0 18px; color:var(--muted); padding:0;">
+              <li style="margin:6px 0;">Projects</li>
+              <li style="margin:6px 0;">Notes</li>
+              <li style="margin:6px 0;">Experiments</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      <footer>
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" role="img">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.69-3.88-1.54-3.88-1.54-.52-1.33-1.26-1.69-1.26-1.69-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.66 1.23 3.3.94.1-.73.4-1.23.73-1.51-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .96-.31 3.15 1.18a10.93 10.93 0 0 1 5.73 0C17.7 4.14 18.66 4.45 18.66 4.45c.62 1.59.23 2.77.11 3.06.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.68.41.35.77 1.05.77 2.12 0 1.53-.01 2.77-.01 3.15 0 .3.21.66.79.55A11.503 11.503 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" fill="#9aa7b9"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // slide-up intersection observer with staggered delays
+    (function(){
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+            // optional: unobserve so it happens once
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.12});
+
+      document.querySelectorAll('.slide-up').forEach((el, i)=>{
+        // apply incremental transition delay for nice stagger
+        const baseDelay = Number(el.dataset.delay || 0);
+        el.style.transitionDelay = (baseDelay/1000) + 's';
+        observer.observe(el);
+      });
+
+      // small reveal for hero on load
+      window.addEventListener('load', ()=>{
+        document.querySelectorAll('.slide-up').forEach((el)=>{
+          // ensure the ones already in-view get the class (hero has it by default)
+          if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+            el.classList.add('in-view');
+          }
+        });
+      });
+
+      // reduce motion respect
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        document.querySelectorAll('.slide-up').forEach(el=>{
+          el.style.transition = 'none';
+          el.classList.add('in-view');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
