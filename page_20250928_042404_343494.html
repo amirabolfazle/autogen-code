@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(255,255,255,0.15);
+      --bg2: rgba(255,255,255,0.25);
+      --bg3: rgba(255,255,255,0.35);
+      --text: #e8f0ff;
+      --muted: rgba(232,240,255,0.85);
+    }
+
+    /* Global reset-ish */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 20%, rgba(150, 200, 255, 0.15), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 180, 200, 0.15), transparent 40%),
+                  linear-gradient(135deg, #0b1020 0%, #0b1220 60%, #0b1020 100%);
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Subtle animated background blobs for glassy vibe */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle at center, rgba(120,180,255,0.25), transparent 45%);
+      filter: blur(20px);
+      border-radius: 50%;
+      z-index: 0;
+      animation: drift 20s ease-in-out infinite;
+      pointer-events: none;
+    }
+    body::before { top: -60px; left: -60px; }
+    body::after { bottom: -60px; right: -60px; animation-delay: 10s; }
+
+    @keyframes drift {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(40px,-20px) scale(1.05); }
+    }
+
+    /* Glass card */
+    .stage {
+      display: grid;
+      place-items: center;
+      padding: 6rem 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glass-card {
+      width: min(92vw, 520px);
+      padding: 48px 40px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 20px;
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease;
+      transform: translateZ(0);
+      animation: floaty 6s ease-in-out infinite;
+    }
+
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+
+    .brand {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800;
+      margin: 0 0 12px;
+      letter-spacing: .5px;
+      color: #fff;
+      display: inline-block;
+      animation: titleBounce 0.9s cubic-bezier(.2,.8,.2,1) both;
+      text-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+
+    @keyframes titleBounce {
+      0% { transform: translateY(-40px) scale(.92); opacity: 0; }
+      60% { transform: translateY(6px) scale(1.02); opacity: 1; }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    .creation-time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.92);
+      margin-top: 6px;
+      padding: 6px 10px;
+      display: inline-block;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      animation: bounceIn 1.5s ease-out both;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(-8px); opacity: 0; }
+      60% { transform: translateY(4px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .glass-card { animation: none; }
+      .brand { animation: none; }
+      .creation-time { animation: none; }
+      body::before, body::after { display: none; }
+    }
+
+    /* Footer with GitHub icon and credit */
+    footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 18px;
+      color: rgba(230,240,255,0.95);
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 1;
+      user-select: none;
+    }
+
+    footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.28);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    footer a:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.28);
+    }
+
+    footer span.credit {
+      color: rgba(230,240,255,0.95);
+    }
+
+    /* GitHub icon SVG sizing */
+    footer svg {
+      width: 18px; height: 18px;
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Intro stage">
+    <section class="glass-card" aria-label="Site title card">
+      <h1 class="brand">amirabolfazle</h1>
+      <div class="creation-time" aria-label="Creation time">
+        2025-09-28 04:23:24
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" role="img">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.262.82-.58
+        0-.287-.01-1.044-.015-2.052-3.338.726-4.042-1.613-4.042-1.613-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.729.083-.729
+        1.205.086 1.84 1.237 1.84 1.237 1.07 1.835 2.809 1.305 3.495.997.108-.776.42-1.304.764-1.604-2.665-.303-5.466-1.335-5.466-5.93
+        0-1.31.469-2.381 1.235-3.221-.124-.303-.535-1.523.117-3.174 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0112 6.844c1.02-.004 2.047-.138 3.005-.406
+        2.293-1.552 3.301-1.23 3.301-1.23.653 1.651.241 2.873.118 3.176.766.84 1.234 1.91 1.234 3.22 0 4.609-2.804 5.624-5.476 5.921.431.37.814 1.102.814 2.223
+        0 1.606-.012 2.898-.012 3.293 0 .32.216.69-.776.58C20.565 22.093 24 17.593 24 12.296 24 5.67 18.627-.703 12 .297z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
