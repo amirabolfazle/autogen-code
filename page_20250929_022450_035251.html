@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #FFF7FB;
+      --bg2: #F6FFF8;
+      --accent1: #FFD6E0; /* pastel pink */
+      --accent2: #D6FFF0; /* pastel mint */
+      --accent3: #EAD7FF; /* pastel lavender */
+      --text: #2b2b37;
+      --muted: #6b6b78;
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 10% 10%, var(--accent1) 0%, transparent 18%),
+                  radial-gradient(1000px 500px at 90% 90%, var(--accent2) 0%, transparent 20%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    .card{
+      width:100%;
+      max-width:1100px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.55));
+      border-radius:18px;
+      box-shadow: 0 12px 40px rgba(30,30,50,0.08);
+      padding:48px;
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    /* floating pastel blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(26px);
+      opacity:0.85;
+      transform: translate3d(0,0,0);
+    }
+    .blob.a{ width:320px;height:320px; background:var(--accent3); left:-80px; top:-60px; animation: floatA 8s ease-in-out infinite; }
+    .blob.b{ width:240px;height:240px; background:var(--accent2); right:-70px; top:-80px; animation: floatB 9s ease-in-out infinite; }
+    .blob.c{ width:180px;height:180px; background:var(--accent1); left:30%; bottom:-80px; animation: floatC 7s ease-in-out infinite; }
+
+    @keyframes floatA{
+      0%{transform: translateY(0) translateX(0) scale(1)}
+      50%{transform: translateY(18px) translateX(8px) scale(1.03)}
+      100%{transform: translateY(0) translateX(0) scale(1)}
+    }
+    @keyframes floatB{
+      0%{transform: translateY(0) translateX(0) scale(1)}
+      50%{transform: translateY(-14px) translateX(-6px) scale(1.02)}
+      100%{transform: translateY(0) translateX(0) scale(1)}
+    }
+    @keyframes floatC{
+      0%{transform: translateY(0) translateX(0) scale(1)}
+      50%{transform: translateY(22px) translateX(-12px) scale(0.98)}
+      100%{transform: translateY(0) translateX(0) scale(1)}
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      align-items:center;
+    }
+
+    @media (max-width:880px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .hero h1{
+      margin:0 0 12px 0;
+      font-size:44px;
+      letter-spacing:-0.6px;
+      line-height:1.02;
+      color:var(--text);
+      display:inline-block;
+      animation: bounceIn 1.2s cubic-bezier(.2,.9,.3,1) both;
+    }
+    .hero p.lead{
+      margin:0 0 22px 0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:680px;
+    }
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:18px;
+    }
+    .stamp{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      box-shadow: 0 6px 18px rgba(40,40,60,0.06);
+      border:1px solid rgba(255,255,255,0.5);
+    }
+
+    @keyframes bounceIn{
+      0%{transform: translateY(32px) scale(.98); opacity:0}
+      60%{transform: translateY(-8px) scale(1.01); opacity:1}
+      100%{transform: translateY(0) scale(1)}
+    }
+
+    .card-side{
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.5));
+      padding:26px;
+      border-radius:12px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .card-side h3{
+      margin:0 0 12px 0;
+      font-size:18px;
+    }
+    .features{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .feature{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      background:rgba(255,255,255,0.45);
+      padding:10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.5);
+    }
+    .dot{
+      width:44px;height:44px;border-radius:10px;
+      display:inline-flex;align-items:center;justify-content:center;
+      font-weight:700;color:#fff;
+      flex-shrink:0;
+      box-shadow: 0 8px 20px rgba(20,20,40,0.06);
+    }
+    .dot.one{ background:linear-gradient(135deg,#FF8FB3,#FFB3D0); }
+    .dot.two{ background:linear-gradient(135deg,#6FFFE0,#8EFAD6); color:#0a2b1f; }
+    .dot.three{ background:linear-gradient(135deg,#CFAFFF,#EBD7FF); color:#271136; }
+
+    .cta{
+      margin-top:20px;
+      display:flex;gap:12px;align-items:center;
+    }
+    .btn{
+      padding:12px 18px;border-radius:999px;border:0;cursor:pointer;
+      background:linear-gradient(90deg,#6FFFE0,#A8FFD9);
+      color:#06302a;font-weight:700;font-size:15px;
+      box-shadow: 0 12px 30px rgba(80,200,170,0.12);
+      transform-origin:center;
+      animation: gentleBounce 2.6s infinite;
+    }
+    .btn.secondary{
+      background:transparent;border:1px solid rgba(60,60,70,0.06); color:var(--muted);
+      box-shadow:none; animation:none;
+    }
+    .btn:active{ transform:translateY(1px) }
+
+    @keyframes gentleBounce{
+      0%{ transform: translateY(0) }
+      50%{ transform: translateY(-6px) }
+      100%{ transform: translateY(0) }
+    }
+
+    /* Footer */
+    footer{
+      margin-top:20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .git{
+      display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--muted);
+      padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.45);
+      border:1px solid rgba(255,255,255,0.5);
+    }
+    .git svg{ width:18px;height:18px; display:block; fill:var(--muted); transition:transform .18s ease, fill .18s ease }
+    .git:hover svg{ transform:translateY(-3px); fill:#111827 }
+    .created{
+      opacity:0.95;
+    }
+
+    /* small screen tweaks */
+    @media (max-width:520px){
+      .hero h1{ font-size:32px }
+      .card{ padding:28px }
+      .card-side{ padding:18px }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-labelledby="main-heading">
+    <span class="blob a" aria-hidden="true"></span>
+    <span class="blob b" aria-hidden="true"></span>
+    <span class="blob c" aria-hidden="true"></span>
+
+    <div class="grid">
+      <section class="hero" aria-label="Introduction">
+        <h1 id="main-heading">amirabolfazle</h1>
+        <p class="lead">A soft, pastel landing experience with lively bounce motion — warm, fresh, and minimal. Designed to catch attention without shouting.</p>
+
+        <div class="meta">
+          <div class="stamp" title="Creation time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:.9">
+              <path d="M7 10h5v5" stroke="#8b8b97" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="#8b8b97" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span style="font-weight:600;color:var(--muted);">Created</span>
+            <span style="font-weight:700;color:var(--text)">&nbsp;2025-09-29 02:24:08</span>
+          </div>
+        </div>
+
+        <div class="cta" role="group" aria-label="Calls to action">
+          <button class="btn" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Explore demo</button>
+          <button class="btn secondary" onclick="alert('Hello from amirabolfazle ✨')">Say hi</button>
+        </div>
+
+        <div style="margin-top:18px; color:var(--muted); font-size:13px">
+          Tip: hover over the GitHub icon in the footer.
+        </div>
+      </section>
+
+      <aside class="card-side" aria-label="Features">
+        <h3>Highlights</h3>
+        <div class="features">
+          <div class="feature">
+            <div class="dot one">A</div>
+            <div>
+              <div style="font-weight:700">Pastel Palette</div>
+              <div style="color:var(--muted);font-size:13px">Soft complementary tones for a calm, modern look.</div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="dot two">B</div>
+            <div>
+              <div style="font-weight:700">Subtle Motion</div>
+              <div style="color:var(--muted);font-size:13px">Gentle floating blobs and bounce effects bring life without distraction.</div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="dot three">C</div>
+            <div>
+              <div style="font-weight:700">Clean UI</div>
+              <div style="color:var(--muted);font-size:13px">Minimal elements with purposeful spacing for clarity.</div>
+            </div>
+          </div>
+        </div>
+
+        <footer>
+          <a class="git" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.85 5.38.85 11.65c0 4.77 3.09 8.82 7.38 10.25.54.1.74-.24.74-.52 0-.26-.01-.95-.01-1.86-3 .65-3.63-1.44-3.63-1.44-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.64 2.52 1.17 3.13.9.1-.7.38-1.17.69-1.44-2.39-.27-4.91-1.2-4.91-5.35 0-1.18.42-2.15 1.11-2.91-.11-.27-.48-1.36.11-2.83 0 0 .9-.29 2.95 1.11a10.2 10.2 0 0 1 2.69-.36c.91 0 1.83.12 2.69.36 2.05-1.4 2.95-1.11 2.95-1.11.59 1.47.22 2.56.11 2.83.69.76 1.11 1.73 1.11 2.91 0 4.16-2.53 5.07-4.94 5.34.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.19.63.75.52 4.28-1.43 7.37-5.48 7.37-10.25C23.15 5.38 18.27.5 12 .5z"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+
+          <div class="created" aria-hidden="true">2025-09-29 02:24:08</div>
+        </footer>
+      </aside>
+    </div>
+
+    <div id="demo" style="margin-top:34px; border-radius:12px; padding:22px; background:linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.35)); box-shadow: 0 8px 20px rgba(30,30,50,0.04);">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#FFD6E0,#A8FFD9); display:flex;align-items:center;justify-content:center;font-weight:800;color:#1b2a2a; font-size:20px">
+          am
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:15px">Live Preview</div>
+          <div style="color:var(--muted);font-size:13px">A tiny interactive card with a gentle pop animation.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px; display:grid; grid-template-columns: repeat(3,1fr); gap:12px;">
+        <div style="padding:12px;border-radius:10px;background:white;border:1px solid rgba(30,30,50,0.03);text-align:center; animation: pop .9s ease both;">
+          <div style="font-weight:700">01</div>
+          <div style="color:var(--muted);font-size:13px">Design</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:white;border:1px solid rgba(30,30,50,0.03);text-align:center; animation: pop .95s ease .06s both;">
+          <div style="font-weight:700">02</div>
+          <div style="color:var(--muted);font-size:13px">Motion</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:white;border:1px solid rgba(30,30,50,0.03);text-align:center; animation: pop 1s ease .12s both;">
+          <div style="font-weight:700">03</div>
+          <div style="color:var(--muted);font-size:13px">Polish</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // subtle entrance animation when the page loads
+    document.addEventListener('DOMContentLoaded', function(){
+      const items = document.querySelectorAll('.feature, .features > div, .btn, .card-side h3, .stamp');
+      items.forEach((el,i)=>{
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(8px)';
+        setTimeout(()=>{ el.style.transition = 'all .45s cubic-bezier(.2,.9,.3,1)'; el.style.opacity='1'; el.style.transform='translateY(0)'; }, 120 + i*80);
+      });
+    });
+  </script>
+  <style>
+    @keyframes pop{
+      0%{ transform: scale(.98); opacity:0 }
+      60%{ transform: scale(1.02); opacity:1 }
+      100%{ transform: scale(1); opacity:1 }
+    }
+  </style>
+</body>
+</html>
