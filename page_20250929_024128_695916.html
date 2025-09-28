@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1:#06010a;
+    --bg-2:#0b0215;
+    --neon-pink:#ff2d95;
+    --neon-cyan:#00f0ff;
+    --neon-purple:#9b5bff;
+    --glass: rgba(255,255,255,0.04);
+    --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink),var(--neon-purple));
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,240,255,0.05), transparent 6%),
+                radial-gradient(800px 400px at 90% 90%, rgba(255,45,149,0.04), transparent 6%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#e9f7ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* animated floating blobs */
+  .bg-blobs{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    mix-blend-mode:screen;
+  }
+  .blob{
+    position:absolute;
+    filter:blur(60px) saturate(150%);
+    opacity:0.9;
+    transform-origin:center;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .blob.b1{width:480px;height:480px;background:radial-gradient(circle at 30% 30%, rgba(0,240,255,0.45), transparent 30%); left:-10%; top:10%; animation-duration:16s;}
+  .blob.b2{width:360px;height:360px;background:radial-gradient(circle at 70% 70%, rgba(255,45,149,0.38), transparent 30%); right:-5%; bottom:5%; animation-duration:18s;}
+  .blob.b3{width:540px;height:540px;background:radial-gradient(circle at 50% 50%, rgba(155,91,255,0.28), transparent 30%); left:20%; bottom:-10%; animation-duration:20s;}
+  @keyframes drift { to { transform:translateY(-30px) translateX(20px) rotate(6deg) scale(1.05);} }
+
+  .container{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+    box-sizing:border-box;
+  }
+
+  .card{
+    width:100%;
+    max-width:980px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:18px;
+    padding:48px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px) saturate(120%);
+    border: 1px solid rgba(255,255,255,0.04);
+    position:relative;
+    overflow:hidden;
+    transform-origin:center;
+    animation: zoomIn 1s cubic-bezier(.2,.9,.3,1);
+  }
+
+  /* animated neon border */
+  .card:before{
+    content:'';
+    position:absolute;
+    inset:-2px;
+    background: conic-gradient(from 90deg at 50% 50%, rgba(0,0,0,0), transparent 10%, rgba(255,255,255,0.02));
+    z-index:-1;
+    border-radius:20px;
+    pointer-events:none;
+  }
+  .neon-outline{
+    position:absolute;
+    inset:0;
+    border-radius:18px;
+    pointer-events:none;
+    box-shadow:
+      0 0 30px rgba(0,240,255,0.05),
+      inset 0 0 80px rgba(155,91,255,0.02);
+    mix-blend-mode: screen;
+  }
+
+  @keyframes zoomIn {
+    0%{ transform: scale(.92) translateY(8px); opacity:0; filter:blur(6px);}
+    60%{ transform: scale(1.04) translateY(-6px); opacity:1; filter:blur(0);}
+    100%{ transform: scale(1) translateY(0); }
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:18px;
+  }
+  .logo {
+    width:86px;
+    height:86px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg, rgba(0,240,255,0.06), rgba(255,45,149,0.04));
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.6), 0 0 30px rgba(155,91,255,0.04);
+    position:relative;
+    overflow:hidden;
+  }
+  .logo .mark{
+    width:56px;height:56px;border-radius:10px;
+    background:linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+    display:flex;align-items:center;justify-content:center;
+    color:#06010a;font-weight:700;
+    font-size:18px;
+    box-shadow: 0 0 28px rgba(0,240,255,0.18), 0 0 10px rgba(255,45,149,0.12);
+    transform:rotate(-8deg);
+  }
+
+  h1{
+    margin:0;
+    font-size:38px;
+    letter-spacing:0.6px;
+    color:transparent;
+    -webkit-background-clip:text;
+    background-clip:text;
+    background-image:var(--accent);
+    text-shadow:
+      0 0 8px rgba(0,240,255,0.12),
+      0 0 18px rgba(155,91,255,0.06);
+    line-height:1;
+    filter:drop-shadow(0 6px 20px rgba(0,0,0,0.6));
+  }
+  .subtitle{
+    margin:6px 0 0 0;
+    font-size:14px;
+    opacity:0.8;
+    color:rgba(255,255,255,0.85);
+  }
+
+  .meta{
+    margin-top:14px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .badge{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    padding:8px 12px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    color:rgba(255,255,255,0.85);
+    font-size:13px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  }
+  .time-badge{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px rgba(0,240,255,0.12);
+    border:1px solid rgba(0,240,255,0.06);
+  }
+
+  /* hero content */
+  .hero{
+    margin-top:28px;
+    display:grid;
+    grid-template-columns:1fr 320px;
+    gap:28px;
+    align-items:stretch;
+  }
+
+  .intro{
+    padding:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border-radius:12px;
+    border: 1px solid rgba(255,255,255,0.02);
+    min-height:220px;
+    box-shadow: inset 0 -30px 60px rgba(0,0,0,0.3);
+    position:relative;
+    overflow:hidden;
+  }
+  .intro p{
+    margin:0;
+    color:rgba(233,247,255,0.95);
+    font-size:15px;
+    line-height:1.6;
+    mix-blend-mode: screen;
+  }
+
+  .panels{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:14px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border:1px solid rgba(255,255,255,0.03);
+    cursor:pointer;
+    transition: transform .36s cubic-bezier(.2,.9,.3,1), box-shadow .36s;
+  }
+  .panel:hover{
+    transform:scale(1.035);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 40px rgba(155,91,255,0.04);
+  }
+  .panel .label{
+    color:rgba(255,255,255,0.9);
+    font-weight:600;
+    font-size:14px;
+  }
+  .panel small{
+    color:rgba(255,255,255,0.6);
+    font-size:12px;
+  }
+
+  /* neon animated scanline */
+  .scanline{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background: linear-gradient(180deg, transparent 40%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0.02) 55%, transparent 60%);
+    mix-blend-mode:overlay;
+    animation: scan 6s linear infinite;
+    opacity:0.6;
+  }
+  @keyframes scan { 0%{ transform:translateY(-100%);} 100%{ transform:translateY(100%);} }
+
+  footer{
+    margin-top:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color:rgba(255,255,255,0.65);
+    font-size:13px;
+    padding-top:20px;
+    border-top:1px dashed rgba(255,255,255,0.03);
+  }
+  footer a{
+    color:inherit;
+    text-decoration:none;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    padding:8px 10px;
+    border-radius:999px;
+    transition: transform .2s, box-shadow .2s;
+  }
+  footer a:hover{ transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+  .gh-icon{ width:18px; height:18px; display:inline-block; filter:drop-shadow(0 3px 12px rgba(0,0,0,0.6)); }
+
+  /* responsive */
+  @media (max-width:880px){
+    .hero{ grid-template-columns: 1fr; }
+    .logo{ width:72px; height:72px;}
+    h1{ font-size:30px; }
+  }
+
+  /* small decorative neon flicker */
+  .flicker{
+    animation: flick 3.4s linear infinite;
+  }
+  @keyframes flick {
+    0%,100%{opacity:1; filter:drop-shadow(0 0 18px rgba(155,91,255,0.08));}
+    50%{opacity:0.94; filter:none;}
+    70%{opacity:0.98;}
+  }
+
+</style>
+</head>
+<body>
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <main class="container" role="main">
+    <section class="card" aria-label="Personal page amirabolfazle">
+      <div class="neon-outline" aria-hidden="true"></div>
+      <header>
+        <div class="logo flicker" title="amirabolfazle logo">
+          <div class="mark">am</div>
+        </div>
+        <div>
+          <h1 class="flicker">amirabolfazle</h1>
+          <div class="subtitle">neon-themed personal page • animated • zoom effects</div>
+          <div class="meta" aria-hidden="false">
+            <div class="badge time-badge" title="creation time">2025-09-29 02:40:26</div>
+            <div class="badge" title="status">Live Prototype</div>
+            <div class="badge" title="mood">Vibes: neon • creative • bold</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="hero">
+        <div class="intro" role="article" aria-label="Introduction">
+          <p style="margin-bottom:12px;">
+            Hello — this is a compact neon-styled personal canvas. Smooth zoom animations and luminous accents give the page a lively, techy vibe. Explore, hover, and enjoy subtle motion that keeps the surface sparkling.
+          </p>
+          <p style="margin-bottom:10px;font-size:13px;color:rgba(255,255,255,0.78)">
+            Built with CSS-driven glow, SVG accents, and small interactive panels. The creation timestamp above marks when this snapshot was generated.
+          </p>
+
+          <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;">
+            <button onclick="pulse(this)" style="cursor:pointer;border:0;padding:10px 14px;border-radius:10px;background:var(--neon-cyan);color:#04030a;font-weight:700;box-shadow:0 8px 30px rgba(0,240,255,0.18);">Ping</button>
+            <button onclick="pulse(this)" style="cursor:pointer;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;background:transparent;color:rgba(255,255,255,0.92);">Glow</button>
+          </div>
+        </div>
+
+        <aside class="panels" aria-label="Quick actions">
+          <div class="panel" role="button" tabindex="0" onclick="openPanel('about')">
+            <div>
+              <div class="label">About</div>
+              <small>Short bio & vibes</small>
+            </div>
+            <div style="color:var(--neon-pink);font-weight:700;">→</div>
+          </div>
+
+          <div class="panel" role="button" tabindex="0" onclick="openPanel('projects')">
+            <div>
+              <div class="label">Projects</div>
+              <small>Selected work</small>
+            </div>
+            <div style="color:var(--neon-cyan);font-weight:700;">→</div>
+          </div>
+
+          <div class="panel" role="button" tabindex="0" onclick="openPanel('contact')">
+            <div>
+              <div class="label">Contact</div>
+              <small>Say hi</small>
+            </div>
+            <div style="color:var(--neon-purple);font-weight:700;">→</div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="scanline" aria-hidden="true"></div>
+
+      <footer>
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" title="View repository on GitHub">
+          <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 0.5C5.648 0.5 0.5 5.648 0.5 12c0 5.084 3.291 9.398 7.863 10.918.575.106.784-.25.784-.555 0-.273-.01-1-.015-1.958-3.2.695-3.877-1.542-3.877-1.542-.523-1.33-1.277-1.684-1.277-1.684-1.044-.713.08-.699.08-.699 1.155.082 1.763 1.188 1.763 1.188 1.026 1.758 2.693 1.25 3.347.957.104-.743.402-1.25.732-1.538-2.554-.291-5.238-1.277-5.238-5.686 0-1.256.45-2.282 1.187-3.086-.119-.292-.515-1.466.113-3.056 0 0 .967-.31 3.17 1.18a11.03 11.03 0 0 1 2.887-.389c.98.004 1.966.132 2.888.39 2.2-1.493 3.165-1.18 3.165-1.18.63 1.59.233 2.764.114 3.056.74.804 1.186 1.83 1.186 3.086 0 4.42-2.689 5.392-5.253 5.676.413.356.782 1.06.782 2.136 0 1.542-.014 2.784-.014 3.164 0 .308.206.667.79.554C20.713 21.395 24 17.083 24 12 24 5.648 18.352.5 12 .5z" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#00f0ff"/>
+                <stop offset="0.5" stop-color="#ff2d95"/>
+                <stop offset="1" stop-color="#9b5bff"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+  </main>
+
+<script>
+  // small interactive helpers
+  function pulse(el){
+    el.animate([
+      { transform: 'scale(1)', boxShadow: getComputedStyle(el).boxShadow || '0 0 0 rgba(0,0,0,0)' },
+      { transform: 'scale(0.92)', boxShadow: '0 6px 24px rgba(0,0,0,0.6)' },
+      { transform: 'scale(1)', boxShadow: getComputedStyle(el).boxShadow || '0 0 0 rgba(0,0,0,0)' }
+    ], { duration: 420, easing: 'cubic-bezier(.2,.9,.3,1)'});
+  }
+
+  function openPanel(name){
+    const msg = {
+      about: "About: a compact neon-styled personal canvas showcasing creative UI.",
+      projects: "Projects: a selection of work would live here — code, experiments, UI art.",
+      contact: "Contact: reach out via GitHub — link in the footer."
+    }[name] || "Opening...";
+    // subtle toast
+    const t = document.createElement('div');
+    t.textContent = msg;
+    t.style.position='fixed';
+    t.style.right='20px';
+    t.style.bottom='20px';
+    t.style.padding='12px 16px';
+    t.style.background='linear-gradient(90deg, rgba(0,240,255,0.06), rgba(255,45,149,0.04))';
+    t.style.border='1px solid rgba(255,255,255,0.03)';
+    t.style.borderRadius='10px';
+    t.style.color='#e9f7ff';
+    t.style.boxShadow='0 10px 40px rgba(0,0,0,0.6)';
+    t.style.fontSize='13px';
+    document.body.appendChild(t);
+    setTimeout(()=> t.style.opacity='0',1800);
+    setTimeout(()=> t.remove(),2200);
+  }
+
+  // keyboard accessible enter/space activation for panels
+  document.querySelectorAll('.panel').forEach(p=>{
+    p.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); p.click(); }
+    });
+  });
+
+  // subtle page focus scale loop
+  (function floatingScale(){
+    const card = document.querySelector('.card');
+    let dir = 1;
+    let t = 0;
+    function frame(){
+      t += 0.008 * dir;
+      const s = 1 + Math.sin(t) * 0.008;
+      card.style.transform = `scale(${s})`;
+      if(t > Math.PI * 2 || t < 0) dir *= -1;
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+</script>
+</body>
+</html>
