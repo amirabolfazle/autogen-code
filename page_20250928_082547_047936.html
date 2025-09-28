@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0b1020;
+      --bg2: #1a1f3a;
+      --glass: rgba(255,255,255,0.15);
+      --glass2: rgba(255,255,255,0.25);
+      --text: #e9f0ff;
+      --muted: #cbd8ff;
+      --accent: #7bdcff;
+      --cardShadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    /* Global reset-ish */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #0b1020 0%, #1a1f3a 60%, #0b1027 100%);
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated glow backdrop for glassy vibe */
+    .bg-orb {
+      position: fixed;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(123, 220, 255, 0.9), rgba(123,220,255,0) 60%);
+      filter: blur(40px);
+      top: -120px;
+      right: -120px;
+      z-index: 0;
+      animation: drift 20s ease-in-out infinite;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    @keyframes drift {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-20px, 20px) scale(1.05); opacity: 0.8; }
+      100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+    }
+
+    /* Layout wrapper with glass feel */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    /* Glassy header hero */
+    .hero {
+      text-align: center;
+      padding: 48px 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: var(--cardShadow);
+      margin: 28px auto 28px;
+      max-width: 920px;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 4vw + 1rem, 4rem);
+      letter-spacing: .5px;
+      color: #eaf3ff;
+      text-shadow: 0 2px 6px rgba(0,0,0,.25);
+    }
+    .hero p.tag {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .creation-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      margin-top: 14px;
+      font-size: .85rem;
+      color: #d5e6ff;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      animation: fadeIn 1s ease-out;
+    }
+    @keyframes fadeIn { from {opacity:0; transform: translateY(-6px);} to {opacity:1; transform: none;} }
+
+    /* Projects grid (glass cards with bounce) */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 8px;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1080px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 16px;
+      padding: 18px 16px 16px;
+      min-height: 170px;
+      box-shadow: 0 8px 26px rgba(0,0,0,.25);
+      color: #eaf4ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      animation: bounceIn 0.9s ease-out both;
+    }
+    .card .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(123, 220, 255, 0.25);
+      color: #eaf8ff;
+      border: 1px solid rgba(123,220,255,0.6);
+      width: fit-content;
+    }
+    .card h3 {
+      margin: 10px 0 6px;
+      font-size: 1.15rem;
+      color: #f0f7ff;
+    }
+    .card p {
+      margin: 0;
+      color: #d6e6ff;
+      font-size: 0.95rem;
+    }
+    .card a.link {
+      align-self: flex-start;
+      margin-top: 8px;
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #0c1b2a;
+      background: linear-gradient(135deg, #7bdcff, #6d9dff);
+      border: 1px solid rgba(255,255,255,0.6);
+      transition: transform 0.25s ease;
+    }
+    .card a.link:hover { transform: translateY(-1px) scale(1.02); }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(-26px); opacity: 0; }
+      60% { transform: translateY(8px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Staggered delays for cards to feel lively */
+    .card.delay-1 { animation-delay: .15s; }
+    .card.delay-2 { animation-delay: .30s; }
+    .card.delay-3 { animation-delay: .45s; }
+    .card.delay-4 { animation-delay: .60s; }
+
+    /* Footer with GitHub link and icon */
+    .footer {
+      margin-top: 28px;
+      padding: 18px;
+      text-align: center;
+      color: #dbe9ff;
+      opacity: 0.95;
+      animation: fadeIn 1s ease-out;
+    }
+    .footer a.github {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #eaf4ff;
+      border-radius: 999px;
+      padding: 8px 14px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.10);
+      transition: transform 0.25s ease;
+    }
+    .footer a.github:hover { transform: translateY(-1px); }
+    .footer svg { width: 20px; height: 20px; fill: currentColor; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* Responsive niceties */
+    @media (max-width: 700px) {
+      .hero { padding: 32px 14px; }
+      .grid { gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orb" aria-hidden="true"></div>
+
+  <main class="wrapper" role="main">
+    <section class="hero" aria-label="Amir Abolfazle portfolio hero">
+      <h1>amirabolfazle</h1>
+      <p class="tag" style="margin:6px 0 0; color:#d0e6ff;">A glassy portfolio with motion and a touch of bounce</p>
+      <div class="creation-time" title="Creation timestamp">
+        Creation time: 2025-09-28 08:25:21
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Projects grid">
+      <article class="card delay-1" aria-label="Project 1">
+        <span class="badge">Web App</span>
+        <h3>WeatherFlow</h3>
+        <p>Beautiful, responsive weather dashboard with animated cards and glassy UI.</p>
+        <a href="#" class="link" aria-label="Open WeatherFlow project">View project</a>
+      </article>
+
+      <article class="card delay-2" aria-label="Project 2">
+        <span class="badge">Tooling</span>
+        <h3>Autogen Studio</h3>
+        <p>A lightweight code generator playground with live previews and examples.</p>
+        <a href="#" class="link" aria-label="Open Autogen Studio project">View project</a>
+      </article>
+
+      <article class="card delay-3" aria-label="Project 3">
+        <span class="badge">Website</span>
+        <h3>Portfolio V2</h3>
+        <p>Another glassy template to showcase projects with subtle motion.</p>
+        <a href="#" class="link" aria-label="Open Portfolio V2 project">View project</a>
+      </article>
+
+      <article class="card delay-4" aria-label="Project 4">
+        <span class="badge">Prototype</span>
+        <h3>IdeaLab Demos</h3>
+        <p>Experimental UI patterns and micro-interactions to inspire.</p>
+        <a href="#" class="link" aria-label="Open IdeaLab Demos project">View project</a>
+      </article>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository: amirabolfazle/autogen-code">
+        <!-- GitHub SVG Icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.28c0 4.5 2.87 8.3 6.84 9.63.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.61-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1.01.07 1.54 1.05 1.54 1.05.89 1.63 2.34 1.16 2.91.89.1-.69.35-1.15.63-1.42-2.22-.26-4.56-1.15-4.56-5.13 0-1.13.41-2.05 1.08-2.77-.11-.27-.47-1.37.1-2.85 0 0 .88-.29 2.88 1.07a9.92 9.92 0 012.62-.37c.9.01 1.81.12 2.66.37 2-1.36 2.88-1.07 2.88-1.07.58 1.48.22 2.58.11 2.85.68.72 1.08 1.64 1.08 2.77 0 3.99-2.34 4.87-4.57 5.12.36.31.68.92.68 1.86 0 1.34-.01 2.42-.01 2.75 0 .26.18.59.69.49A10.01 10.01 0 0022 12.28C22 6.58 17.52 2 12 2z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+</body>
+</html>
