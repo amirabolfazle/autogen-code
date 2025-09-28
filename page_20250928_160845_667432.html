@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --bg2: #081026;
+      --glass: rgba(255,255,255,0.07);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent1: rgba(112,70,255,0.9);
+      --accent2: rgba(0,199,255,0.9);
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.7);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(112,70,255,0.12), transparent 10%),
+                  radial-gradient(1000px 500px at 90% 80%, rgba(0,199,255,0.10), transparent 10%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2) 60%);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* Subtle animated zooming orbs in background */
+    .bg-orbs{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .orb{
+      position:absolute;
+      filter: blur(80px);
+      mix-blend-mode: screen;
+      opacity:0.85;
+      transform-origin:center;
+      animation: floatZoom 18s ease-in-out infinite;
+    }
+    .orb.orb1{ width:520px; height:520px; left:-10%; top:-5%; background: linear-gradient(135deg, rgba(112,70,255,0.45), rgba(0,199,255,0.25)); animation-delay: 0s;}
+    .orb.orb2{ width:420px; height:420px; right:-8%; bottom:-10%; background: linear-gradient(135deg, rgba(0,199,255,0.35), rgba(112,70,255,0.18)); animation-delay: 6s;}
+    .orb.orb3{ width:300px; height:300px; left:50%; top:60%; background: linear-gradient(135deg, rgba(255,200,80,0.14), rgba(112,70,255,0.12)); animation-delay: 12s;}
+    @keyframes floatZoom{
+      0%{ transform: translateY(0) scale(1); }
+      50%{ transform: translateY(-40px) scale(1.08); }
+      100%{ transform: translateY(0) scale(1); }
+    }
+
+    .container{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      box-sizing:border-box;
+      z-index:1;
+      position:relative;
+    }
+
+    .card{
+      width:100%;
+      max-width:980px;
+      border-radius:20px;
+      padding:44px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      backdrop-filter: blur(14px) saturate(120%);
+      -webkit-backdrop-filter: blur(14px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      transform-origin:center;
+      transition: transform 350ms cubic-bezier(.2,.9,.3,1), box-shadow 350ms;
+    }
+
+    /* zoom on hover and subtle parallax on mouse move */
+    .card.zoomable:hover{
+      transform: scale(1.015);
+      box-shadow: 0 28px 60px rgba(2,6,23,0.65);
+    }
+
+    .left{
+      padding:8px 12px;
+    }
+
+    .logo{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .logo .brand{
+      font-weight:800;
+      letter-spacing:-0.6px;
+      font-size:26px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+    .tag{
+      font-size:13px;
+      color:var(--muted);
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      padding:8px 12px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+    }
+
+    h1{
+      margin:6px 0 12px 0;
+      font-size:40px;
+      line-height:1.02;
+      letter-spacing:-1px;
+      font-weight:800;
+      color:var(--text);
+    }
+    p.lead{
+      margin:0 0 20px 0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:62ch;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:14px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,0.06);
+      text-decoration:none;
+      color:var(--text);
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      transition: transform 160ms, box-shadow 160ms, background 160ms;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(112,70,255,0.14), rgba(0,199,255,0.08));
+      box-shadow: 0 6px 20px rgba(112,70,255,0.08), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(112,70,255,0.18);
+      color: #fff;
+    }
+
+    .features{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:13px;
+      color:var(--muted);
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.03);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* right pane: glass panel with zoom image effect */
+    .right{
+      padding:18px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 35px rgba(2,6,23,0.45);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      transition: transform 450ms cubic-bezier(.2,.9,.3,1);
+      transform: perspective(800px) translateZ(0);
+    }
+
+    .mock{
+      width:100%;
+      height:260px;
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+      border:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    }
+
+    .screen{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-weight:600;
+      font-size:14px;
+      transition: transform 600ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    .mock:hover .screen{ transform: scale(1.06) translateY(-6px); }
+
+    .meta{
+      display:flex;
+      gap:10px;
+      width:100%;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .creation-time{
+      padding:8px 12px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      font-weight:600;
+      color:var(--muted);
+    }
+
+    footer{
+      margin-top:26px;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .footer-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--muted);
+      border-radius:10px;
+      padding:8px 12px;
+      transition: background 160ms, transform 160ms;
+    }
+    .footer-link:hover{ background: rgba(255,255,255,0.02); transform: translateY(-3px); color:var(--text); }
+
+    .github-icon{
+      width:18px;height:18px; display:inline-block; fill:currentColor;
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .card{ grid-template-columns: 1fr; padding:28px; gap:18px; }
+      .right{ order:-1; }
+      h1{ font-size:34px; }
+      .mock{ height:200px; }
+    }
+    @media (max-width:480px){
+      h1{ font-size:28px; }
+      .logo .brand{ font-size:20px; }
+      .card{ padding:20px; border-radius:16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <main class="container">
+    <section class="card zoomable" role="region" aria-label="amirabolfazle landing">
+      <div class="left">
+        <div class="logo">
+          <div class="tag">Designer • Maker</div>
+          <div style="flex:1"></div>
+          <div class="brand">amirabolfazle</div>
+        </div>
+
+        <h1>Elegant interfaces, crafted with glassmorphism</h1>
+        <p class="lead">I design immersive UI experiences that feel both modern and tactile. Explore the demo below and enjoy subtle motion and depth created with pure CSS — no heavy images required.</p>
+
+        <div class="cta-row" role="group" aria-label="primary actions">
+          <a class="btn primary" href="#demo" title="Open demo">Explore demo</a>
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View code</a>
+        </div>
+
+        <div class="features" aria-hidden="false">
+          <div class="chip">Glassmorphism</div>
+          <div class="chip">Subtle Zoom Effects</div>
+          <div class="chip">Responsive</div>
+          <div class="chip">Pure CSS</div>
+        </div>
+
+        <footer>
+          <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+            <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.36-1.3-1.72-1.3-1.72-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.38.97.1-.76.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18.92-.26 1.9-.39 2.88-.39.98 0 1.96.13 2.88.39 2.21-1.5 3.18-1.18 3.18-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.84 1.19 3.1 0 4.44-2.71 5.42-5.29 5.7.42.36.8 1.07.8 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.68.8.56C20.71 21.39 24 17.08 24 12 24 5.65 18.35.5 12 .5z"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </footer>
+      </div>
+
+      <aside class="right" id="demo" aria-label="demo panel">
+        <div class="mock" role="img" aria-label="interactive preview">
+          <div class="screen">
+            <svg width="220" height="140" viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="filter: drop-shadow(0 8px 18px rgba(2,6,23,0.45));">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0" stop-color="#7046FF"/>
+                  <stop offset="1" stop-color="#00C7FF"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="220" height="140" rx="14" fill="url(#g1)" opacity="0.18"/>
+              <g transform="translate(14,12)" fill="#fff" opacity="0.98">
+                <rect x="0" y="0" width="192" height="24" rx="6" fill="rgba(255,255,255,0.06)"/>
+                <rect x="0" y="38" width="132" height="14" rx="6" fill="rgba(255,255,255,0.08)"/>
+                <rect x="0" y="62" width="172" height="14" rx="6" fill="rgba(255,255,255,0.05)"/>
+                <rect x="0" y="86" width="92" height="14" rx="6" fill="rgba(255,255,255,0.07)"/>
+                <circle cx="162" cy="20" r="8" fill="#fff" opacity="0.06"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="meta">
+            <div class="creation-time">Creation time: 2025-09-28 16:08:05</div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div class="chip" style="padding:8px 10px;font-weight:700;color:#fff;background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none;">Live</div>
+              <div class="chip">Preview</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width:100%;display:flex;gap:10px;justify-content:center;margin-top:8px;">
+          <a class="btn" href="#" onclick="zoomDemo(1)" aria-label="Zoom 1">Zoom 1</a>
+          <a class="btn" href="#" onclick="zoomDemo(1.06)" aria-label="Zoom 2">Zoom 2</a>
+          <a class="btn" href="#" onclick="zoomDemo(1.12)" aria-label="Zoom 3">Zoom 3</a>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // subtle parallax effect based on mouse position inside the card
+    (function(){
+      const card = document.querySelector('.card.zoomable');
+      if(!card) return;
+      let rect = card.getBoundingClientRect();
+      const maxRotate = 6; // degrees
+      function onMove(e){
+        rect = card.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dx = (e.clientX - cx)/rect.width;
+        const dy = (e.clientY - cy)/rect.height;
+        const rx = dy * maxRotate;
+        const ry = -dx * maxRotate;
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.01)`;
+      }
+      function onLeave(){
+        card.style.transform = '';
+      }
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      // small performance improvement on touch devices
+      card.addEventListener('touchstart', ()=>card.style.transform='scale(1.01)');
+      card.addEventListener('touchend', ()=>card.style.transform='');
+    })();
+
+    // Zoom demo control for the mock screen
+    function zoomDemo(scale){
+      const screen = document.querySelector('.screen');
+      if(!screen) return;
+      screen.style.transition = 'transform 600ms cubic-bezier(.2,.9,.3,1)';
+      screen.style.transform = `scale(${scale}) translateY(-6px)`;
+      setTimeout(()=>{ screen.style.transform = ''; }, 1400);
+    }
+  </script>
+</body>
+</html>
