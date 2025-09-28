@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle — Portfolio</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg2: #11172a;
+      --card: #141a24;
+      --text: #e8f0ff;
+      --muted: #a4b4d6;
+      --accent: #4ee1d2;
+      --glow: 0 0 20px rgba(110,231,210,.6);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI";
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(78, 0, 255, 0.15), transparent 40%), radial-gradient(circle at 100% 0%, rgba(0, 180, 255, 0.12), transparent 40%), #0b0f14;
+      background-color: #0b0f14;
+      overflow-x: hidden;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 1.25rem;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      background: rgba(2,6,23,0.8);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .brand { display:flex; align-items:center; gap:.75rem; }
+    .brand .logo { width: 28px; height:28px; border-radius:8px; background: linear-gradient(135deg, #00e5ff, #9b5cff); box-shadow: 0 0 16px rgba(0,229,255,.8); }
+    .brand h1 { font-size: 1.1rem; margin:0; letter-spacing:.2px; color:#e8f2ff; }
+    .brand .badge { font-size:12px; padding:4px 8px; border-radius:999px; background: rgba(78, 232, 210, .15); color:#aaf3e3; border:1px solid rgba(110,231,210,.4); }
+
+    .hero { padding: 6rem 2rem 3rem; min-height: 60vh; display:flex; align-items:center; justify-content:center; text-align:center; position: relative; overflow:hidden; }
+    .hero-content { max-width: 860px; transform: translateZ(0); perspective: 1000px; }
+    .title { font-size: clamp(2.5rem, 6vw, 6rem); line-height: 1.05; margin: 0; font-weight: 900; letter-spacing: .5px;
+      background: linear-gradient(135deg, #9df3ff 0%, #a0ffdc 40%, #ffd2a8 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 0 40px rgba(0,0,0,.25); filter: drop-shadow(0 8px 28px rgba(0,0,0,.4));
+    }
+    .subtitle { font-size: 1.05rem; color: var(--muted); margin-top: .75rem; }
+
+    .meta { margin-top: 1.5rem; display:flex; justify-content:center; gap: 1rem; flex-wrap: wrap;}
+    .meta .chip { padding: .5rem 1rem; border-radius: 999px; border:1px solid rgba(110,231,210,.5); color:#d9fff2; background: rgba(110,231,210,.08); font-size:.85rem; }
+    .creation { margin-top: 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas; font-size: .92rem; color:#a9c6ff; }
+
+    .section { padding: 4rem 2rem; }
+    .section h2 { font-size: 2rem; margin: 0 0 .75rem; text-align: center; color:#eaf3ff; }
+    .section p { max-width: 700px; margin: 0 auto; color: #cbd6f5; text-align:center; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; padding: 1rem; }
+
+    .card { background: linear-gradient(180deg, rgba(20,26,36,.95), rgba(20,26,36,.75)); border:1px solid rgba(125,160,255,.25);
+      border-radius: 16px; padding: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,.4); transition: transform .25s ease, box-shadow .25s ease;
+      transform-style: preserve-3d; position: relative; overflow: hidden; isolation: isolate;
+    }
+    .card:hover { transform: scale(1.04); box-shadow: 0 16px 40px rgba(0,0,0,.5); }
+    .card .card-title { font-weight: 700; font-size: 1.15rem; margin-bottom: .25rem; color: #e7f0ff; }
+    .card .card-desc { font-size: .92rem; color: #cbd7ff; margin-bottom: .75rem; min-height: 48px; }
+    .tags { display:flex; gap:.5rem; flex-wrap: wrap; }
+    .tag { font-size:.75rem; padding:.25rem .5rem; border-radius:999px; border:1px solid rgba(110,231,210,.4); color:#bff6e9; background: rgba(110,231,210,.08); }
+
+    .skillbar { height: 8px; border-radius: 999px; background: rgba(125, 140, 255, .25); overflow: hidden; }
+    .skillbar > span { display:block; height: 100%; background: linear-gradient(90deg, #4ee1d2, #7ce7ff); width: 0%; }
+
+    .footer { padding: 1.5rem; text-align: center; color: #a5b3da; border-top: 1px solid rgba(255,255,255,.08); background: #0a0f15; }
+
+    .tilt { transition: transform .1s ease; transform-style: preserve-3d; will-change: transform; }
+
+    @media (max-width: 700px){
+      .title { font-size: 3.5rem; }
+      .hero { padding: 3rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand" aria-label="Site Brand">
+    <div class="logo" aria-hidden="true"></div>
+    <h1>amirabolfazle</h1>
+    <span class="badge" title="Portfolio builder">Dark</span>
+  </div>
+  <nav aria-label="Main navigation" style="opacity:.9">
+    <a href="#projects" style="color:#cfe9ff; text-decoration:none; margin-right:.75rem;">Projects</a>
+    <a href="#about" style="color:#cfe9ff; text-decoration:none; margin-right:.75rem;">About</a>
+    <a href="#contact" style="color:#cfe9ff; text-decoration:none;">Contact</a>
+  </nav>
+</header>
+
+<section class="hero" aria-label="Hero">
+  <div class="hero-content tilt" id="hero-tilt">
+    <h2 class="title" style="font-weight:900; font-size: clamp(2rem, 9vw, 6rem); margin:0 0 .5rem;">amirabolfazle</h2>
+    <p class="subtitle">A curious engineer crafting playful interfaces with code and motion.</p>
+    <div class="meta" aria-label="Creation time">
+      <span class="chip" style="background: rgba(0,0,0,.2); border:1px solid rgba(110,231,210,.5);">Dark mode</span>
+      <span class="chip" style="background: rgba(0,0,0,.2); border:1px solid rgba(110,231,210,.5);">Zoom interactions</span>
+      <span class="chip" style="background: rgba(0,0,0,.2); border:1px solid rgba(110,231,210,.5);">Creation time: 2025-09-28 05:46:55</span>
+    </div>
+    <div class="creation" aria-label="Creation timestamp" style="margin-top:0.5rem;">
+      Created on 2025-09-28 05:46:55
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about" aria-label="About">
+  <h2>About</h2>
+  <p>I'm a developer who loves building tiny, delightful web experiences. I enjoy exploring motion, micro-interactions, and accessible design. This is a single-file portfolio showcasing a few personal projects and what inspires me.</p>
+</section>
+
+<section class="section" id="projects" aria-label="Projects">
+  <h2>Projects</h2>
+  <div class="grid tilt" id="project-grid">
+    <article class="card" aria-label="Project 1" style="min-height:140px;">
+      <div class="card-title">Aurora Editor</div>
+      <div class="card-desc">A lightweight text editor with live syntax highlighting and keyboard-first navigation.</div>
+      <div class="tags" aria-label="Technologies">
+        <span class="tag">JavaScript</span><span class="tag">CSS</span><span class="tag">WebGL</span>
+      </div>
+      <div class="skillbar" style="margin-top:.75rem;">
+        <span style="width:78%"></span>
+      </div>
+    </article>
+    <article class="card" aria-label="Project 2" style="min-height:140px;">
+      <div class="card-title">Pulse Playground</div>
+      <div class="card-desc">An interactive canvas visualizer with reactive particles and bezier curves.</div>
+      <div class="tags" aria-label="Technologies">
+        <span class="tag">Canvas</span><span class="tag">SVG</span><span class="tag">Animation</span>
+      </div>
+      <div class="skillbar" style="margin-top:.75rem;">
+        <span style="width:66%"></span>
+      </div>
+    </article>
+    <article class="card" aria-label="Project 3" style="min-height:140px;">
+      <div class="card-title">Nebula Dashboard</div>
+      <div class="card-desc">A responsive admin panel with dark theme, widgets, and dynamic layouts.</div>
+      <div class="tags" aria-label="Technologies">
+        <span class="tag">React</span><span class="tag">CSS</span><span class="tag">TypeScript</span>
+      </div>
+      <div class="skillbar" style="margin-top:.75rem;">
+        <span style="width:72%"></span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="skills" aria-label="Skills">
+  <h2>Skills</h2>
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <div class="card tilt" aria-label="Skill: Frontend" style="padding: 1rem;">
+      <div class="card-title">Frontend</div>
+      <div class="card-desc">React, Vue, Svelte, HTML/CSS</div>
+      <div class="skillbar" style="margin-top:.5rem;">
+        <span style="width:88%"></span>
+      </div>
+    </div>
+    <div class="card tilt" aria-label="Skill: Graphics" style="padding: 1rem;">
+      <div class="card-title">Graphics</div>
+      <div class="card-desc">Canvas, WebGL, SVG</div>
+      <div class="skillbar" style="margin-top:.5rem;">
+        <span style="width:64%"></span>
+      </div>
+    </div>
+    <div class="card tilt" aria-label="Skill: Tools" style="padding: 1rem;">
+      <div class="card-title">Tools</div>
+      <div class="card-desc">Git, Webpack, npm, Figma</div>
+      <div class="skillbar" style="margin-top:.5rem;">
+        <span style="width:78%"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact" aria-label="Contact">
+  <h2>Contact</h2>
+  <p style="text-align:center; margin-bottom: .75rem;">Want to collaborate? Reach out below.</p>
+  <form style="max-width:520px; margin:0 auto; display:grid; gap:.75rem;">
+    <input aria-label="Your name" placeholder="Your name" style="padding:.75rem;border-radius:6px; border:1px solid #334; background:#0f1620; color:#e8f0ff;">
+    <input aria-label="Email" type="email" placeholder="Email" style="padding:.75rem;border-radius:6px; border:1px solid #334; background:#0f1620; color:#e8f0ff;">
+    <textarea aria-label="Message" placeholder="Message" rows="4" style="padding:.75rem;border-radius:6px; border:1px solid #334; background:#0f1620; color:#e8f0ff; resize: vertical;"></textarea>
+    <button type="submit" style="padding:.75rem 1.5rem; border-radius:6px; border:0; background: linear-gradient(135deg, #4ee1d2, #7c9bff); color:white; font-weight:600; cursor:pointer; align-self:start;">Send message</button>
+  </form>
+</section>
+
+<footer class="footer" aria-label="Footer">
+  <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noreferrer" style="display:inline-flex; align-items:center; gap:.5rem; text-decoration:none; color:#cfe9ff;">
+    <!-- GitHub Icon inline SVG -->
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+      <path d="M12 0.5C5.73.5 0.77 5.46 0.77 11.75c0 4.98 3.23 9.18 7.69 10.66.56.1.77-.24.77-.54 0-.27-.01-1.17-.02-2.13-3.13.68-3.79-1.35-3.79-1.35-.51-1.31-1.25-1.66-1.25-1.66-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.16 1.72 1.16 1 1.71 2.63 1.22 3.27.93.1-.72.39-1.22.71-1.5-2.5-.29-5.13-1.26-5.13-5.63 0-1.24.45-2.25 1.19-3.04-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.17a10.9 10.9 0 0 1 2.89-.39 10.88 10.88 0 0 1 2.91.39c2.21-1.48 3.18-1.17 3.18-1.17.63 1.58.24 2.75.12 3.04.75.79 1.18 1.8 1.18 3.04 0 4.39-2.64 5.34-5.15 5.63.4.34.76 1.01.76 2.04 0 1.48-.01 2.67-.01 3.03 0 .3.21.65.78.54A11.01 11.01 0 0 0 23.23 11.75C23.23 5.46 18.27.5 12 0.5z" />
+    </svg>
+    GitHub
+  </a>
+  <div style="margin-top:.25rem">Created by amirabolfazle</div>
+</footer>
+
+<script>
+  // Simple tilt effect for elements with class 'tilt'
+  (function(){
+    const tiltElems = document.querySelectorAll('.tilt');
+    const maxTilt = 8; // degrees
+    function applyTilt(e){
+      const el = e.currentTarget;
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      const x = (e.clientX - cx) / (rect.width/2);
+      const y = (cy - e.clientY) / (rect.height/2);
+      const rx = (maxTilt * y).toFixed(2);
+      const ry = (maxTilt * x).toFixed(2);
+      el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(20px)`;
+    }
+    function resetTilt(e){
+      e.currentTarget.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+    }
+    tiltElems.forEach(el => {
+      el.addEventListener('mousemove', applyTilt);
+      el.addEventListener('mouseleave', resetTilt);
+      // ensure children also tilt with the container
+      el.style.transition = 'transform .15s ease';
+    });
+  })();
+
+  // Optional micro-interaction: animate project cards on load
+  window.addEventListener('load', () => {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, idx) => {
+      card.style.opacity = 0;
+      card.style.transform = 'translateY(10px)';
+      setTimeout(() => {
+        card.style.transition = 'opacity .4s ease, transform .4s ease';
+        card.style.opacity = 1;
+        card.style.transform = 'translateY(0)';
+      }, idx * 60);
+    });
+  });
+</script>
+</body>
+</html>
