@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --neon-cyan: #00f5ff;
+      --neon-pink: #ff3bd4;
+      --bg: #05060a;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #eaffff;
+      background: #04060d;
+      background:
+        radial-gradient(circle at 20% -10%, rgba(0,255,255,.08), transparent 40%),
+        radial-gradient(circle at 80% 0%, rgba(255,0,180,.08), transparent 40%),
+        linear-gradient(135deg, #020306 0%, #020316 60%, #02040a 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bg-glow {
+      position: fixed;
+      top: -10vh;
+      left: -10vw;
+      width: 120vw;
+      height: 120vh;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(0,255,255,.15), rgba(255,0,180,.15), rgba(0,255,255,.15));
+      filter: blur(60px);
+      animation: rotate 20s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    header {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 1rem 2rem;
+      text-align: center;
+    }
+
+    .title {
+      font-size: clamp(2.6rem, 8vw, 9rem);
+      line-height: 0.95;
+      margin: 0;
+      color: #fff;
+      text-shadow:
+        0 0 6px rgba(0,255,255,.6),
+        0 0 12px rgba(0,255,255,.8),
+        0 0 24px rgba(120,0,255,.8);
+      letter-spacing: .04em;
+      transform: translateZ(0);
+      animation: flicker 3s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 19.999%, 22%, 62.999%, 64%, 100% {
+        text-shadow: 0 0 6px rgba(0,255,255,.6), 0 0 12px rgba(0,255,255,.8), 0 0 24px rgba(120,0,255,.8);
+      }
+      20%, 21%, 63%, 63.999% {
+        text-shadow: none;
+      }
+    }
+
+    .sub {
+      margin-top: .75rem;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: #d7e7ff;
+      opacity: .9;
+    }
+
+    .card {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 1.75rem;
+      border-radius: 12px;
+      border: 2px solid rgba(0,255,255,.6);
+      color: #eaffff;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      background: rgba(2,6,23,.3);
+      box-shadow: 0 0 24px rgba(0,255,255,.45);
+      animation: cardGlow 4s ease-in-out infinite;
+      transition: transform .3s ease;
+    }
+
+    @keyframes cardGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,255,255,.25); }
+      50% { box-shadow: 0 0 40px rgba(0,255,255,.6); }
+    }
+
+    .card:hover { transform: translateY(-6px); }
+
+    .cta {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #001018;
+      background: linear-gradient(135deg, #00ffd2, #4b9dff);
+      border: none;
+      padding: .75rem 1.25rem;
+      border-radius: 999px;
+      cursor: pointer;
+      outline: none;
+      animation: bounce 1.8s infinite;
+      box-shadow: 0 6px 20px rgba(0, 255, 210, .6);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      25% { transform: translateY(-8px); }
+      50% { transform: translateY(-4px); }
+      75% { transform: translateY(-6px); }
+    }
+
+    .demo-area {
+      margin: 3rem auto;
+      max-width: 900px;
+      padding: 0 1rem;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+      position: relative;
+    }
+
+    .orb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #00ffff;
+      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -20px;
+      animation: float 2.5s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes float {
+      0% { transform: translate(-50%, 0); opacity: .8; }
+      50% { transform: translate(-50%, -14px); opacity: 1; }
+      100% { transform: translate(-50%, 0); opacity: .8; }
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,.6);
+      color: #e0f0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
+      padding: .75rem;
+      z-index: 2;
+      backdrop-filter: blur(6px);
+      border-top: 1px solid rgba(0,255,255,.25);
+    }
+
+    .footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(0,255,255,.2);
+      padding: 0;
+      transition: transform .2s ease;
+      box-shadow: 0 0 12px rgba(0,255,255,.6);
+    }
+
+    .footer a:hover { transform: scale(1.05); }
+
+    .footer svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    .footer span {
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 600px) {
+      .title { font-size: clamp(2rem, 14vw, 5rem); }
+      .footer { justify-content: center; padding: .5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header>
+    <div class="orb" aria-hidden="true" style="left: calc(50% + 120px); top: 10px; animation-delay: .2s;"></div>
+    <h1 class="title" style="margin-bottom:.25rem;">amirabolfazle</h1>
+    <div class="sub" aria-label="creation-time-label">Creation time: 2025-09-28 11:33:40</div>
+  </header>
+
+  <main class="demo-area" aria-label="neon-demo-area">
+    <div class="card" role="button" aria-label="Demo button">
+      <button class="cta" onclick="alert('Neon vibes!')">Bounce Me</button>
+    </div>
+  </main>
+
+  <footer class="footer" aria-label="site-footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2C6.48 2 2 6.58 2 12.3c0 4.5 2.87 8.29 6.83 9.64.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.2-3.37-1.2-.46-1.22-1.12-1.55-1.12-1.55-.92-.63.07-.62.07-.62 1.02.07 1.56 1.04 1.56 1.04.9 1.56 2.36 1.11 2.94.85.09-.68.35-1.11.63-1.37-2.22-.25-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.25-.45-1.28.1-2.68 0 0 .84-.27 2.76 1.05A9.3 9.3 0 0 1 12 6.8c.85.01 1.7.11 2.5.33 1.92-1.32 2.76-1.05 2.76-1.05.56 1.4.21 2.43.11 2.68.66.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.81-4.57 5.07.36.32.69.95.69 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.3C22 6.58 17.52 2 12 2z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+</body>
+</html>
