@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#05060a;
+      --neon-pink:#ff2ecd;
+      --neon-cyan:#00e6ff;
+      --neon-green:#7aff9e;
+      --glass: rgba(255,255,255,0.03);
+      --speed: 4s;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      background:
+        radial-gradient(600px 300px at 10% 20%, rgba(0,230,255,0.06), transparent 10%),
+        radial-gradient(500px 250px at 90% 80%, rgba(255,46,205,0.05), transparent 10%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #e6f7ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      overflow:hidden;
+    }
+
+    .stage{
+      width:min(920px,92%);
+      padding:48px;
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 8px 40px rgba(2,6,23,0.7), 0 0 40px rgba(0,230,255,0.04) inset;
+      border: 1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px) saturate(1.1);
+      position:relative;
+      overflow:visible;
+    }
+
+    /* animated glowing title with zoom */
+    h1{
+      font-size:clamp(34px,7.5vw,84px);
+      letter-spacing: -0.02em;
+      margin:0 0 8px 0;
+      text-transform:lowercase;
+      color:var(--neon-pink);
+      text-shadow:
+        0 0 8px rgba(255,46,205,0.9),
+        0 0 24px rgba(255,46,205,0.5),
+        0 6px 20px rgba(0,0,0,0.6);
+      display:inline-block;
+      transform-origin:center;
+      animation: pulseZoom var(--speed) ease-in-out infinite;
+      will-change:transform;
+      padding:6px 12px;
+      border-radius:8px;
+      background: linear-gradient(90deg, rgba(255,46,205,0.02), rgba(0,230,255,0.03));
+    }
+
+    @keyframes pulseZoom{
+      0%{transform:scale(1); filter:blur(0px)}
+      50%{transform:scale(1.06); filter:blur(.2px)}
+      100%{transform:scale(1); filter:blur(0px)}
+    }
+
+    .subtitle{
+      color:var(--neon-cyan);
+      font-size:clamp(12px,2.6vw,18px);
+      margin-top:6px;
+      opacity:0.95;
+      display:block;
+      text-shadow: 0 0 8px rgba(0,230,255,0.12);
+    }
+
+    .meta{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--neon-green);
+      font-weight:600;
+      font-size:13px;
+      background:linear-gradient(90deg, rgba(122,255,158,0.03), transparent);
+      padding:10px 12px;
+      border-radius:10px;
+      width:max-content;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      border:1px solid rgba(122,255,158,0.06);
+      transform: translateZ(0);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+    /* subtle neon accent lines */
+    .accents{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+    .accents::before, .accents::after{
+      content:"";
+      position:absolute;
+      width:60%;
+      height:2px;
+      left:10%;
+      top:6%;
+      background: linear-gradient(90deg, transparent, rgba(255,46,205,0.2), transparent);
+      filter: blur(8px);
+      transform: rotate(-2deg);
+      opacity:0.9;
+    }
+    .accents::after{
+      top:auto;
+      bottom:6%;
+      left:20%;
+      width:50%;
+      background: linear-gradient(90deg, transparent, rgba(0,230,255,0.12), transparent);
+      transform: rotate(2deg);
+    }
+
+    /* footer with github icon */
+    footer{
+      margin-top:26px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:flex-start;
+      color:#bfeffd;
+      font-size:13px;
+      opacity:0.95;
+    }
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      background: linear-gradient(90deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+      border:1px solid rgba(0,230,255,0.04);
+    }
+    .gh:hover{ transform:translateY(-4px) scale(1.01); box-shadow: 0 18px 40px rgba(0,230,255,0.06)}
+    .gh svg{ filter:drop-shadow(0 0 8px rgba(0,0,0,0.4)); }
+
+    .created-by{opacity:0.9}
+
+    /* responsiveness */
+    @media (max-width:520px){
+      .stage{padding:28px}
+      .meta{font-size:12px}
+      footer{font-size:12px}
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" role="main" aria-labelledby="site-title">
+    <div class="accents" aria-hidden="true"></div>
+    <h1 id="site-title">amirabolfazle</h1>
+    <span class="subtitle">neon · minimal · animated</span>
+
+    <div class="meta" aria-live="polite">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9;margin-right:6px">
+        <path d="M12 1v11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M21 21H3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M5 5h14v14H5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+      </svg>
+      <span>Created: 2025-09-28 16:55:34</span>
+    </div>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display:block">
+          <path d="M12 .5C5.73.5.998 5.233.998 11.5c0 4.64 3.01 8.57 7.188 9.96.526.1.72-.228.72-.506 0-.25-.01-1.088-.015-1.966-2.923.636-3.54-1.408-3.54-1.408-.48-1.224-1.173-1.55-1.173-1.55-.96-.656.073-.643.073-.643 1.061.075 1.62 1.09 1.62 1.09.943 1.616 2.475 1.15 3.078.88.096-.684.37-1.15.673-1.414-2.335-.266-4.788-1.168-4.788-5.196 0-1.148.41-2.087 1.083-2.823-.108-.267-.47-1.345.103-2.803 0 0 .883-.283 2.895 1.08a10.06 10.06 0 012.635-.355c.895.004 1.795.12 2.636.355 2.01-1.363 2.893-1.08 2.893-1.08.575 1.458.213 2.536.105 2.803.675.736 1.083 1.675 1.083 2.823 0 4.038-2.46 4.927-4.8 5.187.38.33.716.98.716 1.976 0 1.427-.013 2.578-.013 2.93 0 .28.19.61.726.507C20.99 20.069 24 16.14 24 11.5 24 5.233 18.27.5 12 .5z" fill="currentColor"/>
+        </svg>
+        <span>autogen-code</span>
+      </a>
+      <div class="created-by">Created by amirabolfazle</div>
+    </footer>
+  </main>
+</body>
+</html>
