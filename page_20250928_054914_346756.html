@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0f1d;
+      --bg2: #0b1020;
+      --card: rgba(2,6,23,.6);
+      --border: rgba(0,255,255,.25);
+      --cyan: #00e5ff;
+      --pink: #ff4dff;
+      --lime: #39ff14;
+      --glow-cyan: 0 0 12px rgba(0,229,255,.8), 0 0 30px rgba(0,229,255,.5);
+      --glow-pink: 0 0 8px rgba(255,77,255,.8), 0 0 28px rgba(255,77,255,.5);
+      --text: #eaffff;
+    }
+
+    * {box-sizing: border-box}
+    html, body { height: 100%; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0,255,255,.15), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(255,0,170,.15), transparent 40%),
+                  linear-gradient(135deg, var(--bg), #050915 60%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated vignette glow */
+    @keyframes drift {
+      0% { filter: hue-rotate(0deg) brightness(1); }
+      50% { filter: hue-rotate(20deg) brightness(1.05); }
+      100% { filter: hue-rotate(0deg) brightness(1); }
+    }
+    .stage {
+      animation: drift 60s infinite alternate;
+    }
+
+    header.header {
+      padding: 48px 20px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: inline-block;
+      font-weight: 800;
+      font-size: clamp(2.6rem, 6vw, 6rem);
+      line-height: 1;
+      letter-spacing: .04em;
+      background: linear-gradient(92deg, #00e5ff, #ff4dff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 6px rgba(0,229,255,.8),
+        0 0 18px rgba(0,0,0,.4);
+      filter: saturate(1.2);
+      user-select: none;
+    }
+
+    .tagline {
+      margin-top: 12px;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: #e6faff;
+      opacity: .85;
+      text-shadow: 0 0 8px rgba(0,229,255,.5);
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .85rem;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.15);
+      box-shadow: inset 0 0 12px rgba(0,255,255,.25);
+      color: #eaffff;
+      text-shadow: 0 0 6px rgba(0,255,255,.8);
+    }
+
+    main {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    section.section {
+      padding: 48px 0;
+    }
+
+    h2.section-title {
+      font-size: 1.6rem;
+      margin: 0 0 14px;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0,255,255,.8);
+    }
+
+    p.lead {
+      color: #d9f7ff;
+      margin: 0 0 18px;
+      max-width: 70ch;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all .6s ease-out;
+    }
+
+    .card.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+      color: #eaffff;
+      text-shadow: 0 0 6px rgba(0,255,255,.8);
+    }
+
+    .card p {
+      margin: 0 0 10px;
+      color: #d9f7ff;
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+
+    .tags {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tags li {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: .75rem;
+      border: 1px solid rgba(0,255,255,.3);
+      background: rgba(0,255,255,.15);
+      color: #eaffff;
+      text-shadow: 0 0 6px rgba(0,255,255,.8);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .9rem;
+      color: #041018;
+      background: linear-gradient(135deg, #a6fff3, #9b5cff);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 12px rgba(0,0,0,.25), inset 0 0 8px rgba(0,0,0,.15);
+    }
+
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(0,0,0,.35);
+    }
+
+    /* neon glow accents for headings in sections */
+    .section-title {
+      color: #eaffff;
+      text-shadow: 0 0 10px rgba(0,255,255,.9);
+      margin-bottom: 6px;
+    }
+
+    /* Footer */
+    footer.footer {
+      border-top: 1px solid rgba(255,255,255,.15);
+      padding: 18px 20px;
+      text-align: center;
+      color: #cfefff;
+      background: rgba(2,6,23,.6);
+    }
+
+    .footer a.icon {
+      color: #bffaff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      margin-right: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.15);
+      text-decoration: none;
+      box-shadow: var(--glow-cyan);
+    }
+
+    .footer .credit {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .92rem;
+      color: #eaffff;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 700px){
+      .creation-time { display: inline-block; margin-top: 12px; }
+      header.header { padding: 28px 14px 12px; }
+    }
+
+    /* Reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .card { transition: none; transform: none; opacity: 1; }
+      .creation-time { transition: none; }
+    }
+  </style>
+</head>
+<body class="stage">
+  <header class="header" aria-label="Intro">
+    <div class="brand" id="brand">amirabolfazle</div>
+    <div class="tagline">Neon UI • Animations • Frontend</div>
+    <div class="creation-time" aria-label="Creation time">
+      2025-09-28 05:48:41
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <h2 class="section-title" id="about-title">About</h2>
+        <p class="lead">
+          A clean, animated, one-file portfolio built with a neon aesthetic. This page demonstrates slide-up card animations, a dark glow palette, and concise project snapshots.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <h2 class="section-title" id="projects-title">Projects</h2>
+        <p class="lead">A small selection of work snippets. Hover or scroll to reveal the neon cards.</p>
+        <div class="grid" id="grid">
+          <article class="card slide-up" aria-label="Project Neon Pulse">
+            <h3>Neon Pulse Dashboard</h3>
+            <p>A lightweight, real-time dashboard with neon glass UI and subtle, performant animations.</p>
+            <ul class="tags" aria-label="Technologies-used">
+              <li>HTML</li><li>CSS</li><li>Vanilla JS</li><li>Canvas</li>
+            </ul>
+            <a class="cta" href="#" title="Live Demo">Live Demo</a>
+          </article>
+
+          <article class="card slide-up" aria-label="Project Aurora Gallery">
+            <h3>Aurora Gallery</h3>
+            <p>Animated image gallery with parallax and keyboard navigation for a crisp experience.</p>
+            <ul class="tags" aria-label="Technologies-used">
+              <li>CSS</li><li>JS</li><li>Accessibility</li>
+            </ul>
+            <a class="cta" href="#" title="Live Demo">Live Demo</a>
+          </article>
+
+          <article class="card slide-up" aria-label="Project Neon Chat">
+            <h3>Neon Chat</h3>
+            <p>Minimal chat interface with glow effects and smooth transitions between messages.</p>
+            <ul class="tags" aria-label="Technologies-used">
+              <li>Web Components</li><li>CSS Animations</li>
+            </ul>
+            <a class="cta" href="#" title="Live Demo">Live Demo</a>
+          </article>
+
+          <article class="card slide-up" aria-label="Project Flux Forms">
+            <h3>Flux Forms</h3>
+            <p>Accessible, animated forms with instant validation and neon accents.</p>
+            <ul class="tags" aria-label="Technologies-used">
+              <li>HTML</li><li>CSS</li><li>ARIA</li>
+            </ul>
+            <a class="cta" href="#" title="Live Demo">Live Demo</a>
+          </article>
+
+          <article class="card slide-up" aria-label="Project Pulse Playground">
+            <h3>Pulse Playground</h3>
+            <p>Playful UI playground to experiment with glow intensities and timing.</p>
+            <ul class="tags" aria-label="Technologies-used">
+              <li>CSS</li><li>JS</li>
+            </ul>
+            <a class="cta" href="#" title="Live Demo">Live Demo</a>
+          </article>
+
+          <article class="card slide-up" aria-label="Project Nebula Notes">
+            <h3>Nebula Notes</h3>
+            <p>Minimal note app with smooth slide transitions and a dark backdrop.</p>
+            <ul class="tags" aria-label="Technologies-used">
+              <li>LocalStorage</li><li>PWA</li>
+            </ul>
+            <a class="cta" href="#" title="Live Demo">Live Demo</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:block;">
+        <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.06-.02-2.09-3.34.73-4.04-1.43-4.04-1.43a3.18 3.18 0 00-1.33-1.75c-.01-.74-.52-1.46-1.29-1.66-.85-.22-.9-.98-.9-1.98 0-1.01.73-1.84 1.74-2.04-.08-.21-.29-1.04.08-2.17 0 0 1.41-.45 4.62 1.54a15.9 15.9 0 013.98-.57c1.43.01 2.87.19 4.22.57 3.2-2 4.61-1.54 4.61-1.54.37 1.13.16 1.96.08 2.17.97.2 1.74 1.03 1.74 2.04 0 1-.05 1.76-.08 2.04-.74.2-1.24 1-1.26 2.04-.01 1.03-.01 1.88-.01 2.13 0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple IntersectionObserver to trigger slide-up elements
+    (function(){
+      const cards = document.querySelectorAll('.card.slide-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+
+      cards.forEach(card => observer.observe(card));
+    })();
+
+    // Optional: add a little glow on the brand to feel dynamic on load
+    (function(){
+      const brand = document.getElementById('brand');
+      if (!brand) return;
+      let t = 0;
+      function glow() {
+        t += 0.04;
+        const hue = Math.abs(Math.sin(t)) * 180;
+        brand.style.filter = 'hue-rotate(' + hue + 'deg)';
+        requestAnimationFrame(glow);
+      }
+      glow();
+    })();
+  </script>
+</body>
+</html>
