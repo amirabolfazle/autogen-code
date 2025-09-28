@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle • Neon Portfolio</title>
+  <style>
+    :root{
+      --bg: #0a0a0f;
+      --bg2: #0b0b18;
+      --text: #eaf8ff;
+      --muted: #93a3b8;
+      --neon-cyan: #00e5ff;
+      --neon-pink: #ff4dbe;
+      --neon-green: #39ff14;
+      --glass: rgba(10,10,20,.6);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient( circle at 20% 0%, rgba(0,229,255,.08), transparent 40% ),
+                  radial-gradient( circle at 70% 20%, rgba(255,0,208,.08), transparent 40% ),
+                  linear-gradient(#0b0b12, #0b0b12 60%, #0b0b12);
+      background-color: #0b0b12;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated neon glow on a dark backdrop */
+    .neon {
+      text-shadow:
+        0 0 6px rgba(0,229,255,.9),
+        0 0 12px rgba(0,229,255,.6),
+        0 0 28px rgba(0,229,255,.4);
+    }
+
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid rgba(0,255,255,.25);
+      background: rgba(4,4,12,.8);
+      backdrop-filter: saturate(1.2) blur(2px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #00e5ff 0%, #ff4dbe 100%);
+      filter: saturate(1.2);
+      box-shadow: 0 0 12px rgba(0,229,255,.8);
+    }
+
+    .brand-name {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: .4px;
+      color: #e9fbff;
+      text-transform: lowercase;
+      text-shadow:
+        0 0 6px rgba(0,229,255,.9),
+        0 0 12px rgba(0,229,255,.6);
+    }
+
+    nav a {
+      color: #e7fdff;
+      text-decoration: none;
+      margin: 0 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      border: 1px solid rgba(0,255,255,.25);
+      transition: transform .2s ease, background .2s ease;
+    }
+    nav a:hover {
+      transform: translateY(-1px);
+      background: rgba(0,255,255,.15);
+    }
+
+    .creation-tag {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono";
+      font-size: .85rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.4);
+      color: #d9f6ff;
+      background: rgba(0, 229, 255, .08);
+      box-shadow: inset 0 0 12px rgba(0,255,255,.25);
+    }
+
+    main {
+      padding: 40px 20px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section.section {
+      margin: 48px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    section.section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2.section-title {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      color: #eaffff;
+      text-shadow: 0 0 12px rgba(0,229,255,.9);
+    }
+
+    p.lead {
+      color: var(--muted);
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 18px;
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 12px;
+      background: rgba(10,12,20,.65);
+      border: 1px solid rgba(0,255,255,.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,.4);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0,255,255,.55);
+      box-shadow: 0 14px 40px rgba(0,255,255,.25);
+    }
+
+    .card-title {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      color: #eaffff;
+      text-shadow: 0 0 8px rgba(0,229,255,.9);
+    }
+
+    .card-desc {
+      margin: 0;
+      color: #cbd8e6;
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+
+    .card-icon {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 8px;
+      padding: 6px;
+      background: linear-gradient(135deg, rgba(0,229,255,.25), rgba(57,255,20,.25));
+      box-shadow: 0 0 14px rgba(0,229,255,.6);
+      color: #baffff;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 600px){
+      .brand-name { font-size: 1.4rem; }
+      nav { display: none; }
+      .creation-tag { display: none; }
+    }
+
+    footer.site-footer {
+      margin-top: 60px;
+      padding: 22px;
+      text-align: center;
+      color: #a9b8cb;
+      border-top: 1px solid rgba(0,255,255,.25);
+      background: rgba(2,2,12,.6);
+    }
+
+    footer a.github-link {
+      color: #aeefff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 10px;
+    }
+
+    footer svg {
+      width: 22px; height: 22px;
+      color: #aeefff;
+      vertical-align: middle;
+    }
+
+    /* Tiny shimmer for neon glow on headings */
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 6px rgba(0,229,255,.9), 0 0 12px rgba(0,229,255,.6); }
+      50% { text-shadow: 0 0 16px rgba(255,0,208,.95), 0 0 28px rgba(0,229,255,.6); }
+    }
+
+    h1, h2 { animation: glow 6s infinite; }
+
+    /* Creation time badge placement style for a bit of neon flair in header area on load */
+    .creation-wrapper {
+      display: flex; align-items: center; gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Site header">
+    <div class="brand">
+      <div class="brand-logo" aria-label="Logo"></div>
+      <div class="brand-name neon" style="font-family:inherit; font-size:1.8rem; letter-spacing:.5px;">
+        amirabolfazle
+      </div>
+    </div>
+
+    <nav aria-label="Main navigation">
+      <a href="#about" title="About">About</a>
+      <a href="#projects" title="Projects">Projects</a>
+      <a href="#contact" title="Contact">Contact</a>
+    </nav>
+
+    <div class="creation-wrapper" aria-label="Creation time badge">
+      <span class="creation-tag" title="Creation time">2025-09-28 08:09:54</span>
+    </div>
+  </header>
+
+  <main>
+    <section id="about" class="section visible" aria-labelledby="about-title">
+      <div class="section-header">
+        <h2 id="about-title" class="neon" style="margin:0; font-size:1.5rem;">About this portfolio</h2>
+      </div>
+      <p class="lead" style="max-width:720px;">
+        Welcome to a neon-inspired, single-file portfolio. This page uses fade-in effects to greet you with a
+        touch of retro-futurism while keeping everything self-contained in one file.
+      </p>
+    </section>
+
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <div class="section-header">
+        <h2 id="projects-title" class="neon" style="margin:0;">Projects</h2>
+      </div>
+      <div class="grid">
+        <article class="card fade-in" style="animation-delay:.05s;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="card-icon" aria-label="Icon">🚀</div>
+            <h3 class="card-title" style="margin:0;">Autogen Code Studio</h3>
+          </div>
+          <p class="card-desc">A lightweight playground that demonstrates on-the-fly code generation and templates with a neon UI.</p>
+        </article>
+
+        <article class="card fade-in" style="animation-delay:.15s;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="card-icon" aria-label="Icon">⚡</div>
+            <h3 class="card-title" style="margin:0;">Neon Animations</h3>
+          </div>
+          <p class="card-desc">A collection of ready-to-use CSS-driven fade-in and glow effects for stylish UIs.</p>
+        </article>
+
+        <article class="card fade-in" style="animation-delay:.25s;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="card-icon" aria-label="Icon">🧭</div>
+            <h3 class="card-title" style="margin:0;">Portfolio Toolkit</h3>
+          </div>
+          <p class="card-desc">A tiny toolkit to assemble fast, elegant, single-file projects without external dependencies.</p>
+        </article>
+
+        <article class="card fade-in" style="animation-delay:.35s;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="card-icon" aria-label="Icon">🎨</div>
+            <h3 class="card-title" style="margin:0;">Design Systems</h3>
+          </div>
+          <p class="card-desc">Color palettes, typography scales, and glow-first aesthetics for bold interfaces.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <div class="section-header">
+        <h2 id="contact-title" class="neon" style="margin:0;">Contact</h2>
+      </div>
+      <p class="lead" style="max-width:720px;">
+        Reach out with ideas or projects. This is a simple, self-contained page—built to be easy to reuse.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" title="GitHub repository">
+      <!-- GitHub icon inline SVG -->
+      <svg role="img" aria-label="GitHub icon" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" focusable="false">
+        <path d="M12 .5C5.73.5 0 6.23 0 12.01c0 5.08 3.29 9.37 7.86 10.89.58.11.79-.25.79-.56 0-.28-.01-1-.02-1.96-3.2.7-3.88-1.38-3.88-1.38-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.77 2.74 1.26 3.41.96.1-.75.41-1.26.75-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.19a11.1 11.1 0 0 1 2.9-.39c1.04.01 2.09.14 3.07.41 2.21-1.5 3.18-1.19 3.18-1.19.63 1.58.23 2.75.12 3.04.74.81 1.19 1.84 1.19 3.1 0 4.44-2.69 5.41-5.26 5.69.42.36.79 1.07.79 2.15 0 1.55-.01 2.8-.01 3.19 0 .3.21.67.8.55C20.71 21.37 24 17.08 24 12c0-5.77-5.73-11.5-12-11.5z"/>
+      </svg>
+      GitHub
+    </a>
+    <span style="margin-left:8px;">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple fade-in sequence for sections on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section.section');
+      sections.forEach((sec, idx) => {
+        // staggered reveal
+        setTimeout(() => sec.classList.add('visible'), idx * 180);
+      });
+      // reveal header items if needed
+      const headerVisible = document.querySelectorAll('.brand, nav a, .creation-tag');
+      headerVisible.forEach((el, i) => {
+        setTimeout(() => el.style.opacity = 1, 50 + i * 60);
+      });
+    });
+  </script>
+</body>
+</html>
