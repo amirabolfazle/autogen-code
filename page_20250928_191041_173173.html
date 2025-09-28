@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1: #0f1724;
+    --bg2: #071224;
+    --glass: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --accent: rgba(130, 90, 252, 0.85);
+    --muted: rgba(255,255,255,0.75);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(135deg,var(--bg1) 0%, var(--bg2) 45%);
+    color: white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  /* animated rotating gradient orb behind */
+  .orb{
+    position:fixed;
+    left:50%;
+    top:50%;
+    width:110vmax;
+    height:110vmax;
+    transform:translate(-50%,-50%);
+    background: radial-gradient(circle at 30% 20%, rgba(130,90,252,0.15), transparent 8%),
+                radial-gradient(circle at 70% 80%, rgba(0, 200, 255, 0.08), transparent 12%),
+                conic-gradient(from 120deg at 50% 50%, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+    filter: blur(60px) saturate(130%);
+    mix-blend-mode: screen;
+    animation: rotateOrb 20s linear infinite;
+    pointer-events:none;
+    z-index:0;
+  }
+  @keyframes rotateOrb{ to{ transform: translate(-50%,-50%) rotate(360deg); } }
+
+  /* main card */
+  .wrap{
+    position:relative;
+    z-index:1;
+    width: min(92vw, 720px);
+    margin: 40px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    transform-style:preserve-3d;
+    perspective:1000px;
+  }
+
+  .card{
+    width:100%;
+    padding:40px;
+    border-radius:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px) saturate(120%);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    transform: rotateX(6deg) rotateY(-6deg);
+    transition: transform 400ms cubic-bezier(.2,.9,.25,1);
+    animation: slowRotate 12s ease-in-out infinite;
+  }
+
+  .card:hover{
+    transform: rotateX(0deg) rotateY(0deg) translateY(-6px) scale(1.01);
+  }
+
+  @keyframes slowRotate{
+    0%{ transform: rotateX(6deg) rotateY(-6deg) }
+    50%{ transform: rotateX(-4deg) rotateY(8deg) }
+    100%{ transform: rotateX(6deg) rotateY(-6deg) }
+  }
+
+  h1{
+    font-size: clamp(1.4rem, 4.2vw, 2.2rem);
+    letter-spacing: 0.6px;
+    color: white;
+    text-shadow: 0 2px 14px rgba(130,90,252,0.12);
+  }
+
+  .meta{
+    font-size: 0.95rem;
+    color: var(--muted);
+    display:flex;
+    gap:8px;
+    align-items:center;
+    background: linear-gradient(90deg, rgba(255,255,255,0.015), transparent);
+    padding:8px 12px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 4px 18px rgba(2,6,23,0.45);
+  }
+
+  .time{
+    font-variant-numeric: tabular-nums;
+    display:inline-block;
+    transform: translateZ(40px);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float{
+    0%{ transform: translateY(0) translateZ(40px); }
+    50%{ transform: translateY(-6px) translateZ(40px); }
+    100%{ transform: translateY(0) translateZ(40px); }
+  }
+
+  footer{
+    margin-top:14px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    align-items:center;
+    color:var(--muted);
+    font-size:0.92rem;
+    padding-top:8px;
+    padding-bottom:6px;
+  }
+
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:var(--muted);
+    padding:8px 10px;
+    border-radius:10px;
+    transition: background .18s, transform .18s;
+    background: transparent;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  .gh:hover{
+    transform: translateY(-4px);
+    background: linear-gradient(90deg, rgba(130,90,252,0.06), rgba(0,200,255,0.03));
+    color: white;
+  }
+
+  .icon{
+    width:18px;
+    height:18px;
+    display:inline-block;
+    fill:currentColor;
+    opacity:0.95;
+    transform: translateZ(30px);
+  }
+
+  /* small responsive tweaks */
+  @media (max-width:420px){
+    .card{ padding:24px; border-radius:14px; }
+    .meta{ font-size:0.88rem; padding:6px 10px; }
+    footer{ font-size:0.85rem; gap:6px }
+  }
+</style>
+</head>
+<body>
+  <div class="orb" aria-hidden="true"></div>
+
+  <div class="wrap" role="main" aria-labelledby="title">
+    <section class="card" aria-label="amirabolfazle landing">
+      <h1 id="title">amirabolfazle</h1>
+      <div class="meta">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 .5C5.73.5.87 5.36.87 11.63c0 4.79 3.1 8.87 7.4 10.32.54.1.74-.23.74-.52 0-.26-.01-1-.02-1.96-3.01.65-3.64-1.45-3.64-1.45-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.65.07-.65 1.08.08 1.65 1.11 1.65 1.11.97 1.66 2.54 1.18 3.16.9.1-.7.38-1.18.69-1.45-2.4-.27-4.93-1.2-4.93-5.34 0-1.18.42-2.15 1.11-2.91-.11-.27-.48-1.38.11-2.87 0 0 .9-.29 2.95 1.11a10.2 10.2 0 0 1 2.69-.36c.91.01 1.83.12 2.69.36 2.04-1.4 2.94-1.11 2.94-1.11.59 1.49.22 2.6.11 2.87.69.76 1.11 1.73 1.11 2.91 0 4.15-2.53 5.06-4.95 5.33.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.62.75.51 4.3-1.46 7.39-5.54 7.39-10.33C23.13 5.36 18.27.5 12 .5z"/>
+        </svg>
+        <span class="time">Creation time: 2025-09-28 19:09:51</span>
+      </div>
+      <p style="margin-top:8px;color:rgba(255,255,255,0.78);font-size:0.95rem;opacity:0.95">
+        Minimal glassmorphism with gentle rotate effects.
+      </p>
+    </section>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" role="img">
+          <path d="M12 .5C5.73.5.87 5.36.87 11.63c0 4.79 3.1 8.87 7.4 10.32.54.1.74-.23.74-.52 0-.26-.01-1-.02-1.96-3.01.65-3.64-1.45-3.64-1.45-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.65.07-.65 1.08.08 1.65 1.11 1.65 1.11.97 1.66 2.54 1.18 3.16.9.1-.7.38-1.18.69-1.45-2.4-.27-4.93-1.2-4.93-5.34 0-1.18.42-2.15 1.11-2.91-.11-.27-.48-1.38.11-2.87 0 0 .9-.29 2.95 1.11a10.2 10.2 0 0 1 2.69-.36c.91.01 1.83.12 2.69.36 2.04-1.4 2.94-1.11 2.94-1.11.59 1.49.22 2.6.11 2.87.69.76 1.11 1.73 1.11 2.91 0 4.15-2.53 5.06-4.95 5.33.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.62.75.51 4.3-1.46 7.39-5.54 7.39-10.33C23.13 5.36 18.27.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
