@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#071129;
+    --glass-bg: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --accent1: #7ce3ff;
+    --accent2: #b58bff;
+    --muted: rgba(255,255,255,0.75);
+    --soft: rgba(255,255,255,0.04);
+    --glass-blur: 12px;
+    --card-radius: 16px;
+  }
+  *{box-sizing:border-box}
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(124,227,255,0.06), transparent),
+                radial-gradient(900px 400px at 90% 90%, rgba(181,139,255,0.05), transparent),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color: #eaf4ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:auto;
+    padding:40px 20px;
+  }
+
+  /* animated floating nebula shapes */
+  .scene {
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+  }
+  .blob{
+    position:absolute;
+    filter: blur(60px) saturate(140%);
+    opacity:0.25;
+    mix-blend-mode: screen;
+    transform: translate3d(0,0,0);
+    animation: float 12s ease-in-out infinite;
+  }
+  .blob.b1{width:520px;height:520px;border-radius:50%;background:linear-gradient(120deg,var(--accent1),transparent);left:-10%;top:-10%;animation-duration:18s;}
+  .blob.b2{width:360px;height:360px;border-radius:50%;background:linear-gradient(120deg,transparent,var(--accent2));right:-6%;bottom:-8%;animation-duration:16s;animation-delay:3s;}
+  @keyframes float{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-30px) scale(1.05)}
+    100%{transform:translateY(0) scale(1)}
+  }
+
+  /* layout */
+  .wrap{
+    position:relative;
+    max-width:1000px;
+    margin:0 auto;
+    z-index:2;
+    display:grid;
+    grid-template-columns: 340px 1fr;
+    gap:28px;
+    align-items:start;
+  }
+
+  /* glass panel */
+  .glass{
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    padding:22px;
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    box-shadow: 0 8px 40px rgba(2,6,23,0.6);
+    color:var(--muted);
+    overflow:hidden;
+  }
+
+  header.profile{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    margin-bottom:12px;
+  }
+  .avatar{
+    width:86px;
+    height:86px;
+    border-radius:18px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:34px;
+    color: #fff;
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 6px 20px rgba(7,10,20,0.6), inset 0 -6px 20px rgba(0,0,0,0.2);
+  }
+  .handle{
+    display:flex;
+    flex-direction:column;
+  }
+  .handle h1{
+    margin:0;
+    font-size:20px;
+    letter-spacing:0.6px;
+    color: #fff;
+  }
+  .handle p{
+    margin:4px 0 0 0;
+    font-size:13px;
+    color:rgba(235,245,255,0.7);
+  }
+
+  .meta{
+    margin-top:10px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    background:var(--soft);
+    padding:8px 10px;
+    border-radius:999px;
+    font-size:12px;
+    color:rgba(255,255,255,0.9);
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* main content cards */
+  .cards{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .card{
+    padding:18px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .card h2{
+    margin:0 0 8px 0;
+    font-size:15px;
+    color:#fff;
+  }
+  .card p{margin:0;color:rgba(230,245,255,0.8);line-height:1.5;font-size:14px}
+
+  /* project grid */
+  .projects{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:12px;
+    margin-top:12px;
+  }
+  .proj{
+    padding:12px;
+    border-radius:10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    min-height:86px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .proj:hover{
+    transform:translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+  }
+  .proj .title{font-weight:600;color:#fff;font-size:13px}
+  .proj .desc{font-size:12px;color:rgba(235,245,255,0.7);margin-top:6px}
+
+  /* contact row */
+  .contact-row{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    padding:10px 12px;
+    border-radius:10px;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    color:#05202a;
+    font-weight:700;
+    font-size:13px;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    box-shadow: 0 6px 18px rgba(116,58,202,0.12);
+  }
+  .ghost{
+    padding:10px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:rgba(235,245,255,0.9);font-size:13px;text-decoration:none;
+  }
+
+  /* creation time ribbon */
+  .created{
+    font-size:12px;
+    color:rgba(210,230,255,0.75);
+    margin-top:8px;
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .time-badge{
+    padding:6px 8px;
+    background:rgba(255,255,255,0.03);
+    border-radius:8px;
+    font-family:monospace;
+    font-size:12px;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* footer */
+  footer.site-footer{
+    margin-top:28px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:center;
+    color:rgba(230,245,255,0.78);
+    font-size:13px;
+    z-index:2;
+  }
+  .github-link{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    text-decoration:none;
+    color:inherit;
+    padding:8px 12px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .github-icon{width:18px;height:18px;display:inline-block;vertical-align:middle;fill:currentColor}
+
+  /* animations for content reveal */
+  .reveal{opacity:0;transform:translateY(12px);animation:fadeInUp .8s cubic-bezier(.2,.9,.2,1) forwards}
+  .reveal.delay-1{animation-delay:0.08s}
+  .reveal.delay-2{animation-delay:0.16s}
+  .reveal.delay-3{animation-delay:0.26s}
+  .reveal.delay-4{animation-delay:0.34s}
+  .reveal.delay-5{animation-delay:0.42s}
+
+  @keyframes fadeInUp{
+    to{opacity:1;transform:none}
+  }
+
+  /* small screens */
+  @media (max-width:880px){
+    .wrap{grid-template-columns:1fr; padding-bottom:40px}
+    .avatar{width:72px;height:72px;border-radius:12px}
+  }
+
+  /* reduce motion preference */
+  @media (prefers-reduced-motion:reduce){
+    .blob{animation:none}
+    .reveal{animation:none;opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+  </div>
+
+  <main class="wrap" role="main">
+    <aside class="glass reveal delay-1" aria-labelledby="profile-name">
+      <header class="profile">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div class="handle">
+          <h1 id="profile-name">amirabolfazle</h1>
+          <p>Creative dev • UI experiments • Web crafts</p>
+          <div class="created" title="Creation time">
+            <span style="font-size:12px;color:rgba(180,200,255,0.85)">Created</span>
+            <span class="time-badge">2025-09-28 20:09:09</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="meta">
+        <span class="chip">JavaScript</span>
+        <span class="chip">Animations</span>
+        <span class="chip">UI/UX</span>
+        <span class="chip">Design Systems</span>
+      </div>
+
+      <div style="margin-top:14px;font-size:13px;color:rgba(220,235,255,0.8)">
+        <p style="margin:0">Hi—I'm Amira. I design and build crisp interactive experiences with attention to motion and detail. This is a compact animated portfolio example.</p>
+      </div>
+
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn" href="#projects">See projects</a>
+        <a class="ghost" href="mailto:hello@example.com">Get in touch</a>
+      </div>
+    </aside>
+
+    <section class="cards" aria-label="Portfolio content">
+      <div class="glass card reveal delay-2" id="projects">
+        <h2>Featured Projects</h2>
+        <p style="margin-bottom:12px">A selection of experiments, libraries, and playful UI demos exploring motion, accessibility, and polish.</p>
+
+        <div class="projects">
+          <div class="proj reveal delay-3">
+            <div>
+              <div class="title">Nebula UI</div>
+              <div class="desc">A micro UI kit with glassmorphism components and motion primitives.</div>
+            </div>
+            <div style="font-size:12px;color:rgba(200,220,255,0.8)">CSS • JS</div>
+          </div>
+
+          <div class="proj reveal delay-4">
+            <div>
+              <div class="title">Flow Cards</div>
+              <div class="desc">Animated content cards with layered parallax and accessibility in mind.</div>
+            </div>
+            <div style="font-size:12px;color:rgba(200,220,255,0.8)">HTML • CSS</div>
+          </div>
+
+          <div class="proj reveal delay-5">
+            <div>
+              <div class="title">AutoGen Code</div>
+              <div class="desc">Tooling to generate small focused code artifacts and templates.</div>
+            </div>
+            <div style="font-size:12px;color:rgba(200,220,255,0.8)">Node • CLI</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass card reveal delay-3">
+        <h2>About the design</h2>
+        <p>Glassmorphism, soft gradients, and subtle motion combine here for a calm, tactile feel. Cards animate in with a gentle rise and fade so the content draws attention without being loud.</p>
+      </div>
+
+      <div class="glass card reveal delay-4">
+        <h2>Contact</h2>
+        <p>Open to collaborations on UI experiments, front-end tooling, or motion-driven product design. Hit the email button on the left or connect via GitHub below.</p>
+
+        <div class="contact-row" style="margin-top:10px">
+          <a class="ghost" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">View repo</a>
+          <a class="ghost" href="mailto:hello@example.com">Email</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+        0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73
+        1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93
+        0-1.31.47-2.38 1.236-3.22-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005
+        2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22
+        0 4.61-2.804 5.625-5.475 5.92.43.37.823 1.102.823 2.222 0 1.605-.015 2.898-.015 3.293 0 .319.216.694.825.576
+        C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // small JS to add subtle interactive micro-animations and focus outlines
+    (function(){
+      // keyboard focus ring for better accessibility
+      let keyboardMode = false;
+      window.addEventListener('keydown', function(e){
+        if(e.key === 'Tab') {
+          keyboardMode = true;
+          document.documentElement.style.setProperty('--focus-outline','2px solid rgba(124,227,255,0.9)');
+        }
+      });
+      window.addEventListener('mousedown', function(){
+        if(keyboardMode){
+          keyboardMode = false;
+          document.documentElement.style.setProperty('--focus-outline','none');
+        }
+      });
+
+      // tiny hover pulse on avatar
+      const avatar = document.querySelector('.avatar');
+      if(avatar){
+        avatar.addEventListener('mouseenter', ()=> avatar.animate([
+          { transform:'scale(1)' },
+          { transform:'scale(1.06)' },
+          { transform:'scale(1)' }
+        ], { duration:700, easing:'ease-in-out' }));
+      }
+
+      // reveal any elements now (in case prefers-reduced-motion not set)
+      document.querySelectorAll('.reveal').forEach((el, i)=>{
+        // ensure animation triggers if already rendered
+        el.style.opacity = '';
+      });
+
+      // small tilt effect for project cards on pointer move (subtle)
+      const projects = document.querySelectorAll('.proj');
+      projects.forEach(card=>{
+        card.addEventListener('pointermove', (e)=>{
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = `translateY(-6px) rotateX(${(-py*4)}deg) rotateY(${(px*6)}deg)`;
+          card.style.transition = 'transform 120ms linear';
+        });
+        card.addEventListener('pointerleave', ()=>{
+          card.style.transform = '';
+          card.style.transition = 'transform 300ms cubic-bezier(.2,.9,.2,1)';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
