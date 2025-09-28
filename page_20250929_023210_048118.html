@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#0b1020;
+      --glass: rgba(255,255,255,0.07);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent: #7dd3fc;
+      --accent-2: #a78bfa;
+      --txt: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.7);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(120,90,240,0.12), transparent 10%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(90,200,255,0.08), transparent 8%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--txt);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    /* subtle animated background movement */
+    @keyframes floatBG{
+      0%{ transform: translateY(0px) rotate(0deg); filter: hue-rotate(0deg); }
+      50%{ transform: translateY(-18px) rotate(1deg); filter: hue-rotate(10deg); }
+      100%{ transform: translateY(0px) rotate(0deg); filter: hue-rotate(0deg); }
+    }
+
+    .halo{
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(circle at 20% 30%, rgba(167,139,250,0.06), transparent 6%),
+                  radial-gradient(circle at 80% 70%, rgba(125,211,252,0.05), transparent 6%);
+      animation: floatBG 8s ease-in-out infinite;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .card{
+      position:relative;
+      z-index:1;
+      width:min(760px,94vw);
+      max-width:760px;
+      padding:36px;
+      border-radius:16px;
+      background: linear-gradient(180deg, var(--glass), var(--glass-2));
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(12px) saturate(120%);
+      transition: transform 360ms cubic-bezier(.2,.9,.2,1), box-shadow 360ms;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      overflow:hidden;
+      transform-origin:center;
+      animation: popIn 700ms cubic-bezier(.2,.9,.2,1) both;
+    }
+
+    @keyframes popIn{
+      from{ opacity:0; transform: translateY(12px) scale(.985); }
+      to{ opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    .card:hover{
+      transform: scale(1.02);
+      box-shadow: 0 18px 60px rgba(2,6,23,0.7), 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .logo{
+      width:96px;
+      height:96px;
+      flex:0 0 96px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(125,211,252,0.15), rgba(167,139,250,0.15));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.04);
+      overflow:hidden;
+      transition: transform 360ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .card:hover .logo{ transform: scale(1.08) rotate(-6deg); }
+
+    .logo svg{ width:56px; height:56px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.45)); }
+
+    .meta{
+      flex:1;
+      min-width:0;
+    }
+
+    .title{
+      font-size:20px;
+      font-weight:600;
+      letter-spacing:0.2px;
+      margin:0 0 6px 0;
+      color:var(--txt);
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .badge{
+      font-size:11px;
+      padding:6px 8px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(125,211,252,0.14), rgba(167,139,250,0.14));
+      color:var(--accent);
+      border: 1px solid rgba(125,211,252,0.08);
+      box-shadow: inset 0 -6px 18px rgba(167,139,250,0.02);
+    }
+
+    .desc{
+      margin:0;
+      margin-top:6px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      white-space:normal;
+    }
+
+    .meta-bottom{
+      margin-top:14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .time{
+      padding:6px 10px;
+      background: rgba(255,255,255,0.02);
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.02);
+    }
+
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+      z-index:2;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+    }
+
+    footer a{
+      color:var(--muted);
+      text-decoration:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-weight:500;
+      transition: transform 220ms ease, color 220ms ease;
+    }
+
+    footer a:hover{ transform: translateY(-3px); color:var(--accent); }
+
+    .gh{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      fill:currentColor;
+      opacity:0.95;
+    }
+
+    /* responsive */
+    @media (max-width:520px){
+      .card{ padding:20px; gap:14px; }
+      .logo{ width:72px; height:72px; flex:0 0 72px; border-radius:12px; }
+      .title{ font-size:18px; }
+      .desc{ font-size:13px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="halo" aria-hidden="true"></div>
+
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="logo" aria-hidden="true">
+      <!-- abstract monogram A -->
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="logo">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#7dd3fc"/>
+            <stop offset="1" stop-color="#a78bfa"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="64" height="64" rx="12" fill="url(#g1)" opacity="0.18"/>
+        <path d="M12 46 L24 18 L36 46 L28 46 L32 36 L22 36 L26 46 Z" fill="#fff" opacity="0.92"/>
+        <circle cx="44" cy="44" r="10" fill="#fff" opacity="0.06"/>
+      </svg>
+    </div>
+
+    <section class="meta">
+      <h1 id="title" class="title">amirabolfazle <span class="badge">glass • zoom</span></h1>
+      <p class="desc">Minimal animated site with glassmorphism and subtle zoom effects. Lightweight, responsive and calm — created for simple presentation and style.</p>
+
+      <div class="meta-bottom">
+        <div class="time">Creation: 2025-09-29 02:31:37</div>
+        <div style="height:6px;width:1px;background:transparent;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="gh" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .5C5.73.5.9 5.34.9 11.62c0 4.76 3.09 8.8 7.37 10.23.54.1.74-.23.74-.52 0-.26-.01-1-.02-1.95-3  .66-3.64-1.45-3.64-1.45-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.65 2.51 1.17 3.12.9.1-.7.38-1.17.69-1.44-2.4-.27-4.92-1.2-4.92-5.33 0-1.18.42-2.14 1.11-2.89-.11-.27-.48-1.36.11-2.83 0 0 .9-.29 2.95 1.11a10.1 10.1 0 012.68-.36c.91 0 1.83.12 2.68.36 2.04-1.4 2.94-1.11 2.94-1.11.59 1.47.22 2.56.11 2.83.69.75 1.11 1.71 1.11 2.89 0 4.14-2.53 5.06-4.94 5.33.39.34.74 1.02.74 2.06 0 1.49-.01 2.7-.01 3.07 0 .29.2.63.75.52 4.27-1.42 7.36-5.46 7.36-10.22C23.1 5.34 18.27.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+</body>
+</html>
