@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1:#0b0f14;
+    --bg-2:#071018;
+    --accent:#7be5ff;
+    --muted:#9aa7b0;
+    --card:#0f1720;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(123,229,255,0.04), transparent 10%),
+                radial-gradient(900px 500px at 90% 80%, rgba(123,229,255,0.03), transparent 8%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#e6f7fb;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* floating orbs */
+  .orb{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(36px);
+    opacity:0.12;
+    mix-blend-mode:screen;
+    animation:float 14s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .orb.a{width:420px;height:420px;left:-80px;top:-60px;background:linear-gradient(135deg,#7be5ff,#6be6c4); animation-duration:18s;}
+  .orb.b{width:300px;height:300px;right:-60px;bottom:-40px;background:linear-gradient(135deg,#7be5ff44,#b08cff); animation-duration:22s;animation-direction:reverse;}
+  .orb.c{width:160px;height:160px;left:25%;bottom:10%;background:linear-gradient(135deg,#ffb86b44,#7be5ff44); animation-duration:16s;}
+
+  @keyframes float{
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-30px) rotate(180deg);}
+    100%{transform:translateY(0) rotate(360deg);}
+  }
+
+  /* container */
+  .wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6vh 4vw;
+  }
+  .stage{
+    width:min(1200px,94vw);
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:980px){ .stage{ grid-template-columns:1fr; } }
+
+  /* hero card */
+  .hero{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    padding:36px;
+    border-radius:16px;
+    box-shadow: 0 8px 30px rgba(2,6,10,0.6);
+    position:relative;
+    overflow:visible;
+  }
+  .hero-head{
+    display:flex;
+    gap:18px;
+    align-items:center;
+  }
+  .avatar{
+    width:88px;height:88px;border-radius:18px;
+    background:linear-gradient(135deg,#7be5ff,#9bffb7);
+    display:flex;align-items:center;justify-content:center;
+    color:#03121a;font-weight:700;font-size:28px;
+    transform-style:preserve-3d;
+    animation:spinSlow 12s linear infinite;
+    box-shadow: 0 6px 30px rgba(123,229,255,0.06), inset 0 -6px 20px rgba(0,0,0,0.18);
+  }
+  @keyframes spinSlow{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
+
+  .title{
+    font-size:36px;
+    letter-spacing:0.6px;
+    margin:0;
+    line-height:1;
+    text-transform:lowercase;
+    transform-style:preserve-3d;
+    display:flex;flex-direction:column;
+  }
+  .title .name{
+    display:inline-flex;align-items:center;gap:12px;
+  }
+  .subtitle{
+    font-size:14px;color:var(--muted);margin-top:10px;
+  }
+
+  /* rotating ring */
+  .ring{
+    position:absolute;
+    right:-60px;top:10px;
+    width:180px;height:180px;border-radius:50%;
+    border:1px dashed rgba(123,229,255,0.06);
+    display:flex;align-items:center;justify-content:center;
+    transform:rotate3d(1,1,0,15deg);
+    filter:blur(0.4px);
+    animation:rotateRing 16s linear infinite;
+    opacity:0.9;
+  }
+  @keyframes rotateRing{from{transform:rotate(0deg) translateZ(0)} to{transform:rotate(360deg) translateZ(0)}}
+  .ring .dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 6px 18px rgba(123,229,255,0.22);}
+
+  /* info stats */
+  .meta{
+    margin-top:26px;display:flex;gap:16px;flex-wrap:wrap;
+  }
+  .stat{
+    background:linear-gradient(180deg,var(--glass),var(--glass-2));
+    border:1px solid rgba(255,255,255,0.03);
+    padding:12px 14px;border-radius:12px;font-size:13px;color:var(--muted);
+    display:inline-flex;gap:10px;align-items:center;
+    min-width:120px;
+  }
+  .stat strong{color:#e6fbff;font-weight:600;font-size:14px}
+
+  /* project grid */
+  .side{
+    display:flex;flex-direction:column;gap:18px;
+  }
+  .projects{
+    display:grid;gap:14px;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.035);
+    border-radius:12px;padding:14px;
+    transform-style:preserve-3d;
+    transition:transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .25s;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .card:hover{
+    transform:translateY(-8px) rotateX(6deg) rotateY(-6deg);
+    box-shadow: 0 24px 40px rgba(2,6,10,0.6);
+  }
+  .card h4{margin:0;font-size:15px}
+  .card p{margin:0;color:var(--muted);font-size:13px}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .tag{font-size:12px;background:rgba(123,229,255,0.06);padding:6px 8px;border-radius:8px;color:var(--accent)}
+
+  /* big rotating showcase */
+  .showcase{
+    height:260px;border-radius:14px;padding:18px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.015), rgba(255,255,255,0.005));
+    border:1px solid rgba(255,255,255,0.03);
+    display:flex;align-items:center;justify-content:center;position:relative;
+    overflow:hidden;
+  }
+  .cube{
+    width:160px;height:160px;transform-style:preserve-3d;
+    animation:spinCube 10s linear infinite;
+  }
+  .face{
+    position:absolute;width:160px;height:160px;border-radius:10px;
+    display:grid;place-items:center;color:#03121a;font-weight:700;font-size:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.45);
+  }
+  .f1{background:linear-gradient(135deg,#7be5ff,#6be6c4);transform:translateZ(80px) rotateY(0deg)}
+  .f2{background:linear-gradient(135deg,#9b8cff,#7bd2ff);transform:rotateY(90deg) translateZ(80px)}
+  .f3{background:linear-gradient(135deg,#ffc37b,#ff7bb0);transform:rotateY(180deg) translateZ(80px)}
+  .f4{background:linear-gradient(135deg,#7bf0c7,#9b7bff);transform:rotateY(-90deg) translateZ(80px)}
+  @keyframes spinCube{from{transform:rotateX(-12deg) rotateY(0deg)} to{transform:rotateX(-12deg) rotateY(360deg)}}
+
+  /* footer */
+  footer{
+    margin-top:26px;display:flex;align-items:center;gap:12px;color:var(--muted);
+    font-size:13px;
+  }
+  .gh{
+    display:inline-flex;gap:10px;align-items:center;text-decoration:none;color:inherit;padding:8px 10px;border-radius:10px;
+    background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .gh:hover{transform:translateY(-6px); box-shadow:0 16px 36px rgba(2,6,10,0.6)}
+  .gh svg{filter:drop-shadow(0 6px 18px rgba(0,0,0,0.5))}
+
+  /* creation time pill */
+  .created{
+    margin-left:auto;color:var(--muted);font-size:13px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);
+  }
+
+  /* subtle pulse lines */
+  .gridlines{
+    position:absolute;inset:0;pointer-events:none;background-image:
+      linear-gradient(transparent 0 calc(100% - 1px), rgba(123,229,255,0.02) 1px),
+      linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(123,229,255,0.02) 1px);
+    opacity:0.03;
+    mix-blend-mode:overlay;
+  }
+
+  /* micro interactions */
+  .rotate-on-mouse{transform-style:preserve-3d;transition:transform .12s linear}
+  @media (prefers-reduced-motion: reduce){
+    .orb{animation:none}
+    .ring{animation:none}
+    .cube{animation:none}
+    .avatar{animation:none}
+  }
+</style>
+</head>
+<body>
+  <div class="orb a" aria-hidden="true"></div>
+  <div class="orb b" aria-hidden="true"></div>
+  <div class="orb c" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="stage" id="stage">
+      <section class="hero rotate-on-mouse" id="hero">
+        <div class="gridlines" aria-hidden="true"></div>
+        <div class="hero-head">
+          <div class="avatar" aria-hidden="true">am</div>
+          <div class="title">
+            <div class="name">
+              <h1 style="margin:0;font-size:34px;">amirabolfazle</h1>
+              <svg width="40" height="40" viewBox="0 0 24 24" style="opacity:.9" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1116 0 8 8 0 01-16 0z"/></g></svg>
+            </div>
+            <div class="subtitle">interactive portfolio • dark mode • animated effects</div>
+          </div>
+        </div>
+
+        <div class="meta" aria-hidden="false">
+          <div class="stat"><span style="font-size:18px;color:var(--accent)">▣</span><div><strong>Designer & Developer</strong><div style="color:var(--muted);font-size:12px">UI, animations, front-end</div></div></div>
+          <div class="stat"><span style="font-size:18px;color:#ffb86b">★</span><div><strong>Crafted</strong><div style="color:var(--muted);font-size:12px">in the dark — with light</div></div></div>
+          <div class="stat"><span style="font-size:18px;color:#a5b4fc">⚡</span><div><strong>Performance</strong><div style="color:var(--muted);font-size:12px">smooth & responsive</div></div></div>
+        </div>
+
+        <div style="margin-top:26px;display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+          <a href="#projects" style="text-decoration:none">
+            <div style="padding:12px 18px;border-radius:12px;background:linear-gradient(90deg,var(--accent),#9b7bff);color:#04151a;font-weight:700;box-shadow:0 10px 30px rgba(123,229,255,0.08)">Explore projects</div>
+          </a>
+          <div style="padding:10px 12px;border-radius:12px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);color:var(--muted)">Contact: hello@amirabolfazle.dev</div>
+        </div>
+
+        <div style="margin-top:26px;display:flex;gap:18px;align-items:center;">
+          <div style="font-size:12px;color:var(--muted);">Creation time</div>
+          <div style="background:rgba(123,229,255,0.04);padding:8px 10px;border-radius:10px;border:1px solid rgba(123,229,255,0.05);font-weight:600;color:var(--accent)">2025-09-29 03:13:57</div>
+        </div>
+
+        <div class="ring" aria-hidden="true"><div class="dot"></div></div>
+
+        <footer style="margin-top:20px;display:flex;align-items:center;gap:12px">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="display:block" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.7 3 8.7 7.2 10.1.5.1.7-.2.7-.5v-1.9c-2.9.6-3.6-1.3-3.6-1.3-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3.9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.7-1.4-2.3-.3-4.7-1.2-4.7-5.4 0-1.2.4-2.2 1-3-.1-.3-.4-1.4.1-2.8 0 0 .8-.3 2.8 1a9.6 9.6 0 015.1 0c2-.8 2.8-1 2.8-1 .6 1.4.3 2.5.1 2.8.6.8 1 1.8 1 3 0 4.2-2.4 5.1-4.7 5.4.4.4.7 1 .7 2v3c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10.1C23.1 5.3 18.3.5 12 .5z" fill="#e6f7fb"/>
+            </svg>
+            <span style="font-weight:600;color:#e6fbff">autogen-code</span>
+          </a>
+          <div class="created">Created by amirabolfazle</div>
+        </footer>
+      </section>
+
+      <aside class="side">
+        <div class="projects" id="projects">
+          <div class="card">
+            <h4>Autogen Code</h4>
+            <p>Crafting tools that generate code, demos and playful experiments.</p>
+            <div class="tags"><span class="tag">JavaScript</span><span class="tag">AI</span><span class="tag">Tooling</span></div>
+          </div>
+
+          <div class="card">
+            <h4>Motion UI Kit</h4>
+            <p>Library of micro-interactions and animated components for modern apps.</p>
+            <div class="tags"><span class="tag">CSS</span><span class="tag">Animations</span><span class="tag">Design</span></div>
+          </div>
+
+          <div class="card">
+            <h4>Portfolio Demo</h4>
+            <p>Single-file, animated, responsive portfolio templates and experiments.</p>
+            <div class="tags"><span class="tag">HTML</span><span class="tag">SVG</span><span class="tag">UX</span></div>
+          </div>
+        </div>
+
+        <div class="showcase" aria-hidden="true">
+          <div class="cube" id="cube">
+            <div class="face f1">design</div>
+            <div class="face f2">code</div>
+            <div class="face f3">deploy</div>
+            <div class="face f4">iterate</div>
+          </div>
+        </div>
+
+        <div style="padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));border:1px solid rgba(255,255,255,0.02);color:var(--muted);font-size:13px">
+          Quick links
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" style="padding:8px 10px;border-radius:9px;background:rgba(123,229,255,0.03);color:var(--accent);text-decoration:none;font-weight:600">github</a>
+            <a href="#" style="padding:8px 10px;border-radius:9px;background:rgba(255,255,255,0.01);color:var(--muted);text-decoration:none">resume</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+<script>
+  // subtle parallax / rotate on mouse
+  (function(){
+    const hero = document.getElementById('hero');
+    const cube = document.getElementById('cube');
+    const stage = document.getElementById('stage');
+
+    function onMove(e){
+      const rect = hero.getBoundingClientRect();
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      const x = (e.clientX - cx) / rect.width;
+      const y = (e.clientY - cy) / rect.height;
+      const rx = y * -12;
+      const ry = x * 12;
+      hero.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+      cube.style.transform = `rotateX(${-12 + rx/3}deg) rotateY(${( (Date.now()%10000)/10000)*360 + ry/3}deg)`;
+    }
+    function reset(){
+      hero.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+    }
+    // only attach if not reduced motion
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!prefersReduced){
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('touchmove', function(e){ if(e.touches[0]) onMove(e.touches[0]) }, {passive:true});
+      window.addEventListener('mouseleave', reset);
+    }
+
+    // tiny hover tilt on cards
+    document.querySelectorAll('.card').forEach(card=>{
+      let rect;
+      card.addEventListener('mousemove', (ev)=>{
+        rect = rect || card.getBoundingClientRect();
+        const px = (ev.clientX - rect.left) / rect.width - 0.5;
+        const py = (ev.clientY - rect.top) / rect.height - 0.5;
+        const rx = py * -6;
+        const ry = px * 8;
+        card.style.transform = `translateY(-8px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      card.addEventListener('mouseleave', ()=>{ card.style.transform='translateY(0) rotateX(0) rotateY(0)'; rect = null; });
+    });
+  })();
+</script>
+</body>
+</html>
