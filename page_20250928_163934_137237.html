@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#07070b;
+      --card:#0f1116;
+      --muted:#9aa3b2;
+      --accent:#7c5cff;
+      --accent-2:#00d4ff;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --glass-border: rgba(255,255,255,0.04);
+      --radius:14px;
+      --fw-semibold:600;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 6%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(0,212,255,0.06), transparent 8%),
+                  var(--bg);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:36px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      overflow:auto;
+    }
+
+    /* Subtle animated noise overlay */
+    .bg-noise {
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.012), transparent 1%),
+                        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.01), transparent 1%);
+      mix-blend-mode:overlay;
+      animation: drift 20s linear infinite;
+      opacity:0.9;
+    }
+    @keyframes drift{
+      0%{transform:translateY(0) translateX(0)}
+      50%{transform:translateY(-6px) translateX(6px)}
+      100%{transform:translateY(0) translateX(0)}
+    }
+
+    /* Container */
+    .wrap{
+      width:min(1100px,96%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      border-radius:20px;
+      padding:28px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.65);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:hidden;
+    }
+
+    header{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:12px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:20px;
+      box-shadow:0 6px 20px rgba(124,92,255,0.14);
+      transform: translateY(-6px);
+    }
+    .title-block{
+      flex:1;
+      min-width:0;
+    }
+    .title{
+      font-size:20px;
+      font-weight:700;
+      letter-spacing:0.2px;
+      margin:0;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .subtitle{
+      margin:6px 0 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:22px;
+      align-items:start;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+      border-radius:var(--radius);
+      padding:20px;
+      border:1px solid var(--glass-border);
+    }
+    .intro{
+      font-size:15px;
+      line-height:1.6;
+      color:#dfe9f8;
+    }
+    .cta-row{
+      display:flex;
+      gap:12px;
+      margin-top:16px;
+    }
+    .btn{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      border:1px solid transparent;
+      user-select:none;
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+      background:linear-gradient(180deg,rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn-primary{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#071026;
+      box-shadow: 0 8px 24px rgba(124,92,255,0.2), 0 2px 8px rgba(0,212,255,0.06);
+    }
+    .meta{
+      display:flex;
+      gap:12px;
+      margin-top:16px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .time{
+      background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0.2px;
+    }
+
+    /* Projects column */
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .project-card{
+      padding:14px;
+      border-radius:12px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      transition:transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.007));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .project-card:hover{
+      transform:translateY(-6px) scale(1.01);
+      box-shadow:0 14px 40px rgba(3,6,23,0.6);
+    }
+    .p-thumb{
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--accent-2),var(--accent));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#031026;
+    }
+    .p-info{flex:1}
+    .p-title{font-weight:700; font-size:14px; margin:0}
+    .p-desc{margin:6px 0 0 0; color:var(--muted); font-size:13px}
+
+    /* Grid section */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      margin-top:20px;
+    }
+    .tile{
+      padding:18px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s;
+    }
+    .tile:hover{transform:translateY(-8px); box-shadow:0 18px 48px rgba(2,6,23,0.6)}
+
+    .tile h4{margin:0 0 6px 0}
+    .tile p{margin:0; color:var(--muted); font-size:13px}
+
+    /* Footer */
+    footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-top:20px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .gh{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:background .15s, transform .12s;
+    }
+    .gh:hover{background:rgba(255,255,255,0.01); transform:translateY(-4px)}
+
+    /* small screens */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr; }
+      .grid{grid-template-columns: repeat(2,1fr)}
+      .wrap{padding:18px}
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns:1fr}
+      .logo{width:52px; height:52px; font-size:18px}
+      .hero{gap:12px}
+    }
+
+    /* Fade-in animations */
+    .reveal{
+      opacity:0;
+      transform: translateY(10px);
+      will-change:opacity, transform;
+      animation: fadeUp .8s ease forwards;
+    }
+    .reveal.delay-1{ animation-delay:0.12s }
+    .reveal.delay-2{ animation-delay:0.24s }
+    .reveal.delay-3{ animation-delay:0.36s }
+    .reveal.delay-4{ animation-delay:0.48s }
+    .reveal.delay-5{ animation-delay:0.6s }
+    .reveal.delay-6{ animation-delay:0.72s }
+    @keyframes fadeUp{
+      to{opacity:1; transform:none}
+    }
+
+    /* tiny accent animations */
+    .sparkle{
+      position:relative;
+    }
+    .sparkle:after{
+      content:"";
+      position:absolute;
+      width:8px;height:8px;
+      background:rgba(255,255,255,0.06);
+      border-radius:50%;
+      top:-6px; right:-6px;
+      filter:blur(6px);
+      transform:scale(.6);
+      animation: pulse 2.4s infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(.6); opacity:0.6}
+      50%{transform:scale(1.3); opacity:1}
+      100%{transform:scale(.6); opacity:0.6}
+    }
+
+    /* small utilities */
+    .muted{color:var(--muted)}
+    a{color:inherit}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace}
+  </style>
+</head>
+<body>
+  <div class="bg-noise" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="page-title">
+    <header>
+      <div class="logo reveal delay-1" title="amirabolfazle logo">am</div>
+      <div class="title-block">
+        <h1 id="page-title" class="title reveal delay-2">amirabolfazle
+          <span style="font-size:12px;color:var(--muted);font-weight:600">• portfolio</span>
+        </h1>
+        <p class="subtitle reveal delay-3">Designer & developer crafting thoughtful digital experiences — dark mode first.</p>
+      </div>
+      <div style="min-width:120px;text-align:right" class="reveal delay-4">
+        <div class="time mono" title="Creation time">Created: 2025-09-28 16:38:38</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="card reveal delay-5">
+        <div class="intro">
+          <h2 style="margin:0 0 10px 0">Hello — I'm amirabolfazle.</h2>
+          <p>Building clean interfaces, meaningful interactions, and reliable code. I blend precision and personality to create products people enjoy using.</p>
+
+          <div class="cta-row">
+            <button class="btn btn-primary" onclick="toggleContact()" aria-label="Contact me">Contact</button>
+            <a class="btn" href="#projects" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})" aria-label="See projects">See projects</a>
+          </div>
+
+          <div class="meta" style="margin-top:18px;">
+            <div class="muted">Available for freelance & remote roles</div>
+            <div class="muted">Based in UTC</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side reveal delay-6" role="complementary" aria-label="Highlights">
+        <div class="project-card">
+          <div class="p-thumb">AP</div>
+          <div class="p-info">
+            <div class="p-title">Autogen Project</div>
+            <div class="p-desc">A concise code-generation tool and workflow automation. (Demo available)</div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="p-thumb">UI</div>
+          <div class="p-info">
+            <div class="p-title">UI Systems</div>
+            <div class="p-desc">Design systems, tokens and components — consistent, accessible, themeable.</div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="p-thumb">ML</div>
+          <div class="p-info">
+            <div class="p-title">Generative Tools</div>
+            <div class="p-desc">Prototyping helpers for creative and developer workflows.</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="projects" style="margin-top:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <h3 class="reveal delay-1" style="margin:0">Selected Work</h3>
+        <div class="muted reveal delay-2">A small curated selection — more on request</div>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="tile reveal delay-3">
+          <h4>Autogen Code</h4>
+          <p>Tools for generating scaffolded code with precise configuration and CI-friendly outputs.</p>
+        </div>
+        <div class="tile reveal delay-4">
+          <h4>Design System</h4>
+          <p>Tokens, components and documentation for sustainable product UI scaling.</p>
+        </div>
+        <div class="tile reveal delay-5">
+          <h4>Interactive Demos</h4>
+          <p>Small experiments that demonstrate new interaction models and micro-animations.</p>
+        </div>
+        <div class="tile reveal delay-6">
+          <h4>CLI Utilities</h4>
+          <p>Command-line helpers to speed up developer workflows with ergonomic defaults.</p>
+        </div>
+        <div class="tile reveal delay-1">
+          <h4>Performance Benchmarks</h4>
+          <p>Lightweight benchmarking to guide optimization and prioritize improvement work.</p>
+        </div>
+        <div class="tile reveal delay-2">
+          <h4>Accessibility Audit</h4>
+          <p>Practical recommendation lists and fixes to raise baseline accessibility.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="muted">Created by amirabolfazle</div>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.76c0 4.96 3.22 9.15 7.69 10.63.56.1.77-.24.77-.54 0-.27-.01-1.16-.02-2.1-3.13.68-3.79-1.52-3.79-1.52-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 .73 2.63.52 3.28.4.1-.32.39-.52.71-.64-2.5-.29-5.13-1.25-5.13-5.57 0-1.23.44-2.23 1.16-3.02-.12-.3-.5-1.52.11-3.17 0 0 .95-.31 3.12 1.16a10.8 10.8 0 012.84-.38c.96 0 1.92.13 2.84.38 2.17-1.47 3.12-1.16 3.12-1.16.61 1.65.23 2.87.11 3.17.72.79 1.16 1.79 1.16 3.02 0 4.33-2.64 5.27-5.15 5.55.4.34.76 1.03.76 2.08 0 1.5-.01 2.71-.01 3.08 0 .3.2.65.78.54 4.47-1.49 7.69-5.67 7.69-10.63C23.25 5.48 18.27.5 12 .5z" fill="currentColor"/>
+        </svg>
+        <span style="font-weight:600">GitHub</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Intersection reveal
+    (function(){
+      const els = document.querySelectorAll('.reveal');
+      const obs = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.style.animationPlayState = 'running';
+            e.target.classList.remove('reveal'); // prevent re-trigger jitter
+            obs.unobserve(e.target);
+          }
+        }
+      }, {threshold:0.06});
+      els.forEach(el => {
+        el.style.animationPlayState = 'paused';
+        obs.observe(el);
+      });
+    })();
+
+    // Simple contact toggle
+    function toggleContact(){
+      const d = document.createElement('div');
+      d.style.position='fixed';
+      d.style.left='0'; d.style.right='0'; d.style.top='0'; d.style.bottom='0';
+      d.style.display='flex'; d.style.alignItems='center'; d.style.justifyContent='center';
+      d.style.background='linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.85))';
+      d.innerHTML = `
+        <div style="width:min(720px,94%);border-radius:14px;padding:22px;background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);box-shadow:0 20px 60px rgba(0,0,0,.6);color:#eaf2ff">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
+            <div>
+              <div style="font-weight:800;font-size:18px">Let's connect</div>
+              <div style="color:var(--muted);margin-top:6px">Send a quick note or check the repo on GitHub.</div>
+            </div>
+            <button id="closeBtn" style="background:transparent;border:0;color:var(--muted);font-weight:700;cursor:pointer">Close</button>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap">
+            <a href="mailto:hello@amirabolfazle.example" style="padding:10px 12px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#061026;font-weight:700;text-decoration:none">Email</a>
+            <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--muted);font-weight:700;text-decoration:none">View repo</a>
+            <button id="copyBtn" style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--muted);font-weight:700;border:0;cursor:pointer">Copy GitHub URL</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(d);
+      d.querySelector('#closeBtn').onclick = () => d.remove();
+      d.addEventListener('click', function(e){ if(e.target===d) d.remove() }, {passive:true});
+      d.querySelector('#copyBtn').onclick = async () => {
+        try {
+          await navigator.clipboard.writeText('https://github.com/amirabolfazle/autogen-code');
+          const tmp = document.createElement('div');
+          tmp.textContent = 'Copied!';
+          Object.assign(tmp.style, {position:'absolute',right:'26px',bottom:'26px',background:'#0f1724',padding:'8px 12px',borderRadius:'8px',color:'#cfe8ff',boxShadow:'0 6px 20px rgba(2,6,23,0.6)'});
+          d.appendChild(tmp);
+          setTimeout(()=> tmp.remove(),1400);
+        } catch(e){
+          alert('Could not copy — please copy manually.');
+        }
+      }
+    }
+
+    // small keyboard shortcut: press "g" to open github
+    window.addEventListener('keydown', function(e){
+      if(e.key.toLowerCase()==='g' && !e.metaKey && !e.ctrlKey && !e.altKey){
+        window.open('https://github.com/amirabolfazle/autogen-code','_blank');
+      }
+    });
+  </script>
+</body>
+</html>
