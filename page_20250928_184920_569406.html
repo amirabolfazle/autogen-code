@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f13;
+      --bg-2:#071018;
+      --card:#0f1720;
+      --muted:#9aa6b2;
+      --accent:#6ee7b7;
+      --accent-2:#60a5fa;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --radius:14px;
+      --fade-duration:900ms;
+    }
+
+    /* Page reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(96,165,250,0.06), transparent 10%),
+        radial-gradient(900px 400px at 90% 90%, rgba(110,231,183,0.04), transparent 10%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:36px;
+      overflow-x:hidden;
+    }
+
+    /* Subtle animated background */
+    .orb{
+      position:fixed;
+      inset:auto -10% -10% auto;
+      width:520px;
+      height:520px;
+      background: radial-gradient(circle at 30% 30%, rgba(96,165,250,0.10), transparent 20%), linear-gradient(180deg, rgba(96,165,250,0.02), rgba(110,231,183,0.02));
+      filter: blur(48px);
+      transform: translate3d(0,0,0);
+      z-index:0;
+      pointer-events:none;
+      animation:float 12s ease-in-out infinite;
+      border-radius:50%;
+      mix-blend-mode:screen;
+    }
+
+    .orb.alt{
+      right:auto; left:-8%;
+      top:-12%;
+      width:420px;height:420px;
+      background: radial-gradient(circle at 70% 70%, rgba(110,231,183,0.06), transparent 20%), linear-gradient(180deg, rgba(110,231,183,0.02), rgba(96,165,250,0.02));
+      animation-duration:18s;
+    }
+
+    @keyframes float{
+      0%{transform: translateY(0) rotate(0deg) scale(1)}
+      50%{transform: translateY(-18px) rotate(6deg) scale(1.03)}
+      100%{transform: translateY(0) rotate(0deg) scale(1)}
+    }
+
+    /* Container */
+    .wrap{
+      position:relative;
+      z-index:2;
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* Responsive */
+    @media (max-width:960px){
+      .wrap{grid-template-columns:1fr; padding:8px}
+    }
+
+    /* Card styles */
+    header.card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.03);
+      overflow:hidden;
+      position:relative;
+      min-height:180px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:10px;
+      opacity:0;
+      transform: translateY(8px);
+      transition:opacity var(--fade-duration) cubic-bezier(.2,.9,.3,1), transform var(--fade-duration) cubic-bezier(.2,.9,.3,1);
+    }
+
+    .meta .tag{
+      font-size:12px;
+      background:linear-gradient(90deg, rgba(96,165,250,0.12), rgba(110,231,183,0.06));
+      padding:6px 10px;
+      border-radius:999px;
+      color:var(--accent-2);
+      border:1px solid rgba(255,255,255,0.03);
+      letter-spacing:0.6px;
+      font-weight:600;
+    }
+
+    h1.title{
+      margin:0 0 8px 0;
+      font-size:34px;
+      line-height:1;
+      letter-spacing: -0.6px;
+      color: linear-gradient(90deg,var(--accent),var(--accent-2));
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      opacity:0;
+      transform: translateY(14px);
+      transition:opacity calc(var(--fade-duration) + 150ms) cubic-bezier(.2,.9,.3,1), transform calc(var(--fade-duration) + 150ms) cubic-bezier(.2,.9,.3,1);
+    }
+
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.55;
+      opacity:0;
+      transform: translateY(16px);
+      transition:opacity calc(var(--fade-duration) + 300ms) cubic-bezier(.2,.9,.3,1), transform calc(var(--fade-duration) + 300ms) cubic-bezier(.2,.9,.3,1);
+    }
+
+    /* Right column card */
+    aside.card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:220px;
+    }
+
+    .info-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:14px;
+      opacity:0;
+      transform: translateY(12px);
+      transition:opacity var(--fade-duration) cubic-bezier(.2,.9,.3,1), transform var(--fade-duration) cubic-bezier(.2,.9,.3,1);
+    }
+
+    .time{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-weight:600;
+      color:#dffcf4;
+      font-size:13px;
+      background:linear-gradient(90deg, rgba(110,231,183,0.04), rgba(96,165,250,0.02));
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* Grid of features */
+    .grid{
+      margin-top:20px;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    @media (max-width:520px){ .grid{grid-template-columns:1fr} }
+
+    .feature{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      transform:translateY(10px);
+      opacity:0;
+      transition: opacity calc(var(--fade-duration) + 120ms) cubic-bezier(.2,.9,.3,1), transform calc(var(--fade-duration) + 120ms) cubic-bezier(.2,.9,.3,1);
+    }
+
+    .feature svg{flex:0 0 36px}
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:flex-start;
+      color:var(--muted);
+      font-size:13px;
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity calc(var(--fade-duration) + 400ms) cubic-bezier(.2,.9,.3,1), transform calc(var(--fade-duration) + 400ms) cubic-bezier(.2,.9,.3,1);
+    }
+
+    a.gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:10px;
+      transition: all 180ms ease;
+      border:1px solid transparent;
+      background:linear-gradient(180deg, rgba(255,255,255,0.005), rgba(255,255,255,0.01));
+    }
+    a.gh:hover{
+      color:#fff;
+      transform:translateY(-4px);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      border-color: rgba(255,255,255,0.03);
+    }
+
+    /* small badge */
+    .badge{
+      font-size:11px;
+      color:var(--muted);
+      background:var(--glass);
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* loaded state triggers fade-ins */
+    body.loaded .meta{opacity:1; transform:none}
+    body.loaded .title{opacity:1; transform:none}
+    body.loaded .lead{opacity:1; transform:none}
+    body.loaded .info-row{opacity:1; transform:none}
+    body.loaded .feature:nth-child(1){opacity:1; transform:none; transition-delay: 70ms}
+    body.loaded .feature:nth-child(2){opacity:1; transform:none; transition-delay: 140ms}
+    body.loaded .feature:nth-child(3){opacity:1; transform:none; transition-delay: 210ms}
+    body.loaded .feature:nth-child(4){opacity:1; transform:none; transition-delay: 280ms}
+    body.loaded footer{opacity:1; transform:none}
+
+    /* tiny animated underline */
+    .uline{
+      position:relative;
+      display:inline-block;
+    }
+    .uline::after{
+      content:"";
+      position:absolute;
+      left:0;bottom:-6px;
+      width:100%;
+      height:4px;
+      border-radius:4px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      transform-origin:left center;
+      transform:scaleX(0);
+      transition: transform 700ms cubic-bezier(.2,.9,.3,1);
+      opacity:0.95;
+    }
+    body.loaded .uline::after{transform:scaleX(1)}
+
+    /* small animations for icons */
+    .pulse{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:40px;height:40px;border-radius:10px;
+      background:linear-gradient(180deg, rgba(110,231,183,0.03), rgba(96,165,250,0.02));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* focus styles */
+    a:focus{outline:2px solid rgba(96,165,250,0.18); outline-offset:3px; border-radius:8px}
+
+    /* small helper */
+    .muted{color:var(--muted); font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="orb" aria-hidden="true"></div>
+  <div class="orb alt" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <header class="card" aria-labelledby="main-title">
+      <div class="meta">
+        <span class="tag">Dark Mode • Responsive • Animated</span>
+        <span class="badge">Created: <strong style="margin-left:6px;color:#dffcf4;font-weight:600;font-size:12px">2025-09-28 18:48:21</strong></span>
+      </div>
+
+      <h1 id="main-title" class="title"><span class="uline">amirabolfazle</span></h1>
+      <p class="lead">A minimal, fully responsive dark-themed HTML page with smooth fade-in effects and subtle motion. Resize the window to see the layout adapt; enjoy the soft animated background and polished micro-interactions.</p>
+
+      <div style="display:flex;gap:10px;margin-top:18px;align-items:center">
+        <a class="pulse" href="#" onclick="return false" title="Animated">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2v6" stroke="#aee9d8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 22v-6" stroke="#7dc3ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4.93 4.93l4.24 4.24" stroke="#aee9d8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19.07 19.07l-4.24-4.24" stroke="#7dc3ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="3" stroke="#c8fff0" stroke-width="1.6" fill="rgba(255,255,255,0.02)"/>
+          </svg>
+        </a>
+
+        <div class="muted">Soft motion, crisp typography, and layered surfaces for depth.</div>
+      </div>
+    </header>
+
+    <aside class="card" aria-label="panel">
+      <div class="info-row">
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v6" stroke="#9bded0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22v-6" stroke="#79afff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#c8fff0" stroke-width="1.2" fill="rgba(255,255,255,0.01)"/></svg>
+          <div style="font-weight:700">Overview</div>
+        </div>
+        <div class="time" aria-hidden="true">2025-09-28 18:48:21</div>
+      </div>
+
+      <div class="grid" role="list" aria-label="features">
+        <div class="feature" role="listitem">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#7dc3ff" stroke-width="1.4" fill="rgba(96,165,250,0.02)"/></svg>
+          <div>
+            <div style="font-weight:700;color:#e6eef6">Responsive</div>
+            <div style="font-size:12px;color:var(--muted)">Automatic layout for all viewports</div>
+          </div>
+        </div>
+
+        <div class="feature" role="listitem">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C7.03 3 3 7.03 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9Z" stroke="#aee9d8" stroke-width="1.4" fill="rgba(110,231,183,0.02)"/></svg>
+          <div>
+            <div style="font-weight:700;color:#e6eef6">Dark Theme</div>
+            <div style="font-size:12px;color:var(--muted)">Designed with low-light comfort in mind</div>
+          </div>
+        </div>
+
+        <div class="feature" role="listitem">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14" stroke="#79afff" stroke-width="1.4" stroke-linecap="round"/><path d="M12 5v14" stroke="#9bded0" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <div>
+            <div style="font-weight:700;color:#e6eef6">Animated</div>
+            <div style="font-size:12px;color:var(--muted)">Staggered, tasteful fade-ins</div>
+          </div>
+        </div>
+
+        <div class="feature" role="listitem">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M3 7h18M3 12h18M3 17h18" stroke="#c8fff0" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <div>
+            <div style="font-weight:700;color:#e6eef6">Lightweight</div>
+            <div style="font-size:12px;color:var(--muted)">No external JS frameworks required</div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.73.5.86 5.37.86 11.63c0 4.8 3.12 8.86 7.47 10.3.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.02-3.04.66-3.68-1.46-3.68-1.46-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.66.08-.66 1.1.08 1.68 1.14 1.68 1.14.98 1.67 2.58 1.19 3.21.91.1-.71.38-1.19.69-1.46-2.43-.28-4.98-1.22-4.98-5.42 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.93 0 0 .92-.3 3.03 1.12a10.46 10.46 0 012.76-.37c.94.01 1.88.13 2.76.37 2.11-1.42 3.03-1.12 3.03-1.12.6 1.53.22 2.65.11 2.93.7.77 1.13 1.75 1.13 2.95 0 4.21-2.56 5.14-5 5.41.39.34.73 1.01.73 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.2.63.76.52 4.35-1.44 7.47-5.5 7.47-10.3C23.14 5.37 18.27.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </aside>
+  </main>
+
+  <script>
+    // trigger staged reveal
+    window.addEventListener('DOMContentLoaded', function(){
+      // small delay so paint happens
+      requestAnimationFrame(function(){ setTimeout(function(){ document.body.classList.add('loaded'); }, 80); });
+    });
+
+    // friendly keyboard shortcut to focus the GitHub link (g)
+    window.addEventListener('keydown', function(e){
+      if(e.key === 'g' || e.key === 'G'){
+        const el = document.querySelector('a.gh');
+        if(el){ el.focus(); el.scrollIntoView({behavior:'smooth', block:'center'}); }
+      }
+    });
+  </script>
+</body>
+</html>
