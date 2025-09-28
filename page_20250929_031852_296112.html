@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#07070a;
+      --panel: rgba(255,255,255,0.03);
+      --accent-1: #7c5cff;
+      --accent-2: #00e6a8;
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.5);
+      --neon: rgba(124,92,255,0.18);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(800px 400px at 10% 10%, rgba(124,92,255,0.08), transparent 8%),
+        radial-gradient(700px 350px at 90% 90%, rgba(0,230,168,0.06), transparent 12%),
+        var(--bg);
+      color:#eaeefb;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+    }
+
+    .card{
+      width:100%;
+      max-width:1100px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:
+        0 8px 30px rgba(2,6,23,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.02);
+      padding:48px;
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    /* subtle animated orbs */
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(24px);
+      opacity:0.35;
+      mix-blend-mode:screen;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb.a{width:360px;height:360px;left:-80px;top:-100px;background:linear-gradient(135deg,var(--accent-1),transparent); animation-duration:11s}
+    .orb.b{width:260px;height:260px;right:-60px;bottom:-80px;background:linear-gradient(135deg,var(--accent-2),transparent); animation-duration:9s; opacity:0.28}
+    .orb.c{width:120px;height:120px;left:60%;top:10%;background:linear-gradient(135deg,#ff6b6b,transparent); animation-duration:12s; opacity:0.14}
+
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-18px) scale(1.03)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .content{
+      display:flex;
+      gap:28px;
+      align-items:center;
+    }
+
+    .left{
+      flex:1.1;
+      min-width:280px;
+      z-index:2;
+    }
+    .right{
+      flex:0.9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      z-index:2;
+    }
+
+    .logo-wrap{
+      width:140px;
+      height:140px;
+      margin-bottom:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:28px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      box-shadow: 0 10px 30px rgba(2,6,23,0.65), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+      animation: bounceIn 900ms cubic-bezier(.22,.9,.35,1) both;
+    }
+
+    .mark{
+      width:84px;height:84px;border-radius:18px;
+      background: linear-gradient(135deg,var(--accent-1),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      color:white;font-weight:700;font-size:26px;
+      box-shadow: 0 8px 30px rgba(124,92,255,0.18);
+      transform-origin:center;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes bounceIn{
+      0%{transform:translateY(40px) scale(.94);opacity:0}
+      60%{transform:translateY(-12px) scale(1.02);opacity:1}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    h1{
+      margin:0 0 10px 0;
+      font-size:48px;
+      line-height:1;
+      letter-spacing:-0.02em;
+      color: #ffffff;
+      text-shadow:
+        0 6px 30px rgba(0,0,0,0.7),
+        0 0 28px rgba(124,92,255,0.09);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .title-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background: linear-gradient(90deg, rgba(124,92,255,0.12), rgba(0,230,168,0.06));
+      padding:8px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+      box-shadow: inset 0 -1px 0 rgba(255,255,255,0.01);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .tagline{
+      color:var(--muted);
+      margin:8px 0 20px 0;
+      font-size:15px;
+      max-width:66%;
+    }
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 18px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(124,92,255,0.18), rgba(0,230,168,0.12));
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      letter-spacing:0.02em;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 6px 18px rgba(124,92,255,0.06);
+      transform-origin:center;
+      animation: pop 2200ms infinite;
+    }
+
+    @keyframes pop{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+    .meta{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    /* right pane card */
+    .panel{
+      width:100%;
+      max-width:360px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 32px rgba(3,8,23,0.6);
+      transform: translateY(0);
+      animation: lift 1200ms cubic-bezier(.22,.9,.35,1) both;
+    }
+
+    @keyframes lift{
+      0%{transform:translateY(30px) scale(.98);opacity:0}
+      60%{transform:translateY(-6px) scale(1.01);opacity:1}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .panel h3{margin:0 0 8px 0;font-size:18px;color:#fff}
+    .panel p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+    .feat{
+      background:var(--panel);
+      padding:10px;
+      border-radius:10px;
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      gap:8px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .pulse{
+      width:10px;height:10px;border-radius:50%;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      box-shadow:0 6px 18px rgba(124,92,255,0.16);
+      animation: bounce 1600ms infinite;
+      flex:0 0 auto;
+    }
+    @keyframes bounce{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+    footer{
+      margin-top:22px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      justify-content:space-between;
+    }
+
+    .footer-left{display:flex;gap:10px;align-items:center}
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:all .18s ease;
+      border:1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    }
+    .gh:hover{transform:translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,0.6)}
+    .gh svg{display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6))}
+
+    /* small responsive */
+    @media (max-width:880px){
+      .content{flex-direction:column;align-items:flex-start}
+      .right{width:100%}
+      h1{font-size:36px}
+      .tagline{max-width:100%}
+      .panel{width:100%}
+    }
+
+    /* reduce motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .mark, .cta, .pulse { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-labelledby="main-title">
+    <div class="orb a" aria-hidden="true"></div>
+    <div class="orb b" aria-hidden="true"></div>
+    <div class="orb c" aria-hidden="true"></div>
+
+    <div class="content">
+      <div class="left">
+        <div class="logo-wrap" aria-hidden="true">
+          <div class="mark">A</div>
+        </div>
+
+        <h1 id="main-title">
+          amirabolfazle
+          <span class="title-badge">Dark Mode • Bounce</span>
+        </h1>
+
+        <div class="tagline">A sleek, minimal landing page showcasing creative code aesthetics and motion-driven UI. Subtle neon accents meet glassy panels for a modern dark theme.</div>
+
+        <div style="display:flex;gap:12px;align-items:center;margin-top:18px;">
+          <button class="cta" onclick="handleCTAClick()" aria-label="Explore more">Explore my work
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:.95;margin-left:6px" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12h14M13 5l6 7-6 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="meta" aria-hidden="true">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:.9" xmlns="http://www.w3.org/2000/svg"><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div style="font-size:13px;color:var(--muted)">Created: 2025-09-29 03:17:57</div>
+            </div>
+          </div>
+        </div>
+
+        <footer style="border-top:1px solid rgba(255,255,255,0.02);padding-top:18px;margin-top:24px;">
+          <div class="footer-left">
+            <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.648.5.75 5.397.75 11.749c0 4.817 3.124 8.901 7.47 10.345.546.1.744-.237.744-.524 0-.258-.01-.94-.015-1.845-3.036.66-3.676-1.462-3.676-1.462-.496-1.262-1.212-1.6-1.212-1.6-.992-.678.075-.665.075-.665 1.096.078 1.674 1.126 1.674 1.126.975 1.67 2.558 1.188 3.182.909.098-.706.382-1.188.695-1.46-2.422-.276-4.965-1.212-4.965-5.396 0-1.192.426-2.17 1.125-2.935-.114-.275-.489-1.384.107-2.884 0 0 .919-.294 3.012 1.123A10.407 10.407 0 0112 6.845c.931.004 1.869.126 2.747.37 2.09-1.42 3.006-1.127 3.006-1.127.599 1.501.225 2.61.11 2.885.702.765 1.123 1.743 1.123 2.935 0 4.196-2.547 5.117-4.977 5.387.393.338.742.995.742 2.004 0 1.447-.014 2.616-.014 2.973 0 .289.197.628.75.522C19.128 20.646 22.25 16.565 22.25 11.75 22.25 5.398 17.352.5 12 .5z" fill="currentColor"/>
+              </svg>
+              <span style="font-weight:600;color:var(--muted)">GitHub</span>
+            </a>
+            <div style="color:var(--muted);font-size:13px;">Created by amirabolfazle</div>
+          </div>
+
+          <div style="color:var(--muted);font-size:13px;opacity:.9">
+            <span style="display:inline-flex;align-items:center;gap:8px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.2 7.5l2.1 1.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7 15.3l2.1 1.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Dark Mode • Live
+            </span>
+          </div>
+        </footer>
+      </div>
+
+      <div class="right" aria-hidden="false">
+        <div class="panel" role="region" aria-label="Overview">
+          <h3>Snapshot</h3>
+          <p>Motion-driven microinteractions, glassmorphism panels and neon accents. Built to present a refined, dark-themed identity for creative devs and designers.</p>
+
+          <div class="features" style="margin-top:14px;">
+            <div class="feat"><span class="pulse"></span><div>Animated UI</div></div>
+            <div class="feat"><span class="pulse"></span><div>Dark Theme</div></div>
+            <div class="feat"><span class="pulse"></span><div>Accessible</div></div>
+            <div class="feat"><span class="pulse"></span><div>Responsive</div></div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:14px;align-items:center;">
+            <div style="flex:1">
+              <div style="font-size:12px;color:var(--muted)">Status</div>
+              <div style="font-weight:700">Live</div>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:12px;color:var(--muted)">Version</div>
+              <div style="font-weight:700">1.0.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function handleCTAClick(){
+      // small playful interaction: bounce title quickly
+      const title = document.getElementById('main-title');
+      title.animate([
+        { transform: 'translateY(0)' },
+        { transform: 'translateY(-10px)' },
+        { transform: 'translateY(0)' }
+      ], { duration:420, easing:'cubic-bezier(.22,.9,.35,1)' });
+      // reveal a friendly console message
+      console.log('Thanks for exploring amirabolfazle — created 2025-09-29 03:17:57');
+      // small focus effect on GitHub link
+      const gh = document.querySelector('.gh');
+      if(gh) { gh.animate([{ transform:'translateY(0)'},{ transform:'translateY(-6px)'},{ transform:'translateY(0)'}],{duration:540}); }
+    }
+  </script>
+</body>
+</html>
