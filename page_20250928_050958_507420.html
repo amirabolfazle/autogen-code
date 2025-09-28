@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0b1020;
+      --bg2: #1a2140;
+      --glass: rgba(255, 255, 255, 0.16);
+      --glass-border: rgba(255, 255, 255, 0.38);
+      --text: #eaf0ff;
+      --muted: rgba(234, 240, 255, 0.85);
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(13, 9, 40, 1) 0%, rgba(14, 8, 28, 0.95) 40%, rgba(12, 9, 28, 1) 100%), 
+                  radial-gradient(circle at 20% 0%, rgba(120, 180, 255, 0.08), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(255, 180, 170, 0.08), transparent 40%);
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Subtle animated gradient glow for depth */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: conic-gradient(from 180deg at 50% 50%, #7aa6ff22, #ffb3d422, #7affc422, #7aa6ff22);
+      filter: blur(40px);
+      z-index: 0;
+      animation: glow 16s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes glow {
+      0% { transform: rotate(0deg) translate(-2%, -2%); }
+      50% { transform: rotate(180deg) translate(2%, 2%); }
+      100% { transform: rotate(360deg) translate(-2%, -2%); }
+    }
+
+    header {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px 12px;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .glass-title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: .5px;
+      margin: 0;
+      padding: 14px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.36);
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+      box-shadow: var(--shadow);
+      animation: popIn 0.8s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .creation-time {
+      margin-top: 8px;
+      font-size: .92rem;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    @keyframes popIn {
+      0% { transform: translateY(-8px) scale(0.98); opacity: 0; }
+      60% { transform: translateY(6px) scale(1.02); opacity: 1; }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    main {
+      width: 100%;
+      display: grid;
+      place-items: center;
+      padding: 18px 16px 60px;
+      z-index: 1;
+    }
+
+    .grid {
+      width: min(1100px, 92%);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .card {
+      position: relative;
+      padding: 22px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.4);
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+      color: #f7faff;
+      min-height: 140px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+      transform: translateZ(0);
+      animation: rise 0.8s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: rgba(235,245,255,.92);
+      line-height: 1.5;
+      font-size: .95rem;
+    }
+
+    .card ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .card ul li {
+      margin: 6px 0;
+      font-size: .92rem;
+    }
+
+    /* small decorative gloss bar */
+    .card::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; top:0;
+      height:6px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      background: linear-gradient(90deg, #8ec5ff, #a6ffcb, #ffd6a5);
+      opacity:.6;
+      filter: saturate(120%);
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(14px); opacity: 0; }
+      60% { transform: translateY(-4px); opacity: 1; }
+      100% { transform: translateY(0); }
+    }
+
+    /* bounce effect on hover for cards */
+    .card:hover {
+      animation: bounce 0.6s ease;
+      transform-origin: center;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      25% { transform: translateY(-8px); }
+      50% { transform: translateY(0); }
+      75% { transform: translateY(-4px); }
+      100% { transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: auto;
+      width: 100%;
+      padding: 20px 12px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      z-index: 1;
+    }
+
+    .github {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+      transition: transform .2s ease;
+    }
+
+    .github:hover {
+      transform: translateY(-1px) scale(1.02);
+      background: rgba(255,255,255,0.22);
+    }
+
+    .footer-text {
+      font-size: .95rem;
+    }
+
+    @media (max-width: 520px){
+      header { padding: 28px 12px 8px; }
+      .creation-time { font-size: .85rem; padding: 6px 10px; }
+      .card { padding: 18px; min-height: 120px; }
+      .grid { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="glass-title">amirabolfazle</div>
+    <div class="creation-time">Creation time: 2025-09-28 05:09:37</div>
+  </header>
+
+  <main aria-label="Main content">
+    <section class="grid" aria-label="Feature cards with glassmorphism and bounce">
+      <article class="card" tabindex="0" aria-label="Responsive glass card">
+        <h3>Responsive Glass UI</h3>
+        <p>A modern glassmorphism style that adapts to any device with smooth, tactile feedback.</p>
+        <ul>
+          <li>Fluid layout with CSS grid</li>
+          <li>Backdrop blur for depth</li>
+          <li>Accessible focus outlines</li>
+        </ul>
+      </article>
+
+      <article class="card" tabindex="0" aria-label="Animated cards with bounce">
+        <h3>Bounce Animations</h3>
+        <p>Elements gently bounce on load and hover to create a lively interface.</p>
+        <ul>
+          <li>Load-in bounce</li>
+          <li>Hover bounce</li>
+          <li>Subtle motion design</li>
+        </ul>
+      </article>
+
+      <article class="card" tabindex="0" aria-label="Glass panel with soft glow">
+        <h3>Glassmorphism Theme</h3>
+        <p>Soft translucency, glowing edges, and a cohesive color palette for readability.</p>
+        <ul>
+          <li>Semi-transparent layers</li>
+          <li>Soft borders and glow</li>
+          <li>Accessible color contrast</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <footer aria-label="Footer with GitHub link">
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" focusable="false" style="display:block;">
+        <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.5 2.87 8.32 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.25-3.37-1.25-.46-1.18-1.12-1.5-1.12-1.5-.92-.63.07-.62.07-.62 1.02.07 1.56 1.07 1.56 1.07 .9 1.56 2.36 1.11 2.94.85.09-.68.35-1.11.63-1.37-2.22-.26-4.56-1.15-4.56-5.12 0-1.13.41-2.05 1.08-2.77-.11-.27-.47-1.38.1-2.88 0 0 .88-.29 2.89 1.07a9.75 9.75 0 012.64-.37c.9.01 1.81.12 2.66.37 2-1.36 2.88-1.07 2.88-1.07.58 1.5.22 2.61.11 2.88C18.18 9.99 19 11.9 19 13.95c0 3.99-2.34 4.85-4.57 5.08.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49C19.14 20.55 22 16.74 22 12.26 22 6.58 17.52 2 12 2z"/>
+      </svg>
+    </a>
+    <span class="footer-text" aria-label="Created by text">Created by amirabolfazle</span>
+  </footer>
+
+  <!-- No external scripts required; animations are CSS-driven -->
+</body>
+</html>
