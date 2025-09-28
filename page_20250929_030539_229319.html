@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #05060a;
+      --bg-2: #071028;
+      --neon-cyan: #00f0ff;
+      --neon-pink: #ff3ec6;
+      --neon-lime: #7dff6b;
+      --glass: rgba(255,255,255,0.04);
+      --card: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.06);
+      --radius: 14px;
+      --max-width: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(0,240,255,0.04), transparent),
+                  radial-gradient(800px 500px at 90% 90%, rgba(255,62,198,0.03), transparent),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#e6f7ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 24px;
+      min-height:100vh;
+    }
+
+    .stage{
+      width:100%;
+      max-width:var(--max-width);
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+      align-items:stretch;
+    }
+
+    /* Neon header */
+    header.hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border:1px solid var(--glass-border);
+      padding:28px;
+      border-radius:var(--radius);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      gap:20px;
+      align-items:center;
+      flex-wrap:wrap;
+      overflow:hidden;
+    }
+
+    .logo{
+      min-width:84px;
+      min-height:84px;
+      width:84px;
+      height:84px;
+      border-radius:18px;
+      background: linear-gradient(135deg, rgba(0,240,255,0.07), rgba(255,62,198,0.06));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 18px rgba(0,240,255,0.06);
+      transform:translateY(20px);
+      opacity:0;
+    }
+
+    .logo svg{filter:drop-shadow(0 6px 18px rgba(0,240,255,0.08));}
+
+    h1.title{
+      margin:0;
+      font-size:28px;
+      letter-spacing:1px;
+      color:transparent;
+      -webkit-text-stroke: 0.7px rgba(255,255,255,0.08);
+      background-image: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-lime));
+      background-clip: text;
+      -webkit-background-clip: text;
+      text-shadow:
+        0 0 6px rgba(0,240,255,0.12),
+        0 0 18px rgba(255,62,198,0.06);
+      transform:translateY(20px);
+      opacity:0;
+    }
+
+    .subtitle{
+      margin:0;
+      color: rgba(230,247,255,0.75);
+      font-size:13px;
+      transform:translateY(20px);
+      opacity:0;
+    }
+
+    .meta{
+      margin-left:auto;
+      text-align:right;
+      color: rgba(230,247,255,0.6);
+      font-size:13px;
+      transform:translateY(20px);
+      opacity:0;
+    }
+
+    /* Grid content */
+    .grid{
+      display:grid;
+      gap:18px;
+      grid-template-columns: repeat(3, 1fr);
+      align-items:stretch;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 30px rgba(0,0,0,0.12) inset;
+      transform: translateY(30px);
+      opacity:0;
+      transition: transform 700ms cubic-bezier(.2,.9,.3,1), opacity 600ms ease;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .card.reveal{
+      transform: translateY(0);
+      opacity:1;
+    }
+
+    .card .label{
+      font-size:12px;
+      color: rgba(255,255,255,0.6);
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .pulse-dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.25));
+      box-shadow: 0 0 14px var(--neon-pink);
+      animation: pulse 2s infinite;
+      flex-shrink:0;
+    }
+
+    @keyframes pulse{
+      0%{transform:scale(0.9); box-shadow:0 0 8px rgba(255,62,198,0.6);}
+      50%{transform:scale(1.15); box-shadow:0 0 20px rgba(255,62,198,0.9);}
+      100%{transform:scale(0.9); box-shadow:0 0 8px rgba(255,62,198,0.6);}
+    }
+
+    .card h3{
+      margin:0;
+      font-size:16px;
+      color: #e9ffff;
+      text-shadow: 0 0 8px rgba(0,240,255,0.05);
+    }
+
+    .card p{
+      margin:0;
+      color: rgba(230,247,255,0.72);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    /* footer */
+    footer{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      border-radius:12px;
+      color: rgba(230,247,255,0.7);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--neon-cyan);
+      text-decoration:none;
+      transition:transform .18s ease, filter .18s ease;
+      padding:6px 10px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(0,240,255,0.03), transparent);
+      border:1px solid rgba(0,240,255,0.06);
+    }
+    .github-link:hover{ transform:translateY(-4px); filter:drop-shadow(0 8px 26px rgba(0,240,255,0.06)); }
+    .github-link svg{ width:18px; height:18px; display:block; fill:currentColor; }
+
+    /* reveal class for header elements */
+    .appear{
+      transform:translateY(0) !important;
+      opacity:1 !important;
+      transition: transform 700ms cubic-bezier(.2,.9,.3,1), opacity 600ms ease;
+    }
+
+    /* neon lines/background accents */
+    .accent-lines{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      opacity:0.08;
+    }
+    .accent-lines::before, .accent-lines::after{
+      content:'';
+      position:absolute;
+      width:60%;
+      height:2px;
+      left:20%;
+      top:12%;
+      background:linear-gradient(90deg, transparent, rgba(0,240,255,0.6), transparent);
+      filter:blur(6px);
+    }
+    .accent-lines::after{
+      top:auto;
+      bottom:14%;
+      background:linear-gradient(90deg, transparent, rgba(255,62,198,0.5), transparent);
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .grid{grid-template-columns: repeat(2, 1fr);}
+      header.hero{padding:20px;}
+      .logo{width:72px; height:72px; min-width:72px; min-height:72px;}
+      h1.title{font-size:24px}
+    }
+    @media (max-width:640px){
+      .grid{grid-template-columns: 1fr;}
+      .meta{text-align:left; margin-left:0;}
+      header.hero{flex-direction:column; align-items:flex-start; gap:12px;}
+      .logo{width:64px;height:64px}
+      .stage{gap:18px}
+    }
+
+    /* subtle flicker on the neon title */
+    @keyframes flickerTitle{
+      0% { opacity: 0.98; filter: drop-shadow(0 0 8px rgba(0,240,255,0.18)); }
+      30% { opacity: 0.92; filter: drop-shadow(0 0 20px rgba(255,62,198,0.14)); }
+      60% { opacity: 0.99; filter: drop-shadow(0 0 10px rgba(125,255,107,0.12)); }
+      100% { opacity: 0.98; filter: drop-shadow(0 0 8px rgba(0,240,255,0.18)); }
+    }
+
+    .title{ animation: flickerTitle 4.5s linear infinite; }
+  </style>
+</head>
+<body>
+  <div class="accent-lines" aria-hidden="true"></div>
+  <main class="stage" role="main">
+    <header class="hero" aria-labelledby="main-title">
+      <div class="logo" data-animate>
+        <!-- stylized A monogram -->
+        <svg viewBox="0 0 100 100" width="48" height="48" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="#00f0ff"/>
+              <stop offset="0.6" stop-color="#ff3ec6"/>
+              <stop offset="1" stop-color="#7dff6b"/>
+            </linearGradient>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3.5" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <g filter="url(#glow)">
+            <path d="M18 78 L30 22 L50 22 L62 78 L54 78 L50 60 L35 60 L31 78 Z" fill="url(#g1)"/>
+            <path d="M44 34 L52 34 L48 48 Z" fill="rgba(255,255,255,0.06)"/>
+          </g>
+        </svg>
+      </div>
+
+      <div style="min-width:240px">
+        <h1 id="main-title" class="title" data-animate>amirabolfazle</h1>
+        <p class="subtitle" data-animate>Neon playground • Responsive animated layout • Slide-up effects</p>
+      </div>
+
+      <div class="meta" aria-hidden="false" data-animate>
+        <div style="font-weight:600">Creation time</div>
+        <div style="font-size:13px; color:rgba(230,247,255,0.72); margin-top:6px;">2025-09-29 03:04:50</div>
+      </div>
+    </header>
+
+    <section class="grid" aria-label="Showcase panels">
+      <article class="card" data-reveal>
+        <div class="label"><span class="pulse-dot" aria-hidden="true"></span><span>Welcome</span></div>
+        <h3>Vibrant Identity</h3>
+        <p>Colors, glow and soft glass surfaces combine to create a neon identity. Each block slides up as it enters the viewport, adding a lively, dynamic feel.</p>
+      </article>
+
+      <article class="card" data-reveal>
+        <div class="label"><span style="width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,#00f0ff,#7dff6b);box-shadow:0 0 12px rgba(0,240,255,0.12)" aria-hidden="true"></span><span>Interactions</span></div>
+        <h3>Subtle Motion</h3>
+        <p>Animations are intentionally smooth and light to keep the focus on content while enhancing perceived speed and polish.</p>
+      </article>
+
+      <article class="card" data-reveal>
+        <div class="label"><span style="width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,#ff3ec6,#7dff6b);box-shadow:0 0 12px rgba(255,62,198,0.12)" aria-hidden="true"></span><span>Responsive</span></div>
+        <h3>Layout Adapts</h3>
+        <p>Grid-based layout collapses elegantly for narrow viewports. Typography scales and spacing adjusts to keep things readable and balanced.</p>
+      </article>
+
+      <article class="card" data-reveal>
+        <div class="label"><span style="width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,#00f0ff,#ff3ec6);box-shadow:0 0 12px rgba(0,240,255,0.12)" aria-hidden="true"></span><span>Accessibility</span></div>
+        <h3>High Contrast Options</h3>
+        <p>Neon colors sit on a dark backdrop for clear contrast. UI elements include adequate hit areas and legible text sizes for most devices.</p>
+      </article>
+
+      <article class="card" data-reveal>
+        <div class="label"><span style="width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,#7dff6b,#00f0ff);box-shadow:0 0 12px rgba(125,255,107,0.12)" aria-hidden="true"></span><span>Performance</span></div>
+        <h3>GPU-Accelerated Motion</h3>
+        <p>Transforms and opacity are used for animations to keep things smooth even on lower-powered devices. IntersectionObserver triggers animations only when needed.</p>
+      </article>
+
+      <article class="card" data-reveal>
+        <div class="label"><span style="width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,#ff3ec6,#00f0ff);box-shadow:0 0 12px rgba(255,62,198,0.12)" aria-hidden="true"></span><span>Customization</span></div>
+        <h3>Easy to Theme</h3>
+        <p>Root variables hold core colors and radii. Swap a few values or gradients and the whole vibe shifts instantly. Try a cooler or warmer palette.</p>
+      </article>
+    </section>
+
+    <footer>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" title="Open GitHub repository">
+        <!-- Inline GitHub icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.386-1.333-1.756-1.333-1.756-1.089-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.304 3.495.998.108-.775.418-1.305.76-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.381 1.235-3.222-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.49 11.49 0 013.003-.404c1.02.005 2.047.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.241 2.873.118 3.176.77.841 1.233 1.912 1.233 3.222 0 4.61-2.807 5.624-5.48 5.92.429.369.81 1.096.81 2.21 0 1.595-.015 2.876-.015 3.268 0 .32.216.694.824.576C20.565 22.092 24 17.592 24 12.297 24 5.67 18.627.297 12 .297z"/>
+        </svg>
+        <span style="color:inherit; font-weight:600;">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      // Simple reveal-on-scroll with IntersectionObserver
+      const revealables = document.querySelectorAll('[data-reveal]');
+      const animEls = document.querySelectorAll('[data-animate]');
+
+      // Staggered reveal for header pieces on initial load
+      animEls.forEach((el, i) => {
+        setTimeout(()=> el.classList.add('appear'), 180 + i * 90);
+      });
+
+      // Intersection observer for cards
+      if('IntersectionObserver' in window){
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(entry=>{
+            if(entry.isIntersecting){
+              entry.target.classList.add('reveal');
+              io.unobserve(entry.target);
+            }
+          });
+        }, {threshold: 0.15});
+        revealables.forEach((el, i)=>{
+          // small stagger when discovered (optional)
+          el.style.transitionDelay = (i * 80) + 'ms';
+          io.observe(el);
+        });
+      } else {
+        // fallback: show them all
+        revealables.forEach(el=> el.classList.add('reveal'));
+      }
+
+      // keyboard: allow focus-visible style by toggling a class if using keyboard
+      function handleFirstTab(e){
+        if(e.key === 'Tab'){
+          document.documentElement.classList.add('user-is-tabbing');
+          window.removeEventListener('keydown', handleFirstTab);
+        }
+      }
+      window.addEventListener('keydown', handleFirstTab);
+    })();
+  </script>
+</body>
+</html>
