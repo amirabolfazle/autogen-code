@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0a11;
+      --bg2: #0b1020;
+      --fg: #e8f0ff;
+      --neon1: #00f5ff;
+      --neon2: #a100ff;
+      --neon3: #39ff14;
+      --card: rgba(255,255,255,0.05);
+    }
+
+    /* Global reset-ish */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, system-ui, -apple-system, Arial;
+      color: var(--fg);
+      background: linear-gradient(#050711, #090b18 40%, #040612 100%);
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    /* Neon moving grid background */
+    .grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(125,0,255,.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -1;
+      animation: drift 20s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes drift {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-2px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* Neon glow effects */
+    .neon {
+      color: #eaffff;
+      text-shadow:
+        0 0 6px rgba(0,255,255,.6),
+        0 0 16px rgba(0,255,255,.6),
+        0 0 28px rgba(0,255,255,.6);
+    }
+    .neon-gradient {
+      background: linear-gradient(90deg, #00f5ff, #a100ff, #39ff14);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 6px rgba(0,255,255,.8), 0 0 20px rgba(161,0,255,.8);
+      display: inline-block;
+    }
+
+    /* Bounce animation */
+    @keyframes bounce {
+      0%, 20%, 60%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-18px); }
+      80% { transform: translateY(-6px); }
+    }
+    .bounce { animation: bounce 3s ease-in-out infinite; }
+
+    /* Layout */
+    .stage {
+      max-width: 980px;
+      padding: 48px 20px 80px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: clamp(28px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: .04em;
+      margin: 0;
+      /* neon gradient text */
+      background: linear-gradient(90deg, #00f5ff, #a100ff, #39ff14);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(0,255,255,.8), 0 0 22px rgba(161,0,255,.8);
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: #cfe6ff;
+      opacity: .9;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-left: 2px;
+      filter: drop-shadow(0 0 8px rgba(0,255,255,.4));
+    }
+
+    nav {
+      display: flex;
+      gap: 14px;
+      margin: 6px 0 28px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #d9eaff;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.15);
+      transition: transform .3s ease, background .3s ease;
+      backdrop-filter: blur(2px);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: .18em;
+    }
+    nav a:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 255, 255, 0.25);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 22px;
+      margin: 14px 0 26px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.4);
+      backdrop-filter: blur(2px);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #e8faff;
+      text-shadow: 0 0 6px rgba(0,255,255,.6);
+    }
+
+    p { margin: 8px 0 0; line-height: 1.6; color: #dbeaff; }
+
+    ul { padding-left: 20px; margin: 8px 0; }
+
+    /* Creation time badge */
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace,SFMono-Regular,Consolas,"Liberation Mono", monospace;
+      font-size: 12px;
+      color: #00ffe0;
+      background: rgba(0,255,255,.15);
+      border: 1px solid rgba(0,255,255,.4);
+      box-shadow: 0 0 14px rgba(0,255,255,.6);
+      margin: 12px 0;
+    }
+
+    /* Orb decorations */
+    .orb {
+      position: fixed;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      opacity: .75;
+      z-index: -1;
+    }
+    .orb.one { top: 10%; left: 5%; background: radial-gradient(circle at 30% 30%, rgba(0,255,255,.9), rgba(0,0,0,0) 40%), radial-gradient(circle at 60% 60%, rgba(0,0,255,.6), rgba(0,0,0,0) 40%); animation: float 12s ease-in-out infinite; }
+    .orb.two { bottom: 12%; right: 8%; background: radial-gradient(circle at 40% 40%, rgba(161,0,255,.9), rgba(0,0,0,0) 40%), radial-gradient(circle at 60% 60%, rgba(0,255,0,.8), rgba(0,0,0,0) 40%); animation: float 14s ease-in-out infinite reverse; }
+    .orb.three { top: 40%; right: 25%; width: 80px; height: 80px; background: radial-gradient(circle at 40% 40%, rgba(0,255,255,.8), rgba(0,0,0,0) 40%), radial-gradient(circle at 60% 60%, rgba(0,0,255,.7), rgba(0,0,0,0) 40%); animation: float 18s ease-in-out infinite; opacity: .5; }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(20px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    /* Footer */
+    .site-footer {
+      display: flex; align-items: center; gap: 12px;
+      justify-content: center;
+      padding: 20px 10px;
+      margin-top: 20px;
+      color: #a6c6ff;
+      border-top: 1px solid rgba(255,255,255,.08);
+      opacity: .95;
+    }
+    .github-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #d9eaff; text-decoration: none;
+      width: 40px; height: 40px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(0,0,0,.15);
+      transition: transform .3s ease, background .3s ease;
+      box-shadow: 0 0 12px rgba(0,255,255,.6);
+    }
+    .github-link:hover { transform: translateY(-2px) scale(1.05); background: rgba(0, 255, 255, .25); }
+    .credit { font-family: ui-monospace,SFMono-Regular,Consolas,"Liberation Mono", monospace; }
+    
+    /* Responsiveness */
+    @media (max-width: 700px) {
+      .orb { display: none; }
+      nav a { padding: 6px 10px; font-size: 11px; }
+      .creation { font-size: 11px; }
+    }
+
+    /* Reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .bounce { animation: none; }
+      @keyframes drift { from { transform: none; } to { transform: none; } }
+      .orb { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <div class="stage" role="main">
+    <header>
+      <h1 class="logo neon bounce" aria-label="amirabolfazle">amirabolfazle</h1>
+      <div class="tagline neon" style="font-family: ui-sans-serif; font-size: 12px; letter-spacing: .34em;">personal page</div>
+    </header>
+
+    <nav aria-label="Main navigation">
+      <a href="#about" class="bounce" style="animation-delay: .1s;">About</a>
+      <a href="#projects" class="bounce" style="animation-delay: .2s;">Projects</a>
+      <a href="#contact" class="bounce" style="animation-delay: .3s;">Contact</a>
+    </nav>
+
+    <section id="about" class="card" aria-labelledby="about-title">
+      <h2 id="about-title" class="neon" style="margin-bottom:6px; text-shadow: 0 0 8px #00f5ff;">About</h2>
+      <p>Hello! I'm amirabolfazle. This is a fancy neon-styled personal page with animated bounces and glow. It showcases a bit about me and links to my work.</p>
+    </section>
+
+    <section id="projects" class="card" aria-labelledby="projects-title">
+      <h2 id="projects-title" class="neon" style="margin-bottom:6px; text-shadow: 0 0 8px #a100ff;">Projects</h2>
+      <ul>
+        <li>Autogen Code Playground (example)</li>
+        <li>Neon UI Components</li>
+        <li>Animated Personal Pages</li>
+      </ul>
+    </section>
+
+    <section id="contact" class="card" aria-labelledby="contact-title">
+      <h2 id="contact-title" class="neon" style="margin-bottom:6px; text-shadow: 0 0 8px #39ff14;">Contact</h2>
+      <p>Feel free to reach out via GitHub or email. This is a demo page focusing on visuals and motion.</p>
+    </section>
+
+    <div class="creation" aria-live="polite">
+      Creation Time: 2025-09-28 12:47:45
+    </div>
+
+    <!-- decorative orbs for bounce ambiance -->
+    <div class="orb one" aria-hidden="true"></div>
+    <div class="orb two" aria-hidden="true"></div>
+    <div class="orb three" aria-hidden="true"></div>
+  </div>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="GitHub repository">
+      <!-- GitHub icon (SVG) -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" role="img" style="color:#fff;">
+        <path d="M12 0C5.37 0 0 5.373 0 12a12 12 0 0 0 8.208 11.387c.6.113.82-.26.82-.58 0-.287-.01-1.04-.015-2.042-3.338.726-4.042-1.613-4.042-1.613-.546-1.387-1.333-1.758-1.333-1.758-1.09-.746.083-.731.083-.731 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.305 3.495.997.108-.776.418-1.305.761-1.605-2.665-.303-5.466-1.334-5.466-5.93 0-1.31.469-2.382 1.235-3.222-.124-.304-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 0 1 3.003-.403c1.019.004 2.043.137 3.003.403 2.293-1.552 3.301-1.23 3.301-1.23.653 1.653.243 2.873.118 3.176.77.84 1.234 1.912 1.234 3.222 0 4.608-2.807 5.624-5.481 5.921.43.37.814 1.102.814 2.222 0 1.606-.013 2.898-.013 3.293 0 .324.216.702.824.584C20.565 21.793 24 17.295 24 12 24 5.373 18.627 0 12 0z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
