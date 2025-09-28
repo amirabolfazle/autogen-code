@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f2027; /* deep */
+      --bg2:#2c5364; /* teal */
+      --accent1:#ff6b6b;
+      --accent2:#5efce8;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --text: #e9f0f2;
+      --muted: rgba(233,240,242,0.7);
+      --card-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 15%, rgba(94,252,232,0.06), transparent 8%),
+                  radial-gradient(900px 500px at 90% 85%, rgba(255,107,107,0.04), transparent 8%),
+                  linear-gradient(135deg,var(--bg1) 0%, var(--bg2) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;
+      padding:36px;
+      box-shadow:var(--card-shadow);
+      position:relative;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px) saturate(110%);
+    }
+
+    /* animated gradient shapes */
+    .spark{
+      position:absolute;
+      filter:blur(30px) saturate(140%);
+      opacity:0.8;
+      border-radius:50%;
+      transform:translate(-50%,-50%) scale(1);
+      animation: floaty 8s ease-in-out infinite;
+      mix-blend-mode:overlay;
+      pointer-events:none;
+    }
+    .spark.a{width:340px;height:340px;left:-10%;top:10%;background:linear-gradient(120deg,var(--accent2), rgba(94,252,232,0.08)); animation-duration:9s}
+    .spark.b{width:260px;height:260px;right:-6%;bottom:-6%;background:linear-gradient(120deg,var(--accent1), rgba(255,107,107,0.08)); animation-duration:11s}
+    .spark.c{width:160px;height:160px;left:60%;top:-8%;background:linear-gradient(120deg,#ffd166, #ff6b6b); animation-duration:12s; opacity:0.7}
+
+    @keyframes floaty{
+      0%{transform:translate(-50%,-50%) translateY(0) rotate(0)}
+      50%{transform:translate(-50%,-50%) translateY(-18px) rotate(12deg)}
+      100%{transform:translate(-50%,-50%) translateY(0) rotate(0)}
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:28px;
+      align-items:center;
+    }
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr; padding-bottom:10px}
+      .avatar{margin:0 auto}
+    }
+
+    /* avatar card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 26px rgba(2,6,23,0.45);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .avatar{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:center;
+      text-align:center;
+    }
+    .avatar .photo{
+      width:140px;height:140px;border-radius:20px;
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 30px rgba(12,18,22,0.6), inset 0 -6px 18px rgba(0,0,0,0.25);
+      position:relative;
+      overflow:hidden;
+      animation: popIn 700ms cubic-bezier(.2,.9,.2,1);
+    }
+    .photo svg{width:86px;height:86px;filter:drop-shadow(0 6px 20px rgba(0,0,0,0.6))}
+    @keyframes popIn{0%{transform:scale(.86);opacity:0}100%{transform:scale(1);opacity:1}}
+
+    .handle{
+      font-weight:700;
+      font-size:22px;
+      letter-spacing:0.6px;
+      background:linear-gradient(90deg,var(--accent2),var(--accent1));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    }
+    .role{color:var(--muted);font-size:13px;margin-top:-2px}
+
+    .stats{
+      display:flex;gap:12px;margin-top:8px;
+      width:100%;justify-content:center;
+    }
+    .stat{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      padding:10px 14px;border-radius:10px;font-size:13px;color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+      min-width:86px;text-align:center;
+    }
+    .stat strong{display:block;color:var(--text);font-weight:700;font-size:15px;margin-bottom:4px}
+
+    /* main content */
+    .main{
+      padding:6px 4px;
+    }
+    .titleRow{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .heroTitle{
+      font-family:Poppins, Inter;
+      font-weight:900;
+      font-size:42px;
+      margin:0;
+      line-height:1;
+      letter-spacing:-1px;
+      background:linear-gradient(90deg,#ffffff, rgba(255,255,255,0.6));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      display:flex;align-items:center;gap:12px;
+    }
+    .tagline{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:8px;
+    }
+
+    /* gradient badge with bounce */
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      color:#032;
+      font-weight:700;
+      background:linear-gradient(90deg, rgba(94,252,232,0.95), rgba(255,107,107,0.92));
+      box-shadow: 0 10px 30px rgba(94,252,232,0.08), 0 2px 6px rgba(255,107,107,0.06);
+      transform-origin:center;
+      animation: bounce 2200ms infinite;
+    }
+
+    @keyframes bounce{
+      0%{transform:translateY(0)}
+      10%{transform:translateY(-6px)}
+      30%{transform:translateY(0)}
+      60%{transform:translateY(-3px)}
+      100%{transform:translateY(0)}
+    }
+
+    /* description card */
+    .about{
+      margin-top:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);line-height:1.6;font-size:14px;
+      box-shadow: 0 6px 26px rgba(2,6,23,0.35);
+    }
+
+    .actions{
+      margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;
+    }
+    .btn{
+      padding:10px 14px;border-radius:12px;font-weight:700;
+      background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);
+      cursor:pointer;transition:all 220ms ease;backdrop-filter: blur(6px);
+    }
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent2),var(--accent1));
+      color:#031e1d;border:none;
+      box-shadow: 0 10px 30px rgba(255,107,107,0.08);
+      animation: popPulse 2200ms infinite;
+    }
+    @keyframes popPulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.02)}
+      100%{transform:scale(1)}
+    }
+    .btn:active{transform:translateY(1px) scale(.998)}
+
+    .meta{
+      display:flex;gap:12px;align-items:center;margin-top:18px;color:var(--muted);font-size:13px;
+    }
+    .meta .time{
+      display:inline-flex;align-items:center;gap:8px;background:var(--glass);padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.02)
+    }
+
+    /* footer */
+    footer{
+      margin-top:22px;padding-top:18px;border-top:1px dashed rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center;gap:12px;
+      font-size:13px;color:var(--muted);
+    }
+    .gh{
+      display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--muted);
+      transition:all 180ms ease;
+      padding:6px 10px;border-radius:10px;
+    }
+    .gh:hover{color:var(--text);transform:translateY(-4px)}
+    .gh svg{width:18px;height:18px;fill:currentColor;opacity:0.95}
+
+    /* subtle entrance */
+    .stagger>div{opacity:0;transform:translateY(10px) scale(.995);animation:enter 640ms cubic-bezier(.2,.9,.2,1) forwards}
+    .stagger>div:nth-child(1){animation-delay:120ms}
+    .stagger>div:nth-child(2){animation-delay:240ms}
+    .stagger>div:nth-child(3){animation-delay:360ms}
+    .stagger>div:nth-child(4){animation-delay:480ms}
+
+    @keyframes enter{to{opacity:1;transform:none}}
+
+    /* prefers-reduced-motion */
+    @media (prefers-reduced-motion:reduce){
+      .spark,.badge,.btn.primary{animation:none}
+      .stagger>div{animation:none;opacity:1;transform:none}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="stage" role="main" aria-label="amirabolfazle personal page">
+    <div class="spark a" aria-hidden="true"></div>
+    <div class="spark b" aria-hidden="true"></div>
+    <div class="spark c" aria-hidden="true"></div>
+
+    <div class="grid">
+      <div class="card avatar stagger" aria-hidden="false">
+        <div style="display:block">
+          <div class="photo" title="amirabolfazle">
+            <!-- stylized monogram SVG -->
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="logo">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="#5efce8"/>
+                  <stop offset="1" stop-color="#ff6b6b"/>
+                </linearGradient>
+              </defs>
+              <rect width="100" height="100" rx="18" fill="url(#g1)"/>
+              <g fill="#021518" transform="translate(12,10)">
+                <path d="M10 66 L24 12 L38 66 Z" opacity="0.95"/>
+                <path d="M50 66 L64 12 L78 66 Z" opacity="0.95" transform="translate(-2,0)"/>
+                <rect x="18" y="40" width="44" height="8" rx="3" />
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="" style="margin-top:8px">
+          <div class="handle">amirabolfazle</div>
+          <div class="role">Creator • Builder • Curious</div>
+        </div>
+
+        <div class="stats" role="list" aria-label="quick stats">
+          <div class="stat" role="listitem"><strong>42</strong> Projects</div>
+          <div class="stat" role="listitem"><strong>1.2K</strong> Stars</div>
+          <div class="stat" role="listitem"><strong>10</strong> Languages</div>
+        </div>
+      </div>
+
+      <div class="main card stagger" aria-hidden="false">
+        <div class="titleRow">
+          <h1 class="heroTitle">amirabolfazle</h1>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+            <div class="badge" aria-hidden="true">Live • Fancy • Fun</div>
+            <div style="font-size:12px;color:var(--muted)">A small corner of the web</div>
+          </div>
+        </div>
+
+        <div class="tagline">Designing playful experiences and building reliable code — mixing art with craft.</div>
+
+        <div class="about">
+          Hello — this page showcases a compact, animated profile with a gradient theme and subtle bounce effects. Explore projects, peek at code, or simply enjoy the motion. Content is handcrafted for clarity, with attention to color, depth, and rhythm.
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" onclick="location.href='#projects'">Explore Projects</button>
+          <button class="btn" onclick="location.href='https://github.com/amirabolfazle/autogen-code'">View Repo</button>
+          <button class="btn" onclick="alert('Say hi to amirabolfazle!')">Say Hello</button>
+        </div>
+
+        <div class="meta" style="justify-content:space-between;flex-wrap:wrap">
+          <div class="time meta-item">
+            <div class="time" title="creation time">
+              <svg width="14" height="14" viewBox="0 0 24 24" style="flex:0 0 14px" aria-hidden="true"><path fill="currentColor" d="M12 1a11 11 0 1 0 11 11A11.012 11.012 0 0 0 12 1Zm1 12.59-4-2.29.71-1.2 3.3 1.9V18h1.99Z"/></svg>
+              <div style="font-size:13px;color:var(--text);font-weight:700">Created: 2025-09-29 03:25:14</div>
+            </div>
+          </div>
+
+          <div style="color:var(--muted);font-size:13px">Last update • animated UI • gradient theme</div>
+        </div>
+
+        <footer>
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.7 3.05 8.68 7.28 10.08.53.1.72-.23.72-.51 0-.25-.01-.9-.01-1.77-2.96.64-3.58-1.32-3.58-1.32-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.61 2.48 1.15 3.09.88.1-.68.37-1.15.67-1.41-2.37-.27-4.86-1.19-4.86-5.3 0-1.17.42-2.12 1.1-2.87-.11-.28-.48-1.4.1-2.92 0 0 .9-.29 2.95 1.1a10.2 10.2 0 0 1 2.69-.36c.91 0 1.83.12 2.69.36 2.05-1.39 2.95-1.1 2.95-1.1.58 1.52.21 2.64.11 2.92.69.75 1.1 1.7 1.1 2.87 0 4.12-2.5 5.02-4.88 5.29.38.33.72.97.72 1.96 0 1.42-.01 2.57-.01 2.92 0 .28.19.62.73.51C19.05 20.28 22.1 16.3 22.1 11.6 22.1 5.33 17.27.5 12 .5z"></path>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+
+          <div style="color:rgba(233,240,242,0.55);font-size:12px">© 2025</div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // micro interactions: subtle hover bounce controls for users who prefer motion
+    (function(){
+      const badge = document.querySelector('.badge');
+      if(!badge) return;
+      badge.addEventListener('mouseenter', ()=> badge.style.transform = 'translateY(-4px) scale(1.01)');
+      badge.addEventListener('mouseleave', ()=> badge.style.transform = '');
+      // keyboard focus cue
+      const focusables = document.querySelectorAll('.btn, .gh, .photo');
+      focusables.forEach(el=>{
+        el.addEventListener('focus', ()=> el.style.boxShadow = '0 10px 30px rgba(0,0,0,0.45)');
+        el.addEventListener('blur', ()=> el.style.boxShadow = '');
+      });
+    })();
+  </script>
+</body>
+</html>
