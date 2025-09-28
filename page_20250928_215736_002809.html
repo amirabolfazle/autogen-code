@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#04040a;
+      --neon-pink: #ff2d95;
+      --neon-cyan: #00e5ff;
+      --neon-lime: #9aff00;
+      --glass: rgba(255,255,255,0.03);
+      --card: rgba(255,255,255,0.02);
+      --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(0,229,255,0.06), transparent 6%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(255,45,149,0.05), transparent 8%),
+                  var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      color:#e6faff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    /* Subtle animated background grid */
+    .grid {
+      position:fixed;
+      inset:0;
+      background-image:
+        linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px, 60px 60px;
+      transform: translateZ(0);
+      mix-blend-mode: overlay;
+      opacity:0.08;
+      animation: floatGrid 18s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes floatGrid{
+      0%{transform: translateY(0) rotate(0);}
+      50%{transform: translateY(-20px) rotate(0.5deg);}
+      100%{transform: translateY(0) rotate(0);}
+    }
+
+    .stage{
+      width:min(980px,94vw);
+      padding:32px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.01) 100%);
+      box-shadow:
+        0 8px 40px rgba(0,0,0,0.6),
+        0 0 30px rgba(0,229,255,0.03) inset,
+        0 0 30px rgba(255,45,149,0.02) inset;
+      border: 1px solid rgba(255,255,255,0.03);
+      position:relative;
+      overflow:visible;
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    /* Neon title */
+    .title{
+      text-align:center;
+      font-size: clamp(28px, 6vw, 58px);
+      font-weight:800;
+      letter-spacing:0.02em;
+      color: #e9fbff;
+      margin:6px 0 10px;
+      text-transform:lowercase;
+      text-shadow:
+        0 0 6px rgba(0,229,255,0.25),
+        0 0 18px rgba(255,45,149,0.12);
+      display:inline-block;
+      padding:8px 18px;
+      border-radius:12px;
+      position:relative;
+      transform-origin:center;
+      animation: bounce 2.2s cubic-bezier(.28,.84,.42,1) infinite;
+    }
+
+    @keyframes bounce{
+      0%{ transform: translateY(0) scale(1); filter: drop-shadow(0 0 6px rgba(0,229,255,0.06)); }
+      25%{ transform: translateY(-10px) scale(1.02); }
+      50%{ transform: translateY(0) scale(1); }
+      75%{ transform: translateY(-6px) scale(1.01); }
+      100%{ transform: translateY(0) scale(1); }
+    }
+
+    .subtitle{
+      text-align:center;
+      font-size:14px;
+      color: rgba(230,250,255,0.9);
+      margin:6px 0 22px;
+      opacity:0.9;
+    }
+
+    .hero{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .card{
+      flex:1 1 360px;
+      min-width:260px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .neon-badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      background: linear-gradient(90deg, rgba(0,229,255,0.06), rgba(255,45,149,0.06));
+      padding:8px 12px;
+      border-radius:999px;
+      color: #a8fbff;
+      font-weight:600;
+      text-shadow: 0 0 10px rgba(0,229,255,0.06);
+      box-shadow: 0 6px 20px rgba(0,229,255,0.03);
+    }
+
+    .glow-ring{
+      height:10px;
+      width:10px;
+      border-radius:50%;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 12px var(--neon-cyan), 0 0 26px rgba(0,229,255,0.06);
+    }
+
+    .profile{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .avatar{
+      height:88px;
+      width:88px;
+      border-radius:16px;
+      background: linear-gradient(135deg,var(--neon-pink),var(--neon-cyan));
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      font-size:32px;
+      color:#03121a;
+      box-shadow: 0 8px 30px rgba(255,45,149,0.08);
+      transform-origin:center;
+      animation: pulse 3s ease-in-out infinite;
+      flex-shrink:0;
+    }
+    @keyframes pulse{
+      0%{ transform: scale(1);}
+      50%{ transform: scale(1.06) rotate(-2deg);}
+      100%{ transform: scale(1);}
+    }
+
+    .meta{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .meta h3{
+      margin:0;
+      font-size:18px;
+      color: #e6fbff;
+    }
+    .meta p{
+      margin:0;
+      color: rgba(230,250,255,0.8);
+      font-size:13px;
+    }
+
+    .big{
+      font-size:40px;
+      font-weight:700;
+      color: transparent;
+      background: var(--accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow: 0 0 24px rgba(255,45,149,0.06);
+      margin:0;
+    }
+
+    /* Floating info with neon icons */
+    .info-list{
+      display:flex;
+      gap:12px;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+    .info-item{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:12px;
+      background: rgba(255,255,255,0.012);
+      border: 1px solid rgba(255,255,255,0.02);
+      color: rgba(220,255,255,0.85);
+      font-size:13px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+      transform-origin:center;
+      animation: floatSmall 6s ease-in-out infinite;
+    }
+    .info-item:nth-child(2){ animation-delay:0.8s;}
+    .info-item:nth-child(3){ animation-delay:1.4s;}
+    @keyframes floatSmall{
+      0%{ transform: translateY(0);}
+      50%{ transform: translateY(-8px);}
+      100%{ transform: translateY(0);}
+    }
+
+    /* Right column: neon panel */
+    .panel{
+      width:320px;
+      max-width:40%;
+      min-width:240px;
+      border-radius:12px;
+      padding:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 12px 40px rgba(2,6,23,0.6);
+    }
+
+    .panel h4{
+      color: #e9fbff;
+      margin:0 0 10px 0;
+      font-size:14px;
+      letter-spacing:0.04em;
+      font-weight:700;
+    }
+
+    .lights{
+      display:flex;
+      gap:8px;
+      margin-bottom:12px;
+    }
+    .light{
+      flex:1;
+      height:10px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(0,229,255,0.12), rgba(255,45,149,0.12));
+      box-shadow: 0 6px 18px rgba(255,45,149,0.03);
+      transform-origin:left;
+      animation: pulseBar 3s ease-in-out infinite;
+    }
+    .light:nth-child(2){ animation-delay:0.4s;}
+    .light:nth-child(3){ animation-delay:0.9s;}
+    @keyframes pulseBar{
+      0%{ transform: scaleX(0.7); opacity:0.9;}
+      50%{ transform: scaleX(1); opacity:1;}
+      100%{ transform: scaleX(0.7); opacity:0.9;}
+    }
+
+    .time-box{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-top:10px;
+      padding:12px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(0,229,255,0.02), rgba(255,45,149,0.02));
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.55) inset;
+      font-family: "Courier New", monospace;
+      color:#dffcff;
+      font-weight:700;
+      text-shadow: 0 0 8px rgba(0,229,255,0.06);
+    }
+
+    .creation{
+      display:block;
+      font-size:13px;
+      color: rgba(255,255,255,0.92);
+      letter-spacing:0.02em;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      padding-top:12px;
+    }
+
+    .gh-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color: #dffcff;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(90deg, rgba(0,229,255,0.02), rgba(255,45,149,0.02));
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .gh-link:hover{ transform: translateY(-6px); box-shadow: 0 18px 48px rgba(0,0,0,0.6); }
+
+    .gh-icon{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.6));
+      flex-shrink:0;
+    }
+
+    .created-by{
+      color: rgba(220,255,255,0.88);
+      font-size:13px;
+      font-weight:600;
+    }
+
+    /* Decorative floating blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(26px) saturate(140%);
+      opacity:0.65;
+      mix-blend-mode: screen;
+      pointer-events:none;
+      animation: drift 14s linear infinite;
+    }
+    .blob.a{ width:240px; height:240px; background: radial-gradient(circle at 30% 30%, var(--neon-cyan), transparent 45%); top:-80px; left:-80px; animation-duration:20s;}
+    .blob.b{ width:180px; height:180px; background: radial-gradient(circle at 70% 70%, var(--neon-pink), transparent 40%); bottom:-60px; right:-80px; animation-duration:24s; animation-delay:1s;}
+    .blob.c{ width:120px; height:120px; background: radial-gradient(circle at 50% 50%, var(--neon-lime), transparent 50%); top:40%; right:6%; animation-duration:18s; animation-delay:0.6s;}
+
+    @keyframes drift{
+      0%{ transform: translateY(0) translateX(0) rotate(0deg); }
+      50%{ transform: translateY(-18px) translateX(10px) rotate(3deg); }
+      100%{ transform: translateY(0) translateX(0) rotate(0deg); }
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:880px){
+      .hero{ flex-direction:column-reverse; align-items:stretch; }
+      .panel{ width:100%; max-width:unset; }
+      .stage{ padding:20px; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+  <div class="blob c" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="page-title">
+    <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;">
+      <h1 id="page-title" class="title">amirabolfazle</h1>
+      <div class="subtitle">neon portfolio · playful animations · handcrafted vibes</div>
+    </div>
+
+    <section class="hero" aria-label="Profile and panel">
+      <article class="card" aria-label="Profile card">
+        <div class="profile">
+          <div class="avatar" aria-hidden="true">a</div>
+          <div class="meta">
+            <h3 class="big">amirabolfazle</h3>
+            <p>Exploring code, UI, and curious ideas — one neon pixel at a time.</p>
+
+            <div class="info-list" role="list">
+              <div class="info-item" role="listitem">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v6" stroke="url(#g1)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22v-6" stroke="url(#g1)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset="1" stop-color="#ff2d95"/></linearGradient></defs></svg>
+                <div>
+                  <div style="font-weight:700;color:#e8ffff">Full-Stack tinkerer</div>
+                  <div style="font-size:12px;color:rgba(230,250,255,0.78)">web · tools · creative code</div>
+                </div>
+              </div>
+
+              <div class="info-item" role="listitem" title="Location">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="url(#g2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g2" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#9aff00"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs></svg>
+                <div><div style="font-weight:700;color:#e8ffff">Remote-first</div><div style="font-size:12px;color:rgba(230,250,255,0.78)">wherever the signal's strong</div></div>
+              </div>
+
+              <div class="info-item" role="listitem">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h8m-8 5h16" stroke="url(#g3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g3" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ff2d95"/><stop offset="1" stop-color="#9aff00"/></linearGradient></defs></svg>
+                <div><div style="font-weight:700;color:#e8ffff">Projects</div><div style="font-size:12px;color:rgba(230,250,255,0.78)">tools, snippets, experiments</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span class="neon-badge"><span class="glow-ring"></span>online</span>
+            <button style="cursor:pointer; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:#cfffff; font-weight:700; box-shadow:0 8px 30px rgba(0,0,0,0.5); transition: transform .16s ease; " onmouseover="this.style.transform='translateY(-6px)';" onmouseout="this.style.transform='translateY(0)';">say hi</button>
+          </div>
+
+          <div style="font-size:12px; color:rgba(220,255,255,0.82); font-weight:600;">Neon status</div>
+        </div>
+
+      </article>
+
+      <aside class="panel" aria-label="Info panel">
+        <h4>Snapshot</h4>
+        <div class="lights" aria-hidden="true">
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+        </div>
+
+        <div style="display:flex; gap:12px; align-items:center; justify-content:space-between;">
+          <div style="flex:1;">
+            <div style="font-size:12px; color:rgba(220,255,255,0.86); font-weight:600;">Latest build</div>
+            <div style="font-size:14px; color:#dffcff; margin-top:6px; font-weight:700;">autogen-code · repo</div>
+          </div>
+          <div style="width:64px; height:64px; border-radius:12px; background:linear-gradient(135deg,var(--neon-pink),var(--neon-cyan)); display:grid; place-items:center; color:#03121a; font-weight:800; box-shadow: 0 8px 30px rgba(255,45,149,0.06);">GH</div>
+        </div>
+
+        <div class="time-box" style="margin-top:14px;">
+          <span style="font-size:12px; opacity:0.95;">Created</span>
+          <span class="creation">2025-09-28 21:56:38</span>
+        </div>
+
+        <div style="margin-top:14px; color:rgba(220,255,255,0.82); font-size:13px;">
+          Hello — this page showcases a neon, animated identity. Click the GitHub link below to explore the code and projects.
+        </div>
+
+        <footer>
+          <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+            <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 .5C5.65.5.72 5.43.72 11.78c0 4.86 3.14 8.99 7.49 10.45.55.1.75-.24.75-.53 0-.26-.01-.95-.01-1.86-3.04.66-3.68-.74-3.92-1.42-.13-.35-.7-1.42-1.2-1.7-.41-.23-1-.8-.01-.82.93-.02 1.6.86 1.82 1.22 1.07 1.8 2.77 1.28 3.45.98.11-.77.42-1.28.76-1.57-2.72-.31-5.58-1.36-5.58-6.05 0-1.34.47-2.44 1.24-3.3-.13-.31-.54-1.57.12-3.27 0 0 1.01-.33 3.3 1.23a11.27 11.27 0 013.01-.4c1.02.01 2.06.14 3.02.4 2.28-1.56 3.29-1.23 3.29-1.23.67 1.7.26 2.96.13 3.27.77.86 1.24 1.96 1.24 3.3 0 4.7-2.87 5.73-5.61 6.03.43.37.82 1.1.82 2.22 0 1.6-.01 2.89-.01 3.28 0 .3.2.64.76.53 4.35-1.47 7.49-5.6 7.49-10.45C23.28 5.43 18.35.5 12 .5z" fill="#e6fbff"/>
+            </svg>
+            <span class="created-by">Created by amirabolfazle</span>
+          </a>
+        </footer>
+      </aside>
+    </section>
+  </main>
+
+</body>
+</html>
