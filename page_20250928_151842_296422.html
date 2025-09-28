@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0b0f14;
+      --bg2: #081218;
+      --card: rgba(255,255,255,0.03);
+      --muted: rgba(255,255,255,0.45);
+      --accent: #7ee787;
+      --accent2: #6ad0ff;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --shadow: 0 8px 30px rgba(2,6,23,0.7);
+      --radius: 12px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Page reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(110,200,170,0.06), transparent),
+                  radial-gradient(800px 500px at 90% 85%, rgba(100,160,255,0.03), transparent),
+                  linear-gradient(180deg,var(--bg1), var(--bg2));
+      color:#e8eef2;
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:48px;
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+    }
+
+    header.hero{
+      position:relative;
+      padding:36px;
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1fr 220px;
+      gap:28px;
+      align-items:center;
+    }
+    .title{
+      font-size: clamp(28px,4vw,42px);
+      margin:0 0 12px 0;
+      letter-spacing: -0.02em;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .title .dot{
+      width:12px;height:12px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow: 0 6px 18px rgba(110,220,190,0.12), 0 0 30px rgba(120,230,210,0.06);
+      transform-origin:center;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%{transform:translateY(0);}
+      50%{transform:translateY(-6px) scale(1.02);}
+      100%{transform:translateY(0)}
+    }
+
+    .subtitle{
+      color:var(--muted);
+      margin:0 0 18px 0;
+      font-size:15px;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-family:var(--mono);
+      font-size:13px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.012), transparent);
+      padding:8px 12px;
+      border-radius:10px;
+      width:max-content;
+    }
+
+    .hero-visual{
+      position:relative;
+      height:220px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    /* floating blobs */
+    .blob{
+      position:absolute;
+      width:220px;height:220px;border-radius:40%;
+      filter:blur(36px);
+      opacity:0.18;
+      transform-origin:center;
+      mix-blend-mode:screen;
+      animation: blobmove 10s linear infinite;
+    }
+    .blob.a{background:linear-gradient(135deg,#5ee6a6,#42d9ff); top:-30px; left:-40px; animation-duration:11s;}
+    .blob.b{background:linear-gradient(135deg,#9dd2ff,#7ee787); bottom:-50px; right:-60px; animation-duration:12s; transform:scale(1.2)}
+    @keyframes blobmove{
+      0%{transform:translateY(0) rotate(0deg) scale(1);}
+      50%{transform:translateY(-18px) rotate(20deg) scale(1.05);}
+      100%{transform:translateY(0) rotate(0deg) scale(1);}
+    }
+
+    /* cards/sections */
+    main{
+      margin-top:28px;
+      display:grid;
+      gap:20px;
+    }
+
+    section.card{
+      padding:20px;
+      border-radius:12px;
+      background: linear-gradient(180deg,var(--glass),var(--glass-2));
+      box-shadow: 0 6px 22px rgba(4,8,14,0.6);
+      transform: translateY(24px);
+      opacity:0;
+      transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 520ms ease;
+      will-change:transform,opacity;
+    }
+    section.card.visible{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    .card h3{
+      margin:0 0 12px 0;
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .small{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .skills{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .skill{
+      padding:8px 12px;
+      background:rgba(255,255,255,0.02);
+      border-radius:999px;
+      font-family:var(--mono);
+      font-size:13px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .projects-list{
+      display:grid;
+      gap:12px;
+    }
+    .project{
+      padding:14px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .project .left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .proj-icon{
+      width:46px;height:46px;border-radius:8px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      font-family:var(--mono);
+      color:var(--accent);
+      font-size:14px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .project a.link{
+      color:var(--accent2);
+      text-decoration:none;
+      font-family:var(--mono);
+      font-size:13px;
+      opacity:0.95;
+    }
+
+    .contact-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:#051217;
+      font-weight:600;
+      border:none;
+      box-shadow: 0 8px 22px rgba(60,200,150,0.12);
+      cursor:pointer;
+      transition:transform 160ms ease, box-shadow 160ms ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.ghost{
+      background:transparent;
+      color:var(--accent2);
+      border:1px solid rgba(120,220,255,0.08);
+      box-shadow:none;
+    }
+
+    footer{
+      margin-top:28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      padding:12px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    }
+    .github{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:10px;
+      transition:background 160ms ease, transform 160ms ease;
+    }
+    .github:hover{transform:translateY(-3px); background:rgba(255,255,255,0.01)}
+    .gh-icon{width:20px;height:20px;display:inline-block;vertical-align:middle;fill:currentColor}
+
+    /* small responsive */
+    @media (max-width:800px){
+      .hero-grid{grid-template-columns:1fr}
+      .hero-visual{height:160px}
+      body{padding:20px}
+    }
+
+    /* subtle entrance for hero content */
+    .hero .entrance{
+      opacity:0;
+      transform:translateY(8px);
+      animation: reveal 700ms cubic-bezier(.2,.9,.2,1) forwards;
+    }
+    .hero .entrance.delay{animation-delay:160ms}
+    @keyframes reveal{to{opacity:1; transform:translateY(0)}}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero" aria-labelledby="name">
+      <div class="blob a" aria-hidden="true"></div>
+      <div class="blob b" aria-hidden="true"></div>
+
+      <div class="hero-grid">
+        <div>
+          <h1 id="name" class="title"><span class="dot" aria-hidden="true"></span> amirabolfazle</h1>
+          <p class="subtitle entrance">Designer & developer exploring neat tools, pleasant UX and tiny automations.</p>
+          <div class="meta entrance delay" title="creation time">created: 2025-09-28 15:17:50</div>
+        </div>
+
+        <div class="hero-visual">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#7ee787"/>
+                <stop offset="1" stop-color="#6ad0ff"/>
+              </linearGradient>
+              <filter id="f1" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="10" result="b"/>
+                <feComposite in="SourceGraphic" in2="b" operator="over"/>
+              </filter>
+            </defs>
+            <g filter="url(#f1)">
+              <path d="M40 120 C25 80, 80 10, 130 30 C180 50, 190 100, 140 140 C100 180, 50 160, 40 120Z" fill="url(#g1)">
+                <animate attributeName="d" dur="8s" repeatCount="indefinite"
+                  values="M40 120 C25 80, 80 10, 130 30 C180 50, 190 100, 140 140 C100 180, 50 160, 40 120Z;
+                          M30 110 C10 70, 70 30, 120 40 C175 55, 190 110, 150 150 C110 185, 50 165, 30 110Z;
+                          M40 120 C25 80, 80 10, 130 30 C180 50, 190 100, 140 140 C100 180, 50 160, 40 120Z"/>
+              </path>
+            </g>
+            <text x="50%" y="56%" text-anchor="middle" fill="#041214" font-family="var(--mono)" font-size="22" font-weight="700">amirabolfazle</text>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card slide-up" id="about">
+        <h3>About <span class="small">— quick note</span></h3>
+        <p class="small">I craft interfaces and little systems that save time and make things feel smooth. Curious about design systems, automation, and playful details that scale.</p>
+        <div class="contact-row">
+          <button class="btn" onclick="copyMail()">Copy email</button>
+          <button class="btn ghost" onclick="toggleTheme()">Toggle theme</button>
+        </div>
+      </section>
+
+      <section class="card slide-up" id="skills">
+        <h3>Skills <span class="small">— highlights</span></h3>
+        <div class="skills">
+          <span class="skill">HTML</span>
+          <span class="skill">CSS/Animations</span>
+          <span class="skill">JavaScript</span>
+          <span class="skill">Design Systems</span>
+          <span class="skill">Automation</span>
+          <span class="skill">Figma</span>
+        </div>
+      </section>
+
+      <section class="card slide-up" id="projects">
+        <h3>Projects <span class="small">— picks</span></h3>
+        <div class="projects-list">
+          <div class="project">
+            <div class="left">
+              <div class="proj-icon">AC</div>
+              <div>
+                <div style="font-weight:700">AutoGen Code</div>
+                <div class="small" style="margin-top:6px">Tiny tool for templating and automations.</div>
+              </div>
+            </div>
+            <div>
+              <a class="link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">View repo ↗</a>
+            </div>
+          </div>
+
+          <div class="project">
+            <div class="left">
+              <div class="proj-icon">UI</div>
+              <div>
+                <div style="font-weight:700">Design Playground</div>
+                <div class="small" style="margin-top:6px">A set of micro-interactions & tokens.</div>
+              </div>
+            </div>
+            <div><span class="small">demo coming</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card slide-up" id="contact">
+        <h3>Contact <span class="small">— say hello</span></h3>
+        <p class="small">Open to collaborations, small gigs, and idea swaps. Drop a line if something piques your interest.</p>
+        <div style="margin-top:12px;" class="contact-row">
+          <a class="btn" href="mailto:amir@amirabolfazle.dev">Email me</a>
+          <a class="btn ghost" href="https://github.com/amirabolfazle" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="small">Created by amirabolfazle</div>
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 0.5C5.65 0.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.36-1.3-1.72-1.3-1.72-1.06-.73.08-.72.08-.72 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.74-1.56-2.56-.29-5.26-1.28-5.26-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .98-.31 3.2 1.19a11.15 11.15 0 012.92-.39c.99 0 1.99.13 2.92.39 2.22-1.5 3.2-1.19 3.2-1.19.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.67.42.36.8 1.08.8 2.18 0 1.57-.01 2.84-.01 3.22 0 .31.21.67.8.56C20.71 21.39 24 17.08 24 12c0-6.35-5.15-11.5-11.99-11.5z"/>
+        </svg>
+        <span class="small">Open on GitHub</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up intersection observer
+    (function(){
+      const els = document.querySelectorAll('.slide-up');
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){ e.target.classList.add('visible') }
+        });
+      }, {threshold: 0.12});
+      els.forEach(el => io.observe(el));
+
+      // small utilities
+      window.copyMail = function(){
+        const email = 'amir@amirabolfazle.dev';
+        navigator.clipboard?.writeText(email).then(()=>{
+          flashToast('Email copied to clipboard');
+        }).catch(()=>{
+          flashToast('Copy failed — email: ' + email);
+        });
+      };
+
+      window.toggleTheme = function(){
+        // playful invert
+        const body = document.body;
+        if(body.style.filter){
+          body.style.filter = '';
+          flashToast('Theme reset');
+        } else {
+          body.style.filter = 'invert(0.03) hue-rotate(5deg)';
+          flashToast('Subtle theme tweak');
+        }
+      };
+
+      function flashToast(msg){
+        const t = document.createElement('div');
+        t.textContent = msg;
+        Object.assign(t.style,{
+          position:'fixed',
+          left:'50%',
+          bottom:'36px',
+          transform:'translateX(-50%)',
+          background:'rgba(0,0,0,0.6)',
+          color:'#e8f6ef',
+          padding:'10px 16px',
+          borderRadius:'999px',
+          fontFamily:'var(--mono)',
+          zIndex:9999,
+          boxShadow:'0 8px 30px rgba(0,0,0,0.6)',
+          opacity:0,
+          transition:'opacity 240ms ease, transform 240ms ease'
+        });
+        document.body.appendChild(t);
+        requestAnimationFrame(()=>{
+          t.style.opacity=1;
+          t.style.transform='translateX(-50%) translateY(-6px)';
+        });
+        setTimeout(()=>{ t.style.opacity=0; t.style.transform='translateX(-50%) translateY(0)'; }, 1600);
+        setTimeout(()=>t.remove(), 1900);
+      }
+    })();
+  </script>
+</body>
+</html>
