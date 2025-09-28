@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f2027;
+    --bg2:#203a43;
+    --accent1:#ff8a00;
+    --accent2:#e52e71;
+    --glass: rgba(255,255,255,0.06);
+    --muted: rgba(255,255,255,0.65);
+    --card-glow: rgba(229,46,113,0.14);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(229,46,113,0.09), transparent 8%),
+                radial-gradient(900px 500px at 90% 90%, rgba(255,138,0,0.06), transparent 10%),
+                linear-gradient(135deg,var(--bg1),var(--bg2));
+    color: #fff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px;
+  }
+
+  /* floating decorative shapes */
+  .float-wrap{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+  }
+  .blob{
+    position:absolute;
+    filter: blur(30px);
+    opacity:0.55;
+    mix-blend-mode:screen;
+    transform-origin:center;
+    animation: float 8s ease-in-out infinite;
+  }
+  .blob.b1{width:360px;height:360px;left:-8%;top:10%;background:linear-gradient(45deg,var(--accent1),#ffd66b); animation-duration:14s; animation-delay:-2s;}
+  .blob.b2{width:420px;height:420px;right:-6%;bottom:-6%;background:linear-gradient(135deg,var(--accent2),#6a4cff); animation-duration:12s; animation-delay:0s;}
+  .blob.b3{width:220px;height:220px;left:50%;top:60%;transform:translateX(-20%);background:linear-gradient(90deg,#2fd6ff,#8e2bff); animation-duration:10s; animation-delay:-4s;}
+
+  @keyframes float{
+    0%{transform:translateY(0) rotate(0deg) scale(1)}
+    50%{transform:translateY(-24px) rotate(6deg) scale(1.06)}
+    100%{transform:translateY(0) rotate(0deg) scale(1)}
+  }
+
+  /* main card */
+  .card{
+    position:relative;
+    z-index:2;
+    width:min(1100px,96%);
+    backdrop-filter: blur(8px) saturate(120%);
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns: 420px 1fr;
+    min-height:520px;
+  }
+
+  /* left panel */
+  .left{
+    padding:40px;
+    border-right:1px solid rgba(255,255,255,0.03);
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:visible;
+  }
+
+  .avatar-ring{
+    width:220px;height:220px;border-radius:50%;
+    display:grid;place-items:center;
+    background:conic-gradient(from 120deg, rgba(255,255,255,0.04), transparent 30%);
+    border:1px solid rgba(255,255,255,0.04);
+    position:relative;
+    box-shadow: 0 6px 30px var(--card-glow);
+    transform-origin:center;
+    animation: slow-rotate 14s linear infinite;
+  }
+  @keyframes slow-rotate{
+    from{transform:rotate(0deg)}
+    to{transform:rotate(360deg)}
+  }
+  .avatar{
+    width:160px;height:160px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    display:grid;place-items:center;font-weight:700;color:#091018;font-size:34px;
+    transform:rotate(-12deg);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    border:6px solid rgba(255,255,255,0.06);
+  }
+  .name{
+    text-align:center;
+    font-size:28px;
+    letter-spacing:0.6px;
+    font-weight:700;
+    background: linear-gradient(90deg, #fff, rgba(255,255,255,0.6));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    transform:rotate(-3deg);
+  }
+  .role{
+    color:var(--muted);
+    font-size:14px;
+    transform:rotate(-3deg);
+  }
+
+  /* right panel */
+  .right{
+    padding:44px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    justify-content:space-between;
+  }
+  .headline{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .title-box{
+    flex:1;
+  }
+  .title{
+    margin:0;
+    font-size:36px;
+    font-weight:800;
+    letter-spacing:-0.6px;
+    line-height:1;
+    display:inline-block;
+    background: linear-gradient(90deg,var(--accent1),var(--accent2),#7c4dff);
+    background-size:200% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation: hue 6s linear infinite;
+    transform-origin:left center;
+  }
+  @keyframes hue{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  .subtitle{
+    margin:6px 0 0 0;
+    color:var(--muted);
+    font-size:15px;
+  }
+
+  /* rotating badges */
+  .badges{
+    display:flex;
+    gap:12px;
+    margin-top:10px;
+  }
+  .badge{
+    padding:8px 12px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.03);
+    font-size:13px;
+    color:var(--muted);
+    transform-origin:center;
+    animation: pop 6s ease-in-out infinite;
+  }
+  .badge:nth-child(1){animation-delay:-0.2s}
+  .badge:nth-child(2){animation-delay:-0.6s}
+  .badge:nth-child(3){animation-delay:-1.0s}
+
+  @keyframes pop{
+    0%{transform:rotate(-2deg) translateY(0)}
+    50%{transform:rotate(6deg) translateY(-6px)}
+    100%{transform:rotate(-2deg) translateY(0)}
+  }
+
+  .bio{
+    color:rgba(255,255,255,0.85);
+    font-size:15px;
+    line-height:1.6;
+  }
+
+  .meta{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .meta .time{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  /* action area */
+  .actions{
+    display:flex;
+    gap:12px;
+    margin-top:6px;
+  }
+  .btn{
+    padding:12px 16px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    border:0;
+    color:#071025;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    box-shadow: 0 8px 26px rgba(229,46,113,0.12);
+    transition:transform .16s ease, box-shadow .16s ease;
+  }
+  .btn:hover{transform:translateY(-4px) scale(1.02); box-shadow: 0 14px 40px rgba(229,46,113,0.16)}
+
+  /* footer */
+  footer{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 28px;
+    border-top:1px solid rgba(255,255,255,0.02);
+    background:linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
+    color:var(--muted);
+    font-size:13px;
+    justify-content:space-between;
+  }
+  .footer-left{display:flex;gap:10px;align-items:center}
+  .gh{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    text-decoration:none;
+    color:var(--muted);
+    padding:8px;
+    border-radius:10px;
+    transition:transform .18s ease, color .18s ease;
+    border:1px solid rgba(255,255,255,0.02);
+    background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  }
+  .gh:hover{transform:translateY(-4px); color:#fff}
+  .gh svg{width:18px;height:18px;fill:currentColor}
+
+  /* small responsive */
+  @media (max-width:920px){
+    .card{grid-template-columns:1fr; min-height:720px}
+    .left{order:2;padding:28px}
+    .right{order:1;padding:28px}
+    .avatar-ring{margin-top:6px}
+    .title{font-size:28px}
+  }
+</style>
+</head>
+<body>
+  <div class="float-wrap" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <main class="card" role="main" aria-labelledby="page-title">
+    <section class="left" aria-hidden="false">
+      <div class="avatar-ring" title="avatar-rotation">
+        <div class="avatar" aria-hidden="true">A</div>
+      </div>
+
+      <div style="text-align:center;margin-top:10px">
+        <div class="name">amirabolfazle</div>
+        <div class="role">Creative Developer · Open-source tinkerer</div>
+      </div>
+
+      <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px;align-items:center;width:100%">
+        <div style="display:flex;gap:12px">
+          <div class="badge">Web · UI</div>
+          <div class="badge">Animations</div>
+          <div class="badge">Autogen</div>
+        </div>
+        <div style="color:var(--muted);font-size:13px;margin-top:8px">
+          Crafting interactive experiences with code, gradients and a dash of motion.
+        </div>
+      </div>
+
+      <div style="position:absolute;left:18px;bottom:22px;color:var(--muted);font-size:12px">
+        Tip: try resizing the window for a playful layout shift.
+      </div>
+    </section>
+
+    <section class="right">
+      <div>
+        <div class="headline">
+          <div class="title-box">
+            <h1 id="page-title" class="title" aria-level="1">amirabolfazle</h1>
+            <p class="subtitle">A personal page with gradient theme, rotating accents and subtle motion.</p>
+          </div>
+          <div style="width:96px;display:flex;align-items:center;justify-content:center">
+            <!-- small rotating emblem -->
+            <svg viewBox="0 0 100 100" width="72" height="72" style="transform-origin:center;animation:em-rot 9s linear infinite">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0" stop-color="#ff8a00" />
+                  <stop offset="1" stop-color="#e52e71" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(50,50)">
+                <circle r="26" fill="none" stroke="url(#g1)" stroke-width="8" stroke-linecap="round" stroke-dasharray="40 20" transform="rotate(0)"></circle>
+                <circle r="12" fill="url(#g1)" opacity="0.95" transform="translate(16,-10)"></circle>
+              </g>
+            </svg>
+            <style>@keyframes em-rot{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
+          </div>
+        </div>
+
+        <p class="bio">
+          Hi — I'm amirabolfazle. I build delightful interfaces, explore generative code, and ship small experiments that make the web feel alive. This page showcases a gradient-forward aesthetic, gentle rotations, and animated accents to bring personality and motion while staying lightweight.
+        </p>
+
+        <div style="margin-top:14px" class="meta">
+          <div class="time" aria-label="creation-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.9"><path d="M12 7v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+            <span style="font-size:13px;color:var(--muted)">Created: 2025-09-28 18:24:12</span>
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center;margin-left:auto">
+            <button class="btn" onclick="explore()" aria-label="Explore projects">Explore Projects</button>
+            <button class="btn" style="background:linear-gradient(90deg,#2fd6ff,#6a4cff);color:#071025" onclick="contact()" aria-label="Contact">Contact</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px">
+        <div style="color:var(--muted);font-size:13px">
+          Latest experiments:
+          <ul style="margin:8px 0 0 18px;padding:0;color:rgba(255,255,255,0.9);font-size:14px;line-height:1.6">
+            <li>Autogen UI patterns</li>
+            <li>Procedural gradients</li>
+            <li>Minimal motion systems</li>
+          </ul>
+        </div>
+
+        <div style="text-align:right;color:var(--muted);font-size:13px">
+          Want the source? Check the GitHub repo in the footer.
+        </div>
+      </div>
+
+      <footer role="contentinfo" style="margin-top:22px">
+        <div class="footer-left">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.776.418-1.305.762-1.605-2.665-.305-5.467-1.333-5.467-5.93 0-1.31.468-2.382 1.235-3.222-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 013.003-.403c1.018.005 2.045.138 3.003.403 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.873.118 3.176.77.84 1.233 1.912 1.233 3.222 0 4.61-2.807 5.624-5.48 5.92.43.372.814 1.102.814 2.222 0 1.604-.014 2.896-.014 3.289 0 .319.218.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" fill="currentColor"/>
+            </svg>
+            <span>amirabolfazle/autogen-code</span>
+          </a>
+
+          <div style="color:var(--muted)">Created by amirabolfazle</div>
+        </div>
+
+        <div style="color:var(--muted);font-size:12px">© 2025</div>
+      </footer>
+    </section>
+  </main>
+
+<script>
+  // small interactive helpers
+  function explore(){
+    window.open('https://github.com/amirabolfazle/autogen-code','_blank','noopener');
+  }
+  function contact(){
+    const mail = 'mailto:amirabolfazle@example.com?subject=Hi%20amirabolfazle';
+    window.location.href = mail;
+  }
+
+  // tiny tilt effect on mouse move for the card
+  (function(){
+    const card = document.querySelector('.card');
+    const limit = 12;
+    card.addEventListener('mousemove', e=>{
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const rx = (-y * limit).toFixed(2);
+      const ry = (x * limit).toFixed(2);
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+      card.style.transition = 'transform 0.08s linear';
+    });
+    card.addEventListener('mouseleave', ()=> {
+      card.style.transform = 'none';
+      card.style.transition = 'transform 0.5s cubic-bezier(.2,.9,.2,1)';
+    });
+  })();
+</script>
+</body>
+</html>
