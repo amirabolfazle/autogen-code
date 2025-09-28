@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle - Neon Portfolio</title>
+  <style>
+    :root{
+      --bg: #06070a;
+      --bg2: #0b0f1a;
+      --fg: #e6f8ff;
+      --neon: #00e5ff;
+      --neon2: #7a00ff;
+      --accent: #ff2bd3;
+      --card: rgba(2,6,23,.8);
+      --glow: 0 0 12px rgba(0,229,255,.9), 0 0 28px rgba(0,229,255,.5);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient( circle at 20% -10%, rgba(0,255,255,0.08), transparent 40% ),
+                  radial-gradient( circle at 90% 20%, rgba(122,0,255,0.08), transparent 40% ),
+                  linear-gradient(#04070a 0%, #04060a 60%, #02040a 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Neon header / nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      border-bottom: 1px solid rgba(0,255,255,0.15);
+      background: rgba(2,6,23,0.65);
+      backdrop-filter: saturate(180%) blur(2px);
+    }
+
+    .brand {
+      font-weight: 900;
+      letter-spacing: .25em;
+      font-size: 1.8rem;
+      color: #0ff;
+      text-shadow: 0 0 6px #0ff, 0 0 18px #0ff;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #0ff;
+      box-shadow: 0 0 8px #0ff, 0 0 20px #0ff;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.4); opacity: 1; }
+    }
+
+    .creation-chip {
+      font-size: 0.9rem;
+      color: #8af8ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.4);
+      background: rgba(0,255,255,.08);
+      box-shadow: inset 0 0 8px rgba(0,255,255,.25);
+    }
+
+    main { padding: 28px 20px 60px; }
+
+    /* Hero / intro with neon vibe */
+    .hero {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 60px 20px 40px;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: 5.8rem;
+      line-height: 0.95;
+      margin: 0;
+      letter-spacing: .04em;
+      color: #0ff;
+      text-shadow: 0 0 6px #0ff, 0 0 18px #0ff, 0 0 40px #00f;
+      filter: saturate(110%);
+      word-spacing: .2em;
+    }
+    .hero p {
+      margin: 12px 0 0;
+      font-size: 1.15rem;
+      color: #bfefff;
+      text-shadow: 0 0 8px rgba(0,223,255,.6);
+    }
+
+    .neon-divider {
+      width: 100%;
+      height: 4px;
+      margin: 28px auto;
+      background: linear-gradient(90deg, transparent, #0ff, transparent);
+      filter: drop-shadow(0 0 12px #0ff);
+      border-radius: 2px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 18px;
+      margin-top: 14px;
+      font-weight: 600;
+      color: #041018;
+      text-decoration: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #00e5ff 0%, #7a00ff 100%);
+      border: 0;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,229,255,.6);
+      transition: transform .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .section { max-width: 1100px; margin: 0 auto; padding: 40px 0 60px; }
+    .section h2 {
+      font-size: 2rem;
+      margin: 0 0 14px;
+      color: #e8fbff;
+      text-shadow: 0 0 8px #0ff;
+      letter-spacing: .02em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(0,255,255,.25);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 6px 22px rgba(0,255,255,.15);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all .6s ease-out;
+    }
+    .card.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+      color: #aaf;
+      text-shadow: 0 0 8px #6ff;
+    }
+    .card p { margin: 0; color: #d6f1ff; font-size: .95rem; opacity: .95; }
+    .tag {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      border: 1px solid rgba(0,255,255,.5);
+      color: #0ff;
+      background: rgba(0,255,255,.08);
+    }
+
+    footer {
+      padding: 28px 20px;
+      text-align: center;
+      color: #a6f0ff;
+      border-top: 1px solid rgba(0,255,255,.2);
+      background: rgba(2,6,25,.75);
+    }
+    footer a {
+      color: #9ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,255,255,.3);
+      background: rgba(0,255,255,.08);
+    }
+    footer svg { width: 18px; height: 18px; fill: currentColor; }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 4.2rem; }
+    }
+
+    /* simple reveal after load if not in viewport yet */
+    .slide-up { opacity: 0; transform: translateY(20px); transition: all .6s ease-out; }
+    .slide-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand" aria-label="Site brand">
+      <span class="dot" aria-hidden="true"></span>
+      amirabolfazle
+    </div>
+    <div class="creation-chip" title="Creation time on page">
+      Creation: 2025-09-28 07:20:39
+    </div>
+  </header>
+
+  <main>
+    <section class="hero slide-up" aria-label="Intro">
+      <div style="max-width: 900px;">
+        <h1 style="margin:0 0 8px; font-weight:900;">
+          amirabolfazle
+        </h1>
+        <p>Neon-inspired one-file portfolio with slide-up sections and interactive vibes.</p>
+        <div class="neon-divider" aria-hidden="true"></div>
+        <a class="btn" href="#projects" aria-label="View projects">See Projects</a>
+      </div>
+    </section>
+
+    <section id="projects" class="section slide-up" aria-label="Projects">
+      <h2>Projects</h2>
+      <div class="grid" style="margin-top:6px;">
+        <article class="card slide-up" aria-label="Project Autogen Code">
+          <h3>Autogen Code Studio</h3>
+          <p>A fast, single-file playground for auto-generated code samples with live previews.</p>
+          <span class="tag">JavaScript</span>
+        </article>
+
+        <article class="card slide-up" aria-label="Project Neon UI Kit">
+          <h3>Neon UI Kit</h3>
+          <p>Minimal components with neon styling, designed to be drop-in for dashboards.</p>
+          <span class="tag">UI</span>
+        </article>
+
+        <article class="card slide-up" aria-label="Project Interactive Demo">
+          <h3>Interactive Neon Demo</h3>
+          <p>A tiny canvas-driven demo showcasing glow and parallax effects in a single file.</p>
+          <span class="tag">Canvas</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section slide-up" aria-label="About">
+      <h2>About this portfolio</h2>
+      <p style="max-width: 760px; color:#d3f3ff;">
+        This is a compact, self-contained portfolio that embraces a neon aesthetic and slide-up transitions.
+        Everything lives in one HTML file—no external assets required. The page is designed to be fast,
+        responsive, and easy to host anywhere static.
+      </p>
+    </section>
+  </main>
+
+  <footer aria-label="Footer with GitHub link">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub Icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
+        <path d="M12 .5C5.73.5 0 6.23 0 12a11.99 11.99 0 0 0 7.83 11.45c.57.1.78-.25.78-.55v-2c-3.18.69-3.84-1.37-3.84-1.37-.52-1.32-1.28-1.67-1.28-1.67-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.2 1.77 1.2 1.03 1.76 2.71 1.25 3.37.96.11-.78.4-1.25.72-1.54-2.54-.29-5.21-1.27-5.21-5.66 0-1.25.45-2.27 1.2-3.07-.12-.29-.52-1.46.12-3.04 0 0 .97-.31 3.18 1.17a11.1 11.1 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.48 3.17-1.17 3.17-1.17.65 1.58.24 2.75.12 3.04.75.8 1.2 1.82 1.2 3.07 0 4.41-2.67 5.36-5.22 5.64.41.36.78 1.08.78 2.18v3.23c0 .3.21.65.8.54A12 12 0 0 0 24 12C24 6.23 18.27.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <script>
+    // Reveal elements with slide-up as they enter the viewport
+    document.addEventListener('DOMContentLoaded', function() {
+      const toReveal = document.querySelectorAll('.slide-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      toReveal.forEach(el => observer.observe(el));
+
+      // Ensure hero animates on load
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        // give a small delay for a punchy entrance
+        setTimeout(() => hero.classList.add('visible'), 100);
+      }
+    });
+  </script>
+</body>
+</html>
