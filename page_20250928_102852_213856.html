@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle — Portfolio</title>
+  <style>
+    :root{
+      --bg-dark: #0b1020;
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.15);
+      --text: #e9e9e9;
+      --grad1: #7c3aed;
+      --grad2: #0ea5e9;
+      --grad3: #6ee7b7;
+    }
+
+    /* Page baseline */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: #0b1020;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated gradient background layer */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(120deg, rgba(124,58,237,0.45), rgba(14,165,233,0.45), rgba(110,231,183,0.45), rgba(236,72,153,0.45));
+      background-size: 300% 300%;
+      filter: saturate(110%);
+      z-index: -2;
+      animation: gradientBG 18s ease infinite;
+      pointer-events: none;
+    }
+
+    /* Soft decorative gradient blobs for depth */
+    .shape {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      opacity: .28;
+      z-index: -1;
+      mix-blend-mode: screen;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+    .s1 {
+      width: 260px; height: 260px;
+      top: -60px; left: -60px;
+      background: radial-gradient(circle at 30% 30%, rgba(99,102,241,.95), transparent 40%), radial-gradient(circle at 70% 70%, rgba(56,189,248,.85), transparent 40%);
+    }
+    .s2 {
+      width: 320px; height: 320px;
+      bottom: -100px; right: -100px;
+      background: radial-gradient(circle at 40% 40%, rgba(236,72,153,.85), transparent 40%), radial-gradient(circle at 60% 60%, rgba(14,165,233,.75), transparent 40%);
+      animation-delay: 2s;
+    }
+    .s3 {
+      width: 230px; height: 230px;
+      top: 20%; right: -60px;
+      background: radial-gradient(circle at 50% 50%, rgba(110,231,183,.8), transparent 40%);
+      animation-delay: 4s;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) translateX(0px); }
+      100% { transform: translateY(20px) translateX(20px); }
+    }
+
+    /* Layout containers */
+    header.hero {
+      position: relative;
+      padding: 100px 20px 60px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Brand title with gradient text */
+    .brand {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin: 0 0 14px;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, var(--grad1), var(--grad2), var(--grad3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .tagline {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      opacity: .9;
+      margin: 0 0 22px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 0;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      background: linear-gradient(135deg, #7c3aed 0%, #0ea5e9 50%, #34d399 100%);
+      box-shadow: 0 8px 20px rgba(0,0,0,.25);
+      transition: transform .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px) scale(1.02); }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .8rem;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      letter-spacing: .2px;
+    }
+
+    /* Projects grid */
+    #projects { padding: 60px 0 40px; }
+    #projects h2 {
+      text-align: center;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      margin: 0 0 26px;
+      letter-spacing: .5px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .3s ease, box-shadow .3s ease;
+      min-height: 100%;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,.35); }
+
+    .thumb {
+      height: 140px;
+      background-position: center;
+      background-size: cover;
+    }
+    .card-content {
+      padding: 14px;
+    }
+    .card-content h3 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+    }
+    .card-content p {
+      margin: 0;
+      font-size: .95rem;
+      color: #d9d9d9;
+    }
+
+    /* Reveal on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer with inline GitHub icon */
+    footer.footer {
+      padding: 28px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(2,6,23,.6);
+      backdrop-filter: saturate(110%);
+      margin-top: 40px;
+    }
+    footer.footer a {
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      margin-right: 10px;
+      text-decoration: none;
+    }
+    footer.footer svg { display: block; width: 20px; height: 20px; }
+    footer.footer span {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 6px;
+      font-size: .95rem;
+      color: #e9e9e9;
+    }
+
+    /* Responsive tweaks for small screens */
+    @media (max-width: 700px) {
+      .brand { font-size: 3.2rem; }
+      .thumb { height: 120px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative gradient shapes -->
+  <div class="shape s1" aria-hidden="true"></div>
+  <div class="shape s2" aria-hidden="true"></div>
+  <div class="shape s3" aria-hidden="true"></div>
+
+  <header class="hero" aria-label="Intro">
+    <div class="container">
+      <h1 class="brand">amirabolfazle</h1>
+      <p class="tagline">Creative frontend developer • UI/UX-minded designer • Enthusiast of smooth interactions</p>
+      <a href="#projects" class="btn" aria-label="View projects">
+        View Projects
+      </a>
+      <div class="creation-time" aria-label="creation-time">
+        2025-09-28 10:28:14
+      </div>
+    </div>
+  </header>
+
+  <section id="projects" class="container" aria-label="Projects">
+    <h2 class="reveal">Selected Projects</h2>
+    <div class="grid reveal" style="margin-top: 6px;">
+      <article class="card reveal visible" style="--i:0;">
+        <div class="thumb" style="background-image: linear-gradient(135deg, #8b5cf6, #22d3ee);"></div>
+        <div class="card-content">
+          <h3>Interactive Portfolio Component</h3>
+          <p>A modular, animated gallery with gradient themes and micro-interactions.</p>
+        </div>
+      </article>
+
+      <article class="card reveal" style="--i:1;">
+        <div class="thumb" style="background-image: linear-gradient(135deg, #34d399, #22d3ee);"></div>
+        <div class="card-content">
+          <h3>Gradient Hero Section</h3>
+          <p>High-contrast hero with text that pops using gradient text and motion.</p>
+        </div>
+      </article>
+
+      <article class="card reveal" style="--i:2;">
+        <div class="thumb" style="background-image: linear-gradient(135deg, #f472b6, #8b5cf6);"></div>
+        <div class="card-content">
+          <h3>UI Kit Snippets</h3>
+          <p>Compact snippets demonstrating modern UI patterns and accessibility.</p>
+        </div>
+      </article>
+
+      <article class="card reveal" style="--i:3;">
+        <div class="thumb" style="background-image: linear-gradient(135deg, #22c55e, #34d399);"></div>
+        <div class="card-content">
+          <h3>Animated Cards</h3>
+          <p>Cards with hover zoom and subtle shadows for depth and clarity.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub logo (inline SVG) -->
+      <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="GitHub">
+        <path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.87 10.95c.57.1.78-.25.78-.56 0-.28-.01-1.03-.02-2.03-3.2.7-3.88-1.38-3.88-1.38-.52-1.32-1.27-1.67-1.27-1.67-1.04-.72.08-.71.08-.71 1.15.08 1.76 1.02 1.76 1.02 1.02 1.75 2.68 1.25 3.34.96.1-.73.41-1.26.75-1.55-2.56-.29-5.26-1.28-5.26-5.69 0-1.25.45-2.27 1.2-3.08-.12-.29-.52-1.46.12-3.04 0 0 .99-.32 3.25 1.18a11.5 11.5 0 0 1 5.92 0c2.26-1.5 3.25-1.18 3.25-1.18.64 1.58.24 2.75.12 3.04.76.8 1.21 1.82 1.21 3.08 0 4.43-2.7 5.41-5.27 5.69.42.37.8 1.1.8 2.22 0 1.6-.01 2.88-.01 3.28 0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/>
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Reveal-on-scroll for elements with class 'reveal'
+    document.addEventListener('DOMContentLoaded', function(){
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      reveals.forEach(el => {
+        if (!el.classList.contains('visible')) observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
