@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0b12;
+      --bg2: #0b1020;
+      --text: #e8f0ff;
+      --muted: #a6b4d4;
+      --cyan: #00fff0;
+      --pink: #ff3bdc;
+      --glow-cyan: 0 0 12px rgba(0,255,240,.95), 0 0 40px rgba(0,255,240,.6);
+      --glow-pink: 0 0 12px rgba(255,59,220,.9), 0 0 40px rgba(255,59,220,.5);
+      --surface: rgba(255,255,255,.04);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: radial-gradient(circle at 20% -10%, rgba(0,255,230,.08), transparent 40%),
+                  radial-gradient(circle at 90% 10%, rgba(255,0,200,.08), transparent 40%),
+                  linear-gradient(#04040a, #050613 40%, #0a0b12 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Neon header / hero */
+    .hero {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 6rem 1rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle at center, rgba(0,255,240,.35), transparent 60%);
+      filter: blur(40px);
+      pointer-events: none;
+      opacity: .8;
+      top: -60px;
+      right: -60px;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: clamp(2.6rem, 6vw, 6rem);
+      line-height: 1.05;
+      color: #e6ffff;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-shadow:
+        0 0 6px rgba(0,255,240,.8),
+        0 0 20px rgba(0,255,240,.6),
+        0 0 60px rgba(0,255,240,.4);
+      margin: 0;
+      padding: .25em 0;
+      background: linear-gradient(92deg, #a6fff8, #d0b8ff 40%, #fff0f6 60%, #9cffea);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-shadow: 0 0 8px rgba(0,255,240,.4);
+      margin-top: .5em;
+      margin-bottom: 0;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: .6em;
+      padding: .5em 0.75em;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(2,6,23,.55);
+      color: #c7eaff;
+      margin-top: 1.25em;
+      font-weight: 500;
+      font-size: .95rem;
+      box-shadow: 0 0 18px rgba(0,255,240,.35);
+    }
+
+    .creation .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #00ffe6;
+      box-shadow: 0 0 8px #00ffe6;
+    }
+
+    /* Neon divider line for section separation */
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,240,.7), transparent);
+      margin: 3rem 0 2rem;
+      opacity: .6;
+    }
+
+    /* Content sections */
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 1.25rem;
+      min-height: 120px;
+      box-shadow: inset 0 0 0 rgba(255,255,255,.0);
+      backdrop-filter: blur(2px);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.4);
+    }
+
+    .card h3 {
+      margin: 0 0 .35rem 0;
+      font-size: 1.15rem;
+      color: #eaffff;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: .95rem;
+      color: #cfe7ff;
+    }
+
+    /* Slide-up animation on reveal */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .6s ease, transform .6s ease;
+      will-change: transform;
+    }
+
+    .slide-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer with GitHub icon */
+    footer {
+      margin-top: 2rem;
+      padding: 1rem 1rem;
+      background: #0b0f1a;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      color: #c9e6ff;
+    }
+
+    footer a {
+      color: #c9e6ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    /* Small responsive tweaks */
+    @media (max-width: 640px) {
+      .brand { font-size: 2.8rem; }
+      .creation { font-size: .85rem; padding: .45em .65em; }
+    }
+
+    /* Subtle animated glow line across header on load */
+    .neon-underline {
+      width: 180px;
+      height: 4px;
+      margin: 14px auto 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(0,255,240,.0), rgba(0,255,240,.95), rgba(255,59,220,.95), rgba(0,255,240,.0));
+      filter: blur(0.5px);
+      opacity: 0;
+      transform: scaleX(0.6);
+      animation: underline 1.2s forwards;
+      animation-delay: 0.6s;
+    }
+
+    @keyframes underline {
+      to {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="hero" aria-label="Intro section">
+    <div class="glow-orb" aria-hidden="true"></div>
+
+    <h1 class="brand slide-up" style="animation-delay:.1s" >amirabolfazle</h1>
+    <p class="subtitle slide-up" style="animation-delay:.2s">Neon-styled portfolio</p>
+
+    <div class="creation slide-up" style="animation-delay:.3s" aria-label="creation-time">
+      <span class="dot" aria-hidden="true"></span>
+      Creation time: 2025-09-28 10:40:15
+    </div>
+
+    <div class="neon-underline" aria-hidden="true"></div>
+  </main>
+
+  <section class="container slide-up" style="animation-delay: .4s" aria-label="about-section">
+    <div class="grid" style="margin-top: .25rem;">
+      <article class="card" tabindex="0" aria-label="project 1">
+        <h3>Neon Studio</h3>
+        <p>A responsive canvas for animated neon UI experiments with slide-up reveals.</p>
+      </article>
+      <article class="card" tabindex="0" aria-label="project 2">
+        <h3>Slide Up Gallery</h3>
+        <p>Content cards reveal as you scroll, keeping attention on visuals.</p>
+      </article>
+      <article class="card" tabindex="0" aria-label="project 3">
+        <h3>Interactive UI</h3>
+        <p>Theme-driven components with accessible focus states and motion.</p>
+      </article>
+      <article class="card" tabindex="0" aria-label="project 4">
+        <h3>Portfolio Sandbox</h3>
+        <p>Experiment hub for neon aesthetics and responsive layouts.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="container slide-up" aria-label="features" style="animation-delay: .6s">
+    <div class="divider" style="margin: 2rem 0 .5rem;"></div>
+    <div class="grid">
+      <div class="card" tabindex="0" aria-label="feature 1">
+        <h3>Responsive by Design</h3>
+        <p>Fluid grids that adapt from phones to desktops with ease.</p>
+      </div>
+      <div class="card" tabindex="0" aria-label="feature 2">
+        <h3>Neon Motion</h3>
+        <p>Smooth slide-up and glow effects to elevate the UI.</p>
+      </div>
+      <div class="card" tabindex="0" aria-label="feature 3">
+        <h3>Accessible Interactions</h3>
+        <p>Keyboard navigable, focus-visible, and readable contrast.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align: middle;">
+        <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.04-.01-2.04-3.34.73-4.04-1.41-4.04-1.41-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.21.09 1.83 1.24 1.83 1.24 1.07 1.84 2.81 1.31 3.5.99.11-.77.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.31 1.23a11.55 11.55 0 0 1 6.02 0c2.3-1.55 3.31-1.23 3.31-1.23.66 1.65.24 2.87.12 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.62-5.46 5.92.43.37.82 1.1.82 2.22 0 1.6-.01 2.88-.01 3.28 0 .32.22.69.83.57A12 12 0 0 0 24 12C24 5.37 18.63 0 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // Reveal on scroll with IntersectionObserver
+    (function(){
+      const sections = document.querySelectorAll('.slide-up');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      sections.forEach(el => {
+        observer.observe(el);
+      });
+
+      // Also trigger a controlled stagger on initial load for the first items
+      window.addEventListener('load', () => {
+        const initial = document.querySelectorAll('.slide-up');
+        initial.forEach((el, idx) => {
+          setTimeout(() => el.classList.add('visible'), 50 * idx);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
