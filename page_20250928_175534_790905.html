@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --g1:#7f5af0;
+      --g2:#00d4ff;
+      --g3:#ff5ac4;
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.7);
+      --accent: rgba(255,255,255,0.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
+      color:rgba(255,255,255,0.95);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(127,90,240,0.12), transparent),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(0,212,255,0.08), transparent),
+                  linear-gradient(135deg,var(--bg1) 0%, #07122a 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+    }
+
+    /* animated gradient halo */
+    .halo{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(127,90,240,0.12), rgba(0,212,255,0.08), rgba(255,90,196,0.06), rgba(127,90,240,0.12));
+      opacity:0.9;
+      mix-blend-mode:screen;
+      filter:blur(120px) saturate(120%);
+      transform:scale(1.05);
+      animation:spin 24s linear infinite;
+    }
+    @keyframes spin{
+      from{transform:rotate(0) scale(1.05)}
+      to{transform:rotate(360deg) scale(1.05)}
+    }
+
+    .card{
+      position:relative;
+      max-width:980px;
+      width:100%;
+      border-radius:20px;
+      padding:48px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.04);
+      display:flex;
+      gap:28px;
+      align-items:center;
+      transform-origin:center;
+      transition:transform 400ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
+      will-change:transform;
+      overflow:hidden;
+    }
+
+    .card:hover{ transform:scale(1.02); box-shadow:0 20px 60px rgba(2,6,23,0.7); }
+
+    /* left hero */
+    .hero{
+      flex:1 1 520px;
+      min-width:260px;
+      position:relative;
+      padding:8px 0;
+    }
+    .title{
+      font-weight:800;
+      font-size: clamp(34px, 6.6vw, 64px);
+      line-height:0.92;
+      letter-spacing:-0.02em;
+      margin:0 0 12px 0;
+      display:inline-block;
+      background: linear-gradient(90deg,var(--g1), var(--g2), var(--g3));
+      background-size:200% 100%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation: textShift 6s ease-in-out infinite;
+    }
+    @keyframes textShift{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    .subtitle{
+      font-size:16px;
+      color:var(--muted);
+      margin:8px 0 18px 0;
+      max-width:58ch;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    .stamp{
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      padding:10px 14px;
+      font-size:13px;
+      color:var(--muted);
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      box-shadow:0 4px 18px rgba(3,8,20,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      background: linear-gradient(90deg, rgba(127,90,240,0.18), rgba(0,212,255,0.12));
+      color:#fff;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:600;
+      border: 1px solid rgba(255,255,255,0.06);
+      text-decoration:none;
+      transition:transform 220ms ease, box-shadow 220ms ease;
+      box-shadow: 0 8px 28px rgba(31,41,55,0.3);
+      transform-origin:center;
+    }
+    .cta:hover{ transform:translateY(-4px) scale(1.02); box-shadow: 0 18px 48px rgba(31,41,55,0.45); }
+
+    /* right preview / card with zoom */
+    .preview{
+      width:320px;
+      max-width:40%;
+      min-width:240px;
+      border-radius:14px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: -12px 18px 40px rgba(0,0,0,0.45);
+      transform-origin:center;
+    }
+
+    .screen{
+      position:relative;
+      height:420px;
+      background: linear-gradient(140deg, rgba(127,90,240,0.12), rgba(0,212,255,0.06));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      transition:transform 800ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .screen-inner{
+      width:100%;
+      height:100%;
+      background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.04), transparent 10%),
+                  linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transform:scale(1);
+      transition:transform 650ms cubic-bezier(.2,.9,.2,1);
+    }
+    .preview:hover .screen-inner{ transform:scale(1.06) rotate(-0.8deg); }
+
+    .mock{
+      width:92%;
+      height:84%;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(10,12,20,0.9), rgba(8,10,18,0.98));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 20px 40px rgba(2,6,23,0.6);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:18px;
+      color:rgba(255,255,255,0.85);
+      font-weight:600;
+      letter-spacing:0.02em;
+      position:relative;
+      overflow:hidden;
+    }
+    .mock::after{
+      content:'';
+      position:absolute;
+      inset:auto 12% 12% 12%;
+      height:1px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), transparent);
+      border-radius:2px;
+    }
+
+    /* floating zoom accent */
+    .float-accent{
+      position:absolute;
+      width:240px;
+      height:240px;
+      right:-60px;
+      top:-80px;
+      background: radial-gradient(circle at 30% 30%, rgba(127,90,240,0.12), rgba(0,212,255,0.06));
+      filter:blur(30px);
+      transform:scale(0.95);
+      opacity:0.9;
+      border-radius:50%;
+      animation:float 8s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-14px) scale(1.03)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:18px;
+      right:18px;
+      bottom:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      pointer-events:auto;
+    }
+    .footer-inner{
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:10px 14px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:36px;
+      height:36px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform 180ms ease;
+    }
+    .gh:hover{ transform:translateY(-4px) scale(1.06); }
+
+    /* responsive */
+    @media (max-width:880px){
+      .card{ flex-direction:column; padding:28px; gap:18px; align-items:stretch; }
+      .preview{ width:100%; max-width:100%; min-width:auto; order:2; }
+      .hero{ order:1; }
+      footer{ left:12px; right:12px; bottom:12px; }
+      .float-accent{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="halo" aria-hidden="true"></div>
+
+  <main class="card" role="main" aria-labelledby="main-title">
+    <section class="hero" aria-label="Hero section">
+      <h1 id="main-title" class="title">amirabolfazle</h1>
+      <p class="subtitle">A radiant, modern landing experience with smooth zoom motion and a vibrant gradient identity — crafted for clarity and presence.</p>
+
+      <div class="meta">
+        <div class="stamp" title="Creation time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:0.9">
+            <path d="M12 7v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          2025-09-28 17:54:37
+        </div>
+
+        <a class="cta" href="#explore" aria-label="Explore more">
+          Explore the demo
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.95">
+            <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <aside class="preview" aria-label="Preview panel">
+      <div class="float-accent" aria-hidden="true"></div>
+      <div class="screen" role="img" aria-label="Mock preview">
+        <div class="screen-inner">
+          <div class="mock">
+            <div style="text-align:center;">
+              <div style="font-size:14px;color:rgba(255,255,255,0.65);margin-bottom:10px;">Live Preview</div>
+              <div style="font-size:22px; font-weight:700; background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent;">
+                amirabolfazle
+              </div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.5); margin-top:10px; max-width:80%; margin-left:auto; margin-right:auto;">
+                Subtle zoom + polished gradient for a memorable first impression.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="footer-inner" role="contentinfo">
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path fill="currentColor" d="M12 .5C5.73.5.83 5.4.83 11.68c0 4.79 3.11 8.85 7.43 10.29.54.1.74-.24.74-.53 0-.26-.01-.94-.01-1.85-3.02.66-3.66-1.47-3.66-1.47-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.65 2.52 1.17 3.13.89.1-.69.38-1.17.69-1.44-2.41-.27-4.95-1.21-4.95-5.39 0-1.19.42-2.16 1.11-2.92-.11-.27-.48-1.36.11-2.84 0 0 .91-.29 2.98 1.11A10.31 10.31 0 0112 6.8c.92.004 1.85.12 2.71.35 2.07-1.4 2.98-1.11 2.98-1.11.59 1.48.22 2.57.11 2.84.69.76 1.11 1.73 1.11 2.92 0 4.19-2.55 5.12-4.98 5.39.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .3.2.64.75.53 4.32-1.44 7.43-5.5 7.43-10.29C23.17 5.4 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <div style="font-weight:600;color:var(--muted);">Created by amirabolfazle</div>
+    </div>
+  </footer>
+</body>
+</html>
