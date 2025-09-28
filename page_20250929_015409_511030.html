@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --accent1: #7c3aed;
+      --accent2: #06b6d4;
+      --accent3: #f97316;
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.7);
+      --radius: 16px;
+      --max-width: 1100px;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 10%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(6,182,212,0.08), transparent 10%),
+                  var(--bg1);
+      color: #fff;
+      overflow-x:hidden;
+    }
+
+    /* Animated moving gradient overlay */
+    .animated-gradient{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background: linear-gradient(120deg, rgba(124,58,237,0.15), rgba(6,182,212,0.12), rgba(249,115,22,0.10), rgba(99,102,241,0.08));
+      background-size: 300% 300%;
+      animation: gradientShift 12s linear infinite alternate;
+      filter: blur(40px) saturate(120%);
+      opacity:0.95;
+    }
+
+    @keyframes gradientShift{
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    /* Page layout */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      width:100%;
+      max-width:var(--max-width);
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:stretch;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      transform-origin:center;
+      animation: cardPop 700ms cubic-bezier(.2,.9,.2,1) both;
+      transition: transform .35s ease, box-shadow .35s ease;
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    @keyframes cardPop{
+      from{transform: scale(.96) translateY(6px); opacity:0;}
+      to{transform: scale(1) translateY(0); opacity:1;}
+    }
+
+    .card:hover{
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 24px 70px rgba(2,6,23,0.75);
+    }
+
+    /* Left content */
+    .hero{
+      padding:28px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      justify-content:center;
+    }
+
+    .title{
+      font-size: clamp(28px, 4.6vw, 56px);
+      line-height:1;
+      margin:0;
+      letter-spacing:-0.02em;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      transform-origin:left center;
+      animation: titleZoom 900ms cubic-bezier(.2,.9,.2,1) both;
+    }
+
+    .title .tag{
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip:text;
+      color:transparent;
+      font-weight:800;
+      font-size:1.05em;
+    }
+
+    @keyframes titleZoom{
+      from{transform: scale(.86); opacity:0;}
+      to{transform: scale(1); opacity:1;}
+    }
+
+    .subtitle{
+      font-size: clamp(14px, 2vw, 18px);
+      color:var(--muted);
+      margin:0;
+      max-width:68ch;
+    }
+
+    .features{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.02);
+      font-size:13px;
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition: transform .25s ease, background .25s ease;
+      cursor:default;
+    }
+
+    .pill:hover{
+      transform: translateY(-6px) scale(1.02);
+      background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    }
+
+    /* Right panel (visual/interactive) */
+    .preview{
+      padding:20px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:center;
+      justify-content:center;
+      min-height:220px;
+      transform-origin:center;
+      overflow:hidden;
+    }
+
+    .visual{
+      width:100%;
+      height:140px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(124,58,237,0.18), rgba(6,182,212,0.12));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:18px;
+      letter-spacing:0.02em;
+      box-shadow: inset 0 -8px 40px rgba(2,6,23,0.35), 0 12px 40px rgba(2,6,23,0.55);
+      transition: transform .45s cubic-bezier(.2,.9,.2,1);
+      transform: perspective(800px) translateZ(0);
+    }
+
+    .visual:hover{
+      transform: perspective(900px) scale(1.035) rotateX(2deg) translateY(-6px);
+    }
+
+    .zoom-controls{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+    }
+
+    .zoom-btn{
+      padding:10px 14px;
+      border-radius:10px;
+      border:0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--muted);
+      cursor:pointer;
+      transition: transform .18s ease, background .18s ease;
+      font-weight:600;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .zoom-btn:active{ transform: scale(.98); }
+    .zoom-btn:hover{ transform: translateY(-6px); background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); }
+
+    /* Creation time */
+    .meta{
+      margin-top:8px;
+      color:rgba(255,255,255,0.65);
+      font-size:13px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .meta .time{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.02);
+      font-family: SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:18px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .gh-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:999px;
+      transition: transform .18s ease, background .18s ease;
+      background: rgba(255,255,255,0.01);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .gh-link:hover{
+      transform: translateY(-6px);
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    }
+
+    .gh-icon{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      flex:0 0 20px;
+      filter: drop-shadow(0 2px 6px rgba(2,6,23,0.5));
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .card{ grid-template-columns: 1fr; }
+      .preview{ order:-1; }
+    }
+
+    @media (max-width:520px){
+      .wrap{ padding:28px 16px; }
+      .card{ padding:18px; gap:14px; }
+      .visual{ height:120px; }
+    }
+
+    /* small decorative animated element */
+    .orbit{
+      position:absolute;
+      right:-70px;
+      top:-70px;
+      width:240px;
+      height:240px;
+      pointer-events:none;
+      opacity:0.08;
+      transform-origin:center;
+      animation: orbit 16s linear infinite;
+    }
+
+    @keyframes orbit{
+      from{ transform: rotate(0deg) translateX(0px) rotate(0deg);}
+      to{ transform: rotate(360deg) translateX(0px) rotate(-360deg);}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="animated-gradient" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="card" role="region" aria-label="amirabolfazle showcase">
+      <div class="hero">
+        <h1 class="title"><span class="tag">amirabolfazle</span></h1>
+        <p class="subtitle">A clean responsive page with gradient theme, animated accents and zoom effects. Built to adapt across screens and to feel dynamic while staying minimal.</p>
+
+        <div class="features" aria-hidden="true">
+          <div class="pill">Responsive</div>
+          <div class="pill">Animated Gradient</div>
+          <div class="pill">Zoom Effects</div>
+          <div class="pill">Accessible</div>
+        </div>
+
+        <div class="meta" aria-hidden="false">
+          <div class="time" title="Creation time">Creation time: 2025-09-29 01:53:20</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.55)">Static snapshot • CSS-driven animations</div>
+        </div>
+
+        <footer style="border-top:0;margin-top:auto;padding-top:18px;">
+          <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.35-1.3-1.71-1.3-1.71-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.14 1.18a10.9 10.9 0 0 1 2.86-.38c.97.01 1.95.13 2.86.38 2.17-1.49 3.13-1.18 3.13-1.18.62 1.59.23 2.76.11 3.05.73.82 1.18 1.84 1.18 3.1 0 4.42-2.71 5.39-5.29 5.67.42.36.79 1.08.79 2.18 0 1.57-.01 2.84-.01 3.23 0 .31.21.68.8.56C20.71 21.39 24 17.08 24 12 24 5.65 18.35.5 12 .5z"/>
+            </svg>
+            <span style="white-space:nowrap;">Created by amirabolfazle</span>
+          </a>
+        </footer>
+      </div>
+
+      <div class="preview" aria-hidden="false">
+        <div class="visual" id="visual">Animated Preview</div>
+
+        <div class="zoom-controls" aria-hidden="true">
+          <button class="zoom-btn" onclick="zoomOut()" aria-label="Zoom out">− Zoom Out</button>
+          <button class="zoom-btn" onclick="resetZoom()" aria-label="Reset zoom">Reset</button>
+          <button class="zoom-btn" onclick="zoomIn()" aria-label="Zoom in">＋ Zoom In</button>
+        </div>
+
+        <div style="width:100%;display:flex;justify-content:center;">
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);">Hover the card or press zoom buttons</div>
+        </div>
+      </div>
+
+      <svg class="orbit" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1">
+            <stop offset="0" stop-color="#7c3aed"></stop>
+            <stop offset="1" stop-color="#06b6d4"></stop>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="40" stroke="url(#g1)" stroke-width="1.8" fill="none" />
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const visual = document.getElementById('visual');
+      let scale = 1;
+      const min = 0.8;
+      const max = 1.6;
+      const step = 0.08;
+
+      window.zoomIn = function(){
+        scale = Math.min(max, +(scale + step).toFixed(2));
+        apply();
+      };
+      window.zoomOut = function(){
+        scale = Math.max(min, +(scale - step).toFixed(2));
+        apply();
+      };
+      window.resetZoom = function(){
+        scale = 1;
+        apply();
+      };
+      function apply(){
+        visual.style.transform = 'scale(' + scale + ') translateZ(0)';
+        visual.style.transition = 'transform 300ms cubic-bezier(.2,.9,.2,1)';
+      }
+
+      // subtle breathing animation on visual element
+      let breathe = 0;
+      setInterval(() => {
+        breathe = breathe === 0 ? 1 : 0;
+        visual.style.boxShadow = breathe ? 'inset 0 -8px 40px rgba(2,6,23,0.45), 0 18px 50px rgba(2,6,23,0.6)' : 'inset 0 -8px 40px rgba(2,6,23,0.35), 0 12px 40px rgba(2,6,23,0.55)';
+      }, 4200);
+
+      // keyboard shortcuts: +/- to zoom, 0 to reset
+      window.addEventListener('keydown', (e) => {
+        if (e.key === '+' || e.key === '=') { zoomIn(); }
+        if (e.key === '-' || e.key === '_') { zoomOut(); }
+        if (e.key === '0') { resetZoom(); }
+      });
+
+      // reduce motion preference handling
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (mq.matches) {
+        document.querySelectorAll('.animated-gradient, .orbit').forEach(el => el.style.animation = 'none');
+      }
+
+    })();
+  </script>
+</body>
+</html>
