@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-dark: #0b0e1a;
+      --bg-dark2: #0a0e1a;
+      --text: #e2e8f0;
+      --card: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.20);
+      --shadow: rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--text);
+      background: #0b0e1a;
+      overflow-x: hidden;
+    }
+
+    /* Animated gradient background layers */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, rgba(124,58,237,.35), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(2,132,199,.35), transparent 40%),
+                  linear-gradient(135deg, #0b0f1a 0%, #0a0a0f 100%);
+      z-index: -2;
+      filter: saturate(110%);
+    }
+    .bg-rot {
+      position: fixed;
+      inset: -20%;
+      background: conic-gradient(from 0deg at 50% 50%, #ff5f6d, #ffc371, #4ade80, #3b82f6, #a78bfa, #ff5f6d);
+      transform: rotate(0deg);
+      animation: spin 60s linear infinite;
+      filter: blur(60px);
+      opacity: 0.65;
+      z-index: -1;
+      pointer-events: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Layout and visuals */
+    header {
+      text-align: center;
+      padding: 6rem 1rem 2rem;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .card {
+      width: min(1000px, 92vw);
+      padding: 2rem;
+      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px var(--shadow);
+    }
+
+    .glow {
+      font-weight: 900;
+      font-size: clamp(2rem, 6vw, 6rem);
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #fff, #a5f3fc, #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(120,180,255,.6);
+      animation: hue 8s linear infinite;
+      letter-spacing: .2rem;
+      user-select: none;
+    }
+    @keyframes hue { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+
+    .subtitle {
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      color: #e2e8f0;
+      margin-top: .5rem;
+      transform: rotate(-2deg);
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-6px) rotate(-0.5deg); }
+      100% { transform: translateY(0) rotate(-2deg); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .4rem .75rem;
+      border-radius: 999px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.15);
+      font-weight: 600;
+      color: var(--text);
+    }
+    .time {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      padding: .25rem .5rem;
+      border-radius: .4rem;
+      background: rgba(2,6,23,.5);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    .row { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center; }
+
+    main { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1rem; }
+
+    /* Decorative rotating blocks */
+    @keyframes blockspin { to { transform: rotate(360deg); } }
+    .block {
+      width: 60px; height: 60px; border-radius: 12px;
+      display: inline-block; margin: 0 .25rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,.3);
+      animation: blockspin 8s linear infinite;
+    }
+    .b1 { background: linear-gradient(135deg, #f472b6, #f59e0b); }
+    .b2 { background: linear-gradient(135deg, #22c55e, #3b82f6); animation-direction: reverse; }
+    .b3 { background: linear-gradient(135deg, #e11d48, #9333ea); animation-direction: normal; }
+
+    footer {
+      position: fixed;
+      bottom: 12px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .5rem;
+      z-index: 1;
+    }
+
+    footer a {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 1rem;
+      border-radius: 999px;
+      background: rgba(0,0,0,.25);
+      color: #e9e9ff;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,.2);
+      transition: transform .2s ease, background .3s;
+    }
+    footer a:hover { transform: translateY(-2px); background: rgba(0,0,0,.4); }
+
+    @media (max-width: 600px) {
+      .glow { font-size: 2.5rem; }
+      header { padding: 3rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-rot" aria-hidden="true"></div>
+
+  <header aria-label="Intro header">
+    <div class="card" style="text-align:center;">
+      <h1 class="glow" aria-label="amirabolfazle title">amirabolfazle</h1>
+      <p class="subtitle" aria-label="subtitle">A fully responsive animated HTML page</p>
+      <div class="row" style="justify-content:center; margin-top:1rem;">
+        <span class="badge" aria-label="creation time badge">
+          Creation time:
+          <span class="time" id="creation-time">2025-09-28 06:39:34</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main role="main" aria-label="Main content">
+    <section class="card" style="text-align:center;">
+      <p style="margin:0 0 1rem; color:#e9e9f0;">
+        This page demonstrates a gradient theme with rotate effects, responsive layout, and subtle animations.
+      </p>
+      <div class="row" aria-label="decorative shapes">
+        <div class="block b1" style="animation: blockspin 8s linear infinite;"></div>
+        <div class="block b2" style="animation: blockspin 6s linear infinite reverse;"></div>
+        <div class="block b3" style="animation: blockspin 7s linear infinite;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer with GitHub link">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
+        <path d="M12 .5A12.5 12.5 0 0 0 0 12.5C0 18.1 4.13 22.92 9.75 24c.71.13.97-.31.97-.69v-2.43c-3.97.86-4.8-1.92-4.8-1.92-.66-1.36-1.63-1.72-1.63-1.72-1.33-.9.1-.88.1-.88 1.47.1 2.25 1.51 2.25 1.51 1.23 2.25 3.23 1.6 4.01 1.22.11-.77.41-1.29.75-1.58-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.2-3.09-.12-.29-.52-1.46.11-3.04 0 0 .98-.31 3.2 1.18a11.1 11.1 0 0 1 2.92-.39c.99 0 1.99.13 2.92.39 2.22-1.49 3.2-1.18 3.2-1.18.63 1.58.23 2.75.12 3.04.75.8 1.2 1.83 1.2 3.09 0 4.43-2.69 5.41-5.25 5.69.42.36.8 1.08.8 2.18 0 1.58-.01 2.85-.01 3.24 0 .31.21.69.8.57A12.5 12.5 0 0 0 24 12.5C24 5.87 18.13.5 12 .5z"/>
+      </svg>
+    </a>
+    <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas; color:#e9e9ff;">
+      Created by amirabolfazle
+    </span>
+  </footer>
+</body>
+</html>
