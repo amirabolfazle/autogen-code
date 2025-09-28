@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: 18, 20, 25;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent1: 110, 90, 255;
+      --accent2: 0, 210, 255;
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.7);
+      --radius: 16px;
+      --fw-bold: 800;
+      --fw-medium: 600;
+      --fw-normal: 400;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      padding:0;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(var(--accent1),0.12), transparent 6%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(var(--accent2),0.10), transparent 8%),
+                  rgba(var(--bg1),1);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* animated floating blobs */
+    .bubbles{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .bubble{
+      position:absolute;
+      filter: blur(36px) saturate(120%);
+      opacity:0.12;
+      mix-blend-mode:screen;
+      animation: float 12s ease-in-out infinite;
+      transform: translate3d(0,0,0);
+    }
+    .bubble.b1{ width:420px; height:420px; background:linear-gradient(135deg, rgba(var(--accent1),0.80), rgba(var(--accent2),0.30)); top:5%; left:-5%; animation-duration:14s; }
+    .bubble.b2{ width:320px; height:320px; background:linear-gradient(135deg, rgba(var(--accent2),0.85), rgba(var(--accent1),0.18)); bottom:-5%; right:-10%; animation-duration:16s; }
+    .bubble.b3{ width:240px; height:240px; background:linear-gradient(135deg, rgba(var(--accent1),0.4), rgba(var(--accent2),0.25)); top:40%; right:5%; animation-duration:18s; opacity:0.08; }
+
+    @keyframes float{
+      0%{ transform: translateY(0) rotate(0deg) scale(1); }
+      50%{ transform: translateY(-40px) rotate(20deg) scale(1.03); }
+      100%{ transform: translateY(0) rotate(0deg) scale(1); }
+    }
+
+    /* Center layout */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 28px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      width:min(980px, 96%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius: calc(var(--radius) + 6px);
+      padding: clamp(20px, 4vw, 44px);
+      box-shadow: 0 8px 32px rgba(2,8,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.04);
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:24px;
+      align-items:center;
+      transition: transform 350ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms;
+    }
+
+    /* zoom effect for card on hover */
+    .card:hover{
+      transform: scale(1.02);
+      box-shadow: 0 28px 80px rgba(2,8,23,0.65);
+    }
+
+    /* left content */
+    .hero{
+      padding:10px;
+    }
+    h1{
+      margin:0 0 10px 0;
+      font-size: clamp(28px, 4.2vw, 48px);
+      letter-spacing:-0.02em;
+      line-height:1.02;
+      font-weight:var(--fw-bold);
+      color:var(--text);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.02);
+      transition: transform 300ms;
+    }
+    .subtitle{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-weight:var(--fw-normal);
+      font-size: clamp(13px, 2.2vw, 16px);
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:13px;
+      backdrop-filter: blur(6px);
+      cursor:default;
+    }
+
+    /* right panel - glass preview */
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));
+      border-radius: calc(var(--radius) - 4px);
+      padding:18px;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      border:1px solid rgba(255,255,255,0.035);
+      transition: transform 420ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    .panel:hover{
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    .preview{
+      width:100%;
+      border-radius:12px;
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.016), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .screen{
+      flex:1;
+      height:120px;
+      border-radius:10px;
+      background: linear-gradient(135deg, rgba(var(--accent1),0.08), rgba(var(--accent2),0.06));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(255,255,255,0.9);
+      font-weight:var(--fw-medium);
+      letter-spacing:0.02em;
+      font-size:13px;
+      transform-origin:center;
+      transition: transform 260ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    .preview .screen:hover{
+      transform: scale(1.06) translateY(-4px);
+      box-shadow: 0 12px 40px rgba(2,8,23,0.45);
+    }
+
+    .mock-bars{
+      width:64px;
+      height:8px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      border-radius: 6px;
+      margin-right:8px;
+      flex-shrink:0;
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:18px;
+      display:flex;
+      justify-content:center;
+      z-index:3;
+      pointer-events:none;
+    }
+    .footer-inner{
+      pointer-events:auto;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 22px rgba(2,8,23,0.45);
+      text-decoration:none;
+      font-size:14px;
+    }
+
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+
+    .gh svg{ width:18px; height:18px; fill:currentColor; display:block; }
+
+    /* responsive */
+    @media (max-width:880px){
+      .card{
+        grid-template-columns: 1fr;
+      }
+      .panel{ order:-1; }
+      .preview .screen{ height:110px; }
+    }
+
+    @media (max-width:420px){
+      .card{ padding:18px; gap:12px; }
+      .preview .screen{ height:90px; font-size:12px; }
+      footer{ bottom:12px; }
+    }
+
+    /* small accent animated underline for title */
+    .title-wrap{
+      display:inline-block;
+      position:relative;
+      overflow:visible;
+    }
+    .title-wrap::after{
+      content:'';
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:100%;
+      height:6px;
+      border-radius:100px;
+      background: linear-gradient(90deg, rgba(var(--accent1),0.85), rgba(var(--accent2),0.85));
+      transform-origin:left;
+      transform: scaleX(0);
+      transition: transform 650ms cubic-bezier(.2,.9,.3,1);
+      opacity:0.85;
+      filter: blur(8px) saturate(120%);
+    }
+    .card:hover .title-wrap::after{
+      transform: scaleX(1);
+    }
+
+    /* subtle type animation */
+    .flicker{
+      display:inline-block;
+      animation: flick 4s linear infinite;
+      opacity:0.999;
+    }
+
+    @keyframes flick{
+      0%, 100%{ opacity:1; text-shadow: 0 0 0 rgba(255,255,255,0); }
+      10%{ opacity:0.98; text-shadow: 0 0 8px rgba(var(--accent2),0.06); }
+      50%{ opacity:1; text-shadow: 0 0 12px rgba(var(--accent1),0.04); }
+    }
+
+    /* focus styles */
+    a:focus, button:focus { outline:2px solid rgba(255,255,255,0.06); outline-offset:3px; border-radius:8px; }
+  </style>
+</head>
+<body>
+  <div class="bubbles" aria-hidden="true">
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+  </div>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="main-title">
+      <div class="hero">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg, rgba(var(--accent1),0.18), rgba(var(--accent2),0.12)); display:grid; place-items:center; font-weight:700; color:var(--text); font-size:20px; box-shadow: inset 0 -6px 18px rgba(0,0,0,0.18);">
+            AM
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--muted); font-weight:600; letter-spacing:0.06em;">Portfolio</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.06); margin-top:4px;">Glassmorphism • Animated • Responsive</div>
+          </div>
+        </div>
+
+        <h1 id="main-title">
+          <span class="title-wrap"><span class="flicker">amirabolfazle</span></span>
+        </h1>
+
+        <p class="subtitle">A lightweight, glassmorphic demo with smooth zoom interactions and subtle motion. Resize the window or hover to see responsive and animated effects.</p>
+
+        <div class="meta" aria-hidden="false">
+          <div class="chip" title="Created on">📅 2025-09-29 01:06:23</div>
+          <div class="chip" title="Theme">✨ Glassmorphism</div>
+          <div class="chip" title="Interactions">🔍 Hover to zoom</div>
+        </div>
+      </div>
+
+      <aside class="panel" aria-label="Preview panel">
+        <div class="preview" role="img" aria-label="Animated preview">
+          <div class="mock-bars" aria-hidden="true"></div>
+          <div class="screen" id="zoomScreen">LIVE PREVIEW</div>
+        </div>
+
+        <div style="margin-top:12px; font-size:13px; color:var(--muted); text-align:center;">
+          Interactive preview — hover the elements or the card to see zoom effects.
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <a class="footer-inner gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.41 7.86 10.94.58.11.79-.25.79-.56v-2.05c-3.2.7-3.87-1.38-3.87-1.38-.52-1.34-1.27-1.7-1.27-1.7-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.95.1-.74.4-1.25.73-1.54-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 2.87-.39c.98 0 1.97.13 2.87.39 2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.43-2.71 5.4-5.29 5.68.41.36.78 1.07.78 2.16v3.2c0 .31.2.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+      </svg>
+      <span style="font-weight:600;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // subtle parallax background reaction to pointer for immersive zoom
+    (function(){
+      const wrap = document.querySelector('.wrap');
+      const bubbles = document.querySelectorAll('.bubble');
+      const card = document.querySelector('.card');
+
+      // pointer based parallax for bubbles
+      window.addEventListener('pointermove', (e) => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const x = (e.clientX / vw) - 0.5;
+        const y = (e.clientY / vh) - 0.5;
+
+        bubbles.forEach((b, i) => {
+          const depth = (i + 1) * 12;
+          b.style.transform = `translate3d(${ -x * depth }px, ${ -y * depth }px, 0)`;
+        });
+
+        // subtle tilt on card
+        const tiltX = (y * 6);
+        const tiltY = (-x * 6);
+        card.style.transform = `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.01)`;
+      });
+
+      // reset when pointer leaves
+      window.addEventListener('pointerleave', () => {
+        bubbles.forEach(b => b.style.transform = '');
+        card.style.transform = '';
+      });
+
+      // accessibility: keyboard focus reveals zoom slightly
+      const focusables = document.querySelectorAll('a, button, [tabindex]');
+      focusables.forEach(el => {
+        el.addEventListener('focus', () => { card.style.transform = 'scale(1.02)'; });
+        el.addEventListener('blur',  () => { card.style.transform = ''; });
+      });
+
+      // small entrance animation
+      window.requestAnimationFrame(() => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(8px) scale(0.995)';
+        setTimeout(()=> {
+          card.style.transition = 'transform 520ms cubic-bezier(.2,.9,.3,1), opacity 520ms';
+          card.style.opacity = '1';
+          card.style.transform = '';
+        }, 60);
+      });
+    })();
+  </script>
+</body>
+</html>
