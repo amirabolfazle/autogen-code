@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rubik:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --accent1: #7c5cff;
+      --accent2: #38e6b0;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.65);
+      --card-radius: 16px;
+      --soft-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 600px at 10% 20%, rgba(124,92,255,0.16), transparent 8%),
+                  radial-gradient(700px 500px at 90% 80%, rgba(56,230,176,0.12), transparent 6%),
+                  linear-gradient(180deg, #071027 0%, #071829 50%, #00111a 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+      overflow:hidden;
+    }
+
+    /* animated floating blobs */
+    .bg-blob{
+      position:fixed;
+      filter: blur(60px);
+      opacity:0.7;
+      mix-blend-mode:screen;
+      pointer-events:none;
+      z-index:0;
+    }
+    .blob-a{
+      width:520px;
+      height:520px;
+      left:-10%;
+      top:-10%;
+      background: radial-gradient(circle at 30% 30%, rgba(124,92,255,0.85), transparent 30%),
+                  radial-gradient(circle at 70% 70%, rgba(56,230,176,0.5), transparent 30%);
+      animation: floatA 12s ease-in-out infinite;
+      border-radius:50%;
+    }
+    .blob-b{
+      width:420px;
+      height:420px;
+      right:-8%;
+      bottom:-5%;
+      background: radial-gradient(circle at 20% 20%, rgba(56,230,176,0.6), transparent 30%),
+                  radial-gradient(circle at 80% 80%, rgba(124,92,255,0.35), transparent 30%);
+      animation: floatB 14s ease-in-out infinite;
+      border-radius:50%;
+    }
+    @keyframes floatA{
+      0%{transform: translateY(0) rotate(0deg) scale(1)}
+      50%{transform: translateY(-30px) rotate(8deg) scale(1.02)}
+      100%{transform: translateY(0) rotate(0deg) scale(1)}
+    }
+    @keyframes floatB{
+      0%{transform: translateY(0) rotate(0deg) scale(1)}
+      50%{transform: translateY(28px) rotate(-6deg) scale(0.98)}
+      100%{transform: translateY(0) rotate(0deg) scale(1)}
+    }
+
+    /* main card */
+    .stage{
+      position:relative;
+      z-index:2;
+      width:min(980px, 96vw);
+      display:grid;
+      grid-template-columns: 340px 1fr;
+      gap:28px;
+      align-items:start;
+      transition:transform .45s cubic-bezier(.2,.9,.25,1);
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border-radius: var(--card-radius);
+      padding:26px;
+      box-shadow: var(--soft-shadow);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.06);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    /* left column */
+    .left{
+      position:relative;
+      overflow:visible;
+    }
+
+    .avatar-wrap{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .avatar{
+      width:108px;
+      height:108px;
+      border-radius:20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text);
+      font-weight:700;
+      font-family:Rubik, Inter;
+      font-size:28px;
+      position:relative;
+      overflow:hidden;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+      border:1px solid rgba(255,255,255,0.06);
+      animation: bounce 3s infinite;
+    }
+
+    /* decorative inner accent */
+    .avatar::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background: linear-gradient(120deg, rgba(124,92,255,0.18), rgba(56,230,176,0.12));
+      mix-blend-mode: overlay;
+    }
+
+    @keyframes bounce{
+      0%{transform: translateY(0)}
+      20%{transform: translateY(-10px)}
+      40%{transform: translateY(0)}
+      60%{transform: translateY(-6px)}
+      80%{transform: translateY(0)}
+      100%{transform: translateY(0)}
+    }
+
+    .name{
+      font-family:Rubik, Inter;
+      font-weight:700;
+      font-size:20px;
+      letter-spacing:0.2px;
+      color:var(--text);
+    }
+    .subtitle{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .stats{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+    }
+    .stat{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:10px 12px;
+      min-width:86px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .stat .num{font-weight:700; font-family:Rubik; color:var(--text)}
+    .stat .label{font-size:12px; color:var(--muted); margin-top:6px}
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:14px;
+    }
+    .tag{
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(124,92,255,0.12), rgba(56,230,176,0.07));
+      color:var(--text);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform .22s ease;
+    }
+    .tag:hover{transform:translateY(-6px) scale(1.02); box-shadow: 0 10px 30px rgba(2,6,23,0.55);}
+
+    /* right column */
+    .right{
+      min-height:320px;
+    }
+    .hero-title{
+      display:flex;
+      align-items:baseline;
+      gap:12px;
+      margin-bottom:6px;
+    }
+    h1{
+      margin:0;
+      font-family:Rubik, Inter;
+      font-size:30px;
+      letter-spacing:-0.4px;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .glow-badge{
+      background: linear-gradient(90deg, rgba(124,92,255,0.14), rgba(56,230,176,0.10));
+      border-radius:12px;
+      padding:6px 10px;
+      font-size:13px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 20px rgba(124,92,255,0.06);
+    }
+
+    .bio{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.5;
+      max-width:100%;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:12px;
+      margin-top:18px;
+    }
+    .card{
+      padding:14px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      transition: transform .32s cubic-bezier(.2,.9,.25,1), box-shadow .32s;
+    }
+    .card:hover{ transform: translateY(-8px) scale(1.01); box-shadow: 0 18px 46px rgba(2,6,23,0.6); }
+
+    .card h3{ margin:0; font-family:Rubik; font-size:14px; color:var(--text) }
+    .card p{ margin:8px 0 0 0; font-size:13px; color:var(--muted); line-height:1.4 }
+
+    /* actions */
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      align-items:center;
+    }
+    .btn{
+      padding:10px 16px;
+      border-radius:12px;
+      font-weight:600;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      color:white;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 8px 30px rgba(60,50,120,0.28);
+      transition: transform .28s cubic-bezier(.2,.9,.25,1), box-shadow .28s;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .btn:active{ transform: translateY(2px) }
+    .btn:hover{ transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 60px rgba(60,50,120,0.32); }
+
+    .ghost{
+      padding:10px 14px;
+      border-radius:12px;
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(6px);
+    }
+
+    /* creation time chip */
+    .time-chip{
+      margin-top:14px;
+      align-self:flex-start;
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.025), rgba(255,255,255,0.015));
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      grid-column:1/-1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+    }
+    .footer-left{display:flex; align-items:center; gap:12px}
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:12px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.03);
+      transition: transform .2s ease, box-shadow .2s ease;
+      backdrop-filter: blur(6px);
+    }
+    .github-link:hover{ transform: translateY(-6px); box-shadow: 0 12px 40px rgba(2,6,23,0.45) }
+    .github-link svg{ width:18px; height:18px; display:block; flex-shrink:0; }
+
+    /* small screens */
+    @media (max-width:880px){
+      .stage{ grid-template-columns: 1fr; }
+      .cards{ grid-template-columns: 1fr 1fr }
+      body{ padding:32px }
+    }
+    @media (max-width:520px){
+      .cards{ grid-template-columns: 1fr }
+      .avatar{ width:92px; height:92px; font-size:22px }
+    }
+
+    /* subtle entrance */
+    .stage{ opacity:0; transform: translateY(18px) scale(.998); animation:enter .8s cubic-bezier(.2,.9,.25,1) forwards;}
+    @keyframes enter{ to{ opacity:1; transform:none } }
+  </style>
+</head>
+<body>
+  <div class="bg-blob blob-a" aria-hidden="true"></div>
+  <div class="bg-blob blob-b" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-label="amirabolfazle personal page">
+    <section class="panel left" aria-labelledby="profile-heading">
+      <div class="avatar-wrap">
+        <div class="avatar" aria-hidden="true">AM</div>
+        <div>
+          <div class="name" id="profile-heading">amirabolfazle</div>
+          <div class="subtitle">Maker • Engineer • Curious about elegant systems</div>
+        </div>
+      </div>
+
+      <div class="stats" aria-hidden="true">
+        <div class="stat"><div class="num">42</div><div class="label">Projects</div></div>
+        <div class="stat"><div class="num">10k+</div><div class="label">Commits</div></div>
+        <div class="stat"><div class="num">7</div><div class="label">Tools</div></div>
+      </div>
+
+      <div class="tags" aria-hidden="true">
+        <div class="tag">JavaScript</div>
+        <div class="tag">Rust</div>
+        <div class="tag">AI</div>
+        <div class="tag">UI/UX</div>
+        <div class="tag">Open Source</div>
+      </div>
+
+      <div class="time-chip" title="Creation time">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 7v6l4 2" stroke="rgba(255,255,255,0.65)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.06)" stroke-width="1.6" />
+        </svg>
+        2025-09-29 02:53:42
+      </div>
+
+      <div style="margin-top:auto;">
+        <div style="font-size:12px;color:var(--muted);margin-top:14px">Quick links</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <a class="ghost" href="mailto:amir@example.com" aria-label="Email">Email</a>
+          <a class="ghost" href="#" aria-label="Resume">Resume</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel right" aria-labelledby="hero-heading">
+      <div class="hero-title">
+        <h1 id="hero-heading">amirabolfazle</h1>
+        <div class="glow-badge">Designer & Developer</div>
+      </div>
+
+      <div class="bio">
+        Welcome — this is a small, animated corner of the web crafted with glassmorphism and playful motion.
+        Hover, click, imagine. The page celebrates clarity, subtle depth and bounce: a tiny stage for bigger ideas.
+      </div>
+
+      <div class="cards" role="list" aria-label="Highlights">
+        <div class="card" role="listitem">
+          <h3>Featured Project</h3>
+          <p>Autogenerated tooling that helps bootstrap fast, delightful developer experiences.</p>
+        </div>
+        <div class="card" role="listitem">
+          <h3>Playground</h3>
+          <p>Interactive demos of UI patterns, motion, and modern web techniques.</p>
+        </div>
+        <div class="card" role="listitem">
+          <h3>Blog</h3>
+          <p>Notes on systems, design thinking, and engineering curiosities.</p>
+        </div>
+        <div class="card" role="listitem">
+          <h3>Open Source</h3>
+          <p>Building tools and libraries that make code more pleasant to write and read.</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" onclick="location.href='https://github.com/amirabolfazle/autogen-code'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.484 2 12.02c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.216.682-.48 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.607.069-.607 1.003.071 1.53 1.032 1.53 1.032.893 1.528 2.344 1.087 2.91.832.09-.647.35-1.087.636-1.337-2.22-.253-4.555-1.113-4.555-4.957 0-1.095.39-1.991 1.03-2.692-.103-.253-.447-1.27.098-2.647 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.91-1.296 2.748-1.026 2.748-1.026.547 1.378.203 2.395.1 2.647.64.701 1.03 1.597 1.03 2.692 0 3.853-2.338 4.7-4.565 4.948.36.311.68.924.68 1.862 0 1.343-.012 2.426-.012 2.756 0 .267.18.579.688.481C19.137 20.2 22 16.45 22 12.02 22 6.484 17.523 2 12 2z" fill="white"/>
+          </svg>
+          View on GitHub
+        </button>
+
+        <a class="ghost" href="#" role="button">Contact</a>
+      </div>
+
+      <footer>
+        <div class="footer-left">
+          <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.477 2 2 6.484 2 12.02c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.216.682-.48 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.607.069-.607 1.003.071 1.53 1.032 1.53 1.032.893 1.528 2.344 1.087 2.91.832.09-.647.35-1.087.636-1.337-2.22-.253-4.555-1.113-4.555-4.957 0-1.095.39-1.991 1.03-2.692-.103-.253-.447-1.27.098-2.647 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.91-1.296 2.748-1.026 2.748-1.026.547 1.378.203 2.395.1 2.647.64.701 1.03 1.597 1.03 2.692 0 3.853-2.338 4.7-4.565 4.948.36.311.68.924.68 1.862 0 1.343-.012 2.426-.012 2.756 0 .267.18.579.688.481C19.137 20.2 22 16.45 22 12.02 22 6.484 17.523 2 12 2z" fill="currentColor"/>
+            </svg>
+            <span>autogen-code</span>
+          </a>
+
+          <div style="font-size:13px;color:var(--muted);">Created by amirabolfazle</div>
+        </div>
+
+        <div style="font-size:12px;color:var(--muted);">© <span id="year">2025</span></div>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // small niceties: set year and subtle effect
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // keyboard accessible: allow Enter on action-like anchors
+    document.querySelectorAll('.ghost').forEach(el=>{
+      el.addEventListener('keydown', e=>{
+        if(e.key === 'Enter') el.click();
+      });
+    });
+  </script>
+</body>
+</html>
