@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#07060a;
+    --neon-cyan:#00f0ff;
+    --neon-mag:#ff2dcb;
+    --neon-green:#7dff6b;
+    --glass: rgba(255,255,255,0.03);
+    --card: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    --blur: 18px;
+    --accent: var(--neon-cyan);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(600px 400px at 10% 10%, rgba(0,240,255,0.06), transparent 8%),
+      radial-gradient(500px 300px at 90% 90%, rgba(255,45,203,0.05), transparent 6%),
+      var(--bg);
+    color:#e8f7f8;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:48px;
+    overflow-y:auto;
+  }
+
+  /* animated floating blobs */
+  .bg-blob{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+  }
+  .blob{
+    position:absolute;
+    filter: blur(var(--blur));
+    opacity:0.45;
+    mix-blend-mode: screen;
+    transform-origin:center;
+    animation: float 12s ease-in-out infinite;
+  }
+  .blob.b1{left:6%;top:8%;width:420px;height:420px;background:linear-gradient(45deg,var(--neon-cyan),transparent);}
+  .blob.b2{right:6%;bottom:10%;width:360px;height:360px;background:linear-gradient(45deg,var(--neon-mag),transparent);animation-duration:18s;}
+  .blob.b3{left:50%;top:50%;width:520px;height:520px;background:linear-gradient(60deg,var(--neon-green),transparent);transform:translate(-40%,-60%);animation-duration:14s;opacity:0.25;}
+
+  @keyframes float{
+    0%{transform:translateY(0) scale(1);}
+    50%{transform:translateY(-30px) scale(1.03) rotate(8deg);}
+    100%{transform:translateY(0) scale(1);}
+  }
+
+  .wrap{
+    position:relative;
+    max-width:1100px;
+    margin:0 auto;
+    z-index:2;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:28px;
+  }
+  .brand{
+    display:flex;
+    gap:18px;
+    align-items:center;
+  }
+  .logo{
+    width:84px;
+    height:84px;
+    border-radius:14px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.6), 0 0 28px rgba(0,240,255,0.06);
+    position:relative;
+  }
+  .logo::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:12px;
+    box-shadow:0 0 30px rgba(0,240,255,0.06);
+    pointer-events:none;
+  }
+  .logo svg{filter: drop-shadow(0 0 8px rgba(0,240,255,0.45));}
+  h1{
+    font-size:34px;
+    letter-spacing:1px;
+    margin:0;
+    line-height:1;
+    color:transparent;
+    -webkit-text-stroke: 0.6px rgba(255,255,255,0.06);
+    background:linear-gradient(90deg,var(--neon-cyan),var(--neon-mag));
+    -webkit-background-clip:text;
+    background-clip:text;
+    text-shadow:
+      0 0 10px rgba(0,240,255,0.12),
+      0 0 30px rgba(255,45,203,0.04);
+    font-weight:700;
+  }
+  .tag{
+    font-size:13px;
+    color:rgba(255,255,255,0.65);
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.03);
+    background:rgba(255,255,255,0.01);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  }
+
+  /* main hero */
+  .hero{
+    margin-top:12px;
+    padding:34px;
+    border-radius:14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+    display:grid;
+    grid-template-columns:1fr 340px;
+    gap:24px;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .left h2{
+    font-size:28px;
+    margin:0 0 8px 0;
+    color:var(--neon-cyan);
+    text-shadow:0 0 12px rgba(0,240,255,0.18);
+  }
+  .hero p{
+    margin:0 0 18px 0;
+    color:rgba(255,255,255,0.78);
+    line-height:1.55;
+  }
+  .cta-row{display:flex;gap:12px;align-items:center}
+  .btn{
+    padding:10px 14px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    border:1px solid rgba(255,255,255,0.04);
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+    color:var(--neon-cyan);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.6);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,0.6)}
+  .profile{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:center;
+  }
+  .avatar{
+    width:120px;height:120px;border-radius:18px;
+    background:linear-gradient(135deg,var(--neon-mag),var(--neon-cyan));
+    display:flex;align-items:center;justify-content:center;
+    color:#0a0610;font-weight:800;font-size:22px;
+    box-shadow: 0 10px 40px rgba(255,45,203,0.06), 0 0 28px rgba(0,240,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .meta{
+    font-size:13px;color:rgba(255,255,255,0.6);
+    background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* cards list */
+  .grid{
+    margin-top:26px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+  }
+  .card{
+    border-radius:12px;
+    padding:18px;
+    min-height:120px;
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    position:relative;
+    overflow:hidden;
+    color:rgba(255,255,255,0.9);
+  }
+  .card h3{
+    margin:0 0 8px 0;font-size:16px;color:var(--neon-mag);
+    text-shadow:0 0 12px rgba(255,45,203,0.08);
+  }
+  .card p{margin:0;color:rgba(255,255,255,0.7);font-size:14px;line-height:1.45}
+
+  /* slide-up animation */
+  .slide{opacity:0; transform:translateY(28px) scale(0.995); will-change:transform,opacity;}
+  @keyframes slideUp {
+    from{opacity:0; transform:translateY(28px) scale(0.995);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+  .slide.in-view{animation: slideUp .72s cubic-bezier(.2,.9,.2,1) both; animation-delay:var(--delay,0ms);}
+
+  /* footer */
+  footer{
+    margin-top:42px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    color:rgba(255,255,255,0.6);
+    font-size:13px;
+    padding:12px 16px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.01);
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .gh{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    color:var(--neon-cyan);
+    text-decoration:none;
+    padding:8px 10px;border-radius:10px;
+    transition:transform .12s ease;
+    border:1px solid rgba(255,255,255,0.02);
+    background:rgba(255,255,255,0.008);
+  }
+  .gh:hover{transform:translateY(-4px)}
+  .gh svg{filter:drop-shadow(0 0 6px rgba(0,240,255,0.12))}
+  .created{opacity:0.85}
+
+  /* responsive */
+  @media (max-width:980px){
+    .hero{grid-template-columns:1fr; padding:20px}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    header{flex-direction:column;align-items:flex-start}
+  }
+  @media (max-width:640px){
+    .grid{grid-template-columns:1fr}
+    .logo{width:64px;height:64px}
+    h1{font-size:24px}
+    body{padding:18px}
+  }
+
+  /* small accent neon lines */
+  .neon-line{
+    height:2px;border-radius:2px;margin:12px 0;
+    background:linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    box-shadow:0 0 18px rgba(0,240,255,0.08);
+  }
+</style>
+</head>
+<body>
+  <div class="bg-blob" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo slide" style="--delay:0ms">
+          <!-- stylized A monogram -->
+          <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="12" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#00F0FF"/>
+                <stop offset="1" stop-color="#FF2DCB"/>
+              </linearGradient>
+            </defs>
+            <path d="M18 46L32 18L46 46H40L32 30L24 46H18Z" fill="#0A0610" opacity="0.96"/>
+            <path d="M22 40H42L32 24L22 40Z" fill="rgba(0,240,255,0.08)"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="slide" style="--delay:80ms">amirabolfazle</h1>
+          <div class="tag slide" style="--delay:140ms">Neon portfolio • Web / UI / Experiments</div>
+        </div>
+      </div>
+
+      <div style="text-align:right">
+        <div class="slide meta" style="--delay:200ms">Created: 2025-09-28 18:59:24</div>
+      </div>
+    </header>
+
+    <section class="hero slide" style="--delay:260ms" aria-labelledby="hero-title">
+      <div class="left">
+        <h2 id="hero-title">Hi — I'm amirabolfazle</h2>
+        <p>Designer & developer who likes neon lights, clean micro-interactions, and small web toys that surprise. This single-file portfolio shows animated tiles and slide-up effects with a moody neon theme.</p>
+
+        <div class="cta-row">
+          <button class="btn" onclick="scrollToSection('projects')">View Projects</button>
+          <a class="btn" href="#contact" style="text-decoration:none;color:var(--neon-cyan">Contact</a>
+        </div>
+      </div>
+
+      <aside class="profile">
+        <div class="avatar slide" style="--delay:320ms">AM</div>
+        <div class="meta slide" style="--delay:380ms">Full-stack experiments • Open-source</div>
+        <div class="meta slide" style="--delay:440ms">Location: Remote • Time: UTC+3:30</div>
+      </aside>
+    </section>
+
+    <div class="neon-line slide" style="--delay:480ms"></div>
+
+    <section id="projects" style="margin-top:16px">
+      <div class="grid">
+        <article class="card slide" style="--delay:520ms">
+          <h3>Autogen Code</h3>
+          <p>AI-assisted code generation toolkit. Small, focused utilities that make prototyping faster. Repo linked in the footer.</p>
+        </article>
+
+        <article class="card slide" style="--delay:580ms">
+          <h3>Neon UI Kit</h3>
+          <p>Collection of components and micro-interactions with neon themes — buttons, cards, and animated inputs designed for modern dashboards.</p>
+        </article>
+
+        <article class="card slide" style="--delay:640ms">
+          <h3>Visual Experiments</h3>
+          <p>Canvas and SVG play: particle fields, fluid gradients, and small playable demos that blend UI with motion.</p>
+        </article>
+
+        <article class="card slide" style="--delay:700ms">
+          <h3>Design Systems</h3>
+          <p>Thoughtful tokens and accessibility-minded components for teams that want consistency with a little personality.</p>
+        </article>
+
+        <article class="card slide" style="--delay:760ms">
+          <h3>Mini Apps</h3>
+          <p>Utilities: clipboard managers, password helpers, and small productivity apps — all tiny and focused.</p>
+        </article>
+
+        <article class="card slide" style="--delay:820ms">
+          <h3>Contact</h3>
+          <p id="contact">Open to collaboration and freelance. Drop a note on GitHub or send an email via the link in the footer.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="slide" style="--delay:900ms">
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub: amirabolfazle/autogen-code">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.76c0 4.92 3.18 9.08 7.59 10.54.56.1.77-.24.77-.53 0-.26-.01-.94-.01-1.85-3.09.67-3.74-1.5-3.74-1.5-.51-1.31-1.25-1.66-1.25-1.66-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1.01 1.72 2.67 1.22 3.32.93.1-.72.39-1.22.71-1.5-2.47-.28-5.07-1.23-5.07-5.49 0-1.21.43-2.2 1.14-2.98-.11-.28-.5-1.39.11-2.9 0 0 .93-.3 3.05 1.14a10.67 10.67 0 0 1 5.56 0c2.12-1.44 3.05-1.14 3.05-1.14.61 1.51.22 2.62.11 2.9.71.78 1.14 1.77 1.14 2.98 0 4.27-2.6 5.2-5.08 5.48.4.35.75 1.02.75 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.21.64.78.53C19.07 20.84 22.25 16.68 22.25 11.76 22.25 5.48 17.27.5 12 .5z" fill="currentColor"/>
+        </svg>
+        <span style="font-weight:700">amirabolfazle/autogen-code</span>
+      </a>
+
+      <div class="created">
+        Created by amirabolfazle
+      </div>
+    </footer>
+  </div>
+
+<script>
+  // Reveal slide-up elements when they come into view (stagger via CSS var --delay)
+  (function(){
+    const nodes = document.querySelectorAll('.slide');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('in-view');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.12});
+    nodes.forEach((n,i)=> {
+      // ensure a gentle default stagger if no inline --delay set
+      if(!n.style.getPropertyValue('--delay')){
+        n.style.setProperty('--delay', (i*40)+'ms');
+      }
+      io.observe(n);
+    });
+  })();
+
+  // helper for button
+  function scrollToSection(id){
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+</script>
+</body>
+</html>
