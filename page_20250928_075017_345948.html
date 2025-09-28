@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle – Neon Portfolio</title>
+  <style>
+    :root{
+      --bg: #0b0b14;
+      --panel: rgba(8, 15, 28, 0.8);
+      --neon-cyan: #00f7ff;
+      --neon-pink: #ff00f0;
+      --text: #eafcff;
+      --glow: 0 0 14px rgba(0,255,255,.85), 0 0 40px rgba(0,255,255,.5);
+    }
+
+    /* Global reset-ish */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: #070712;
+      overflow-x: hidden;
+      letter-spacing: .2px;
+    }
+
+    /* Subtle neon background layers that drift */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 180%;
+      height: 180%;
+      left: -40%;
+      top: -40%;
+      background: radial-gradient(circle at 25% 25%, rgba(0,255,255,.18), transparent 40%),
+                  radial-gradient(circle at 70% 70%, rgba(255,0,255,.18), transparent 40%);
+      filter: blur(0.5px);
+      z-index: -1;
+      animation: drift 60s linear infinite;
+      pointer-events: none;
+    }
+    body::after { opacity: .6; animation-duration: 90s; }
+
+    @keyframes drift {
+      0% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(180deg) translateZ(0); }
+      100% { transform: rotate(360deg) translateZ(0); }
+    }
+
+    /* Neon title and hero */
+    header.hero {
+      padding: 40px 16px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 14px;
+      border: 2px solid rgba(0,255,255,.6);
+      background: rgba(0,0,0,.25);
+      box-shadow: 0 0 20px rgba(0,255,255,.4);
+      transform: translateZ(0);
+    }
+
+    .neon-name {
+      font-weight: 800;
+      font-size: clamp(42px, 9vw, 118px);
+      color: #00eaff;
+      letter-spacing: 4px;
+      text-shadow:
+        0 0 6px rgba(0,255,255,.9),
+        0 0 16px rgba(0,255,255,.65),
+        0 0 40px rgba(0,255,255,.45);
+      background: linear-gradient(90deg, #00eaff 0%, #9dff50 60%, #00eaff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%,100% { text-shadow: 0 0 6px rgba(0,255,255,.9), 0 0 18px rgba(0,255,255,.6); }
+      50%   { text-shadow: 0 0 18px rgba(0,255,255,.95), 0 0 40px rgba(0,255,255,.75); }
+    }
+
+    .sub {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #d7faff;
+      opacity: .9;
+    }
+
+    .creation-time {
+      margin-top: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #a7f9ff;
+      letter-spacing: .8px;
+      opacity: .9;
+    }
+
+    .orb {
+      width: 180px; height:180px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,255,255,.6);
+      margin: 20px auto 0;
+      box-shadow: 0 0 28px rgba(0,255,255,.7);
+      animation: spin 14s linear infinite;
+      position: relative;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Layout sections */
+    main { padding: 28px 20px 60px; }
+
+    section.panel {
+      max-width: 1100px;
+      margin: 28px auto;
+      padding: 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(8,12,24,.9), rgba(8,12,24,.6) 60%);
+      border: 1px solid rgba(0,255,255,.35);
+      box-shadow: 0 8px 28px rgba(0,0,0,.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    section.panel h2 {
+      font-size: clamp(20px, 4vw, 28px);
+      margin: 2px 0 12px;
+      color: #eaffff;
+      text-shadow: 0 0 10px rgba(0,255,255,.9);
+    }
+
+    .panel .lead {
+      color: #d9f8ff;
+      opacity: .95;
+    }
+
+    /* Projects grid and neon cards with rotate effect */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+      perspective: 1200px;
+    }
+
+    .card {
+      position: relative;
+      height: 180px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(2,6,23,.6);
+      border: 1px solid rgba(0,255,255,.5);
+      transform-style: preserve-3d;
+      transition: transform .25s ease;
+      cursor: pointer;
+    }
+
+    .card:before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 16px;
+      border: 2px solid rgba(0,255,255,.6);
+      filter: blur(0.5px);
+      transform: rotateZ(0deg);
+      animation: ringSpin 6s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes ringSpin {
+      to { transform: rotateZ(360deg); }
+    }
+
+    .card .ring-glow {
+      position: absolute;
+      width: 260px; height: 260px;
+      left: -40px; top: -40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,0,255,.4);
+      filter: blur(1px);
+      animation: spinGlow 8s linear infinite;
+      z-index: 0;
+      opacity: .6;
+      pointer-events: none;
+    }
+    @keyframes spinGlow {
+      to { transform: rotate(360deg); }
+    }
+
+    .card .content {
+      position: relative;
+      z-index: 1;
+      padding: 18px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #e2fbff;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #aaf;
+      text-shadow: 0 0 12px rgba(0,255,255,.9);
+    }
+
+    .card p {
+      margin: 6px 0 0;
+      font-size: 12.5px;
+      color: #d8faff;
+    }
+
+    /* Hover tilt/rotate for cards */
+    .card:hover { transform: rotateY(8deg) rotateX(-2deg); }
+    .card:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,255,255,.3); }
+
+    /* About and Contact content quick styles */
+    .lead { font-size: 15px; line-height: 1.6; color: #e6fbff; }
+
+    /* Footer with GitHub icon and credit text */
+    footer.site-footer {
+      border-top: 1px solid rgba(0,255,255,.25);
+      padding: 18px 20px;
+      text-align: center;
+      color: #c9fbff;
+      background: #05060e;
+    }
+    footer.site-footer a {
+      color: #8af4ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.5);
+      background: rgba(0,0,0,.25);
+      box-shadow: 0 0 12px rgba(0,255,255,.25);
+    }
+    footer.site-footer a:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(0,255,255,.5);
+    }
+    footer.site-footer svg { display: inline-block; vertical-align: middle; }
+
+    .credit { margin-left: 8px; font-family: ui-mono, SFMono-Regular, Menlo, Consolas; font-size: 12px; color: #bfeaff; }
+
+    /* Responsive tweaks */
+    @media (max-width: 720px) {
+      .orb { width: 140px; height: 140px; }
+      .card { height: 170px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" aria-label="Intro">
+    <div class="brand" aria-label="Brand badge">
+      <div class="neon-name" style="display:inline-block;">amirabolfazle</div>
+    </div>
+    <div class="sub" aria-hidden="true" style="margin-top:8px; color:#bafaff; opacity:.9;">Neon portfolio</div>
+    <div class="orb" aria-label="Rotating neon orb"></div>
+    <div class="creation-time" title="Creation timestamp">Creation time: 2025-09-28 07:49:42</div>
+  </header>
+
+  <main>
+    <section id="about" class="panel" aria-labelledby="about-title">
+      <h2 id="about-title" style="text-shadow:0 0 12px rgba(0,255,255,.8);">About</h2>
+      <p class="lead" style="max-width: 900px;">
+        Hello! I’m amirabolfazle — a curious creator who enjoys building compact, expressive software. This single-file portfolio showcases a few ideas with a neon aesthetic and motion-driven vibes. Hover a project to feel the rotation, and watch the glow ripple through the UI.
+      </p>
+    </section>
+
+    <section id="projects" class="panel" aria-labelledby="projects-title">
+      <h2 id="projects-title" style="text-shadow:0 0 12px rgba(0,255,255,.8);">Projects</h2>
+      <p class="lead" style="margin-top:6px;">A small selection. Each card has a neon glow and a rotate effect.</p>
+
+      <div class="projects-grid" style="margin-top:14px;">
+        <article class="card" tabindex="0" aria-label="Autogen Code project">
+          <div class="ring-glow"></div>
+          <div class="content">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <h3 style="margin:0;font-size:14px;letter-spacing:1px;color:#9ff;">Autogen Code</h3>
+            </div>
+            <p>One-file code generator with neon visuals and subtle animations.</p>
+          </div>
+        </article>
+
+        <article class="card" tabindex="0" aria-label="Neon portfolio card">
+          <div class="ring-glow" style="animation-duration:9s; border-color: rgba(255,0,255,.6);"></div>
+          <div class="content">
+            <div style="display:flex;gap:8px;align-items:center;">
+              <h3 style="margin:0;font-size:14px;letter-spacing:1px;color:#9ff;">Neon Studio</h3>
+            </div>
+            <p>Stylized components with CSS-driven neon glow effects.</p>
+          </div>
+        </article>
+
+        <article class="card" tabindex="0" aria-label="Live demo card">
+          <div class="ring-glow" style="animation-duration:11s; border-color: rgba(0,255,180,.6);"></div>
+          <div class="content">
+            <div style="display:flex;gap:8px;align-items:center;">
+              <h3 style="margin:0;font-size:14px;letter-spacing:1px;color:#9ff;">Live Demo</h3>
+            </div>
+            <p>Interactive elements with tilt and spin on hover/focus.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="panel" aria-labelledby="contact-title">
+      <h2 id="contact-title" style="text-shadow:0 0 12px rgba(0,255,255,.8);">Contact</h2>
+      <p class="lead" style="max-width: 900px;">
+        Want to chat about a project? Reach out and we can brainstorm together. Open to collaborations and code experiments.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noreferrer">
+      <!-- GitHub inline icon -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" role="img">
+        <path d="M12 .5A12.5 12.5 0 0 0 0 12.5c0 5.5 3.57 10.17 8.53 11.83.62.11.85-.27.85-.6 0-.3-.01-1.14-.02-2.24-3.47.75-4.21-1.49-4.21-1.49-.56-1.43-1.37-1.81-1.37-1.81-1.12-.77.09-.76.09-.76 1.24.09 1.89 1.27 1.89 1.27 1.1 1.88 2.87 1.34 3.57 1.02.11-.79.43-1.34.78-1.65-2.77-.32-5.68-1.38-5.68-6.13 0-1.35.48-2.45 1.27-3.31-.13-.32-.55-1.61.12-3.37 0 0 1.04-.33 3.41 1.26a11.69 11.69 0 0 1 6.22 0C16.43-.66 17.47-.33 17.47-.33c.68 1.76.25 3.05.12 3.37.8.86 1.27 1.96 1.27 3.31 0 4.75-2.92 5.8-5.7 6.12.44.38.83 1.12.83 2.26 0 1.63-.01 2.95-.01 3.35 0 .33.22.72.86.6A12.5 12.5 0 0 0 12 .5z"/>
+      </svg>
+      <span class="credit" style="font-weight:600; margin-left:6px;">GitHub</span>
+    </a>
+    <span class="credit" aria-label="Creator credit" style="margin-left:12px;">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple tilt interaction on cards for a more dynamic feel
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const px = e.clientX - rect.left;
+          const py = e.clientY - rect.top;
+          const rx = -(py - rect.height/2) / 8;
+          const ry = (px - rect.width/2) / 8;
+          card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+        card.addEventListener('focus', () => {
+          card.style.transform = 'rotateX(6deg) rotateY(-6deg)';
+        });
+        card.addEventListener('blur', () => {
+          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
