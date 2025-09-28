@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1: #fbeaff;
+    --bg2: #e9fff7;
+    --accent1: #ffd6e0;
+    --accent2: #c7f3e6;
+    --accent3: #f9f0c1;
+    --muted: #6b6b6b;
+    --glass: rgba(255,255,255,0.6);
+    --glass-2: rgba(255,255,255,0.45);
+    --card-shadow: 0 10px 30px rgba(17,24,39,0.07);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: radial-gradient(1200px 600px at 10% 10%, var(--accent2) 0%, transparent 20%),
+                radial-gradient(1000px 500px at 90% 90%, var(--accent1) 0%, transparent 20%),
+                linear-gradient(180deg, var(--bg1), var(--bg2));
+    color:#222;
+  }
+
+  .container{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+    box-sizing:border-box;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* floating pastel shapes */
+  .shape{
+    position:absolute;
+    filter: drop-shadow(0 10px 20px rgba(15,23,42,0.06));
+    transform-origin:center;
+    opacity:0.95;
+    mix-blend-mode:normal;
+    animation: float 12s ease-in-out infinite;
+  }
+  .shape.s1{width:340px;height:340px;left:-60px;top:-80px;background:linear-gradient(135deg,var(--accent1),#fff);border-radius:48% 52% 50% 50%/48% 52% 48% 52%;animation-duration:16s;animation-direction:alternate;transform-origin:center;}
+  .shape.s2{width:220px;height:220px;right:-40px;top:20px;background:linear-gradient(135deg,var(--accent2),#fff);border-radius:40% 60% 50% 50%/50% 40% 60% 50%;animation-duration:14s;animation-direction:alternate-reverse;}
+  .shape.s3{width:160px;height:160px;left:20%;bottom:-50px;background:linear-gradient(135deg,var(--accent3),#fff);border-radius:60% 40% 55% 45%/50% 60% 40% 50%;animation-duration:18s;opacity:0.9;}
+  @keyframes float{
+    0%{transform: translateY(0) rotate(0deg);}
+    25%{transform: translateY(-18px) rotate(10deg);}
+    50%{transform: translateY(6px) rotate(-8deg);}
+    75%{transform: translateY(-10px) rotate(6deg);}
+    100%{transform: translateY(0) rotate(0deg);}
+  }
+
+  /* main card */
+  .card{
+    width:100%;
+    max-width:980px;
+    backdrop-filter: blur(8px) saturate(120%);
+    background: linear-gradient(180deg, var(--glass), var(--glass-2));
+    border-radius:20px;
+    padding:40px;
+    box-shadow: var(--card-shadow);
+    position:relative;
+    overflow:visible;
+    border:1px solid rgba(255,255,255,0.6);
+  }
+
+  .row{
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .intro{
+    flex:1 1 360px;
+    min-width:260px;
+  }
+
+  h1{
+    margin:0;
+    font-size:40px;
+    letter-spacing:0.4px;
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+  }
+
+  .title-badge{
+    font-size:14px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+    padding:6px 10px;
+    border-radius:999px;
+    color:#333;
+    box-shadow:0 4px 12px rgba(17,24,39,0.06);
+  }
+
+  .subtitle{
+    color:var(--muted);
+    margin-top:10px;
+    margin-bottom:18px;
+    font-size:15px;
+  }
+
+  .rotator{
+    display:inline-block;
+    padding:10px 14px;
+    margin-top:14px;
+    border-radius:12px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.65));
+    box-shadow: 0 6px 24px rgba(17,24,39,0.06);
+    transform-origin:center;
+    animation: slowrotate 12s linear infinite;
+    font-weight:600;
+    color:#333;
+    letter-spacing:0.2px;
+    cursor:default;
+  }
+
+  @keyframes slowrotate{
+    0%{transform: rotate(0deg);}
+    25%{transform: rotate(3deg);}
+    50%{transform: rotate(0deg);}
+    75%{transform: rotate(-3deg);}
+    100%{transform: rotate(0deg);}
+  }
+
+  /* tiles */
+  .tiles{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+    gap:18px;
+    flex:1 1 460px;
+    min-width:240px;
+  }
+
+  .tile{
+    background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
+    border-radius:14px;
+    padding:18px;
+    box-shadow: var(--card-shadow);
+    transition: transform 450ms cubic-bezier(.2,.9,.3,1), box-shadow 350ms;
+    transform-origin:center;
+    border:1px solid rgba(255,255,255,0.5);
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  .tile:hover{
+    transform: translateY(-8px) rotate(2deg) scale(1.01);
+    box-shadow: 0 18px 40px rgba(17,24,39,0.08);
+  }
+
+  .tile .icon{
+    width:56px;height:56px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;font-weight:700;color:#fff;
+    flex:0 0 56px;
+    box-shadow: 0 6px 18px rgba(17,24,39,0.06);
+  }
+  .tile .t-body{flex:1}
+  .tile h3{margin:0;font-size:16px}
+  .tile p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+  .i-pink{background: linear-gradient(135deg,#ffccd6,#ffb5d0);}
+  .i-mint{background: linear-gradient(135deg,#bff3e0,#bfe9ff);}
+  .i-amber{background: linear-gradient(135deg,#fff2c2,#ffe5a9);}
+  .i-lav{background: linear-gradient(135deg,#e9d7ff,#ffdfff);}
+
+  /* projects list */
+  .projects{
+    margin-top:24px;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap:14px;
+  }
+
+  .project{
+    padding:14px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.75));
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    transition: transform 350ms ease, box-shadow 350ms ease;
+    border:1px solid rgba(255,255,255,0.55);
+  }
+
+  .project:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:0 18px 40px rgba(17,24,39,0.06)}
+  .project .p-top{display:flex;justify-content:space-between;align-items:center}
+  .p-tag{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,0.04);color:#333}
+  .p-title{font-weight:700}
+  .p-desc{font-size:13px;color:var(--muted);margin-top:6px}
+
+  /* footer */
+  footer{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    justify-content:center;
+    padding:18px 22px;
+    margin-top:28px;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .footer-link{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    color:inherit;
+    text-decoration:none;
+    transition: transform 220ms ease;
+  }
+  .footer-link:hover{transform:translateY(-4px)}
+  .gh{
+    width:18px;height:18px;display:inline-block;vertical-align:middle;
+  }
+
+  /* small screens */
+  @media (max-width:720px){
+    .row{flex-direction:column}
+    .tiles{grid-template-columns:1fr 1fr}
+    .container{padding:28px 18px}
+    h1{font-size:32px}
+  }
+
+  /* subtle focus */
+  a:focus{outline:3px solid rgba(100,116,255,0.16);outline-offset:3px;border-radius:8px}
+</style>
+</head>
+<body>
+  <div class="container" aria-label="amirabolfazle portfolio">
+
+    <!-- decorative shapes -->
+    <div class="shape s1" aria-hidden="true"></div>
+    <div class="shape s2" aria-hidden="true"></div>
+    <div class="shape s3" aria-hidden="true"></div>
+
+    <main class="card" role="main">
+      <div class="row">
+        <section class="intro" aria-labelledby="name">
+          <h1 id="name">
+            amirabolfazle
+            <span class="title-badge">Portfolio</span>
+          </h1>
+          <p class="subtitle">A playful pastel portfolio with calming motion and subtle rotations. Design, code, and small experiments in one single file.</p>
+
+          <div class="rotator" aria-hidden="false">Creative • Curious • Calm</div>
+
+          <div style="margin-top:18px;color:var(--muted);font-size:13px;">
+            Created on: <strong>2025-09-28 20:52:59</strong>
+          </div>
+
+          <div style="margin-top:20px;display:flex;gap:10px;">
+            <a href="#projects" style="text-decoration:none;">
+              <button style="border:0;padding:10px 14px;border-radius:10px;background:#fff;color:#111;box-shadow:0 8px 20px rgba(17,24,39,0.06);cursor:pointer;">
+                View projects
+              </button>
+            </a>
+            <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+              <button style="border:0;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,#fff7f9,#f6ffff);color:#111;box-shadow:0 8px 20px rgba(17,24,39,0.06);cursor:pointer;">
+                Source
+              </button>
+            </a>
+          </div>
+
+        </section>
+
+        <aside class="tiles" aria-label="Highlights">
+          <div class="tile">
+            <div class="icon i-pink">UI</div>
+            <div class="t-body">
+              <h3>Interface Experiments</h3>
+              <p>Micro-interactions, pastel themes, and playful layouts with accessibility in mind.</p>
+            </div>
+          </div>
+
+          <div class="tile">
+            <div class="icon i-mint">Code</div>
+            <div class="t-body">
+              <h3>Front-end</h3>
+              <p>Single-file demos, components, and animations using modern CSS and minimal JS.</p>
+            </div>
+          </div>
+
+          <div class="tile">
+            <div class="icon i-amber">API</div>
+            <div class="t-body">
+              <h3>Integrations</h3>
+              <p>Small serverless ideas, automations, and prototype integrations for workflows.</p>
+            </div>
+          </div>
+
+          <div class="tile">
+            <div class="icon i-lav">Art</div>
+            <div class="t-body">
+              <h3>Generative Art</h3>
+              <p>Colorful experiments with noise, shapes, and looping motion.</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section id="projects" style="margin-top:28px;">
+        <h2 style="margin:0 0 12px 0;font-size:18px;">Selected projects</h2>
+        <div class="projects" role="list">
+          <article class="project" role="listitem">
+            <div class="p-top">
+              <div class="p-tag">Single-file</div>
+              <div style="font-size:12px;color:var(--muted);">CSS • JS</div>
+            </div>
+            <div class="p-title">Animated Portfolio</div>
+            <div class="p-desc">This single-file portfolio demonstrates pastel theming, rotating shapes and subtle hover physics.</div>
+          </article>
+
+          <article class="project" role="listitem">
+            <div class="p-top">
+              <div class="p-tag">Demo</div>
+              <div style="font-size:12px;color:var(--muted);">UX • Motion</div>
+            </div>
+            <div class="p-title">Micro-Interactions</div>
+            <div class="p-desc">Reusable micro-interaction patterns for buttons, cards and toggles with graceful fallbacks.</div>
+          </article>
+
+          <article class="project" role="listitem">
+            <div class="p-top">
+              <div class="p-tag">Prototype</div>
+              <div style="font-size:12px;color:var(--muted);">Art • Code</div>
+            </div>
+            <div class="p-title">Generative Blobs</div>
+            <div class="p-desc">Playful blob shapes animated by CSS keyframes and subtle rotations for a calming effect.</div>
+          </article>
+
+          <article class="project" role="listitem">
+            <div class="p-top">
+              <div class="p-tag">Open</div>
+              <div style="font-size:12px;color:var(--muted);">GitHub</div>
+            </div>
+            <div class="p-title">autogen-code</div>
+            <div class="p-desc">Source and experiments live on GitHub — small, curated repos for sharing ideas and toys.</div>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg class="gh" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 018 4.6c.68.003 1.36.092 2 .27 1.52-1.04 2.19-.82 2.19-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </main>
+  </div>
+
+<script>
+  // subtle interactive rotation of the main card based on pointer (parallax)
+  (function(){
+    const card = document.querySelector('.card');
+    let rect = card.getBoundingClientRect();
+    function updateRect(){ rect = card.getBoundingClientRect(); }
+    window.addEventListener('resize', updateRect);
+
+    function onMove(e){
+      const x = ((e.clientX - rect.left) / rect.width) - 0.5;
+      const y = ((e.clientY - rect.top) / rect.height) - 0.5;
+      const rx = (y * 6).toFixed(2);
+      const ry = (x * -8).toFixed(2);
+      const tz = 1 + Math.hypot(x,y) * 0.02;
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${tz})`;
+    }
+    function onLeave(){
+      card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)';
+    }
+    card.addEventListener('mousemove', onMove);
+    card.addEventListener('mouseleave', onLeave);
+    card.addEventListener('touchmove', function(e){
+      if(e.touches && e.touches[0]) onMove(e.touches[0]);
+    }, {passive:true});
+    card.addEventListener('touchend', onLeave);
+
+    // tiny rotation shift on load for personality
+    card.animate([
+      { transform: 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)' },
+      { transform: 'perspective(900px) rotateX(2deg) rotateY(-2deg) scale(1.01)' },
+      { transform: 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)' }
+    ], { duration: 2200, easing: 'ease-out' });
+  })();
+</script>
+</body>
+</html>
