@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#00101a;
+      --bg2:#050017;
+      --neon-cyan:#00f0ff;
+      --neon-pink:#ff1fb3;
+      --neon-lime:#7dff6b;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --accent: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+      --shadow-strong: 0 0 18px rgba(0,240,255,0.12), 0 0 36px rgba(255,31,179,0.06);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background:
+        radial-gradient(1200px 600px at 10% 20%, rgba(0,240,255,0.04), transparent 8%),
+        radial-gradient(900px 500px at 90% 80%, rgba(255,31,179,0.03), transparent 12%),
+        linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#e9f8ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      box-sizing:border-box;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+      align-items:center;
+      padding:28px;
+      box-sizing:border-box;
+    }
+
+    header.hero{
+      width:100%;
+      display:flex;
+      gap:20px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
+    .logo{
+      width:84px;
+      height:84px;
+      border-radius:16px;
+      background: conic-gradient(from 220deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display:grid;
+      place-items:center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5), var(--shadow-strong);
+      backdrop-filter: blur(6px);
+      transform-origin:center;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float{
+      0%{ transform: translateY(0) rotate(0deg) scale(1); }
+      50%{ transform: translateY(-8px) rotate(2deg) scale(1.02); }
+      100%{ transform: translateY(0) rotate(0deg) scale(1); }
+    }
+
+    .logo svg{
+      width:64px;
+      height:64px;
+      filter: drop-shadow(0 6px 18px rgba(0,240,255,0.08));
+      mix-blend-mode:screen;
+    }
+
+    h1.title{
+      margin:0;
+      font-size:clamp(26px,6vw,48px);
+      letter-spacing:1px;
+      line-height:1;
+      font-weight:800;
+      color:var(--neon-cyan);
+      text-transform:none;
+      text-shadow:
+        0 0 6px rgba(0,240,255,0.22),
+        0 0 18px rgba(0,240,255,0.14),
+        0 6px 30px rgba(0,0,0,0.6);
+      background:
+        linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      transform-origin:center;
+      animation: zoomIn .9s cubic-bezier(.22,.9,.34,1) both;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    @keyframes zoomIn {
+      0%{ transform: scale(.85); opacity:0; filter: blur(6px); }
+      60%{ transform: scale(1.04); opacity:1; filter: blur(0); }
+      100%{ transform: scale(1); opacity:1; }
+    }
+
+    .meta{
+      text-align:right;
+      font-size:13px;
+      color:rgba(233,248,255,0.8);
+      opacity:0.9;
+    }
+
+    .created-time{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      color: #bfefff;
+      letter-spacing:0.6px;
+    }
+
+    main{
+      width:100%;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:20px;
+      align-items:stretch;
+    }
+
+    .panel{
+      grid-column: span 12;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:20px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      overflow:hidden;
+      position:relative;
+      min-height:120px;
+    }
+
+    .panel::after{
+      content:'';
+      position:absolute;
+      inset: -40% -20% auto -20%;
+      height:180%;
+      background: radial-gradient(600px 200px at 10% 30%, rgba(0,240,255,0.06), transparent 10%),
+                  radial-gradient(500px 200px at 90% 70%, rgba(255,31,179,0.04), transparent 10%);
+      opacity:0.8;
+      transform:rotate(-8deg);
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+
+    .panel .info{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      z-index:2;
+    }
+
+    .avatar{
+      width:84px;
+      height:84px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      transition: transform .5s cubic-bezier(.2,.9,.2,1);
+    }
+
+    .panel:hover .avatar{ transform: scale(1.06) translateY(-6px); }
+
+    .avatar svg{ width:56px; height:56px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)); }
+
+    .panel .desc{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      color:rgba(233,248,255,0.95);
+    }
+
+    .desc .lead{
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:0.2px;
+      color:linear-gradient(var(--neon-pink),var(--neon-cyan));
+    }
+
+    .desc .sub{
+      font-size:13px;
+      color:rgba(233,248,255,0.7);
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      z-index:2;
+    }
+
+    .btn{
+      padding:10px 16px;
+      border-radius:10px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--neon-cyan);
+      font-weight:700;
+      letter-spacing:0.6px;
+      cursor:pointer;
+      transition: all .28s cubic-bezier(.2,.9,.2,1);
+      box-shadow: var(--shadow-strong);
+      backdrop-filter: blur(6px);
+    }
+
+    .btn.ghost{
+      color:var(--neon-pink);
+      border-color: rgba(255,31,179,0.12);
+    }
+
+    .btn:hover{
+      transform:translateY(-6px) scale(1.02);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 40px rgba(0,240,255,0.06);
+    }
+
+    .cards{
+      width:100%;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:18px;
+    }
+
+    .card{
+      grid-column: span 4;
+      min-height:160px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: transform .5s cubic-bezier(.22,.9,.34,1), box-shadow .3s ease;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .card:hover{
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 40px 90px rgba(0,0,0,0.6), 0 0 40px rgba(255,31,179,0.06);
+    }
+
+    .card h3{
+      margin:0;
+      font-size:16px;
+      color:var(--neon-pink);
+      text-shadow: 0 0 8px rgba(255,31,179,0.12);
+    }
+
+    .card p{
+      margin:0;
+      font-size:13px;
+      color:rgba(233,248,255,0.78);
+      line-height:1.4;
+    }
+
+    .glow-ring{
+      position:absolute;
+      width:260%;
+      height:260%;
+      left:-80%;
+      top:-100%;
+      filter: blur(60px);
+      opacity:0.07;
+      background: radial-gradient(circle at 20% 30%, var(--neon-cyan), transparent 12%),
+                  radial-gradient(circle at 80% 70%, var(--neon-pink), transparent 12%);
+      mix-blend-mode:screen;
+      transform: rotate(-12deg);
+      pointer-events:none;
+    }
+
+    footer{
+      width:100%;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      margin-top:8px;
+      border-radius:12px;
+      color:rgba(233,248,255,0.85);
+      font-size:13px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.007));
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      position:relative;
+      z-index:3;
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:inherit;
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:8px;
+      transition: transform .18s ease, box-shadow .18s ease;
+      border:1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    }
+
+    .github-link:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(0,240,255,0.06);
+    }
+
+    .gh-icon{
+      width:22px;
+      height:22px;
+      display:inline-block;
+      color:var(--neon-cyan);
+      filter: drop-shadow(0 6px 16px rgba(0,240,255,0.06));
+    }
+
+    .footer-text{
+      opacity:0.95;
+      font-weight:700;
+      letter-spacing:0.3px;
+      color:linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .cards .card{ grid-column: span 6; }
+      .panel{ min-height:140px; }
+      .brand{ gap:12px; }
+    }
+
+    @media (max-width:600px){
+      header.hero{ align-items:flex-start; gap:12px; }
+      .meta{ text-align:left; width:100%; }
+      .cards .card{ grid-column: span 12; }
+      .logo{ width:64px; height:64px; }
+      .avatar{ width:68px;height:68px;}
+      .wrap{ padding:16px; }
+    }
+
+    /* small accent pulse */
+    .pulse {
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(0,240,255,0.06), rgba(255,31,179,0.04));
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(0,240,255,0.03);
+      animation: pulse 3.6s ease-in-out infinite;
+      font-weight:700;
+      color:var(--neon-lime);
+      font-size:13px;
+    }
+
+    @keyframes pulse{
+      0%{ transform: scale(1); opacity:0.98; }
+      50%{ transform: scale(1.06); opacity:1; }
+      100%{ transform: scale(1); opacity:0.98; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <header class="hero" aria-label="Hero">
+      <div class="brand" title="amirabolfazle">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="logo">
+            <defs>
+              <linearGradient id="g1" x1="1" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#00f0ff"/>
+                <stop offset="1" stop-color="#ff1fb3"/>
+              </linearGradient>
+            </defs>
+            <rect x="4" y="4" width="56" height="56" rx="12" fill="url(#g1)" opacity="0.12"/>
+            <g transform="translate(8 8)" fill="none" stroke="#fff" stroke-width="1.6" opacity="0.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 6c6-4 18-4 22 0 2 2 2 6 0 8-6 6-18 6-24 0-2-2-2-6 0-8z" stroke="url(#g1)"/>
+              <circle cx="20" cy="20" r="6" stroke="url(#g1)" opacity="0.8"/>
+            </g>
+          </svg>
+        </div>
+        <h1 class="title">amirabolfazle <span class="pulse" aria-hidden="true">neon</span></h1>
+      </div>
+
+      <div class="meta" aria-hidden="false">
+        <div class="created-time">Creation time: 2025-09-28 19:27:34</div>
+        <div style="height:6px"></div>
+        <div style="font-size:12px;opacity:0.8">Responsive • Animated • Neon • Zoom</div>
+      </div>
+    </header>
+
+    <main aria-label="Content">
+      <section class="panel" aria-labelledby="panel-title">
+        <div class="info">
+          <div class="avatar" aria-hidden="true">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+              <defs>
+                <linearGradient id="lg2" x1="0" x2="1">
+                  <stop offset="0" stop-color="#00f0ff"/>
+                  <stop offset="1" stop-color="#ff1fb3"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="64" height="64" rx="10" fill="url(#lg2)" opacity="0.08"/>
+              <g transform="translate(8 8)" stroke="url(#lg2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M24 30c-6 0-10-4-10-8s4-8 10-8 10 4 10 8-4 8-10 8z" fill="rgba(255,255,255,0.02)"/>
+                <path d="M24 28c-7.2 0-14 3.6-14 7v3h28v-3c0-3.4-6.8-7-14-7z" fill="rgba(255,255,255,0.015)"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="desc">
+            <div class="lead">Neon interactive canvas</div>
+            <div class="sub">Smooth glows, floating logo, and gentle zoom animations tuned for all screens.</div>
+          </div>
+        </div>
+
+        <div class="actions" aria-hidden="true">
+          <button class="btn">Explore</button>
+          <button class="btn ghost">Customize</button>
+        </div>
+
+        <div class="glow-ring" aria-hidden="true"></div>
+      </section>
+
+      <div class="cards" aria-label="Feature cards">
+        <article class="card" aria-labelledby="c1">
+          <h3 id="c1">Fluid Zoom</h3>
+          <p>Headings animate with a soft zoom on load and cards lift on hover to create depth.</p>
+        </article>
+
+        <article class="card" aria-labelledby="c2">
+          <h3 id="c2">Neon Glow</h3>
+          <p>Multi-colored neon glows combine cyan and pink highlights with subtle shadowing for contrast.</p>
+        </article>
+
+        <article class="card" aria-labelledby="c3">
+          <h3 id="c3">Responsive</h3>
+          <p>Grid-based layout adapts across phones, tablets and desktop without external libraries.</p>
+        </article>
+      </div>
+    </main>
+
+    <footer role="contentinfo" aria-label="Footer">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <span class="gh-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.57.11.78-.25.78-.55 0-.27-.01-1-.02-1.96-3.2.7-3.88-1.38-3.88-1.38-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.74 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.45.11-3.02 0 0 .97-.31 3.17 1.18.92-.26 1.9-.4 2.87-.4.97 0 1.95.14 2.87.4 2.2-1.49 3.17-1.18 3.17-1.18.62 1.57.23 2.73.11 3.02.73.81 1.18 1.84 1.18 3.1 0 4.43-2.71 5.4-5.29 5.68.41.36.77 1.08.77 2.18 0 1.58-.01 2.85-.01 3.24 0 .3.21.66.79.55C20.71 21.39 24 17.08 24 12c0-6.35-5.15-11.5-12-11.5z" fill="#00f0ff"/>
+          </svg>
+        </span>
+        <span class="footer-text">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
