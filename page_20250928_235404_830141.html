@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#05030a;
+    --neon1:#00f0ff;
+    --neon2:#ff2dff;
+    --accent:#7ef0a3;
+    --glass: rgba(255,255,255,0.03);
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,255,0.04), transparent 8%),
+                radial-gradient(900px 500px at 90% 80%, rgba(255,45,255,0.03), transparent 10%),
+                var(--bg);
+    color:#e9f8ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* background animated blobs */
+  .nebula {
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    mix-blend-mode:screen;
+    opacity:0.9;
+  }
+  .blob {
+    position:absolute;
+    filter: blur(60px) saturate(140%);
+    transform-origin:center;
+    will-change:transform,opacity;
+    animation: drift 12s ease-in-out infinite;
+    opacity:0.9;
+  }
+  .blob.b1{ width:520px;height:520px;background:linear-gradient(135deg,var(--neon1),rgba(0,240,255,0.06)); left:-10%; top:10%; animation-duration:14s;}
+  .blob.b2{ width:420px;height:420px;background:linear-gradient(135deg,var(--neon2), rgba(255,45,255,0.06)); right:-5%; bottom:-5%; animation-duration:18s;}
+  .blob.b3{ width:340px;height:340px;background:linear-gradient(135deg,var(--accent), rgba(126,240,163,0.04)); left:40%; top:50%; animation-duration:16s; }
+
+  @keyframes drift{
+    0%{ transform: translateY(0) translateX(0) scale(1); opacity:0.9;}
+    50%{ transform: translateY(-30px) translateX(20px) scale(1.05); opacity:1;}
+    100%{ transform: translateY(0) translateX(0) scale(1); opacity:0.9;}
+  }
+
+  .wrap{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px;
+    box-sizing:border-box;
+    text-align:center;
+  }
+
+  .card{
+    width:100%;
+    max-width:980px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:18px;
+    padding:48px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.65), 0 0 60px rgba(0,0,0,0.5) inset;
+    backdrop-filter: blur(8px) saturate(120%);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .title{
+    font-weight:800;
+    font-size:56px;
+    letter-spacing:0.04em;
+    margin:6px 0 12px;
+    color:var(--neon1);
+    text-shadow:
+      0 0 6px rgba(0,240,255,0.35),
+      0 0 18px rgba(0,240,255,0.12),
+      0 8px 24px rgba(0,0,0,0.6);
+    display:inline-block;
+    padding:6px 18px;
+    border-radius:12px;
+    animation: neonPulse 2.8s ease-in-out infinite;
+    transform-origin:center;
+  }
+
+  @keyframes neonPulse{
+    0%{ text-shadow: 0 0 6px rgba(0,240,255,0.15), 0 0 18px rgba(0,240,255,0.06), 0 12px 28px rgba(0,0,0,0.6); transform:translateY(0);}
+    45%{ text-shadow: 0 0 14px rgba(0,240,255,0.45), 0 0 36px rgba(0,240,255,0.18), 0 20px 40px rgba(0,0,0,0.6); transform:translateY(-6px) scale(1.01);}
+    100%{ text-shadow: 0 0 6px rgba(0,240,255,0.15), 0 0 18px rgba(0,240,255,0.06), 0 12px 28px rgba(0,0,0,0.6); transform:translateY(0);}
+  }
+
+  .subtitle{
+    font-size:18px;
+    color:rgba(233,248,255,0.9);
+    margin:0 0 22px;
+    opacity:0.95;
+  }
+
+  .neon-strip{
+    display:inline-flex;
+    gap:12px;
+    align-items:center;
+    justify-content:center;
+    margin:20px 0 28px;
+    flex-wrap:wrap;
+  }
+
+  .tag{
+    padding:10px 16px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    color:rgba(255,255,255,0.9);
+    font-weight:600;
+    letter-spacing:0.02em;
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    transform-origin:center;
+  }
+  .tag.neon{
+    color:var(--neon2);
+    text-shadow: 0 0 10px rgba(255,45,255,0.12);
+  }
+
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    background: linear-gradient(90deg, rgba(0,240,255,0.12), rgba(255,45,255,0.06));
+    border: 1px solid rgba(255,255,255,0.06);
+    padding:16px 26px;
+    border-radius:12px;
+    color:#03010a;
+    font-weight:800;
+    font-size:18px;
+    cursor:pointer;
+    box-shadow:
+      0 6px 20px rgba(0,0,0,0.6),
+      0 0 40px rgba(0,240,255,0.08);
+    transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms;
+    transform-origin:center;
+    animation: bounce 3s infinite;
+    text-decoration:none;
+  }
+
+  .cta:hover{
+    transform:translateY(-8px);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.6),
+      0 0 80px rgba(0,240,255,0.12);
+  }
+
+  @keyframes bounce{
+    0%{ transform: translateY(0) scale(1); }
+    20%{ transform: translateY(-6px) scale(1.02); }
+    50%{ transform: translateY(0) scale(1); }
+    80%{ transform: translateY(-2px) scale(1.01); }
+    100%{ transform: translateY(0) scale(1); }
+  }
+
+  .meta{
+    margin-top:18px;
+    color:rgba(233,248,255,0.72);
+    font-size:14px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .time{
+    padding:8px 12px;
+    border-radius:10px;
+    background:linear-gradient(90deg, rgba(0,0,0,0.28), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    font-weight:700;
+    color:rgba(233,248,255,0.92);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  /* subtle marquee neon lines */
+  .neon-lines{
+    position:absolute;
+    left:0;right:0;
+    top:12%;
+    height:2px;
+    opacity:0.22;
+    background:linear-gradient(90deg, transparent, var(--neon1), transparent);
+    filter:blur(8px);
+    z-index:1;
+  }
+  .neon-lines.two{ top:80%; background:linear-gradient(90deg, transparent, var(--neon2), transparent); opacity:0.18; }
+
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    z-index:3;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 14px;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+    font-size:14px;
+    color:rgba(233,248,255,0.9);
+    text-decoration:none;
+  }
+
+  .gh {
+    width:18px;height:18px; display:inline-block; vertical-align:middle;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+  }
+  .gh svg { width:100%;height:100%; display:block; fill:var(--neon1); transition: fill 160ms; }
+  footer a:hover svg { fill:var(--neon2); }
+
+  /* responsive */
+  @media (max-width:640px){
+    .title{ font-size:36px; padding:8px 14px; }
+    .card{ padding:28px; border-radius:14px; }
+    .cta{ width:100%; justify-content:center; padding:14px; font-size:16px; }
+    footer{ font-size:13px; padding:8px 12px; bottom:12px; }
+  }
+</style>
+</head>
+<body>
+  <div class="nebula" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <div class="neon-lines" aria-hidden="true"></div>
+  <div class="neon-lines two" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="main-title">
+      <h1 id="main-title" class="title">amirabolfazle</h1>
+
+      <p class="subtitle">neon vibes • kinetic micro-interactions • bold presence</p>
+
+      <div class="neon-strip" role="list">
+        <div class="tag">Creative</div>
+        <div class="tag neon">Futuristic</div>
+        <div class="tag">Interactive</div>
+        <div class="tag">Lightweight</div>
+      </div>
+
+      <a class="cta" href="#explore" role="button" aria-label="Explore more">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="#020617" d="M12 2L15 9H9L12 2Z"/><path fill="#020617" d="M3 22H21L12 11L3 22Z"/></svg>
+        Dive In
+      </a>
+
+      <div class="meta" aria-hidden="false">
+        <div class="time" title="creation time">Creation time: 2025-09-28 23:53:26</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="repo" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <span class="gh" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <path d="M12 .5C5.65.5.5 5.66.5 12.02c0 5.09 3.29 9.4 7.86 10.93.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.35-1.3-1.71-1.3-1.71-1.06-.72.08-.71.08-.71 1.18.08 1.8 1.21 1.8 1.21 1.04 1.78 2.72 1.27 3.39.97.11-.76.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.73 0-1.27.45-2.31 1.19-3.12-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.17 1.19a11.02 11.02 0 0 1 2.89-.39c.98 0 1.97.13 2.9.39 2.19-1.5 3.16-1.19 3.16-1.19.63 1.59.24 2.77.12 3.06.74.81 1.19 1.85 1.19 3.12 0 4.46-2.71 5.44-5.29 5.72.42.37.8 1.1.8 2.22 0 1.6-.02 2.89-.02 3.29 0 .31.21.68.8.56A11.54 11.54 0 0 0 23.5 12.02C23.5 5.66 18.35.5 12 .5z"/>
+        </svg>
+      </span>
+    </a>
+    <div>Created by amirabolfazle</div>
+  </footer>
+
+  <script>
+    // Tiny interaction: pulse the CTA on focus for accessibility and bounce on entry
+    (function(){
+      const cta = document.querySelector('.cta');
+      cta.addEventListener('focus', ()=> cta.style.boxShadow = '0 20px 60px rgba(0,240,255,0.12)');
+      cta.addEventListener('blur', ()=> cta.style.boxShadow = '');
+      // Subtle entrance animation
+      document.querySelector('.card').animate([
+        { transform: 'translateY(18px)', opacity: 0 },
+        { transform: 'translateY(0px)', opacity: 1 }
+      ], { duration: 650, easing: 'cubic-bezier(.2,.9,.2,1)', fill: 'forwards' });
+    })();
+  </script>
+</body>
+</html>
