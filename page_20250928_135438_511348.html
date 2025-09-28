@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root { --bg: #040b16; --neon: #00e5ff; --accent: #ff00e6; --card: rgba(255,255,255,0.08); --glow: 0 0 18px rgba(0,229,255,.8), 0 0 40px rgba(0,0,0,.4); }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #e8f2ff;
+      background: radial-gradient(circle at 20% 10%, rgba(0,180,255,.15), transparent 40%), 
+                  radial-gradient(circle at 80% 0%, rgba(255,0,200,.15), transparent 40%), 
+                  linear-gradient(135deg, #020b16 0%, #081c2a 60%, #04131b 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+    /* animated gradient overlay */
+    .bg-neon {
+      position: fixed;
+      inset: 0;
+      background: conic-gradient(from 180deg at 50% 50%, #00e5ff, #00ffcc, #ff00e6, #00e5ff);
+      filter: hue-rotate(-20deg) saturate(120%);
+      opacity: 0.15;
+      z-index: 0;
+      animation: spin 20s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    header {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      backdrop-filter: saturate(1.2) blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(3,7,20,.6);
+    }
+
+    .brand {
+      font-weight: 800; letter-spacing: .4px;
+      font-size: clamp(1.4rem, 4vw, 2.5rem);
+      background: linear-gradient(90deg, #a6ffea, #6d7cff, #ff6bd6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 16px rgba(0, 0, 0, 0.0);
+    }
+
+    nav a {
+      color: #d7f7ff;
+      text-decoration: none;
+      margin: 0 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: transform .3s ease;
+    }
+    nav a:hover { transform: translateY(-2px); color: #fff; text-shadow: 0 0 8px rgba(0,230,255,.9); }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .card {
+      background: rgba(8,12,28,.7);
+      border: 1px solid rgba(140,180,255,.25);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,.25), 0 8px 24px rgba(0,0,0,.15);
+      position: relative;
+      overflow: hidden;
+      color: #eaf6ff;
+      transition: transform .4s ease;
+    }
+
+    .card:hover { transform: translateY(-3px); }
+
+    .neon-title {
+      font-family: "Trebuchet MS", Impact, fantasy;
+      font-size: clamp(1.6rem, 6vw, 3rem);
+      line-height: 1.05;
+      margin: 0 0 8px;
+      color: transparent;
+      background: linear-gradient(90deg, #00f5ff, #8a5fff, #ff2bd1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow: 0 0 12px rgba(0, 230, 255, .8);
+    }
+    .neon-sub {
+      font-size: 1rem;
+      color: #b8dfff;
+      opacity: .95;
+    }
+
+    /* slide-up animation on elements with class 'slide-up' */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .slide-up.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .creation-time {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(0, 170, 255, .6);
+      color: #c8f6ff;
+      font-size: .95rem;
+      box-shadow: 0 0 18px rgba(0,170,255,.6);
+      margin-left: auto;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .container { grid-template-columns: 1fr 1fr; align-items: start; }
+      .row { grid-template-columns: 1fr 1fr; }
+      .card { min-height: 180px; }
+      .creation-time { margin-left: 0; }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #b8dfff;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(2,6,18,.8);
+      position: relative;
+    }
+
+    .github {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #dbeeff; text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(170, 210, 255, .6);
+      background: rgba(0,0,0,.25);
+      box-shadow: 0 0 12px rgba(0,170,255,.5);
+      transition: transform .2s ease;
+    }
+    .github:hover { transform: translateY(-2px); }
+
+    /* little decorative neon lines */
+    .decor {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+      opacity: .6;
+      margin: 12px 0 16px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg-neon" aria-hidden="true"></div>
+
+  <header>
+    <div class="brand" aria-label="Site title">amirabolfazle</div>
+    <nav aria-label="Main">
+      <a href="#intro">Intro</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="intro" class="container">
+    <div class="card slide-up">
+      <h1 class="neon-title" style="margin:0 0 6px;">amirabolfazle</h1>
+      <p class="neon-sub" style="margin:0;">
+        A neon-inspired, responsive showcase. Smooth slide-up transitions and glowing accents.
+      </p>
+      <div class="decor" aria-hidden="true"></div>
+      <div style="display:flex; gap:12px; align-items:center; margin-top:8px;">
+        <span class="creation-time" title="Creation time">Creation time: 2025-09-28 13:54:02</span>
+      </div>
+    </div>
+
+    <div class="card slide-up" id="about">
+      <div class="row">
+        <div class="slide-content" style="padding:0;">
+          <h2 class="neon-title" style="font-size:1.4rem; margin:0 0 6px; -webkit-text-stroke:1px rgba(0,170,255,.5);">About</h2>
+          <p class="neon-sub" style="margin:0;">
+            A compact, neon-themed page with slide-up entries. Built to be responsive across devices.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="container" aria-label="Projects" style="margin-top:0;">
+    <div class="card slide-up" id="p1" style="grid-column:1 / -1;">
+      <h3 class="neon-title" style="font-size:1.25rem; margin:0 0 8px;">Neon Cards</h3>
+      <p class="neon-sub" style="margin:0;">
+        Animated cards with slide-up effects and glowing borders.
+      </p>
+    </div>
+
+    <div class="card slide-up" id="p2">
+      <h3 class="neon-title" style="font-size:1.25rem; margin:0 0 8px;">Gradient Flow</h3>
+      <p class="neon-sub" style="margin:0;">
+        A flowing gradient background with subtle parallax cues.
+      </p>
+    </div>
+
+    <div class="card slide-up" id="p3">
+      <h3 class="neon-title" style="font-size:1.25rem; margin:0 0 8px;">Timed Animations</h3>
+      <p class="neon-sub" style="margin:0;">
+        Elements reveal themselves as you scroll, with smooth slide-in motion.
+      </p>
+    </div>
+  </section>
+
+  <section id="contact" class="container" aria-label="Contact" style="margin-top:0;">
+    <div class="card slide-up" id="c1" style="grid-column:1 / -1;">
+      <h2 class="neon-title" style="font-size:1.4rem; margin:0 0 6px;">Get in touch</h2>
+      <p class="neon-sub" style="margin:0;">
+        This is a mock contact area for demonstration. No backend connected.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub Icon SVG -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub icon" role="img" style="display:inline-block; vertical-align:middle;">
+        <path d="M12 .5A12 12 0 0 0 0 12.75a12.0 12.0 0 0 0 8.208 11.41c.6.111.82-.261.82-.58 0-.287-.01-1.046-.015-2.052-3.352.729-4.047-1.442-4.047-1.442-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.205.086 1.84 1.238 1.84 1.238 1.07 1.83 2.81 1.302 3.495.995.108-.775.419-1.302.761-1.602-2.666-.303-5.467-1.333-5.467-5.93 0-1.309.469-2.381 1.236-3.222-.124-.303-.536-1.525.117-3.177 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.403c1.02.005 2.047.137 3.003.403 2.29-1.552 3.296-1.23 3.296-1.23.654 1.652.242 2.874.118 3.177.77.841 1.235 1.913 1.235 3.222 0 4.609-2.806 5.624-5.479 5.921.431.371.815 1.102.815 2.222 0 1.603-.014 2.895-.014 3.289 0 .321.218.696.825.578A12 12 0 0 0 24 12.75 12 12 0 0 0 12 .5z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+    <span style="margin-left: 12px;">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // IntersectionObserver to handle slide-up elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const options = { threshold: 0.15 };
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            obs.unobserve(e.target);
+          }
+        });
+      }, options);
+
+      document.querySelectorAll('.slide-up').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
