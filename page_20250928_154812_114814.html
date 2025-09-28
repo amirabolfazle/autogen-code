@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent: linear-gradient(135deg, rgba(111,66,255,0.9), rgba(0,222,255,0.9));
+      --muted: rgba(255,255,255,0.6);
+      --card-border: rgba(255,255,255,0.12);
+      --radius: 16px;
+      --max-width: 1100px;
+      --gap: 24px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100%;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(111,66,255,0.12), transparent 6%),
+                  radial-gradient(1000px 500px at 90% 80%, rgba(0,222,255,0.08), transparent 8%),
+                  var(--bg1);
+      color:#e9eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:48px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:var(--gap);
+      align-items:start;
+      position:relative;
+    }
+
+    @media (max-width:900px){
+      .container{grid-template-columns:1fr; padding-bottom:40px}
+    }
+
+    /* Glass card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    header.hero{
+      grid-column:1 / -1;
+      display:flex;
+      gap:var(--gap);
+      align-items:center;
+    }
+
+    .title-block{
+      flex:1;
+      padding:28px;
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .title{
+      font-weight:800;
+      letter-spacing:-0.02em;
+      margin:0 0 8px 0;
+      font-size:clamp(28px,4vw,44px);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-weight:400;
+      font-size:14px;
+    }
+
+    .meta{
+      margin-top:14px;
+      color:rgba(255,255,255,0.55);
+      font-size:13px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* Accent strip */
+    .accent-strip{
+      position:absolute;
+      right:-80px;
+      top:-40px;
+      width:320px;
+      height:320px;
+      transform:rotate(25deg);
+      background:linear-gradient(180deg, rgba(111,66,255,0.18), rgba(0,222,255,0.12));
+      filter:blur(40px);
+      opacity:0.8;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+
+    /* Right column */
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:var(--gap);
+      position:sticky;
+      top:48px;
+      align-self:start;
+    }
+
+    @media (max-width:900px){
+      .side{position:static}
+    }
+
+    .profile{
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+
+    .avatar{
+      width:82px;
+      height:82px;
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:28px;
+      color:rgba(255,255,255,0.95);
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+      flex-shrink:0;
+    }
+
+    .profile-info h4{
+      margin:0;
+      font-size:16px;
+      font-weight:700;
+    }
+    .profile-info p{margin:2px 0 0 0; color:var(--muted); font-size:13px}
+
+    /* Content list */
+    .list{display:grid; gap:14px}
+    .list .mini{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .dot{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      background:var(--glass-2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.03);
+      font-weight:600;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* Main content cards */
+    main{
+      display:grid;
+      gap:var(--gap);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:18px;
+    }
+    @media (max-width:700px){ .grid{grid-template-columns:1fr} }
+
+    .panel{
+      padding:18px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .panel h3{margin:0 0 8px 0}
+    .panel p{margin:0; color:var(--muted); font-size:14px; line-height:1.5}
+
+    /* footer */
+    footer{
+      grid-column:1 / -1;
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      padding-top:8px;
+    }
+    .github{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      text-decoration:none;
+      border-radius:999px;
+      padding:8px 12px;
+      background:transparent;
+      transition:background .2s ease, transform .12s ease;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .github:hover{transform:translateY(-4px); background:rgba(255,255,255,0.02)}
+
+    /* Animations: slide-up */
+    .anim{opacity:0; transform:translateY(28px) scale(.995); transition: transform .6s cubic-bezier(.2,.9,.2,1), opacity .6s cubic-bezier(.2,.9,.2,1)}
+    .anim.in-view{opacity:1; transform:translateY(0) scale(1)}
+
+    /* stagger via data-delay */
+    .anim[data-delay="1"]{transition-delay:.06s}
+    .anim[data-delay="2"]{transition-delay:.12s}
+    .anim[data-delay="3"]{transition-delay:.18s}
+    .anim[data-delay="4"]{transition-delay:.24s}
+    .anim[data-delay="5"]{transition-delay:.30s}
+    .anim[data-delay="6"]{transition-delay:.36s}
+    .anim[data-delay="7"]{transition-delay:.42s}
+
+    /* Subtle floating lights */
+    .float-light{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(40px);
+      opacity:0.16;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .light-a{width:220px;height:220px;background:#6f42ff;left:5%;top:10%}
+    .light-b{width:160px;height:160px;background:#00deff;right:10%;bottom:0}
+
+    /* small utilities */
+    .muted{color:var(--muted)}
+    .spacer{height:8px}
+  </style>
+</head>
+<body>
+  <div class="float-light light-a"></div>
+  <div class="float-light light-b"></div>
+
+  <div class="container" role="main" aria-labelledby="main-title">
+    <header class="hero">
+      <div class="title-block card anim" data-delay="1">
+        <div class="accent-strip" aria-hidden="true"></div>
+        <h1 id="main-title" class="title">amirabolfazle
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-left:6px;">
+            <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#6F42FF"/><stop offset="1" stop-color="#00DEFF"/></linearGradient></defs>
+            <rect x="0" y="0" width="24" height="24" rx="6" fill="url(#g1)"></rect>
+            <path d="M7 12l3 3 7-7" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </h1>
+        <p class="subtitle">A minimal glassmorphism demo with smooth slide-up animations and responsive layout.</p>
+
+        <div class="meta">
+          <span class="badge">Theme: Glassmorphism</span>
+          <span class="badge">Effects: Slide-up, Floating lights</span>
+          <span class="muted">Created at: <strong style="margin-left:6px;color:#fff">2025-09-28 15:47:26</strong></span>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="card profile anim" data-delay="2">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div class="avatar">A</div>
+            <div class="profile-info">
+              <h4>amirabolfazle</h4>
+              <p>Designer · Developer · Builder</p>
+              <div class="spacer"></div>
+              <div style="display:flex;gap:8px;">
+                <a class="badge" href="#projects" style="text-decoration:none;color:var(--muted)">Projects</a>
+                <a class="badge" href="#about" style="text-decoration:none;color:var(--muted)">About</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card list anim" data-delay="3" aria-hidden="false">
+          <div class="mini">
+            <div class="dot">01</div>
+            <div>
+              <div style="font-weight:700">Responsive</div>
+              <div class="muted" style="font-size:13px">Adapts to phones, tablets and desktop</div>
+            </div>
+          </div>
+
+          <div class="mini">
+            <div class="dot">02</div>
+            <div>
+              <div style="font-weight:700">Animated</div>
+              <div class="muted" style="font-size:13px">Slide-up reveal powered by IntersectionObserver</div>
+            </div>
+          </div>
+
+          <div class="mini">
+            <div class="dot">03</div>
+            <div>
+              <div style="font-weight:700">Modern UI</div>
+              <div class="muted" style="font-size:13px">Soft glass, blur, and subtle highlights</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <main>
+      <section class="grid">
+        <div class="panel card anim" data-delay="4" id="projects">
+          <h3>Featured Project</h3>
+          <p>Autogenerated UI kit demonstrating glassmorphism principles, layered glows, and motion-rich interactions. Built to be clean, accessible and easy to adapt.</p>
+        </div>
+
+        <div class="panel card anim" data-delay="5" id="about">
+          <h3>About</h3>
+          <p>Crafted with attention to typography, spacing and micro-interactions. This page showcases a simple pattern for presenting personal work with personality.</p>
+        </div>
+      </section>
+
+      <section style="margin-top:14px" class="card anim" data-delay="6">
+        <h3 style="margin-top:0">Details</h3>
+        <p class="muted">This layout uses modern CSS: grid for structure, backdrop-filter for the glass effect, and an intersection observer to trigger smooth slide-up transitions as elements enter view. Resize the window or view on mobile to see the responsive behavior.</p>
+      </section>
+
+      <footer class="anim" data-delay="7">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View repository on GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 .5C5.65.5.5 5.66.5 12.02c0 5.08 3.29 9.38 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1-.01-1.95-3.2.7-3.88-1.55-3.88-1.55-.53-1.35-1.3-1.71-1.3-1.71-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.39.97.11-.76.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18.92-.26 1.9-.39 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.71 5.41-5.29 5.69.42.36.8 1.07.8 2.15 0 1.55-.01 2.8-.01 3.18 0 .3.21.67.8.55 4.56-1.53 7.85-5.83 7.85-10.91C23.5 5.66 18.35.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // On-load subtle entrance for elements initially in view, plus scroll observer for the rest
+    (function(){
+      const items = Array.from(document.querySelectorAll('.anim'));
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -6% 0px',
+        threshold: 0.06
+      };
+
+      function reveal(el){
+        el.classList.add('in-view');
+      }
+
+      // reveal elements already in viewport
+      items.forEach((el, i) => {
+        const delay = el.getAttribute('data-delay') || (i+1);
+        el.dataset.delay = delay;
+      });
+
+      // IntersectionObserver to toggle in-view
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            reveal(entry.target);
+            obs.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      items.forEach(el => {
+        io.observe(el);
+      });
+
+      // Fallback: ensure at least hero reveals after a tiny delay
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          document.querySelectorAll('.anim').forEach(el=>{
+            // if not observed yet (older browsers), ensure visible
+            if(!el.classList.contains('in-view') && isElementInViewport(el)){
+              el.classList.add('in-view');
+            }
+          });
+        }, 220);
+      });
+
+      function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+          rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.bottom >= 0
+        );
+      }
+    })();
+  </script>
+</body>
+</html>
