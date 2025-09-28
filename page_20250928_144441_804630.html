@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#05060a;
+      --neon-cyan: #00fff7;
+      --neon-pink: #ff2df6;
+      --neon-blue: #5bd0ff;
+      --glass: rgba(255,255,255,0.04);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,240,0.06), transparent 10%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(255,45,246,0.04), transparent 12%),
+                  var(--bg);
+      color:var(--neon-cyan);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* animated grid lines */
+    .grid {
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 120px 120px, 120px 120px;
+      animation: drift 12s linear infinite;
+      mix-blend-mode:overlay;
+      opacity:0.6;
+      pointer-events:none;
+      filter:blur(6px);
+    }
+    @keyframes drift{
+      0%{transform:translate(0,0)}
+      50%{transform:translate(-40px,20px)}
+      100%{transform:translate(0,0)}
+    }
+
+    .stage{
+      position:relative;
+      width:min(900px,92vw);
+      padding:48px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), 0 0 60px rgba(0,255,247,0.04), 0 0 30px rgba(255,45,246,0.02) inset;
+      backdrop-filter: blur(6px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.04);
+      text-align:center;
+      overflow:hidden;
+    }
+
+    h1{
+      font-size: clamp(28px,7vw,64px);
+      letter-spacing:0.04em;
+      color:var(--neon-cyan);
+      margin-bottom:12px;
+      text-shadow:
+        0 0 6px rgba(0,255,247,0.35),
+        0 0 18px rgba(0,255,247,0.12),
+        0 0 40px rgba(91,208,255,0.06);
+      transform:translateY(8px);
+      opacity:0;
+      animation: fadeUp 900ms ease-out 200ms forwards;
+    }
+
+    .subtitle{
+      color:var(--neon-pink);
+      font-size:14px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      margin-bottom:20px;
+      opacity:0;
+      transform:translateY(8px);
+      animation: fadeUp 900ms ease-out 340ms forwards;
+      text-shadow: 0 0 8px rgba(255,45,246,0.16);
+    }
+
+    .time{
+      display:inline-block;
+      margin-top:6px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--neon-blue);
+      box-shadow: 0 6px 24px rgba(11,19,40,0.6);
+      opacity:0;
+      transform:translateY(8px);
+      animation: fadeUp 900ms ease-out 480ms forwards;
+      text-shadow: 0 0 6px rgba(91,208,255,0.06);
+      border:1px solid rgba(91,208,255,0.06);
+    }
+
+    @keyframes fadeUp{
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    /* subtle pulsing underline */
+    .underline{
+      height:3px;
+      width:60%;
+      margin:20px auto 0;
+      border-radius:999px;
+      background: linear-gradient(90deg,var(--neon-cyan), var(--neon-pink));
+      filter:blur(6px);
+      opacity:0.9;
+      animation: pulse 2.6s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scaleX(0.7); opacity:0.8}
+      50%{transform:scaleX(1); opacity:1}
+      100%{transform:scaleX(0.7); opacity:0.8}
+    }
+
+    footer{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin-top:22px;
+      opacity:0;
+      transform:translateY(8px);
+      animation: fadeUp 900ms ease-out 640ms forwards;
+    }
+
+    .footer-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--neon-cyan);
+      text-decoration:none;
+      padding:10px 14px;
+      border-radius:999px;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .footer-link:hover{ transform:translateY(-4px); box-shadow: 0 10px 30px rgba(0,255,247,0.06) }
+    .gh-icon{
+      width:20px; height:20px; display:inline-block;
+      filter:drop-shadow(0 4px 12px rgba(0,255,247,0.08));
+      transition:filter .18s ease;
+    }
+    .gh-text{ font-size:13px; color:rgba(255,255,255,0.75) }
+
+    /* neon glow around container */
+    .stage::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(400px 200px at 20% 10%, rgba(0,255,247,0.06), transparent 8%),
+        radial-gradient(400px 200px at 80% 90%, rgba(255,45,246,0.05), transparent 10%);
+      pointer-events:none;
+      mix-blend-mode:screen;
+      opacity:0.9;
+      animation: swirl 14s linear infinite;
+    }
+    @keyframes swirl{
+      0%{transform:rotate(0deg)}
+      100%{transform:rotate(360deg)}
+    }
+
+    /* reduce motion */
+    @media (prefers-reduced-motion:reduce){
+      .grid, .stage::before, .underline { animation:none }
+      * { transition:none !important; animation:none !important }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="site-title">
+    <h1 id="site-title">amirabolfazle</h1>
+    <div class="subtitle">neon • minimal • animated</div>
+
+    <div class="time" aria-label="creation time">Created: 2025-09-28 14:44:15</div>
+
+    <div class="underline" aria-hidden="true"></div>
+
+    <footer>
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.6 7.6 0 0 1 8 4.77c.68.003 1.36.092 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.001 8.001 0 0 0 16 8c0-4.42-3.58-8-8-8z" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#00fff7"/>
+              <stop offset="1" stop-color="#ff2df6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="gh-text">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+</body>
+</html>
