@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --accent-a: #7b2ff7;
+      --accent-b: #2af598;
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.04);
+      --text: #e6eef8;
+      --muted: #9fb3c8;
+      --shadow: 0 8px 30px rgba(2,6,23,0.6);
+      --glass-border: rgba(255,255,255,0.06);
+    }
+
+    /* animated gradient background */
+    body{
+      min-height:100vh;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(120deg, var(--bg1) 0%, #081029 20%, #031028 40%, #021018 100%);
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .sky{
+      position:fixed;
+      inset:0;
+      background: linear-gradient(120deg, rgba(123,47,247,0.08), rgba(42,245,152,0.04));
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation: rotateGradient 14s linear infinite;
+    }
+
+    @keyframes rotateGradient{
+      0%{transform:rotate(0deg) scale(1.02)}
+      50%{transform:rotate(180deg) scale(1.05)}
+      100%{transform:rotate(360deg) scale(1.02)}
+    }
+
+    .container{
+      width:min(1100px,94%);
+      margin:48px auto;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:28px;
+      align-items:start;
+      z-index:2;
+    }
+
+    /* left panel */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      border-radius:16px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:hidden;
+      position:relative;
+      animation:popIn 900ms cubic-bezier(.2,.95,.2,1) both;
+    }
+
+    @keyframes popIn{
+      0%{transform:translateY(28px) scale(.98); opacity:0}
+      60%{transform:translateY(-8px) scale(1.01)}
+      100%{transform:translateY(0) scale(1); opacity:1}
+    }
+
+    .profile{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .avatar{
+      width:86px;
+      height:86px;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--accent-a),var(--accent-b));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:28px;
+      color:white;
+      box-shadow: 0 10px 30px rgba(123,47,247,0.18);
+      transform-origin:center;
+      animation:bounceFloat 3.6s ease-in-out infinite;
+    }
+
+    @keyframes bounceFloat{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+      100%{transform:translateY(0)}
+    }
+
+    .meta h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.6px;
+    }
+
+    .meta p{
+      margin:4px 0 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .skills{
+      margin-top:18px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform 300ms cubic-bezier(.2,.9,.3,1);
+      cursor:default;
+    }
+
+    .tag:hover{ transform:translateY(-6px) scale(1.02); color:var(--text); }
+
+    .time-badge{
+      margin-top:16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:12px;
+      color:var(--muted);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:12px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* right content */
+    .works{
+      display:grid;
+      gap:18px;
+    }
+
+    .hero{
+      height:220px;
+      border-radius:14px;
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:transparent;
+      background: linear-gradient(135deg, rgba(123,47,247,0.18), rgba(42,245,152,0.06));
+      border:1px solid rgba(255,255,255,0.03);
+      animation:glow 6s ease-in-out infinite;
+    }
+
+    @keyframes glow{
+      0%{box-shadow:0 6px 30px rgba(123,47,247,0.06)}
+      50%{box-shadow:0 24px 60px rgba(42,245,152,0.06)}
+      100%{box-shadow:0 6px 30px rgba(123,47,247,0.06)}
+    }
+
+    .hero-inner{
+      z-index:2;
+      color:var(--text);
+      transform:translateY(6px);
+      animation:bounceInTitle 800ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    @keyframes bounceInTitle{
+      0%{transform:translateY(30px) scale(.98); opacity:0}
+      60%{transform:translateY(-6px) scale(1.02)}
+      100%{transform:translateY(0) scale(1); opacity:1}
+    }
+
+    .hero h2{
+      margin:0;
+      font-size:26px;
+      letter-spacing:0.4px;
+    }
+
+    .hero p{
+      margin:8px 0 0 0;
+      color:var(--muted);
+    }
+
+    .project-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap:14px;
+      margin-top:12px;
+    }
+
+    .project{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform 400ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms;
+      cursor:pointer;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      overflow:hidden;
+    }
+
+    .project:hover{
+      transform:translateY(-8px) scale(1.01);
+      box-shadow: 0 18px 50px rgba(2,6,23,0.5);
+    }
+
+    .p-thumb{
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--accent-b),var(--accent-a));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      flex-shrink:0;
+      animation:thumbFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes thumbFloat{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+    .p-info h3{ margin:0; font-size:15px; }
+    .p-info p{ margin:6px 0 0 0; color:var(--muted); font-size:13px; }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      font-size:13px;
+      z-index:3;
+      backdrop-filter: blur(6px);
+    }
+
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--text);
+      text-decoration:none;
+      font-weight:600;
+      font-size:13px;
+    }
+
+    .gh svg{ width:18px; height:18px; fill:var(--text); display:block; }
+
+    /* responsive */
+    @media (max-width:880px){
+      .container{ grid-template-columns: 1fr; }
+      .hero{ height:180px; }
+    }
+
+    /* subtle decorative particles */
+    .particle{
+      position:absolute;
+      width:14px;
+      height:14px;
+      border-radius:10px;
+      opacity:0.08;
+      filter: blur(2px);
+      transform:translateZ(0);
+    }
+
+    .particle.a{ background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); top:12%; left:8%; animation:driftA 8s ease-in-out infinite;}
+    .particle.b{ background:linear-gradient(90deg,var(--accent-b),var(--accent-a)); bottom:10%; right:6%; width:22px;height:22px; opacity:0.06; animation:driftB 10s ease-in-out infinite;}
+    @keyframes driftA{ 0%{transform:translateY(0) translateX(0)} 50%{transform:translateY(-18px) translateX(12px)} 100%{transform:translateY(0) translateX(0)} }
+    @keyframes driftB{ 0%{transform:translateY(0) translateX(0)} 50%{transform:translateY(22px) translateX(-20px)} 100%{transform:translateY(0) translateX(0)} }
+
+    /* tiny bounce effect for buttons */
+    .btn{
+      background: linear-gradient(90deg,var(--accent-a),var(--accent-b));
+      color:white;
+      padding:10px 14px;
+      border-radius:10px;
+      border:0;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 8px 30px rgba(123,47,247,0.12);
+      transition: transform 260ms cubic-bezier(.2,.9,.3,1);
+    }
+    .btn:active{ transform:translateY(4px) scale(.995); }
+    .btn:hover{ transform:translateY(-6px) scale(1.02); }
+
+  </style>
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+
+  <div class="container" role="main">
+    <aside class="card" aria-label="Profile panel">
+      <div class="profile">
+        <div class="avatar" aria-hidden="true">AM</div>
+        <div class="meta">
+          <h1>amirabolfazle</h1>
+          <p>Designer • Developer • Creative tinkerer</p>
+        </div>
+      </div>
+
+      <div class="skills" role="list" aria-label="Skills">
+        <div class="tag" role="listitem">HTML</div>
+        <div class="tag" role="listitem">CSS</div>
+        <div class="tag" role="listitem">JavaScript</div>
+        <div class="tag" role="listitem">UI/UX</div>
+        <div class="tag" role="listitem">Animations</div>
+      </div>
+
+      <div class="time-badge" title="Creation time">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v6l4 2" stroke="rgba(255,255,255,0.7)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.12)" stroke-width="1.6" fill="transparent"></circle></svg>
+        2025-09-28 14:30:02
+      </div>
+
+      <div style="margin-top:18px; display:flex; gap:8px;">
+        <button class="btn" onclick="toast('Portfolio copied!')">Copy Link</button>
+        <button class="btn" style="background:rgba(255,255,255,0.06); color:var(--text); border:1px solid rgba(255,255,255,0.03);" onclick="toast('Hello 👋')">Say Hi</button>
+      </div>
+
+      <div style="margin-top:18px; color:var(--muted); font-size:13px;">
+        Quick bio — crafting crisp interfaces and playful micro-interactions. Always prototyping, sometimes finishing.
+      </div>
+
+      <div class="particle a" aria-hidden="true"></div>
+    </aside>
+
+    <section class="works" aria-label="Works and projects">
+      <div class="card hero" aria-hidden="false">
+        <div class="hero-inner">
+          <h2>Selected Works & Experiments</h2>
+          <p>Interactive UI, fast prototypes, and subtle motion design</p>
+        </div>
+        <div style="position:absolute; inset:0; opacity:0.06; background:
+          radial-gradient(600px 200px at 10% 20%, rgba(123,47,247,0.8), transparent),
+          radial-gradient(400px 150px at 90% 80%, rgba(42,245,152,0.8), transparent);"></div>
+      </div>
+
+      <div class="project-grid" id="projects">
+        <article class="project" tabindex="0" onclick="openDemo('Glass UI')">
+          <div class="p-thumb">G</div>
+          <div class="p-info">
+            <h3>Glass UI Kit</h3>
+            <p>Neumorphic + glass components with interactive states.</p>
+          </div>
+        </article>
+
+        <article class="project" tabindex="0" onclick="openDemo('Gradient Lab')">
+          <div class="p-thumb">L</div>
+          <div class="p-info">
+            <h3>Gradient Lab</h3>
+            <p>Playful gradient generator for modern headers and cards.</p>
+          </div>
+        </article>
+
+        <article class="project" tabindex="0" onclick="openDemo('Motion Pack')">
+          <div class="p-thumb">M</div>
+          <div class="p-info">
+            <h3>Motion Pack</h3>
+            <p>Micro-interactions and bounce primitives for UIs.</p>
+          </div>
+        </article>
+
+        <article class="project" tabindex="0" onclick="openDemo('AutoGen Code')">
+          <div class="p-thumb">A</div>
+          <div class="p-info">
+            <h3>AutoGen Code</h3>
+            <p>Automation experiments and code generation utilities.</p>
+          </div>
+        </article>
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:12px; align-items:center;">
+        <button class="btn" onclick="shuffleProjects()">Shuffle</button>
+        <button class="btn" onclick="filterMotion()">Motion</button>
+        <div style="color:var(--muted); font-size:13px;">Hover projects to see bounce</div>
+      </div>
+
+      <div class="particle b" aria-hidden="true"></div>
+    </section>
+  </div>
+
+  <footer>
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .5C5.65.5.75 5.4.75 11.74c0 4.85 3.14 8.97 7.5 10.43.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.05.66-3.69-1.35-3.69-1.35-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.2 3.2.92.1-.72.38-1.2.69-1.48-2.43-.28-4.98-1.22-4.98-5.42 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .93-.3 3.05 1.13a10.63 10.63 0 0 1 2.78-.37c.94.01 1.89.13 2.78.37 2.11-1.43 3.04-1.13 3.04-1.13.61 1.52.23 2.64.12 2.92.71.77 1.12 1.75 1.12 2.95 0 4.21-2.56 5.13-5 5.4.39.33.74.98.74 1.98 0 1.43-.01 2.58-.01 2.93 0 .29.19.63.76.52 4.36-1.47 7.49-5.59 7.49-10.44C23.25 5.4 18.35.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+  <div id="toast" style="position:fixed; right:18px; bottom:86px; background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:white; padding:10px 14px; border-radius:10px; opacity:0; transform:translateY(8px) scale(.98); pointer-events:none; transition:all 320ms; z-index:9999; box-shadow:0 14px 40px rgba(2,6,23,0.5);"></div>
+
+  <script>
+    // small interactions
+    function toast(text){
+      const t = document.getElementById('toast');
+      t.textContent = text;
+      t.style.opacity = '1';
+      t.style.transform = 'translateY(0) scale(1)';
+      setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(8px) scale(.98)'; }, 1800);
+    }
+
+    function openDemo(name){
+      toast(name + ' — preview');
+    }
+
+    // Shuffle simple projects order for playful effect
+    function shuffleProjects(){
+      const grid = document.getElementById('projects');
+      const items = Array.from(grid.children);
+      for(let i = items.length -1; i>0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        grid.appendChild(items[j]);
+        items.splice(j,1);
+      }
+      toast('Projects shuffled');
+    }
+
+    function filterMotion(){
+      toast('Filtered: Motion-related');
+    }
+
+    // keyboard accessibility: Enter on project opens demo
+    document.getElementById('projects').addEventListener('keydown', function(e){
+      if(e.key === 'Enter' && e.target.classList.contains('project')){
+        e.target.click();
+      }
+    });
+
+    // subtle entrance stagger
+    window.addEventListener('load', ()=>{
+      document.querySelectorAll('.project').forEach((el,i)=>{
+        el.style.animation = 'popIn 700ms cubic-bezier(.2,.95,.2,1) both';
+        el.style.animationDelay = (i * 80) + 'ms';
+      });
+    });
+  </script>
+</body>
+</html>
