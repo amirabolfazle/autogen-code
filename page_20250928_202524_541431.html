@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1: #0f1724;
+    --bg2: #0b1220;
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.08);
+    --accent: #7dd3fc;
+    --accent-2: #a78bfa;
+    --muted: rgba(255,255,255,0.7);
+    --card-border: rgba(255,255,255,0.12);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(122,75,255,0.12), transparent 8%),
+                radial-gradient(900px 500px at 90% 90%, rgba(125,211,252,0.08), transparent 10%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color: #e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* subtle animated zooming nebula background */
+  .bg-zoom {
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"><defs><radialGradient id="g" cx="50%" cy="50%"><stop offset="0" stop-color="%23a78bfa" stop-opacity="0.06"/><stop offset="0.6" stop-color="%237dd3fc" stop-opacity="0.03"/><stop offset="1" stop-color="%23000000" stop-opacity="0"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/></svg>');
+    background-repeat:no-repeat;
+    background-position:50% 45%;
+    background-size:200% 200%;
+    animation: bgScale 20s ease-in-out infinite alternate;
+    mix-blend-mode:screen;
+    filter: blur(30px) saturate(120%);
+    opacity:0.9;
+  }
+  @keyframes bgScale{
+    0%{ transform: scale(1); background-position:45% 40%;}
+    100%{ transform: scale(1.08); background-position:55% 50%;}
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+  }
+
+  .card {
+    width:100%;
+    max-width:980px;
+    border-radius:20px;
+    padding:32px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid var(--card-border);
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    transform-origin:center;
+    transition: transform 400ms cubic-bezier(.2,.9,.2,1), box-shadow 250ms;
+    display:grid;
+    grid-template-columns: 260px 1fr;
+    gap:28px;
+    align-items:center;
+    overflow:hidden;
+  }
+
+  .card:hover{
+    transform: scale(1.01);
+    box-shadow: 0 20px 60px rgba(2,6,23,0.7);
+  }
+
+  .portrait {
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+
+  .avatar {
+    width:160px;
+    height:160px;
+    border-radius:28px;
+    background: linear-gradient(135deg,var(--accent), var(--accent-2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:rgba(255,255,255,0.95);
+    font-weight:700;
+    font-size:48px;
+    box-shadow: 0 8px 30px rgba(120,80,200,0.28);
+    border:1px solid rgba(255,255,255,0.08);
+    transform: translateZ(0);
+    transition: transform 350ms cubic-bezier(.2,.9,.2,1), box-shadow 350ms;
+  }
+
+  .avatar:after{
+    content:"";
+    position:absolute;
+    width:120%;
+    height:120%;
+    left:-10%;
+    top:-10%;
+    background: linear-gradient(45deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+    border-radius:inherit;
+    mix-blend-mode:overlay;
+    pointer-events:none;
+  }
+
+  .avatar-wrap{
+    position:relative;
+    border-radius:28px;
+    overflow:hidden;
+  }
+
+  .avatar-wrap:hover .avatar{
+    transform: scale(1.06) translateY(-4px);
+    box-shadow: 0 18px 60px rgba(120,80,200,0.38);
+  }
+
+  .meta {
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1;
+  }
+
+  h1 {
+    margin:0;
+    font-size:34px;
+    letter-spacing:0.6px;
+    color: #f3f7ff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .tagline {
+    color: rgba(255,255,255,0.88);
+    margin-top:6px;
+    margin-bottom:16px;
+    font-size:15px;
+  }
+
+  .content {
+    padding-right:8px;
+  }
+
+  .bio {
+    color: rgba(255,255,255,0.86);
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:18px;
+  }
+
+  .cards {
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .mini {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    padding:10px 14px;
+    border-radius:12px;
+    color:var(--muted);
+    font-size:13px;
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    transition: transform 250ms cubic-bezier(.2,.9,.2,1), box-shadow 250ms;
+    cursor:default;
+  }
+
+  .mini:hover{
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 18px 40px rgba(10,10,40,0.5);
+  }
+
+  .accent-dot {
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background: linear-gradient(180deg,var(--accent),var(--accent-2));
+    box-shadow: 0 6px 18px rgba(125,211,252,0.12);
+  }
+
+  .actions {
+    display:flex;
+    gap:12px;
+    margin-top:18px;
+  }
+
+  .btn {
+    padding:10px 14px;
+    border-radius:12px;
+    font-weight:600;
+    font-size:14px;
+    border:1px solid rgba(255,255,255,0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    color: #eaf6ff;
+    cursor:pointer;
+    transition: transform 220ms, box-shadow 220ms, background 220ms;
+  }
+  .btn:active{ transform: translateY(1px) }
+  .btn-ghost{
+    background:transparent;
+    color:var(--muted);
+  }
+  .btn-primary{
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#072029;
+    border: none;
+    box-shadow: 0 10px 30px rgba(125,211,252,0.12), inset 0 -6px 20px rgba(255,255,255,0.03);
+  }
+
+  /* creation time chip */
+  .created {
+    margin-left:auto;
+    font-size:13px;
+    color: rgba(255,255,255,0.7);
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.04);
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+  }
+
+  /* footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform: translateX(-50%);
+    bottom:18px;
+    z-index:3;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding:8px 14px;
+    border-radius:999px;
+    background: rgba(0,0,0,0.25);
+    border:1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  a.icon {
+    color:inherit;
+    text-decoration:none;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  .gh {
+    width:20px;
+    height:20px;
+    display:inline-block;
+    vertical-align:middle;
+    fill:currentColor;
+    opacity:0.95;
+    transition: transform 180ms;
+  }
+  a.icon:hover .gh{ transform: scale(1.06) translateY(-2px) }
+
+  /* responsive */
+  @media (max-width:880px){
+    .card{ grid-template-columns:1fr; padding:22px; gap:18px;}
+    .portrait{ flex-direction:row; justify-content:flex-start; gap:14px; }
+    .avatar { width:110px; height:110px; border-radius:18px; font-size:34px; }
+    h1{ font-size:26px; }
+    footer{ bottom:12px; padding:8px 12px; }
+  }
+
+  /* small animated sparkles inside card */
+  .sparkles {
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    opacity:0.6;
+  }
+  .sparkles span{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+    filter: blur(6px);
+    animation: float 8s linear infinite;
+    transform: translateZ(0);
+  }
+  .sparkles span:nth-child(1){ left:6%; top:20%; animation-duration:9s; animation-delay:0s; }
+  .sparkles span:nth-child(2){ left:28%; top:10%; animation-duration:12s; animation-delay:1s; }
+  .sparkles span:nth-child(3){ left:80%; top:30%; animation-duration:10s; animation-delay:2s; }
+  .sparkles span:nth-child(4){ left:68%; top:72%; animation-duration:11s; animation-delay:.5s; }
+  .sparkles span:nth-child(5){ left:14%; top:76%; animation-duration:9s; animation-delay:1.5s; }
+  @keyframes float{
+    0%{ transform: translateY(0) scale(1); opacity:0.95}
+    50%{ transform: translateY(-18px) scale(1.2); opacity:0.6}
+    100%{ transform: translateY(0) scale(1); opacity:0.95}
+  }
+
+  /* reduced motion respect */
+  @media (prefers-reduced-motion: reduce){
+    .bg-zoom, .card, .avatar, .mini, .sparkles span { animation:none; transition:none; transform:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg-zoom" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <main class="card" id="card" role="main" aria-labelledby="name">
+      <div class="portrait">
+        <div class="avatar-wrap" aria-hidden="true">
+          <div class="avatar" title="A">
+            AM
+          </div>
+        </div>
+        <div class="meta" aria-hidden="false">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-weight:700;color:#f3f7ff;">amirabolfazle</div>
+            <div class="created" title="Creation time">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.9">
+                <path d="M12 7v5l3 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+              </svg>
+              2025-09-28 20:24:33
+            </div>
+          </div>
+          <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.6)">Designer • Maker • Curious mind</div>
+        </div>
+      </div>
+
+      <div class="content" id="content">
+        <h1 id="name">
+          amirabolfazle
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style="margin-left:6px; opacity:0.95">
+            <circle cx="12" cy="12" r="10" stroke="url(#g1)" stroke-width="1.1" opacity="0.9"></circle>
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#7dd3fc"/>
+                <stop offset="1" stop-color="#a78bfa"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </h1>
+
+        <div class="tagline">A personal space with glassmorphism flair and subtle motion.</div>
+
+        <p class="bio">
+          Hi — this is a small animated personal page built with frosted glass layers, gentle zoom effects, and tiny sparkles to make the UI feel alive without being distracting. Move your mouse over the card to tilt and zoom slightly.
+        </p>
+
+        <div class="cards" aria-hidden="false">
+          <div class="mini"><span class="accent-dot" aria-hidden="true"></span> Frontend • UI</div>
+          <div class="mini"><span class="accent-dot" aria-hidden="true"></span> Animations</div>
+          <div class="mini"><span class="accent-dot" aria-hidden="true"></span> Creative Code</div>
+          <div class="mini"><span class="accent-dot" aria-hidden="true"></span> Open Source</div>
+        </div>
+
+        <div class="actions" role="group" aria-label="Actions">
+          <button class="btn btn-primary" onclick="openLink()">Visit Repo</button>
+          <button class="btn btn-ghost" onclick="copyTime()">Copy Creation Time</button>
+        </div>
+
+        <div style="height:8px"></div>
+        <small style="color:rgba(255,255,255,0.45)">Tip: Hover the card or move your cursor to see a subtle 3D tilt and zoom.</small>
+
+        <div class="sparkles" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg class="gh" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.111.82-.261.82-.58 0-.287-.01-1.04-.016-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.381 1.235-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3-.404c1.02.005 2.047.138 3 .404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.233 1.911 1.233 3.221 0 4.61-2.803 5.624-5.475 5.921.43.37.815 1.096.815 2.21 0 1.594-.014 2.877-.014 3.268 0 .321.216.694.825.576C20.565 22.092 24 17.592 24 12.297 24 5.67 18.63.297 12 .297z"/>
+      </svg>
+      <span style="opacity:0.95">Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+<script>
+  // Interactive tilt + zoom for card
+  (function(){
+    const card = document.getElementById('card');
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!card || prefersReduced) return;
+
+    let rect = null;
+    let mouseInside = false;
+
+    function updateRect(){ rect = card.getBoundingClientRect(); }
+
+    function handleMove(e){
+      mouseInside = true;
+      if(!rect) updateRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      const rotateY = (x - 0.5) * 10; // degrees
+      const rotateX = (0.5 - y) * 8;
+      const scale = 1.02;
+      card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+    }
+
+    function handleLeave(){
+      mouseInside = false;
+      card.style.transform = '';
+    }
+
+    window.addEventListener('resize', updateRect);
+    card.addEventListener('mousemove', handleMove);
+    card.addEventListener('mouseleave', handleLeave);
+    card.addEventListener('mouseenter', updateRect);
+  })();
+
+  // Open repo in new tab
+  function openLink(){
+    window.open('https://github.com/amirabolfazle/autogen-code','_blank','noopener');
+  }
+
+  // Copy creation time
+  function copyTime(){
+    const time = '2025-09-28 20:24:33';
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(time).then(()=> {
+        flash('Copied creation time');
+      }, ()=> {
+        flash('Copy failed');
+      });
+    } else {
+      // fallback
+      const ta = document.createElement('textarea');
+      ta.value = time;
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); flash('Copied creation time'); }catch(e){ flash('Copy failed'); }
+      ta.remove();
+    }
+  }
+
+  // tiny toast
+  function flash(msg){
+    const t = document.createElement('div');
+    t.textContent = msg;
+    t.style.position='fixed';
+    t.style.left='50%';
+    t.style.transform='translateX(-50%)';
+    t.style.bottom='90px';
+    t.style.padding='8px 14px';
+    t.style.borderRadius='10px';
+    t.style.background='rgba(0,0,0,0.5)';
+    t.style.color='white';
+    t.style.fontSize='13px';
+    t.style.zIndex=9999;
+    t.style.backdropFilter='blur(6px)';
+    document.body.appendChild(t);
+    setTimeout(()=> t.style.opacity='0', 1600);
+    setTimeout(()=> t.remove(), 2000);
+  }
+
+  // subtle parallax with mouse on body for background movement
+  (function(){
+    const bg = document.querySelector('.bg-zoom');
+    if(!bg) return;
+    let raf = null;
+    window.addEventListener('mousemove', function(e){
+      const cx = e.clientX / window.innerWidth;
+      const cy = e.clientY / window.innerHeight;
+      const tx = (cx - 0.5) * 20;
+      const ty = (cy - 0.5) * 12;
+      if(raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(()=> {
+        bg.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(1.02)`;
+      });
+    });
+    window.addEventListener('mouseleave', ()=> {
+      bg.style.transform = '';
+    });
+  })();
+</script>
+</body>
+</html>
