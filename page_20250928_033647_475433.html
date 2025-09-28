@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --bg-elev: #141923;
+      --fg: #e9e9f0;
+      --muted: #a6a6b3;
+      --accent: #7c5cff;
+      --card: #181c2a;
+      --border: rgba(255,255,255,.15);
+      --glow: 0 0 28px rgba(124,92,255,.55);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--fg);
+      background: #0b0f14;
+      background: radial-gradient(circle at 20% 20%, rgba(124,92,255,.15), transparent 20%),
+                  radial-gradient(circle at 80% 80%, rgba(0,255,255,.15), transparent 25%),
+                  linear-gradient(#0b0f14, #0b0f14 70%, #0b0f14);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Animated subtle background zoom */
+    .hero-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(124,92,255,.22), transparent 20%),
+                  radial-gradient(circle at 70% 60%, rgba(0,255,255,.18), transparent 25%),
+                  linear-gradient(#0b0f14, #0b0f14);
+      background-size: 200% 200%;
+      filter: saturate(1.1);
+      animation: bgZoom 20s ease infinite;
+      pointer-events: none;
+    }
+    @keyframes bgZoom {
+      0% { background-position: 0% 0%, 0% 0%; }
+      50% { background-position: 100% 100%, 50% 50%; }
+      100% { background-position: 0% 0%, 0% 0%; }
+    }
+
+    .header {
+      position: relative;
+      padding: 6rem 1.5rem 2rem;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .brand {
+      font-size: clamp(2.8rem, 5vw, 6rem);
+      font-weight: 900;
+      letter-spacing: .4rem;
+      text-transform: lowercase;
+      color: #fff;
+      margin: 0;
+      text-shadow: 0 4px 22px rgba(0,255,255,.4);
+      animation: glow 3s ease-in-out infinite alternate;
+      line-height: 0.9;
+    }
+    @keyframes glow {
+      0% { text-shadow: 0 4px 18px rgba(0,255,255,.4); }
+      100% { text-shadow: 0 8px 40px rgba(124,92,255,.8); }
+    }
+
+    .creation-time {
+      display: inline-block;
+      font-family: ui-monospace,SFMono-Regular,Consolas,"Courier New",monospace;
+      font-size: .9rem;
+      color: #d8d8e5;
+      padding: .25rem .75rem;
+      margin-top: .6rem;
+      border-radius: .6rem;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(2px);
+      letter-spacing: .1em;
+      animation: pulse 3s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: .92; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+
+    .nav {
+      margin-top: 1rem;
+      display: inline-flex;
+      gap: .6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .nav a {
+      padding: .6rem 1rem;
+      border-radius: 999px;
+      background: rgba(124,92,255,.25);
+      color: #f8f7ff;
+      border: 1px solid rgba(124,92,255,.65);
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform .25s ease, background .25s ease;
+    }
+    .nav a:hover {
+      transform: translateY(-2px) scale(1.02);
+      background: rgba(124,92,255,.42);
+    }
+
+    .main {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 1.25rem 2rem;
+    }
+
+    .panel {
+      background: linear-gradient(#141923, #0f1320);
+      border: 1px solid #2a2f55;
+      border-radius: 16px;
+      padding: 28px;
+      margin: 1.25rem 0;
+      box-shadow: 0 20px 40px rgba(0,0,0,.4);
+      transition: transform .3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 28px 60px rgba(0,0,0,.5);
+    }
+
+    .panel h2 {
+      margin: 0 0 .5rem 0;
+      font-size: 1.6rem;
+      color: #fff;
+      display: inline-block;
+      padding-bottom: .25rem;
+      border-bottom: 2px solid rgba(124,92,255,.6);
+      letter-spacing: .04em;
+    }
+
+    .panel p { color: #d7d7e0; line-height: 1.6; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 8px;
+    }
+    .card {
+      background: linear-gradient(#161a2a, #0f1320);
+      border: 1px solid #2a2f55;
+      border-radius: 12px;
+      padding: 14px 14px 12px;
+      transition: transform .25s ease, box-shadow .25s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 12px 28px rgba(0,0,0,.4);
+    }
+    .card .title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: .25rem;
+    }
+    .card .desc {
+      color: #cbd5e1;
+      font-size: .95rem;
+      line-height: 1.5;
+    }
+
+    .hero-title-tilt {
+      display: inline-block;
+      animation: tilt 6s ease-in-out infinite;
+      transform-origin: center;
+    }
+    @keyframes tilt {
+      0%, 100% { transform: rotate(-1deg); }
+      50% { transform: rotate(1deg); }
+    }
+
+    .contact {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    footer.footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,.08);
+      margin-top: 2rem;
+      background: #0b0f14;
+    }
+    .footer-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .footer a.github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.12);
+      color: inherit;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
+    .footer a.github-link:hover {
+      transform: translateY(-1px);
+    }
+    .footer svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      color: #fff;
+    }
+    .credit {
+      font-family: ui-monospace,SFMono-Regular,Consolas,"Courier New",monospace;
+      font-size: .95rem;
+      color: #dce3ea;
+    }
+
+    @media (max-width: 700px) {
+      .brand { font-size: 4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <header class="header" role="banner" aria-label="Site header">
+    <h1 class="brand hero-title-tilt" style="margin-bottom:.25rem;">amirabolfazle</h1>
+    <div class="creation-time" aria-label="Creation time">
+      Creation time: 2025-09-28 03:36:00
+    </div>
+
+    <nav class="nav" aria-label="Site navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="main" role="main">
+    <section id="about" class="panel" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p>
+        Hello! I’m amirabolfazle, a developer who enjoys crafting delightful web experiences.
+        This page showcases a dark-mode, animated personal space with zoomy interactions
+        and a touch of motion. Scroll, hover, and observe subtle gradients breathe life into
+        the UI.
+      </p>
+    </section>
+
+    <section id="projects" class="panel" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <div class="card-grid">
+        <div class="card" role="article" aria-label="Autogen code snippets project">
+          <div class="title tilt" style="animation: tilt 6s ease-in-out infinite;">Autogen code snippets</div>
+          <div class="desc">Small AI-assisted templates to generate boilerplate code quickly.</div>
+        </div>
+        <div class="card" role="article" aria-label="Animation experiments project">
+          <div class="title tilt" style="animation: tilt 6s ease-in-out infinite;">Animation experiments</div>
+          <div class="desc">CSS/JS micro-interactions and motion design playgrounds.</div>
+        </div>
+        <div class="card" role="article" aria-label="Web UI kits project">
+          <div class="title tilt" style="animation: tilt 6s ease-in-out infinite;">Web UI kits</div>
+          <div class="desc">Accessible components with a cohesive dark-theme aesthetic.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="panel" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p>You can reach out via GitHub or via direct email if provided. This section is a placeholder to illustrate layout.</p>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo" aria-label="Site footer">
+    <div class="footer-inner">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" aria-label="GitHub repository">
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.23.48-2.7-1.04-2.7-1.04-.36-.92-.88-1.17-.88-1.17-.72-.49.055-.48.055-.48.8.055 1.22.82 1.22.82.71 1.21 1.87.86 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.13 0 0 .67-.21 2.2.82a7.63 7.63 0 0 1 4 0c1.53-1.03 2.2-.79 2.2-.79.46 0 .83.34.83.34.54 1.1.02 2.12-.18 2.4.76.84 1.24 1.89 1.24 3.21 0 4-2.43 4.89-4.74 5.17.32.27.6.8.6 1.62 0 1.17-.01 2.12-.01 2.41 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </div>
+  </footer>
+</body>
+</html>
