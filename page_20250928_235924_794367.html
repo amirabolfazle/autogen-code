@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#0b1220;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: #8be9fd;
+      --accent2: #a78bfa;
+      --text: rgba(255,255,255,0.96);
+      --muted: rgba(255,255,255,0.75);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(900px 400px at 10% 20%, rgba(135,95,255,0.08), transparent),
+                  radial-gradient(700px 300px at 90% 80%, rgba(139,233,253,0.06), transparent),
+                  linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+    }
+
+    /* drifting gradient overlay */
+    .ambient{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      background:
+        conic-gradient(from 120deg at 20% 10%, rgba(167,139,250,0.14), transparent 25%),
+        conic-gradient(from 40deg at 90% 90%, rgba(139,233,253,0.12), transparent 20%);
+      mix-blend-mode:overlay;
+      animation: drift 18s linear infinite;
+      opacity:0.9;
+      filter: blur(40px);
+    }
+    @keyframes drift{
+      0%{transform:translateY(0) rotate(0deg);}
+      50%{transform:translateY(-6%) rotate(45deg);}
+      100%{transform:translateY(0) rotate(0deg);}
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+      position:relative;
+      z-index:1;
+      gap:28px;
+      flex-direction:column;
+    }
+
+    .card{
+      width:min(920px, 96vw);
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:28px;
+      padding:28px;
+      border-radius:20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(10px) saturate(120%);
+      animation: fadeInUp 800ms cubic-bezier(.2,.9,.2,1) both;
+      overflow:hidden;
+    }
+
+    /* Responsive */
+    @media (max-width:860px){
+      .card{grid-template-columns:1fr; padding:20px;}
+    }
+
+    .profile{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      text-align:center;
+      padding:18px;
+      animation: pop 900ms cubic-bezier(.2,.9,.2,1) both;
+    }
+
+    .avatar{
+      width:140px;
+      height:140px;
+      border-radius:24px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:48px;
+      color:var(--accent2);
+      box-shadow: 0 6px 24px rgba(10,12,20,0.6);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .avatar::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, rgba(255,255,255,0.02) 0%, transparent 40%);
+      mix-blend-mode:overlay;
+    }
+
+    h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.6px;
+      color:var(--text);
+    }
+
+    .role{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .meta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .chip{
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .content{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      justify-content:center;
+    }
+
+    .headline{
+      font-size:22px;
+      margin:0;
+      color:var(--text);
+      letter-spacing:0.2px;
+      animation: fadeIn 1100ms ease both;
+    }
+
+    .desc{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:15px;
+      max-width:72ch;
+      animation: fadeIn 1200ms ease both;
+      opacity:0.95;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:8px;
+      flex-wrap:wrap;
+      animation: fadeIn 1300ms ease both;
+    }
+
+    .btn{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--text);
+      text-decoration:none;
+      border-radius:12px;
+      font-size:14px;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .btn:hover{transform:translateY(-4px); box-shadow: 0 10px 30px rgba(11,18,35,0.45);}
+    .btn.accent{
+      background: linear-gradient(90deg, rgba(139,233,253,0.12), rgba(167,139,250,0.08));
+      border:1px solid rgba(139,233,253,0.15);
+      color:var(--text);
+      box-shadow: 0 6px 18px rgba(139,233,253,0.06);
+    }
+
+    .stats{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+      opacity:0.95;
+    }
+
+    .stat{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    footer.page-foot{
+      width:100%;
+      max-width:920px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      margin-top:20px;
+      padding:14px 18px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.012), transparent);
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:14px;
+      backdrop-filter: blur(6px);
+      animation: fadeIn 1600ms ease both;
+    }
+
+    footer a.github{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:10px;
+      transition:transform .16s ease, color .16s ease;
+    }
+    footer a.github:hover{transform:translateY(-3px); color:var(--accent);}
+
+    .created-time{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:6px;
+      text-align:center;
+      animation: fadeIn 900ms ease both;
+    }
+
+    /* small animated accents inside card */
+    .sparkle{
+      position:absolute;
+      width:420px;
+      height:420px;
+      right:-16%;
+      top:-24%;
+      background:radial-gradient(circle at 20% 20%, rgba(139,233,253,0.06), transparent 15%),
+                 radial-gradient(circle at 80% 80%, rgba(167,139,250,0.05), transparent 20%);
+      filter: blur(30px);
+      z-index:0;
+      pointer-events:none;
+      transform:rotate(15deg);
+      animation: floaty 10s ease-in-out infinite;
+      opacity:0.9;
+    }
+
+    @keyframes floaty{
+      0%{transform:translateY(0) rotate(10deg) scale(1);}
+      50%{transform:translateY(-6%) rotate(-6deg) scale(1.03);}
+      100%{transform:translateY(0) rotate(10deg) scale(1);}
+    }
+
+    @keyframes fadeInUp{
+      from{opacity:0; transform:translateY(14px) scale(0.996);}
+      to{opacity:1; transform:translateY(0) scale(1);}
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(6px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    @keyframes pop{
+      from{opacity:0; transform:scale(.96) translateY(6px);}
+      to{opacity:1; transform:scale(1) translateY(0);}
+    }
+
+    /* subtle link underline animation */
+    a.inline{
+      color:var(--accent);
+      text-decoration:none;
+      background-image:linear-gradient(90deg, var(--accent) 0 0, transparent 0 0);
+      background-size:0% 2px;
+      background-repeat:no-repeat;
+      background-position:0 100%;
+      transition:background-size .28s cubic-bezier(.2,.9,.2,1);
+    }
+    a.inline:hover{background-size:100% 2px;}
+
+    /* small helper */
+    .muted{
+      color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <main class="card" role="main" aria-labelledby="page-title">
+      <div style="position:relative;">
+        <div class="profile" aria-hidden="false">
+          <div class="avatar" aria-hidden="true">
+            AM
+          </div>
+          <div>
+            <h1 id="page-title">amirabolfazle</h1>
+            <p class="role">Creative developer • tinkerer • builder</p>
+          </div>
+
+          <div class="meta" aria-hidden="true">
+            <span class="chip">Web · UI · Automation</span>
+            <span class="chip">Open Source</span>
+          </div>
+
+          <div class="stats" aria-hidden="true">
+            <div class="stat">Location: Tehran</div>
+            <div class="stat">Availability: Open for projects</div>
+            <div class="stat">Loves: Clean code & subtle animations</div>
+          </div>
+        </div>
+
+        <div class="sparkle" aria-hidden="true"></div>
+      </div>
+
+      <section class="content" aria-label="About">
+        <h2 class="headline">Hello — I'm amirabolfazle</h2>
+        <p class="desc">I build elegant interfaces and thoughtful systems. This page showcases a refined glassmorphism aesthetic with soft motion and subtle depth. Things here fade, float and feel responsive — like the web should.</p>
+
+        <div class="actions" role="navigation" aria-label="Quick actions">
+          <a class="btn accent" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <!-- GitHub mini icon -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.76c0 4.93 3.2 9.11 7.64 10.59.56.1.76-.24.76-.54 0-.27-.01-1.17-.02-2.13-3.1.67-3.76-1.5-3.76-1.5-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.4.11-2.92 0 0 .95-.31 3.12 1.16.9-.25 1.86-.38 2.82-.38.96 0 1.92.13 2.82.38 2.17-1.47 3.12-1.16 3.12-1.16.61 1.52.23 2.64.11 2.92.72.78 1.16 1.78 1.16 3 0 4.29-2.63 5.24-5.13 5.52.39.34.74 1.02.74 2.06 0 1.49-.01 2.69-.01 3.06 0 .3.2.64.77.53 4.44-1.48 7.64-5.66 7.64-10.59C23.25 5.48 18.27.5 12 .5z" fill="currentColor"/>
+            </svg>
+            View code
+          </a>
+
+          <a class="btn" href="#" onclick="alert('Contact link placeholder — replace with real contact.'); return false;">Contact</a>
+          <a class="btn" href="#" onclick="alert('Resume link placeholder — replace with real resume.'); return false;">Resume</a>
+        </div>
+
+        <div style="margin-top:6px;">
+          <p class="created-time">Creation time: 2025-09-28 23:58:37</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="page-foot" role="contentinfo">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.76c0 4.93 3.2 9.11 7.64 10.59.56.1.76-.24.76-.54 0-.27-.01-1.17-.02-2.13-3.1.67-3.76-1.5-3.76-1.5-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.4.11-2.92 0 0 .95-.31 3.12 1.16.9-.25 1.86-.38 2.82-.38.96 0 1.92.13 2.82.38 2.17-1.47 3.12-1.16 3.12-1.16.61 1.52.23 2.64.11 2.92.72.78 1.16 1.78 1.16 3 0 4.29-2.63 5.24-5.13 5.52.39.34.74 1.02.74 2.06 0 1.49-.01 2.69-.01 3.06 0 .3.2.64.77.53 4.44-1.48 7.64-5.66 7.64-10.59C23.25 5.48 18.27.5 12 .5z" fill="currentColor"/>
+        </svg>
+        <span>View on GitHub</span>
+      </a>
+
+      <div class="muted">Created by amirabolfazle</div>
+    </footer>
+  </div>
+
+  <script>
+    // Gentle staged fade-in via adding classes (keeps HTML static and accessible)
+    (function(){
+      // nothing required; CSS animations start automatically for visual polish
+      // small accessibility: reduce motion respects
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced){
+        document.documentElement.style.animation = 'none';
+        document.querySelectorAll('*').forEach(el => el.style.transition = 'none');
+      }
+    })();
+  </script>
+</body>
+</html>
