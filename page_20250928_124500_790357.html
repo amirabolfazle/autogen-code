@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #1a2a6c;
+      --bg2: #fcb044;
+      --fg: #ffffff;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    /* animated gradient background */
+    body::before {
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: conic-gradient(from 180deg at 50% 50%, #ff6b6b, #f6d365, #9be7ff, #7bd389, #ff6b6b);
+      filter: saturate(120%);
+      animation: spin 60s linear infinite;
+      z-index: -1;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    /* subtle moving gradient overlay for depth */
+    .glow {
+      position: fixed;
+      pointer-events: none;
+      width: 60vmax;
+      height: 60vmax;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.7), rgba(255,255,255,0) 40%),
+                  radial-gradient(circle at 70% 70%, rgba(255,0,150,.4), rgba(255,0,0,0) 40%);
+      filter: blur(60px);
+      top: -10vmax;
+      right: -20vmax;
+      z-index: -1;
+      animation: floaty 12s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translate(0,0) rotate(0deg); opacity:.8; }
+      50% { transform: translate(8px,-6px) rotate(20deg); opacity:1; }
+    }
+    header {
+      text-align: center;
+      padding: 6rem 1rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .title {
+      font-size: clamp(2.5rem, 6vw, 6rem);
+      font-weight: 900;
+      margin: 0;
+      line-height: 1.05;
+      letter-spacing: .04em;
+      background: linear-gradient(135deg, #fff, #ffd1dc, #9be7ff, #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 400% 100%;
+      animation: gradientMove 10s linear infinite;
+      text-shadow: 0 6px 20px rgba(0,0,0,.15);
+      user-select: none;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 0; }
+      50% { background-position: 100% 0; }
+      100% { background-position: 0% 0; }
+    }
+    .subtitle {
+      color: rgba(255,255,255,.85);
+      margin-top: .75rem;
+      font-size: clamp(1rem, 3.5vw, 1.25rem);
+      letter-spacing: .04em;
+    }
+
+    /* rotating decorative orbs */
+    .orbs {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .orb {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      filter: saturate(120%);
+      mix-blend-mode: screen;
+      opacity: .6;
+      animation: float 18s ease-in-out infinite;
+      background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.9), rgba(255,255,255,.0) 40%), linear-gradient(135deg, #ff7eb3, #8d8aff);
+    }
+    .orb.o2 { left: -40px; top: 20%; width: 140px; height: 140px; animation-duration: 22s; opacity:.45; }
+    .orb.o3 { right: -60px; bottom: 10%; width: 200px; height: 200px; animation-duration: 26s; opacity:.5; }
+    .orb.o4 { left: 40%; bottom: -60px; width: 260px; height: 260px; animation-duration: 30s; opacity:.4; }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-20px, -40px) rotate(180deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    main {
+      display: grid;
+      place-items: start center;
+      padding: 2rem 1rem 3rem;
+      width: 100%;
+      flex: 1 0 auto;
+    }
+
+    .card {
+      background: rgba(17,24,39,.75);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px;
+      padding: 2rem;
+      width: min(860px, 92%);
+      max-width: 95vw;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      transform: rotate(-1deg);
+      transition: transform .6s ease, box-shadow .6s ease;
+      backdrop-filter: saturate(110%) blur(1px);
+    }
+    .card:hover {
+      transform: rotate(0deg) scale(1.01);
+      box-shadow: 0 30px 90px rgba(0,0,0,.40);
+    }
+
+    .section {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 720px) {
+      .section {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .section h2 {
+      font-size: 1.25rem;
+      color: #fff;
+      margin: 0 0 .5rem;
+    }
+    .section p {
+      color: rgba(255,255,255,.92);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: .4rem .7rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.15);
+      font-size: .85rem;
+      color: #fff;
+      margin-right: .5rem;
+    }
+
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .35rem .65rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      margin-bottom: .75rem;
+    }
+
+    footer {
+      padding: 1.25rem;
+      text-align: center;
+      color: rgba(255,255,255,.75);
+      background: rgba(0,0,0,.15);
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,.15);
+      margin-top: auto;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: #fff;
+      text-decoration: none;
+      padding: .25rem .6rem;
+      border-radius: 6px;
+      transition: transform .2s ease;
+    }
+    .github-link:hover {
+      transform: translateY(-1px);
+    }
+    .github-icon {
+      width: 1.1em;
+      height: 1.1em;
+      display: inline-block;
+    }
+
+    /* accessibility prefers reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .glow, .title, .card, .glow { animation: none; }
+      body::before { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="orbs" aria-hidden="true">
+    <div class="orb"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+    <div class="orb o4"></div>
+  </div>
+
+  <header>
+    <h1 class="title" aria-label="amirabolfazle">amirabolfazle</h1>
+    <div class="subtitle">a personal page with a gradient theme and dynamic rotate effects</div>
+
+    <span class="creation" title="Creation timestamp">
+      Creation time: 2025-09-28 12:44:18
+    </span>
+  </header>
+
+  <main>
+    <section class="card" aria-label="About">
+      <div class="section">
+        <div>
+          <h2>About</h2>
+          <p>Welcome to this animated personal page. It features a gradient theme, rotating elements, and a touch of motion to bring a simple presence online to life.</p>
+        </div>
+        <div>
+          <h2>Tech</h2>
+          <p>HTML, CSS, and a sprinkle of motion. No heavy frameworks required.</p>
+        </div>
+      </div>
+      <div style="margin-top:1rem;">
+        <span class="chip">Gradient</span>
+        <span class="chip">Rotation</span>
+        <span class="chip">Animation</span>
+        <span class="chip">Accessible</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="22" height="22">
+        <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58 0-.29-.01-1.04-.01-2.04-2.72.59-3.29-1.22-3.29-1.22-.56-1.42-1.37-1.8-1.37-1.8-1.12-.76.08-.75.08-.75 1.24.09 1.89 1.27 1.89 1.27 1.04 1.78 2.73 1.27 3.4 0 .9-.76 1.3-1.27 2.01-1.56-.86-.12-1.77-.35-2.67-1.06-.03-.56-.43-1.06-.94-1.23 0 0-.76-.24-1.66.71-.1-.06-.22-.15-.36-.25-.18-.14-.38-.33-.62-.53-.56-.44-1.2-1-1.92-1.35-.85-.41-1.83-.8-2.85-.7-.9.11-1.62.63-2.04 1.27-.65 1-.65 2.9-.65 2.9-.18.9-.07 1.86.23 2.72.3.86 1.02 1.62 1.85 2.14.5.28 1.02.52 1.56.83.34.2.52.5.52.86 0 .54-.18.96-.34 1.33-.08.24-.21.49-.25.75-.1.66.22 1.28.84 1.28h7.4c.62 0 1-.62.87-1.28-.04-.26-.17-.51-.25-.75-.16-.37-.34-.79-.34-1.33 0-.36.18-.66.52-.86.54-.31 1.06-.55 1.56-.83a7.9 7.9 0 0 0 1.87-2.14c.3-.86.41-1.82.23-2.72 0 0 0-.9-.65-2.9-.3-.53-.7-1.04-1.55-1.37-1.12-.43-2.6-.74-3.82-1.2-.04-.01-.08-.02-.12-.04C13.2 1.03 12 0.5 12 .5Z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+</body>
+</html>
