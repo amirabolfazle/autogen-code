@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --bg2: #071029;
+      --glass: rgba(255,255,255,0.08);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent: rgba(137, 96, 255, 0.85);
+      --accent-2: rgba(85, 220, 255, 0.85);
+      --text: #e6eef8;
+      --muted: rgba(230,238,248,0.65);
+      --glass-border: rgba(255,255,255,0.12);
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(85,220,255,0.06), transparent 8%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(137,96,255,0.06), transparent 8%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+      overflow-y:auto;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:28px;
+      align-items:start;
+      animation:fadeInUp .9s ease both;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      box-shadow: 0 6px 22px rgba(84,78,255,0.18);
+      transform:translateZ(0);
+      position:relative;
+      overflow:hidden;
+      flex-shrink:0;
+      animation:logoFloat 6s ease-in-out infinite;
+    }
+
+    .logo span{font-family:monospace}
+    .title{
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+    .title h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.6px;
+    }
+    .title p{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    nav{
+      display:flex;
+      gap:12px;
+    }
+    .nav-btn{
+      background:transparent;
+      border:1px solid transparent;
+      color:var(--muted);
+      padding:10px 14px;
+      border-radius:10px;
+      font-size:13px;
+      cursor:pointer;
+      transition:all .2s ease;
+    }
+    .nav-btn:hover{
+      color:var(--text);
+      transform:translateY(-4px);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.5);
+    }
+
+    main{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:20px;
+      align-items:start;
+    }
+
+    .hero{
+      padding:28px;
+      border-radius:var(--radius);
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(137,96,255,0.14), rgba(85,220,255,0.09));
+      color:var(--text);
+      width:max-content;
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .hero h2{
+      margin:0;
+      font-size:28px;
+      letter-spacing:-0.6px;
+      color:var(--text);
+      line-height:1.05;
+      animation:fadeIn .9s ease both .15s;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+      animation:fadeIn .9s ease both .25s;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .chip{
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--glass-2);
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      animation:fadeIn .9s ease both .35s;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:6px;
+    }
+
+    .card{
+      padding:18px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%);
+      box-shadow: 0 6px 20px rgba(2,6,23,0.5);
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      animation:fadeIn .9s ease both;
+    }
+    .card .icon{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      display:inline-grid;
+      place-items:center;
+      background:linear-gradient(135deg, rgba(137,96,255,0.14), rgba(85,220,255,0.14));
+      color:white;
+      font-weight:700;
+      font-family:monospace;
+      font-size:16px;
+    }
+    .card h3{margin:0;font-size:15px}
+    .card p{margin:0;color:var(--muted);font-size:13px}
+
+    footer{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      justify-content:space-between;
+      padding:14px 18px;
+      border-radius:12px;
+      background:transparent;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .footer-left{display:flex;align-items:center;gap:12px}
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:all .18s ease;
+      border:1px solid transparent;
+    }
+    .github-link:hover{
+      color:var(--text);
+      transform:translateY(-3px);
+      background:linear-gradient(135deg, rgba(137,96,255,0.05), rgba(85,220,255,0.03));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .gh-icon{width:20px;height:20px;display:inline-block;fill:currentColor}
+
+    /* Animated floating shapes */
+    .float-shapes{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+    .shape{
+      position:absolute;
+      width:160px;
+      height:160px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.04), transparent 30%),
+                  conic-gradient(from 180deg at 50% 50%, rgba(137,96,255,0.06), rgba(85,220,255,0.06));
+      filter:blur(30px);
+      border-radius:40%;
+      transform-origin:center;
+      animation: drift 12s linear infinite;
+      opacity:0.9;
+    }
+    .shape.s1{top:-40px;left:-60px;animation-duration:16s}
+    .shape.s2{right:-60px;bottom:-40px;animation-duration:18s;border-radius:20%}
+    .shape.s3{right:40%;top:-80px;animation-duration:20s;opacity:0.7}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .title h1{font-size:18px}
+      .logo{width:48px;height:48px}
+    }
+    @media (max-width:600px){
+      .stage{gap:18px}
+      .grid{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start;gap:12px}
+      nav{width:100%;display:flex;justify-content:space-between}
+    }
+
+    /* Animations */
+    @keyframes drift{
+      0%{transform:translateY(0) rotate(0deg) scale(1)}
+      50%{transform:translateY(-18px) rotate(18deg) scale(1.08)}
+      100%{transform:translateY(0) rotate(0deg) scale(1)}
+    }
+    @keyframes logoFloat{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(6px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(12px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .shape, .logo{animation:none}
+      *{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" role="main" aria-labelledby="main-title">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>am</span></div>
+        <div class="title">
+          <h1 id="main-title">amirabolfazle</h1>
+          <p>Glassmorphism · Responsive · Animated</p>
+        </div>
+      </div>
+      <nav aria-label="Main navigation">
+        <button class="nav-btn" aria-pressed="false">Overview</button>
+        <button class="nav-btn" aria-pressed="false">Projects</button>
+        <button class="nav-btn" aria-pressed="false">Contact</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="float-shapes" aria-hidden="true">
+          <div class="shape s1"></div>
+          <div class="shape s2"></div>
+          <div class="shape s3"></div>
+        </div>
+
+        <div>
+          <div class="kicker">Welcome</div>
+        </div>
+
+        <h2 id="hero-title">A subtle glassmorphism landing — soft, modern, and responsive</h2>
+        <p>Designed with layered translucency, soft blurs and motion to give a contemporary UI feel. Resize the window to see responsive adjustments. Animations are gentle and non-intrusive.</p>
+
+        <div class="meta" role="status" aria-live="polite">
+          <div class="chip" title="Creation time">Created on: <strong style="margin-left:8px;color:var(--text)">2025-09-28 18:15:15</strong></div>
+          <div class="chip">Theme: Glassmorphism</div>
+          <div class="chip">Animations: Fade-in & subtle float</div>
+        </div>
+
+        <div class="grid" aria-label="Highlights">
+          <article class="card" style="animation-delay:.05s">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div class="icon">UI</div>
+              <div style="font-size:12px;color:var(--muted)">Design</div>
+            </div>
+            <h3>Polished UI</h3>
+            <p>Soft borders, translucent panels and gentle shadows create depth without clutter.</p>
+          </article>
+
+          <article class="card" style="animation-delay:.12s">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div class="icon">R</div>
+              <div style="font-size:12px;color:var(--muted)">Responsive</div>
+            </div>
+            <h3>Fully Responsive</h3>
+            <p>Grid and flex layouts adapt across devices from mobile to large screens.</p>
+          </article>
+
+          <article class="card" style="animation-delay:.19s">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div class="icon">A</div>
+              <div style="font-size:12px;color:var(--muted)">Animated</div>
+            </div>
+            <h3>Smooth Animations</h3>
+            <p>Fade-in and slow drifting shapes provide subtle motion to guide attention.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-left">
+          <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.76c0 4.9 3.16 9.06 7.57 10.52.55.1.75-.24.75-.53 0-.26-.01-1-.02-1.96-3.08.67-3.73-1.49-3.73-1.49-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.67.08-.67 1.1.08 1.68 1.14 1.68 1.14.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.46-.28-5.05-1.23-5.05-5.48 0-1.21.43-2.2 1.14-2.98-.11-.28-.5-1.41.11-2.95 0 0 .93-.3 3.05 1.14a10.68 10.68 0 0 1 2.78-.38c.94 0 1.88.13 2.78.38 2.12-1.44 3.05-1.14 3.05-1.14.61 1.54.22 2.67.11 2.95.71.78 1.14 1.77 1.14 2.98 0 4.25-2.6 5.19-5.08 5.47.39.34.73 1.01.73 2.03 0 1.47-.01 2.66-.01 3.02 0 .29.2.64.76.53 4.4-1.45 7.56-5.61 7.56-10.51C23.25 5.48 18.27.5 12 .5z"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </div>
+        <div style="color:var(--muted);font-size:13px">© 2025</div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Respect reduced motion: avoid runtime animations if user prefers reduced motion
+    (function(){
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced) return;
+      // Stagger fade-in animations for cards
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((c,i)=>{
+        c.style.animationDelay = (0.08 + i*0.06) + 's';
+      });
+      // Slightly animate nav buttons in sequence
+      const navBtns = document.querySelectorAll('.nav-btn');
+      navBtns.forEach((b,i)=> b.style.transitionDelay = (i*0.04)+'s');
+    })();
+  </script>
+</body>
+</html>
