@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bgStart: #1a1a2e;
+      --bgMid: #2a1e3b;
+      --bgEnd: #0b0f1a;
+      --fg: #ffffff;
+      --muted: rgba(255,255,255,.75);
+      --cta: #8a2be2;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--fg);
+      background: radial-gradient(1000px circle at 15% -10%, rgba(126, 87, 194, .25), transparent 40%),
+                  radial-gradient(800px circle at 90% 0%, rgba(0, 204, 255, .25), transparent 40%),
+                  linear-gradient(135deg, #1e1b3b 0%, #2a2a6a 45%, #0f0f1a 100%);
+      overflow-x: hidden;
+    }
+
+    /* Background decorative rotating orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(0);
+      opacity: .5;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: rotate 40s linear infinite;
+    }
+    .orb.o1 { width: 380px; height: 380px; top: -120px; left: -60px;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 105, 180, .9), rgba(255,105,180,.0) 60%),
+                  linear-gradient(135deg, rgba(255, 105, 180, .8), rgba(0, 204, 255, .4));
+      animation-duration: 60s;
+    }
+    .orb.o2 { width: 260px; height: 260px; bottom: -100px; right: -80px;
+      background: radial-gradient(circle at 40% 40%, rgba(0, 255, 170, .9), rgba(0,255,170,.0) 60%),
+                  linear-gradient(135deg, rgba(0, 255, 170, .6), rgba(0, 120, 255, .5));
+      animation-duration: 50s;
+    }
+    .orb.o3 { width: 180px; height: 180px; top: 40%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .75), rgba(255,255,255,.0) 60%),
+                  radial-gradient(circle at 50% 50%, rgba(0, 204, 255, .6), rgba(0, 0, 0, 0) 60%);
+      animation-duration: 70s;
+      opacity: .3;
+    }
+    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* Layout */
+    .wrap { position: relative; min-height: 100vh; display: grid; place-items: center; padding: 0 20px; text-align: center; }
+    .content {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      padding: 48px 28px;
+      border-radius: 20px;
+      background: rgba(10, 12, 20, 0.42);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    h1.title {
+      font-size: clamp(40px, 7vw, 88px);
+      line-height: 0.95;
+      margin: 0 0 12px;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #ffffff 0%, #c6f7ff 40%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 18px rgba(0,0,0,.25);
+    }
+
+    .gradient-sub {
+      font-size: clamp(14px, 2.6vw, 18px);
+      color: var(--muted);
+      margin: 0 0 22px;
+    }
+
+    .cta {
+      display: inline-block;
+      padding: 14px 26px;
+      font-size: 16px;
+      color: #0a0a0a;
+      background: linear-gradient(135deg, #ffffff, #d9e4ff);
+      border: none;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.25); }
+
+    .meta {
+      margin-top: 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #e8e8e8;
+      opacity: .9;
+    }
+
+    /* Creation time badge style */
+    .creation-time {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 12px;
+      color: #f0f6ff;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 16px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    footer > a, footer > span {
+      pointer-events: auto;
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #e8e8e8;
+      text-decoration: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 14px;
+    }
+    footer svg { width: 20px; height: 20px; fill: currentColor; }
+
+    /* Small screens adjustments */
+    @media (max-width: 600px) {
+      .wrap { padding-top: 20px; }
+      .creation-time { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" aria-label="Landing hero">
+    <!-- decorative rotating orbs -->
+    <div class="orb o1" aria-hidden="true"></div>
+    <div class="orb o2" aria-hidden="true"></div>
+    <div class="orb o3" aria-hidden="true"></div>
+
+    <main class="content">
+      <h1 class="title gradient-text" aria-label="amirabolfazle">amirabolfazle</h1>
+      <p class="gradient-sub" aria-label="Subtitle">
+        A stunning landing page with gradient vibes and subtle rotate effects.
+      </p>
+
+      <a href="#learn" class="cta" aria-label="Explore amirabolfazle">Explore</a>
+
+      <div class="creation-time" aria-label="Creation time">
+        Creation Time: 2025-09-28 05:38:41
+      </div>
+      <div class="meta" aria-hidden="true" style="margin-top:8px;">
+        Gradient theme • Rotating visuals • Inline GitHub link in the footer
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository - amirabolfazle/autogen-code">
+      <!-- GitHub icon (inline SVG) -->
+      <svg viewBox="0 0 24 24" role="img" aria-label="GitHub icon" focusable="false">
+        <path d="M12 .5A12 12 0 0 0 0 12.5c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.26.82-.58 0-.287-.01-1.046-.016-2.053-3.338.726-4.042-1.613-4.042-1.613-.546-1.389-1.333-1.759-1.333-1.759-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.494.997.108-.776.419-1.303.762-1.601-2.665-.304-5.466-1.333-5.466-5.93 0-1.31.469-2.381 1.236-3.221-.124-.304-.536-1.533.117-3.196 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 0 1 3.003-.405 11.5 11.5 0 0 1 3.003.405c2.293-1.552 3.301-1.23 3.301-1.23.654 1.663.242 2.892.118 3.196.77.84 1.235 1.911 1.235 3.221 0 4.609-2.804 5.623-5.476 5.921.431.37.815 1.102.815 2.222 0 1.606-.015 2.899-.015 3.293 0 .32.216.695.825.578A12.01 12.01 0 0 0 24 12.5 12 12 0 0 0 12 .5z" />
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
