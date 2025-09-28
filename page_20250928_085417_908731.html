@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg2: #0b1020;
+      --card: rgba(255, 255, 255, 0.08);
+      --cardBorder: rgba(255, 255, 255, 0.18);
+      --text: #f8faff;
+      --muted: rgba(248, 250, 255, 0.75);
+      --gradA: #ff7ab6;
+      --gradB: #7df2ff;
+      --gradC: #ffd166;
+      --gradD: #7dffa5;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* Animated gradient background */
+    body { 
+      background: linear-gradient(-45deg, rgba(255,122,182,.25), rgba(125,242,255,.25), rgba(255,209,102,.25), rgba(125,255,165,.25), rgba(255,122,182,.25));
+      background-size: 400% 400%;
+      animation: gradientBG 16s ease infinite;
+      position: relative;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating color blobs for depth */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      filter: blur(60px);
+      border-radius: 50%;
+      z-index: 0;
+      opacity: .5;
+      mix-blend-mode: screen;
+      transform: translate3d(0,0,0);
+      pointer-events: none;
+    }
+    body::before {
+      left: -120px;
+      bottom: -160px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,122,182,.9), rgba(255,122,182,0) 60%);
+      animation: floatBlob 16s ease-in-out infinite;
+    }
+    body::after {
+      right: -120px;
+      top: -120px;
+      background: radial-gradient(circle at 30% 30%, rgba(125,242,255,.9), rgba(125,242,255,0) 60%);
+      animation: floatBlob 20s ease-in-out infinite reverse;
+    }
+    @keyframes floatBlob {
+      0% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(40px,-20px,0) scale(1.05); }
+      100% { transform: translate3d(0,0,0) scale(1); }
+    }
+
+    /* Layout */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 20px 40px 20px;
+    }
+
+    header.hero {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    .name {
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      line-height: 1;
+      margin: 0;
+      text-transform: lowercase;
+      font-weight: 800;
+      letter-spacing: .5rem;
+      background: linear-gradient(90deg, var(--gradA), var(--gradB), var(--gradC), var(--gradD));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 20px rgba(0,0,0,.15);
+      animation: headlineZoom 1s ease-out forwards;
+      transform-origin: center;
+      transform: scale(0.98);
+    }
+
+    @keyframes headlineZoom {
+      to { transform: scale(1); }
+    }
+
+    .tagline {
+      margin-top: 14px;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+
+    .creation-time {
+      margin-top: 12px;
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas,"Liberation Mono","Courier New", monospace;
+      color: #e8e8e8;
+      opacity: .9;
+      font-size: .9rem;
+    }
+
+    main.grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: start;
+      margin-top: 28px;
+    }
+
+    @media (min-width: 760px) {
+      main.grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--cardBorder);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+      transform: translateY(8px) scale(0.98);
+      opacity: 0;
+      animation: reveal 0.6s ease forwards;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+      letter-spacing: .04em;
+    }
+
+    .card p {
+      color: #eef4ff;
+      line-height: 1.6;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .card li {
+      margin: 6px 0;
+    }
+
+    /* Light hover zoom for cards */
+    .card:hover {
+      transform: translateY(0) scale(1.02);
+      transition: transform 0.25s ease;
+    }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Simple footer with icon and text */
+    footer.footer {
+      margin-top: 40px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #dbe7ff;
+      font-family: ui-sans-serif, system-ui;
+    }
+
+    .gh {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(135deg, #333, #111);
+      box-shadow: inset 0 0 0 rgba(0,0,0,0);
+      transition: transform 0.2s ease;
+    }
+
+    .gh:hover { transform: scale(1.05); }
+
+    .gh svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+      color: #fff;
+    }
+
+    .credit {
+      font-size: .95rem;
+      color: #eaf0ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero" aria-label="Intro">
+      <h1 class="name">amirabolfazle</h1>
+      <p class="tagline">Creative Developer • Frontend Enthusiast</p>
+      <div class="creation-time">Creation time: 2025-09-28 08:53:49</div>
+    </header>
+
+    <main class="grid" aria-label="Content sections">
+      <section class="card" aria-label="About section">
+        <h2>About</h2>
+        <p>Hi, I’m amirabolfazle. This is a fancy, animated personal page with a gradient theme and zoom effects. It showcases a little bit about me and my work, with a playful spirit and a touch of motion.</p>
+      </section>
+
+      <section class="card" aria-label="Projects section">
+        <h2>Projects</h2>
+        <ul>
+          <li>Autogen Code — a lightweight code generation playground</li>
+          <li>Gradient Studio — design-friendly UI experiments</li>
+          <li>Animation Toolkit — small, reusable motion components</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer" aria-label="Footer">
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" aria-label="GitHub repository">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" role="img">
+        <path d="M12 0C5.373 0 0 5.373 0 12a12 12 0 008.207 11.386c.6.111.817-.26.817-.577v-2.045c-3.34.727-4.033-1.607-4.033-1.607-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.83 2.809 1.302 3.495.995.107-.773.42-1.303.764-1.603-2.665-.304-5.467-1.333-5.467-5.931 0-1.31.467-2.381 1.235-3.221-.125-.304-.535-1.527.117-3.183 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 013-.404c1.02.004 2.045.137 3 .403 2.29-1.552 3.296-1.23 3.296-1.23.653 1.656.243 2.879.12 3.183.77.84 1.234 1.911 1.234 3.221 0 4.609-2.807 5.624-5.479 5.921.43.37.814 1.102.814 2.222v3.293c0 .322.218.694.825.576A12 12 0 0012 0z"/>
+      </svg>
+    </a>
+    <span class="credit">Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
