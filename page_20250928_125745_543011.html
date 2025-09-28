@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle — Portfolio</title>
+  <style>
+    :root{
+      --bg: #f8f1f9;
+      --bg2: #f6f3f9;
+      --card: #ffffff;
+      --ink: #2a2a2a;
+      --p1: #ffd9e5; /* pastel pink */
+      --p2: #d9f2ff; /* pastel blue */
+      --p3: #e6ffd9; /* pastel mint */
+      --p4: #efe0ff; /* pastel lavender */
+      --shadow: rgba(0,0,0,.08);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
+      color: var(--ink);
+      background: radial-gradient( circle at 20% -10%, rgba(255,210,230,.35), transparent 40% ),
+                  radial-gradient( circle at 100% 0%, rgba(210,245,255,.35), transparent 40% ),
+                  linear-gradient(135deg, var(--bg), var(--bg2) 60%, #fff);
+      overflow-x: hidden;
+    }
+
+    /* decorative rotating shapes in the background */
+    .orb {
+      position: fixed;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      filter: blur(0.5px);
+      opacity: 0.6;
+      z-index: 0;
+      animation: spin 40s linear infinite;
+      mix-blend-mode: multiply;
+    }
+    .orb.o1 { left: -60px; top: 40vh; background: #ffc5d3; }
+    .orb.o2 { right: -90px; bottom: 25vh; background: #c6f5ff; width: 320px; height: 320px; animation-duration: 60s; opacity: 0.5; }
+    .orb.o3 { left: 40vw; top: -90px; background: #e3ffd8; width: 280px; height: 280px; animation-duration: 50s; opacity: 0.5; }
+
+    @keyframes spin {
+      from { transform: rotate(0deg) translateZ(0); }
+      to { transform: rotate(360deg) translateZ(0); }
+    }
+
+    header.hero {
+      position: relative;
+      padding: 72px 20px 48px;
+      text-align: center;
+      z-index: 1;
+    }
+    .brand {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,255,255,.6));
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    }
+    h1 {
+      margin: 16px 0 6px;
+      font-size: 48px;
+      letter-spacing: .5px;
+      color: #3a3a3a;
+      text-transform: none;
+      text-shadow: 0 1px 0 rgba(255,255,255,.8);
+    }
+    .tagline {
+      margin: 0;
+      font-size: 15px;
+      color: #6b6b6b;
+    }
+
+    /* creation time badge */
+    .creation-time {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      background: rgba(255,255,255,.8);
+      border: 1px solid rgba(0,0,0,.05);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #555;
+      backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+
+    main.container {
+      position: relative;
+      z-index: 1;
+      padding: 0 16px 60px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 22px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 8px 20px var(--shadow);
+      transition: transform .6s cubic-bezier(.22,.61,.36,1), box-shadow .6s;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      position: relative;
+      min-height: 180px;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: rotateY(8deg) rotateX(4deg);
+      box-shadow: 0 18px 28px rgba(0,0,0,.12);
+    }
+
+    .card .thumb {
+      height: 92px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--p2), var(--p4) 60%, var(--p1));
+      margin-bottom: 12px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.95);
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    .card h3 { margin: 0 0 6px; font-size: 16px; }
+    .card p { margin: 0 0 12px; color: #555; font-size: 13.5px; line-height: 1.4; }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      text-decoration: none;
+      color: #1a1a1a;
+      background: linear-gradient(135deg, #fff 0%, #f7f7f7 100%);
+      border: 1px solid #eee;
+      transition: transform .3s;
+    }
+    .cta:hover { transform: translateY(-1px); }
+
+    /* decorative tilt on cards inner content for extra depth */
+    .card .content {
+      transform: translateZ(20px);
+    }
+
+    footer.site {
+      text-align: center;
+      padding: 28px 12px;
+      color: #666;
+      font-size: 13px;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #333;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #e6e6e6;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
+    }
+    .github-link:hover { background: #f8f9fa; }
+
+    .github-icon {
+      width: 16px; height: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      color: #333;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 720px) {
+      h1 { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- decorative rotating pastel orbs -->
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <div class="creation-time" aria-live="polite">Creation time: 2025-09-28 12:57:16</div>
+
+  <header class="hero" role="banner">
+    <div class="brand" aria-label="Brand badge">
+      <span style="font-weight:700; letter-spacing:.4px; font-size:14px; color:#555;">portfolio</span>
+    </div>
+    <h1>amirabolfazle</h1>
+    <p class="tagline">Pastel-themed portfolio with rotate effects • single-file HTML</p>
+  </header>
+
+  <main class="container" role="main">
+    <section class="grid" aria-label="Projects">
+      <article class="card" style="--rotate:6deg;">
+        <div class="thumb" aria-label="Aurora UI thumbnail" style="background: linear-gradient(135deg, #ffd6e4, #d6f5ff 70%);">Aurora UI</div>
+        <div class="content">
+          <h3>Aurora UI</h3>
+          <p>Delightful interface components with soft motion and accessible contrast.</p>
+          <a class="cta" href="#" aria-label="View Aurora UI project">View project</a>
+        </div>
+      </article>
+
+      <article class="card" style="--rotate:-6deg;">
+        <div class="thumb" aria-label="Calm Canvas thumbnail" style="background: linear-gradient(135deg, #d9f2ff, #e6ffd9 70%);">Calm Canvas</div>
+        <div class="content">
+          <h3>Calm Canvas</h3>
+          <p>Minimal visuals with fluid transitions and pastel-inspired palettes.</p>
+          <a class="cta" href="#" aria-label="View Calm Canvas project">View project</a>
+        </div>
+      </article>
+
+      <article class="card" style="--rotate:4deg;">
+        <div class="thumb" aria-label="Pastel Pulse thumbnail" style="background: linear-gradient(135deg, #e3ffd8, #ffd9e5 60%);">Pastel Pulse</div>
+        <div class="content">
+          <h3>Pastel Pulse</h3>
+          <p>Micro-interactions that feel gentle and uplifting for modern UI.</p>
+          <a class="cta" href="#" aria-label="View Pastel Pulse project">View project</a>
+        </div>
+      </article>
+
+      <article class="card" style="--rotate:-4deg;">
+        <div class="thumb" aria-label="Soft Shadow thumbnail" style="background: linear-gradient(135deg, #fbd1ff, #d9f2ff 70%);">Soft Shadow</div>
+        <div class="content">
+          <h3>Soft Shadow</h3>
+          <p>Typography and shadows tuned for readability and calm aesthetics.</p>
+          <a class="cta" href="#" aria-label="View Soft Shadow project">View project</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site" role="contentinfo" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg class="github-icon" viewBox="0 0 16 16" aria-label="GitHub" fill="currentColor" role="img" width="16" height="16">
+        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.75-.02-2.16-.03-3.37-2 .37-2.53-.49-2.53-.49-.36-.92-.88-1.17-.88-1.17-.72-.49.06-.48.06-.48.8.06 1.22.83 1.22.83.71 1.22 1.86.87 2.32.66.07-.52.28-.87.51-1.07-1.6-.18-3.29-.8-3.29-3.56 0-.78.28-1.42.74-1.92-.07-.18-.32-.92.07-1.92 0 0 .6-.19 1.96.73a6.7 6.7 0 012.04-.27c.61-.01 1.23.08 1.81.24 1.36-.92 1.96-.73 1.96-.73.39 1 .15 1.74.07 1.92.46.5.74 1.14.74 1.92 0 2.77-1.69 3.38-3.3 3.56.29.25.55.74.55 1.5 0 1.08-.01 1.95-.01 2.21 0 .21.15.46.56.38A8 8 0 008 0z" clip-rule="evenodd" />
+      </svg>
+      <span>https://github.com/amirabolfazle/autogen-code</span>
+      <span aria-hidden="true">•</span>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
