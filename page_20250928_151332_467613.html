@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #fdf6ff;
+      --bg-2: #f2fff3;
+      --accent-a: #ffd6e0;
+      --accent-b: #cbe7ff;
+      --accent-c: #fff1b8;
+      --glass: rgba(255,255,255,0.6);
+      --muted: #6b6b6b;
+      --card-shadow: 0 10px 30px rgba(17,24,39,0.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--accent-a) 0%, transparent 20%),
+                  radial-gradient(900px 500px at 90% 90%, var(--accent-b) 0%, transparent 18%),
+                  linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+    }
+
+    /* Floating rotating pastel shapes */
+    .float-layer {position:absolute; inset:0; pointer-events:none; overflow:hidden;}
+    .blob{
+      position:absolute;
+      filter:blur(18px) saturate(120%);
+      opacity:.9;
+      transform-origin:center;
+      mix-blend-mode:screen;
+      border-radius:48px;
+    }
+    .blob.a{width:360px;height:360px; left:-120px; top:-80px; background:linear-gradient(135deg,#ffd6e0,#ffc9e6); animation:slow-rotate 28s linear infinite;}
+    .blob.b{width:280px;height:280px; right:-100px; top:60px; background:linear-gradient(135deg,#cbe7ff,#d7f1ff); animation:slow-rotate 22s linear reverse infinite;}
+    .blob.c{width:220px;height:220px; left:20%; bottom:-80px; background:linear-gradient(135deg,#fff1b8,#fff7d1); animation:slow-rotate 35s linear infinite;}
+    @keyframes slow-rotate{
+      from{transform:rotate(0deg) translateZ(0) scale(1)}
+      to{transform:rotate(360deg) translateZ(0) scale(1)}
+    }
+
+    /* Center card */
+    .card-wrap{
+      position:relative;
+      width:980px;
+      max-width:100%;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      justify-content:center;
+      z-index:2;
+    }
+    .card{
+      flex:1 1 480px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.66));
+      border-radius:20px;
+      padding:32px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.6);
+      position:relative;
+      overflow:hidden;
+      transform-style:preserve-3d;
+      transition:transform .55s cubic-bezier(.2,.9,.25,1);
+    }
+    .card:hover{transform:translateY(-8px) rotateX(6deg) rotateY(-6deg)}
+    .title{
+      font-size:36px;
+      font-weight:700;
+      margin:0 0 6px 0;
+      letter-spacing:0.6px;
+      color:#222;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin:0 0 18px 0;
+      font-weight:400;
+    }
+    .avatar{
+      width:96px;
+      height:96px;
+      border-radius:22px;
+      background:linear-gradient(135deg,#fff,#f7f7ff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#222;
+      font-size:28px;
+      box-shadow:0 6px 20px rgba(17,24,39,0.06);
+      margin-right:14px;
+      flex-shrink:0;
+      transform:translateZ(30px);
+    }
+    .header-row{display:flex; align-items:center; gap:12px;}
+    .intro{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    /* Right panel with rotating cards */
+    .side{
+      width:320px;
+      min-width:220px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:stretch;
+    }
+    .tile{
+      background:linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.58));
+      border-radius:14px;
+      padding:18px;
+      box-shadow: var(--card-shadow);
+      border:1px solid rgba(255,255,255,0.6);
+      position:relative;
+      overflow:hidden;
+      transform-origin:center;
+    }
+    .rotate-wrap{display:flex; gap:12px; align-items:center;}
+    .ticker{
+      display:inline-block;
+      padding:8px 10px;
+      background:linear-gradient(90deg,#fff,#faf9ff);
+      border-radius:10px;
+      font-weight:600;
+      color:#333;
+      box-shadow:0 6px 18px rgba(17,24,39,0.06);
+    }
+    .rotor{
+      width:52px;height:52px;border-radius:12px;
+      display:inline-flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#e6f6ff,#fff7f0);
+      animation:spin 6s linear infinite;
+      box-shadow:0 6px 20px rgba(17,24,39,0.06);
+    }
+    .rotor:hover{animation-play-state:paused; transform:scale(1.06) rotate(12deg)}
+    @keyframes spin{from{transform:rotate(0deg)} to{transform:rotate(360deg)}}
+
+    /* About and links */
+    .about{color:#333; line-height:1.5; margin-top:6px;}
+    .links{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;}
+    .link{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      background:rgba(255,255,255,0.8); color:#222; font-weight:600; text-decoration:none;
+      box-shadow:0 6px 18px rgba(17,24,39,0.04);
+      transform:translateZ(10px);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .link:hover{transform:translateY(-6px); box-shadow:0 16px 40px rgba(17,24,39,0.08)}
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:24px; right:24px; bottom:18px;
+      display:flex;justify-content:center;align-items:center;
+      gap:12px; z-index:9;
+    }
+    .footer-card{
+      background:linear-gradient(90deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
+      border-radius:999px; padding:8px 14px; display:flex; gap:10px; align-items:center;
+      box-shadow:0 10px 30px rgba(17,24,39,0.06);
+      border:1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(6px);
+    }
+    .gh-link{display:inline-flex;gap:8px;align-items:center;text-decoration:none;color:#222;font-weight:600}
+    .gh-icon{width:20px;height:20px;display:inline-block;vertical-align:middle;fill:#222}
+
+    /* small responsive tweaks */
+    @media (max-width:880px){
+      .card-wrap{flex-direction:column; padding:20px;}
+      .side{width:100%}
+      footer{left:12px;right:12px}
+    }
+
+    /* subtle decorative rotating ring */
+    .ring{
+      position:absolute;
+      width:420px;height:420px;border-radius:50%;
+      border:8px solid rgba(255,255,255,0.14);
+      top:-130px; right:-140px;
+      transform-origin:center;
+      animation:slow-rotate 60s linear infinite;
+      pointer-events:none;
+      z-index:1;
+      filter:blur(2px);
+    }
+
+    .creation-time{
+      margin-top:14px;
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="float-layer" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+    <div class="ring"></div>
+  </div>
+
+  <main class="card-wrap" role="main" aria-labelledby="page-title">
+    <section class="card" aria-labelledby="profile-title">
+      <div class="header-row">
+        <div class="avatar" aria-hidden="true">am</div>
+        <div class="intro">
+          <h1 id="profile-title" class="title">amirabolfazle</h1>
+          <div class="subtitle">Designer • Builder • Curious Mind</div>
+          <p class="about">A pastel playground for ideas, experiments and tiny animations. This space rotates a little, breathes a little, and keeps a timestamp for posterity.</p>
+          <div class="links" role="navigation" aria-label="links">
+            <a class="link" href="mailto:hello@amirabolfazle.example" title="Email">✉️ Email</a>
+            <a class="link" href="https://twitter.com/amirabolfazle" title="Twitter">🐦 Twitter</a>
+            <a class="link" href="#projects" title="Projects">📁 Projects</a>
+          </div>
+          <div class="creation-time" aria-label="creation time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v6l4 2" stroke="#6b6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="#6b6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            2025-09-28 15:12:49
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px; display:flex; gap:14px; align-items:flex-start;">
+        <div style="flex:1;">
+          <div style="height:160px; border-radius:12px; background:linear-gradient(135deg,#fff,#fbfdff); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(17,24,39,0.04); border:1px solid rgba(255,255,255,0.6)">
+            <div style="text-align:center; color:#666;">Interactive demo placeholder<br><small style="color:#9aa">Hover elements to pause rotations</small></div>
+          </div>
+          <div style="display:flex; gap:12px; margin-top:12px;">
+            <div style="flex:1; padding:12px; background:linear-gradient(180deg,#fff,#fffdfc); border-radius:12px; box-shadow:var(--card-shadow); border:1px solid rgba(255,255,255,0.6)">
+              <div style="font-weight:700; color:#222">Skills</div>
+              <div style="margin-top:8px; color:var(--muted)">UI, Motion, Prototyping, Frontend</div>
+            </div>
+            <div style="width:120px; padding:12px; background:linear-gradient(180deg,#fff,#fffdfc); border-radius:12px; box-shadow:var(--card-shadow); border:1px solid rgba(255,255,255,0.6)">
+              <div style="font-weight:700; color:#222">Status</div>
+              <div style="margin-top:8px; color:#1b8a6b">Open for work</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="side" aria-label="widgets">
+          <div class="tile" title="rotating tile" role="region" aria-label="rotating widget">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <div style="font-weight:700; color:#222">Recent</div>
+                <div style="color:var(--muted); margin-top:6px">Small experiments & notes</div>
+              </div>
+              <div class="rotate-wrap">
+                <div class="ticker">v1.2</div>
+                <div class="rotor" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="#4b5563" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:12px; display:flex; gap:8px; color:var(--muted); font-size:14px;">
+              <div style="flex:1">- micro UI motion</div>
+              <div style="flex:1">- color experiments</div>
+            </div>
+          </div>
+
+          <div class="tile" style="display:flex; gap:12px; align-items:center;">
+            <div style="flex:1">
+              <div style="font-weight:700; color:#222">Quick Links</div>
+              <div style="margin-top:8px; color:var(--muted)">Shortcuts to projects and notes</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <a class="link" href="#designs" style="padding:8px 10px; font-size:13px">🎨 Designs</a>
+              <a class="link" href="#code" style="padding:8px 10px; font-size:13px">💻 Code</a>
+            </div>
+          </div>
+
+          <div class="tile" aria-hidden="false">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div style="font-weight:700; color:#222">Contact</div>
+              <div style="color:var(--muted); font-size:13px">Available</div>
+            </div>
+            <div style="margin-top:10px; color:var(--muted); font-size:14px">If you'd like to collaborate, drop a line and say hi!</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-card" role="contentinfo">
+      <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.68 3.03 8.65 7.24 10.05.53.1.72-.23.72-.51 0-.25-.01-.92-.01-1.79-2.95.64-3.58-1.26-3.58-1.26-.48-1.22-1.18-1.55-1.18-1.55-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.62 2.47 1.15 3.07.88.09-.68.37-1.15.67-1.41-2.35-.27-4.82-1.17-4.82-5.21 0-1.15.41-2.09 1.08-2.83-.11-.27-.47-1.37.1-2.85 0 0 .88-.28 2.88 1.08a9.9 9.9 0 0 1 2.62-.35c.89 0 1.78.12 2.62.35 2-.36 2.88-1.08 2.88-1.08.57 1.48.21 2.58.1 2.85.67.74 1.08 1.68 1.08 2.83 0 4.05-2.48 4.94-4.84 5.19.38.33.72.99.72 1.99 0 1.44-.01 2.6-.01 2.96 0 .28.19.62.73.51 4.21-1.41 7.24-5.37 7.24-10.05C23.1 5.33 18.27.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </div>
+  </footer>
+</body>
+</html>
