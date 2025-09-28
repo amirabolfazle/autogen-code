@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#07060a;
+      --neon-cyan:#00f6ff;
+      --neon-pink:#ff3ecb;
+      --neon-purple:#8a5cff;
+      --glass: rgba(255,255,255,0.03);
+      --card: rgba(255,255,255,0.02);
+      --accent: 1px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      padding:0;
+      min-height:100%;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:
+        radial-gradient(600px 300px at 10% 20%, rgba(138,92,255,0.08), transparent 10%),
+        radial-gradient(500px 300px at 90% 80%, rgba(0,246,255,0.06), transparent 15%),
+        linear-gradient(180deg, rgba(9,8,13,1) 0%, rgba(3,2,6,1) 100%);
+      color:#e7eefc;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      overflow-x:hidden;
+    }
+
+    /* Animated neon background movement */
+    @keyframes floatBG {
+      0%{transform: translateY(0) scale(1)}
+      50%{transform: translateY(-10px) scale(1.02)}
+      100%{transform: translateY(0) scale(1)}
+    }
+    body::before{
+      content:'';
+      position:fixed;
+      inset:-20%;
+      background:
+        radial-gradient(800px 400px at 20% 10%, rgba(255,62,203,0.035), transparent 15%),
+        radial-gradient(700px 350px at 80% 90%, rgba(0,246,255,0.03), transparent 12%);
+      filter:blur(30px) saturate(120%);
+      z-index:0;
+      animation: floatBG 9s ease-in-out infinite;
+      pointer-events:none;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+      align-items:center;
+      padding:28px;
+    }
+
+    .neon-header{
+      text-align:center;
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .badge {
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:999px;
+      padding:8px 14px;
+      color:var(--neon-cyan);
+      font-weight:600;
+      letter-spacing:0.6px;
+      border:1px solid rgba(0,246,255,0.06);
+      box-shadow: 0 6px 30px rgba(0,246,255,0.04), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px) saturate(120%);
+      font-size:14px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(36px,6vw,68px);
+      line-height:0.92;
+      letter-spacing:1px;
+      color:transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple));
+      background-clip: text;
+      -webkit-background-clip: text;
+      text-shadow:
+        0 0 6px rgba(255,62,203,0.18),
+        0 0 18px rgba(0,246,255,0.06),
+        0 10px 30px rgba(0,0,0,0.6);
+      transform-origin:center;
+      animation: bounce 2s cubic-bezier(.2,.9,.3,1) infinite;
+      display:inline-block;
+      padding:6px 8px;
+    }
+
+    @keyframes bounce {
+      0%{transform:translateY(0) scale(1)}
+      20%{transform:translateY(-12px) scale(1.03)}
+      40%{transform:translateY(0) scale(0.995)}
+      60%{transform:translateY(-6px) scale(1.01)}
+      80%{transform:translateY(0) scale(0.999)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .subtitle{
+      color:rgba(231,238,252,0.8);
+      font-size:clamp(14px,2.2vw,18px);
+      margin-top:6px;
+      text-align:center;
+      max-width:900px;
+      line-height:1.4;
+      filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+    }
+
+    .glass-card{
+      width:100%;
+      display:flex;
+      gap:20px;
+      align-items:center;
+      justify-content:space-between;
+      padding:22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 40px rgba(2,2,4,0.6), 0 0 40px rgba(128,67,255,0.03);
+      backdrop-filter: blur(8px) saturate(120%);
+      max-width:980px;
+      flex-wrap:wrap;
+    }
+
+    .left{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      min-width:0;
+      flex:1 1 360px;
+    }
+
+    .avatar{
+      width:84px;
+      height:84px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6), 0 0 20px rgba(138,92,255,0.06);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .avatar svg{width:52px;height:52px;filter:drop-shadow(0 6px 22px rgba(0,246,255,0.06));}
+    .name-block{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .display{
+      font-weight:700;
+      font-size:18px;
+      color:linear-gradient(#fff,#eee);
+      background:linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+      background-clip:text;
+      -webkit-background-clip:text;
+      color:transparent;
+      text-shadow:0 0 12px rgba(255,62,203,0.12);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .meta{
+      font-size:13px;
+      color:rgba(231,238,252,0.68);
+    }
+
+    .right{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:flex-end;
+      flex:0 0 auto;
+      flex-wrap:wrap;
+    }
+
+    .time-pill{
+      font-weight:600;
+      font-size:13px;
+      color:var(--neon-pink);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,62,203,0.08);
+      background:linear-gradient(90deg, rgba(255,62,203,0.03), rgba(138,92,255,0.02));
+      box-shadow:0 8px 30px rgba(255,62,203,0.03), 0 0 18px rgba(138,92,255,0.02);
+    }
+
+    .pulse-dot{
+      width:12px;height:12px;border-radius:50%;
+      background:linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+      box-shadow:0 0 10px rgba(0,246,255,0.18), 0 0 30px rgba(255,62,203,0.08);
+      animation: pulse 2s infinite;
+      border:1px solid rgba(255,255,255,0.06);
+    }
+    @keyframes pulse{
+      0%{transform:scale(0.9); opacity:0.95}
+      50%{transform:scale(1.25); opacity:1}
+      100%{transform:scale(0.9); opacity:0.95}
+    }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      color:rgba(231,238,252,0.7);
+      font-size:13px;
+      width:100%;
+    }
+    .gh-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 12px;
+      border-radius:999px;
+      transition:transform .18s ease, box-shadow .18s ease;
+      border:1px solid rgba(255,255,255,0.03);
+      background:linear-gradient(90deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+    }
+    .gh-link:hover{transform:translateY(-4px); box-shadow:0 18px 60px rgba(0,246,255,0.04), 0 8px 30px rgba(138,92,255,0.02)}
+    .gh-icon{
+      width:18px;height:18px;display:inline-block;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+    }
+    .created-by{opacity:0.85; font-weight:600; color:rgba(231,238,252,0.85)}
+    .footer-wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;width:100%;max-width:980px}
+
+    /* small animated accent elements */
+    .accent-blob{
+      position:absolute;
+      border-radius:999px;
+      filter:blur(28px) saturate(130%);
+      opacity:0.9;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .blob-a{
+      width:220px;height:220px; left:8%; top:6%;
+      background: linear-gradient(90deg, rgba(255,62,203,0.12), rgba(138,92,255,0.08));
+      animation: driftA 12s linear infinite;
+    }
+    .blob-b{
+      width:300px;height:300px; right:6%; bottom:10%;
+      background: linear-gradient(90deg, rgba(0,246,255,0.11), rgba(138,92,255,0.07));
+      animation: driftB 14s linear infinite;
+    }
+    @keyframes driftA{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-18px) translateX(10px)}100%{transform:translateY(0) translateX(0)}}
+    @keyframes driftB{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(20px) translateX(-14px)}100%{transform:translateY(0) translateX(0)}}
+
+    /* responsive tweaks */
+    @media (max-width:720px){
+      .glass-card{padding:16px; gap:12px}
+      .right{justify-content:flex-start;width:100%}
+      .left{flex-basis:100%}
+      footer{font-size:12px}
+    }
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      *{animation: none !important; transition: none !important}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="blob-a accent-blob" aria-hidden="true"></div>
+  <div class="blob-b accent-blob" aria-hidden="true"></div>
+
+  <div class="wrap" role="main">
+    <div class="neon-header" aria-hidden="false">
+      <div class="badge">amirabolfazle</div>
+      <h1 aria-label="amirabolfazle neon heading">amirabolfazle</h1>
+    </div>
+
+    <p class="subtitle">A neon-themed responsive showcase with lively bounce effects and glassy accents. Enjoy the subtle glow, floating color blobs and a soothing, animated header.</p>
+
+    <section class="glass-card" aria-labelledby="profileTitle">
+      <div class="left">
+        <div class="avatar" aria-hidden="true">
+          <!-- stylized logo -->
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#ff3ecb"/>
+                <stop offset="1" stop-color="#00f6ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="8" y="8" width="240" height="240" rx="30" fill="none" stroke="url(#g1)" stroke-width="12" opacity="0.14"/>
+            <path d="M74 173c18-28 36-42 54-42s36 14 54 42" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="128" cy="92" r="34" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="name-block">
+          <div id="profileTitle" class="display">amirabolfazle</div>
+          <div class="meta">Neon UI & animations · Responsive design · Created: 2025-09-29 00:46:11</div>
+        </div>
+      </div>
+
+      <div class="right" aria-hidden="false">
+        <div class="pulse-dot" title="Live pulse accent"></div>
+        <div class="time-pill" aria-label="creation time">Creation time: 2025-09-29 00:46:11</div>
+      </div>
+    </section>
+
+    <footer role="contentinfo" aria-label="footer">
+      <div class="footer-wrap">
+        <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <span class="gh-icon" aria-hidden="true">
+            <!-- GitHub icon SVG -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+              <defs>
+                <linearGradient id="ghg" x1="0" x2="1">
+                  <stop offset="0" stop-color="#8a5cff"/>
+                  <stop offset="1" stop-color="#00f6ff"/>
+                </linearGradient>
+              </defs>
+              <path d="M12 2C6.48 2 2 6.58 2 12.18c0 4.49 2.87 8.31 6.84 9.66.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.38-3.37-1.38-.45-1.17-1.1-1.48-1.1-1.48-.9-.62.07-.61.07-.61 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.67.35-1.11.63-1.37-2.22-.26-4.55-1.13-4.55-5.03 0-1.11.39-2.01 1.03-2.72-.1-.26-.45-1.3.1-2.7 0 0 .84-.27 2.75 1.04A9.3 9.3 0 0112 7.1c.85.004 1.71.116 2.51.34 1.9-1.31 2.74-1.04 2.74-1.04.55 1.4.21 2.44.1 2.7.64.71 1.03 1.61 1.03 2.72 0 3.91-2.34 4.76-4.57 5.02.36.32.68.95.68 1.92 0 1.38-.01 2.49-.01 2.83 0 .26.18.58.69.48A10.21 10.21 0 0022 12.18C22 6.58 17.52 2 12 2z" fill="url(#ghg)"/>
+            </svg>
+          </span>
+          <span class="created-by">Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Accessibility: reduce motion toggle on SPACE when focusing header (fun little interaction)
+    (function(){
+      const header = document.querySelector('h1');
+      if(!header) return;
+      header.tabIndex = 0;
+      header.addEventListener('keydown', e => {
+        if(e.code === 'Space' || e.key === ' '){
+          e.preventDefault();
+          const el = document.documentElement;
+          if(el.style.setProperty){
+            const off = getComputedStyle(el).getPropertyValue('--reduced-motion') === 'true';
+            if(!off){
+              el.style.setProperty('--reduced-motion','true');
+              document.querySelectorAll('*').forEach(n=>n.style.animationPlayState='paused');
+            } else {
+              el.style.removeProperty('--reduced-motion');
+              document.querySelectorAll('*').forEach(n=>n.style.animationPlayState='running');
+            }
+          }
+        }
+      },{passive:false});
+    })();
+  </script>
+</body>
+</html>
