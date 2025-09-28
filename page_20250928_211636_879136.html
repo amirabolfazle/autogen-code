@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root{
+      --bg1: #FFFBFA;
+      --bg2: #F8FFF7;
+      --accent1: #A8D5FF; /* pastel blue */
+      --accent2: #FFD6E0; /* pastel pink */
+      --accent3: #D7FFD6; /* pastel green */
+      --muted: #6B6B6B;
+      --card: rgba(255,255,255,0.7);
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 18px rgba(18,18,18,0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100%;
+      background: linear-gradient(135deg,var(--bg1) 0%, var(--bg2) 100%);
+      background-attachment: fixed;
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:36px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+    }
+    .wrap{
+      width:100%;
+      max-width:980px;
+      backdrop-filter: blur(6px);
+    }
+
+    header.hero{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:18px;
+      align-items:center;
+      margin-bottom:26px;
+    }
+    .brand{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .logo{
+      width:72px;
+      height:72px;
+      border-radius:16px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:22px;
+      box-shadow: var(--shadow);
+      flex-shrink:0;
+      transform:rotate(-8deg);
+    }
+    h1{
+      margin:0;
+      font-size:26px;
+      letter-spacing:0.6px;
+    }
+    .meta{
+      text-align:right;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .meta .time{
+      display:block;
+      font-weight:600;
+      color:#2b2b2b;
+    }
+
+    main{
+      display:grid;
+      gap:18px;
+    }
+
+    section.card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), var(--glass));
+      border-radius:14px;
+      padding:18px;
+      box-shadow: var(--shadow);
+      transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s;
+      will-change: transform;
+      overflow:hidden;
+    }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px rgba(18,18,18,0.08); }
+
+    .intro{
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+    .avatar{
+      width:92px;
+      height:92px;
+      border-radius:14px;
+      background: linear-gradient(135deg,var(--accent3),var(--accent1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: #014f2b;
+      font-size:34px;
+      font-weight:700;
+      box-shadow: 0 8px 20px rgba(10,10,10,0.06);
+    }
+    .bio h2{ margin:0 0 8px 0; font-size:18px }
+    .bio p{ margin:0; color:var(--muted); line-height:1.45 }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:14px;
+      margin-top:12px;
+    }
+    .project{
+      border-radius:12px;
+      padding:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+      box-shadow: 0 6px 16px rgba(12,12,12,0.04);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .project:hover{ transform: translateY(-6px); box-shadow: 0 18px 36px rgba(12,12,12,0.06); }
+    .project h3{ margin:0 0 6px 0; font-size:15px }
+    .project p{ margin:0; color:var(--muted); font-size:13px }
+
+    .cta-row{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:white;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      transition: transform .18s;
+    }
+    .btn:active{ transform: translateY(2px) }
+
+    footer.sitefoot{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 10px;
+      border-radius:10px;
+      transition: background .18s, transform .18s;
+    }
+    .gh:hover{ background:rgba(0,0,0,0.03); transform: translateY(-3px); }
+    .gh svg{ width:18px; height:18px; display:block; fill:currentColor; }
+
+    /* slide-up animation */
+    .slide-up{
+      opacity:0;
+      transform: translateY(18px);
+      transition: transform .7s cubic-bezier(.2,.9,.2,1), opacity .7s ease;
+      will-change: transform, opacity;
+    }
+    .slide-up.in{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* responsive */
+    @media (max-width:700px){
+      .grid{ grid-template-columns: 1fr }
+      header.hero{ grid-template-columns: 1fr; text-align:left }
+      .meta{ text-align:left }
+      .wrap{ padding:8px }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero slide-up" data-delay="0">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">A</div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div style="color:var(--muted); font-size:13px;">Designer • Builder • Curious mind</div>
+        </div>
+      </div>
+      <div class="meta">
+        <div class="time">2025-09-28 21:15:57</div>
+        <div style="font-size:12px">Portfolio snapshot</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card slide-up" data-delay="100">
+        <div class="intro">
+          <div class="avatar">AB</div>
+          <div class="bio">
+            <h2>Hello — I'm amirabolfazle</h2>
+            <p>I craft thoughtful interfaces and playful animations with pastel palettes. I like small details, clear interactions, and projects that smile back.</p>
+            <div class="cta-row" style="margin-top:10px">
+              <button class="btn" onclick="highlight('#projects')">View Projects</button>
+              <button class="btn" style="background:linear-gradient(90deg,var(--accent3),var(--accent1))" onclick="alert('Hi! 👋')">Say Hello</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="card slide-up" data-delay="200">
+        <h3 style="margin:0 0 8px 0">Selected projects</h3>
+        <div class="grid">
+          <article class="project">
+            <h3>SoftUI Studio</h3>
+            <p>Design system with pastel tokens, interactive components, and accessible patterns for playful apps.</p>
+          </article>
+          <article class="project">
+            <h3>Motion Minis</h3>
+            <p>Micro-interactions library: loaders, toasts, and slide-up reveals that feel satisfying.</p>
+          </article>
+          <article class="project">
+            <h3>Palette Garden</h3>
+            <p>Tool to generate harmonious pastel palettes and export CSS variables for designers and devs.</p>
+          </article>
+          <article class="project">
+            <h3>Microblog Demo</h3>
+            <p>Minimal writing platform with smooth reading transitions and delightful micro-interactions.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card slide-up" data-delay="300">
+        <h3 style="margin:0 0 8px 0">Contact</h3>
+        <p style="margin:0 0 12px 0; color:var(--muted)">Open to collaboration, commissions, or friendly chats about design systems and animations.</p>
+        <form onsubmit="event.preventDefault(); contactToast()" style="display:flex; gap:8px; flex-wrap:wrap">
+          <input name="name" placeholder="Your name" style="flex:1; min-width:160px; padding:10px; border-radius:10px; border:1px solid rgba(0,0,0,0.06)" />
+          <input name="email" placeholder="Email" style="flex:1; min-width:160px; padding:10px; border-radius:10px; border:1px solid rgba(0,0,0,0.06)" />
+          <button class="btn" type="submit" style="min-width:130px">Send</button>
+        </form>
+      </section>
+
+      <footer class="sitefoot slide-up" data-delay="400">
+        <div style="color:var(--muted)">Created by amirabolfazle</div>
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub — amirabolfazle">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 .297a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.6-.7 1.6-.7.9-1.6 2.4-1.1 3-.9.1-.8.4-1.1.8-1.4-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.4 1.2-3.3-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.4 1.2a11.4 11.4 0 016.2 0C18 3.2 19 3.5 19 3.5c.6 1.7.2 3 .1 3.3.8.9 1.2 2 1.2 3.3 0 4.5-2.8 5.5-5.5 5.8.4.4.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0012 .297"></path>
+          </svg>
+          <span style="font-weight:600">GitHub</span>
+        </a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Slide-up reveal using IntersectionObserver
+    (function(){
+      const els = Array.from(document.querySelectorAll('.slide-up'));
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            const el = entry.target;
+            const delay = Number(el.dataset.delay||0);
+            setTimeout(()=> el.classList.add('in'), delay);
+            obs.unobserve(el);
+          }
+        });
+      }, {threshold:0.12});
+      els.forEach(e => observer.observe(e));
+    })();
+
+    function highlight(id){
+      const el = document.querySelector(id);
+      if(!el) return;
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      el.animate([{boxShadow:'0 0 0 rgba(0,0,0,0)'},{boxShadow:'0 16px 40px rgba(168,213,255,0.18)'}], {duration:600, direction:'alternate', iterations:2});
+    }
+
+    function contactToast(){
+      const t = document.createElement('div');
+      t.textContent = 'Thanks — message simulated. ✨';
+      t.style.position='fixed';
+      t.style.right='18px';
+      t.style.bottom='18px';
+      t.style.background='linear-gradient(90deg,#A8D5FF,#FFD6E0)';
+      t.style.padding='10px 14px';
+      t.style.borderRadius='12px';
+      t.style.boxShadow='0 12px 28px rgba(10,10,10,0.12)';
+      t.style.color='#052a43';
+      t.style.fontWeight='700';
+      t.style.zIndex='9999';
+      document.body.appendChild(t);
+      setTimeout(()=> t.style.opacity='0', 2000);
+      setTimeout(()=> t.remove(), 2600);
+    }
+
+    // Small tilt effect for avatar
+    (function(){
+      const av = document.querySelector('.avatar');
+      if(!av) return;
+      av.addEventListener('mousemove', e => {
+        const r = av.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        av.style.transform = `rotateX(${(-y*6).toFixed(2)}deg) rotateY(${(x*6).toFixed(2)}deg)`;
+      });
+      av.addEventListener('mouseleave', ()=> av.style.transform = 'rotate(0deg)');
+    })();
+  </script>
+</body>
+</html>
