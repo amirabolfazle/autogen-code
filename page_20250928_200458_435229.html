@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: 12,18,36;
+      --glass-1: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.10);
+      --accent: 111, 185, 255;
+      --accent-2: 186, 104, 255;
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(111,185,255,0.08), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 80%, rgba(186,104,255,0.06), transparent 12%),
+                  linear-gradient(180deg, rgba(var(--bg-1),1) 0%, rgba(6,11,28,1) 100%);
+      overflow-x:hidden;
+    }
+
+    /* animated floating blobs */
+    .blobs{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      overflow:hidden;
+      mix-blend-mode:screen;
+      filter: blur(40px) saturate(1.1);
+      opacity:0.9;
+    }
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      width:40vmax;
+      height:40vmax;
+      transform:translate(-50%,-50%) scale(1);
+      opacity:0.12;
+      animation:float 18s ease-in-out infinite;
+      will-change:transform;
+    }
+    .blob.a{ background: radial-gradient(circle at 30% 30%, rgba(var(--accent),1), rgba(var(--accent),0.08) 40%, transparent 60%); left:10%; top:20%; animation-duration:20s; }
+    .blob.b{ background: radial-gradient(circle at 60% 40%, rgba(var(--accent-2),1), rgba(var(--accent-2),0.06) 35%, transparent 60%); left:85%; top:35%; animation-duration:26s; opacity:0.14; }
+    .blob.c{ background: radial-gradient(circle at 50% 50%, rgba(255,200,120,0.9), rgba(255,200,120,0.05) 30%, transparent 60%); left:55%; top:80%; animation-duration:22s; opacity:0.08; }
+
+    @keyframes float{
+      0%{ transform: translate(-50%,-50%) translateY(0) scale(1); }
+      25%{ transform: translate(-50%,-50%) translateY(-6vh) scale(1.02); }
+      50%{ transform: translate(-50%,-50%) translateY(0) scale(1.05); }
+      75%{ transform: translate(-50%,-50%) translateY(6vh) scale(1.01); }
+      100%{ transform: translate(-50%,-50%) translateY(0) scale(1); }
+    }
+
+    /* layout */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:6vh 4vw;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      width:min(980px, 96vw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:20px;
+      padding: clamp(20px, 3.5vw, 40px);
+      backdrop-filter: blur(12px) saturate(1.05);
+      -webkit-backdrop-filter: blur(12px) saturate(1.05);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      display:flex;
+      gap:24px;
+      align-items:center;
+      overflow:hidden;
+      position:relative;
+      transform-origin:center;
+      transition:transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .35s;
+      animation:zoomPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes zoomPulse{
+      0%{ transform: scale(1); }
+      50%{ transform: scale(1.01); }
+      100%{ transform: scale(1); }
+    }
+
+    .card:hover{
+      transform: scale(1.02);
+      box-shadow: 0 18px 50px rgba(2,6,23,0.7);
+    }
+
+    .avatar{
+      min-width:120px;
+      width:18%;
+      aspect-ratio:1/1;
+      border-radius:20px;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, rgba(var(--accent),0.14), rgba(var(--accent-2),0.14));
+      border:1px solid rgba(255,255,255,0.06);
+      flex-shrink:0;
+      position:relative;
+    }
+
+    .avatar .initial{
+      font-weight:800;
+      font-size:48px;
+      color:rgba(255,255,255,0.92);
+      text-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      transform:translateY(2px);
+    }
+
+    .content{
+      flex:1;
+      min-width:0;
+    }
+
+    .title-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:space-between;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(20px, 3.6vw, 34px);
+      letter-spacing:-0.02em;
+      line-height:1;
+      font-weight:800;
+      color:var(--text);
+    }
+    .meta{
+      color:var(--muted);
+      font-size:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      white-space:nowrap;
+    }
+
+    p.lead{
+      margin:14px 0 18px 0;
+      color:rgba(255,255,255,0.88);
+      font-size: clamp(13px, 2.4vw, 16px);
+      line-height:1.45;
+      max-width:70ch;
+    }
+
+    .badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .badge{
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(var(--accent),0.12), rgba(var(--accent-2),0.08));
+      color:var(--text);
+      font-weight:600;
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.04);
+      transform-origin:center;
+      transition:transform .25s ease;
+    }
+    .badge:hover{ transform:translateY(-4px) scale(1.03); }
+
+    /* right column */
+    .side{
+      width:200px;
+      min-width:160px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      padding-left:8px;
+      border-left:1px solid rgba(255,255,255,0.03);
+      min-height:120px;
+    }
+    .zoom-box{
+      width:120px;
+      height:120px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.05);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      color:var(--text);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      transition:transform .45s cubic-bezier(.2,.9,.2,1);
+      cursor:default;
+    }
+    .zoom-box:hover{
+      transform:scale(1.12) rotate(-2deg);
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      bottom:14px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:5;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:8px 12px;
+      border-radius:999px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+      color:var(--muted);
+      font-size:13px;
+      transition:transform .25s ease;
+    }
+    footer a{ color:var(--muted); text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
+    footer a:hover{ transform:translateY(-3px); }
+
+    .gh-icon{
+      width:18px;height:18px;display:inline-block;vertical-align:middle;
+      filter:drop-shadow(0 2px 6px rgba(0,0,0,0.45));
+    }
+
+    /* small screens */
+    @media (max-width:760px){
+      .card{ flex-direction:column; align-items:stretch; padding:20px; gap:18px;}
+      .avatar{ width:100%; height:100px; border-radius:12px; display:flex; align-items:center; justify-content:flex-start; padding:16px; }
+      .avatar .initial{ font-size:28px; }
+      .side{ width:100%; min-width:unset; border-left:0; border-top:1px solid rgba(255,255,255,0.03); padding-top:12px; padding-left:0; flex-direction:row; justify-content:space-between; }
+      .zoom-box{ width:86px; height:86px; }
+      footer{ left:8px; transform:none; right:8px; border-radius:12px; justify-content:space-between; }
+    }
+
+    /* accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      .blobs, .card, .badge, .zoom-box { animation: none !important; transition: none !important; }
+      .card{ transform:none !important; }
+    }
+
+    /* small decorative animated ring */
+    .ring{
+      position:absolute;
+      right:-10%;
+      top:-10%;
+      width:280px;
+      height:280px;
+      border-radius:50%;
+      border:1px dashed rgba(255,255,255,0.03);
+      transform:rotate(0deg);
+      opacity:0.06;
+      animation:spin 24s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes spin{ 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+
+  </style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="main-title">
+      <div class="avatar" aria-hidden="false" title="amirabolfazle">
+        <div class="initial">A</div>
+      </div>
+
+      <div class="content">
+        <div class="title-row">
+          <div>
+            <h1 id="main-title">amirabolfazle</h1>
+            <div class="meta">Creative glass UI • animated • responsive</div>
+          </div>
+
+          <div style="text-align:right;">
+            <div class="meta" style="justify-content:flex-end;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:6px;opacity:.95;">
+                <path d="M12 2v6l4-4" stroke="rgba(255,255,255,0.9)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="8" stroke="rgba(255,255,255,0.06)" stroke-width="1.6" />
+              </svg>
+              <div style="font-size:13px;color:rgba(255,255,255,0.75);">Created: 2025-09-28 20:03:57</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="lead">A lightweight responsive demo page showcasing glassmorphism, subtle zoom effects and smooth animated accents. Resize the window or tap and hover interactively to explore the effects.</p>
+
+        <div class="badges" aria-hidden="true">
+          <div class="badge">Glassmorphism</div>
+          <div class="badge">Responsive</div>
+          <div class="badge">Animated</div>
+          <div class="badge">CSS only (no frameworks)</div>
+        </div>
+      </div>
+
+      <aside class="side" aria-label="Quick zoom">
+        <div style="text-align:center;color:var(--muted);font-size:13px;">Zoom preview</div>
+        <div class="zoom-box" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="11" cy="11" r="6" stroke="rgba(255,255,255,0.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </aside>
+
+      <div class="ring" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.88-1.53-3.88-1.53-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.26-1.28-5.26-5.72 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.45.11-3.02 0 0 .97-.31 3.18 1.19a11.02 11.02 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.5 3.17-1.19 3.17-1.19.63 1.57.24 2.73.12 3.02.74.81 1.19 1.84 1.19 3.1 0 4.45-2.71 5.43-5.29 5.71.41.36.78 1.08.78 2.18 0 1.58-.01 2.86-.01 3.25 0 .31.2.66.79.55A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" fill="rgba(255,255,255,0.95)"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // small interaction: subtle tilt on mousemove for the card
+    (function(){
+      const card = document.querySelector('.card');
+      const wrap = document.querySelector('.wrap');
+      let supports = window.matchMedia && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(!card || !supports) return;
+
+      function handle(e){
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const rx = (py - 0.5) * 6; // rotateX
+        const ry = (px - 0.5) * -6; // rotateY
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.01)`;
+      }
+      function reset(){
+        card.style.transform = '';
+      }
+      card.addEventListener('mousemove', handle);
+      card.addEventListener('mouseleave', reset);
+      // tiny pulse sync
+      const pulse = () => {
+        card.animate([{filter:'brightness(1)'},{filter:'brightness(1.03)'},{filter:'brightness(1)'}], {duration:9000,iterations:1, easing:'ease-in-out'});
+        setTimeout(pulse, 9000 + Math.random()*6000);
+      };
+      pulse();
+    })();
+  </script>
+</body>
+</html>
