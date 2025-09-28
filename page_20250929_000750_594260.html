@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #FFF7FB;
+      --bg-2: #F3FFF7;
+      --accent-1: #FFD6E0;
+      --accent-2: #DDEBFF;
+      --accent-3: #E9F6FF;
+      --muted: #6B6B6B;
+      --glass: rgba(255,255,255,0.6);
+      --card: rgba(255,255,255,0.75);
+      --shadow: 0 10px 30px rgba(20,20,40,0.06);
+      --radius: 14px;
+      --bounce-time: 850ms;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(800px 400px at 10% 10%, var(--accent-1) 0%, transparent 20%),
+                  radial-gradient(700px 350px at 90% 90%, var(--accent-2) 0%, transparent 22%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#17202A;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:36px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.6));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:22px;
+      backdrop-filter: blur(8px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.6);
+    }
+
+    /* Left Column */
+    .profile{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      position:relative;
+      overflow:visible;
+    }
+
+    .avatar{
+      width:120px;
+      height:120px;
+      border-radius:24px;
+      background: linear-gradient(135deg,var(--accent-3),var(--accent-1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:36px;
+      color:#132A2D;
+      box-shadow: 0 8px 20px rgba(18,26,38,0.08);
+      transform-origin:center;
+      animation:pop var(--bounce-time) cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    @keyframes pop{
+      0%{ transform: translateY(-20px) scale(.95); opacity:0}
+      60%{ transform: translateY(8px) scale(1.03); opacity:1}
+      100%{ transform: translateY(0) scale(1);}
+    }
+
+    .name{
+      font-size:22px;
+      font-weight:700;
+      letter-spacing:-0.02em;
+      color:#0E2B2E;
+      margin-top:6px;
+      animation:slideIn var(--bounce-time) cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    .role{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .chip{
+      background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:#163033;
+      box-shadow: 0 4px 14px rgba(8,18,22,0.04);
+      transform-origin:center;
+      transition:transform 280ms cubic-bezier(.2,.9,.3,1);
+    }
+    .chip:hover{ transform: translateY(-6px) rotate(-1.2deg); }
+
+    .about{
+      font-size:14px;
+      color:#193033;
+      line-height:1.45;
+      margin-top:6px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), transparent);
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.5);
+      box-shadow: inset 0 -6px 20px rgba(255,255,255,0.15);
+      animation:fadeIn 700ms 100ms ease both;
+    }
+
+    @keyframes slideIn{
+      0%{ transform: translateX(-14px); opacity:0}
+      100%{ transform: translateX(0); opacity:1}
+    }
+    @keyframes fadeIn{
+      from{opacity:0; transform: translateY(6px)}
+      to{opacity:1; transform:none}
+    }
+
+    /* Right Column */
+    .content{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .hero{
+      padding:22px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.7));
+      border:1px solid rgba(255,255,255,0.6);
+      display:flex;
+      gap:18px;
+      align-items:center;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:-0.02em;
+      color:#072427;
+      animation:heroBounce 900ms cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    @keyframes heroBounce{
+      0%{ transform: translateY(-28px) scale(.98); opacity:0}
+      60%{ transform: translateY(10px) scale(1.02); opacity:1}
+      100%{ transform: translateY(0) scale(1)}
+    }
+
+    .hero p{
+      margin:6px 0 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* Cards */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:14px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,0.5);
+      transition: transform 380ms cubic-bezier(.2,.9,.3,1), box-shadow 280ms;
+      box-shadow: 0 6px 22px rgba(18,28,36,0.04);
+      transform-origin:center;
+      overflow:hidden;
+    }
+
+    .card:hover{
+      transform: translateY(-10px) rotate(-1deg);
+      box-shadow: 0 24px 48px rgba(18,28,36,0.08);
+    }
+
+    .project-title{
+      font-weight:700;
+      color:#062728;
+      margin:0 0 6px 0;
+      font-size:15px;
+    }
+
+    .project-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .tag-row{
+      margin-top:10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      font-size:12px;
+      padding:6px 8px;
+      background:rgba(255,255,255,0.6);
+      border-radius:999px;
+      color:#144041;
+      box-shadow: 0 6px 18px rgba(8,16,20,0.03);
+    }
+
+    .bounce{
+      display:inline-block;
+      animation:bob 3.2s ease-in-out infinite;
+    }
+    .bounce.delay{ animation-delay:0.4s;}
+    .bounce.delay2{ animation-delay:0.9s;}
+    @keyframes bob{
+      0%{ transform: translateY(0)}
+      25%{ transform: translateY(-6px)}
+      50%{ transform: translateY(0)}
+      75%{ transform: translateY(-4px)}
+      100%{ transform: translateY(0)}
+    }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+      padding-top:10px;
+      border-top:1px dashed rgba(18,28,36,0.05);
+    }
+
+    .footer-left{ display:flex; align-items:center; gap:10px;}
+    .gitlink{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:transform 180ms ease;
+      background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+      border:1px solid rgba(255,255,255,0.5);
+    }
+    .gitlink:hover{ transform: translateY(-6px); box-shadow:0 10px 30px rgba(2,16,20,0.06); }
+
+    .gh{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      flex-shrink:0;
+      fill:#0E2B2E;
+    }
+
+    .created{
+      color:#0E2B2E;
+      font-weight:600;
+      font-size:13px;
+      margin-left:6px;
+    }
+
+    .time{
+      background:rgba(255,255,255,0.7);
+      padding:6px 10px;
+      border-radius:999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:12px;
+      color:#15383A;
+      box-shadow: inset 0 -6px 14px rgba(255,255,255,0.4);
+    }
+
+    /* Responsive */
+    @media (max-width:920px){
+      .wrap{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width:560px){
+      .grid{ grid-template-columns: 1fr; }
+      .hero{ flex-direction:column; align-items:flex-start; }
+    }
+
+    /* Decorative blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(24px);
+      opacity:0.55;
+      z-index:0;
+    }
+    .blob.one{
+      width:220px; height:220px;
+      right:-40px; top:-60px;
+      background: linear-gradient(120deg, rgba(255,215,238,0.8), rgba(217,245,248,0.6));
+      animation:spinSlow 18s linear infinite;
+    }
+    .blob.two{
+      width:160px; height:160px;
+      left:-40px; bottom:-40px;
+      background: linear-gradient(120deg, rgba(237,243,255,0.9), rgba(255,241,238,0.8));
+      animation:spinSlowReverse 24s linear infinite;
+    }
+    @keyframes spinSlow{ from{ transform: rotate(0deg) } to{ transform: rotate(360deg) } }
+    @keyframes spinSlowReverse{ from{ transform: rotate(0deg) } to{ transform: rotate(-360deg) } }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="profile-title">
+    <div class="panel profile" style="position:relative; overflow:visible;">
+      <div class="blob one" aria-hidden="true"></div>
+      <div class="blob two" aria-hidden="true"></div>
+
+      <div style="display:flex; gap:16px; align-items:center;">
+        <div class="avatar bounce">
+          am
+        </div>
+        <div>
+          <div id="profile-title" class="name">amirabolfazle</div>
+          <div class="role">Creative dev • UI experiments • small joyful things</div>
+          <div style="margin-top:6px; display:flex; gap:8px; align-items:center;">
+            <div class="time" title="creation-time">2025-09-29 00:06:57</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meta" style="margin-top:10px;">
+        <div class="chip">Pastel UI</div>
+        <div class="chip">Micro animations</div>
+        <div class="chip">Single-file</div>
+      </div>
+
+      <div class="about" style="margin-top:10px;">
+        I build light, playful interfaces and tidy code experiments — things that make interfaces feel friendly and alive. This is a compact portfolio demo with soft pastels, bouncey motion and a focus on clarity.
+      </div>
+
+      <footer style="margin-top:auto;">
+        <div class="footer-left">
+          <a class="gitlink" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg class="gh" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.11.82-.26.82-.577 0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.086 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.42-1.305.762-1.605-2.665-.303-5.466-1.333-5.466-5.933 0-1.31.468-2.383 1.235-3.223-.124-.303-.535-1.523.117-3.176 0 0 1.008-.323 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.02.005 2.045.138 3.003.404 2.29-1.554 3.297-1.23 3.297-1.23.653 1.653.242 2.873.119 3.176.77.84 1.233 1.913 1.233 3.223 0 4.61-2.805 5.624-5.476 5.922.432.372.816 1.102.816 2.222 0 1.603-.015 2.895-.015 3.286 0 .32.216.694.825.576C20.565 21.796 24 17.3 24 12c0-6.63-5.373-12-12-12z"/>
+            </svg>
+            <span style="font-weight:600; color:#072427;">GitHub</span>
+          </a>
+          <div class="created">Created by amirabolfazle</div>
+        </div>
+        <div style="opacity:0.9; font-size:12px; color:var(--muted);">One-file pastel portfolio</div>
+      </footer>
+    </div>
+
+    <div class="panel content">
+      <div class="hero">
+        <div style="flex:1;">
+          <h1>Playful interfaces, thoughtful code</h1>
+          <p>Small projects, nice details, and experiments in motion design for the web.</p>
+        </div>
+        <div style="min-width:140px; text-align:right;">
+          <div style="font-size:12px; color:var(--muted)">Focus mode</div>
+          <div style="margin-top:8px;">
+            <div style="display:inline-flex; gap:8px;">
+              <button class="chip" onclick="flash('Exploring UI ideas ✨')">Explore</button>
+              <button class="chip" onclick="flash('Contact: hello@amir.example')">Contact</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid" aria-live="polite">
+        <div class="card bounce">
+          <div class="project-title">Aurora Notes</div>
+          <p class="project-desc">A tiny notes app with soft gradients and elastic list interactions. Built to prototype quick ideas with delightful micro-motion.</p>
+          <div class="tag-row">
+            <span class="tag">Vanilla JS</span>
+            <span class="tag">CSS Motion</span>
+            <span class="tag">Local-first</span>
+          </div>
+        </div>
+
+        <div class="card bounce delay">
+          <div class="project-title">Palette Mixer</div>
+          <p class="project-desc">Interactive swatches that generate accessible pastel palettes and transitions you can copy into projects.</p>
+          <div class="tag-row">
+            <span class="tag">Design Tool</span>
+            <span class="tag">Color Math</span>
+          </div>
+        </div>
+
+        <div class="card bounce delay2">
+          <div class="project-title">Micro-Interactions Kit</div>
+          <p class="project-desc">Reusable, single-file UI bits (toasts, toggles, cards) with tasteful easing and tiny performance budgets.</p>
+          <div class="tag-row">
+            <span class="tag">UI Kit</span>
+            <span class="tag">Accessible</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="project-title">Klein Layouts</div>
+          <p class="project-desc">Experimenting with compact, modular layouts for content-dense pages that still breathe.</p>
+          <div class="tag-row">
+            <span class="tag">Grid</span>
+            <span class="tag">Responsive</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center; margin-top:6px;">
+        <div style="flex:1;">
+          <div style="font-size:13px; color:var(--muted)">A few notes</div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <div class="chip">Single-file</div>
+            <div class="chip">CSS-driven</div>
+            <div class="chip">Subtle bounce</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px; color:var(--muted)">Last update</div>
+          <div style="font-weight:700; color:#0E2B2E; margin-top:6px;">2025-09-29</div>
+        </div>
+      </div>
+
+      <div style="margin-top:6px; font-size:13px; color:var(--muted);">
+        Want the code? Click the GitHub link in the footer — it's all in one file for easy tinkering.
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Small interactive flourish: temporary toast
+    function flash(text){
+      let t = document.createElement('div');
+      t.textContent = text;
+      Object.assign(t.style, {
+        position:'fixed',
+        left:'50%',
+        transform:'translateX(-50%)',
+        bottom:'28px',
+        background:'linear-gradient(90deg,rgba(255,255,255,0.95),rgba(255,255,255,0.85))',
+        color:'#0B2A2C',
+        padding:'12px 18px',
+        borderRadius:'12px',
+        boxShadow:'0 10px 30px rgba(2,16,20,0.08)',
+        fontWeight:600,
+        zIndex:9999,
+        opacity:0,
+        transition:'opacity 240ms, transform 320ms',
+        border:'1px solid rgba(255,255,255,0.6)'
+      });
+      document.body.appendChild(t);
+      requestAnimationFrame(()=>{ t.style.opacity=1; t.style.transform='translateX(-50%) translateY(-6px)'; });
+      setTimeout(()=>{ t.style.opacity=0; t.style.transform='translateX(-50%) translateY(0)'; }, 1600);
+      setTimeout(()=> t.remove(), 2000);
+    }
+
+    // Gentle reveal for cards on load
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('.card').forEach((c,i)=>{
+        c.style.opacity = 0;
+        c.style.transform = 'translateY(10px) scale(.995)';
+        setTimeout(()=>{
+          c.style.transition = 'opacity 420ms cubic-bezier(.2,.9,.3,1), transform 420ms';
+          c.style.opacity = 1;
+          c.style.transform = 'translateY(0) scale(1)';
+        }, 120 + i*80);
+      });
+    });
+  </script>
+</body>
+</html>
