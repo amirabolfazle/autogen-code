@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1: #FFF7FB;
+    --bg2: #F8FFF4;
+    --accent1: #FFD8E0;
+    --accent2: #D8FFF1;
+    --accent3: #FFF0C2;
+    --muted: #7A7A7A;
+    --card: rgba(255,255,255,0.85);
+    --glass: rgba(255,255,255,0.6);
+    --shadow: 0 10px 30px rgba(20,20,20,0.08);
+    --radius: 18px;
+    font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background: radial-gradient(1200px 600px at 10% 20%, var(--accent1) 0%, transparent 20%),
+                radial-gradient(1100px 500px at 90% 80%, var(--accent2) 0%, transparent 18%),
+                linear-gradient(180deg, var(--bg1), var(--bg2));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    color:#222;
+    overflow-x:hidden;
+  }
+
+  /* floating blobs */
+  .blob{
+    position:fixed;
+    filter: blur(28px) saturate(110%);
+    opacity:0.9;
+    transform: translate3d(0,0,0);
+    mix-blend-mode:overlay;
+    pointer-events:none;
+  }
+  .blob.one{width:420px;height:420px;background:linear-gradient(135deg,#FFDDE6,#FFD8E0);left:-80px;top:-60px;animation:float1 12s ease-in-out infinite;}
+  .blob.two{width:360px;height:360px;background:linear-gradient(135deg,#D8FFF1,#CFF6E8);right:-100px;bottom:-90px;animation:float2 14s ease-in-out infinite;}
+  .blob.three{width:240px;height:240px;background:linear-gradient(135deg,#FFF6D0,#FFF0C2);left:50%;top:10%;transform:translateX(-30%) scale(0.9);animation:float3 10s ease-in-out infinite;}
+
+  .blob.one, .blob.two, .blob.three{border-radius:50%;}
+
+  @keyframes float1{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(18px) scale(1.03)}
+    100%{transform:translateY(0) scale(1)}
+  }
+  @keyframes float2{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-20px) scale(0.98)}
+    100%{transform:translateY(0) scale(1)}
+  }
+  @keyframes float3{
+    0%{transform:translateX(-30%) translateY(0) scale(0.9)}
+    50%{transform:translateX(-30%) translateY(14px) scale(0.94)}
+    100%{transform:translateX(-30%) translateY(0) scale(0.9)}
+  }
+
+  .stage{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:56px 24px;
+    box-sizing:border-box;
+  }
+
+  .card{
+    width:100%;
+    max-width:980px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.6));
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    display:flex;
+    gap:28px;
+    padding:32px;
+    align-items:center;
+    position:relative;
+    overflow:visible;
+    transform-origin:center;
+    animation:zoomIn 900ms cubic-bezier(.2,.9,.3,1);
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+
+  @keyframes zoomIn{
+    0%{opacity:0;transform:scale(0.86)}
+    60%{opacity:1;transform:scale(1.02)}
+    100%{transform:scale(1)}
+  }
+
+  .avatar{
+    flex:0 0 160px;
+    height:160px;
+    border-radius:26px;
+    background:linear-gradient(135deg,#FFF,#FBF3FF);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 8px 24px rgba(30,30,30,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
+    transition:transform 300ms cubic-bezier(.2,.9,.3,1);
+  }
+  .avatar:hover{transform:scale(1.04) rotate(-1.2deg);}
+
+  .avatar .initial{
+    width:120px;height:120px;border-radius:18px;
+    background:linear-gradient(160deg,#FFF0FB,#EFE9FF);
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    font-size:46px;color:#6B2D64;box-shadow: 0 8px 20px rgba(110,30,110,0.06);
+  }
+
+  .content{
+    flex:1 1 auto;
+    min-width:0;
+  }
+
+  h1{
+    margin:0;padding:0;font-size:34px;letter-spacing:0.4px;color:#43294A;
+    display:flex;align-items:center;gap:12px;
+  }
+
+  .title-badge{
+    display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,#FFEFF6,#FFF6EA);
+    font-size:12px;color:#6E3B57;font-weight:600;
+    box-shadow: 0 4px 10px rgba(120,60,90,0.06);
+    transform-origin:center;
+    animation:badgePop 1100ms cubic-bezier(.2,.9,.3,1);
+  }
+
+  @keyframes badgePop{
+    0%{transform:scale(0.6);opacity:0}
+    60%{transform:scale(1.06);opacity:1}
+    100%{transform:scale(1)}
+  }
+
+  .meta{
+    margin-top:8px;color:var(--muted);font-size:14px;
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  }
+
+  .meta .dot{width:8px;height:8px;border-radius:50%;background:#EED8E6;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+
+  .blurb{
+    margin-top:18px;font-size:15px;color:#4A4A4A;line-height:1.5;
+    max-width:68ch;
+  }
+
+  /* zoomable feature tiles */
+  .features{
+    margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;
+  }
+  .tile{
+    background:var(--card);padding:10px 14px;border-radius:12px;font-weight:600;color:#44324A;
+    box-shadow: 0 6px 18px rgba(30,30,30,0.04);
+    transition:transform 260ms cubic-bezier(.2,.9,.3,1), box-shadow 260ms;
+    cursor:pointer;
+    transform-origin:center;
+  }
+  .tile:hover{transform:scale(1.06) translateY(-4px);box-shadow:0 12px 30px rgba(30,30,30,0.08);}
+
+  /* clock/creation row */
+  .row{
+    display:flex;gap:16px;align-items:center;margin-top:18px;
+    color:var(--muted);font-size:13px;
+  }
+  .time{
+    background:var(--glass);padding:8px 12px;border-radius:10px;color:#3E2A3B;font-weight:600;
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,0.35);
+    display:inline-flex;gap:8px;align-items:center;
+  }
+
+  /* footer */
+  footer{
+    position:fixed;left:50%;transform:translateX(-50%);bottom:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
+    padding:10px 14px;border-radius:999px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;
+    backdrop-filter: blur(6px) saturate(120%);
+    font-size:13px;color:#4B3B4B;
+  }
+  .gh{
+    display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none;
+    padding:6px;border-radius:8px;transition:transform 160ms,background 160ms;
+  }
+  .gh:hover{transform:translateY(-3px);background:rgba(0,0,0,0.03);}
+
+  /* small screens */
+  @media (max-width:720px){
+    .card{flex-direction:column;align-items:stretch;padding:20px}
+    .avatar{width:118px;height:118px;align-self:center;margin-bottom:6px}
+    h1{font-size:26px}
+    .features{justify-content:center}
+    footer{left:12px;transform:none;right:12px;border-radius:12px;justify-content:center}
+  }
+</style>
+</head>
+<body>
+  <div class="blob one" aria-hidden="true"></div>
+  <div class="blob two" aria-hidden="true"></div>
+  <div class="blob three" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="page-title">
+    <section class="card" aria-labelledby="page-title">
+      <div class="avatar" aria-hidden="true">
+        <div class="initial">A</div>
+      </div>
+
+      <div class="content">
+        <h1 id="page-title">
+          amirabolfazle
+          <span class="title-badge" aria-hidden="true">pastel • animated</span>
+        </h1>
+
+        <div class="meta" role="list">
+          <div role="listitem" class="dot" aria-hidden="true"></div>
+          <div role="listitem">Designer &amp; builder</div>
+          <div role="listitem">Loves smooth transitions</div>
+          <div role="listitem">Prefers subtle motion</div>
+        </div>
+
+        <p class="blurb">
+          A gentle, animated personal landing space. Soft pastel tones, playful floating shapes and tasteful zoom effects create a calm, modern vibe — crafted to showcase identity and quick links while staying light on personality.
+        </p>
+
+        <div class="features" aria-hidden="true">
+          <div class="tile">Projects</div>
+          <div class="tile">Notes</div>
+          <div class="tile">Contact</div>
+          <div class="tile">Journal</div>
+        </div>
+
+        <div class="row" aria-hidden="false">
+          <div class="time" title="Creation time">
+            Created: 2025-09-28 22:00:46
+          </div>
+          <div style="font-size:12px;color:var(--muted);">Interactive • Animated • Pastel</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#3B3B3B" d="M12 .5C5.73.5.95 5.28.95 11.6c0 4.68 3.03 8.64 7.24 10.04.53.1.72-.23.72-.51 0-.25-.01-.91-.02-1.78-2.95.64-3.57-1.42-3.57-1.42-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.65.07-.65 1.06.08 1.62 1.12 1.62 1.12.94 1.6 2.46 1.14 3.06.87.09-.67.37-1.14.67-1.40-2.36-.27-4.85-1.19-4.85-5.29 0-1.17.41-2.12 1.09-2.87-.11-.27-.48-1.36.1-2.84 0 0 .9-.29 2.95 1.09a10.1 10.1 0 012.69-.36c.91.01 1.83.12 2.69.36 2.04-1.39 2.94-1.09 2.94-1.09.58 1.48.21 2.57.1 2.84.68.75 1.09 1.71 1.09 2.87 0 4.11-2.5 5.02-4.88 5.28.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.61.73.51 4.2-1.41 7.22-5.37 7.22-10.04C23.05 5.28 18.27.5 12 .5z"/>
+      </svg>
+      <span style="font-weight:600;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
