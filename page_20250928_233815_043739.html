@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #0f172a;
+      --accent-a: #7c3aed;
+      --accent-b: #06b6d4;
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #f8fafc;
+      background: linear-gradient(135deg, rgba(12,18,35,1) 0%, rgba(14,21,45,1) 30%, rgba(7,10,23,1) 100%);
+      overflow-y:auto;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* animated gradient overlay */
+    .gradient-wrap{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background: radial-gradient(600px 400px at 10% 10%, rgba(124,58,237,0.12), transparent 10%),
+                  radial-gradient(500px 350px at 90% 90%, rgba(6,182,212,0.10), transparent 12%);
+      mix-blend-mode: screen;
+      animation: floatGrad 12s ease-in-out infinite;
+      z-index:0;
+    }
+    @keyframes floatGrad {
+      0% { transform: translateY(0px) rotate(0deg); opacity:0.95 }
+      50% { transform: translateY(-12px) rotate(2deg); opacity:1 }
+      100% { transform: translateY(0px) rotate(0deg); opacity:0.95 }
+    }
+
+    .page{
+      position:relative;
+      z-index:1;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:32px;
+      padding:48px 24px;
+    }
+
+    header{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:12px;
+      background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+      box-shadow: 0 8px 30px rgba(7,10,23,0.6), 0 2px 8px rgba(6,182,212,0.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:20px;
+      color:white;
+      transform:translateZ(0);
+      transition:transform .45s cubic-bezier(.2,.9,.2,1);
+    }
+    .logo:hover{ transform: translateY(-6px) scale(1.02) }
+
+    .title-block{
+      display:flex;
+      flex-direction:column;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(20px,4.6vw,40px);
+      letter-spacing:-0.02em;
+      line-height:1;
+      background: linear-gradient(90deg, #fff 10%, rgba(255,255,255,0.85) 60%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    p.lead{
+      margin:6px 0 0 0;
+      color:var(--muted);
+      font-size:clamp(12px,1.4vw,16px);
+    }
+
+    main{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:28px;
+      align-items:start;
+    }
+
+    @media (max-width:900px){
+      main{ grid-template-columns:1fr; padding-top:6px }
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:20px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      border: 1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+    }
+
+    /* left content: sections with reveal */
+    .content{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .card{
+      padding:18px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.025);
+      transition: transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .3s;
+    }
+    .card:hover{ transform: translateY(-8px); box-shadow: 0 18px 40px rgba(7,10,23,0.6); }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(124,58,237,0.14), rgba(6,182,212,0.10));
+      font-weight:600;
+      color:white;
+      font-size:12px;
+    }
+
+    /* slide-up reveal */
+    .reveal{
+      opacity:0;
+      transform: translateY(26px);
+      transition: opacity .6s ease-out, transform .6s cubic-bezier(.2,.9,.2,1);
+      will-change: opacity, transform;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    .hero-visual{
+      height:160px;
+      border-radius:10px;
+      margin-top:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .shimmer{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0.02) 55%, transparent 100%);
+      transform:translateX(-120%);
+      animation: shimmer 3.8s linear infinite;
+    }
+    @keyframes shimmer{
+      to { transform:translateX(120%) }
+    }
+
+    .right{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .stats{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .stat{
+      flex:1 1 120px;
+      padding:14px;
+      background: linear-gradient(180deg, rgba(124,58,237,0.12), rgba(6,182,212,0.06));
+      border-radius:12px;
+      text-align:center;
+      color:white;
+      font-weight:700;
+    }
+    .muted-sm{ font-size:12px; color:rgba(255,255,255,0.85); font-weight:600 }
+
+    footer{
+      margin-top:28px;
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .footer-left{ display:flex; gap:12px; align-items:center }
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:inherit;
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:8px;
+      background: transparent;
+      transition: background .18s, transform .18s;
+    }
+    .github-link:hover{ background: rgba(255,255,255,0.02); transform:translateY(-4px) }
+
+    .gh-icon{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      fill:currentColor;
+      flex-shrink:0;
+    }
+
+    .created{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* small helpers */
+    .small{ font-size:13px; color:var(--muted) }
+
+    /* responsive padding for panels on very small screens */
+    @media (max-width:420px){
+      .page{ padding:28px 14px }
+      header{ gap:10px }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-wrap" aria-hidden="true"></div>
+
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">a</div>
+        <div class="title-block">
+          <h1>amirabolfazle</h1>
+          <p class="lead">A responsive animated demo with gradient theme and slide-up effects</p>
+        </div>
+      </div>
+
+      <div class="meta small">
+        <div class="badge">Live Preview</div>
+        <div style="min-width:10px"></div>
+        <div aria-hidden="true">Creation: <strong style="margin-left:6px">2025-09-28 23:37:19</strong></div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel content" aria-labelledby="intro-heading">
+        <div class="card reveal">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+            <div>
+              <div class="meta" style="margin-bottom:8px">
+                <div class="badge">Gradient</div>
+                <div class="small">Animated theme</div>
+              </div>
+              <h2 id="intro-heading" style="margin:0 0 8px 0;font-size:18px">Fluid gradient background</h2>
+              <p class="small" style="margin:0">Subtle layered gradients and motion create a lively but soft backdrop. Resize to see full responsiveness.</p>
+            </div>
+            <div class="muted-sm" style="text-align:right">Version 1.0</div>
+          </div>
+
+          <div class="hero-visual" style="margin-top:14px">
+            <svg width="220" height="120" viewBox="0 0 220 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="gA" x1="0" x2="1">
+                  <stop offset="0" stop-color="#7c3aed"/>
+                  <stop offset="1" stop-color="#06b6d4"/>
+                </linearGradient>
+              </defs>
+              <rect x="6" y="10" rx="12" width="208" height="100" fill="url(#gA)" opacity="0.09"/>
+              <g opacity="0.9" fill="#fff" transform="translate(14,26)">
+                <circle cx="18" cy="18" r="6" opacity="0.9"/>
+                <rect x="36" y="10" rx="6" width="150" height="18" opacity="0.12"/>
+                <rect x="36" y="36" rx="6" width="120" height="12" opacity="0.08"/>
+              </g>
+            </svg>
+            <div class="shimmer" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="card reveal" style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <h3 style="margin:0;font-size:16px">Slide-up sections</h3>
+              <div class="small" style="margin-top:6px">Elements animate into view as you scroll.</div>
+            </div>
+            <div class="small muted-sm">Scroll to interact</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:6px">
+            <div class="card" style="padding:12px">
+              <div style="font-weight:700">Responsive</div>
+              <div class="small" style="margin-top:6px">Mobile-first layout</div>
+            </div>
+            <div class="card" style="padding:12px">
+              <div style="font-weight:700">Animated</div>
+              <div class="small" style="margin-top:6px">Smooth micro-interactions</div>
+            </div>
+            <div class="card" style="padding:12px">
+              <div style="font-weight:700">Accessible</div>
+              <div class="small" style="margin-top:6px">Semantic structure</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card reveal">
+          <h3 style="margin:0 0 8px 0">Creation time</h3>
+          <time datetime="2025-09-28T23:37:19Z" style="display:inline-block;background:var(--glass);padding:8px 12px;border-radius:8px;color:var(--muted);font-weight:600">2025-09-28 23:37:19</time>
+          <p class="small" style="margin-top:12px">Timestamp embedded on the page for reference.</p>
+        </div>
+
+        <!-- filler to allow scrolling reveal effects -->
+        <div class="reveal card" style="padding:18px">
+          <h4 style="margin:0 0 6px 0">More content</h4>
+          <p class="small" style="margin:0">This area demonstrates how new blocks rise into view with the slide-up animation. Add or remove blocks as needed.</p>
+        </div>
+
+      </section>
+
+      <aside class="panel right" aria-label="Sidebar">
+        <div class="card reveal">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">Quick stats</div>
+              <div style="font-weight:800;font-size:20px">Snapshot</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div class="stat" style="background:linear-gradient(180deg,rgba(124,58,237,0.22),rgba(6,182,212,0.08));min-width:86px">UI</div>
+              <div class="stat" style="background:linear-gradient(180deg,rgba(6,182,212,0.12),rgba(124,58,237,0.04));min-width:86px">UX</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <div class="small">Theme</div>
+            <div class="badge">Gradient</div>
+            <div class="badge" style="background:transparent;border:1px solid rgba(255,255,255,0.03)">Animated</div>
+          </div>
+        </div>
+
+        <div class="card reveal" style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">Utilities</div>
+              <div style="font-weight:700">Controls</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:8px">Toggle</button>
+              <button style="background:linear-gradient(90deg,var(--accent-a),var(--accent-b));border:none;color:white;padding:8px 10px;border-radius:8px">Action</button>
+            </div>
+          </div>
+          <div class="small">Small interactive controls that respond visually on hover.</div>
+        </div>
+
+        <div class="card reveal" style="text-align:center">
+          <div style="font-size:13px;color:var(--muted)">Built for demo</div>
+          <div style="margin-top:8px;font-weight:800">amirabolfazle</div>
+        </div>
+
+      </aside>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="gh-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.2 1.87.86 2.33.66.07-.52.28-.86.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.1 0 0 .67-.22 2.2.82a7.6 7.6 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.09.16 1.9.08 2.1.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>autogen-code</span>
+        </a>
+
+        <div class="created">Created by amirabolfazle</div>
+      </div>
+
+      <div class="small">© 2025 • <span style="font-variant-numeric:tabular-nums">2025-09-28 23:37:19</span></div>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up reveal using IntersectionObserver
+    (function(){
+      const reveals = Array.from(document.querySelectorAll('.reveal'));
+      if(!('IntersectionObserver' in window)) {
+        // Fallback: show all
+        reveals.forEach(r => r.classList.add('visible'));
+        return;
+      }
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if(e.isIntersecting){
+            e.target.classList.add('visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, {threshold:0.12});
+      reveals.forEach(r => io.observe(r));
+    })();
+
+    // Small accessible focus ring for keyboard users
+    (function(){
+      const body = document.body;
+      function handleKeyboard(e){
+        if(e.key === 'Tab') body.classList.add('show-focus');
+      }
+      window.addEventListener('keydown', handleKeyboard, {once:true});
+    })();
+  </script>
+</body>
+</html>
