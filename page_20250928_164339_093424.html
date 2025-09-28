@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071126;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent1: rgba(99,102,241,0.85);
+      --accent2: rgba(34,211,238,0.85);
+      --muted: rgba(255,255,255,0.75);
+      --glass-radius: 16px;
+      --shadow: 0 8px 30px rgba(2,6,23,0.6);
+      --glass-blur: 14px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Background */
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(99,102,241,0.12), transparent 8%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(34,211,238,0.06), transparent 8%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--muted);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    /* Floating decorative blobs */
+    .blob {
+      position:fixed;
+      filter: blur(40px);
+      opacity:0.35;
+      pointer-events:none;
+      mix-blend-mode: screen;
+      z-index:0;
+    }
+    .blob.a{ width:360px;height:360px;left:-60px;top:10%; background:linear-gradient(45deg,var(--accent1),transparent);}
+    .blob.b{ width:420px;height:420px;right:-90px;bottom:-50px; background:linear-gradient(135deg,var(--accent2),transparent);}
+
+    /* Layout */
+    .wrap{
+      min-height:100dvh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+      position:relative;
+      z-index:1;
+      box-sizing:border-box;
+    }
+    .grid{
+      width:100%;
+      max-width:980px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:start;
+    }
+    @media (max-width:920px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    /* Glass card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--glass-radius);
+      backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+      box-shadow: var(--shadow);
+      padding:28px;
+      box-sizing:border-box;
+      transition: transform 520ms cubic-bezier(.16,.8,.26,1), opacity 480ms ease;
+      transform: translateY(22px);
+      opacity:0;
+    }
+
+    /* Slide-up trigger */
+    body.ready .card{ transform:translateY(0); opacity:1; }
+
+    /* Stagger using nth-child within container */
+    .main .card{ transition-delay: 120ms; }
+    .main .card:nth-child(1){ transition-delay: 120ms; }
+    .main .card:nth-child(2){ transition-delay: 220ms; }
+    .main .card:nth-child(3){ transition-delay: 320ms; }
+
+    .side .card{ transition-delay: 160ms; }
+    .side .card:nth-child(1){ transition-delay: 160ms; }
+    .side .card:nth-child(2){ transition-delay: 260ms; }
+
+    /* Header / Hero */
+    .hero{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    .avatar{
+      width:82px;
+      height:82px;
+      border-radius:18px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      color: white;
+      flex-shrink:0;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.55);
+    }
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    h1{
+      margin:0;
+      font-size:24px;
+      letter-spacing:0.2px;
+      color:white;
+    }
+    .subtitle{
+      margin:0;
+      font-size:13px;
+      color:rgba(255,255,255,0.8);
+    }
+
+    /* Badges / meta */
+    .meta-row{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .badge{
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      color:rgba(255,255,255,0.85);
+      border:1px solid rgba(255,255,255,0.04);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* Content sections */
+    .section-title{
+      font-weight:600;
+      color: #eaf0ff;
+      font-size:13px;
+      margin:0 0 8px 0;
+    }
+    p.lead{
+      margin:0 0 12px 0;
+      color:rgba(255,255,255,0.86);
+      line-height:1.4;
+    }
+
+    .project{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      padding:12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+      border:1px solid rgba(255,255,255,0.03);
+      transition: transform 220ms ease, box-shadow 220ms ease;
+    }
+    .project:hover{ transform: translateY(-6px); box-shadow: 0 14px 40px rgba(2,6,23,0.5); }
+
+    .project .p-title{ font-weight:600; color:white; font-size:15px; }
+    .project .p-desc{ font-size:13px; color:rgba(255,255,255,0.78); }
+
+    /* Side column small cards */
+    .side .card.small{ padding:18px; border-radius:12px; }
+
+    /* Footer */
+    footer{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:13px;
+      color:rgba(255,255,255,0.78);
+    }
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:inherit;
+      text-decoration:none;
+      background:transparent;
+      border-radius:10px;
+      padding:6px 8px;
+      transition: background 180ms ease, transform 160ms ease;
+    }
+    .github-link:hover{ background: rgba(255,255,255,0.02); transform: translateY(-3px); }
+
+    .gh-icon{ width:20px;height:20px;display:inline-block;fill:currentColor; color:var(--muted); }
+
+    /* small timestamp badge top-right */
+    .created-time {
+      position:fixed;
+      right:18px;
+      top:18px;
+      z-index:2;
+      padding:8px 12px;
+      font-size:12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.85);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+      transform: translateY(-10px);
+      opacity:0;
+      transition: transform 480ms cubic-bezier(.16,.8,.26,1), opacity 420ms ease;
+    }
+    body.ready .created-time{ transform: translateY(0); opacity:1; transition-delay:340ms; }
+
+    /* subtle link style */
+    a.inline{
+      color:var(--accent1);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(255,255,255,0.04);
+    }
+    a.inline:hover{ text-decoration:underline; }
+
+    /* focus styles */
+    a:focus{ outline:2px solid rgba(99,102,241,0.25); outline-offset:3px; border-radius:6px; }
+
+    /* small responsiveness */
+    @media (max-width:420px){
+      .avatar{ width:64px;height:64px;border-radius:14px;font-size:22px; }
+      .grid{ gap:18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+
+  <div class="created-time" aria-hidden="false">Created: 2025-09-28 16:42:42</div>
+
+  <main class="wrap" role="main">
+    <div class="grid" role="region" aria-label="personal page content">
+      <div class="main">
+        <section class="card" aria-labelledby="hero-heading">
+          <div class="hero">
+            <div class="avatar" aria-hidden="true">A</div>
+            <div class="title">
+              <h1 id="hero-heading">amirabolfazle</h1>
+              <p class="subtitle">Creative Developer · AI tinkerer · Open-source</p>
+              <div class="meta-row" role="list">
+                <div class="badge" role="listitem">Full-stack experiments</div>
+                <div class="badge" role="listitem">Animation & UI design</div>
+                <div class="badge" role="listitem">Autogen & tooling</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height:14px"></div>
+
+          <div>
+            <p class="section-title">About</p>
+            <p class="lead">I build polished interfaces, experiment with generative code and ship practical tools. This page showcases a few ideas and links to projects I maintain.</p>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div>
+            <p class="section-title">Featured Projects</p>
+            <div style="display:grid;gap:12px;margin-top:8px;">
+              <div class="project" role="article" aria-label="Autogen Code">
+                <div class="p-title">Autogen Code</div>
+                <div class="p-desc">Repository for automation and code generation utilities. Lightweight, modular and open.</div>
+              </div>
+
+              <div class="project" role="article" aria-label="UI Experiments">
+                <div class="p-title">UI Experiments</div>
+                <div class="p-desc">A playground of micro-interactions, glassmorphism components and animation patterns.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="contact-heading" style="margin-top:20px;">
+          <p id="contact-heading" class="section-title">Contact & Links</p>
+          <p class="lead">Say hi: <a class="inline" href="mailto:hello@amirabolfazle.me">hello@amirabolfazle.me</a> · Explore my work on GitHub below.</p>
+
+          <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+            <a class="badge" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">GitHub · autogen-code</a>
+            <a class="badge" href="#" aria-disabled="true">Twitter</a>
+            <a class="badge" href="#" aria-disabled="true">Dribbble</a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side" role="complementary">
+        <div class="card small" aria-labelledby="mini-heading-1">
+          <p id="mini-heading-1" class="section-title">Skills</p>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
+            <div class="badge">JavaScript / TypeScript</div>
+            <div class="badge">React / Svelte</div>
+            <div class="badge">AI & Automation</div>
+          </div>
+        </div>
+
+        <div class="card small" style="margin-top:18px;">
+          <p class="section-title">Quick Links</p>
+          <nav style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+            <a class="badge" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" style="width:100%; justify-content:center;">
+              <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49C3.73 13.91 3.2 12.68 3.2 12.68c-.36-.92-.88-1.17-.88-1.17-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.22 1.86.87 2.32.66.07-.51.28-.87.51-1.07-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 018 3.5c.85.004 1.71.115 2.51.337 1.9-1.29 2.74-1.02 2.74-1.02.56 1.37.21 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            </a>
+
+            <a class="badge" href="#" aria-disabled="true">Resume (pdf)</a>
+            <a class="badge" href="#" aria-disabled="true">Blog</a>
+          </nav>
+        </div>
+
+        <div class="card small" style="margin-top:18px;">
+          <p class="section-title">Playful CTA</p>
+          <p class="lead" style="margin-bottom:12px;">Like animations? Hover items, explore projects and fork the repo.</p>
+          <div style="display:flex;gap:8px;">
+            <button class="badge" style="cursor:pointer" onclick="toggleTheme()">Toggle vibe</button>
+            <a class="badge" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">Fork</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer style="width:100%;max-width:980px;display:flex;justify-content:center;margin-top:28px;">
+      <div class="card" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+            <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49C3.73 13.91 3.2 12.68 3.2 12.68c-.36-.92-.88-1.17-.88-1.17-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.22 1.86.87 2.32.66.07-.51.28-.87.51-1.07-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 018 3.5c.85.004 1.71.115 2.51.337 1.9-1.29 2.74-1.02 2.74-1.02.56 1.37.21 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          </a>
+          <div style="font-size:14px;color:rgba(255,255,255,0.9)">Created by amirabolfazle</div>
+        </div>
+
+        <div style="font-size:12px;color:rgba(255,255,255,0.64);">Built with glassmorphism & subtle animations</div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Trigger entrance animations
+    document.addEventListener('DOMContentLoaded', function(){
+      // small timeout to allow paint, then show
+      requestAnimationFrame(()=> setTimeout(()=> document.body.classList.add('ready'), 80));
+    });
+
+    // playful theme toggle (affects accents)
+    function toggleTheme(){
+      const root = document.documentElement;
+      const dark = root.style.getPropertyValue('--accent1') === 'rgba(99,102,241,0.85)';
+      if(dark){
+        root.style.setProperty('--accent1', 'rgba(236,72,153,0.92)');
+        root.style.setProperty('--accent2', 'rgba(249,115,22,0.92)');
+      } else {
+        root.style.setProperty('--accent1', 'rgba(99,102,241,0.85)');
+        root.style.setProperty('--accent2', 'rgba(34,211,238,0.85)');
+      }
+    }
+  </script>
+</body>
+</html>
