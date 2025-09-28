@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #050509;
+      --bg2: #0a0f1a;
+      --glow: rgba(0, 255, 208, 0.9);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: #e6faff;
+      background: #050509;
+      overflow-x: hidden;
+    }
+
+    /* animated neon gradient background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(0, 255, 208, .15), transparent 40%),
+                  radial-gradient(circle at 80% 80%, rgba(0, 180, 255, .15), transparent 40%),
+                  linear-gradient(135deg, #03040a 0%, #02060d 40%, #01040b 100%);
+      z-index: -3;
+      filter: saturate(120%);
+      animation: bgMove 20s linear infinite;
+    }
+    @keyframes bgMove {
+      0% { transform: translate3d(0,0,0); }
+      50% { transform: translate3d(-10px, 10px, 0); }
+      100% { transform: translate3d(0,0,0); }
+    }
+
+    .ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      overflow: hidden;
+    }
+    .orb {
+      position: absolute;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(0,255,240,.25) 40%, rgba(0,0,0,0) 70%);
+      box-shadow: 0 0 16px rgba(0,255,240,.8), inset 0 0 10px rgba(0,255,240,.8);
+      animation: float var(--dur) ease-in-out infinite;
+      top: var(--top);
+      left: var(--left);
+      opacity: .75;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) translateX(20px) rotate(180deg); }
+      100% { transform: translateY(0px) translateX(0px) rotate(360deg); }
+    }
+
+    .container {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 16px 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .name-wrap {
+      position: relative;
+      display: inline-block;
+      padding: 10px 18px;
+    }
+
+    .name {
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: #eaffff;
+      margin: 0;
+      text-shadow:
+        0 0 6px rgba(0,255,208,.9),
+        0 0 18px rgba(0, 128, 255, .8),
+        0 0 40px rgba(255,0,200,.6);
+      transform: translateZ(0);
+      position: relative;
+      z-index: 1;
+    }
+
+    .neon-ring {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 255, 208, .6);
+      box-shadow: 0 0 40px rgba(0,255,208,.6);
+      animation: spin 14s linear infinite;
+      pointer-events: none;
+      filter: blur(.2px);
+      z-index: 0;
+    }
+
+    @keyframes spin {
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    .creation {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-sans-serif;
+      font-size: 0.95rem;
+      color: #0a0d12;
+      background: linear-gradient(135deg, rgba(0,255,208,.95), rgba(0,128,255,.95));
+      box-shadow: 0 0 12px rgba(0,255,208,.8);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    .subtitle {
+      margin: 12px auto 0;
+      font-size: 1rem;
+      color: #b6f6ff;
+      opacity:.9;
+    }
+
+    .scene {
+      display: grid;
+      place-items: center;
+      padding: 40px 16px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .spin-card {
+      width: 320px;
+      height: 320px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0,255,208,.8), rgba(0,128,255,.8));
+      border: 2px solid rgba(255,255,255,.25);
+      box-shadow: 0 0 40px rgba(0,255,208,.8);
+      transform-style: preserve-3d;
+      animation: spinCard 12s linear infinite;
+    }
+
+    @keyframes spinCard {
+      0% { transform: rotateY(0deg) rotateX(0deg); }
+      50% { transform: rotateY(180deg) rotateX(180deg); }
+      100% { transform: rotateY(360deg) rotateX(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #b5e9ff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #bfefff;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.15);
+      box-shadow: 0 0 12px rgba(0,255,200,.6);
+      transition: transform .2s ease;
+    }
+
+    .github-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .github-link svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .footer-text {
+      display: inline-block;
+      margin-left: 12px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 800px) {
+      .neon-ring { width: 320px; height: 320px; top: -40px; }
+      .spin-card { width: 260px; height: 260px; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <span class="orb" style="--size: 140px; --top: 10%; --left: 5%; --dur: 10s;"></span>
+    <span class="orb" style="--size: 110px; --top: 20%; --left: 85%; --dur: 12s;"></span>
+    <span class="orb" style="--size: 90px; --top: 60%; --left: 25%; --dur: 14s;"></span>
+    <span class="orb" style="--size: 120px; --top: 70%; --left: 70%; --dur: 11s;"></span>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="name-wrap" aria-label="Site Title">
+        <div class="neon-ring" aria-hidden="true"></div>
+        <h1 class="name">amirabolfazle</h1>
+        <div class="creation" title="Creation time">Creation time: 2025-09-28 09:29:29</div>
+      </div>
+      <p class="subtitle" style="margin-top:8px;">A fancy neon-themed personal page with rotating elements</p>
+    </header>
+
+    <main class="scene" aria-label="Main content">
+      <div class="spin-card" role="img" aria-label="Neon rotating card"></div>
+    </main>
+
+    <footer>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12a12 12 0 0 0 8.207 11.385c.6.112.82-.256.82-.57 0-.28-.01-1.02-.02-2.01-3.357.73-4.042-1.614-4.042-1.614-.546-1.389-1.333-1.76-1.333-1.76-1.089-.745.083-.729.083-.729 1.208.086 1.844 1.243 1.844 1.243 1.07 1.832 2.809 1.302 3.495.995.108-.776.42-1.302.764-1.603-2.668-.303-5.462-1.334-5.462-5.93 0-1.31.467-2.38 1.236-3.22-.125-.304-.539-1.523.12-3.17 0 0 .99-.317 3.245 1.025a11.3 11.3 0 0 1 2.965-.396c.997.02 2.006.268 2.963.594 2.25-1.342 3.24-1.026 3.24-1.026.66 1.66.245 2.88.12 3.17.77.84 1.24 1.92 1.24 3.22 0 4.6-2.8 5.64-5.47 5.93.43.37.8 1.1.8 2.22 0 1.6-.01 2.9-.01 3.28 0 .31.214.68.828.56A12.01 12.01 0 0 0 24 12C24 5.373 18.627 0 12 0Z" />
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <span class="footer-text" aria-label="Footer credit">Created by amirabolfazle</span>
+    </footer>
+  </div>
+</body>
+</html>
