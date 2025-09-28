@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg1: #0b1023;
+      --bg2: #1e3a8a;
+      --bg3: #8b5cf6;
+      --card: rgba(255,255,255,0.08);
+      --text: #eaeaf3;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(120deg, #0b1023 0%, #111a35 40%, #0b1023 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    /* Animated gradient overlay */
+    .bg-gradient {
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: conic-gradient(from 190deg at 60% 60%, rgba(56,189,248,0.25), rgba(236,72,153,0.25), rgba(99,102,241,0.25), rgba(56,189,248,0.25));
+      filter: blur(40px);
+      z-index: -1;
+      animation: rotateGrad 60s linear infinite;
+    }
+    @keyframes rotateGrad {
+      0% { transform: rotate(0deg) scale(1); }
+      100% { transform: rotate(360deg) scale(1.15); }
+    }
+    /* page wrapper and glass card */
+    .wrapper {
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 6rem 2rem;
+    }
+    .card {
+      width: min(1000px, 92vw);
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 28px;
+      padding: 48px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      position: relative;
+      overflow: hidden;
+      transform: rotate(-2deg);
+      animation: float 6s ease-in-out infinite alternate;
+    }
+    @keyframes float {
+      0% { transform: rotate(-2deg) translateY(0); }
+      100% { transform: rotate(2deg) translateY(-8px); }
+    }
+    .outline {
+      position: absolute;
+      inset: -1px;
+      border-radius: 29px;
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.0) 60%);
+      filter: blur(0.5px);
+      pointer-events: none;
+    }
+    header {
+      text-align: center;
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+    h1.brand {
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0;
+      letter-spacing: 0.4rem;
+      line-height: 1.05;
+      text-transform: uppercase;
+      font-weight: 800;
+      background: linear-gradient(90deg, #fff, #a5b4fc, #f472b6, #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 4px 14px rgba(0,0,0,0.25));
+      transform: rotate(-1deg);
+      display: inline-block;
+      padding-right: 0.5rem;
+      user-select: none;
+    }
+    .spin {
+      display: inline-block;
+      width: 1.2em;
+      height: 1.2em;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      animation: orbSpin 12s linear infinite;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #fff, #a5b4fc, #34d399, #fff);
+    }
+    @keyframes orbSpin {
+      to { transform: rotate(360deg); }
+    }
+    .sub {
+      margin-top: 0.6rem;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+      opacity: 0.95;
+    }
+    .creation {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      margin-top: 0.5rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(2,6,23,0.4);
+      border: 1px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(2px);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.0rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .card-item {
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 18px;
+      padding: 16px;
+      transform: rotateX(6deg) rotateY(-6deg);
+      transition: transform 0.6s ease, box-shadow 0.6s ease;
+      min-height: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-item:hover {
+      transform: rotateX(0deg) rotateY(0deg) scale(1.02);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    }
+    .card-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+    .card-desc {
+      font-size: 0.92rem;
+      color: #dbeafe;
+      line-height: 1.4;
+    }
+    footer.site-footer {
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      color: #e2e8f0;
+      font-size: 0.95rem;
+      background: rgba(0,0,0,0.15);
+      border-radius: 0 0 28px 28px;
+    }
+    a.icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      color: inherit;
+    }
+    a.icon:hover {
+      transform: translateY(-1px);
+    }
+    /* decorative parallax shapes */
+    .shape {
+      position: fixed;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.0) 60%), rgba(59,130,246,0.35);
+      filter: blur(0.2px);
+      z-index: -1;
+      animation: floatShape 14s ease-in-out infinite;
+      opacity: 0.6;
+    }
+    .shape.shape1 { left: 8%; top: 12%; transform: rotate(20deg); }
+    .shape.shape2 { right: 6%; top: 20%; width: 240px; height: 240px; animation-duration: 18s; }
+    @keyframes floatShape {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); }
+      50% { transform: translateY(-20px) translateX(20px) rotate(15deg); }
+      100% { transform: translateY(0) translateX(0) rotate(0deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient" aria-hidden="true"></div>
+  <div class="shape shape1" aria-hidden="true"></div>
+  <div class="shape shape2" aria-hidden="true"></div>
+
+  <div class="wrapper">
+    <main class="card" role="main" aria-label="Amir Abolfazle personal page">
+      <div class="outline" aria-hidden="true"></div>
+
+      <header>
+        <h1 class="brand" aria-label="Amir Abolfazle">amirabolfazle</h1>
+        <span class="spin" aria-hidden="true" title="rotating decorative orb"></span>
+        <div class="creation" role="note" aria-label="Creation time">
+          2025-09-28 04:03:43
+        </div>
+        <p class="sub">Frontend tinkerer • UI designer • occasional engineer</p>
+      </header>
+
+      <section aria-label="Overview">
+        <div class="grid">
+          <article class="card-item" aria-label="About card">
+            <div class="card-title">About</div>
+            <div class="card-desc">Hi, I’m amirabolfazle. I like building small, delightful web experiences with smooth interactions and gradients.</div>
+          </article>
+          <article class="card-item" aria-label="Projects card">
+            <div class="card-title">Projects</div>
+            <div class="card-desc">A few experiments in animations, gradients, and micro-interactions. Hover to see them come alive.</div>
+          </article>
+          <article class="card-item" aria-label="Skills card">
+            <div class="card-title">Skills</div>
+            <div class="card-desc">HTML, CSS, JavaScript, React, UX, motion design, performance-minded thinking.</div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="site-footer" aria-label="Footer">
+        <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository: amirabolfazle/autogen-code">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.58 2 12.29c0 4.5 2.868 8.32 6.839 9.68.5.09.682-.21.682-.47 0-.23-.01-.84-.014-1.65-2.782.606-3.37-1.21-3.37-1.21-.455-1.17-1.114-1.48-1.114-1.48-.909-.63.069-.617.069-.617 1.005.07 1.532 1.05 1.532 1.05.895 1.58 2.343 1.122 2.912.857.093-.682.35-1.122.636-1.38-2.22-.254-4.555-1.133-4.555-5.043 0-1.115.378-2.026 1-2.742-.1-.255-.43-1.288.094-2.684 0 0 .82-.263 2.685 1.04a9.28 9.28 0 012.44-.333c.83.004 1.666.112 2.446.33 1.862-1.303 2.682-1.04 2.682-1.04.524 1.396.195 2.43.1 2.685.625.717 1.0 1.626 1.0 2.74 0 3.92-2.337 4.785-4.57 5.033.357.31.678.92.678 1.86 0 1.344-.012 2.424-.012 2.756 0 .273.18.606.69.49C19.138 20.604 22 16.784 22 12.29 22 6.58 17.523 2 12 2z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+        <span>Created by amirabolfazle</span>
+      </footer>
+    </main>
+  </div>
+
+</body>
+</html>
