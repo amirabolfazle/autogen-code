@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --grad1:#1e3c72;
+      --grad2:#2a5298;
+      --grad3:#1e3c72;
+      --text:#ffffff;
+      --muted:#dbe7ff;
+      --glass: rgba(255,255,255,.15);
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: #000;
+    }
+
+    /* Gradient background that shifts to create a dynamic look */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 4rem 1rem;
+      overflow: hidden;
+      text-align: center;
+      background: linear-gradient(135deg, var(--grad1) 0%, var(--grad2) 50%, var(--grad3) 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 12s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Subtle decorative orbs to enhance depth */
+    .orb {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      filter: blur(0.6px);
+      opacity: .25;
+      background: radial-gradient(circle at center, rgba(255,255,255,.95), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+    .orb.o1 { top: 8%; left: 6%; animation: float1 9s ease-in-out infinite; }
+    .orb.o2 { bottom: 12%; right: 8%; animation: float2 11s ease-in-out infinite; }
+
+    @keyframes float1 {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(12px,-14px) scale(1.04); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+    @keyframes float2 {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-12px,14px) scale(1.05); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    /* Tilt container provides a zoom+3D feel on mouse interaction */
+    .tilt {
+      perspective: 1000px;
+      width: min(920px, 92vw);
+      transform-style: preserve-3d;
+      transition: transform .15s ease;
+      display: inline-block;
+      padding: 2rem;
+      border-radius: 20px;
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      will-change: transform;
+    }
+
+    .content {
+      transform: translateZ(40px);
+    }
+
+    .brand {
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      font-size: clamp(2.4rem, 6vw + 1rem, 6rem);
+      line-height: 1.05;
+      background: linear-gradient(135deg, #fff, #e9e9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 40px rgba(0,0,0,.25);
+      transform: scale(0.95);
+      animation: riseIn 900ms ease forwards;
+    }
+
+    @keyframes riseIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .tagline {
+      margin: 0.75rem 0 0;
+      font-size: clamp(1rem, 2.2vw, 1.4rem);
+      color: #eef2ff;
+      opacity: .95;
+    }
+
+    .creation-time {
+      display: inline-block;
+      margin-top: 1.6rem;
+      padding: .6rem 1rem;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: .95rem;
+      background: rgba(255,255,255,.18);
+      backdrop-filter: blur(4px);
+      color: #fff;
+    }
+
+    /* Footer with GitHub icon and creator note */
+    .site-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 20px;
+      font-size: 0.95rem;
+      color: #e8eaf6;
+      background: rgba(0,0,0,.15);
+    }
+
+    .site-footer a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      background: rgba(255,255,255,.15);
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .site-footer a:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.25);
+    }
+
+    .site-footer svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .orb { display: none; }
+      .tilt { width: 92vw; padding: 1.6rem; }
+      .brand { font-size: clamp(2rem, 12vw, 4rem); }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero" aria-label="Amirabolfazle landing">
+    <div class="orb o1" aria-hidden="true"></div>
+    <div class="orb o2" aria-hidden="true"></div>
+
+    <div class="tilt" id="tiltRoot" aria-label="Interactive banner">
+      <div class="content">
+        <h1 class="brand">amirabolfazle</h1>
+        <p class="tagline">Fully responsive animated HTML with a gradient theme and zoom effects</p>
+        <div class="creation-time" title="Creation time">
+          Creation time: 2025-09-28 05:50:22
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <!-- GitHub icon (common octocat path) -->
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-label="GitHub">
+        <path fill-rule="evenodd" d="M12 .5C5.73.5 0 5.37 0 12.04c0 5.08 3.29 9.41 7.86 10.94.57.1.78-.22.78-.49 0-.24-.01-.88-.01-1.72-3.2.7-3.88-1.41-3.88-1.41-.54-1.38-1.32-1.75-1.32-1.75-1.09-.74.08-.73.08-.73 1.21.08 1.82 1.25 1.82 1.25 1 1.78 2.64 1.26 3.29.96.11-.75.43-1.26.78-1.56-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.46-2.38 1.22-3.22-.12-.3-.53-1.52.12-3.17 0 0 .99-.32 3.25 1.23a11.3 11.3 0 0 1 5.93 0c2.26-1.55 3.25-1.23 3.25-1.23.66 1.65.24 2.88.12 3.17.77.84 1.23 1.92 1.23 3.23 0 4.6-2.81 5.62-5.47 5.92.44.37.84 1.09.84 2.21 0 1.59-.01 2.87-.01 3.27 0 .31.22.67.81.56A12 12 0 0 0 24 12C24 5.37 18.63.5 12 .5z" />
+      </svg>
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Simple 3D tilt + subtle zoom on mouse interaction for the hero
+    (function(){
+      const root = document.getElementById('tiltRoot');
+      if(!root) return;
+      const maxRotate = 6; // degrees
+      const rect = () => root.getBoundingClientRect();
+
+      function handleMove(e){
+        const r = rect();
+        const px = (e.clientX - (r.left + r.width/2)) / (r.width/2);
+        const py = (e.clientY - (r.top  + r.height/2)) / (r.height/2);
+        const rx = (-py) * maxRotate;
+        const ry = ( px) * maxRotate;
+        root.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale(1.04)`;
+      }
+
+      function handleLeave(){
+        root.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      }
+
+      // Attach events
+      root.addEventListener('mousemove', handleMove);
+      root.addEventListener('mouseleave', handleLeave);
+    })();
+  </script>
+</body>
+</html>
