@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1:#f8f4ff;
+      --bg-2:#fffaf3;
+      --accent-1:#ffd6e0;
+      --accent-2:#d6f7ff;
+      --accent-3:#e7ffd6;
+      --glass: rgba(255,255,255,0.6);
+      --muted:#6b6b7a;
+      --card-shadow: 0 10px 30px rgba(24,24,35,0.08);
+      --radius:18px;
+      --ease: cubic-bezier(.2,.9,.3,1);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--accent-1) 0%, transparent 20%),
+                  radial-gradient(900px 500px at 90% 90%, var(--accent-2) 0%, transparent 18%),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#222;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow:hidden;
+    }
+
+    /* Floating pastel blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(30px);
+      opacity:0.9;
+      mix-blend-mode:screen;
+      animation: float 12s var(--ease) infinite;
+    }
+    .blob.one{ width:420px;height:420px; left:-120px; top:-60px; background: linear-gradient(135deg,#ffd6e0,#ffd9b8); animation-duration:14s; }
+    .blob.two{ width:300px;height:300px; right:-100px; bottom:-80px; background: linear-gradient(135deg,#d6f7ff,#cde8ff); animation-duration:18s; animation-direction:reverse; }
+    .blob.three{ width:260px;height:260px; left:20%; bottom:20%; background: linear-gradient(135deg,#e7ffd6,#e0ffd9); animation-duration:16s;}
+    @keyframes float{
+      0%{ transform: translateY(0) rotate(0deg) scale(1); }
+      50%{ transform: translateY(-28px) rotate(12deg) scale(1.03); }
+      100%{ transform: translateY(0) rotate(0deg) scale(1); }
+    }
+
+    /* Main card */
+    .card{
+      width: min(920px, 96vw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.5));
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.6);
+      padding: clamp(28px, 4vw, 44px);
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap: clamp(18px, 3.5vw, 34px);
+      align-items:center;
+      min-height:420px;
+      opacity:0;
+      transform: translateY(18px);
+      animation: fadeInUp .9s var(--ease) forwards;
+    }
+
+    @keyframes fadeInUp{
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    /* Left content */
+    .content{
+      padding-right:10px;
+    }
+    h1{
+      margin:0 0 8px 0;
+      font-size: clamp(34px, 4.6vw, 48px);
+      letter-spacing:-0.6px;
+      color: #1b1b23;
+      opacity:0;
+      transform: translateY(8px);
+      animation: fadeIn .7s var(--ease) .15s forwards;
+    }
+    .subtitle{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-weight:600;
+      opacity:0;
+      transform: translateY(8px);
+      animation: fadeIn .7s var(--ease) .25s forwards;
+    }
+    p.lead{
+      margin:0 0 22px 0;
+      color:#333;
+      line-height:1.45;
+      opacity:0;
+      transform: translateY(8px);
+      animation: fadeIn .7s var(--ease) .35s forwards;
+    }
+
+    @keyframes fadeIn{
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    /* Buttons / links */
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:6px;
+      opacity:0;
+      transform: translateY(8px);
+      animation: fadeIn .7s var(--ease) .45s forwards;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      border:1px solid rgba(0,0,0,0.06);
+      color:#111;
+      text-decoration:none;
+      font-weight:600;
+      box-shadow: 0 6px 20px rgba(24,24,35,0.06);
+      transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .btn:active{ transform: translateY(1px) scale(.998); }
+    .btn.secondary{
+      background:transparent;
+      border: 1px dashed rgba(34,34,34,0.06);
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    /* Right card */
+    .profile{
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.75));
+      border-radius:14px;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:center;
+      justify-content:center;
+      min-height:220px;
+      box-shadow: 0 8px 30px rgba(24,24,35,0.04);
+      opacity:0;
+      transform: translateY(8px) scale(.99);
+      animation: fadeIn .7s var(--ease) .55s forwards;
+    }
+    .avatar{
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      background: conic-gradient(from 180deg at 50% 50%, #ffd6e0, #d6f7ff, #e7ffd6, #ffd6e0);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      color:#222;
+      font-size:42px;
+      box-shadow: 0 8px 24px rgba(24,24,35,0.06);
+      border: 6px solid rgba(255,255,255,0.6);
+    }
+    .meta{
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .time{
+      font-weight:700;
+      color:#2e2e37;
+      margin-top:6px;
+    }
+
+    /* Footer */
+    footer.site-footer{
+      position: absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      background: transparent;
+      padding:6px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+      opacity:0;
+      animation: fadeIn .8s var(--ease) .85s forwards;
+    }
+    footer a{ color:inherit; text-decoration:none; display:inline-flex; gap:8px; align-items:center; }
+    .gh-icon{
+      width:18px;height:18px; display:inline-block; vertical-align:middle;
+      filter: drop-shadow(0 2px 6px rgba(34,34,52,0.08));
+    }
+
+    /* Responsive */
+    @media (max-width:880px){
+      .card{ grid-template-columns: 1fr; padding:22px;}
+      .profile{ order:-1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob one" aria-hidden="true"></div>
+  <div class="blob two" aria-hidden="true"></div>
+  <div class="blob three" aria-hidden="true"></div>
+
+  <main class="card" role="main" aria-labelledby="page-title">
+    <section class="content">
+      <h1 id="page-title">amirabolfazle</h1>
+      <div class="subtitle">pastel personal page • animated • minimal</div>
+      <p class="lead">Hello — I'm amirabolfazle. This little corner showcases a soft pastel aesthetic, gentle motion, and a calm, focused layout. Tweak, remix, or just admire the fade-in vibes.</p>
+
+      <div class="actions" role="list">
+        <a class="btn" href="#about" role="listitem" aria-label="About">About</a>
+        <a class="btn secondary" href="#projects" role="listitem" aria-label="Projects">Projects</a>
+      </div>
+    </section>
+
+    <aside class="profile" aria-labelledby="profile-title">
+      <div class="avatar" aria-hidden="true">A</div>
+      <div id="profile-title" class="meta">Soft-crafted interface with subtle motion</div>
+      <div class="time" title="Creation time">Created: 2025-09-28 20:13:09</div>
+    </aside>
+
+    <footer class="site-footer" role="contentinfo">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M12 .5a11.5 11.5 0 00-3.64 22.43c.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.22.7-3.9-1.55-3.9-1.55-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.26 3.4.96.11-.75.41-1.26.75-1.55-2.57-.29-5.27-1.29-5.27-5.74 0-1.27.45-2.31 1.19-3.13-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.19a11.06 11.06 0 015.79 0c2.21-1.5 3.18-1.19 3.18-1.19.63 1.59.23 2.77.11 3.06.74.82 1.19 1.86 1.19 3.13 0 4.46-2.7 5.44-5.28 5.73.42.36.8 1.08.8 2.18 0 1.57-.01 2.83-.01 3.22 0 .31.21.68.8.56A11.5 11.5 0 0012 .5z"
+            fill="#111827"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Gentle entrance for the whole page to synchronize tiny delays
+    (function(){
+      // Add reduced-motion respect
+      const preferReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(preferReduced){
+        document.querySelectorAll('.card, .blob, footer').forEach(el=>{
+          el.style.animation = 'none';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
