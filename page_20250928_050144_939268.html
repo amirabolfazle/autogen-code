@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #f7f4f8;
+      --surface: #ffffff;
+      --text: #1f1b2b;
+      --muted: #6b6b6b;
+      --shadow: 0 8px 20px rgba(0,0,0,.08);
+      --radius: 14px;
+      --gap: 1.5rem;
+      --grad-blue: linear-gradient(135deg, #e0f2ff 0%, #e6f0ff 40%, #f5faff 100%);
+      --grad-pink: linear-gradient(135deg, #ffe2f0 0%, #ffd6e6 40%, #fff2f7 100%);
+      --grad-green: linear-gradient(135deg, #e6fff0 0%, #d8f5e2 40%, #f7fff7 100%);
+      --grad lavender: linear-gradient(135deg, #f3e8ff 0%, #e9e2ff 40%, #fef8ff 100%);
+      --grad-lavender: linear-gradient(135deg, #f0e8ff 0%, #e8ddff 40%, #f7f6ff 100%);
+      --grad1: #d7f0ff;
+      --grad2: #ffd9e6;
+      --grad3: #eafbd8;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial;
+      color: var(--text);
+      background: #fbf9ff;
+      background: radial-gradient(circle at 20% -10%, rgba(255,214,238,.25), transparent 40%),
+                  radial-gradient(circle at 100% 0%, rgba(186,235,230,.25), transparent 40%),
+                  linear-gradient(180deg, #fefefe 0%, #fbf7ff 100%);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: .75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand h1 {
+      font-size: clamp(1.6rem, 4vw + .5rem, 3.2rem);
+      margin: 0;
+      background: linear-gradient(90deg, #7c6cff, #ff9bd6, #7ff0d5);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: .5px;
+    }
+
+    .creation-time {
+      font-size: .85rem;
+      color: var(--muted);
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.05);
+      padding: .4rem .7rem;
+      border-radius: 999px;
+    }
+
+    main {
+      flex: 1 1 auto;
+      padding: 0 1.25rem 2rem;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      align-items: center;
+      justify-items: start;
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin: 0 0 1rem 0;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.05);
+      box-shadow: var(--shadow);
+    }
+
+    @media (min-width: 640px){
+      .intro { grid-template-columns: 2fr 1fr; padding: 1.25rem 1.75rem; }
+    }
+
+    .intro p { margin: 0; color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--gap);
+      align-items: stretch;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 16px;
+      padding: 1.25rem;
+      color: #0b0b0f;
+      background: #fff;
+      box-shadow: var(--shadow);
+      min-height: 180px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.05);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 0.65s ease-out forwards;
+    }
+
+    .card .card-title {
+      font-size: 1.1rem;
+      margin: 0 0 .5rem;
+    }
+
+    .card .card-text {
+      font-size: .95rem;
+      color: #495057;
+      line-height: 1.4;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: .25rem .5rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      color: #555;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.05);
+      margin-top: .5rem;
+    }
+
+    /* pastel cards backgrounds */
+    .pastel-blue { background: var(--grad-blue); }
+    .pastel-pink { background: var(--grad-pink); }
+    .pastel-green { background: var(--grad-green); }
+    .pastel-lav { background: rgba(232, 228, 255, 0.85); background-image: linear-gradient(135deg, #f1e6ff 0%, #e3e9ff 60%, #fdfcff 100%); }
+    .pastel-lav2 { background: linear-gradient(135deg, #efeaff 0%, #e8dcff 40%, #f7f6ff 100%); }
+    .card:hover { transform: translateY(-2px); transition: transform .25s ease; }
+
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* staggered delays for slide-up effect */
+    .card[data-delay="0"] { animation-delay: .05s; }
+    .card[data-delay="1"] { animation-delay: .15s; }
+    .card[data-delay="2"] { animation-delay: .25s; }
+    .card[data-delay="3"] { animation-delay: .35s; }
+    .card[data-delay="4"] { animation-delay: .45s; }
+    .card[data-delay="5"] { animation-delay: .55s; }
+
+    footer {
+      padding: 1rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      text-decoration: none;
+      color: inherit;
+      padding: .4rem .6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.8);
+    }
+
+    .github-link svg {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+    }
+
+    @media (max-width: 600px){
+      .creation-time { display: inline-block; }
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="brand" aria-label="amirabolfazle home">
+      <span aria-hidden="true" style="font-size:1.2rem; line-height:1;">✨</span>
+      <h1>amirabolfazle</h1>
+    </a>
+    <div class="creation-time" aria-label="creation-time-display">
+      Creation time: 2025-09-28 05:01:13
+    </div>
+  </header>
+
+  <main>
+    <section class="intro" aria-label="introduction">
+      <div>
+        <p>Welcome to a fully responsive, pastel-themed, animated HTML page. Elements slide up as you load and resize, creating a calm and playful experience.</p>
+      </div>
+      <div class="chip" style="justify-self:end; align-self:start; display:inline-flex; gap:.5rem;">
+        <span>Pastel Theme</span>
+        <span>Slide-up Animations</span>
+        <span>Responsive Grid</span>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="content-cards">
+      <article class="card pastel-blue" data-delay="0" style="background: var(--grad-blue);">
+        <h3 class="card-title">Hello from amirabolfazle</h3>
+        <p class="card-text">This UI showcases gentle hues and smooth motion. Built with pure HTML and CSS for performance and accessibility.</p>
+        <span class="chip" aria-label="tag">Intro</span>
+      </article>
+
+      <article class="card pastel-pink" data-delay="1" style="background: var(--grad-pink);">
+        <h3 class="card-title">Pastel Palette</h3>
+        <p class="card-text">Pastel colors invite a calm vibe while keeping contrast readable and friendly.</p>
+        <span class="chip" aria-label="tag">Design</span>
+      </article>
+
+      <article class="card pastel-green" data-delay="2" style="background: var(--grad-green);">
+        <h3 class="card-title">Responsive Grid</h3>
+        <p class="card-text">Auto-fit columns adapt to your screen width, maintaining spacing and balance.</p>
+        <span class="chip" aria-label="tag">Layout</span>
+      </article>
+
+      <article class="card pastel-lav" data-delay="3" style="background: linear-gradient(135deg, #f1e6ff 0%, #e2dbff 60%, #fdfaff 100%);">
+        <h3 class="card-title">Slide-up Motion</h3>
+        <p class="card-text">Elements animate into view with a subtle upward slide, enhancing engagement.</p>
+        <span class="chip" aria-label="tag">Animation</span>
+      </article>
+
+      <article class="card pastel-lav2" data-delay="4" style="background: linear-gradient(135deg, #f0e8ff 0%, #e9e2ff 40%, #fff 100%);">
+        <h3 class="card-title">Accessible & Lightweight</h3>
+        <p class="card-text">No external dependencies required. Clean, semantic HTML with graceful fallbacks.</p>
+        <span class="chip" aria-label="tag">Accessibility</span>
+      </article>
+
+      <article class="card pastel-green" data-delay="5" style="background: linear-gradient(135deg, #eafff5 0%, #e3f8ee 50%, #f7fff9 100%);">
+        <h3 class="card-title">Creation Time</h3>
+        <p class="card-text">This area demonstrates including meta-like content inside the page layout.</p>
+        <span class="chip" aria-label="tag">Meta</span>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" width="18" height="18">
+        <path d="M12 .5A12.5 12.5 0 00.5 12c0 5.5 3.58 10.17 8.54 11.79.63.12.86-.27.86-.6 0-.3-.01-1.09-.02-2.13-3.48.75-4.21-1.49-4.21-1.49-.57-1.45-1.39-1.84-1.39-1.84-1.14-.78.09-.77.09-.77 1.26.09 1.92 1.29 1.92 1.29 1.12 1.92 2.94 1.37 3.66 1.05.11-.82.44-1.37.8-1.69-2.78-.32-5.71-1.39-5.71-6.18 0-1.37.49-2.49 1.29-3.37-.13-.32-.56-1.63.12-3.39 0 0 1.05-.34 3.45 1.27a12 12 0 016.3 0C16.8 2.6 17.85 3 17.85 3c.69 1.76.26 3.07.13 3.39.8.88 1.29 2 1.29 3.37 0 4.8-2.93 5.85-5.73 6.15.45.39.85 1.16.85 2.34 0 1.69-.02 3.05-.02 3.47 0 .33.23.72.87.6A12.5 12.5 0 0024 12C24 5.37 18.63 0 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
