@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #0b0b14;
+      --bg2: #0a0a12;
+      --neon-cyan: #00f5ff;
+      --neon-pink: #ff3bd2;
+      --neon-purple: #8a3cff;
+      --card: rgba(255,255,255,0.06);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif; background: #0b0b14; color: #e6e6e6; }
+
+    /* animated neon gradient background layers */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 20%, rgba(0,255,255,0.18), transparent 40%), 
+                  radial-gradient(circle at 80% 60%, rgba(255,0,180,0.18), transparent 40%), 
+                  radial-gradient(circle at 50% 90%, rgba(60,255,120,0.18), transparent 40%);
+      filter: saturate(1.2);
+      animation: drift 28s linear infinite;
+      pointer-events: none;
+    }
+    body::after { opacity: 0.9; animation-duration: 40s; }
+
+    @keyframes drift {
+      0% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(-6%, 4%) rotate(0.5deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 12px;
+    }
+
+    h1.brand {
+      font-size: clamp(28px, 6vw, 64px);
+      margin: 0;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #e8fbff;
+      text-shadow:
+        0 0 6px rgba(0, 255, 255, 0.9),
+        0 0 18px rgba(0, 255, 255, 0.7),
+        0 0 40px rgba(255, 0, 210, 0.4);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px 8px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #e8e8e8;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+    }
+    nav a:hover {
+      transform: translateY(-2px);
+      background: rgba(0,0,0,0.4);
+      border-color: rgba(0,255,255,0.6);
+      text-shadow: 0 0 6px rgba(0,255,255,0.8);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px 60px;
+    }
+
+    section {
+      margin: 40px 0;
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(20,20,40,0.6), rgba(20,20,40,0.25));
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    section::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px; right: -2px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, rgba(0,255,255,0.9), transparent);
+      filter: blur(0.5px);
+      opacity: 0.9;
+      animation: glow 3s ease-in-out infinite;
+    }
+    @keyframes glow { 0%,100%{ transform: translateX(-6px); } 50% { transform: translateX(6px); } }
+
+    h2 { margin: 0 0 12px; font-size: 22px; color: #e9faff; text-transform: uppercase; letter-spacing: 0.15em; }
+    p { color: #d9d9d9; line-height: 1.6; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.4);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(0,255,255,0.6);
+      box-shadow: 0 0 14px rgba(0,255,255,0.3);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      min-height: 140px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 28px rgba(0,255,255,0.6);
+    }
+
+    .card h3 { margin: 0 0 6px; font-size: 18px; color: #eafffd; }
+    .card p { margin: 0; color: #cbd6e1; font-size: 13px; }
+    .chip {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0, 255, 255, 0.15);
+      color: #aaf3f9;
+      border: 1px solid rgba(0,255,255,0.6);
+      font-size: 12px;
+      margin-right: 6px;
+    }
+    .actions a {
+      color: #0ff;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.6);
+      background: rgba(0,0,0,0.2);
+      transition: background .2s;
+    }
+    .actions a:hover { background: rgba(0,255,255,0.25); }
+
+    .section-header {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,0.6);
+      color: #baffff;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    footer {
+      margin: 60px auto;
+      text-align: center;
+      padding: 20px;
+      color: #d2d2d2;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    .footer-inner {
+      display: inline-flex; align-items: center; gap: 12px;
+      justify-content: center;
+    }
+    .github-icon {
+      width: 20px; height: 20px; display: inline-block;
+      vertical-align: middle;
+      color: #9bd7ff;
+      filter: drop-shadow(0 0 4px rgba(0,255,255,0.8));
+    }
+
+    /* fade-in effect on sections */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.9s ease forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 720px) {
+      h1.brand { font-size: 40px; }
+      nav { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="brand" aria-label="amirabolfazle">amirabolfazle</h1>
+    <nav aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="about" class="fade-in" style="animation-delay:0s;">
+      <div class="section-header">
+        <h2>About</h2>
+        <span class="badge">Creation: 2025-09-28 07:51:25</span>
+      </div>
+      <p>Hello, I’m amir abolfazle — a developer who loves crafting vibrant, neon-bright interfaces and delightful UX. I experiment with motion, color, and clean code to build snappy, accessible experiences. This one-file portfolio showcases a taste of projects and ideas.</p>
+      <p>Based in the intersection of design and engineering, I explore web tech with curiosity and a dash of whimsy. If something glows, I want to make it move.</p>
+    </section>
+
+    <section id="projects" class="fade-in" style="animation-delay:0.15s;">
+      <div class="section-header">
+        <h2>Projects</h2>
+        <span class="badge">Selected</span>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>Neon Pulse Dashboard</h3>
+          <p>A real-time dashboard with neon-glow charts and smooth fade transitions.</p>
+          <div class="chip">React</div><div class="chip">D3</div>
+          <div class="actions" style="margin-top:8px;">
+            <a href="#" aria-label="Open project Neon Pulse Dashboard">Open</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>GlowKit UI</h3>
+          <p>A component library with neon aesthetics and accessible focus states.</p>
+          <div class="chip">UI/UX</div><div class="chip">Frontend</div>
+          <div class="actions" style="margin-top:8px;">
+            <a href="#" aria-label="Open project GlowKit UI">Open</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Pulse Animations</h3>
+          <p>A collection of reusable neon-inspired animations for web apps.</p>
+          <div class="chip">CSS</div><div class="chip">Animation</div>
+          <div class="actions" style="margin-top:8px;">
+            <a href="#" aria-label="Open project Pulse Animations">Open</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="fade-in" style="animation-delay:0.30s;">
+      <div class="section-header">
+        <h2>Skills</h2>
+        <span class="badge">Toolkit</span>
+      </div>
+      <div class="grid" aria-label="Skills list">
+        <div class="card" style="min-height: 100px;">
+          <h3>Frontend</h3>
+          <p>HTML, CSS, JavaScript, TypeScript, React, Vue</p>
+        </div>
+        <div class="card" style="min-height: 100px;">
+          <h3>Design</h3>
+          <p>UI/UX, motion design, color systems, accessibility</p>
+        </div>
+        <div class="card" style="min-height: 100px;">
+          <h3>Tools</h3>
+          <p>Git, Webpack, Vite, Figma, VSCode</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="fade-in" style="animation-delay:0.45s;">
+      <div class="section-header">
+        <h2>Contact</h2>
+        <span class="badge">Tell me hello</span>
+      </div>
+      <p>You can reach me via email or social media. This section is intentionally concise for this one-file demo.</p>
+      <p>Email: amira@example.com</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <a href="https://github.com/amirabolfazle/autogen-code" aria-label="GitHub repository">
+        <!-- GitHub logo as inline SVG -->
+        <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" focusable="false" style="color:#9bd7ff;">
+          <path d="M12 .5a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.44-4.04-1.44-.55-1.41-1.34-1.79-1.34-1.79-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.17 0 0 1 .32 3.29 1.23a11.43 11.43 0 016 0c2.28-.91 3.28-1.23 3.28-1.23.66 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.47 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.58A12 12 0 0012 .5z"/>
+        </svg>
+      </a>
+      <span>Created by amirabolfazle</span>
+    </div>
+  </footer>
+
+  <script>
+    // Optional: ensure initial fade-ins start after load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.fade-in').forEach((el) => {
+        // force reflow to restart animation if needed
+        void el.offsetWidth;
+      });
+    });
+  </script>
+</body>
+</html>
