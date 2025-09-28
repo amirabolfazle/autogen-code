@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-a:#0f1724;
+      --g1: linear-gradient(135deg,#5ee7df 0%, #b490ca 40%, #7f7fd5 70%, #4facfe 100%);
+      --glass: rgba(255,255,255,0.06);
+      --accent: rgba(255,255,255,0.14);
+      --card: rgba(255,255,255,0.04);
+      --text: #f6f7fb;
+      --muted: rgba(246,247,251,0.75);
+      font-family: Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(127,127,213,0.12), transparent 10%),
+                  radial-gradient(900px 400px at 90% 80%, rgba(95,231,223,0.08), transparent 8%),
+                  var(--bg-a);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .page{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 28px;
+      box-sizing:border-box;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* gradient blob background */
+    .blob{
+      position:absolute;
+      filter:blur(60px) saturate(120%);
+      opacity:0.9;
+      transform:translateZ(0);
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .blob.a{
+      width:720px;height:720px;
+      background:linear-gradient(135deg,#7f7fd5,#b490ca 40%,#5ee7df 80%);
+      top:-12%;
+      left:-10%;
+    }
+    .blob.b{
+      width:520px;height:520px;
+      background:linear-gradient(135deg,#4facfe, #00f2fe 60%, #7f7fd5 100%);
+      bottom:-8%;
+      right:-6%;
+      opacity:0.7;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      align-items:center;
+      z-index:2;
+    }
+
+    @media (max-width:920px){
+      .container{ grid-template-columns:1fr; padding-top:28px; gap:18px; }
+    }
+
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:42px;
+      border-radius:16px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(8px) saturate(120%);
+      transform-origin:center;
+      animation:zoomIn 900ms cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    @keyframes zoomIn{
+      from{ transform:scale(.98); opacity:0; }
+      to{ transform:scale(1); opacity:1; }
+    }
+
+    .title{
+      display:flex;
+      align-items:baseline;
+      gap:14px;
+      margin:0 0 14px 0;
+      flex-wrap:wrap;
+    }
+    .title h1{
+      font-size: clamp(28px, 4.6vw, 44px);
+      margin:0;
+      letter-spacing:-0.02em;
+      line-height:1;
+      font-weight:700;
+      background:var(--g1);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 6px 30px rgba(79,79,144,0.14);
+    }
+    .badge{
+      font-size:12px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: inset 0 -6px 18px rgba(0,0,0,0.25);
+    }
+
+    .lead{
+      color:var(--muted);
+      margin:8px 0 24px 0;
+      font-size:16px;
+      line-height:1.6;
+      max-width:58ch;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      color:var(--text);
+      font-weight:600;
+      transition:transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s;
+      box-shadow: 0 6px 22px rgba(3,7,18,0.55);
+    }
+    .btn:active{ transform:translateY(1px); }
+    .btn.primary{
+      background: linear-gradient(90deg,#7f7fd5,#4facfe);
+      color:#071029;
+      box-shadow: 0 10px 30px rgba(79,127,213,0.18);
+      border: none;
+    }
+    .btn:hover{ transform: scale(1.03); }
+
+    .meta{
+      margin-top:18px;
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    /* right card */
+    .panel{
+      padding:28px;
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 20px 60px rgba(3,8,21,0.6);
+      backdrop-filter: blur(8px);
+      transform-origin:center;
+      animation: float 4200ms ease-in-out infinite alternate;
+    }
+    @keyframes float{
+      from{ transform: translateY(0) scale(1); }
+      to{ transform: translateY(-8px) scale(1.01); }
+    }
+
+    .mock{
+      width:100%;
+      height:320px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .mock .art{
+      width:88%;
+      height:88%;
+      border-radius:10px;
+      background:var(--card);
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      padding:12px;
+      transform-origin:center;
+      transition:transform .35s cubic-bezier(.2,.9,.3,1);
+      box-shadow: inset 0 -20px 60px rgba(0,0,0,0.25);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .mock:hover .art{ transform: scale(1.035) rotate(-0.6deg); }
+
+    .tile{
+      background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+      border-radius:8px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      justify-content:center;
+      align-items:flex-start;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .tile h4{ margin:0; font-size:13px; color:var(--muted); }
+    .tile p{ margin:0; font-size:18px; font-weight:700; }
+
+    .features{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    .feature{
+      background: rgba(255,255,255,0.02);
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:inline-flex;
+      gap:12px;
+      align-items:center;
+      min-width:120px;
+      transition:transform .22s;
+    }
+    .feature:hover{ transform:scale(1.04); }
+
+    .dot{
+      width:44px;height:44px;border-radius:10px;
+      background:var(--accent);
+      display:grid;place-items:center;color:var(--text);
+      font-weight:700;
+      font-size:15px;
+      box-shadow: inset 0 -6px 16px rgba(0,0,0,0.25);
+    }
+
+    footer{
+      margin-top:36px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .footer-left{ display:flex; align-items:center; gap:12px; }
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:10px;
+      transition:background .16s, transform .16s;
+      border:1px solid rgba(255,255,255,0.02);
+      background: rgba(255,255,255,0.01);
+    }
+    .gh svg{ width:18px;height:18px; display:block; }
+    .gh:hover{ transform:translateY(-2px); background: rgba(255,255,255,0.02); color:var(--text); }
+
+    /* small */
+    .small{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    /* subtle focus states */
+    .btn:focus, .gh:focus { outline:2px solid rgba(127,127,213,0.18); outline-offset:3px; }
+
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+
+    <main class="container" role="main" aria-labelledby="site-title">
+      <section class="hero" aria-label="Hero section">
+        <div class="title">
+          <h1 id="site-title">amirabolfazle</h1>
+          <span class="badge">Landing • Gradient • Motion</span>
+        </div>
+
+        <p class="lead">
+          A modern, vivid landing page concept built around fluid gradients and soft zoom motion — crafted to showcase projects, portfolios or product ideas with clarity and presence.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn primary" href="#get-started" role="button">Get started</a>
+          <a class="btn" href="#learn-more" role="button">Explore features</a>
+        </div>
+
+        <div class="meta" aria-hidden="false">
+          <span class="small">Creation time: <strong style="color:var(--text); margin-left:6px;">2025-09-28 17:37:07</strong></span>
+          <span class="small">•</span>
+          <span class="small">Responsive • Animated • Lightweight</span>
+        </div>
+
+        <footer style="margin-top:22px;">
+          <div class="footer-left">
+            <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.5-1.3-1.3-1.6-1.3-1.6-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.3 1.9 1.3 1 .1 1.6-.8 2-1.3-.9-.1-1.9-.5-1.9-2 0-.4.1-.8.3-1.1-.4-.1-1.1-.6-.1-1.5 0 0 .8-.3 2.7 1 1-.3 2.1-.5 3.2-.5 1.1 0 2.2.2 3.2.5 1.9-1.3 2.7-1 2.7-1 .9.9.3 1.4.2 1.5.2.3.3.7.3 1.1 0 1.4-1 1.9-1.9 2 .6.5 1.1 1.4 1.1 2.8v4.1c0 .3.2.7.8.6A12 12 0 0 0 12 .5z" fill="currentColor"/>
+              </svg>
+              <span>Created by amirabolfazle</span>
+            </a>
+          </div>
+        </footer>
+      </section>
+
+      <aside class="panel" aria-label="Preview and features">
+        <div class="mock" role="img" aria-label="UI preview mockup">
+          <div class="art" aria-hidden="true">
+            <div class="tile">
+              <h4>Heading</h4>
+              <p>Intuitive</p>
+              <div style="height:8px;"></div>
+              <div style="width:100%;height:8px;background:linear-gradient(90deg,#7f7fd5,#4facfe);border-radius:6px;"></div>
+            </div>
+            <div class="tile">
+              <h4>Speed</h4>
+              <p>Fast</p>
+              <div style="height:8px;"></div>
+              <div style="width:100%;height:8px;background:linear-gradient(90deg,#5ee7df,#b490ca);border-radius:6px;"></div>
+            </div>
+            <div class="tile" style="grid-column:1 / span 2; display:flex; align-items:center; justify-content:space-between;">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <h4 style="color:var(--muted);">Overview</h4>
+                <p style="font-size:20px;margin:0;font-weight:800;">Beautiful by design</p>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,#7f7fd5,#4facfe);display:grid;place-items:center;font-weight:800;">A</div>
+                <div style="font-size:12px;color:var(--muted);text-align:right;">Prototype • Motion • Scale</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="features" style="margin-top:18px;">
+          <div class="feature"><div class="dot">01</div><div><strong style="display:block">Gradient UI</strong><span class="small">Vibrant themes</span></div></div>
+          <div class="feature"><div class="dot">02</div><div><strong style="display:block">Zoom Effects</strong><span class="small">Interactive motion</span></div></div>
+          <div class="feature"><div class="dot">03</div><div><strong style="display:block">Responsive</strong><span class="small">Mobile-first</span></div></div>
+        </div>
+
+        <div style="margin-top:18px; display:flex; gap:10px; align-items:center; justify-content:space-between;">
+          <div style="color:var(--muted); font-size:13px;">Preview card with subtle hover zoom and motion.</div>
+          <a class="btn" href="#download" style="font-size:13px;padding:10px 12px;">Download</a>
+        </div>
+
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
