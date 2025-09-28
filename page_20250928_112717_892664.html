@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg: #050509;
+      --fg: #e6f9ff;
+      --neon1: #00f5ff;
+      --neon2: #ff00ff;
+      --neon3: #39ff14;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+      color: #eaffff;
+      background: #04060a;
+      overflow-x: hidden;
+    }
+
+    /* animated neon gradient background */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 0%, rgba(0,255,255,0.15), transparent 40%),
+                  radial-gradient(circle at 90% 50%, rgba(255,0,255,0.15), transparent 40%),
+                  radial-gradient(circle at 50% 100%, rgba(0,255,128,0.15), transparent 40%),
+                  linear-gradient(135deg, #020617 0%, #020617 60%, #090b1a 100%);
+      animation: shimmer 12s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(40deg); }
+      100% { filter: hue-rotate(0deg); }
+    }
+
+    .scene {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      position: relative;
+      padding: 2.25rem;
+      border-radius: 20px;
+      width: min(100%, 1100px);
+      background: rgba(4, 8, 20, 0.45);
+      border: 1px solid rgba(0, 255, 255, 0.6);
+      box-shadow:
+        0 0 6px rgba(0,255,255,0.6),
+        inset 0 0 18px rgba(0,255,255,0.25),
+        0 0 40px rgba(0, 255, 255, 0.4);
+      backdrop-filter: saturate(1.2) blur(0.5px);
+      overflow: hidden;
+    }
+
+    /* neon glow border using multiple shadows */
+    .card:before,
+    .card:after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      pointer-events: none;
+    }
+    .card:before {
+      border: 2px solid rgba(0, 255, 255, 0.75);
+      filter: blur(0.5px);
+      z-index: -1;
+    }
+    .card:after {
+      border: 2px solid rgba(255, 0, 255, 0.75);
+      filter: blur(1px);
+      z-index: -2;
+    }
+
+    .title {
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0 0 0.75rem 0;
+      text-align: center;
+      letter-spacing: .04em;
+      color: #e8feff;
+      text-shadow:
+        0 0 6px rgba(0, 255, 255, 0.9),
+        0 0 18px rgba(0, 255, 255, 0.6),
+        0 0 40px rgba(255, 0, 255, 0.8);
+      animation: bounce 1.4s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      25% { transform: translateY(-12px); }
+      50% { transform: translateY(6px); }
+      75% { transform: translateY(-6px); }
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #c8faff;
+      opacity: 0.9;
+      margin-bottom: 1.25rem;
+      font-size: clamp(1rem, 2.6vw, 1.25rem);
+    }
+
+    .panel {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    @media (min-width: 800px) {
+      .panel { grid-template-columns: 1fr 1fr; }
+    }
+
+    .neon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: .6rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,255,.6);
+      color:#d9feff;
+      text-shadow: 0 0 6px rgba(0,255,255,.8);
+      background: linear-gradient(135deg, rgba(0,0,0,0.25), rgba(0,0,0,0.15));
+      box-shadow: 0 0 12px rgba(0,255,255,.6);
+      justify-content: center;
+      width: max-content;
+      margin: 0 auto;
+    }
+
+    .neon-dot {
+      width: 12px; height: 12px; border-radius:50%;
+      background: #00fff0;
+      box-shadow: 0 0 10px #00fff0, 0 0 20px #00fff0;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    .cta {
+      display:flex; justify-content:center; gap:1rem;
+    }
+    .btn {
+      appearance: none; border:0; outline:0;
+      padding: .75rem 1.25rem;
+      border-radius: 999px;
+      font-weight: 600;
+      color: #041018;
+      background: linear-gradient(135deg, #00f5ff, #7a0aff);
+      border: 1px solid rgba(255,255,255,.5);
+      cursor: pointer;
+      text-shadow: 0 1px 0 rgba(0,0,0,.2);
+      box-shadow: 0 6px 14px rgba(0,0,0,.25), 0 0 12px rgba(0,255,255,.8);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,255,255,.5); }
+    .btn:active { transform: translateY(0); }
+
+    .creation {
+      text-align:center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas;
+      font-size: .95rem;
+      color: #bffcff;
+    }
+
+    .footer {
+      display:flex; align-items:center; justify-content:center; gap:.5rem;
+      padding: 1rem; margin-top: 1.75rem;
+      border-top: 1px solid rgba(0,255,255,.25);
+      color:#cfffff;
+    }
+
+    .footer a {
+      color: #aeeaff; text-decoration: none;
+      display:inline-flex; align-items:center; gap:.5rem;
+    }
+    .footer a:hover { text-decoration: underline; }
+
+    /* decorative neon lines around panel */
+    .panel-line {
+      position:absolute;
+      height: 2px;
+      width: 70%;
+      left:15%;
+      top: 0;
+      background: linear-gradient(90deg, rgba(0,255,255,.0), rgba(0,255,255,.8), rgba(0,255,255,.0));
+      filter: blur(0.5px);
+      animation: glow-run 6s linear infinite;
+    }
+    @keyframes glow-run {
+      0% { transform: translateX(0); opacity: .8; }
+      50% { transform: translateX(-8px); opacity: 1; }
+      100% { transform: translateX(0); opacity: .8; }
+    }
+
+    /* floating neon shapes */
+    .shape {
+      position: absolute;
+      border-radius: 999px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle at 30% 30%, rgba(0,255,255,.9), rgba(0,0,0,0) 60%);
+      filter: saturate(1.6);
+      box-shadow: 0 0 40px rgba(0,255,255,.8);
+      animation: floaty 7s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+    .shape.one { left: -40px; top: 60px; }
+    .shape.two { right: -60px; bottom: 120px; width: 210px; height: 210px; background: radial-gradient(circle at 60% 40%, rgba(255,0,255,.9), rgba(0,0,0,0) 60%); animation-duration: 9s; }
+    .shape.three { left: 40%; top: -40px; width: 140px; height: 140px; background: radial-gradient(circle at 40% 40%, rgba(0,255,128,.8), rgba(0,0,0,0) 60%); animation-duration: 8s; }
+
+    @keyframes floaty {
+      0% { transform: translateY(0) translateX(0) scale(1); opacity:.8; }
+      50% { transform: translateY(-28px) translateX(20px) scale(1.05); opacity:1; }
+      100% { transform: translateY(0) translateX(0) scale(1); opacity:.8; }
+    }
+
+    @media (max-width: 600px) {
+      .shape { display: none; }
+      .card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="scene">
+    <section class="card" aria-label="Neon intro card">
+      <div class="panel" style="position: relative;">
+        <h1 class="title">amirabolfazle</h1>
+        <div class="subtitle">A fully responsive neon-themed animated page</div>
+        <div class="panel" style="position: relative; isolation: isolate;">
+          <div class="neon-badge" style="justify-content:center;">
+            <span class="neon-dot" aria-hidden="true"></span>
+            Neon Glow
+          </div>
+          <div class="creation" style="margin-top:.6rem;">
+            Creation time: 2025-09-28 11:26:31
+          </div>
+          <div class="shape one"></div>
+          <div class="shape two"></div>
+          <div class="shape three"></div>
+        </div>
+
+        <div class="cta" style="margin-top:1rem;">
+          <button class="btn" onclick="alert('Hello from amirabolfazle!')">Hover me</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer" role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" aria-label="GitHub repository">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M12 0C5.37 0 0 5.372 0 12c0 5.303 3.438 9.8 8.207 11.387.6.113.793-.26.793-.58 0-.287-.01-1.046-.015-2.053-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.305 3.492.998.108-.775.418-1.305.76-1.605-2.665-.303-5.466-1.333-5.466-5.93 0-1.31.467-2.382 1.235-3.222-.125-.303-.535-1.523.118-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 013.003-.404c1.018.005 2.042.138 3.003.404 2.29-1.553 3.296-1.23 3.296-1.23.655 1.653.244 2.873.12 3.176.77.84 1.234 1.912 1.234 3.222 0 4.609-2.807 5.624-5.475 5.921.43.37.815 1.102.815 2.222 0 1.606-.015 2.897-.015 3.293 0 .324.192.697.801.58C20.565 21.796 24 17.3 24 12c0-6.628-5.372-12-12-12z"/>
+      </svg>
+      GitHub
+    </a>
+    <span>Created by amirabolfazle</span>
+  </footer>
+</body>
+</html>
