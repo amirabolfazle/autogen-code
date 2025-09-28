@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(99,102,241,0.18);
+      --bg2: rgba(139,92,246,0.16);
+      --accent: rgba(48,211,200,0.9);
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.75);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:linear-gradient(135deg, rgba(6,6,23,1) 0%, rgba(10,12,30,1) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      position:relative;
+    }
+
+    /* animated rotating backdrop */
+    .backdrop-wrap{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      overflow:hidden;
+      pointer-events:none;
+    }
+    .blob{
+      position:absolute;
+      width:60vmax;
+      height:60vmax;
+      filter: blur(120px) saturate(1.2);
+      transform-origin:center;
+      opacity:0.85;
+      mix-blend-mode:screen;
+      animation:spin 30s linear infinite;
+    }
+    .blob.a{left:-10%; top:-30%; background: radial-gradient(circle at 20% 30%, var(--bg1), transparent 30%); transform:rotate(12deg)}
+    .blob.b{right:-20%; bottom:-10%; background: radial-gradient(circle at 70% 70%, var(--bg2), transparent 30%); animation-direction: reverse; transform:rotate(-8deg)}
+    @keyframes spin{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    /* main layout */
+    .stage{
+      z-index:2;
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      padding:28px;
+    }
+
+    /* single column on small screens */
+    @media (max-width:880px){
+      .stage{grid-template-columns:1fr; padding:18px}
+    }
+
+    /* glass card */
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      border:1px solid var(--glass-border);
+      backdrop-filter: blur(10px) saturate(1.05);
+      -webkit-backdrop-filter: blur(10px) saturate(1.05);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      padding:28px;
+      color:var(--text);
+      position:relative;
+      overflow:hidden;
+      transition: transform 0.6s cubic-bezier(.2,.9,.2,1), box-shadow 0.3s;
+      will-change:transform;
+    }
+
+    /* rotate effect: slow idle rotation, faster on hover */
+    .glass.rotate{
+      transform: perspective(800px) rotateY(-6deg) rotateX(1deg);
+      animation: idleRotate 12s linear infinite;
+    }
+    @keyframes idleRotate{
+      0%{ transform: perspective(800px) rotateY(-2deg) rotateX(0.5deg)}
+      50%{ transform: perspective(800px) rotateY(2deg) rotateX(-0.5deg)}
+      100%{ transform: perspective(800px) rotateY(-2deg) rotateX(0.5deg)}
+    }
+    .glass:hover{
+      transform: perspective(900px) rotateY(0deg) rotateX(0deg) scale(1.01);
+      box-shadow: 0 20px 60px rgba(2,6,23,0.75);
+    }
+
+    .title{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+      transition: transform .4s ease;
+      flex-shrink:0;
+    }
+    .glass:hover .logo{ transform: rotate(22deg) scale(1.06) }
+
+    .logo svg{ filter: drop-shadow(0 6px 18px rgba(48,211,200,0.08)) }
+
+    h1{
+      font-size:clamp(1.2rem, 2.4vw, 1.7rem);
+      margin:0;
+      letter-spacing:0.4px;
+    }
+    p.lead{
+      margin:10px 0 0 0;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* info grid */
+    .info{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+    .chip{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.04);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:0.95rem;
+    }
+    .chip .dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:linear-gradient(180deg,var(--accent), #7af7e9);
+      box-shadow:0 6px 18px rgba(48,211,200,0.12);
+      flex-shrink:0;
+    }
+
+    /* right column: rotating card preview */
+    .preview-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      min-height:260px;
+    }
+    .preview{
+      width:100%;
+      max-width:420px;
+      height:260px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      backdrop-filter:blur(6px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .rotor{
+      width:220px;
+      height:220px;
+      border-radius:18px;
+      background: linear-gradient(135deg, rgba(48,211,200,0.12), rgba(139,92,246,0.08));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(10,10,10,0.9);
+      font-weight:700;
+      transform-origin:center;
+      animation: rotorSpin 8s linear infinite;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
+      transition: transform .4s ease;
+    }
+
+    .preview:hover .rotor{ transform: scale(1.03) rotate(12deg) }
+    @keyframes rotorSpin{
+      0%{ transform: rotate(0deg) }
+      100%{ transform: rotate(360deg) }
+    }
+
+    /* creation info */
+    .meta{
+      margin-top:16px;
+      color:var(--muted);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      font-size:0.92rem;
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      z-index:3;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      padding:8px 14px;
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+      box-shadow:0 6px 20px rgba(0,0,0,0.45);
+      color:var(--muted);
+      font-size:0.92rem;
+    }
+    footer a{ color:var(--muted); text-decoration:none; display:flex; gap:8px; align-items:center }
+    footer svg{ width:18px; height:18px; display:block; fill:var(--muted) }
+    footer a:hover svg{ filter:drop-shadow(0 4px 10px rgba(48,211,200,0.12)); transform:translateY(-1px) }
+
+    /* accessible reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .blob, .glass.rotate, .rotor { animation: none !important; transition:none !important; transform:none !important }
+    }
+
+    /* small improvements for tiny screens */
+    @media (max-width:420px){
+      .logo{width:54px;height:54px}
+      .stage{gap:18px}
+      footer{left:12px; transform:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop-wrap" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+  </div>
+
+  <main class="stage" role="main">
+    <section class="glass rotate" aria-labelledby="site-title">
+      <div class="title">
+        <div class="logo" aria-hidden="true">
+          <!-- custom monogram -->
+          <svg viewBox="0 0 96 96" width="44" height="44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#30d3c8"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+            <rect x="8" y="8" width="80" height="80" rx="14" fill="url(#g)" />
+            <g transform="translate(18,20)" fill="#061029">
+              <path d="M6 6h8v44H6zM24 6h10c6 0 10 4 10 10v14c0 6-4 10-10 10H24z" opacity="0.95"/>
+            </g>
+          </svg>
+        </div>
+
+        <div>
+          <h1 id="site-title">amirabolfazle</h1>
+          <p class="lead">A responsive glassmorphism demo with subtle rotation and animation effects.</p>
+        </div>
+      </div>
+
+      <div class="info" aria-hidden="false">
+        <div class="chip" title="Theme">
+          <div class="dot" style="background:linear-gradient(180deg,#30d3c8,#8b5cf6)"></div>
+          Glassmorphism Theme
+        </div>
+        <div class="chip" title="Effects">
+          <div class="dot" style="background:linear-gradient(180deg,#ffd166,#ff7b7b)"></div>
+          Rotate & Animate
+        </div>
+        <div class="chip" title="Responsive">
+          <div class="dot" style="background:linear-gradient(180deg,#7af7e9,#91a7ff)"></div>
+          Fully Responsive
+        </div>
+        <div class="chip" title="Creation">
+          <div class="dot" style="background:linear-gradient(180deg,#d9b8ff,#30d3c8)"></div>
+          Created at 2025-09-28 16:33:04
+        </div>
+      </div>
+
+      <div class="meta" aria-label="creation-time">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:.9">
+          <path d="M12 7v6l4 2" stroke="rgba(255,255,255,0.85)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div style="line-height:1">
+          <div style="font-weight:600">Creation time</div>
+          <div style="font-size:0.88rem;color:var(--muted)">2025-09-28 16:33:04</div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="preview-wrap" aria-label="preview">
+      <div class="preview" role="img" aria-label="rotating card preview">
+        <div class="rotor" aria-hidden="true">
+          <div style="text-align:center">
+            <div style="font-size:1.05rem;color:rgba(255,255,255,0.98);margin-bottom:6px">amirabolfazle</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.92);opacity:.95">glass • rotate • responsive</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.93 3.19 9.11 7.62 10.58.56.1.77-.24.77-.54 0-.27-.01-1-.02-1.95-3.1.67-3.75-1.5-3.75-1.5-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.12.08 1.71 1.15 1.71 1.15 1.01 1.73 2.66 1.23 3.31.94.1-.74.39-1.23.71-1.51-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.4.11-2.92 0 0 .94-.3 3.08 1.15a10.7 10.7 0 0 1 2.8-.38c.95.01 1.9.13 2.8.38 2.13-1.45 3.07-1.15 3.07-1.15.62 1.52.24 2.64.12 2.92.72.78 1.14 1.78 1.14 3 0 4.29-2.62 5.23-5.11 5.51.4.34.75 1.02.75 2.06 0 1.49-.01 2.69-.01 3.06 0 .3.2.65.78.54 4.43-1.48 7.62-5.66 7.62-10.58C23.25 5.48 18.27.5 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // small interactive tilt effect on pointer move for the main glass card
+    (function(){
+      const glass = document.querySelector('.glass');
+      if (!glass) return;
+
+      const handle = (e)=>{
+        const rect = glass.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const rx = (-y * 8).toFixed(2);
+        const ry = (x * 10).toFixed(2);
+        glass.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.01)`;
+      };
+
+      const reset = ()=>{
+        glass.style.transform = '';
+      };
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      glass.addEventListener('pointermove', handle);
+      glass.addEventListener('pointerleave', reset);
+      glass.addEventListener('pointerdown', ()=>glass.style.transform += ' scale(.995)');
+      glass.addEventListener('pointerup', reset);
+    })();
+  </script>
+</body>
+</html>
