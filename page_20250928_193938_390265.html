@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark">
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1720;
+      --muted:#8b98a6;
+      --accent:#7c5cff;
+      --accent-2:#00e6a0;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(124,92,255,0.06);
+      --card:#0d1318;
+      --radius:14px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 600px at 10% 20%, rgba(124,92,255,0.08), transparent 6%),
+        radial-gradient(900px 500px at 90% 80%, rgba(0,230,160,0.04), transparent 6%),
+        var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+      transition:background 0.4s ease;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      border-radius:20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      box-shadow:
+        0 10px 30px rgba(2,6,23,0.65),
+        inset 0 1px 0 rgba(255,255,255,0.02);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:28px;
+      padding:28px;
+      align-items:stretch;
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .container{grid-template-columns:1fr; padding:22px}
+      .side{order:2}
+    }
+
+    /* Left: hero */
+    .hero{
+      padding:34px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 20px rgba(2,6,23,0.5), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      min-height:360px;
+      transform-origin:center;
+      animation: heroZoom 900ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    @keyframes heroZoom{
+      0%{transform:scale(1.04); filter:blur(2px); opacity:0}
+      60%{transform:scale(1); filter:blur(0); opacity:1}
+      100%{transform:scale(1); filter:blur(0); opacity:1}
+    }
+
+    .branding{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:68px;
+      height:68px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#071023;
+      font-size:24px;
+      box-shadow:0 6px 20px rgba(124,92,255,0.12);
+      transform:translateZ(0);
+    }
+
+    .title{
+      font-size:28px;
+      letter-spacing:0.2px;
+      margin:0;
+    }
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .creation{
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-variant-numeric:tabular-nums;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .hero .headline{
+      margin-top:16px;
+      font-size:40px;
+      line-height:1.02;
+      margin-bottom:6px;
+      letter-spacing:-0.6px;
+    }
+
+    .hero p.lead{
+      margin:0;
+      color:var(--muted);
+      max-width:72ch;
+      font-size:16px;
+      line-height:1.6;
+    }
+
+    .cta-row{
+      margin-top:auto;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      color:#071023;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow: 0 8px 30px rgba(124,92,255,0.14);
+      transform:translateZ(0);
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow:none;
+    }
+
+    /* Right: side panel */
+    .side{
+      padding:22px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      box-shadow: 0 6px 20px rgba(2,6,23,0.5), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      align-items:stretch;
+    }
+
+    .profile{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .avatar{
+      width:74px;
+      height:74px;
+      border-radius:14px;
+      background: linear-gradient(135deg,var(--accent-2),var(--accent));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#041018;
+      font-weight:800;
+      font-size:22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition:transform .28s cubic-bezier(.2,.9,.2,1);
+    }
+    .avatar:hover{transform:scale(1.06)}
+
+    .profile-info h3{margin:0;font-size:16px}
+    .profile-info p{margin:0;color:var(--muted);font-size:13px}
+
+    .cards{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:6px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s ease;
+      transform-origin:center;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .card:hover{
+      transform:translateY(-8px) scale(1.02);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.6);
+    }
+
+    .chip{
+      width:48px;
+      height:48px;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#071023;
+    }
+
+    .card .meta{font-size:13px;color:var(--muted);margin:0}
+
+    .zoom-gallery{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:6px;
+      align-items:stretch;
+    }
+
+    .zoom-item{
+      border-radius:10px;
+      overflow:hidden;
+      min-height:80px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+      position:relative;
+      transition:transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .45s ease;
+      transform-origin:center;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .zoom-item:before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(124,92,255,0.06), rgba(0,230,160,0.035));
+      opacity:0;
+      transition:opacity .28s ease;
+    }
+
+    .zoom-item:hover{
+      transform:scale(1.06) translateY(-6px);
+      box-shadow: 0 20px 40px rgba(2,6,23,0.6);
+    }
+
+    .zoom-item:hover:before{opacity:1}
+
+    .zoom-item .label{
+      position:absolute;
+      left:12px;
+      bottom:10px;
+      font-size:13px;
+      color:#eaf6f0;
+      font-weight:600;
+      text-shadow:0 6px 18px rgba(2,6,23,0.6);
+    }
+
+    footer{
+      grid-column:1/-1;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,0.02);
+      margin-top:10px;
+    }
+
+    .footer-left{color:var(--muted); font-size:13px}
+    .footer-right{display:flex;gap:12px;align-items:center}
+
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      font-size:13px;
+      background:transparent;
+      padding:8px 10px;
+      border-radius:10px;
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .github-link:hover{
+      background:linear-gradient(90deg, rgba(124,92,255,0.06), rgba(0,230,160,0.04));
+      color:#e6fdf3;
+      transform:translateY(-4px);
+    }
+
+    .gh-icon{width:18px;height:18px;display:inline-block;vertical-align:middle;fill:currentColor}
+
+    /* subtle animated background dots */
+    .bg-dots{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.015) 0.5px, transparent 0.6px),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.01) 0.6px, transparent 0.7px);
+      background-size:160px 160px;
+      mix-blend-mode:overlay;
+      opacity:0.6;
+      transform:translateZ(0);
+      animation: drift 18s linear infinite;
+    }
+
+    @keyframes drift{
+      0%{transform:translateY(0) translateX(0)}
+      50%{transform:translateY(-18px) translateX(12px)}
+      100%{transform:translateY(0) translateX(0)}
+    }
+
+    /* small screens adjust hero font sizes */
+    @media (max-width:520px){
+      .hero .headline{font-size:28px}
+      .title{font-size:20px}
+      .logo{width:56px;height:56px;font-size:20px}
+      .avatar{width:64px;height:64px;font-size:18px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg-dots" aria-hidden="true"></div>
+  <main class="container" role="main" aria-labelledby="site-title">
+    <section class="hero" aria-label="Hero section">
+      <div class="branding">
+        <div class="logo" aria-hidden="true">am</div>
+        <div>
+          <h1 id="site-title" class="title">amirabolfazle</h1>
+          <p class="subtitle">Designer · Builder · Curious Mind</p>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="creation" title="Creation time">Creation time: 2025-09-28 19:38:55</div>
+        <div style="margin-left:auto;color:var(--muted);font-size:13px">Dark mode • Smooth zoom effects</div>
+      </div>
+
+      <h2 class="headline">Crafting elegant interfaces and playful interactions</h2>
+      <p class="lead">I build thoughtful digital experiences that blend refined visuals with subtle motion. Smooth micro-interactions, considered layout, and responsive performance are my toolkit.</p>
+
+      <div class="cta-row" role="group" aria-label="Call to action">
+        <button class="btn" onclick="location.hash='#projects'">Explore Projects</button>
+        <button class="btn secondary" onclick="location.hash='#contact'">Get in touch</button>
+      </div>
+    </section>
+
+    <aside class="side" aria-label="Sidebar">
+      <div class="profile">
+        <div class="avatar" aria-hidden="true">AB</div>
+        <div class="profile-info">
+          <h3>amirabolfazle</h3>
+          <p>Frontend • Motion • Product</p>
+        </div>
+      </div>
+
+      <div class="cards" id="projects">
+        <div class="card" role="article" aria-label="Project - Aurora UI">
+          <div class="chip">A</div>
+          <div>
+            <div style="font-weight:700">Aurora UI</div>
+            <p class="meta">A component library with delightful motion and accessibility in mind.</p>
+          </div>
+        </div>
+
+        <div class="card" role="article" aria-label="Project - Zenflow">
+          <div class="chip">Z</div>
+          <div>
+            <div style="font-weight:700">Zenflow</div>
+            <p class="meta">A responsive editor focused on calm UX and expressive interactions.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:6px; font-size:13px; color:var(--muted)">Live previews</div>
+      <div class="zoom-gallery" aria-hidden="false">
+        <div class="zoom-item" title="Preview 1">
+          <div class="label">Aurora • Preview</div>
+        </div>
+        <div class="zoom-item" title="Preview 2">
+          <div class="label">Zenflow • Preview</div>
+        </div>
+        <div class="zoom-item" title="Preview 3">
+          <div class="label">Motion Tests</div>
+        </div>
+        <div class="zoom-item" title="Preview 4">
+          <div class="label">Dark Mode</div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="footer-left">Creation time: 2025-09-28 19:38:55</div>
+        <div class="footer-right">
+          <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+            <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 .296a12 12 0 00-3.797 23.394c.6.111.82-.261.82-.58 0-.287-.01-1.046-.016-2.052-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.204.085 1.838 1.24 1.838 1.24 1.07 1.834 2.807 1.304 3.492.997.108-.775.42-1.305.763-1.605-2.665-.304-5.467-1.334-5.467-5.932 0-1.31.468-2.381 1.235-3.22-.124-.304-.536-1.528.117-3.183 0 0 1.008-.322 3.301 1.23a11.49 11.49 0 013.004-.404c1.02.005 2.047.138 3.004.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.655.243 2.879.12 3.183.77.839 1.233 1.91 1.233 3.22 0 4.61-2.807 5.625-5.479 5.921.431.372.815 1.103.815 2.222 0 1.605-.015 2.9-.015 3.295 0 .322.216.698.825.58A12.004 12.004 0 0012 .296z"/>
+            </svg>
+            Created by amirabolfazle
+          </a>
+        </div>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>
