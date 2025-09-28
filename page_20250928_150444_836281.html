@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#04040a;
+      --neon-cyan:#00fff0;
+      --neon-pink:#ff2dcb;
+      --neon-blue:#5be0ff;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      background:
+        radial-gradient(800px 400px at 10% 20%, rgba(0,255,240,0.06), transparent 8%),
+        radial-gradient(600px 300px at 90% 80%, rgba(255,45,203,0.05), transparent 8%),
+        var(--bg);
+      font-family: "Orbitron", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--neon-cyan);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 24px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* subtle animated rotating beams */
+    .beam{
+      position:absolute;
+      inset:-30%;
+      background:linear-gradient(90deg, transparent, rgba(0,255,240,0.06), transparent);
+      transform:rotate(20deg);
+      filter: blur(40px);
+      animation: spin 18s linear infinite;
+      mix-blend-mode:screen;
+    }
+    .beam:nth-child(2){
+      transform:rotate(-10deg);
+      background:linear-gradient(90deg, transparent, rgba(255,45,203,0.05), transparent);
+      animation-duration:24s;
+    }
+    @keyframes spin{
+      from{transform:rotate(0deg) translateZ(0)}
+      to{transform:rotate(360deg) translateZ(0)}
+    }
+
+    .card{
+      width:min(720px,92vw);
+      padding:48px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 28px rgba(0,255,240,0.04);
+      border: 1px solid rgba(0,255,240,0.06);
+      position:relative;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      transform-style:preserve-3d;
+      overflow:visible;
+    }
+
+    /* neon rotating title */
+    h1{
+      margin:0;
+      font-size:clamp(28px,6vw,64px);
+      letter-spacing:0.08em;
+      color:var(--neon-cyan);
+      text-shadow:
+        0 0 8px rgba(0,255,240,0.6),
+        0 0 24px rgba(0,255,240,0.18),
+        0 8px 30px rgba(0,0,0,0.7);
+      transform-origin:center;
+      animation: rotateY 8s linear infinite;
+      padding:6px 10px;
+      border-radius:8px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(0,255,240,0.08);
+    }
+
+    @keyframes rotateY{
+      0%{transform: perspective(800px) rotateY(-18deg) rotateZ(-2deg)}
+      50%{transform: perspective(800px) rotateY(18deg) rotateZ(2deg)}
+      100%{transform: perspective(800px) rotateY(-18deg) rotateZ(-2deg)}
+    }
+
+    .time{
+      font-size:14px;
+      color:var(--neon-pink);
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,45,203,0.06), rgba(0,255,240,0.02));
+      box-shadow: 0 4px 18px rgba(255,45,203,0.03);
+      border:1px solid rgba(255,45,203,0.06);
+      text-shadow: 0 0 6px rgba(255,45,203,0.18);
+    }
+
+    /* decorative rotating ring */
+    .ring{
+      position:absolute;
+      right:-60px;
+      top:-60px;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      border:2px solid rgba(91,224,255,0.06);
+      box-shadow: 0 0 40px rgba(91,224,255,0.04), inset 0 0 20px rgba(91,224,255,0.02);
+      animation: ring-rot 14s linear infinite;
+      z-index:1;
+      backdrop-filter: blur(2px);
+    }
+    @keyframes ring-rot{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+    footer{
+      margin-top:28px;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      color:rgba(255,255,255,0.6);
+      font-size:13px;
+    }
+
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--neon-blue);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.25);
+      border:1px solid rgba(91,224,255,0.06);
+      box-shadow: 0 6px 26px rgba(0,0,0,0.5);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .gh:hover{ transform:translateY(-4px) scale(1.02); box-shadow: 0 12px 36px rgba(0,0,0,0.6); }
+    .gh svg{ filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6)); }
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      .card{ padding:28px; }
+      .ring{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="beam" aria-hidden="true"></div>
+    <div class="beam" aria-hidden="true"></div>
+
+    <div class="card" role="main">
+      <div class="ring" aria-hidden="true"></div>
+      <h1>amirabolfazle</h1>
+      <div class="time" aria-label="creation time">2025-09-28 15:04:11</div>
+
+      <footer>
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0.5C5.37 0.5 0 5.87 0 12.5C0 17.9 3.438 22.44 8.205 23.98C8.805 24.09 9.025 23.73 9.025 23.41C9.025 23.12 9.015 22.39 9.01 21.37C5.672 21.99 4.968 19.5 4.968 19.5C4.422 18.19 3.633 17.83 3.633 17.83C2.546 17.08 3.717 17.09 3.717 17.09C4.922 17.17 5.56 18.33 5.56 18.33C6.64 20.12 8.352 19.62 9.052 19.32C9.162 18.56 9.47 18.03 9.816 17.71C7.145 17.39 4.343 16.32 4.343 11.58C4.343 10.26 4.79 9.18 5.52 8.34C5.39 8.01 5.01 6.74 5.63 5.03C5.63 5.03 6.63 4.69 9.015 6.24C9.97 5.95 10.99 5.81 12.01 5.81C13.03 5.81 14.05 5.95 15.01 6.24C17.39 4.69 18.387 5.03 18.387 5.03C19.01 6.74 18.63 8.01 18.5 8.34C19.235 9.18 19.68 10.26 19.68 11.58C19.68 16.33 16.872 17.38 14.195 17.7C14.64 18.08 15.04 18.85 15.04 20.02C15.04 21.66 15.03 22.93 15.03 23.41C15.03 23.73 15.245 24.095 15.855 23.98C20.62 22.44 24.06 17.9 24.06 12.5C24.06 5.87 18.69 0.5 12.06 0.5H12Z" fill="white" opacity="0.95"/>
+          </svg>
+          <span style="color:var(--neon-cyan); font-weight:600;">Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
