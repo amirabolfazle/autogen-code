@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root {
+      --bg-top: #0b1020;
+      --bg-bot: #1b1f38;
+      --glass: rgba(255, 255, 255, 0.15);
+      --glass-strong: rgba(255, 255, 255, 0.25);
+      --text: #e8edff;
+      --muted: rgba(232, 237, 255, 0.8);
+      --accent: #7bdff6;
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: radial-gradient( circle at 20% -10%, rgba(123,223,246,0.25), transparent 40% ),
+                  radial-gradient( circle at 100% 0%, rgba(140,98,255,0.25), transparent 40% ),
+                  linear-gradient(135deg, var(--bg-top), var(--bg-bot) 60%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated background glow bars for glassy vibe */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -20vh;
+      left: -10vw;
+      width: 120vw;
+      height: 60vh;
+      background: radial-gradient(circle at 20% 20%, rgba(123,223,246,0.25), transparent 40%),
+                  radial-gradient(circle at 70% 60%, rgba(125,223,246,0.15), transparent 40%);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 12s linear infinite;
+    }
+
+    @keyframes drift {
+      0% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(-20px, 10px, 0) scale(1.02); }
+      100% { transform: translate3d(0,0,0) scale(1); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 48px 20px 100px;
+    }
+
+    .card {
+      border-radius: 18px;
+      padding: 22px;
+      background: linear-gradient(to bottom right, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: var(--text);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 56px);
+      line-height: 1.05;
+      margin: 0 0 10px;
+      letter-spacing: .4px;
+      text-transform: none;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: .4px;
+      margin-bottom: 18px;
+    }
+
+    .hero {
+      width: min(1100px, 92vw);
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: stretch;
+      border-radius: 20px;
+      background: linear-gradient(to right, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.28);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      animation: floatIn 1s ease forwards;
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .brand .mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(123, 223, 246, 0.5), rgba(123, 246, 214, 0.4));
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: inset 0 0 18px rgba(255,255,255,0.6);
+      margin-bottom: 12px;
+      animation: bounce 1s ease;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(-6px); }
+      60% { transform: translateY(4px); }
+      100% { transform: translateY(0); }
+    }
+
+    .brand h2 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 44px);
+      letter-spacing: .4px;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(123, 223, 246, 0.6), rgba(125, 246, 214, 0.55));
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 6px 16px rgba(123,223,246,0.5);
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(123,223,246,0.6);
+    }
+
+    .glance {
+      font-size: 13px;
+      color: #e9f2ff;
+      opacity: .9;
+    }
+
+    .hero-content {
+      display: grid;
+      align-content: center;
+      gap: 12px;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .proj {
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(to bottom right, rgba(255,255,255,0.16), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.28);
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: bounceIn 0.9s both;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(14px); opacity: 0; }
+      60% { transform: translateY(-6px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .proj h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    .proj p {
+      margin: 0;
+      font-size: 13px;
+      color: #e8f0ff;
+      opacity: 0.92;
+    }
+
+    .proj .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.32);
+      color: #fff;
+      width: max-content;
+    }
+
+    .view {
+      align-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #0b1020;
+      background: linear-gradient(135deg, #fff, #e6f2ff);
+      border: 1px solid rgba(0,0,0,0.08);
+      transition: transform 0.25s ease;
+      cursor: pointer;
+    }
+
+    .view:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Footer with GitHub icon and attribution */
+    footer {
+      margin-top: 32px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: linear-gradient(to bottom right, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      animation: bounceIn 0.9s both;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .github {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 16px; }
+      .brand { padding: 0 6px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero card" aria-label="Portfolio header">
+      <div class="brand" aria-label="Brand block">
+        <div class="mark" aria-hidden="true">
+          <!-- simple geometric glyph as brand mark -->
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.9">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop stop-color="#7bdff6"/>
+                <stop offset="1" stop-color="#7bdc9f"/>
+              </linearGradient>
+            </defs>
+            <rect x="8" y="8" width="48" height="48" rx="12" fill="url(#g)"/>
+            <path d="M16 32h32" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+            <path d="M32 16v32" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.95"/>
+          </svg>
+        </div>
+        <h2 style="letter-spacing:.5px; margin:0;">amirabolfazle</h2>
+        <p>Glassmorphic portfolio with subtle bounce and motion</p>
+      </div>
+
+      <div class="hero-content" aria-label="Intro">
+        <div class="card" style="padding:16px; border-radius:14px;">
+          <p class="glance" style="margin:0 0 8px; font-weight:600; letter-spacing:.6px; color:#eaf2ff;">
+            Welcome. A one-file showcase focusing on glassmorphism, animation, and clean UI blocks.
+          </p>
+          <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+            <a href="#projects" class="cta" aria-label="See projects">
+              View Projects
+              <span style="display:inline-block; transform: translateY(1px);">
+                <!-- small chevron -->
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </span>
+            </a>
+            <span class="glance" aria-label="Creation time">Creation time: 2025-09-28 03:55:22</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="card" style="width: min(1100px, 92vw); margin-top: 20px;">
+      <div style="display:flex; justify-content: space-between; align-items: baseline; gap:12px; flex-wrap:wrap;">
+        <h3 style="margin:0; font-size:20px;">Selected projects</h3>
+        <span class="glance" style="font-size:12px;">Bounce-enabled cards</span>
+      </div>
+
+      <div class="projects" aria-label="Project grid" style="margin-top:12px;">
+        <article class="proj" style="animation-delay:.05s;">
+          <div>
+            <span class="tag" aria-label="Tag">UI Components</span>
+            <h3>Auto-generated UI blocks</h3>
+            <p>Self-contained, reusable components designed with glassy aesthetics and accessible markup.</p>
+          </div>
+          <a class="view" href="#" aria-label="Open project: Auto-generated UI blocks">Open</a>
+        </article>
+
+        <article class="proj" style="animation-delay:.15s;">
+          <div>
+            <span class="tag" aria-label="Tag">Animation</span>
+            <h3>Interactive micro-interactions</h3>
+            <p>Subtle springy motions and bounce effects to enrich user experience without distraction.</p>
+          </div>
+          <a class="view" href="#" aria-label="Open project: Interactive micro-interactions">Open</a>
+        </article>
+
+        <article class="proj" style="animation-delay:.25s;">
+          <div>
+            <span class="tag" aria-label="Tag">Code Snippets</span>
+            <h3>Self-contained examples</h3>
+            <p>One-file demos that you can copy-paste and adapt into your own projects.</p>
+          </div>
+          <a class="view" href="#" aria-label="Open project: Self-contained examples">Open</a>
+        </article>
+
+        <article class="proj" style="animation-delay:.35s;">
+          <div>
+            <span class="tag" aria-label="Tag">Glassmorphism</span>
+            <h3>Frosted glass UI</h3>
+            <p>Soft translucency, frosted blur, and crisp borders for a futuristic vibe.</p>
+          </div>
+          <a class="view" href="#" aria-label="Open project: Frosted glass UI">Open</a>
+        </article>
+      </div>
+    </section>
+
+    <footer style="width: min(1100px, 92vw); margin-top: 22px;">
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener"
+         aria-label="GitHub repository amirabolfazle/autogen-code">
+        <span class="github" aria-label="GitHub icon">
+          <!-- GitHub icon (SVG) -->
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M12 2C6.477 2 2 6.523 2 12.266c0 4.514 2.865 8.36 6.839 9.703.5.098.682-.223.682-.496 0-.246-.009-.888-.014-1.744-2.782.606-3.369-1.363-3.369-1.363-.454-1.17-1.11-1.481-1.11-1.481-.909-.625.069-.612.069-.612 1.003.07 1.531 1.04 1.531 1.04.892 1.54 2.341 1.096 2.91.84.092-.647.35-1.096.635-1.347-2.22-.26-4.555-1.128-4.555-5.014 0-1.108.39-2.014 1.03-2.723-.103-.263-.447-1.322.098-2.756 0 0 .84-.27 2.75 1.04A9.18 9.18 0 0 1 12 6.844c.853.004 1.71.116 2.514.343 1.909-1.31 2.748-1.04 2.748-1.04.546 1.434.203 2.493.1 2.756.642.709 1.028 1.615 1.028 2.723 0 3.887-2.338 4.749-4.563 5.004.359.317.679.938.679 1.895 0 1.368-.012 2.469-.012 2.803 0 .275.18.597.688.492C19.139 20.62 22 16.775 22 12.266 22 6.523 17.523 2 12 2z"/>
+          </svg>
+        </span>
+        <span style="font-size:13px; color:#eaf0ff; text-decoration: none;">https://github.com/amirabolfazle/autogen-code</span>
+      </a>
+      <span class="footer-text" style="margin-left: 12px;">
+        Created by amirabolfazle
+      </span>
+    </footer>
+  </main>
+</body>
+</html>
