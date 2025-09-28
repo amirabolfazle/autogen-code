@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #FFFBF2;
+      --bg-2: #F6FDFF;
+      --accent-1: #A8E6CF; /* pastel mint */
+      --accent-2: #FFD3B6; /* pastel peach */
+      --accent-3: #FFAAA7; /* pastel coral */
+      --accent-4: #D7BBFF; /* pastel lavender */
+      --text: #2E2E2E;
+      --muted: #6B6B6B;
+      --glass: rgba(255,255,255,0.6);
+      --radius: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--accent-1) 0%, transparent 12%),
+                  radial-gradient(900px 400px at 90% 90%, var(--accent-4) 0%, transparent 10%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      overflow-x:hidden;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      margin:auto;
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* mobile stack */
+    @media (max-width:880px){
+      .stage{ grid-template-columns: 1fr; padding-bottom:80px; }
+      .side { order:2 }
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      border-radius: var(--radius);
+      box-shadow: 0 8px 30px rgba(30,30,30,0.08);
+      padding:28px;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    header.card{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:flex-start;
+      position:relative;
+      overflow:visible;
+    }
+
+    h1{
+      margin:0;
+      font-weight:700;
+      letter-spacing: -0.02em;
+      font-size: clamp(28px, 4.6vw, 44px);
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo-badge{
+      width:54px;
+      height:54px;
+      border-radius:12px;
+      background: linear-gradient(135deg, var(--accent-3), var(--accent-2));
+      display:inline-grid;
+      place-items:center;
+      color:white;
+      font-weight:700;
+      font-size:18px;
+      transform: rotate(-8deg);
+      transition: transform .6s cubic-bezier(.2,.9,.3,1);
+      box-shadow: 0 6px 20px rgba(255,160,140,0.18);
+    }
+
+    h1:hover .logo-badge{ transform: rotate(6deg) }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .meta{
+      margin-top:6px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.35), rgba(255,255,255,0.15));
+      padding:10px 12px;
+      border-radius:10px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      box-shadow: inset 0 -1px 0 rgba(255,255,255,0.3);
+    }
+
+    .meta .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:conic-gradient(from 90deg, var(--accent-1), var(--accent-3));
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* animated showcase */
+    .showcase{
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+
+    @media (max-width:520px){
+      .showcase{ grid-template-columns: 1fr; }
+    }
+
+    .tile{
+      border-radius:12px;
+      padding:18px;
+      min-height:110px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      color:rgba(20,20,20,0.9);
+      font-weight:600;
+      transform-origin:center;
+      transition: transform .5s cubic-bezier(.2,.9,.3,1), box-shadow .3s;
+    }
+
+    .tile p{ margin:0; font-weight:500; color:var(--muted); font-size:13px }
+
+    .tile-1{ background: linear-gradient(135deg, rgba(168,230,207,0.25), rgba(168,230,207,0.12)); border: 1px solid rgba(168,230,207,0.18) }
+    .tile-2{ background: linear-gradient(135deg, rgba(255,211,182,0.18), rgba(255,211,182,0.08)); border: 1px solid rgba(255,211,182,0.2) }
+    .tile-3{ background: linear-gradient(135deg, rgba(255,170,167,0.12), rgba(255,170,167,0.06)); border: 1px solid rgba(255,170,167,0.16) }
+    .tile-4{ background: linear-gradient(135deg, rgba(215,187,255,0.18), rgba(215,187,255,0.08)); border: 1px solid rgba(215,187,255,0.18) }
+
+    .tile:hover{ transform: translateY(-6px) rotate(-3deg) scale(1.01); box-shadow: 0 10px 30px rgba(60,60,90,0.06) }
+
+    /* rotating decorative orbs */
+    .orb{
+      position:absolute;
+      filter: blur(18px);
+      opacity:0.85;
+      border-radius:50%;
+      pointer-events:none;
+      mix-blend-mode:soft-light;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb.x1{ width:240px; height:240px; left:-60px; top:-60px; background: linear-gradient(135deg, var(--accent-2), var(--accent-1)); animation-duration:12s; transform: rotate(12deg) }
+    .orb.x2{ width:140px; height:140px; right:-40px; bottom:60px; background: linear-gradient(135deg, var(--accent-4), var(--accent-3)); animation-duration:10s; transform: rotate(-18deg) }
+
+    @keyframes float{
+      0%{ transform: translateY(0) rotate(0deg) }
+      50%{ transform: translateY(-14px) rotate(12deg) }
+      100%{ transform: translateY(0) rotate(0deg) }
+    }
+
+    /* side column */
+    .side{
+      position:relative;
+    }
+
+    .preview{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .preview .screen{
+      min-height:200px;
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:18px;
+      letter-spacing:0.02em;
+      border:1px solid rgba(255,255,255,0.3);
+      transform-origin:center;
+      animation: slow-rotate 12s linear infinite;
+      background: linear-gradient(135deg, rgba(255,170,167,0.9), rgba(215,187,255,0.85));
+      box-shadow: 0 12px 36px rgba(80,60,120,0.08);
+    }
+
+    /* second smaller preview */
+    .mini{
+      height:120px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .mini .panel{
+      flex:1;
+      border-radius:10px;
+      padding:12px;
+      color:var(--text);
+      font-weight:600;
+      background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+      transform-origin:center;
+      animation: pulse-rotate 6s ease-in-out infinite;
+    }
+
+    @keyframes slow-rotate{
+      0%{ transform: rotate(-6deg) }
+      50%{ transform: rotate(6deg) }
+      100%{ transform: rotate(-6deg) }
+    }
+    @keyframes pulse-rotate{
+      0%{ transform: rotate(0deg) translateY(0) }
+      50%{ transform: rotate(-4deg) translateY(-6px) }
+      100%{ transform: rotate(0deg) translateY(0) }
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+      padding:10px 14px;
+      border-radius:999px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      box-shadow:0 8px 20px rgba(20,20,30,0.08);
+      border:1px solid rgba(255,255,255,0.6);
+      z-index:60;
+      backdrop-filter: blur(6px);
+      font-weight:600;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    footer a{ color:inherit; display:inline-flex; gap:8px; align-items:center; text-decoration:none; }
+    footer .gh{
+      width:20px;height:20px; display:inline-grid; place-items:center;
+    }
+    footer a:hover{ color:var(--text) }
+
+    /* accessible reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .orb, .screen, .panel, .tile, .logo-badge { animation: none; transition: none; transform:none !important }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb x1" aria-hidden="true"></div>
+  <div class="orb x2" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="title">
+    <section class="card">
+      <header class="card" aria-hidden="false">
+        <h1 id="title">
+          <span class="logo-badge" aria-hidden="true">am</span>
+          amirabolfazle
+        </h1>
+        <div class="subtitle">A pastel-themed responsive demo with gentle rotate effects.</div>
+
+        <div class="meta" aria-label="creation time">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Creation time: 2025-09-28 18:34:38</span>
+        </div>
+
+        <div class="showcase" aria-hidden="false" style="margin-top:16px">
+          <div class="tile tile-1">
+            <div style="font-size:16px;">Soft Rotate</div>
+            <p>Hover to tilt and rotate — subtle motion for interactions.</p>
+          </div>
+          <div class="tile tile-2">
+            <div style="font-size:16px;">Pastel Palette</div>
+            <p>Calm pastel gradients to keep the interface friendly.</p>
+          </div>
+          <div class="tile tile-3">
+            <div style="font-size:16px;">Responsive</div>
+            <p>Layout adapts to narrow screens; try resizing the window.</p>
+          </div>
+          <div class="tile tile-4">
+            <div style="font-size:16px;">Accessible</div>
+            <p>Respects reduced motion preferences and remains legible.</p>
+          </div>
+        </div>
+      </header>
+
+      <div style="margin-top:18px; display:flex; gap:14px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:150px" class="card" aria-hidden="false">
+          <strong style="display:block; font-size:13px; margin-bottom:8px">About</strong>
+          <div style="color:var(--muted); font-size:14px; line-height:1.45">
+            Lightweight demo combining smooth CSS transforms and a soft pastel aesthetic. No external scripts required.
+          </div>
+        </div>
+
+        <div style="width:220px; min-width:160px" class="card" aria-hidden="false">
+          <strong style="display:block; font-size:13px; margin-bottom:8px">Quick Actions</strong>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button style="flex:1; padding:8px 10px; border-radius:10px; border:0; background:var(--accent-1); color:#083; font-weight:700;">Explore</button>
+            <button style="flex:1; padding:8px 10px; border-radius:10px; border:0; background:var(--accent-2); color:#663; font-weight:700;">Preview</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side" aria-label="visual preview">
+      <div class="preview card">
+        <div class="screen" role="img" aria-label="rotating preview panel">
+          amirabolfazle
+        </div>
+
+        <div class="mini">
+          <div class="panel">
+            <div style="font-size:14px">Minimal</div>
+            <div style="color:var(--muted); font-size:12px; margin-top:6px">Clean layout & soft motion</div>
+          </div>
+          <div class="panel">
+            <div style="font-size:14px">Animated</div>
+            <div style="color:var(--muted); font-size:12px; margin-top:6px">Rotate and float effects</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+      <span class="gh" aria-hidden="true">
+        <!-- GitHub Mark SVG -->
+        <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.62 7.62 0 018 4.58c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </span>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
