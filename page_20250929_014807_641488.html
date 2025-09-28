@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071129;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: #7cf7d9;
+      --accent2: #7b9dff;
+      --muted: rgba(255,255,255,0.75);
+      --card-radius: 18px;
+      --glass-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--muted);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(123,157,255,0.12), transparent 10%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(124,247,217,0.08), transparent 12%),
+                  linear-gradient(160deg,var(--bg1), var(--bg2));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .stage{grid-template-columns:1fr; padding:20px}
+    }
+
+    /* Floating decorative orbs */
+    .orb{
+      position:absolute;
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--accent), var(--accent2));
+      filter:blur(30px);
+      opacity:0.18;
+      z-index:0;
+      transform:translate3d(0,0,0);
+      animation: floaty 8s ease-in-out infinite;
+    }
+    .orb.o1{left:-40px; top:-40px; animation-duration:10s;}
+    .orb.o2{right:-60px; bottom:-30px; width:200px;height:200px; animation-duration:12s; opacity:0.14}
+    .orb.o3{left:50%; top:-80px; width:100px;height:100px; opacity:0.12; animation-duration:9s}
+
+    @keyframes floaty{
+      0%{transform:translateY(0) translateX(0)}
+      50%{transform:translateY(-22px) translateX(12px)}
+      100%{transform:translateY(0) translateX(0)}
+    }
+
+    /* Glass card */
+    .glass{
+      position:relative;
+      background:var(--glass-bg);
+      border:1px solid var(--glass-border);
+      border-radius:var(--card-radius);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      box-shadow: var(--glass-shadow);
+      padding:34px;
+      z-index:2;
+      overflow:hidden;
+    }
+
+    .hero{
+      padding:42px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .title{
+      font-size:48px;
+      line-height:1;
+      font-weight:700;
+      letter-spacing:-0.02em;
+      color: #ffffff;
+      text-transform:lowercase;
+      margin:0;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .title .dot{
+      width:14px;height:14px;border-radius:50%;
+      background: linear-gradient(180deg,var(--accent),var(--accent2));
+      box-shadow:0 6px 18px rgba(123,157,255,0.24);
+      transform-origin:center;
+      animation: pulse 2.6s infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.28)}
+      100%{transform:scale(1)}
+    }
+
+    .subtitle{
+      color:rgba(255,255,255,0.85);
+      font-size:16px;
+      margin:0;
+      max-width:62%;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:6px;
+      flex-wrap:wrap;
+    }
+
+    .meta .time{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.06);
+      padding:8px 12px;
+      border-radius:12px;
+      font-size:13px;
+      color:rgba(255,255,255,0.9);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* CTA and small card on the right */
+    .panel{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .cta{
+      display:inline-flex;
+      gap:12px;
+      align-items:center;
+      padding:14px 20px;
+      border-radius:12px;
+      background:linear-gradient(90deg, rgba(124,247,217,0.14), rgba(123,157,255,0.12));
+      border:1px solid rgba(255,255,255,0.06);
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      width:fit-content;
+      transform-origin:center;
+      animation: bounce 3s infinite;
+      box-shadow: 0 10px 30px rgba(124,247,217,0.06);
+      text-decoration:none;
+    }
+
+    @keyframes bounce{
+      0%{transform:translateY(0)}
+      30%{transform:translateY(-8px)}
+      50%{transform:translateY(0)}
+      100%{transform:translateY(0)}
+    }
+
+    .features{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      margin-top:8px;
+    }
+
+    .mini-card{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .mini-card .icon{
+      width:44px;height:44px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent2),var(--accent));
+      display:inline-flex;align-items:center;justify-content:center;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+      color:#022;
+      font-weight:700;
+      font-size:18px;
+    }
+
+    .mini-card .text{
+      font-size:14px;color:rgba(255,255,255,0.92);line-height:1.1;
+    }
+
+    .gloss{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%);
+      pointer-events:none;
+      border-radius:var(--card-radius);
+    }
+
+    /* small animated preview area */
+    .preview{
+      margin-top:10px;
+      border-radius:14px;
+      height:160px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .preview .dotline{
+      width:90%;
+      height:6px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(124,247,217,0.8), rgba(123,157,255,0.7));
+      box-shadow:0 6px 18px rgba(123,157,255,0.08), inset 0 -4px 12px rgba(255,255,255,0.03);
+      transform-origin:left center;
+      animation: loader 2s cubic-bezier(.28,.84,.42,1) infinite;
+    }
+    @keyframes loader{
+      0%{transform:scaleX(0.04)}
+      50%{transform:scaleX(0.92)}
+      100%{transform:scaleX(0.04)}
+    }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:flex-start;
+      color:rgba(255,255,255,0.78);
+      font-size:13px;
+    }
+    .gh-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:inherit;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .gh-link:hover{transform:translateY(-3px); transition:transform 200ms}
+    .gh-icon{
+      width:18px;height:18px;display:inline-block;flex-shrink:0;opacity:0.95;
+    }
+
+    /* small decorative labels */
+    .tag{
+      font-size:12px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.03);
+      padding:6px 8px;border-radius:10px;color:rgba(255,255,255,0.85)
+    }
+
+    /* subtle motion for the whole layout */
+    .stage{animation: slight 14s ease-in-out infinite}
+    @keyframes slight{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <main class="stage" role="main">
+    <section class="glass hero" aria-labelledby="site-title">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;">
+        <h1 id="site-title" class="title">
+          <span class="dot" aria-hidden="true"></span>
+          amirabolfazle
+        </h1>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="tag">glassmorphism</span>
+          <span class="tag">bounce UI</span>
+        </div>
+      </div>
+
+      <p class="subtitle">A modern, minimal landing presence with soft glass surfaces, playful bounce motion, and a calm color mood — handcrafted for clarity and flair.</p>
+
+      <div class="meta" role="note" aria-label="meta">
+        <div class="time" title="Creation time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 7V12L15 14" stroke="rgba(255,255,255,0.9)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0z" stroke="rgba(255,255,255,0.9)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <strong style="font-weight:600;font-size:13px;color:var(--muted)">2025-09-29 01:47:10</strong>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.72)">Made with subtle motion and glassy depth</div>
+      </div>
+
+      <div style="display:flex;gap:14px;align-items:center;margin-top:18px;flex-wrap:wrap">
+        <a class="cta" href="#" role="button" aria-label="Explore">
+          Explore
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12h14" stroke="rgba(255,255,255,0.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 5l7 7-7 7" stroke="rgba(255,255,255,0.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="mini-card" style="padding:10px 12px;">
+            <div class="icon">G</div>
+            <div class="text"><strong>Glass</strong> surfaces with depth and blur</div>
+          </div>
+
+          <div class="mini-card" style="padding:10px 12px;">
+            <div class="icon" style="background:linear-gradient(135deg,#ffd67a,#ff9a9a)">B</div>
+            <div class="text"><strong>Bounce</strong> accents that feel alive</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview" aria-hidden="true" style="margin-top:18px">
+        <div class="dotline" style="border-radius:999px"></div>
+      </div>
+
+      <div class="gloss" aria-hidden="true"></div>
+    </section>
+
+    <aside class="panel">
+      <div class="glass" style="padding:18px 20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.68);text-transform:uppercase;letter-spacing:1px">Highlights</div>
+            <div style="margin-top:8px;font-weight:700;font-size:18px;color:#fff">Sleek. Soft. Responsive.</div>
+          </div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.56)">v1.0</div>
+        </div>
+
+        <div style="margin-top:14px;display:grid;gap:12px">
+          <div class="mini-card" style="padding:10px;">
+            <div class="icon" style="width:40px;height:40px;border-radius:9px">UI</div>
+            <div class="text">Scalable components, ready to adapt.</div>
+          </div>
+
+          <div class="mini-card" style="padding:10px;">
+            <div class="icon" style="width:40px;height:40px;border-radius:9px;background:linear-gradient(135deg,#9be7ff,#c8b6ff)">A</div>
+            <div class="text">Accessible color contrast and motion tuning.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center;justify-content:space-between">
+          <div style="font-size:13px;color:rgba(255,255,255,0.86)"><strong>Live demo</strong></div>
+          <a class="cta" href="#" style="padding:8px 12px;font-size:13px">Preview</a>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="glass" style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;gap:12px;align-items:center">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="18" height="18" rx="6" fill="url(#g)"></rect>
+              <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#7cf7d9"/><stop offset="1" stop-color="#7b9dff"/></linearGradient></defs>
+            </svg>
+            <div>
+              <div style="font-weight:700;color:#fff">Fast setup</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.66)">Plug-and-play components</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6)">Ready</div>
+        </div>
+
+        <div class="glass" style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:44px;height:44;border-radius:10px;background:linear-gradient(135deg,#ffd7e1,#ffd67a);display:flex;align-items:center;justify-content:center;font-weight:700;color:#111">S</div>
+            <div>
+              <div style="font-weight:700;color:#fff">Smooth motion</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.66)">Motion tuned for calmness</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6)">On</div>
+        </div>
+      </div>
+
+      <footer>
+        <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg class="gh-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.77 3.09 8.82 7.39 10.25.54.1.74-.23.74-.52 0-.26-.01-1.13-.02-2.05-3.01.65-3.64-1.45-3.64-1.45-.49-1.23-1.19-1.56-1.19-1.56-.98-.67.07-.66.07-.66 1.08.08 1.64 1.11 1.64 1.11.96 1.64 2.52 1.17 3.13.9.1-.7.37-1.17.67-1.44-2.4-.27-4.93-1.2-4.93-5.34 0-1.18.42-2.14 1.11-2.9-.11-.28-.48-1.4.11-2.92 0 0 .9-.29 2.95 1.11a10.2 10.2 0 0 1 2.68-.36c.91.01 1.83.12 2.68.36 2.04-1.4 2.95-1.11 2.95-1.11.59 1.52.22 2.64.11 2.92.69.76 1.11 1.72 1.11 2.9 0 4.15-2.53 5.06-4.94 5.33.38.33.72.98.72 1.98 0 1.43-.01 2.6-.01 2.95 0 .29.2.63.75.52 4.3-1.43 7.38-5.48 7.38-10.25C23.1 5.33 18.27.5 12 .5z" fill="white"/>
+          </svg>
+          <span style="font-size:13px;font-weight:600">Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </aside>
+  </main>
+</body>
+</html>
