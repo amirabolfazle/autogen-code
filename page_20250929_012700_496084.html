@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #0f172a;
+      --accent-1: #7c3aed;
+      --accent-2: #06b6d4;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.03);
+      --text: #e6eef8;
+      --muted: #cbd5e1;
+    }
+
+    /* Page background: animated gradient */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(120deg, rgba(12,16,31,1) 0%, rgba(14,22,50,1) 30%, rgba(10,6,40,1) 100%);
+      overflow-y:auto;
+      color:var(--text);
+    }
+    .animated-bg{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background: radial-gradient(circle at 10% 10%, rgba(124,58,237,0.12), transparent 8%),
+                  radial-gradient(circle at 90% 80%, rgba(6,182,212,0.12), transparent 12%),
+                  linear-gradient(160deg, rgba(124,58,237,0.06), rgba(6,182,212,0.06));
+      animation: bgShift 18s linear infinite;
+      filter: blur(48px) saturate(120%);
+      transform: translateZ(0);
+    }
+    @keyframes bgShift{
+      0%{ transform: translate3d(0,0,0) scale(1)}
+      50%{ transform: translate3d(-6%,3%,0) scale(1.05)}
+      100%{ transform: translate3d(0,0,0) scale(1)}
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 28px;
+    }
+
+    .card{
+      width:min(980px,96%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      border-radius:18px;
+      padding:36px;
+      backdrop-filter: blur(8px) saturate(140%);
+      overflow:hidden;
+    }
+
+    header.hero{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .glass-avatar{
+      width:88px;
+      height:88px;
+      border-radius:16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:32px;
+      color:var(--text);
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 4px 18px rgba(2,6,23,0.6);
+      flex-shrink:0;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:-0.6px;
+    }
+    .hero p{
+      margin:6px 0 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .meta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(124,58,237,0.12), rgba(6,182,212,0.08));
+      color:var(--text);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 20px rgba(6,8,22,0.45);
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:22px;
+      margin-top:28px;
+      align-items:start;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 24px rgba(5,8,20,0.45);
+    }
+
+    .bio h3{
+      margin:0 0 8px 0;
+      font-size:16px;
+    }
+    .bio p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:14px;
+    }
+
+    .skills{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .skill{
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);
+    }
+
+    .right-cta{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .stat{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .stat .num{
+      font-weight:700;
+      font-size:20px;
+      color:var(--text);
+    }
+    .stat .lbl{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      color:white;
+      font-weight:600;
+      text-decoration:none;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 8px 28px rgba(6,182,212,0.12);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .btn:hover{ transform:translateY(-4px); box-shadow:0 18px 48px rgba(6,182,212,0.16) }
+
+    footer.site-foot{
+      margin-top:22px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      padding-top:14px;
+      border-top:1px dashed rgba(255,255,255,0.02);
+    }
+
+    a.icon-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      text-decoration:none;
+      transition:color .14s;
+    }
+    a.icon-link:hover{ color:var(--text) }
+
+    /* Slide-up reveal animations */
+    .reveal{
+      opacity:0;
+      transform: translateY(18px);
+      transition: transform .7s cubic-bezier(.2,.9,.2,1), opacity .7s cubic-bezier(.2,.9,.2,1);
+      will-change:transform,opacity;
+    }
+    .reveal.show{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* small screens */
+    @media (max-width:880px){
+      .content{ grid-template-columns:1fr; }
+      .hero{ gap:14px; }
+      .glass-avatar{ width:72px; height:72px; font-size:26px; border-radius:12px; }
+    }
+
+    /* subtle floating accent */
+    .floating-accent{
+      position:absolute;
+      right:-120px;
+      top:40px;
+      width:360px;
+      height:360px;
+      pointer-events:none;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(124,58,237,0.08), rgba(6,182,212,0.06), rgba(124,58,237,0.06));
+      border-radius:50%;
+      filter: blur(36px) saturate(120%);
+      transform: translateZ(0);
+      mix-blend-mode:screen;
+    }
+    @media (max-width:880px){ .floating-accent{ display:none } }
+
+    /* tiny micro-interactions */
+    .link-ghost{
+      color:var(--accent-2);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(6,182,212,0.12);
+      padding-bottom:2px;
+    }
+    .link-ghost:hover{ border-color:rgba(6,182,212,0.28) }
+  </style>
+</head>
+<body>
+  <div class="animated-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <main class="card" role="main" aria-labelledby="page-title">
+      <div class="floating-accent" aria-hidden="true"></div>
+
+      <header class="hero reveal" id="hero">
+        <div class="glass-avatar" aria-hidden="true">A</div>
+        <div>
+          <h1 id="page-title">amirabolfazle</h1>
+          <p>Designer, builder, and curious problem-solver. I craft focused experiences and tidy dev tooling.</p>
+          <div class="meta-row">
+            <span class="pill" title="Creation time">Created: 2025-09-29 01:26:02</span>
+            <a class="pill link-ghost" href="#contact">Contact</a>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="panel bio reveal" id="about" tabindex="0">
+          <h3>About</h3>
+          <p>Hello — I'm amirabolfazle. I love turning messy ideas into structured, useful things. I focus on clean UI, pragmatic engineering and delightful micro-interactions. I tinker across design and code and enjoy tiny animations that make a product feel alive.</p>
+
+          <div class="skills" aria-label="skills">
+            <span class="skill">UI & UX</span>
+            <span class="skill">Frontend</span>
+            <span class="skill">Node.js</span>
+            <span class="skill">Animations</span>
+            <span class="skill">Tooling</span>
+          </div>
+
+          <div style="margin-top:16px; display:flex; gap:10px; align-items:center;">
+            <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">View Repo</a>
+            <a class="btn" style="background:transparent; color:var(--text); box-shadow:none; border:1px solid rgba(255,255,255,0.04)">Download CV</a>
+          </div>
+        </div>
+
+        <aside class="panel right-cta reveal" id="right" aria-label="Quick stats">
+          <div class="stat">
+            <div>
+              <div class="num">8+</div>
+              <div class="lbl">Years experience</div>
+            </div>
+            <div style="font-size:28px; opacity:.9;">✨</div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="stat">
+            <div>
+              <div class="num">120+</div>
+              <div class="lbl">Projects & experiments</div>
+            </div>
+            <div style="font-size:28px; opacity:.9;">🧰</div>
+          </div>
+
+          <div style="height:14px"></div>
+
+          <div style="display:flex; gap:10px; margin-top:auto;">
+            <a class="btn" href="#projects">Projects</a>
+            <a class="btn" href="#contact" style="background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); color:var(--text); box-shadow:none; border:1px solid rgba(255,255,255,0.03)">Say hi</a>
+          </div>
+        </aside>
+      </section>
+
+      <footer class="site-foot reveal" id="page-foot">
+        <div>Creation time: <strong style="color:var(--text)">2025-09-29 01:26:02</strong></div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <a class="icon-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub — amirabolfazle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .5C5.65.5.6 5.56.6 11.92c0 5.02 3.29 9.27 7.86 10.77.58.11.78-.25.78-.55 0-.27-.01-1.17-.01-2.12-3.2.69-3.88-1.43-3.88-1.43-.52-1.34-1.27-1.7-1.27-1.7-1.04-.71.08-.7.08-.7 1.15.08 1.77 1.19 1.77 1.19 1.02 1.74 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.52-2.56-.29-5.26-1.28-5.26-5.72 0-1.26.45-2.3 1.19-3.11-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.9-.39c.98.01 1.98.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.81 1.19 1.85 1.19 3.11 0 4.45-2.71 5.43-5.29 5.71.41.36.78 1.08.78 2.18 0 1.57-.01 2.84-.01 3.23 0 .3.2.66.79.55 4.56-1.5 7.84-5.75 7.84-10.77C23.4 5.56 18.35.5 12 .5z" fill="currentColor"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Simple reveal on load + on-scroll staggered slide-up
+    (function(){
+      const reveals = Array.from(document.querySelectorAll('.reveal'));
+      let initDelay = 80;
+      reveals.forEach((el, i)=>{
+        setTimeout(()=> el.classList.add('show'), initDelay * (i+1));
+      });
+
+      // on-scroll reveal for any that weren't shown yet (responsive safety)
+      const observer = new IntersectionObserver((entries)=>{
+        for(const e of entries){
+          if(e.isIntersecting){
+            e.target.classList.add('show');
+            observer.unobserve(e.target);
+          }
+        }
+      }, {root:null, rootMargin: "0px 0px -10% 0px", threshold:0.08});
+
+      reveals.forEach(el=>{
+        if(!el.classList.contains('show')) observer.observe(el);
+      });
+
+      // subtle keyboard focus ring for accessibility
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Tab') document.documentElement.classList.add('user-tabbing');
+      });
+
+      // small prefers-reduced-motion respect
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        reveals.forEach(r => { r.style.transition = 'none'; r.classList.add('show'); });
+        document.querySelector('.animated-bg').style.animation = 'none';
+      }
+    })();
+  </script>
+</body>
+</html>
