@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --accent1: rgba(123, 97, 255, 0.35);
+      --accent2: rgba(0, 220, 255, 0.20);
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --glass-highlight: rgba(255,255,255,0.02);
+      --text: #eaf2ff;
+      --muted: rgba(234,242,255,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Background */
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(123,97,255,0.12), transparent 6%),
+                  radial-gradient(900px 400px at 85% 80%, rgba(0,220,255,0.08), transparent 6%),
+                  linear-gradient(180deg,#071022 0%, #071226 40%, #061026 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    /* Animated floating shapes for rotate effect */
+    .float-shape{
+      position: absolute;
+      filter: blur(18px);
+      opacity: 0.75;
+      mix-blend-mode: screen;
+      transform-origin: center;
+      animation: slow-rotate 18s linear infinite;
+      will-change: transform;
+      pointer-events:none;
+    }
+    .float-shape.shape-a{
+      width:420px;height:420px;
+      left:-8%;
+      top:-6%;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(123,97,255,0.35), rgba(0,220,255,0.12));
+      animation-duration: 28s;
+      animation-direction: reverse;
+    }
+    .float-shape.shape-b{
+      width:360px;height:360px;
+      right:-6%;
+      bottom:-10%;
+      background: conic-gradient(from 90deg at 50% 50%, rgba(0,220,255,0.18), rgba(123,97,255,0.06));
+      animation-duration: 22s;
+    }
+    .float-shape.shape-c{
+      width:140px;height:140px;
+      left:60%;
+      top:10%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), transparent 40%);
+      animation-duration: 12s;
+      opacity:0.45;
+      filter: blur(8px);
+    }
+
+    @keyframes slow-rotate{
+      from{ transform: rotate(0deg) translateZ(0) }
+      to{ transform: rotate(360deg) translateZ(0) }
+    }
+
+    /* Center card */
+    .wrap{
+      width: min(980px, 94vw);
+      padding: 48px;
+      display:flex;
+      gap:24px;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+      flex-wrap:wrap;
+    }
+
+    .glass {
+      flex:1 1 560px;
+      min-width: 280px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius: 18px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(10px) saturate(140%);
+      -webkit-backdrop-filter: blur(10px) saturate(140%);
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 300ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    /* subtle rotate on hover */
+    .glass:hover{
+      transform: perspective(900px) rotateX(6deg) rotateY(-6deg) translateY(-6px);
+    }
+
+    .hero-title{
+      margin: 0 0 10px 0;
+      font-size: clamp(28px, 6.2vw, 48px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: linear-gradient(90deg, #fff, #dfeaff);
+      font-weight: 700;
+      display:inline-block;
+      position: relative;
+      z-index: 3;
+      -webkit-text-stroke: 0.2px rgba(255,255,255,0.06);
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    .controls{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      margin-top:12px;
+    }
+
+    .btn{
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.10);
+      color:var(--text);
+      padding: 12px 18px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight:600;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+      transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+    }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(123,97,255,0.30), rgba(0,220,255,0.12));
+      border: 1px solid rgba(255,255,255,0.12);
+      transform-origin:center;
+    }
+    .btn:hover{ transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 30px rgba(2,6,23,0.55); }
+
+    .meta{
+      margin-top:18px;
+      display:flex;
+      gap:16px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* Side panel with rotating card effect */
+    .panel{
+      width:320px;
+      min-width:260px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding:18px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(8px);
+      position:relative;
+      overflow:hidden;
+      transform-origin:center;
+      animation: slight-tilt 10s infinite ease-in-out;
+    }
+
+    @keyframes slight-tilt{
+      0%{ transform: rotate(-2deg) translateY(0) }
+      50%{ transform: rotate(3deg) translateY(-6px) }
+      100%{ transform: rotate(-2deg) translateY(0) }
+    }
+
+    .panel h4{
+      margin:0 0 10px 0;
+      font-size:16px;
+      color:var(--text);
+    }
+    .panel p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    /* footer */
+    footer{
+      position: absolute;
+      bottom:14px;
+      left:50%;
+      transform: translateX(-50%);
+      z-index:3;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      padding:8px 12px;
+      background: rgba(0,0,0,0.12);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+    }
+    footer a{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .gh-icon{
+      width:18px;height:18px;
+      display:inline-block;
+      vertical-align:middle;
+      fill: currentColor;
+      opacity:0.95;
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:880px){
+      .wrap{ padding:28px; gap:12px; }
+      .panel{ order: 2; width:100%; min-width:unset; }
+      .glass{ order:1; width:100%; }
+    }
+
+    /* Decorative rotating glass chips */
+    .chip{
+      position:absolute;
+      width:140px;height:140px;
+      border-radius:16px;
+      background: linear-gradient(160deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      top:10%;
+      right:10%;
+      transform-origin:center;
+      animation: chip-rotate 9s linear infinite;
+      filter: blur(0.6px);
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    .chip.two{ left:6%; top:52%; width:120px; height:120px; animation-duration:14s; animation-direction:reverse; opacity:0.8; }
+    @keyframes chip-rotate{
+      0%{ transform: rotate(0deg) translateY(0) }
+      50%{ transform: rotate(180deg) translateY(-8px) }
+      100%{ transform: rotate(360deg) translateY(0) }
+    }
+
+    /* small labels */
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:600;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="float-shape shape-a" aria-hidden="true"></div>
+  <div class="float-shape shape-b" aria-hidden="true"></div>
+  <div class="float-shape shape-c" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="title">
+    <section class="glass" aria-label="Hero">
+      <h1 id="title" class="hero-title">amirabolfazle</h1>
+      <p class="sub">A polished, glassmorphic landing interface with kinetic rotation effects — minimal, modern and bold.</p>
+
+      <div class="controls" role="group" aria-label="Primary actions">
+        <a class="btn primary" href="#" onclick="event.preventDefault();">
+          Explore
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a class="btn" href="#" onclick="event.preventDefault();">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        </a>
+      </div>
+
+      <div class="meta" aria-hidden="false">
+        <span class="badge">Glassmorphism</span>
+        <span class="badge">Rotate Effects</span>
+        <div style="margin-left:auto; text-align:right;">
+          <div style="font-size:12px; color:var(--muted);">Creation time</div>
+          <div style="font-weight:700; color:var(--text); font-size:13px;">2025-09-29 02:12:23</div>
+        </div>
+      </div>
+
+      <div class="chip" aria-hidden="true"></div>
+      <div class="chip two" aria-hidden="true"></div>
+    </section>
+
+    <aside class="panel" aria-label="Details">
+      <h4>Why this design?</h4>
+      <p>
+        The glassmorphism aesthetic focuses on translucency, depth and soft highlights to create a premium interface feel.
+        Motion and rotation add life without distraction — these panels tilt and spin subtly to guide the eye.
+      </p>
+
+      <div style="height:12px;"></div>
+      <h4>Quick specs</h4>
+      <p style="margin-bottom:10px;">
+        Responsive layout • Backdrop blur • Subtle 3D hover • CSS-driven animations — lightweight and retina-ready.
+      </p>
+
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <div class="badge">CSS Animations</div>
+        <div class="badge">SVG Icon</div>
+      </div>
+    </aside>
+  </main>
+
+  <footer role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg class="gh-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.9 3.17 9.06 7.57 10.53.55.1.75-.24.75-.53 0-.26-.01-1.13-.02-2.05-3.08.67-3.73-1.49-3.73-1.49-.5-1.26-1.22-1.6-1.22-1.6-.99-.67.08-.66.08-.66 1.1.08 1.67 1.13 1.67 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.46-.28-5.05-1.23-5.05-5.49 0-1.21.43-2.2 1.13-2.98-.11-.28-.49-1.4.11-2.92 0 0 .93-.3 3.05 1.13a10.6 10.6 0 0 1 2.78-.37c.94 0 1.89.13 2.78.37 2.12-1.43 3.05-1.13 3.05-1.13.6 1.52.22 2.64.11 2.92.7.78 1.13 1.77 1.13 2.98 0 4.27-2.6 5.21-5.08 5.48.39.34.73 1.01.73 2.04 0 1.48-.01 2.67-.01 3.03 0 .3.2.64.76.53 4.4-1.48 7.56-5.64 7.56-10.54C23.25 5.48 18.27.5 12 .5z"/>
+      </svg>
+      <span style="margin-left:8px;">Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // subtle parallax for mouse movement - apply to main glass card for extra depth
+    (function(){
+      const glass = document.querySelector('.glass');
+      if(!glass) return;
+      let rect = null;
+      function updateRect(){ rect = glass.getBoundingClientRect(); }
+      updateRect();
+      window.addEventListener('resize', updateRect, {passive:true});
+      document.addEventListener('mousemove', (e)=>{
+        if(!rect) return;
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dx = (e.clientX - cx) / rect.width;
+        const dy = (e.clientY - cy) / rect.height;
+        const rx = dy * 6; // rotateX
+        const ry = dx * -6; // rotateY
+        const tz = Math.max(Math.abs(dx), Math.abs(dy)) * -10;
+        glass.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(${tz}px)`;
+      }, {passive:true});
+
+      // return to base on mouse leave
+      document.addEventListener('mouseleave', ()=>{
+        glass.style.transform = '';
+      });
+      glass.addEventListener('mouseleave', ()=>{
+        glass.style.transform = '';
+      });
+    })();
+  </script>
+</body>
+</html>
