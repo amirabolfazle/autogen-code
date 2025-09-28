@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f12;
+      --card:#0f1720;
+      --muted:#9aa4af;
+      --accent1:#6ee7b7;
+      --accent2:#60a5fa;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --glass-border: rgba(255,255,255,0.04);
+      --shadow: rgba(2,6,23,0.7);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(96,165,250,0.06), transparent),
+                  radial-gradient(1000px 500px at 90% 80%, rgba(110,231,183,0.04), transparent),
+                  var(--bg);
+      color:#e6eef6;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* animated subtle background mesh */
+    .bg-anim{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+      mix-blend-mode:screen;
+      opacity:0.9;
+    }
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(60px);
+      opacity:0.22;
+      transform:translate3d(0,0,0);
+      animation:float 12s ease-in-out infinite;
+      will-change:transform;
+    }
+    .orb.a{width:420px;height:420px;background:linear-gradient(135deg,var(--accent2),transparent);left:-10%;top:5%;animation-duration:18s}
+    .orb.b{width:380px;height:380px;background:linear-gradient(135deg,var(--accent1),transparent);right:-8%;bottom:10%;animation-duration:14s;opacity:0.18}
+    .orb.c{width:220px;height:220px;background:linear-gradient(135deg,rgba(96,165,250,0.7),rgba(110,231,183,0.2));left:40%;top:60%;animation-duration:20s;opacity:0.12}
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      25%{transform:translateY(-24px) scale(1.02)}
+      50%{transform:translateY(0) scale(1)}
+      75%{transform:translateY(18px) scale(0.98)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    /* layout */
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      position:relative;
+      z-index:2;
+    }
+    .card{
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 10px 30px var(--shadow);
+      border-radius:16px;
+      padding:32px;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      transform-origin:center;
+      transition:transform 350ms cubic-bezier(.2,.9,.3,1), box-shadow 350ms;
+      backdrop-filter: blur(8px) saturate(120%);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* initial zoom-in entrance */
+    .card { animation:entrance 900ms cubic-bezier(.2,.9,.3,1) both; }
+    @keyframes entrance{
+      from{transform:scale(.98) translateY(10px); opacity:0}
+      to{transform:scale(1) translateY(0); opacity:1}
+    }
+
+    /* hover zoom effect */
+    .card:hover{
+      transform:scale(1.02);
+      box-shadow: 0 22px 50px rgba(2,6,23,0.66);
+    }
+
+    /* left hero */
+    .left{
+      flex:1 1 340px;
+      min-width:220px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .title{
+      font-size:clamp(22px,4.5vw,36px);
+      font-weight:700;
+      line-height:1.02;
+      letter-spacing:-0.02em;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .title .tag{
+      font-size:12px;
+      color:var(--muted);
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin-top:4px;
+      font-size:14px;
+    }
+
+    /* right content */
+    .right{
+      flex:0 0 320px;
+      min-width:200px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      align-items:stretch;
+    }
+    .preview{
+      background:linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.008));
+      border-radius:12px;
+      padding:12px;
+      border:1px solid var(--glass-border);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      transition:transform 300ms;
+      transform-origin:center;
+    }
+    .preview .eye{
+      width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .preview strong{display:block;font-size:14px}
+    .zoom-ctrl{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .btn{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:13px;
+      transition:all 220ms;
+    }
+    .btn:hover{transform:translateY(-3px); color:#fff; border-color:rgba(255,255,255,0.08)}
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:#03243b;
+      border:none;
+      box-shadow: 0 6px 18px rgba(32,178,170,0.12), inset 0 -4px 8px rgba(255,255,255,0.03);
+    }
+
+    /* info boxes */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      width:100%;
+    }
+    .info{
+      background:linear-gradient(180deg, rgba(255,255,255,0.014), rgba(255,255,255,0.01));
+      border-radius:10px;
+      padding:12px;
+      border:1px solid var(--glass-border);
+      font-size:13px;
+      color:var(--muted);
+    }
+    .info strong{color:#e6eef6; display:block; font-size:15px; margin-bottom:6px}
+
+    /* footer */
+    footer{
+      width:100%;
+      padding:14px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:14px;
+      z-index:5;
+      pointer-events:auto;
+    }
+    .footer-inner{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      padding:10px 14px;
+      border-radius:999px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px);
+    }
+    .github{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      text-decoration:none;
+      transition:all 180ms;
+    }
+    .github:hover{transform:translateY(-4px); color:#fff}
+    .gh-icon{
+      width:18px;height:18px;display:inline-block;vertical-align:middle;fill:currentColor;
+    }
+
+    /* responsive */
+    @media (max-width:830px){
+      .card{flex-direction:column; padding:20px}
+      .right{width:100%;order:3}
+      .left{order:1;width:100%}
+      .grid{grid-template-columns:repeat(1,1fr)}
+    }
+    @media (max-width:420px){
+      .title{font-size:20px}
+      .subtitle{font-size:13px}
+      .card{padding:16px;border-radius:12px}
+      footer{bottom:10px}
+    }
+
+    /* tiny accent shimmer */
+    .shimmer{
+      position:absolute; inset:0; pointer-events:none; mix-blend-mode:overlay; opacity:0.06;
+      background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+      transform:translateX(-40%);
+      animation:shm 6s linear infinite;
+    }
+    @keyframes shm{from{transform:translateX(-40%)}to{transform:translateX(120%)}}
+
+    /* subtle pulse on title */
+    .title .pulse{
+      display:inline-block;
+      width:10px;height:10px;border-radius:50%;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      box-shadow:0 6px 18px rgba(96,165,250,0.12);
+      animation:pulse 1.8s infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1);opacity:1}
+      50%{transform:scale(1.3);opacity:0.65}
+      100%{transform:scale(1);opacity:1}
+    }
+
+    /* subtle tilt/zoom based on pointer */
+    .card[data-mx]{transition:none}
+  </style>
+</head>
+<body>
+  <div class="bg-anim" aria-hidden="true">
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+    <div class="orb c"></div>
+    <div class="shimmer"></div>
+  </div>
+
+  <main class="wrap">
+    <section class="card" id="card" role="region" aria-label="amirabolfazle card">
+      <div class="left">
+        <div class="title">
+          <span class="pulse" aria-hidden="true"></span>
+          <div style="display:flex;flex-direction:column">
+            amirabolfazle
+            <span class="tag" style="margin-top:8px">Dark Mode</span>
+          </div>
+        </div>
+        <div class="subtitle">A fully responsive animated demo with zoom effects and subtle motion.</div>
+
+        <div style="margin-top:10px" class="grid">
+          <div class="info">
+            <strong>Creation time</strong>
+            2025-09-29 03:06:53
+          </div>
+          <div class="info">
+            <strong>Theme</strong>
+            Dark, glassy surface, animated accents
+          </div>
+          <div class="info">
+            <strong>Interactions</strong>
+            Hover to zoom, tilt with pointer, responsive layout
+          </div>
+          <div class="info">
+            <strong>Built</strong>
+            Self-contained HTML + CSS + small JS
+          </div>
+        </div>
+      </div>
+
+      <aside class="right" aria-label="controls and preview">
+        <div class="preview" title="Preview panel">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="eye" aria-hidden="true">AB</div>
+            <div style="min-width:0">
+              <strong> Live Preview </strong>
+              <div style="color:var(--muted);font-size:13px">Hover this card for zoom. Move pointer for tilt.</div>
+            </div>
+          </div>
+
+          <div class="zoom-ctrl">
+            <button class="btn" id="reset">Reset</button>
+            <button class="btn primary" id="toggle">Toggle Zoom</button>
+          </div>
+        </div>
+
+        <div class="info" style="align-self:stretch">
+          <strong>Notes</strong>
+          This page is optimized to work across screen sizes. The glowing orbs and shimmer use pure CSS to remain lightweight.
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="flex:1" class="info">
+            <strong>Responsiveness</strong>
+            Shrinks to single-column layout on small screens.
+          </div>
+          <div style="width:72px;display:flex;align-items:center;justify-content:center">
+            <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent1));display:flex;align-items:center;justify-content:center;font-weight:800;color:#03243b;border:1px solid rgba(255,255,255,0.02)">UI</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer aria-hidden="false">
+    <div class="footer-inner" role="contentinfo">
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49C3.73 13.91 3.26 12.6 3.26 12.6c-.36-.92-.88-1.17-.88-1.17-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.22 1.86.87 2.32.67.07-.52.28-.87.51-1.07-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.28.1-2.67 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 8 3.5c.85.004 1.71.115 2.5.337 1.9-1.29 2.74-1.02 2.74-1.02.56 1.39.21 2.41.1 2.67.64.7 1.02 1.59 1.02 2.68 0 3.85-2.34 4.7-4.57 4.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.001 8.001 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // small interactive tilt + zoom toggling (keeps page lightweight)
+    (function(){
+      const card = document.getElementById('card');
+      let zoomEnabled = true;
+      const toggle = document.getElementById('toggle');
+      const reset = document.getElementById('reset');
+
+      function onMove(e){
+        const rect = card.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const mx = (e.clientX - cx) / rect.width; // -0.5 to 0.5 approx
+        const my = (e.clientY - cy) / rect.height;
+
+        const rx = (my * -12).toFixed(2);
+        const ry = (mx * 14).toFixed(2);
+        const tz = zoomEnabled ? 8 : 2;
+
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${zoomEnabled?1.02:1})`;
+        card.style.boxShadow = `0 22px 50px rgba(2,6,23,0.66)`;
+        card.setAttribute('data-mx', `${mx.toFixed(3)},${my.toFixed(3)}`);
+      }
+
+      function onLeave(){
+        card.style.transform = '';
+        card.style.boxShadow = '';
+        card.removeAttribute('data-mx');
+      }
+
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('touchmove', function(e){
+        if(e.touches && e.touches[0]) onMove(e.touches[0]);
+      }, {passive:true});
+      window.addEventListener('mouseleave', onLeave);
+      window.addEventListener('touchend', onLeave);
+
+      toggle.addEventListener('click', function(){
+        zoomEnabled = !zoomEnabled;
+        toggle.textContent = zoomEnabled ? 'Toggle Zoom' : 'Toggle Zoom';
+        // small feedback
+        toggle.classList.toggle('primary', zoomEnabled);
+        if(!zoomEnabled){
+          card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)';
+        }
+      });
+
+      reset.addEventListener('click', function(){
+        zoomEnabled = true;
+        onLeave();
+        toggle.classList.add('primary');
+      });
+
+      // accessibility: allow keyboard to reset
+      reset.addEventListener('keyup', function(e){
+        if(e.key === 'Enter' || e.key === ' ') reset.click();
+      });
+
+      // small parallax on orbs for depth
+      const orbs = document.querySelectorAll('.orb');
+      window.addEventListener('mousemove', function(e){
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const nx = (e.clientX / w - 0.5) * 2;
+        const ny = (e.clientY / h - 0.5) * 2;
+        orbs.forEach((o, i) => {
+          const depth = (i+1) * 6;
+          o.style.transform = `translate3d(${nx * depth}px, ${ny * depth}px, 0)`;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
