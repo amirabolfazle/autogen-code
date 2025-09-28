@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#04040a;
+      --neon-cyan:#00f0ff;
+      --neon-pink:#ff3dd7;
+      --neon-yellow:#fff24b;
+      --glass: rgba(255,255,255,0.03);
+      --soft: rgba(255,255,255,0.06);
+      --shadow: 0 0 18px rgba(0,0,0,0.6);
+      --radius:16px;
+      --mono: "Segoe UI Mono", "Roboto Mono", Menlo, Monaco, monospace;
+      --ui: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:var(--ui);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(0,255,255,0.04), transparent 6%),
+        radial-gradient(900px 500px at 90% 90%, rgba(255,61,215,0.03), transparent 6%),
+        linear-gradient(180deg, #01010a 0%, #050512 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:#e6f7ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      box-sizing:border-box;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:calc(var(--radius) + 6px);
+      padding: clamp(24px, 3.2vw, 48px);
+      box-shadow: var(--shadow), 0 6px 40px rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.03);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* Neon accents */
+    .neon-grid{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(transparent 95%, rgba(0,255,255,0.02) 95%),
+        linear-gradient(90deg, transparent 95%, rgba(255,61,215,0.02) 95%);
+      background-size: 40px 40px, 40px 40px;
+      mix-blend-mode:screen;
+      opacity:0.7;
+      transform:translateZ(0);
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+      z-index:2;
+      position:relative;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:10px;
+      background:linear-gradient(120deg, rgba(0,255,255,0.06), rgba(255,61,215,0.03));
+      border-radius:12px;
+      box-shadow: 0 6px 26px rgba(0,0,0,0.6);
+      transform-origin:center;
+      animation: zoomIn 1.2s cubic-bezier(.2,.9,.28,1);
+    }
+
+    .badge{
+      width:64px;
+      height:64px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, rgba(0,255,255,0.12), rgba(255,61,215,0.08));
+      box-shadow:
+        0 0 12px rgba(0,255,255,0.08),
+        inset 0 2px 8px rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04);
+      transform:translateZ(0);
+      animation: neonPulse 3s ease-in-out infinite;
+    }
+
+    svg.logo-mark{
+      width:38px;
+      height:38px;
+      filter: drop-shadow(0 6px 18px rgba(0,255,255,0.12)) drop-shadow(0 -2px 8px rgba(255,61,215,0.06));
+    }
+
+    h1.title{
+      font-size:clamp(20px, 3.6vw, 44px);
+      margin:0;
+      letter-spacing:0.02em;
+      line-height:1;
+      color:transparent;
+      -webkit-text-stroke: 0.6px rgba(255,255,255,0.08);
+      background:linear-gradient(90deg, var(--neon-cyan), var(--neon-pink) 40%, var(--neon-yellow) 80%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      text-shadow:
+        0 0 10px rgba(0,240,255,0.12),
+        0 0 28px rgba(255,61,215,0.08);
+      transform-origin:left center;
+      animation: flicker 3.8s linear infinite;
+    }
+
+    .subtitle{
+      font-family:var(--mono);
+      font-size:clamp(12px, 1.6vw, 14px);
+      opacity:0.86;
+      margin:6px 0 0 0;
+      color:#cceff4;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    main.content{
+      margin-top:20px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:20px;
+      align-items:start;
+      z-index:2;
+      position:relative;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:20px;
+      border: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+      min-height:140px;
+      transform:translateZ(0);
+      transition:transform 0.35s cubic-bezier(.2,.9,.28,1), box-shadow 0.35s;
+    }
+
+    .card:hover{
+      transform:scale(1.02);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    }
+
+    .lead{
+      font-size:clamp(14px, 1.8vw, 16px);
+      color:#dffaff;
+      margin:0 0 12px 0;
+    }
+
+    .panel{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .time{
+      font-family:var(--mono);
+      color:var(--neon-yellow);
+      padding:10px 12px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(255,242,75,0.06), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,242,75,0.06);
+      box-shadow:0 8px 26px rgba(255,242,75,0.02);
+      display:inline-block;
+      font-size:14px;
+    }
+
+    .glass-preview{
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      justify-content:space-between;
+    }
+
+    .neon-box{
+      flex:1;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(0,255,255,0.02), rgba(255,61,215,0.02));
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-start;
+      justify-content:center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .neon-text{
+      font-size:clamp(18px, 3vw, 28px);
+      color:transparent;
+      -webkit-background-clip:text;
+      background-clip:text;
+      background:linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+      text-shadow: 0 6px 30px rgba(0,240,255,0.06);
+      transform-origin:center;
+      animation: zoomPulse 4.2s ease-in-out infinite;
+    }
+
+    .meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+    }
+
+    /* Footer */
+    footer{
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      color:rgba(220,240,255,0.85);
+      font-size:13px;
+      z-index:2;
+      position:relative;
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 12px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+
+    .github-link:hover{
+      transform:translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+    }
+
+    .github-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+    }
+
+    /* Animations */
+    @keyframes neonPulse{
+      0%{ box-shadow:0 0 6px rgba(0,240,255,0.06), 0 0 24px rgba(0,240,255,0.04) }
+      50%{ box-shadow:0 0 22px rgba(0,240,255,0.12), 0 0 52px rgba(255,61,215,0.06) }
+      100%{ box-shadow:0 0 6px rgba(0,240,255,0.06), 0 0 24px rgba(0,240,255,0.04) }
+    }
+
+    @keyframes zoomIn{
+      0%{ transform:scale(.86) translateY(-6px); opacity:0 }
+      60%{ transform:scale(1.03); opacity:1 }
+      100%{ transform:scale(1) }
+    }
+
+    @keyframes flicker{
+      0%{ opacity:1; filter:drop-shadow(0 0 14px rgba(0,240,255,0.12)); transform:translateY(0) }
+      6%{ opacity:.9; filter:drop-shadow(0 0 6px rgba(0,240,255,0.06)); transform:translateY(-1px) }
+      12%{ opacity:1; filter:drop-shadow(0 0 20px rgba(255,61,215,0.08)); transform:translateY(0) }
+      30%{ opacity:0.98 }
+      100%{ opacity:1; filter:drop-shadow(0 0 28px rgba(0,240,255,0.12)) }
+    }
+
+    @keyframes zoomPulse{
+      0%{ transform:scale(1) }
+      50%{ transform:scale(1.04) translateY(-4px) }
+      100%{ transform:scale(1) }
+    }
+
+    /* Zoom hover effect on the whole stage for interactive feel */
+    .stage:hover{
+      transform:scale(1.008);
+      transition:transform 0.35s cubic-bezier(.2,.9,.28,1);
+    }
+
+    /* Responsive */
+    @media (max-width:880px){
+      main.content{
+        grid-template-columns:1fr;
+      }
+      .badge{ width:56px; height:56px; }
+      .logo{ gap:10px; padding:8px; }
+    }
+
+    @media (max-width:420px){
+      body{ padding:18px; }
+      .stage{ padding:18px; }
+      .badge{ width:48px; height:48px; }
+      .title{ font-size:22px; }
+      footer{ flex-direction:column; align-items:flex-start; gap:8px; }
+    }
+
+    /* subtle animated decorative orbs */
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(36px);
+      opacity:.12;
+      transform:translateZ(0);
+      mix-blend-mode:screen;
+      animation: floaty 12s ease-in-out infinite;
+      pointer-events:none;
+    }
+
+    .orb.cyan{ width:360px; height:360px; background:linear-gradient(45deg,#00f0ff,#00b3ff); left:-10%; top:-20%; }
+    .orb.pink{ width:260px; height:260px; background:linear-gradient(45deg,#ff3dd7,#ff88d9); right:-8%; bottom:-18%; animation-duration:14s; animation-direction:reverse; }
+    .orb.yellow{ width:180px; height:180px; background:linear-gradient(45deg,#fff24b,#ffd96b); left:30%; bottom:-12%; animation-duration:18s; opacity:0.08; }
+
+    @keyframes floaty{
+      0%{ transform:translateY(0) translateX(0) scale(1) }
+      50%{ transform:translateY(-18px) translateX(10px) scale(1.03) }
+      100%{ transform:translateY(0) translateX(0) scale(1) }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="stage" role="main" aria-labelledby="main-title">
+    <div class="neon-grid" aria-hidden="true"></div>
+    <div class="orb cyan" aria-hidden="true"></div>
+    <div class="orb pink" aria-hidden="true"></div>
+    <div class="orb yellow" aria-hidden="true"></div>
+
+    <header>
+      <div class="logo" aria-hidden="false">
+        <div class="badge" aria-hidden="true">
+          <!-- Custom neon mark -->
+          <svg class="logo-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="2" width="60" height="60" rx="12" fill="url(#g1)"/>
+            <g style="mix-blend-mode:screen">
+              <path d="M20 44c6-6 13-10 24-10" stroke="#00f0ff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 24c6 6 13 10 24 10" stroke="#ff3dd7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#001217" stop-opacity="0.6"/>
+                <stop offset="1" stop-color="#0a0314" stop-opacity="0.6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div>
+          <h1 class="title" id="main-title">amirabolfazle</h1>
+          <div class="subtitle">neon portfolio / animated demo</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content" aria-live="polite">
+      <section class="card">
+        <p class="lead">Welcome. This page is crafted as a responsive neon-themed animated showcase with zoom effects and subtle motion. Resize or hover to see interactive zooms and pulses.</p>
+
+        <div class="panel" aria-hidden="false">
+          <div class="meta">
+            <span class="time" title="Creation time">Created: 2025-09-28 23:47:20</span>
+            <span style="opacity:.8; font-size:13px;">• Animated CSS • Neon glow • Responsive</span>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+            <div class="time" style="background:linear-gradient(90deg, rgba(0,240,255,0.03), rgba(255,61,215,0.02)); color:var(--neon-cyan);">Neon</div>
+            <div class="time" style="background:linear-gradient(90deg, rgba(255,61,215,0.03), rgba(255,242,75,0.02)); color:var(--neon-pink);">Animated</div>
+            <div class="time" style="background:linear-gradient(90deg, rgba(255,242,75,0.03), rgba(0,240,255,0.02)); color:var(--neon-yellow);">Zoom</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card glass-preview" aria-label="Preview panel">
+        <div class="neon-box">
+          <div class="neon-text">amirabolfazle</div>
+          <div style="font-size:13px; color:rgba(255,255,255,0.72);">Live preview with pulsing neon and zoom effects. Hover over cards and the footer link to animate.</div>
+        </div>
+
+        <div style="display:flex; gap:8px; align-items:center; justify-content:space-between;">
+          <div style="font-family:var(--mono); font-size:12px; color:rgba(255,255,255,0.66);">Theme: Neon · Mode: Dark</div>
+          <div style="display:flex; gap:8px;">
+            <span style="background:var(--soft); padding:8px 10px; border-radius:10px; font-size:13px; color:rgba(255,255,255,0.8);">Responsive</span>
+            <span style="background:var(--glass); padding:8px 10px; border-radius:10px; font-size:13px; color:rgba(255,255,255,0.8);">Animated</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div style="display:flex; flex-direction:column;">
+        <div style="font-size:13px; color:rgba(255,255,255,0.88);">Creation time</div>
+        <div style="font-family:var(--mono); font-size:13px; color:var(--neon-yellow);">2025-09-28 23:47:20</div>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center;">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="github-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.73.5.99 5.24.99 11.52c0 4.61 2.99 8.52 7.14 9.91.52.1.7-.22.7-.49 0-.24-.01-.87-.01-1.71-2.9.63-3.51-1.4-3.51-1.4-.47-1.2-1.16-1.52-1.16-1.52-.95-.65.07-.64.07-.64 1.05.08 1.6 1.07 1.6 1.07.93 1.6 2.45 1.14 3.05.87.09-.68.36-1.14.66-1.4-2.32-.27-4.76-1.16-4.76-5.17 0-1.14.39-2.07 1.03-2.8-.1-.26-.45-1.32.1-2.75 0 0 .84-.27 2.75 1.05a9.54 9.54 0 0 1 2.5-.34c.85 0 1.71.11 2.5.34 1.9-1.32 2.74-1.05 2.74-1.05.56 1.43.21 2.49.11 2.75.64.73 1.03 1.66 1.03 2.8 0 4.02-2.44 4.9-4.77 5.16.37.32.7.96.7 1.94 0 1.4-.01 2.53-.01 2.88 0 .27.18.6.71.5 4.15-1.39 7.14-5.3 7.14-9.91C23.01 5.24 18.27.5 12 .5z" fill="url(#g2)"/>
+            <defs>
+              <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#00f0ff"/>
+                <stop offset="1" stop-color="#ff3dd7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <span style="font-weight:600;">Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
