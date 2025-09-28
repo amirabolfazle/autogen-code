@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#05020a;
+      --neon-cyan:#00f0ff;
+      --neon-pink:#ff2d9c;
+      --neon-purple:#9b6bff;
+      --glass: rgba(255,255,255,0.03);
+      --muted: rgba(255,255,255,0.12);
+      --accent: linear-gradient(90deg,var(--neon-pink),var(--neon-purple),var(--neon-cyan));
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(800px 400px at 10% 20%, rgba(155,107,255,0.06), transparent 6%),
+        radial-gradient(600px 300px at 90% 80%, rgba(0,240,255,0.04), transparent 6%),
+        var(--bg);
+      color:#e9f7ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      padding:40px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+    }
+
+    /* container */
+    .card{
+      width:100%;
+      max-width:980px;
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.6),
+        0 0 40px rgba(155,107,255,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.02);
+      padding:36px;
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px) saturate(120%);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%{ transform: translateY(0px)}
+      50%{ transform: translateY(-6px)}
+      100%{ transform: translateY(0px)}
+    }
+
+    /* subtle animated neon grid */
+    .grid {
+      position:absolute;
+      inset:0;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
+      pointer-events:none;
+      opacity:0.08;
+    }
+    .grid svg { width:120%; height:120%; transform:translate(-10%,-10%); filter:blur(6px); }
+
+    /* header */
+    .hero{
+      display:flex;
+      gap:22px;
+      align-items:center;
+      margin-bottom:14px;
+    }
+    .avatar{
+      width:108px;
+      height:108px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 6px 30px rgba(107,35,255,0.06), 0 0 30px rgba(0,240,255,0.02);
+      position:relative;
+      overflow:hidden;
+    }
+    .avatar::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background: conic-gradient(from 120deg, rgba(255,45,156,0.06), rgba(155,107,255,0.04));
+      mix-blend-mode:screen;
+      opacity:0.9;
+    }
+    .avatar svg{ position:relative; z-index:2; filter: drop-shadow(0 6px 16px rgba(155,107,255,0.16)); }
+
+    h1{
+      margin:0;
+      font-family:Orbitron, Inter, sans-serif;
+      font-weight:700;
+      font-size:36px;
+      letter-spacing:1px;
+      color:var(--neon-cyan);
+      text-shadow: 0 0 12px rgba(0,240,255,0.16), 0 0 30px rgba(155,107,255,0.06);
+    }
+    .sub{
+      margin:6px 0 0 0;
+      color:rgba(233,247,255,0.75);
+      opacity:0.95;
+      font-size:14px;
+    }
+
+    /* chips */
+    .meta{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:rgba(233,247,255,0.85);
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+    .chip .dot{
+      width:10px;height:10px;border-radius:50%;
+      box-shadow: 0 0 12px currentColor;
+    }
+    .dot-cyan{ background:var(--neon-cyan); color:var(--neon-cyan)}
+    .dot-pink{ background:var(--neon-pink); color:var(--neon-pink)}
+    .dot-purple{ background:var(--neon-purple); color:var(--neon-purple)}
+
+    /* content sections */
+    .sections{ margin-top:20px; display:grid; grid-template-columns: 1fr 320px; gap:18px; align-items:start;}
+    .panel{
+      border-radius:12px;
+      padding:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      backdrop-filter: blur(6px);
+      overflow:hidden;
+      transform: translateY(18px);
+      opacity:0;
+    }
+
+    /* neon headings */
+    .panel h3{
+      margin:0 0 8px 0;
+      color:var(--neon-pink);
+      font-family:Orbitron, Inter, sans-serif;
+      font-size:16px;
+      text-shadow: 0 0 10px rgba(255,45,156,0.14);
+    }
+    .panel p{ margin:0; color:rgba(233,247,255,0.85); line-height:1.45; font-size:14px; opacity:0.95}
+
+    /* list of social / links */
+    .links{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    .link{
+      padding:10px 12px;
+      border-radius:10px;
+      color:var(--neon-cyan);
+      background: linear-gradient(90deg, rgba(0,240,255,0.02), rgba(155,107,255,0.01));
+      border:1px solid rgba(0,240,255,0.06);
+      text-decoration:none;
+      font-weight:600;
+      font-size:13px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .link:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,240,255,0.06); }
+
+    /* creation time badge */
+    .creation{
+      position:absolute;
+      right:18px;
+      top:18px;
+      padding:8px 10px;
+      border-radius:8px;
+      font-size:12px;
+      color:rgba(233,247,255,0.85);
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    }
+    .creation strong{ display:block; font-family:Orbitron, Inter, sans-serif; color:var(--neon-purple); font-size:12px; letter-spacing:0.6px; text-shadow: 0 0 8px rgba(155,107,255,0.06); }
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      justify-content:flex-end;
+      color:rgba(233,247,255,0.78);
+      font-size:13px;
+      opacity:0.95;
+    }
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      color:var(--neon-cyan);
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(0,240,255,0.06);
+      background: linear-gradient(90deg, rgba(0,240,255,0.02), rgba(155,107,255,0.01));
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .gh:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(155,107,255,0.06); }
+    .gh svg{ filter: drop-shadow(0 6px 18px rgba(0,0,0,0.55)); }
+
+    /* slide up animation classes */
+    .slide-up{ animation: slideUp .7s cubic-bezier(.2,.9,.3,1) forwards; }
+    .slide-up-delay-1{ animation-delay:0.06s }
+    .slide-up-delay-2{ animation-delay:0.12s }
+    .slide-up-delay-3{ animation-delay:0.18s }
+    .slide-up-delay-4{ animation-delay:0.24s }
+    @keyframes slideUp{
+      from{ transform:translateY(18px); opacity:0 }
+      to{ transform:translateY(0); opacity:1 }
+    }
+
+    /* responsive */
+    @media (max-width:880px){
+      .sections{ grid-template-columns: 1fr; }
+      .avatar{ width:92px; height:92px }
+      .creation{ position:static; margin-top:10px; align-self:flex-start }
+      footer{ justify-content:center }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="grid" aria-hidden="true">
+      <!-- decorative grid lines -->
+      <svg viewBox="0 0 1200 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#ff2d9c" stop-opacity="0.18"/>
+            <stop offset="0.5" stop-color="#9b6bff" stop-opacity="0.12"/>
+            <stop offset="1" stop-color="#00f0ff" stop-opacity="0.08"/>
+          </linearGradient>
+        </defs>
+        <rect width="1200" height="800" fill="none"/>
+        <g stroke="url(#lg)" stroke-width="1" opacity="0.9">
+          <!-- vertical lines -->
+          <g transform="translate(80,0)">
+            <g stroke-opacity="0.9">
+              <path d="M0 0 L0 800"/>
+              <path d="M80 0 L80 800" opacity="0.8"/>
+              <path d="M160 0 L160 800" opacity="0.6"/>
+              <path d="M240 0 L240 800" opacity="0.5"/>
+              <path d="M320 0 L320 800" opacity="0.35"/>
+              <path d="M400 0 L400 800" opacity="0.25"/>
+              <path d="M480 0 L480 800" opacity="0.18"/>
+            </g>
+          </g>
+          <!-- horizontal lines -->
+          <g transform="translate(0,40)">
+            <g stroke-opacity="0.7">
+              <path d="M0 0 L1200 0"/>
+              <path d="M0 80 L1200 80" opacity="0.8"/>
+              <path d="M0 160 L1200 160" opacity="0.6"/>
+              <path d="M0 240 L1200 240" opacity="0.45"/>
+              <path d="M0 320 L1200 320" opacity="0.32"/>
+              <path d="M0 400 L1200 400" opacity="0.2"/>
+              <path d="M0 480 L1200 480" opacity="0.12"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="creation" title="Creation timestamp">
+      <strong>Created</strong>
+      2025-09-29 01:16:52
+    </div>
+
+    <header class="hero">
+      <div class="avatar slide-up slide-up-delay-1" style="--i:1" aria-hidden="true">
+        <svg width="72" height="72" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#ff2d9c"/>
+              <stop offset="1" stop-color="#00f0ff"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="22" height="22" rx="6" stroke="url(#g)" stroke-width="1.5" fill="rgba(0,0,0,0.06)"/>
+          <path d="M7 16C7 13.7909 8.79086 12 11 12C13.2091 12 15 13.7909 15 16" stroke="url(#g)" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="11" cy="9.4" r="1.9" stroke="url(#g)" stroke-width="1.2"/>
+        </svg>
+      </div>
+
+      <div style="flex:1" class="slide-up slide-up-delay-2">
+        <h1>amirabolfazle</h1>
+        <p class="sub">Neon-themed portfolio & playground — code, ideas, improvisation.</p>
+
+        <div class="meta">
+          <div class="chip"><span class="dot dot-cyan"></span> Developer</div>
+          <div class="chip"><span class="dot dot-pink"></span> Open-source</div>
+          <div class="chip"><span class="dot dot-purple"></span> Creative-Coder</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="sections">
+      <section class="panel slide-up slide-up-delay-3" id="about">
+        <h3>About</h3>
+        <p>I'm amirabolfazle — building with curiosity at the intersection of design and automation. I tinker with code, prototypes, and neon palettes to craft playful, useful things. This page is a tiny glowing sample of that aesthetic.</p>
+
+        <div class="links" style="margin-top:16px">
+          <a class="link" href="#projects">Projects</a>
+          <a class="link" href="#blog">Notes</a>
+          <a class="link" href="mailto:hello@amirabolfazle.example">Contact</a>
+        </div>
+      </section>
+
+      <aside class="panel slide-up slide-up-delay-4" id="details">
+        <h3>Quick Stats</h3>
+        <p style="margin-bottom:10px">Status: <strong style="color:var(--neon-cyan)">Exploring</strong></p>
+        <p style="margin-bottom:10px">Stacks: JS · Python · Rust · Web</p>
+        <p style="margin-bottom:10px">Location: Virtual</p>
+
+        <div style="height:12px"></div>
+
+        <h3 style="margin-top:6px">Live Links</h3>
+        <div class="links" style="margin-top:8px">
+          <a class="link" href="https://github.com/amirabolfazle" target="_blank" rel="noopener">GitHub</a>
+          <a class="link" href="https://twitter.com/amirabolfazle" target="_blank" rel="noopener">Twitter</a>
+        </div>
+      </aside>
+
+      <!-- additional content area to demonstrate slide up on scroll -->
+      <section class="panel slide-up slide-up-delay-1" id="projects" style="grid-column:1/-1; margin-top:8px;">
+        <h3>Featured Projects</h3>
+        <p style="margin-top:8px">• Autogen-code — code generation experiments and utilities.</p>
+        <p>• Neon-play — UI experiments with glowing, tactile components.</p>
+      </section>
+
+    </main>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.92 3.19 9.08 7.61 10.55.56.1.76-.24.76-.53 0-.26-.01-.95-.01-1.86-3.09.67-3.74-1.49-3.74-1.49-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.09.08 1.66 1.12 1.66 1.12.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.47-.28-5.07-1.24-5.07-5.5 0-1.21.43-2.2 1.13-2.97-.11-.28-.49-1.4.11-2.9 0 0 .92-.29 3.02 1.13.87-.24 1.8-.36 2.73-.36.93 0 1.86.12 2.73.36 2.09-1.42 3-1.13 3-1.13.6 1.5.22 2.62.11 2.9.7.77 1.13 1.76 1.13 2.97 0 4.27-2.6 5.22-5.08 5.5.39.34.73 1.01.73 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.19.64.77.53C19.06 20.83 22.25 16.67 22.25 11.75 22.25 5.48 17.27.5 11 .5z" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#ff2d9c"/>
+              <stop offset="1" stop-color="#00f0ff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Intersection-based reveal for panels (slide-up on scroll into view)
+    (function(){
+      const opts = {root:null, rootMargin: "0px 0px -10% 0px", threshold: 0.06};
+      const observer = new IntersectionObserver((entries)=> {
+        entries.forEach(e => {
+          if(e.isIntersecting){
+            e.target.classList.add('slide-up');
+            observer.unobserve(e.target);
+          }
+        });
+      }, opts);
+
+      document.querySelectorAll('.panel').forEach((el, i) => {
+        // ensure they have the base hidden state
+        el.style.transform = 'translateY(18px)';
+        el.style.opacity = '0';
+        observer.observe(el);
+      });
+
+      // slight staggers for hero parts already revealed
+      document.querySelectorAll('.slide-up-delay-1, .slide-up-delay-2, .slide-up-delay-3, .slide-up-delay-4').forEach((el)=>{
+        // they already have class names and CSS animation delays, ensure animation plays:
+        el.classList.add('slide-up');
+      });
+
+      // little interactive glow that follows the cursor inside the card
+      const card = document.getElementById('card');
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        card.style.setProperty('--mx', x + 'px');
+        card.style.setProperty('--my', y + 'px');
+        // subtle background radial
+        card.style.backgroundImage = `
+          radial-gradient(600px 300px at ${x/ r.width * 100}% ${y / r.height * 100}%, rgba(0,240,255,0.03), transparent 3%),
+          radial-gradient(500px 250px at ${100 - x/ r.width * 100}% ${100 - y / r.height * 100}%, rgba(155,107,255,0.02), transparent 3%),
+          linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))
+        `;
+      });
+
+      // small accessibility: keyboard focus reveal
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('focus', () => {
+          el.classList.add('slide-up');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
