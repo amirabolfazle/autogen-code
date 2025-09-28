@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#06060a;
+    --panel:#0f1115;
+    --muted:#9aa4b2;
+    --accent:#7cf29c;
+    --accent2:#6bd7ff;
+    --glass: rgba(255,255,255,0.03);
+    --card-edge: rgba(124,242,156,0.08);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(107,215,255,0.06), transparent),
+                radial-gradient(900px 500px at 90% 80%, rgba(124,242,156,0.04), transparent),
+                var(--bg);
+    color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    padding:48px 32px;
+  }
+
+  /* animated ambient rings */
+  .ambient{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+  }
+  .ring{
+    position:absolute;
+    border-radius:50%;
+    mix-blend-mode:screen;
+    opacity:0.14;
+    filter:blur(30px);
+    animation:slow-rotate linear infinite;
+  }
+  .ring.r1{width:700px;height:700px;left:-200px;top:-150px;background:conic-gradient(from 80deg, rgba(108,166,255,0.55), transparent 40%);animation-duration:28s;}
+  .ring.r2{width:900px;height:900px;right:-300px;bottom:-200px;background:conic-gradient(from 200deg, rgba(124,242,156,0.5), transparent 45%);animation-duration:36s;}
+  @keyframes slow-rotate{to{transform:rotate(360deg);}}
+
+  .container{
+    position:relative;
+    z-index:1;
+    max-width:1100px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:28px;
+    align-items:start;
+  }
+
+  /* HERO / MAIN CARD */
+  .hero{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid var(--card-edge);
+    border-radius:18px;
+    padding:30px;
+    min-height:380px;
+    position:relative;
+    overflow:visible;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    transform-style:preserve-3d;
+    transition:transform .18s cubic-bezier(.2,.8,.2,1), box-shadow .18s;
+  }
+
+  .hero:hover{box-shadow: 0 18px 70px rgba(0,0,0,0.7);}
+
+  .headline{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .logo{
+    width:72px;height:72px;border-radius:14px;
+    background: linear-gradient(135deg,var(--accent) 0%, var(--accent2) 100%);
+    display:flex;align-items:center;justify-content:center;
+    color:#021014;font-weight:700;font-size:20px;
+    box-shadow: 0 6px 18px rgba(108,166,255,0.08), inset 0 -6px 18px rgba(0,0,0,0.12);
+    transform:translateZ(30px);
+  }
+  .title{
+    font-size:28px;font-weight:700;letter-spacing:-0.02em;
+    transform:translateZ(30px);
+  }
+  .subtitle{color:var(--muted);margin-top:6px;font-size:13px;}
+
+  .tags{
+    margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;
+    transform:translateZ(30px);
+  }
+  .tag{
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    color:var(--muted);
+    padding:8px 12px;border-radius:999px;font-size:13px;border:1px solid rgba(255,255,255,0.02);
+    backdrop-filter: blur(6px);
+  }
+
+  .description{
+    margin-top:22px;color:#cfeaf6;line-height:1.6;max-width:760px;
+    transform:translateZ(30px);
+  }
+
+  /* project grid */
+  .projects{
+    margin-top:22px;
+    display:grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap:16px;
+  }
+  .project{
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.03);
+    display:flex;flex-direction:column;gap:8px;
+    transition:transform .6s cubic-bezier(.2,.8,.2,1);
+    transform-origin:center;
+    cursor:pointer;
+    perspective:900px;
+  }
+  .project:hover{transform:translateY(-6px) rotateX(8deg) rotateY(6deg); box-shadow: 0 18px 50px rgba(0,0,0,0.6);}
+  .project .p-head{display:flex;justify-content:space-between;align-items:center;}
+  .p-title{font-weight:700}
+  .p-note{font-size:12px;color:var(--muted)}
+
+  /* side panel */
+  .side{
+    position:sticky;top:48px;
+    align-self:start;
+  }
+  .panel{
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 26px rgba(0,0,0,0.6);
+  }
+  .meta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .meta-title{font-size:13px;color:var(--muted)}
+  .meta-value{font-weight:700;color:#dffcf0}
+
+  .rotate-badge{
+    margin-top:18px;padding:10px;border-radius:12px;background:linear-gradient(90deg, rgba(124,242,156,0.06), rgba(107,215,255,0.03));
+    display:flex;align-items:center;gap:12px;border:1px solid rgba(124,242,156,0.05);
+  }
+  .dial{
+    width:52px;height:52px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(255,255,255,0.02));
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    transition:transform .7s linear;
+  }
+
+  /* rotating showcase */
+  .showcase{
+    margin-top:18px;display:flex;gap:12px;align-items:center;
+  }
+  .orb{
+    width:74px;height:74px;border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    display:flex;align-items:center;justify-content:center;color:var(--accent2);
+    border:1px solid rgba(255,255,255,0.02);
+    position:relative;
+    animation:orb-rotate 10s linear infinite;
+  }
+  @keyframes orb-rotate{to{transform:rotate(360deg)}}
+
+  .clock{
+    margin-top:20px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;
+  }
+
+  footer{
+    margin-top:42px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);gap:12px;
+    max-width:1100px;margin-left:auto;margin-right:auto;
+  }
+  .footer-left{display:flex;gap:12px;align-items:center}
+  .github-link{
+    display:inline-flex;align-items:center;gap:8px;color:#e6eef6;text-decoration:none;
+    padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);
+    transition:transform .18s;
+  }
+  .github-link:hover{transform:translateY(-4px)}
+  .gh-icon{width:18px;height:18px;display:inline-block;vertical-align:middle;fill:#e6eef6;opacity:0.95}
+
+  /* responsive */
+  @media (max-width:980px){
+    .container{grid-template-columns:1fr; padding:0; gap:18px}
+    .side{position:relative;top:0}
+  }
+</style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+  </div>
+
+  <div class="container" id="main">
+    <main class="hero" id="hero" aria-label="amirabolfazle portfolio hero">
+      <div class="headline">
+        <div class="logo" aria-hidden="true">AB</div>
+        <div>
+          <div class="title">amirabolfazle</div>
+          <div class="subtitle">Creative dev • interactive experiments • lightweight design</div>
+        </div>
+      </div>
+
+      <div class="tags" role="list" aria-hidden="false">
+        <div class="tag">JavaScript</div>
+        <div class="tag">UI/UX</div>
+        <div class="tag">Animations</div>
+        <div class="tag">WebGL</div>
+        <div class="tag">Frontend</div>
+      </div>
+
+      <p class="description">I craft crisp, animated web experiences with a focus on performance and playful motion. This single-file portfolio demonstrates subtle 3D interactions, rotating accents and a compact, dark aesthetic. Explore the projects and hover around — things rotate.</p>
+
+      <div class="projects" aria-label="projects">
+        <div class="project" tabindex="0" role="button" aria-pressed="false" data-color="#7cf29c">
+          <div class="p-head"><div class="p-title">AutoGen Code</div><div class="p-note">tooling</div></div>
+          <div style="font-size:13px;color:var(--muted)">Generator for scaffolded code + templates with smart prompts and minimal noise.</div>
+        </div>
+
+        <div class="project" tabindex="0" role="button" aria-pressed="false" data-color="#6bd7ff">
+          <div class="p-head"><div class="p-title">Neon Grid</div><div class="p-note">visual</div></div>
+          <div style="font-size:13px;color:var(--muted)">Interactive canvas grid with dynamic lighting and subtle physics.</div>
+        </div>
+
+        <div class="project" tabindex="0" role="button" aria-pressed="false" data-color="#e099ff">
+          <div class="p-head"><div class="p-title">Pulse UI</div><div class="p-note">kit</div></div>
+          <div style="font-size:13px;color:var(--muted)">A tiny component set for animated cards, toggles and motion-ready layouts.</div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="side" aria-label="metadata and controls">
+      <div class="panel" id="panel">
+        <div class="meta-row">
+          <div class="meta-title">Role</div>
+          <div class="meta-value">Engineer / Designer</div>
+        </div>
+        <div class="meta-row">
+          <div class="meta-title">Location</div>
+          <div class="meta-value">Remote</div>
+        </div>
+
+        <div class="rotate-badge" title="interactive dial">
+          <div class="dial" id="dial">↻</div>
+          <div style="flex:1">
+            <div style="font-weight:700">Rotate Effects</div>
+            <div style="font-size:13px;color:var(--muted)">Move the cursor over the hero or tap projects to feel the tilt.</div>
+          </div>
+        </div>
+
+        <div class="showcase" aria-hidden="true">
+          <div class="orb" style="color:var(--accent)">⟲</div>
+          <div style="flex:1">
+            <div style="font-weight:700">Ambient Motion</div>
+            <div style="font-size:13px;color:var(--muted)">Slowly rotating rings and subtle parallax enhance depth.</div>
+          </div>
+        </div>
+
+        <div class="clock" style="margin-top:16px">
+          <div>Creation time</div>
+          <div style="font-family:monospace;color:#9df9c9">2025-09-28 17:18:30</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <div class="footer-left">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository link">
+        <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+          0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+          -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64
+          -.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 012-.27c.68.003
+          1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
+          3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span style="font-size:13px">autogen-code</span>
+      </a>
+      <div style="font-size:13px;color:var(--muted)">Created by amirabolfazle</div>
+    </div>
+
+    <div style="font-size:12px;color:var(--muted)">Lightweight, animated portfolio • Single HTML file</div>
+  </footer>
+
+<script>
+  // small interactive tilt for hero and project cards
+  (function(){
+    const hero = document.getElementById('hero');
+    const dial = document.getElementById('dial');
+    const projects = document.querySelectorAll('.project');
+
+    function handleMove(e){
+      const rect = hero.getBoundingClientRect();
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
+      const rx = (-dy / rect.height) * 12;
+      const ry = (dx / rect.width) * 12;
+      hero.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+      dial.style.transform = `rotate(${(dx/rect.width)*40}deg)`;
+    }
+
+    function reset(){
+      hero.style.transform = '';
+      dial.style.transform = '';
+    }
+
+    hero.addEventListener('mousemove', handleMove);
+    hero.addEventListener('touchmove', handleMove, {passive:true});
+    hero.addEventListener('mouseleave', reset);
+    hero.addEventListener('touchend', reset);
+
+    // simple hover color accent for projects
+    projects.forEach(p=>{
+      p.addEventListener('mouseenter', ()=>{
+        const c = p.getAttribute('data-color') || '#7cf29c';
+        p.style.boxShadow = `0 14px 40px ${hexToRgba(c,0.12)}`;
+      });
+      p.addEventListener('mouseleave', ()=>{
+        p.style.boxShadow = '';
+      });
+      p.addEventListener('click', ()=> {
+        // subtle pulse feedback
+        p.animate([{transform:'scale(1)'},{transform:'scale(0.98)'},{transform:'scale(1)'}], {duration:260,easing:'ease-out'});
+      });
+    });
+
+    // utility
+    function hexToRgba(hex, alpha){
+      const h = hex.replace('#','');
+      const bigint = parseInt(h,16);
+      const r = (bigint >> 16) & 255;
+      const g = (bigint >> 8) & 255;
+      const b = bigint & 255;
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+
+    // subtle auto-rotate for dial
+    let ang = 0;
+    setInterval(()=> {
+      ang = (ang + 0.6) % 360;
+      dial.style.transform = `rotate(${ang}deg)`;
+    }, 60);
+
+    // keyboard accessibility: tilt when focusing hero
+    hero.addEventListener('focusin', ()=> hero.style.transform = 'rotateX(4deg) rotateY(-6deg) translateZ(6px)');
+    hero.addEventListener('focusout', ()=> reset());
+  })();
+</script>
+</body>
+</html>
