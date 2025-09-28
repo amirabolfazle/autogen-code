@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0a0e1a;
+      --bg2: #141a2b;
+      --glass: rgba(255,255,255,0.08);
+      --glass-border: rgba(255,255,255,0.25);
+      --text: #e9eaff;
+      --muted: rgba(233,235,255,0.75);
+      --accent: rgba(120, 180, 255, 0.9);
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(10,12,30,0.95) 0%, rgba(8,12,25,0.95) 60%, rgba(6,8,18,0.95) 100%), 
+                  radial-gradient(circle at 20% 10%, rgba(100,150,255,0.15), transparent 40%),
+                  radial-gradient(circle at 90% 70%, rgba(255,120,180,0.15), transparent 40%);
+      overflow-x: hidden;
+    }
+
+    /* decorative rotating orbs for glassy vibe */
+    .orb, .orb2, .orb3 {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(0.2px);
+      opacity: 0.6;
+      mix-blend-mode: screen;
+      border: 1px solid rgba(255,255,255,0.25);
+      animation: spin 28s linear infinite;
+    }
+    .orb { width: 280px; height: 280px; left: -60px; top: 120px; background: radial-gradient(circle at 30% 30%, rgba(120,180,255,0.6), rgba(120,180,255,0.0) 60%); }
+    .orb2{ width: 360px; height: 360px; right: -120px; top: 40%; animation-duration: 40s; background: radial-gradient(circle at 40% 40%, rgba(255,120,200,0.5), rgba(255,120,200,0) 60%); }
+    .orb3{ width: 520px; height: 520px; left: 15%; bottom: -180px; animation-duration: 60s; background: radial-gradient(circle at 50% 50%, rgba(140,255,200,0.4), rgba(140,255,200,0) 60%); }
+
+    @keyframes spin {
+      from { transform: rotate(0deg) translateZ(0); }
+      to   { transform: rotate(360deg) translateZ(0); }
+    }
+
+    /* layout */
+    .wrap {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: start center;
+      padding: 6rem 1.2rem 4rem;
+      z-index: 1;
+    }
+
+    header.hero {
+      width: min(1100px, 92vw);
+      border-radius: 24px;
+      padding: 2.2rem;
+      display: grid;
+      gap: 0.8rem;
+      align-items: center;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle glow behind header */
+    header.hero::before {
+      content: "";
+      position: absolute; inset: -2px;
+      background: radial-gradient(circle at 20% 20%, rgba(120,180,255,0.25), transparent 40%),
+                  radial-gradient(circle at 70% 0%, rgba(255,120,180,0.25), transparent 40%);
+      filter: blur(20px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .brand {
+      display: flex; align-items: center; gap: 14px;
+      z-index: 1;
+    }
+    .logo {
+      width: 64px; height: 64px; border-radius: 50%;
+      display: inline-block;
+      position: relative;
+      border: 2px solid rgba(255,255,255,0.5);
+      animation: spinLogo 12s linear infinite;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(120,180,255,0.9), rgba(255,255,255,0.2), rgba(120,180,255,0.9));
+      box-shadow: 0 0 0 6px rgba(120,180,255,0.15);
+    }
+    @keyframes spinLogo { to { transform: rotate(360deg); } }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 700;
+      letter-spacing: .4px;
+      margin: 0;
+      z-index: 1;
+    }
+    .tagline {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(14px, 2.6vw, 18px);
+      z-index: 1;
+    }
+
+    .creation-time {
+      z-index: 1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      color: #d9e2ff;
+      opacity: .95;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      align-self: start;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.08);
+      width: max-content;
+      justify-self: start;
+    }
+
+    main {
+      width: min(1100px, 92vw);
+      margin-top: 28px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+      z-index: 1;
+    }
+
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 18px 20px;
+      min-height: 180px;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.6s ease, box-shadow 0.6s ease;
+      transform-style: preserve-3d;
+    }
+
+    .card:hover {
+      transform: rotateX(8deg) rotateY(-6deg);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+    }
+
+    .card p { margin: 0; color: #dbe4ff; opacity: .9; }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px; border-radius: 999px;
+      font-size: 12px; color: #e8f0ff;
+      background: rgba(120,180,255,0.2);
+      border: 1px solid rgba(120,180,255,0.4);
+      margin: 6px 0 0;
+    }
+
+    /* footer with GitHub icon link */
+    footer {
+      width: 100%;
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding: 12px 16px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px;
+      color: #dbe4ff;
+      font-size: 14px;
+      opacity: .95;
+      z-index: 1;
+    }
+    .git-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; color: inherit;
+      border-radius: 8px;
+      padding: 6px 10px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.08);
+      transition: transform 0.3s ease;
+    }
+    .git-link:hover { transform: translateY(-1px); }
+    .git-icon {
+      width: 20px; height: 20px; display: inline-block;
+      color: #fff;
+    }
+
+    @media (max-width: 720px){
+      header.hero { padding: 1.6rem; }
+      .creation-time { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <span class="orb" aria-hidden="true"></span>
+  <span class="orb2" aria-hidden="true"></span>
+  <span class="orb3" aria-hidden="true"></span>
+
+  <div class="wrap" aria-label="Portfolio container">
+    <header class="hero" role="banner">
+      <div class="brand" aria-label="Brand">
+        <span class="logo" aria-hidden="true" style="animation:spin 20s linear infinite;"></span>
+        <h1>amirabolfazle</h1>
+      </div>
+      <p class="tagline" style="grid-column: 1 / -1; margin-top: 6px;">
+        A glassy, animated one-file portfolio with rotate effects
+      </p>
+      <div class="creation-time" aria-live="polite">
+        Creation time: 2025-09-28 13:26:36
+      </div>
+    </header>
+
+    <main aria-label="Projects and sections">
+      <section class="card" aria-label="About me">
+        <h3>About</h3>
+        <p>Frontend engineer crafting interactive, glassy interfaces. I enjoy turning ideas into polished, small-footprint experiences. This single-file portfolio showcases motion, glassmorphism, and responsive layout without external dependencies.</p>
+        <span class="chip" title="Location">Remote • Open to collaboration</span>
+      </section>
+
+      <section class="card" aria-label="Project 1">
+        <h3>Project: Neon Glass Grid</h3>
+        <p>A minimal grid explorer with glass cards and subtle 3D tilt on hover. Uses CSS only for motion and depth.</p>
+        <span class="chip" aria-label="Tech used">CSS • HTML • JS</span>
+      </section>
+
+      <section class="card" aria-label="Project 2">
+        <h3>Project: Orbiting Headers</h3>
+        <p>Decoration with rotating orbs and backdrop blur to elevate the hero experience.</p>
+        <span class="chip" aria-label="Tech used">Motion • Glass</span>
+      </section>
+
+      <section class="card" aria-label="Project 3">
+        <h3>Project: Timeline Cards</h3>
+        <p>Responsive timeline-inspired cards with hover tilt and readable typography.</p>
+        <span class="chip" aria-label="Tech used">Layout • Accessibility</span>
+      </section>
+    </main>
+
+    <footer role="contentinfo" aria-label="Footer">
+      <a class="git-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg class="git-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" width="20" height="20">
+          <path d="M12 .5C5.73.5 1 5.23 1 11.5c0 4.48 2.87 8.27 6.84 9.62.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.2-3.37-1.2-.46-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.61.07-.61 1.01.07 1.54 1.04 1.54 1.04.9 1.54 2.36 1.1 2.93.84.09-.65.35-1.1.63-1.36-2.22-.26-4.56-1.14-4.56-5.1 0-1.13.4-2.05 1.05-2.77-.11-.26-.46-1.32.1-2.75 0 0 .84-.27 2.76 1.05.79-.22 1.63-.34 2.48-.34s1.69.12 2.48.34c1.92-1.32 2.76-1.05 2.76-1.05.57 1.43.21 2.49.1 2.75.64.72 1.04 1.64 1.04 2.77 0 3.96-2.34 4.83-4.57 5.08.36.31.68.93.68 1.87 0 1.35-.01 2.44-.01 2.77 0 .27.18.59.69.49C18.73 20.53 22 16.74 22 11.5 22 5.23 17.27.5 12 .5z"/>
+        </svg>
+        GitHub
+      </a>
+      <span>Created by amirabolfazle</span>
+    </footer>
+  </div>
+
+  <!-- tiny inline animations for accessibility cue -->
+  <style>
+    @keyframes spinLogo { to { transform: rotate(360deg); } }
+  </style>
+</body>
+</html>
