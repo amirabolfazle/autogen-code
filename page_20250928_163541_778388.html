@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#0b0d10;
+    --panel:#0f1114;
+    --muted:#9aa4b2;
+    --accent:#66e0ff;
+    --glass: rgba(255,255,255,0.03);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1000px 400px at 10% 20%, rgba(102,224,255,0.05), transparent 8%),
+      radial-gradient(800px 300px at 90% 80%, rgba(102,224,255,0.03), transparent 10%),
+      var(--bg);
+    color:#e6eef6;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    overflow:hidden;
+  }
+
+  /* rotating ambient ring */
+  .ring {
+    position:fixed;
+    inset: -20vmax;
+    pointer-events:none;
+    filter: blur(36px);
+    opacity:0.16;
+    background: conic-gradient(from 120deg at 50% 50%, rgba(102,224,255,0.14), rgba(160,100,255,0.08), rgba(102,224,255,0.06));
+    transform-origin:center;
+    animation: spin 24s linear infinite;
+    mix-blend-mode:screen;
+  }
+
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .wrap{
+    width:min(880px,90vw);
+    text-align:center;
+    padding:48px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    border-radius:12px;
+    box-shadow: 0 6px 30px rgba(2,6,12,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+
+  h1{
+    margin:0 0 14px 0;
+    font-size: clamp(28px, 6vw, 56px);
+    letter-spacing: -0.02em;
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .title-badge{
+    display:inline-grid;
+    place-items:center;
+    width:64px;
+    height:64px;
+    border-radius:12px;
+    background:linear-gradient(135deg, rgba(102,224,255,0.12), rgba(160,100,255,0.06));
+    border:1px solid rgba(255,255,255,0.03);
+    transform-origin:center;
+    animation: tilt 8s ease-in-out infinite;
+    box-shadow:0 8px 18px rgba(2,6,12,0.6);
+  }
+  @keyframes tilt{
+    0%{transform:rotate(-6deg)}
+    50%{transform:rotate(6deg)}
+    100%{transform:rotate(-6deg)}
+  }
+
+  .mono{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-weight:600;
+    color:var(--accent);
+    font-size:18px;
+    transform: rotate(-6deg);
+    display:inline-block;
+  }
+
+  .subtitle{
+    margin:0;
+    color:var(--muted);
+    font-size:14px;
+    letter-spacing:0.02em;
+  }
+
+  .card{
+    margin-top:26px;
+    display:flex;
+    gap:18px;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .clock{
+    padding:12px 18px;
+    border-radius:10px;
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,0.02);
+    color:var(--muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-size:13px;
+    letter-spacing:0.02em;
+  }
+
+  /* rotating accent around the clock */
+  .rotor{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(180deg, rgba(102,224,255,0.06), rgba(160,100,255,0.04));
+    border:1px solid rgba(255,255,255,0.02);
+    animation: slow-rotate 10s linear infinite;
+  }
+  @keyframes slow-rotate{to{transform:rotate(360deg)}}
+
+  footer{
+    margin-top:28px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .gh{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    color:var(--muted);
+    text-decoration:none;
+    border-radius:8px;
+    padding:8px;
+    transition: all 180ms ease;
+  }
+  .gh:hover{
+    color:var(--accent);
+    transform:translateY(-4px);
+  }
+  .gh svg{display:block; width:18px; height:18px; fill:currentColor}
+
+  /* subtle floating */
+  @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+  .wrap{animation: floaty 6s ease-in-out infinite;}
+
+  /* reduced motion support */
+  @media (prefers-reduced-motion:reduce){
+    .ring, .title-badge, .rotor, .wrap{animation:none}
+    h1 .mono{transform:none}
+  }
+</style>
+</head>
+<body>
+  <div class="ring" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="site-title">
+    <h1 id="site-title">
+      <span class="title-badge" aria-hidden="true">
+        <span class="mono">a</span>
+      </span>
+      amirabolfazle
+    </h1>
+    <p class="subtitle">minimal • dark • animated</p>
+
+    <div class="card" aria-hidden="false">
+      <div class="rotor" title="creation">
+        <!-- small decorative dot -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="5" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="clock" aria-label="creation time">
+        Created on: 2025-09-28 16:35:15
+      </div>
+    </div>
+
+    <footer role="contentinfo">
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55 0-.27-.01-1.01-.02-1.99-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.52-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.06 11.06 0 0 1 2.9-.39c.98.01 1.97.13 2.9.39 2.2-1.48 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.26 5.68.41.35.77 1.04.77 2.1 0 1.52-.01 2.75-.01 3.12 0 .3.2.66.79.55A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+</body>
+</html>
