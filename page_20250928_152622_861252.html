@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#02030a;
+      --neon-cyan:#00f0ff;
+      --neon-pink:#ff2df5;
+      --neon-mag:#7a00ff;
+      --glass: rgba(255,255,255,0.03);
+      --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(600px 300px at 10% 20%, rgba(0,240,255,0.06), transparent),
+                  radial-gradient(800px 400px at 90% 80%, rgba(255,45,245,0.04), transparent),
+                  var(--bg);
+      color:#e8f9ff;
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      padding:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+    }
+
+    /* animated neon haze */
+    .haze{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      mix-blend-mode:screen;
+      opacity:0.95;
+    }
+    .haze::before, .haze::after{
+      content:"";
+      position:absolute;
+      width:60vmax;height:60vmax;
+      border-radius:50%;
+      filter:blur(50px);
+      transform:translate(-10%,-10%);
+      animation: drift 18s linear infinite;
+      opacity:0.9;
+    }
+    .haze::before{
+      background: radial-gradient(circle at 30% 30%, rgba(0,240,255,0.12), transparent 30%);
+      left:-10%;
+      top:-5%;
+      animation-duration:22s;
+    }
+    .haze::after{
+      background: radial-gradient(circle at 70% 70%, rgba(255,45,245,0.10), transparent 30%);
+      right:-10%;
+      bottom:-5%;
+      animation-duration:28s;
+      animation-direction:reverse;
+    }
+    @keyframes drift{
+      0%{transform:translate(-10%,-10%) scale(1)}
+      50%{transform:translate(10%,10%) scale(1.05)}
+      100%{transform:translate(-10%,-10%) scale(1)}
+    }
+
+    .stage{
+      position:relative;
+      z-index:2;
+      width:100%;
+      max-width:1000px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      padding:48px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,240,255,0.03);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:hidden;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .mark{
+      width:64px;height:64px;border-radius:12px;
+      background: conic-gradient(from 210deg, var(--neon-pink), var(--neon-mag), var(--neon-cyan));
+      box-shadow: 0 0 24px rgba(0,240,255,0.12), 0 6px 22px rgba(122,0,255,0.06), 0 0 60px rgba(255,45,245,0.04) inset;
+      display:grid;place-items:center;
+      transform:rotate(-8deg);
+      flex:0 0 64px;
+    }
+    .mark svg{filter:drop-shadow(0 4px 12px rgba(0,0,0,0.6));}
+
+    h1{
+      margin:0;
+      font-size:36px;
+      letter-spacing:0.06em;
+      background: var(--accent);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 0 14px rgba(0,240,255,0.12), 0 0 28px rgba(255,45,245,0.06);
+      font-weight:700;
+      line-height:1;
+      font-family: var(--mono);
+    }
+
+    .meta{
+      color: rgba(232,249,255,0.55);
+      font-size:13px;
+      text-align:right;
+      min-width:200px;
+      opacity:0.95;
+    }
+
+    /* slide items */
+    .content{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:20px;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+    }
+
+    p.lead{
+      margin:0 0 14px 0;
+      color:rgba(232,249,255,0.9);
+      font-size:15px;
+      line-height:1.6;
+    }
+
+    .badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .badge{
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      background:linear-gradient(90deg, rgba(0,240,255,0.06), rgba(255,45,245,0.04));
+      color:var(--neon-cyan);
+      border:1px solid rgba(0,240,255,0.08);
+      text-shadow:0 2px 8px rgba(0,0,0,0.6);
+      box-shadow: 0 6px 18px rgba(0,240,255,0.02);
+    }
+
+    .right-column{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .panel{
+      padding:14px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .links{
+      display:flex;
+      gap:12px;
+      margin-top:8px;
+    }
+
+    .neon-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:10px;
+      color:#001018;
+      font-weight:700;
+      background:var(--neon-cyan);
+      text-decoration:none;
+      box-shadow: 0 8px 30px rgba(0,240,255,0.12);
+      transform:translateY(0);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .neon-btn.secondary{
+      background:var(--neon-pink);
+      color:#0c0014;
+      box-shadow: 0 8px 30px rgba(255,45,245,0.12);
+    }
+    .neon-btn:hover{ transform:translateY(-4px); box-shadow: 0 20px 50px rgba(0,240,255,0.14) }
+
+    /* slide-up animation */
+    .slide{
+      opacity:0;
+      transform: translateY(32px);
+      transition: transform 700ms cubic-bezier(.16,.84,.44,1), opacity 700ms cubic-bezier(.16,.84,.44,1);
+      will-change:transform,opacity;
+    }
+    .slide.show{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* neon lines and accents */
+    .outline{
+      position:relative;
+      padding:16px;
+      border-radius:12px;
+      overflow:visible;
+    }
+    .outline::after{
+      content:"";
+      position:absolute;
+      inset: -2px;
+      border-radius:14px;
+      pointer-events:none;
+      background: linear-gradient(120deg, rgba(0,240,255,0.06), rgba(255,45,245,0.05));
+      filter:blur(10px);
+      opacity:0.6;
+      mix-blend-mode:screen;
+      clip-path: inset(6px);
+    }
+
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      color:rgba(232,249,255,0.75);
+      font-size:14px;
+      padding-top:18px;
+    }
+
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--neon-cyan);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(0,240,255,0.03), rgba(255,45,245,0.02));
+      border:1px solid rgba(0,240,255,0.06);
+      box-shadow: 0 8px 30px rgba(0,240,255,0.06);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .gh:hover{ transform:translateY(-6px); box-shadow: 0 28px 60px rgba(0,240,255,0.12) }
+
+    .gh svg{width:18px;height:18px;filter:drop-shadow(0 6px 22px rgba(0,0,0,0.6));}
+
+    /* small screens */
+    @media (max-width:880px){
+      .content{ grid-template-columns: 1fr; }
+      header{justify-content:center;text-align:center}
+      .meta{min-width:initial;text-align:center}
+      .right-column{order:3}
+    }
+
+    /* subtle flicker on title */
+    @keyframes flicker {
+      0%, 100% {opacity:1; text-shadow: 0 0 18px rgba(0,240,255,0.12), 0 0 36px rgba(255,45,245,0.08);}
+      50% {opacity:0.95; text-shadow: 0 0 8px rgba(0,240,255,0.06), 0 0 20px rgba(255,45,245,0.04);}
+    }
+    h1{ animation: flicker 3.8s infinite ease-in-out; }
+
+    /* subtle floating for mark */
+    .mark{ animation: float 6s ease-in-out infinite; }
+    @keyframes float{ 0%{transform:rotate(-8deg) translateY(0)} 50%{transform:rotate(-8deg) translateY(-6px)} 100%{transform:rotate(-8deg) translateY(0)} }
+
+    .small-muted{ font-size:12px; color:rgba(232,249,255,0.45) }
+
+  </style>
+</head>
+<body>
+  <div class="haze" aria-hidden="true"></div>
+
+  <main class="stage" role="main">
+    <header>
+      <div class="logo slide" id="s-1">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="6" y="6" width="52" height="52" rx="10" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+            <path d="M18 44 L32 20 L46 44 Z" fill="rgba(0,0,0,0.06)" />
+            <path d="M28 34 L36 34 L32 26 Z" fill="white" opacity="0.08"/>
+          </svg>
+        </div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="small-muted">neon vibes • creative code • open source</div>
+        </div>
+      </div>
+
+      <div class="meta slide" id="s-2" aria-hidden="false">
+        <div style="font-family:var(--mono);font-weight:600;color:var(--neon-pink);font-size:13px">created: 2025-09-28 15:25:22</div>
+        <div style="margin-top:8px;font-size:12px">Welcome — this page shows a neon animated personal snapshot.</div>
+      </div>
+    </header>
+
+    <section class="content">
+      <div>
+        <div class="card outline slide" id="s-3" style="margin-bottom:18px">
+          <p class="lead">Hello — I'm amirabolfazle. I like building striking visual experiences, playful UIs, and small tools that feel fast. This page is a neon-themed personal snapshot with smooth slide-up effects and subtle motion.</p>
+          <div class="badges" aria-hidden="true">
+            <div class="badge">Web</div>
+            <div class="badge">Design</div>
+            <div class="badge">Open Source</div>
+            <div class="badge">Neon</div>
+          </div>
+        </div>
+
+        <div class="card slide" id="s-4">
+          <h3 style="margin:0 0 8px 0; font-family:var(--mono); color:var(--neon-cyan)">Showcase</h3>
+          <p class="small-muted">Quick links & highlights</p>
+          <div class="links" style="margin-top:12px">
+            <a class="neon-btn" href="#projects" role="button">Projects</a>
+            <a class="neon-btn secondary" href="mailto:amirabolfazle@example.com" role="button">Contact</a>
+          </div>
+          <div style="margin-top:14px" class="small-muted">Tip: hover buttons for a neon lift.</div>
+        </div>
+      </div>
+
+      <aside class="right-column">
+        <div class="panel slide" id="s-5">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <div>
+              <div class="small-muted">Current focus</div>
+              <div style="font-weight:700;color:var(--neon-mag);margin-top:6px">Creative tooling & live UIs</div>
+            </div>
+            <div style="font-family:var(--mono);background:rgba(255,255,255,0.02);padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02)">
+              v1.0
+            </div>
+          </div>
+        </div>
+
+        <div class="panel slide" id="s-6">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div class="small-muted">Quick actions</div>
+              <div style="margin-top:8px;display:flex;gap:8px">
+                <a class="neon-btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">Repo</a>
+                <a class="neon-btn secondary" href="#more">Notes</a>
+              </div>
+            </div>
+            <div style="font-size:12px;color:rgba(232,249,255,0.6)">UTC+0</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer aria-label="footer">
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.73.5.98 5.25.98 11.52c0 4.66 3.02 8.62 7.22 10.02.53.1.73-.23.73-.51 0-.25-.01-.92-.01-1.8-2.94.64-3.56-1.41-3.56-1.41-.48-1.22-1.17-1.55-1.17-1.55-.96-.66.07-.65.07-.65 1.06.07 1.62 1.09 1.62 1.09.94 1.61 2.47 1.14 3.07.87.09-.67.37-1.14.67-1.4-2.35-.27-4.82-1.18-4.82-5.24 0-1.16.41-2.1 1.09-2.84-.11-.27-.48-1.36.1-2.83 0 0 .9-.29 2.95 1.09a10.2 10.2 0 012.69-.36c.91 0 1.83.12 2.69.36 2.04-1.38 2.94-1.09 2.94-1.09.58 1.47.21 2.56.1 2.83.68.74 1.09 1.68 1.09 2.84 0 4.06-2.48 4.97-4.84 5.23.38.33.72.98.72 1.98 0 1.43-.01 2.59-.01 2.95 0 .28.19.62.74.51 4.2-1.4 7.22-5.36 7.22-10.02C23.02 5.25 18.27.5 12 .5z" fill="currentColor"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Slide-up reveal with stagger
+    document.addEventListener('DOMContentLoaded', function(){
+      const els = [
+        document.getElementById('s-1'),
+        document.getElementById('s-2'),
+        document.getElementById('s-3'),
+        document.getElementById('s-4'),
+        document.getElementById('s-5'),
+        document.getElementById('s-6')
+      ].filter(Boolean);
+
+      els.forEach((el,i) => {
+        setTimeout(()=> el.classList.add('show'), 160 + i*140);
+      });
+
+      // Intersection observer to add show to anything that might be added later
+      const io = new IntersectionObserver((entries)=> {
+        for(const e of entries){
+          if(e.isIntersecting) e.target.classList.add('show');
+        }
+      }, {threshold:0.12});
+
+      document.querySelectorAll('.slide').forEach(el => io.observe(el));
+    });
+  </script>
+</body>
+</html>
