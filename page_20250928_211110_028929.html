@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#f8fbff;
+      --glass: rgba(255,255,255,0.6);
+      --pastel-1: #FAD6E8; /* pink */
+      --pastel-2: #D6F4FF; /* sky */
+      --pastel-3: #E6FBD8; /* mint */
+      --pastel-4: #F3E9FF; /* lavender */
+      --accent: #7B6BFF;
+      --muted:#6b6b6b;
+      --radius:16px;
+      --max-width:1100px;
+      --shadow: 0 8px 30px rgba(90,90,120,0.08);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--pastel-2) 0%, transparent 20%),
+                  radial-gradient(1000px 500px at 90% 90%, var(--pastel-4) 0%, transparent 18%),
+                  var(--bg);
+      color:#24313f;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      -webkit-text-size-adjust:100%;
+      display:flex;
+      align-items:stretch;
+    }
+
+    .page{
+      margin:40px auto;
+      width:calc(100% - 40px);
+      max-width:var(--max-width);
+      position:relative;
+      min-height:calc(100vh - 80px);
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+    }
+
+    /* floating blobs */
+    .blob{
+      position:absolute;
+      filter: blur(36px);
+      opacity:0.45;
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation:float 12s ease-in-out infinite;
+      border-radius:50%;
+      z-index:0;
+    }
+    .blob.b1{ width:400px;height:400px; left:-80px; top:-120px; background:linear-gradient(135deg,var(--pastel-1),var(--pastel-2)); animation-duration:14s; }
+    .blob.b2{ width:320px;height:320px; right:-80px; bottom:-100px; background:linear-gradient(135deg,var(--pastel-3),var(--pastel-4)); animation-duration:16s; animation-direction:reverse; }
+    .blob.b3{ width:220px;height:220px; left:20%; bottom:60px; background:linear-gradient(135deg,#FFF1B8,var(--pastel-3)); animation-duration:18s; opacity:0.35; }
+
+    @keyframes float{
+      0%{ transform: translateY(0) translateX(0) rotate(0deg);}
+      50%{ transform: translateY(-18px) translateX(8px) rotate(6deg);}
+      100%{ transform: translateY(0) translateX(0) rotate(0deg);}
+    }
+
+    header{
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+      border-radius: calc(var(--radius) + 4px);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      border:1px solid rgba(120,120,140,0.06);
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .logo{
+      width:64px;height:64px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--pastel-4),var(--pastel-1));
+      box-shadow: 0 6px 18px rgba(123,107,255,0.14);
+      border:1px solid rgba(255,255,255,0.55);
+      flex:0 0 64px;
+    }
+    .logo svg{ width:42px;height:42px; }
+
+    h1{
+      font-size:1.4rem;
+      margin:0;
+      letter-spacing:0.4px;
+      color:#14202b;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:0.95rem;
+      margin-top:4px;
+    }
+
+    .meta{
+      text-align:right;
+      color:var(--muted);
+      font-size:0.92rem;
+      min-width:200px;
+    }
+    .time{
+      font-weight:600;
+      color:#2c3e50;
+      background: rgba(255,255,255,0.6);
+      padding:6px 10px;
+      border-radius:12px;
+      display:inline-block;
+      box-shadow: 0 6px 14px rgba(60,70,90,0.06);
+      border:1px solid rgba(0,0,0,0.03);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:0.92rem;
+    }
+
+    main{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:start;
+    }
+
+    .panel{
+      background:var(--glass);
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(6px);
+    }
+
+    .intro{
+      padding:28px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+    }
+    .intro p{ margin:0; color:#2b3a44; line-height:1.6; }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.65));
+      border-radius:12px;
+      padding:14px;
+      text-align:center;
+      box-shadow: 0 6px 20px rgba(60,64,80,0.06);
+      transition:transform .45s cubic-bezier(.2,.9,.3,1), box-shadow .25s;
+      border:1px solid rgba(0,0,0,0.03);
+    }
+    .card:hover{ transform: translateY(-8px); box-shadow: 0 18px 40px rgba(60,64,100,0.09); }
+
+    .card svg{ width:44px;height:44px; margin-bottom:10px; }
+
+    .card h3{ margin:0; font-size:1rem; color:#24313f; }
+    .card p{ margin:6px 0 0; font-size:0.92rem; color:var(--muted); }
+
+    aside{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .panel .list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .list-item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:10px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      border:1px solid rgba(0,0,0,0.03);
+    }
+    .dot{ width:10px;height:10px;border-radius:50%; margin-top:6px; flex:0 0 12px; }
+    .dot.a{ background:linear-gradient(135deg,var(--pastel-1),var(--pastel-4)); }
+    .dot.b{ background:linear-gradient(135deg,var(--pastel-2),#cfeffd); }
+    .dot.c{ background:linear-gradient(135deg,var(--pastel-3),#e9ffda); }
+
+    .list-item .li-text{ font-size:0.95rem; color:#2b3a44; }
+
+    footer{
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px 22px;
+      border-radius:12px;
+      margin-top:auto;
+      background:transparent;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    .gh{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:#24313f;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5));
+      border:1px solid rgba(0,0,0,0.03);
+      box-shadow: 0 8px 22px rgba(60,64,80,0.05);
+    }
+    .gh svg{ width:20px;height:20px; display:block; fill:currentColor; }
+
+    /* Fade-in reveal animation */
+    .reveal{
+      opacity:0;
+      transform: translateY(18px);
+      transition: opacity .8s cubic-bezier(.2,.9,.3,1), transform .8s cubic-bezier(.2,.9,.3,1);
+      will-change:opacity, transform;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* initial page load fade */
+    .page.fade-in{ animation:pageFade .9s ease both; }
+    @keyframes pageFade{
+      from{ opacity:0; transform:translateY(8px); }
+      to{ opacity:1; transform:none; }
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      main{ grid-template-columns:1fr; }
+      .cards{ grid-template-columns:repeat(2,1fr); }
+      .brand{ gap:12px; }
+    }
+    @media (max-width:640px){
+      .cards{ grid-template-columns:1fr; }
+      header{ padding:16px; }
+      .logo{width:56px;height:56px;}
+      .meta{ text-align:left; min-width:unset; width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page fade-in" role="main" aria-labelledby="title">
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+    <div class="blob b3" aria-hidden="true"></div>
+
+    <header class="reveal" id="site-header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- monogram -->
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="logo">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#7B6BFF"/>
+                <stop offset="1" stop-color="#FAD6E8"/>
+              </linearGradient>
+            </defs>
+            <rect width="64" height="64" rx="12" fill="url(#g1)"/>
+            <path d="M20 42c6 0 8-3 12-8s8-6 12-6" stroke="rgba(255,255,255,0.95)" stroke-width="3" stroke-linecap="round" fill="none" stroke-linejoin="round"/>
+            <circle cx="22" cy="26" r="3.6" fill="rgba(255,255,255,0.95)"/>
+            <circle cx="42" cy="22" r="3.6" fill="rgba(255,255,255,0.95)"/>
+          </svg>
+        </div>
+        <div>
+          <h1 id="title">amirabolfazle</h1>
+          <div class="subtitle">pastel-themed responsive demo with gentle animations</div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div style="font-size:0.86rem;color:var(--muted);">Creation time</div>
+        <div class="time" aria-live="polite">2025-09-28 21:10:18</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel intro reveal" aria-labelledby="intro-heading">
+        <h2 id="intro-heading" style="margin:0 0 8px; font-size:1.05rem; color:#1f2a33;">Welcome</h2>
+        <p>Clean, soft visuals and subtle motion make interfaces feel friendly. This page showcases a pastel palette, responsive layout and fade-in effects that reveal content smoothly as you explore.</p>
+
+        <div class="cards" style="margin-top:18px;">
+          <article class="card reveal" aria-labelledby="c1">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="3" fill="#FBE7F1"/>
+              <path d="M7 10h10M7 14h6" stroke="#7B6BFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3 id="c1">Responsive</h3>
+            <p>Layouts adapt from wide screens to phones without losing charm.</p>
+          </article>
+
+          <article class="card reveal" aria-labelledby="c2">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" fill="#E8FFF0"/>
+              <path d="M4 20c2-4 6-6 8-6s6 2 8 6" stroke="#2FA67A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3 id="c2">Pastel Theme</h3>
+            <p>Soft gradients and light shadows create a calm reading experience.</p>
+          </article>
+
+          <article class="card reveal" aria-labelledby="c3">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="3" fill="#EAF6FF"/>
+              <path d="M8 12h8M8 8h8M8 16h5" stroke="#3B7BE3" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <h3 id="c3">Fade-in Effects</h3>
+            <p>Elements appear gently to guide attention without distraction.</p>
+          </article>
+        </div>
+      </section>
+
+      <aside>
+        <div class="panel reveal" aria-labelledby="side-head">
+          <h3 id="side-head" style="margin:0 0 12px;">Quick Notes</h3>
+          <div class="list">
+            <div class="list-item reveal">
+              <div class="dot a" aria-hidden="true"></div>
+              <div class="li-text">Accessible structure and semantic markup.</div>
+            </div>
+            <div class="list-item reveal">
+              <div class="dot b" aria-hidden="true"></div>
+              <div class="li-text">No external assets required — everything inline.</div>
+            </div>
+            <div class="list-item reveal">
+              <div class="dot c" aria-hidden="true"></div>
+              <div class="li-text">Lightweight animations for performance and taste.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel reveal" aria-labelledby="tools-head">
+          <h3 id="tools-head" style="margin:0 0 12px;">Touch & Interaction</h3>
+          <p style="margin:0;color:var(--muted);">Hover or tap cards to feel subtle depth. Scroll to reveal additional content — each block fades in when visible.</p>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="reveal" role="contentinfo">
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+        <!-- GitHub icon (inline SVG) -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.73.5.89 5.34.89 11.62c0 4.66 3.01 8.62 7.18 10.02.52.1.71-.22.71-.5 0-.25-.01-.91-.01-1.79-2.92.64-3.54-1.4-3.54-1.4-.48-1.22-1.17-1.55-1.17-1.55-.96-.65.07-.64.07-.64 1.06.08 1.62 1.09 1.62 1.09.95 1.63 2.5 1.16 3.11.89.1-.69.37-1.16.67-1.43-2.33-.27-4.78-1.16-4.78-5.17 0-1.14.39-2.07 1.03-2.8-.1-.26-.45-1.3.1-2.7 0 0 .84-.27 2.75 1.05A9.53 9.53 0 0112 6.8c.85.004 1.71.114 2.51.335 1.9-1.32 2.74-1.05 2.74-1.05.55 1.4.2 2.44.1 2.7.64.73 1.03 1.66 1.03 2.8 0 4.02-2.46 4.9-4.8 5.16.38.33.72.98.72 1.99 0 1.44-.013 2.6-.013 2.96 0 .28.19.61.72.5 4.17-1.4 7.18-5.36 7.18-10.02C23.11 5.34 18.27.5 12 .5z"/>
+        </svg>
+        <span style="font-weight:600;">Created by amirabolfazle</span>
+      </a>
+
+      <div style="color:var(--muted);font-size:0.9rem;">Made with soft tones • 2025</div>
+    </footer>
+  </div>
+
+  <script>
+    // Reveal elements on scroll with IntersectionObserver; also staggered timing.
+    (function(){
+      const reveals = Array.from(document.querySelectorAll('.reveal'));
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const el = entry.target;
+            // small delay based on index for pleasing stagger
+            const idx = reveals.indexOf(el);
+            setTimeout(()=> el.classList.add('visible'), Math.min(300, idx*80));
+            observer.unobserve(el);
+          }
+        });
+      }, {threshold: 0.12});
+
+      reveals.forEach((el)=> observer.observe(el));
+
+      // small accessibility: allow user to reduce motion
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced){
+        reveals.forEach(el=> el.classList.add('visible'));
+        document.querySelectorAll('.blob').forEach(b => b.style.animation = 'none');
+      }
+
+      // gentle parallax for blobs on mouse move (disabled for touch)
+      if(!('ontouchstart' in window) && !prefersReduced){
+        const blobs = document.querySelectorAll('.blob');
+        window.addEventListener('mousemove', (e)=>{
+          const w = window.innerWidth, h = window.innerHeight;
+          const nx = (e.clientX / w - 0.5) * 30;
+          const ny = (e.clientY / h - 0.5) * 20;
+          blobs.forEach((b,i)=>{
+            const depth = (i+1) * 6;
+            b.style.transform = `translate3d(${nx/depth}px, ${ny/depth}px, 0)`;
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
