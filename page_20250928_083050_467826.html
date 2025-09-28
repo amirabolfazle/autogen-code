@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0b14;
+      --bg2: #0a0b16;
+      --neon-cyan: #39fff1;
+      --neon-pink: #ff2bd3;
+      --neon-purple: #7a5cff;
+      --card: rgba(255,255,255,0.08);
+      --glow: 0 0 8px rgba(57,255,241,.9),0 0 28px rgba(57,255,241,.6);
+      --shadow: 0 8px 20px rgba(0,0,0,.4);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #e6f7ff;
+      background: radial-gradient(circle at 20% 20%, rgba(0,255,204,.08), transparent 40%),
+                  radial-gradient(circle at 80% 60%, rgba(255,0,210,.08), transparent 40%),
+                  linear-gradient(135deg, #050510 0%, #0a0b16 100%);
+      overflow-x: hidden;
+      background-attachment: fixed;
+    }
+
+    /* Subtle animated glow background layer */
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(0,255,240,.15), transparent 40%),
+        radial-gradient(circle at 90% 70%, rgba(255,0,180,.15), transparent 40%);
+      animation: glow 12s ease-in-out infinite;
+      filter: saturate(120%);
+    }
+    @keyframes glow {
+      0%,100% { transform: translate3d(0,0,0); }
+      50% { transform: translate3d(-6px,6px,0); }
+    }
+
+    header.site-header {
+      padding: 40px 20px 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .brand {
+      display: inline-block;
+      font-family: "Trebuchet MS", Impact, sans-serif;
+      font-weight: 900;
+      font-size: clamp(40px, 8vw, 110px);
+      color: #0ff;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(0,255,255,.8), 0 0 24px rgba(0,255,255,.6);
+      line-height: 1;
+      user-select: none;
+    }
+
+    .brand .dot {
+      color: var(--neon-pink);
+      text-shadow: 0 0 8px rgba(255,0,210,.9), 0 0 24px rgba(255,0,210,.6);
+    }
+
+    .creation-chip {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(57,255,241,.5);
+      color: #a9fff7;
+      background: rgba(0,0,0,.15);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      box-shadow: inset 0 0 12px rgba(0,255,255,.15);
+    }
+
+    main {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 22px 0 60px;
+    }
+
+    section.slide {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all .6s ease-out;
+      margin: 54px 0;
+      padding: 22px;
+      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid rgba(120,255,255,.25);
+      box-shadow: var(--shadow);
+    }
+
+    section.slide.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2.section-title {
+      font-size: clamp(1.4rem, 3vw, 2.6rem);
+      margin: 0 0 14px;
+      color: #eaffff;
+      text-shadow: 0 0 6px rgba(0,255,255,.9), 0 0 20px rgba(0,255,255,.5);
+      letter-spacing: .04em;
+    }
+
+    p {
+      color: #d6fbff;
+      line-height: 1.6;
+      margin: 0 0 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .card {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(66,255,255,.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      box-shadow: 0 6px 18px rgba(0,255,255,.5);
+      border-color: rgba(0,255,255,.8);
+    }
+    .card-title {
+      font-weight: 700;
+      color: #eaffff;
+      margin-bottom: 6px;
+      text-shadow: 0 0 6px rgba(0,255,255,.8);
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: #001018;
+      background: #6afff1;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .section-ghost {
+      height: 6px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, rgba(57,255,241,.9), transparent);
+      border-radius: 6px;
+      margin: 8px 0 14px;
+      animation: dash 2s infinite;
+    }
+    @keyframes dash {
+      0% { background-position: 0% 0; }
+      100% { background-position: 100% 0; }
+    }
+
+    .footer {
+      text-align: center;
+      padding: 24px;
+      color: #a6f7ff;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #a6f7ff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(57,255,241,.5);
+      background: rgba(0,0,0,.15);
+    }
+
+    .github-link:hover {
+      color: #fff;
+      box-shadow: 0 0 12px rgba(57,255,241,.8);
+    }
+
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+    }
+
+    .neon-cta {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 999px;
+      color: #021018;
+      background: linear-gradient(135deg, #39fff1, #7a5cff);
+      text-decoration: none;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      box-shadow: 0 0 18px rgba(57,255,241,.8);
+      border: 0;
+    }
+
+    @media (max-width: 700px){
+      .brand { font-size: 64px; }
+      .creation-chip { display: inline-block; margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Site header">
+    <div class="brand-wrap" style="display:inline-block;">
+      <div class="brand" aria-label="Site title">amirabolfazle</div>
+      <div class="creation-chip" style="margin-top:8px;">2025-09-28 08:30:17</div>
+    </div>
+  </header>
+
+  <main aria-label="Portfolio content">
+    <section class="slide" id="about" aria-label="About me">
+      <div class="section-ghost" style="width:60px; margin-left:0;"></div>
+      <h2 class="section-title">About</h2>
+      <p>Hello! I’m Amir Abolfazle, a developer exploring code, design, and neon aesthetics. This is a compact, single-file portfolio with slide-up transitions and a neon vibe.</p>
+      <p>Built as a live demo: everything you see is contained in one HTML file, with smooth animations and no external dependencies.</p>
+    </section>
+
+    <section class="slide" id="projects" aria-label="Projects">
+      <div class="section-ghost" style="width:120px;"></div>
+      <h2 class="section-title">Projects</h2>
+      <div class="grid" aria-label="Projects grid">
+        <article class="card">
+          <div class="card-title">Autogen Code (Demo)</div>
+          <p>A self-contained code generator to produce boilerplate and templates in seconds.</p>
+          <span class="badge" title="Status">Demo</span>
+        </article>
+        <article class="card">
+          <div class="card-title">Neon Studio</div>
+          <p>A tiny UI kit with neon glow and glassy panels for fast prototyping.</p>
+          <span class="badge" style="background:#ffd166; color:#1a1a1a;">Open</span>
+        </article>
+        <article class="card">
+          <div class="card-title">Portfolio Pulse</div>
+          <p>A minimalist, animated portfolio layout focused on typography and motion.</p>
+          <span class="badge" style="background:#6afff1; color:#003039;">Live</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" id="contact" aria-label="Contact">
+      <div class="section-ghost" style="width:90px;"></div>
+      <h2 class="section-title">Contact</h2>
+      <p>You can reach me through GitHub or email. This is a static demo; replace with your own contact details if you’re exporting.</p>
+      <p style="margin-top:6px;">
+        GitHub projects: <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" style="color:#9af; text-decoration:underline;">https://github.com/amirabolfazle/autogen-code</a>
+      </p>
+      <p style="opacity:.85;">Email: example@example.com</p>
+      <p style="margin-top:12px;">
+        <a class="neon-cta" href="#" onclick="alert('This is a static demo. Replace with a real contact form in your own version.'); return false;">Hire Me</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer" aria-label="Footer">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" title="GitHub repository">
+      <span class="github-icon" aria-hidden="true">
+        <!-- Simple GitHub-like icon (circle with GH) for a lightweight inline icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="GitHub icon" style="display:block;">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"></circle>
+          <text x="12" y="16" text-anchor="middle" font-family="Arial" font-size="9" fill="currentColor" style="font-weight:700;">GH</text>
+        </svg>
+      </span>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // Basic SPA-like reveal on scroll using "slide" elements
+    document.addEventListener('DOMContentLoaded', function() {
+      // set document title to match requested portfolio title
+      document.title = 'amirabolfazle';
+
+      const slides = document.querySelectorAll('.slide');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+
+      slides.forEach(el => observer.observe(el));
+
+      // Ensure initial state has neon glow on title for a punchy first render
+      const brand = document.querySelector('.brand');
+      if (brand) {
+        brand.style.textShadow = '0 0 8px rgba(57,255,241,.95), 0 0 28px rgba(57,255,241,.75)';
+      }
+    });
+  </script>
+</body>
+</html>
