@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg-soft: #111725;
+      --card: #141a28;
+      --fg: #e8e8e8;
+      --muted: #a6b0c3;
+      --accent: #5ef0d8;
+      --glow: 0 0 12px rgba(94,240,216,.6);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial;
+      background: radial-gradient(circle at 20% -10%, rgba(90, 255, 210, .08), transparent 40%),
+                  radial-gradient(circle at 90% 0%, rgba(140, 90, 255, .08), transparent 40%),
+                  linear-gradient(#0b0f14, #0b0f14 60%, #0b0f14 100%);
+      color: var(--fg);
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated background lanes for depth */
+    .bg-layers {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .bg-layers span {
+      position: absolute; width: 240px; height: 240px; border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(94,240,216,.5), transparent 60%);
+      filter: blur(20px); animation: drift 14s linear infinite;
+      opacity: .25;
+    }
+    .bg-layers span:nth-child(1){ left: -60px; top: 20%; animation-duration: 16s; }
+    .bg-layers span:nth-child(2){ right: -40px; top: 40%; animation-duration: 20s; animation-direction: reverse; opacity: .18; }
+    .bg-layers span:nth-child(3){ left: 40%; bottom: -60px; animation-duration: 18s; opacity: .22; }
+    @keyframes drift { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px, 20px) scale(1.1); } 100% { transform: translate(0,0) scale(1); } }
+
+    header.site-header {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px; gap: 12px;
+      backdrop-filter: saturate(1.2) blur(6px);
+      background: rgba(8,12,18,.75);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .brand .logo {
+      width: 14px; height: 14px; border-radius: 3px;
+      background: linear-gradient(135deg, #4ff7c7, #8a4aff);
+      box-shadow: 0 0 12px #4ff7c7;
+    }
+    .brand .name {
+      font-weight: 700; letter-spacing: .4px;
+      font-size: 1.05rem;
+      color: #eafaf5;
+    }
+    nav a {
+      color: #e8e8e8; text-decoration: none; margin: 0 10px;
+      font-size: .95rem; opacity: .9;
+    }
+    nav a:hover { opacity: 1; text-decoration: underline; }
+
+    .creation-time {
+      font-family: ui-monospace,SFMono-Regular,Monaco,Consolas;
+      font-size: .92rem; color: #cfe8f7;
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(180,230,255,.25);
+      background: rgba(20,28,40,.6);
+    }
+
+    main { position: relative; z-index: 1; padding: 32px 20px 80px; }
+
+    section.section { max-width: 1000px; margin: 0 auto 60px; padding: 20px; }
+    section.section h2 {
+      font-size: 1.6rem; margin: 0 0 14px;
+      color: #eafaf5;
+      letter-spacing: .4px;
+    }
+    section.section p { color: var(--muted); line-height: 1.6; }
+
+    .hero {
+      display: grid; place-items: center; text-align: center;
+      padding: 80px 20px 60px;
+    }
+    .hero h1 {
+      font-size: 4rem; line-height: 1.1; margin: 6px 0 8px;
+      background: linear-gradient(135deg, #7cfbd1 0%, #b88dff 50%, #5bd7ff 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,.4));
+    }
+    .subtitle {
+      font-size: 1.05rem; color: #cbd7e8;
+    }
+    .cta {
+      display: inline-block; margin-top: 20px;
+      padding: 12px 20px; border-radius: 999px;
+      color: #041015; background: linear-gradient(135deg, #7cfbd1, #5bd7ff);
+      text-decoration: none; font-weight: 600;
+      box-shadow: 0 6px 18px rgba(91,215,255,.5);
+      transition: transform .2s ease;
+    }
+    .cta:hover { transform: translateY(-2px) scale(1.02); }
+
+    /* Projects grid with zoom on hover */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+    .card {
+      background: rgba(18,22,34,.9);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px; padding: 16px;
+      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.25);
+      transform: scale(1);
+      min-height: 140px;
+    }
+    .card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 16px 40px rgba(0,0,0,.4);
+    }
+    .card h3 { margin: 8px 0 6px; font-size: 1.05rem; }
+    .card p { color: #cbd5e1; margin: 0 0 8px; font-size: .95rem; }
+    .tag { display: inline-block; padding: 4px 8px; margin-right: 6px; font-size: 12px;
+           border-radius: 999px; background: rgba(0,0,0,.25); color: #dbe7f8; border: 1px solid rgba(255,255,255,.08); }
+    .card-media { height: 60px; border-radius: 8px; background: linear-gradient(135deg, rgba(0,0,0,.25), rgba(255,255,255,.04)); margin-bottom: 8px; }
+
+    .skills-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px 20px; }
+    .skills-list li { background: rgba(20,26,42,.8); padding: 6px 10px; border-radius: 6px; border:1px solid rgba(255,255,255,.08); color: #dbe7f8; }
+
+    .contact-form {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      max-width: 720px; margin-top: 6px;
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%; padding: 12px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(8,12,20,.6); color: #e9f4ff;
+      outline: none;
+    }
+    .contact-form textarea { grid-column: 1 / -1; min-height: 120px; resize: vertical; }
+    .btn {
+      padding: 12px 16px; border-radius: 8px; border: none;
+      background: linear-gradient(135deg, #5bd7ff, #7cfbd1);
+      color: #041015; font-weight: 700; cursor: pointer;
+    }
+
+    footer.site-footer {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 20px; text-align: center; color: #cbd5e1;
+      background: rgba(2,6,12,.8);
+      position: relative; z-index: 1;
+    }
+    footer.site-footer a {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #e6f6ff; text-decoration: none; margin-right: 8px;
+    }
+
+    /* Icon size for footer link */
+    .github-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; fill: currentColor; }
+
+    /* Reveal animations on scroll */
+    .reveal { opacity: 0; transform: translateY(12px); transition: all .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 700px){
+      .hero{ padding: 40px 12px; }
+      .brand .name{ font-size: 1rem; }
+      .creation-time{ display: none; }
+      .contact-form{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-layers" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+
+  <header class="site-header" aria-label="Site header and navigation">
+    <div class="brand" aria-label="Brand">
+      <span class="logo" aria-label="Logo"></span>
+      <span class="name">amirabolfazle</span>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="creation-time" aria-label="Creation timestamp">2025-09-28 11:53:38</div>
+  </header>
+
+  <main>
+    <section class="hero" id="home" aria-label="Intro">
+      <h1>amirabolfazle</h1>
+      <div class="subtitle" style="margin-top:6px;">
+        Frontend & Web Experience • Animations • Creative Demos
+      </div>
+      <a class="cta" href="#projects" role="button">View Work</a>
+    </section>
+
+    <section class="section reveal" id="about" aria-label="About">
+      <h2>About</h2>
+      <p>
+        I craft interactive, fast-loading web experiences with a love for clean design and delightful motion.
+        This one-file portfolio demonstrates motion, depth, and a touch of whimsy through a compact, self-contained
+        codebase.
+      </p>
+    </section>
+
+    <section class="section reveal" id="projects" aria-label="Projects">
+      <h2>Projects</h2>
+      <div class="grid">
+        <article class="card" tabindex="0" aria-label="Autogen Code Studio project">
+          <div class="card-media" aria-hidden="true"></div>
+          <h3>Autogen Code Studio</h3>
+          <p>A lightweight generator for code templates and scaffolding with live previews.</p>
+          <span class="tag">JavaScript</span><span class="tag">Web</span>
+        </article>
+
+        <article class="card" tabindex="0" aria-label="Portfolio Animations project">
+          <div class="card-media" aria-hidden="true"></div>
+          <h3>Portfolio Animations</h3>
+          <p>A single-file portfolio with motion, depth, and micro-interactions.</p>
+          <span class="tag">CSS</span><span class="tag">UX</span>
+        </article>
+
+        <article class="card" tabindex="0" aria-label="Realtime Playground project">
+          <div class="card-media" aria-hidden="true"></div>
+          <h3>Realtime Playground</h3>
+          <p>Canvas experiments and shader-inspired visuals for creative vibes.</p>
+          <span class="tag">Canvas</span><span class="tag">Graphics</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="skills" aria-label="Skills">
+      <h2>Skills</h2>
+      <ul class="skills-list" aria-label="Skill list">
+        <li>HTML, CSS, JavaScript</li>
+        <li>Web performance & accessibility</li>
+        <li>UI/UX, design systems</li>
+        <li>Animation, motion design</li>
+      </ul>
+    </section>
+
+    <section class="section reveal" id="contact" aria-label="Contact">
+      <h2>Contact</h2>
+      <p>Have a project in mind? Reach out and we can explore together.</p>
+      <form class="contact-form" onsubmit="return false;">
+        <input type="text" placeholder="Your name" aria-label="Your name" />
+        <input type="email" placeholder="Email" aria-label="Email" />
+        <textarea placeholder="Message" aria-label="Message"></textarea>
+        <button class="btn" type="submit" aria-label="Send message">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.6-1 1.1-1.1-.8-.1-1.6-.5-1.6-2.2 0-1.5 1-2.7 2.4-3.1-.1-.3-.5-1.6.2-3.2 0 0 2-.7 6.9 1.9a23.7 23.7 0 0 1 6.3-.8c.2 0 .4.2.4.4 0 1-.4 2.3-.4 2.3 0 1.7.9 3.2 2.2 4.2-.2.6-.9 1.9-.9 3.8 0 2.7 1.9 4.6 4.5 4.9-.4.3-.8 1-.8 2 0 1.5-.1 2.7-.1 3.1 0 .3.2.7.8.6A12 12 0 0 0 12 .5Z" fill="currentColor"/>
+      </svg>
+      GitHub
+    </a>
+    <span style="margin-left:8px;">Created by amirabolfazle</span>
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    (function(){
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+      reveals.forEach(r => observer.observe(r));
+    })();
+
+    // Optional gentle focus ring for keyboard users
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card=>{
+        card.addEventListener('focus', ()=> card.style.outline = '2px solid rgba(94,240,216,.9)');
+        card.addEventListener('blur', ()=> card.style.outline = 'none');
+      });
+    })();
+  </script>
+</body>
+</html>
