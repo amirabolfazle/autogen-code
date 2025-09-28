@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="theme-color" content="#0f172a" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --accent1:#7b61ff;
+      --accent2:#00d4ff;
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.04);
+      --text: #e6eef8;
+      --muted: #9fb4d6;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.12), transparent),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(0,212,255,0.08), transparent),
+                  var(--bg1);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      animation: backgroundShift 18s linear infinite;
+    }
+
+    @keyframes backgroundShift{
+      0%{background-position:0% 0%, 100% 100%;}
+      50%{background-position:10% 20%, 90% 80%;}
+      100%{background-position:0% 0%, 100% 100%;}
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 380px 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* Left column */
+    .card-left{
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      padding:28px;
+      border-radius:18px;
+      backdrop-filter: blur(8px) saturate(120%);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      position:relative;
+      overflow:hidden;
+    }
+    .avatar{
+      width:96px;height:96px;border-radius:18px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;font-family:Poppins,Inter,sans-serif;
+      font-size:36px;color:white;
+      box-shadow:0 8px 30px rgba(123,97,255,0.12);
+      transform:translateZ(0);
+      transition:transform .4s cubic-bezier(.2,.9,.2,1);
+    }
+    .avatar:hover{transform:scale(1.08) rotate(-4deg) }
+    .name{margin-top:14px;font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:20px;letter-spacing:0.2px}
+    .role{color:var(--muted);font-size:13px;margin-top:6px}
+    .bio{margin-top:16px;color:var(--text);line-height:1.5;font-size:14px}
+    .meta{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+    .pill{background:var(--card);padding:8px 12px;border-radius:999px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+    .left-footer{margin-top:22px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px}
+
+    /* Right column */
+    .card-right{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;padding:26px;border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 12px 40px rgba(2,6,23,0.6);
+      min-height:360px;
+      display:flex;flex-direction:column;gap:18px;
+    }
+    .hero-title{font-family:Poppins,Inter,sans-serif;font-weight:800;font-size:34px;line-height:1.02}
+    .hero-sub{color:var(--muted);font-size:15px;margin-top:6px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;margin-top:14px;
+    }
+    .tile{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+      transition:transform .36s cubic-bezier(.2,.9,.2,1), box-shadow .36s;
+      transform-origin:center;
+      cursor:default;
+    }
+    .tile:hover{transform:translateY(-8px) scale(1.02); box-shadow:0 10px 40px rgba(2,6,23,0.5)}
+    .tile h4{margin:0;font-size:15px;font-weight:700}
+    .tile p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.4}
+
+    /* Hero actions */
+    .actions{display:flex;gap:12px;margin-top:auto}
+    .btn{
+      border-radius:12px;padding:10px 14px;font-weight:600;border:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--text);cursor:pointer;transition:transform .24s;
+      display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      box-shadow:0 8px 30px rgba(123,97,255,0.12);
+      color:white;border:none;
+    }
+    .spark{
+      width:10px;height:10px;border-radius:50%;
+      background:rgba(255,255,255,0.18);box-shadow:0 6px 18px rgba(0,212,255,0.08);
+    }
+
+    /* Footer */
+    footer{
+      margin-top:24px;grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;color:var(--muted);
+      font-size:13px;
+    }
+    .created{display:flex;align-items:center;gap:10px}
+    .gh-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none}
+    .gh-link svg{filter:drop-shadow(0 4px 20px rgba(0,0,0,0.6));transition:transform .2s}
+    .gh-link:hover svg{transform:scale(1.06)}
+    .time{font-variant-numeric:tabular-nums;background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+
+    /* Decorative floating blobs */
+    .blob{
+      position:absolute;border-radius:50%;filter:blur(40px);opacity:0.12;pointer-events:none;
+      animation: floaty 9s ease-in-out infinite;
+    }
+    .blob.b1{width:260px;height:260px;background:linear-gradient(135deg,var(--accent1),var(--accent2));left:-70px;top:-70px;animation-delay:-2s}
+    .blob.b2{width:160px;height:160px;background:linear-gradient(135deg,#00d4ff,#4be1b1);right:-40px;bottom:-40px;animation-delay:-4s}
+    @keyframes floaty{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-18px) scale(1.03)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .stage{grid-template-columns:1fr;padding-bottom:24px}
+      footer{flex-direction:column;align-items:flex-start;gap:12px}
+    }
+
+    /* tiny entrance animations */
+    .fade-in{opacity:0;transform:translateY(8px) scale(.995);animation:enter .9s cubic-bezier(.2,.9,.2,1) forwards}
+    .fade-in.delay-1{animation-delay:.08s}
+    .fade-in.delay-2{animation-delay:.16s}
+    .fade-in.delay-3{animation-delay:.28s}
+    @keyframes enter{
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="amirabolfazle personal page">
+    <section class="card-left fade-in">
+      <div style="display:flex;gap:16px;align-items:center">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div>
+          <div class="name">amirabolfazle</div>
+          <div class="role">Full-stack tinkerer • creative automations</div>
+        </div>
+      </div>
+
+      <p class="bio">I build elegant tools and playful interfaces that make repetitive work feel a little less like work. I mix automation, code and design to ship delightful micro-products and experiments.</p>
+
+      <div class="meta">
+        <div class="pill">JavaScript • Python</div>
+        <div class="pill">UX & Design</div>
+        <div class="pill">APIs & Automation</div>
+      </div>
+
+      <div class="left-footer">
+        <span class="time" title="creation time displayed below">Created: 2025-09-29 02:48:01</span>
+      </div>
+
+      <div class="blob b1" aria-hidden="true"></div>
+      <div class="blob b2" aria-hidden="true"></div>
+    </section>
+
+    <section class="card-right fade-in delay-1">
+      <div>
+        <div class="hero-title">Hello — I'm amirabolfazle</div>
+        <div class="hero-sub">I craft fast, polished experiences and automated workflows. Below are recent sparks and experiments.</div>
+      </div>
+
+      <div class="grid">
+        <article class="tile fade-in delay-2" style="--i:1">
+          <h4>Autogen Code</h4>
+          <p>Smart scaffolding for projects that wire up templates, CI and deploy scripts — so you can start building instantly.</p>
+        </article>
+
+        <article class="tile fade-in delay-3" style="--i:2">
+          <h4>Mini UX Library</h4>
+          <p>Compact components with delightful motion and accessibility choices baked in.</p>
+        </article>
+
+        <article class="tile fade-in" style="--i:3">
+          <h4>Automation Playbooks</h4>
+          <p>Small automations that save hours: data syncs, notifications, and recurrent task runners.</p>
+        </article>
+
+        <article class="tile fade-in" style="--i:4">
+          <h4>Creative Experiments</h4>
+          <p>Visual toys and generative interfaces — a place to try odd ideas and learn fast.</p>
+        </article>
+      </div>
+
+      <div class="actions">
+        <a class="btn primary" href="#projects" aria-label="Explore projects">
+          Explore projects
+        </a>
+        <a class="btn" href="mailto:hello@amirabolfazle.example" aria-label="Contact">
+          Contact
+        </a>
+      </div>
+
+      <footer>
+        <div class="created">
+          <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+            <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49C3.9 13.9 3.4 12.8 3.4 12.8c-.36-.91-.88-1.15-.88-1.15-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.51.28-.87.5-1.07-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.28.1-2.66 0 0 .84-.27 2.75 1.02A9.56 9.56 0 018 3.44c.85.004 1.71.115 2.51.337 1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.4.11 2.66.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.29.25.54.74.54 1.49 0 1.08-.01 1.95-.01 2.21 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </div>
+
+        <div style="color:var(--muted);font-size:13px">Creation time: <span class="time">2025-09-29 02:48:01</span></div>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // subtle zoom-in on load for hero title
+    (function(){
+      const title = document.querySelector('.hero-title');
+      if(!title) return;
+      title.animate([
+        {transform:'scale(0.98) translateY(6px)', opacity:0},
+        {transform:'scale(1) translateY(0)', opacity:1}
+      ], {duration:700,easing:'cubic-bezier(.2,.9,.2,1)'});
+    })();
+  </script>
+</body>
+</html>
