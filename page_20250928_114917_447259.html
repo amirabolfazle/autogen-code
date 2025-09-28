@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg2: #101428;
+      --card: rgba(255,255,255,0.08);
+      --text: #e9e9f1;
+      --muted: #b7b7c9;
+      --accent: #8b5cf6;
+      --accent2: #22d3ee;
+      --glow: 0 0 24px rgba(139,92,246,.65);
+    }
+
+    /* Dark mode ambiance with subtle animated ambience */
+    html, body {
+      height: 100%;
+      background: radial-gradient( circle at 20% -10%, rgba(124,58,237,.25), transparent 40% ),
+                  radial-gradient( circle at 100% 0%, rgba(2,132,199,.15), transparent 40% ),
+                  linear-gradient(#0b0f1a, #0b0f1a 60%, #0a0e1a);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* animated floating blobs for depth */
+    .bg-orb {
+      position: fixed;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: .25;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 14s ease-in-out infinite;
+    }
+    .bg-orb.a { left: -100px; top: 60px; background: #4f46e5; }
+    .bg-orb.b { right: -120px; bottom: 120px; background: #06b6d4; animation-duration: 20s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(20px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    /* Card layout */
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1100px, 92vw);
+      padding: 48px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      backdrop-filter: blur(6px);
+      overflow: hidden;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 20px 24px 28px;
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      margin: 0 auto 14px;
+      position: relative;
+      background: conic-gradient(from 180deg at 50% 50%, #7c3aed, #06b6d4, #22d3ee, #e11d48, #7c3aed);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 28px rgba(0,0,0,.5);
+      animation: spin 8s linear infinite;
+    }
+    .avatar::after {
+      content: "";
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 30%, rgba(255,255,255,.9), rgba(255,255,255,.0) 40%),
+                  linear-gradient(135deg, rgba(0,0,0,.15), rgba(255,255,255,.0) 60%);
+      position: absolute;
+      transform: scale(0.92);
+      filter: saturate(0.95);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .title {
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      font-weight: 800;
+      letter-spacing: .04em;
+      margin: 6px 0 6px;
+      text-transform: lowercase;
+      background: linear-gradient(135deg, #e9e9ff 0%, #c7d2fe 40%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transform: translateY(-24px);
+      opacity: 0;
+      animation: bounceIn 0.9s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: -6px;
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: bounceIn 0.9s cubic-bezier(.2,.8,.2,1) forwards;
+      animation-delay: .15s;
+    }
+
+    .creation {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .85rem;
+      color: #dbeafe;
+      background: rgba(99,102,241,.25);
+      border: 1px solid rgba(99,102,241,.55);
+      box-shadow: inset 0 0 12px rgba(99,102,241,.35);
+      animation: fadeIn 0.8s ease-out forwards;
+      opacity: 0;
+      transform: translateY(-8px);
+      animation-delay: .25s;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: translateY(-50px) scale(.9); opacity: 0; }
+      60% { transform: translateY(6px) scale(1.02); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .content {
+      padding: 6px 2px 20px;
+      display: grid;
+      grid-template-columns: 1.05fr;
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(2,6,23,.55);
+      border: 1px solid rgba(99,102,241,.4);
+      border-radius: 16px;
+      padding: 18px 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 6px 18px rgba(0,0,0,.25);
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      letter-spacing: .02em;
+    }
+
+    .card p {
+      margin: 0;
+      color: #dbeafe;
+      line-height: 1.6;
+    }
+
+    /* Footer with GitHub icon and attribution */
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px 8px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      margin-top: 20px;
+      color: #cbd5e1;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      color: #e5e7eb;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .github-link:hover {
+      transform: translateY(-2px);
+      background: rgba(99,102,241,.25);
+    }
+
+    .credit {
+      font-size: .95rem;
+      opacity: .95;
+    }
+
+    /* Responsive tweaks */
+    @media (min-width: 700px) {
+      .content {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orb a" aria-hidden="true"></div>
+  <div class="bg-orb b" aria-hidden="true"></div>
+
+  <main class="page" aria-label="Personal page for amirabolfazle">
+    <section class="hero">
+      <div class="avatar" aria-label="Avatar decoration"></div>
+      <h1 class="title" style="animation-delay:0s">amirabolfazle</h1>
+      <div class="subtitle" style="animation-delay:.15s">a fancy animated personal page</div>
+      <div class="creation" aria-label="creation time" style="animation-delay:.3s">Creation time: 2025-09-28 11:48:39</div>
+    </section>
+
+    <section class="content" aria-label="About and projects">
+      <div class="card" style="animation: fadeIn 0.8s ease-out both; animation-delay:.05s;">
+        <h2>About</h2>
+        <p>Welcome to my corner on the web. This page embraces a dark mode aesthetic with playful bounce effects and subtle depth. It’s a lightweight, animated personal landing designed to showcase personality and focus.</p>
+      </div>
+
+      <div class="card" style="animation: fadeIn 0.8s ease-out both; animation-delay:.15s;">
+        <h2>Projects</h2>
+        <p>Autogenerated code playground and other small experiments. The GitHub link in the footer points to the repository for autogen-code artifacts.</p>
+      </div>
+    </section>
+
+    <footer>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="flex:1;">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.5-2.01.37-2.53-.49-2.53-.49-.54-1.37-1.32-1.75-1.32-1.75-1.08-.74.08-.73.08-.73 1.205.085 1.84 1.238 1.84 1.238 1.072 1.835 2.81 1.305 3.495.997.108-.779.42-1.306.764-1.606-2.665-.303-5.466-1.333-5.466-5.93 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.65 1.23.20 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.55.73.55 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+      <span class="credit">Created by amirabolfazle</span>
+    </footer>
+  </main>
+</body>
+</html>
