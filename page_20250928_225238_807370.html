@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1:#FDEFF9;
+      --bg-2:#F1FBFF;
+      --bg-3:#FFF9F2;
+      --accent-1:#A7E9AF;
+      --accent-2:#FFD6A5;
+      --accent-3:#C7CEEA;
+      --muted:#6B6B6B;
+      --glass: rgba(255,255,255,0.6);
+      --radius:14px;
+      --ease:cubic-bezier(.2,.9,.2,1);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(120deg,var(--bg-1),var(--bg-2) 45%, var(--bg-3) 100%);
+      color:#243242;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      min-height:100vh;
+      flex-direction:column;
+      align-items:center;
+      padding:32px;
+      gap:24px;
+    }
+
+    /* Animated pastel blobs background */
+    .blobs{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      overflow:hidden;
+      pointer-events:none;
+    }
+    .blob{
+      position:absolute;
+      filter: blur(50px);
+      opacity:0.7;
+      mix-blend-mode:soft-light;
+      animation: drift 18s var(--ease) infinite;
+    }
+    .blob--a{width:420px;height:420px;background:linear-gradient(135deg,#FFD6A5,#FFB4C4);left:-8%;top:-6%;animation-duration:22s;}
+    .blob--b{width:360px;height:360px;background:linear-gradient(135deg,#C7CEEA,#A7E9AF);right:-6%;top:10%;animation-duration:20s;animation-delay:2s;}
+    .blob--c{width:500px;height:500px;background:linear-gradient(135deg,#FDEFF9,#F1FBFF);left:20%;bottom:-18%;animation-duration:26s;animation-delay:4s;}
+    @keyframes drift{
+      0%{transform:translateY(0) translateX(0) rotate(0deg)}
+      25%{transform:translateY(-6%) translateX(4%) rotate(22deg)}
+      50%{transform:translateY(-2%) translateX(-6%) rotate(0deg)}
+      75%{transform:translateY(6%) translateX(6%) rotate(-18deg)}
+      100%{transform:translateY(0) translateX(0) rotate(0deg)}
+    }
+
+    header{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      flex:1;
+      min-width:0;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--accent-1),var(--accent-3));
+      display:grid;
+      place-items:center;
+      box-shadow: 0 6px 18px rgba(36,50,66,0.12);
+      transform-origin:center;
+      animation: pop 5s ease-in-out infinite;
+    }
+    .logo svg{width:40px;height:40px;}
+    @keyframes pop{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.06)}
+    }
+
+    h1{
+      font-size:clamp(20px,4.5vw,34px);
+      line-height:1;
+      letter-spacing: -0.02em;
+      color:#142533;
+      white-space:nowrap;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:clamp(12px,1.6vw,16px);
+      margin-top:6px;
+    }
+
+    .hero{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow: 0 10px 30px rgba(36,50,66,0.08);
+      backdrop-filter: blur(6px);
+      transition: transform 360ms var(--ease), box-shadow 360ms var(--ease);
+      transform-origin:center;
+    }
+
+    .card:hover{
+      transform:translateY(-6px) scale(1.02);
+      box-shadow: 0 18px 36px rgba(36,50,66,0.12);
+    }
+
+    .intro{
+      display:flex;
+      gap:18px;
+      align-items:flex-start;
+    }
+    .avatar{
+      width:84px;height:84px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent-2),var(--accent-3));
+      display:grid;place-items:center;
+      font-weight:700;color:#243242;
+      font-size:24px;
+      box-shadow:0 8px 20px rgba(36,50,66,0.08);
+      flex-shrink:0;
+      transition: transform 420ms var(--ease);
+    }
+    .intro .card:hover .avatar{transform:scale(1.05)}
+
+    .meta{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:0;
+    }
+    .meta p{color:var(--muted);font-size:14px}
+    .meta .title{font-size:18px;font-weight:600;color:#122230;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .zoom-gallery{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:14px;
+    }
+    .zoom-item{
+      background:linear-gradient(135deg, rgba(255,255,255,0.6), rgba(250,250,250,0.5));
+      border-radius:12px;
+      padding:14px;
+      text-align:center;
+      transition: transform 360ms var(--ease), box-shadow 360ms var(--ease);
+      transform-origin:center;
+      cursor:pointer;
+    }
+    .zoom-item:hover{
+      transform:scale(1.08) translateY(-6px);
+      box-shadow:0 14px 30px rgba(36,50,66,0.08);
+    }
+    .zoom-item small{display:block;color:var(--muted);font-size:12px;margin-top:8px}
+
+    /* Right column */
+    .panel{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:stretch;
+    }
+    .pulse{
+      padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--accent-3),rgba(255,255,255,0.5));
+      display:flex;align-items:center;justify-content:space-between;
+      gap:10px;
+      box-shadow:0 8px 20px rgba(36,50,66,0.06);
+      animation: pulse 3.8s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.02)}
+      100%{transform:scale(1)}
+    }
+    .time{font-weight:600;color:#102028}
+    .time small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+
+    .stats{
+      display:flex;gap:12px;align-items:center;
+    }
+    .stat{
+      flex:1;padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0.55));
+      text-align:center;
+    }
+    .stat h3{font-size:18px;margin-bottom:6px}
+    .stat p{color:var(--muted);font-size:13px}
+
+    /* Footer */
+    footer{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 6px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .footer-link{
+      display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none;
+      padding:8px 10px;border-radius:10px;transition:background .24s ease, transform .24s var(--ease);
+    }
+    .footer-link:hover{background:rgba(255,255,255,0.4);transform:translateY(-3px)}
+    .github-icon{width:20px;height:20px;display:inline-block;vertical-align:middle}
+
+    /* Responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr;align-items:stretch}
+      .zoom-gallery{grid-template-columns:repeat(2,1fr)}
+      .panel{order:2}
+    }
+    @media (max-width:440px){
+      body{padding:18px}
+      .zoom-gallery{grid-template-columns:1fr}
+      .brand{gap:10px}
+      .logo{width:56px;height:56px}
+    }
+  </style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob blob--a" ></div>
+    <div class="blob blob--b" ></div>
+    <div class="blob blob--c" ></div>
+  </div>
+
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 12c0-4 4-7 8-7s8 3 8 7-4 7-8 7-8-3-8-7z" fill="#142533" opacity="0.12"/>
+          <path d="M7.5 12.5c0-2.2 2.3-4 5-4s5 1.8 5 4-2.3 4-5 4-5-1.8-5-4z" fill="#FFF" />
+        </svg>
+      </div>
+      <div style="min-width:0">
+        <h1>amirabolfazle</h1>
+        <div class="subtitle">pastel UI playground • responsive • animated</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;align-items:center">
+      <nav aria-label="top navigation" style="display:flex;gap:8px">
+        <a href="#" style="text-decoration:none;color:#244047;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.6);box-shadow:0 6px 14px rgba(36,50,66,0.05);font-weight:600">Explore</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero" role="main">
+    <section class="card">
+      <div class="intro">
+        <div class="avatar" aria-hidden="true">AB</div>
+        <div class="meta">
+          <div class="title">Interactive Pastel Collection</div>
+          <p>Subtle motion, soft gradients and zoom interactions crafted to feel light and playful. Resize the window to see the layout adapt.</p>
+          <div class="zoom-gallery" aria-hidden="false" style="margin-top:12px">
+            <div class="zoom-item" tabindex="0">
+              <strong style="display:block">Soft Zoom</strong>
+              <small>Hover or tap</small>
+            </div>
+            <div class="zoom-item" tabindex="0">
+              <strong style="display:block">Slide Glow</strong>
+              <small>Responsive</small>
+            </div>
+            <div class="zoom-item" tabindex="0">
+              <strong style="display:block">Gentle Pop</strong>
+              <small>Animated</small>
+            </div>
+            <div class="zoom-item" tabindex="0">
+              <strong style="display:block">Color Drift</strong>
+              <small>Looping</small>
+            </div>
+            <div class="zoom-item" tabindex="0">
+              <strong style="display:block">Glass Card</strong>
+              <small>Frosted look</small>
+            </div>
+            <div class="zoom-item" tabindex="0">
+              <strong style="display:block">Subtle Shadow</strong>
+              <small>Depth</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="card pulse" role="status" aria-live="polite">
+        <div>
+          <div style="font-size:13px;color:var(--muted)">Creation time</div>
+          <div class="time">2025-09-28 22:51:57</div>
+        </div>
+        <div style="text-align:right;color:var(--muted);font-size:13px">
+          <div style="font-weight:700;color:#0f2730">amirabolfazle</div>
+          <small>pastel theme</small>
+        </div>
+      </div>
+
+      <div class="card stats" role="region" aria-label="quick stats">
+        <div class="stat">
+          <h3>Design</h3>
+          <p>Pastel gradients & motion</p>
+        </div>
+        <div class="stat">
+          <h3>Layout</h3>
+          <p>Fluid & responsive</p>
+        </div>
+        <div class="stat">
+          <h3>Effects</h3>
+          <p>Zoom & soft blur</p>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <span class="github-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.302 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.237 1.84 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.776.42-1.305.763-1.605-2.665-.304-5.467-1.334-5.467-5.93 0-1.31.47-2.38 1.235-3.22-.124-.304-.536-1.527.117-3.176 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.29-1.552 3.296-1.23 3.296-1.23.654 1.65.242 2.872.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.807 5.624-5.48 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297 24 5.67 18.63.297 12 .297z"/>
+        </svg>
+      </span>
+      <span>Created by amirabolfazle</span>
+    </a>
+
+    <div style="color:var(--muted);font-size:13px">Made with pastel motion</div>
+  </footer>
+</body>
+</html>
