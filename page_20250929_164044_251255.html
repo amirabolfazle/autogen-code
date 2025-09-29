@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#050507;
+    --neon-cyan:#00f0ff;
+    --neon-pink:#ff00d4;
+    --neon-blue:#4bd0ff;
+    --glass: rgba(255,255,255,0.04);
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(0,176,255,0.06), transparent 8%),
+      radial-gradient(1000px 500px at 90% 90%, rgba(255,0,212,0.04), transparent 10%),
+      var(--bg);
+    color:#e6f7ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  .stage{
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    padding:40px 20px;
+    box-sizing:border-box;
+    text-align:center;
+  }
+
+  /* Neon title */
+  h1{
+    margin:0;
+    font-size:clamp(28px,7vw,68px);
+    letter-spacing:0.06em;
+    color:var(--neon-cyan);
+    text-transform:lowercase;
+    text-shadow:
+      0 0 6px rgba(0,240,255,0.45),
+      0 0 18px rgba(0,240,255,0.12),
+      0 6px 24px rgba(0,0,0,0.6);
+    filter:drop-shadow(0 0 12px rgba(0,240,255,0.12));
+    animation: neonFlicker 3.5s infinite alternate;
+    opacity:0;
+    transform:translateY(8px);
+    animation-name: fadeInUp, neonFlicker;
+    animation-duration: 900ms, 3.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(.2,.9,.3,1), linear;
+    animation-delay: 160ms, 0s;
+  }
+
+  p.subtitle{
+    margin:0;
+    color:linear-gradient(90deg,#fff,#fff);
+    font-size:clamp(12px,2.2vw,16px);
+    opacity:0;
+    transform:translateY(8px);
+    animation: fadeInUp 900ms cubic-bezier(.2,.9,.3,1) forwards;
+    animation-delay:320ms;
+    letter-spacing:0.02em;
+    color: rgba(230,247,255,0.9);
+  }
+
+  .time{
+    margin-top:6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
+    font-size:13px;
+    color:rgba(180,240,255,0.95);
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:8px 12px;
+    border-radius:8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border:1px solid rgba(0,240,255,0.06);
+    opacity:0;
+    transform:translateY(10px);
+    animation: fadeInUp 900ms cubic-bezier(.2,.9,.3,1) forwards;
+    animation-delay:480ms;
+  }
+
+  /* small animated accent */
+  .accent{
+    width:160px;
+    height:2px;
+    border-radius:2px;
+    background: linear-gradient(90deg, rgba(0,240,255,0), var(--neon-cyan), rgba(255,0,212,0));
+    filter:drop-shadow(0 0 12px rgba(0,240,255,0.14));
+    opacity:0;
+    transform:translateY(10px);
+    animation: fadeInUp 900ms cubic-bezier(.2,.9,.3,1) forwards;
+    animation-delay:620ms;
+  }
+
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    background:var(--glass);
+    padding:8px 12px;
+    border-radius:999px;
+    backdrop-filter: blur(6px) saturate(120%);
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    opacity:0.98;
+  }
+
+  footer a{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    color:var(--neon-pink);
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+  }
+
+  footer svg{
+    width:18px;
+    height:18px;
+    fill:transparent;
+    stroke:var(--neon-pink);
+    stroke-width:1.5;
+    filter:drop-shadow(0 0 8px rgba(255,0,212,0.18));
+  }
+
+  footer a span{
+    color:rgba(230,247,255,0.9);
+    font-weight:500;
+    letter-spacing:0.01em;
+  }
+
+  /* animation keyframes */
+  @keyframes fadeInUp{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  @keyframes neonFlicker{
+    0%{ text-shadow: 0 0 6px rgba(0,240,255,0.45), 0 0 18px rgba(0,240,255,0.12); transform:translateY(0); }
+    3%{ text-shadow: none; transform:translateY(-1px); }
+    6%{ text-shadow: 0 0 8px rgba(0,240,255,0.5); }
+    12%{ text-shadow: 0 0 14px rgba(0,240,255,0.3); }
+    30%{ text-shadow: 0 0 20px rgba(0,240,255,0.55); }
+    100%{ text-shadow: 0 0 6px rgba(0,240,255,0.45), 0 0 18px rgba(0,240,255,0.12);}
+  }
+
+  /* small responsive tweaks */
+  @media (max-width:420px){
+    footer{bottom:12px; padding:6px 10px;}
+    .accent{width:120px;}
+  }
+</style>
+</head>
+<body>
+  <div class="stage" role="main" aria-labelledby="title">
+    <h1 id="title">amirabolfazle</h1>
+    <p class="subtitle">neon • minimal • animated</p>
+    <div class="time" aria-label="creation time">2025-09-29 16:40:17</div>
+    <div class="accent" aria-hidden="true"></div>
+  </div>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.6-.7 1.6-.7.9-1.6 2.4-1.1 3-.9.1-.7.4-1.1.7-1.4-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.3 11.3 0 016 0c2.3-1.4 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.7 1 .7 2v3c0 .3.2.7.8.6A12 12 0 0012 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
