@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f172a;
+    --bg2:#071033;
+    --accent1: rgba(99,102,241,0.25);
+    --accent2: rgba(16,185,129,0.20);
+    --glass: rgba(255,255,255,0.06);
+    --glass-strong: rgba(255,255,255,0.09);
+    --glass-border: rgba(255,255,255,0.12);
+    --text: #e6eef8;
+    --muted: rgba(230,238,248,0.65);
+    --glass-blur: 12px;
+  }
+
+  /* Reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body,#root{height:100%}
+  body{
+    min-height:100vh;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(99,102,241,0.07), transparent 8%),
+                radial-gradient(1000px 500px at 90% 90%, rgba(16,185,129,0.05), transparent 8%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    padding:40px 24px;
+  }
+
+  /* floating colorful blobs */
+  .blob{
+    position:fixed;
+    filter:blur(40px) saturate(120%) contrast(105%);
+    opacity:0.9;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    border-radius:50%;
+    transform: translate3d(0,0,0);
+    animation:float 12s ease-in-out infinite;
+    will-change:transform,opacity;
+  }
+  .blob.a{width:520px;height:520px;left:-10%;top:-8%;background:linear-gradient(45deg,#7c3aed,#60a5fa); animation-duration:18s;}
+  .blob.b{width:420px;height:420px;right:-8%;bottom:-6%;background:linear-gradient(45deg,#10b981,#06b6d4); animation-duration:16s; animation-direction:reverse; opacity:0.85}
+  .blob.c{width:260px;height:260px;left:20%;bottom:10%;background:linear-gradient(45deg,#f97316,#f43f5e); animation-duration:14s; opacity:0.65}
+  @keyframes float{
+    0%{transform:translate3d(0,0,0) scale(1)}
+    25%{transform:translate3d(20px,-30px,0) scale(1.02)}
+    50%{transform:translate3d(0,20px,0) scale(1)}
+    75%{transform:translate3d(-25px,-10px,0) scale(0.98)}
+    100%{transform:translate3d(0,0,0) scale(1)}
+  }
+
+  /* Central layout */
+  .stage{
+    max-width:1100px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:28px;
+    align-items:start;
+    min-height:calc(100vh - 80px);
+    position:relative;
+    z-index:2;
+  }
+
+  /* Glass card */
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border: 1px solid var(--glass-border);
+    border-radius:16px;
+    padding:28px;
+    backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+    box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+    color:var(--text);
+    animation:fadeInUp .9s ease both;
+  }
+
+  /* main area */
+  .hero{
+    padding:36px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    min-height:320px;
+  }
+  .title{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+  }
+  .name{
+    font-size:34px;
+    font-weight:700;
+    letter-spacing: -0.6px;
+    background: linear-gradient(90deg,#fff, rgba(255,255,255,0.8));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .tag{
+    font-size:13px;
+    color:var(--muted);
+    padding:6px 10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .bio{
+    color:var(--muted);
+    line-height:1.6;
+    margin-top:6px;
+    font-size:15px;
+    max-width:62ch;
+  }
+
+  /* Projects list */
+  .projects{
+    margin-top:8px;
+    display:grid;
+    gap:12px;
+  }
+  .project{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    transition:transform .24s ease, box-shadow .24s ease;
+    cursor:default;
+  }
+  .project:hover{ transform:translateY(-6px); box-shadow:0 10px 30px rgba(2,6,23,0.5)}
+  .proj-icon{
+    width:48px;height:48px;border-radius:10px;flex:0 0 48px;
+    display:grid;place-items:center;
+    font-weight:700;
+    color:#fff;
+    background:linear-gradient(135deg,#7c3aed,#06b6d4);
+    box-shadow:0 6px 18px rgba(7,12,33,0.5);
+  }
+  .proj-meta{ display:flex;flex-direction:column}
+  .proj-title{ font-weight:600; font-size:15px; }
+  .proj-desc{ font-size:13px; color:var(--muted) }
+
+  /* sidebar */
+  .sidebar{
+    padding:22px;
+    position:relative;
+    min-height:200px;
+  }
+  .profile{
+    display:flex;gap:14px;align-items:center;margin-bottom:18px;
+  }
+  .avatar{
+    width:74px;height:74px;border-radius:14px;background:linear-gradient(135deg,#60a5fa,#7c3aed);
+    display:grid;place-items:center;font-weight:700;color:#fff;font-size:20px;
+    box-shadow:0 8px 30px rgba(7,12,33,0.6);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .meta{display:flex;flex-direction:column}
+  .meta .role{color:var(--muted);font-size:13px}
+  .meta .contact{margin-top:8px;font-size:13px;color:var(--muted)}
+  .meta .contact a{color:var(--text);text-decoration:none;border-bottom:1px dashed rgba(255,255,255,0.03)}
+
+  .stats{
+    margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;
+  }
+  .stat{
+    flex:1 1 45%;
+    background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    border:1px solid rgba(255,255,255,0.02);
+    padding:12px;border-radius:10px;font-size:13px;color:var(--muted)
+  }
+  .stat strong{display:block;font-size:16px;color:var(--text);margin-bottom:6px}
+
+  /* footer */
+  footer{
+    margin-top:20px;
+    display:flex;align-items:center;gap:10px;justify-content:space-between;
+    color:var(--muted);font-size:14px;
+    opacity:0.98;
+    animation:fadeIn .9s ease .4s both;
+  }
+  .github{
+    display:inline-flex;align-items:center;gap:10px;color:var(--muted);
+    text-decoration:none;padding:8px 12px;border-radius:999px;transition:all .18s ease;
+    border:1px solid rgba(255,255,255,0.02);
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  }
+  .github:hover{ transform:translateY(-4px); box-shadow:0 10px 30px rgba(2,6,23,0.5) ; color:var(--text)}
+
+  /* fade in up */
+  @keyframes fadeInUp{
+    from{opacity:0; transform:translateY(18px)}
+    to{opacity:1; transform:translateY(0)}
+  }
+  @keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+  }
+
+  /* subtle staggered fades for children */
+  .stagger > *{
+    opacity:0; transform:translateY(10px);
+    animation:fadeInUp .66s ease both;
+  }
+  .stagger > *:nth-child(1){ animation-delay:0.08s }
+  .stagger > *:nth-child(2){ animation-delay:0.16s }
+  .stagger > *:nth-child(3){ animation-delay:0.24s }
+  .stagger > *:nth-child(4){ animation-delay:0.32s }
+  .stagger > *:nth-child(5){ animation-delay:0.40s }
+
+  /* responsive */
+  @media (max-width:980px){
+    .stage{grid-template-columns:1fr; padding-bottom:40px}
+    .sidebar{order:-1}
+  }
+  @media (max-width:520px){
+    .name{font-size:24px}
+    .title{flex-direction:column;align-items:flex-start;gap:6px}
+    .card{padding:18px;border-radius:14px}
+    .projects{gap:8px}
+  }
+
+  /* small animated underline on name */
+  .name::after{
+    content:"";
+    display:block;
+    height:3px;
+    width:0%;
+    border-radius:2px;
+    background:linear-gradient(90deg,#7c3aed,#06b6d4);
+    transition:width .5s cubic-bezier(.2,.8,.2,1);
+    margin-top:8px;
+  }
+  .card:hover .name::after{ width:48% }
+</style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+  <div class="blob c" aria-hidden="true"></div>
+
+  <main class="stage" id="root">
+    <section class="card hero stagger" aria-labelledby="hero-title">
+      <header class="title" id="hero-title">
+        <div>
+          <div class="name">amirabolfazle</div>
+          <div class="tag" style="margin-top:8px">Designer • Developer • Builder</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;color:var(--muted);font-size:13px">
+          Creation time
+          <div style="font-weight:600;color:var(--text);margin-top:6px;font-family:monospace">2025-09-29 07:16:48</div>
+        </div>
+      </header>
+
+      <p class="bio">A compact, animated portfolio showcasing a glassmorphism theme with soft motion and subtle details. I craft interfaces and prototypes that feel alive — focused on clarity, motion and delightful micro-interactions.</p>
+
+      <div style="margin-top:8px" class="stagger">
+        <h3 style="font-size:15px;color:var(--muted);margin-bottom:8px">Selected projects</h3>
+
+        <div class="projects">
+          <div class="project">
+            <div class="proj-icon">AG</div>
+            <div class="proj-meta">
+              <div class="proj-title">Autogen UI — Live Builder</div>
+              <div class="proj-desc">A dynamic interface for composing apps with generative templates and instant previews.</div>
+            </div>
+          </div>
+
+          <div class="project">
+            <div class="proj-icon">ML</div>
+            <div class="proj-meta">
+              <div class="proj-title">Model Lab — Experiments</div>
+              <div class="proj-desc">Streamlined experiments and model visualizations, designed for rapid iteration.</div>
+            </div>
+          </div>
+
+          <div class="project">
+            <div class="proj-icon">WS</div>
+            <div class="proj-meta">
+              <div class="proj-title">Wave Studio — Audio Toolkit</div>
+              <div class="proj-desc">Realtime audio visuals and lightweight tools for prototyping sound-based experiences.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="card sidebar stagger" aria-labelledby="side-title">
+      <div class="profile">
+        <div class="avatar" aria-hidden="true">AB</div>
+        <div class="meta">
+          <div style="font-weight:700">amirabolfazle</div>
+          <div class="role">Full-stack & Creative Engineer</div>
+          <div class="contact" style="margin-top:6px">hello@amirabolfazle.dev</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><strong>10+</strong>Projects shipped</div>
+        <div class="stat"><strong>5</strong>Open-source repos</div>
+        <div class="stat"><strong>3</strong>Years experimenting</div>
+        <div class="stat"><strong>∞</strong>Curiosity</div>
+      </div>
+
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">
+        Quick links
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <a href="#projects" style="color:var(--text);text-decoration:none;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)">Projects</a>
+          <a href="#contact" style="color:var(--text);text-decoration:none;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)">Contact</a>
+        </div>
+      </div>
+
+      <footer style="margin-top:20px">
+        <div style="font-size:13px;color:var(--muted)">Built with HTML & CSS — animated</div>
+        <div></div>
+      </footer>
+    </aside>
+
+    <div style="grid-column:1/3;margin-top:18px;display:flex;justify-content:space-between;align-items:center">
+      <div style="color:var(--muted);font-size:13px">Want a tailored version? Reach out — love collaborating.</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <title>GitHub</title>
+            <path d="M12 .5C5.73.5.98 5.25.98 11.5c0 4.63 2.99 8.56 7.14 9.95.52.1.71-.22.71-.49 0-.24-.01-.87-.01-1.71-2.9.63-3.51-1.4-3.51-1.4-.47-1.2-1.15-1.52-1.15-1.52-.94-.64.07-.63.07-.63 1.04.07 1.59 1.07 1.59 1.07.93 1.58 2.45 1.12 3.04.85.09-.66.36-1.12.66-1.38-2.32-.26-4.76-1.17-4.76-5.2 0-1.15.41-2.09 1.08-2.83-.11-.27-.47-1.36.1-2.84 0 0 .88-.28 2.88 1.08a9.9 9.9 0 0 1 2.62-.35c.89.01 1.78.12 2.62.35 2-.36 2.88-1.08 2.88-1.08.57 1.48.21 2.57.1 2.84.67.74 1.08 1.68 1.08 2.83 0 4.04-2.45 4.93-4.78 5.19.37.31.7.92.7 1.86 0 1.34-.01 2.42-.01 2.75 0 .27.19.6.72.5C20.03 20.06 23 16.13 23 11.5 23 5.25 18.27.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span style="font-weight:600">Created by amirabolfazle</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // tiny touch: fade in body for dramatic effect on load
+    document.documentElement.style.setProperty('--initial-opacity','0');
+    window.addEventListener('load',()=> {
+      document.body.style.transition = 'opacity .6s ease';
+      document.body.style.opacity = '1';
+    });
+
+    // gentle parallax for blobs based on mouse for a more lively feeling
+    (function(){
+      const blobs = document.querySelectorAll('.blob');
+      const move = (e) => {
+        const cx = window.innerWidth/2, cy = window.innerHeight/2;
+        const dx = (e.clientX - cx)/cx;
+        const dy = (e.clientY - cy)/cy;
+        blobs.forEach((b,i)=>{
+          const depth = 8 + i*6;
+          b.style.transform = `translate3d(${dx*depth}px, ${dy*depth}px, 0) scale(${1 + i*0.02})`;
+        });
+      };
+      window.addEventListener('mousemove', move);
+      window.addEventListener('touchmove', (e)=> {
+        if(e.touches && e.touches[0]) move(e.touches[0]);
+      }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
