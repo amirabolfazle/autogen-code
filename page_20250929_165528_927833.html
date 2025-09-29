@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#071033;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent1: rgba(129, 140, 248, 0.6);
+      --accent2: rgba(99, 102, 241, 0.55);
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.7);
+      --card-radius: 16px;
+      --max-width: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 500px at 10% 20%, rgba(99,102,241,0.12), transparent 10%),
+                  radial-gradient(700px 400px at 90% 80%, rgba(129,140,248,0.08), transparent 12%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+      overflow-x:hidden;
+    }
+
+    /* animated background blobs */
+    .bg-blob{
+      position:fixed;
+      border-radius:50%;
+      filter: blur(60px) saturate(120%);
+      opacity:0.7;
+      transform:translate3d(0,0,0);
+      z-index:0;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .blob-1{
+      width:420px;
+      height:420px;
+      left:-80px;
+      top:-120px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      animation: floatA 12s ease-in-out infinite;
+    }
+    .blob-2{
+      width:360px;
+      height:360px;
+      right:-90px;
+      bottom:-130px;
+      background:linear-gradient(120deg,#06b6d4, #8b5cf6 70%);
+      animation: floatB 14s ease-in-out infinite;
+      opacity:0.65;
+    }
+
+    @keyframes floatA{
+      0%{transform:translateY(0) rotate(0deg) scale(1)}
+      50%{transform:translateY(20px) rotate(6deg) scale(1.05)}
+      100%{transform:translateY(0) rotate(0deg) scale(1)}
+    }
+    @keyframes floatB{
+      0%{transform:translateY(0) rotate(0deg) scale(1)}
+      50%{transform:translateY(-18px) rotate(-4deg) scale(1.06)}
+      100%{transform:translateY(0) rotate(0deg) scale(1)}
+    }
+
+    /* container */
+    .container{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:var(--max-width);
+      display:flex;
+      gap:28px;
+      align-items:stretch;
+      justify-content:center;
+      flex-wrap:wrap;
+      padding:36px;
+    }
+
+    /* glass card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      border-radius:var(--card-radius);
+      padding:28px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      min-width:260px;
+      color:var(--text);
+      flex:1 1 320px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      transform:translateY(0);
+      transition:transform .36s cubic-bezier(.2,.9,.3,1), box-shadow .28s;
+      overflow:hidden;
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      box-shadow: 0 18px 50px rgba(3,8,30,0.6);
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(20px,4vw,34px);
+      letter-spacing:-0.02em;
+      font-weight:800;
+      color:var(--text);
+      line-height:1;
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:clamp(13px,2.2vw,15px);
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .tag{
+      font-size:13px;
+      padding:6px 10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);
+    }
+
+    .time{
+      font-weight:600;
+      color:var(--muted);
+      font-size:13px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* grid cards inside */
+    .grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    }
+    .mini{
+      padding:14px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.015));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      transition:transform .22s ease, box-shadow .22s;
+    }
+    .mini:hover{ transform:translateY(-6px); box-shadow:0 10px 30px rgba(2,6,23,0.45); }
+    .mini .dot{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      flex-shrink:0;
+      font-weight:700;
+      box-shadow: inset 0 -10px 30px rgba(0,0,0,0.12);
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .mini .label{
+      font-size:14px;
+      color:var(--muted);
+    }
+    .mini .value{
+      font-weight:700;
+      color:var(--text);
+      font-size:15px;
+    }
+
+    /* CTA */
+    .cta{
+      margin-top:6px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(99,102,241,0.16), rgba(99,102,241,0.08));
+      color:var(--text);
+      text-decoration:none;
+      font-weight:700;
+      border:1px solid rgba(99,102,241,0.22);
+      transition:transform .18s ease, box-shadow .18s;
+      cursor:pointer;
+    }
+    .btn:hover{ transform:translateY(-4px); box-shadow:0 10px 30px rgba(99,102,241,0.08); }
+    .btn.secondary{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    /* footer */
+    footer{
+      width:100%;
+      max-width:var(--max-width);
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+      z-index:1;
+      padding:6px 16px;
+    }
+    footer a.repo{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      border-radius:8px;
+      padding:6px 8px;
+      transition:background .14s, transform .14s;
+    }
+    footer a.repo:hover{ background:rgba(255,255,255,0.02); transform:translateY(-4px); }
+
+    svg.icon{
+      width:18px;height:18px;display:block;fill:var(--muted);
+      transition:fill .14s;
+    }
+    footer a.repo:hover svg.icon{ fill:var(--text); }
+
+    /* fade-in animations */
+    .fade-in{opacity:0; transform:translateY(12px) scale(.995); animation: fadeIn .7s cubic-bezier(.2,.9,.3,1) forwards}
+    .delay-1{ animation-delay:0.12s }
+    .delay-2{ animation-delay:0.28s }
+    .delay-3{ animation-delay:0.44s }
+    .delay-4{ animation-delay:0.6s }
+    @keyframes fadeIn{
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    /* responsive tweaks */
+    @media (max-width:860px){
+      .container{ padding:20px; gap:18px; }
+      .card{ padding:20px; border-radius:14px }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .blob-1, .blob-2, .card, .mini, .btn, .fade-in{ animation:none !important; transition:none !important }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blob blob-1" aria-hidden="true"></div>
+  <div class="bg-blob blob-2" aria-hidden="true"></div>
+
+  <main class="container" role="main">
+    <section class="card fade-in delay-1" aria-labelledby="site-title">
+      <header>
+        <h1 id="site-title">amirabolfazle</h1>
+        <p class="lead">A minimalist responsive demo with glassmorphism and delightfully subtle motion.</p>
+        <div class="meta">
+          <span class="tag">Glassmorphism</span>
+          <span class="tag">Responsive</span>
+          <span class="time" title="Creation time">Created: 2025-09-29 16:54:37</span>
+        </div>
+      </header>
+
+      <div class="grid" style="margin-top:8px">
+        <div class="mini fade-in delay-2" aria-hidden="false">
+          <div class="dot" style="background:linear-gradient(135deg,#7c3aed,#06b6d4)">AI</div>
+          <div>
+            <div class="label">Feature</div>
+            <div class="value">Animated UI</div>
+          </div>
+        </div>
+
+        <div class="mini fade-in delay-3">
+          <div class="dot" style="background:linear-gradient(135deg,#06b6d4,#7c3aed)">UI</div>
+          <div>
+            <div class="label">Style</div>
+            <div class="value">Glass Theme</div>
+          </div>
+        </div>
+
+        <div class="mini fade-in delay-4">
+          <div class="dot" style="background:linear-gradient(135deg,#ef4444,#fb923c)">RT</div>
+          <div>
+            <div class="label">Performance</div>
+            <div class="value">Smooth</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta" aria-hidden="false">
+        <a class="btn" href="#learn" role="button">Explore</a>
+        <a class="btn secondary" href="#details" role="button">Details</a>
+      </div>
+    </section>
+
+    <aside class="card fade-in delay-2" aria-label="Highlights">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-weight:800;font-size:18px">Highlights</div>
+          <div style="color:var(--muted);margin-top:6px">Adaptive layout, layered blur, and tasteful motion with accessibility respect.</div>
+        </div>
+        <div style="text-align:right;color:var(--muted);font-size:13px">v1.0</div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:140px">
+          <div style="font-size:13px;color:var(--muted)">Viewport</div>
+          <div style="font-weight:700">Fully responsive</div>
+        </div>
+        <div style="flex:1;min-width:140px">
+          <div style="font-size:13px;color:var(--muted)">Motion</div>
+          <div style="font-weight:700">Subtle & performant</div>
+        </div>
+      </div>
+
+      <div style="margin-top:auto;display:flex;gap:10px;align-items:center;justify-content:flex-end">
+        <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open repository">
+          View Repo
+        </a>
+      </div>
+    </aside>
+  </main>
+
+  <footer role="contentinfo">
+    <a class="repo" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle on GitHub">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .297a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.1-.76.08-.75.08-.75 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.84 1.32 3.53 1.01.11-.78.42-1.32.76-1.62-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.56.12-3.25 0 0 1.01-.32 3.3 1.23a11.4 11.4 0 016 0c2.29-1.55 3.3-1.23 3.3-1.23.67 1.69.25 2.94.12 3.25.77.84 1.24 1.9 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0012 .297z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // small enhancement: add subtle entrance for reduced-motion users not set
+    (function(){
+      // ensure the creation time is exact and readable to screen readers
+      var timeElements = document.querySelectorAll('.time');
+      timeElements.forEach(function(el){
+        el.setAttribute('aria-label','Creation time 2025-09-29 16:54:37');
+      });
+
+      // Lightweight progressive reveal for older browsers
+      document.documentElement.style.setProperty('--loaded','1');
+    })();
+  </script>
+</body>
+</html>
