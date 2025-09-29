@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #071032;
+      --accent: rgba(99,102,241,0.9);
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.65);
+      --card-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    }
+
+    /* Page reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(88,28,135,0.25), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(13,148,136,0.12), transparent 10%),
+                  linear-gradient(160deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow:auto;
+    }
+
+    /* Subtle animated moving gradient overlay */
+    .ambient {
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      mix-blend-mode:overlay;
+      opacity:0.18;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(99,102,241,0.22), rgba(16,185,129,0.18), rgba(59,130,246,0.18), rgba(99,102,241,0.22));
+      filter:blur(40px) saturate(120%);
+      animation: spin 14s linear infinite;
+      z-index:0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Layout */
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      z-index:1;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:28px;
+      align-items:start;
+    }
+
+    @media (max-width:940px){
+      .wrap{grid-template-columns:1fr; padding:20px}
+    }
+
+    /* Glass card */
+    .glass{
+      background: var(--glass-bg);
+      border-radius:14px;
+      border:1px solid var(--glass-border);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(10px) saturate(1.2);
+      -webkit-backdrop-filter: blur(10px) saturate(1.2);
+      padding:26px;
+      color:var(--text);
+    }
+
+    /* Left column hero */
+    .hero{
+      padding:32px;
+      min-height:360px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .title{
+      font-size:34px;
+      font-weight:700;
+      letter-spacing:0.4px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .tag{
+      background:linear-gradient(90deg, rgba(99,102,241,0.18), rgba(16,185,129,0.12));
+      color:var(--muted);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:15px;
+      max-width:66ch;
+      line-height:1.5;
+    }
+
+    .stats{
+      display:flex;
+      gap:12px;
+      margin-top:6px;
+      flex-wrap:wrap;
+    }
+    .stat{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius:10px;
+      padding:12px 14px;
+      min-width:120px;
+      text-align:left;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .stat strong{display:block; font-size:18px}
+    .stat span{color:var(--muted); font-size:13px}
+
+    /* Right column */
+    .side{
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      min-height:360px;
+    }
+    .avatar{
+      width:84px;height:84px;border-radius:18px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--text);
+      font-size:22px;border:1px solid rgba(255,255,255,0.06);
+    }
+    .skill-list{display:flex;flex-wrap:wrap;gap:8px}
+    .skill{
+      padding:8px 10px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)
+    }
+
+    /* Projects */
+    .projects{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+    @media (max-width:600px){ .projects{grid-template-columns:1fr} }
+    .project{
+      padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .25s;
+      cursor:pointer;
+    }
+    .project:hover{ transform:translateY(-8px) scale(1.01); box-shadow: 0 20px 40px rgba(3,7,18,0.6)}
+    .project h4{font-size:15px;margin-bottom:6px}
+    .project p{font-size:13px;color:var(--muted)}
+
+    /* Contact / CTA */
+    .cta{
+      margin-top:16px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      background:linear-gradient(90deg,var(--accent), #10b981);
+      color:white;padding:10px 14px;border-radius:12px;font-weight:700;border:none;
+      box-shadow:0 8px 28px rgba(16,24,40,0.45);
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s;
+    }
+    .btn:active{transform:translateY(1px)}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer}
+
+    /* Footer */
+    footer{
+      margin-top:22px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+      color:var(--muted);
+      font-size:13px;
+    }
+    footer a{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none}
+    .gh-icon{width:18px;height:18px;display:inline-block;vertical-align:middle;fill:var(--muted)}
+
+    /* Creation time pill */
+    .stamp{
+      position:absolute;
+      top:18px;
+      right:18px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:8px 10px;border-radius:999px;font-size:12px;color:var(--muted)
+    }
+
+    /* Fade-in animations */
+    .fade-in{ opacity:0; transform:translateY(12px); animation: fadeUp .9s forwards cubic-bezier(.2,.9,.2,1); }
+    @keyframes fadeUp{
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    /* Decorative floating shapes */
+    .floater{
+      position:absolute;
+      border-radius:20px;
+      filter:blur(6px);
+      opacity:0.12;
+      transform:translateZ(0);
+      z-index:0;
+    }
+    .f1{width:210px;height:210px;background:linear-gradient(45deg, rgba(99,102,241,0.9), rgba(59,130,246,0.9)); top:-60px;left:-80px; animation: drift1 8s ease-in-out infinite alternate;}
+    .f2{width:160px;height:160px;background:linear-gradient(45deg, rgba(16,185,129,0.9), rgba(99,102,241,0.7)); bottom:-60px;right:-80px; animation: drift2 10s ease-in-out infinite alternate;}
+    @keyframes drift1{ to{ transform: translateY(18px) translateX(10px) rotate(8deg) } }
+    @keyframes drift2{ to{ transform: translateY(-16px) translateX(-8px) rotate(-6deg) } }
+
+    /* small utilities */
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="wrap" role="main" aria-labelledby="main-title">
+    <!-- Left / Main -->
+    <section class="glass hero fade-in" style="animation-delay: 0.08s;">
+      <div class="stamp" aria-hidden="true">Created: 2025-09-29 05:08:00</div>
+      <div class="floater f1" aria-hidden="true"></div>
+      <div class="title">
+        <div id="main-title">amirabolfazle</div>
+        <div class="tag">portfolio</div>
+      </div>
+      <div class="subtitle">Designing and building clean, focused interfaces and tools — blending front-end craft with pragmatic engineering. This page is a single-file animated portfolio demo using glassmorphism and subtle motion.</div>
+
+      <div class="stats" style="margin-top:16px;">
+        <div class="stat">
+          <strong>Frontend</strong>
+          <span>HTML · CSS · JS · React</span>
+        </div>
+        <div class="stat">
+          <strong>UI / UX</strong>
+          <span>Design systems, prototyping</span>
+        </div>
+        <div class="stat">
+          <strong>Tooling</strong>
+          <span>Git · Vite · Testing</span>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;display:flex;gap:12px;align-items:center">
+        <button class="btn" onclick="copyStamp()">Copy creation time</button>
+        <button class="ghost" onclick="openGit()">Open GitHub</button>
+      </div>
+
+      <div style="margin-top:20px;">
+        <h3 style="font-size:16px;margin-bottom:8px">Selected projects</h3>
+        <div class="projects">
+          <article class="project" onclick="openProject('https://github.com/amirabolfazle/autogen-code')">
+            <h4>Autogen Code</h4>
+            <p class="muted">A repo for generated tooling and templates. Example of automation and rapid prototyping.</p>
+          </article>
+          <article class="project" onclick="openProject('#')">
+            <h4>Design Tokens</h4>
+            <p class="muted">Shared design language and token system to keep UIs consistent across apps.</p>
+          </article>
+          <article class="project" onclick="openProject('#')">
+            <h4>Interactive Dashboard</h4>
+            <p class="muted">Real-time visualizations paired with approachable controls and accessible design.</p>
+          </article>
+          <article class="project" onclick="openProject('#')">
+            <h4>Component Library</h4>
+            <p class="muted">Composable, tested components with clear docs and examples.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right / Side -->
+    <aside class="glass side fade-in" style="animation-delay: 0.18s;">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="avatar">AB</div>
+          <div>
+            <div style="font-weight:700">amirabolfazle</div>
+            <div style="font-size:13px;color:var(--muted)">full-stack & UI</div>
+          </div>
+        </div>
+        <div style="text-align:right;color:var(--muted);font-size:12px">Location<br>Remote</div>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom:8px;font-size:15px">Skills</h4>
+        <div class="skill-list">
+          <div class="skill">JavaScript</div>
+          <div class="skill">TypeScript</div>
+          <div class="skill">CSS</div>
+          <div class="skill">React</div>
+          <div class="skill">Node</div>
+          <div class="skill">Deno</div>
+          <div class="skill">Design</div>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom:8px;font-size:15px">Contact</h4>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Say hi — always curious about new problems and collaborations.</div>
+        <div style="display:flex;gap:8px">
+          <a class="btn" href="mailto:amirabolfazle@example.com" style="text-decoration:none">Email</a>
+          <button class="ghost" onclick="copyEmail()">Copy</button>
+        </div>
+      </div>
+
+      <footer>
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="gh-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82a7.6 7.6 0 0 1 2-.27c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          Created by amirabolfazle
+        </a>
+      </footer>
+    </aside>
+  </div>
+
+  <script>
+    // Stagger fade-in for child elements
+    document.addEventListener('DOMContentLoaded', () => {
+      const nodes = document.querySelectorAll('.fade-in');
+      nodes.forEach((n, i) => {
+        n.style.animationDelay = (0.08 + i*0.06) + 's';
+      });
+    });
+
+    // Helpers for interactions
+    function copyStamp(){
+      const text = '2025-09-29 05:08:00';
+      copyToClipboard(text);
+      toast('Creation time copied');
+    }
+    function copyEmail(){
+      const text = 'amirabolfazle@example.com';
+      copyToClipboard(text);
+      toast('Email copied');
+    }
+    function openGit(){
+      window.open('https://github.com/amirabolfazle/autogen-code', '_blank', 'noopener');
+    }
+    function openProject(url){
+      if(url && url !== '#') window.open(url, '_blank', 'noopener');
+      else toast('Demo project — link not set');
+    }
+
+    function copyToClipboard(txt){
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).catch(()=> fallbackCopy(txt));
+      } else fallbackCopy(txt);
+      function fallbackCopy(t){
+        const ta = document.createElement('textarea');
+        ta.value = t; ta.style.position='fixed'; ta.style.left='-9999px';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch(e){}
+        ta.remove();
+      }
+    }
+
+    // lightweight toast
+    function toast(msg = '', duration = 1600){
+      const existing = document.getElementById('__toast');
+      if(existing){ existing.remove(); }
+      const t = document.createElement('div');
+      t.id = '__toast';
+      t.textContent = msg;
+      Object.assign(t.style, {
+        position: 'fixed', left:'50%', transform:'translateX(-50%)',
+        bottom:'28px', padding:'10px 16px', borderRadius:'999px',
+        background:'rgba(0,0,0,0.6)', color:'#fff', fontSize:'13px',
+        zIndex:9999, opacity:0, transition:'opacity .18s'
+      });
+      document.body.appendChild(t);
+      requestAnimationFrame(()=> t.style.opacity = 1);
+      setTimeout(()=> { t.style.opacity = 0; setTimeout(()=> t.remove(),200) }, duration);
+    }
+  </script>
+</body>
+</html>
