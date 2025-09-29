@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg: #f8fbff;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent1: #ffd6e0; /* pastel pink */
+      --accent2: #d8f3ff; /* pastel blue */
+      --accent3: #f0ffd9; /* pastel green */
+      --accent4: #efe0ff; /* pastel lavender */
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 10px 30px rgba(16,24,40,0.07);
+      --radius: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color-scheme: light;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(circle at 10% 20%, var(--accent2) 0%, transparent 20%),
+                  radial-gradient(circle at 90% 80%, var(--accent1) 0%, transparent 18%),
+                  linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .stage{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      box-sizing:border-box;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* pastel rotating blobs */
+    .blob{
+      position:absolute;
+      filter: blur(30px) saturate(1.05);
+      opacity:0.9;
+      mix-blend-mode:screen;
+      border-radius:50%;
+      transform-origin:center;
+      will-change:transform;
+      animation:rotate-slow linear infinite;
+    }
+
+    .blob.a{ width:360px; height:360px; left:-80px; top:-60px; background:var(--accent4); animation-duration:30s; animation-direction:reverse; }
+    .blob.b{ width:260px; height:260px; right:-60px; top:-40px; background:var(--accent1); animation-duration:24s; }
+    .blob.c{ width:420px; height:420px; left:50%; bottom:-200px; transform:translateX(-30%); background:var(--accent3); animation-duration:36s; animation-direction:reverse; opacity:0.8; }
+    .blob.d{ width:160px; height:160px; right:8%; bottom:6%; background:var(--accent2); animation-duration:20s; }
+
+    @keyframes rotate-slow{
+      from{ transform: rotate(0deg) scale(1); }
+      50%{ transform: rotate(180deg) scale(1.06); }
+      to{ transform: rotate(360deg) scale(1); }
+    }
+
+    .container{
+      width:100%;
+      max-width:980px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      z-index:10;
+    }
+
+    @media (max-width:880px){
+      .container{ grid-template-columns: 1fr; padding-top:12vh; gap:18px; }
+      .right-panel{ order:-1; }
+    }
+
+    .left{
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      border-radius: var(--radius);
+      padding:36px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    .left h1{
+      margin:0 0 12px 0;
+      font-size: clamp(28px, 3.6vw, 44px);
+      letter-spacing: -0.02em;
+      color:#111827;
+    }
+
+    .subtitle{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:clamp(14px, 1.8vw, 17px);
+      line-height:1.5;
+    }
+
+    .card-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .mini{
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+      border-radius:12px;
+      padding:12px 14px;
+      flex:1 1 160px;
+      min-width:140px;
+      box-shadow: 0 6px 20px rgba(16,24,40,0.05);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      transition:transform .45s cubic-bezier(.2,.9,.3,1), box-shadow .3s;
+      transform-origin:center;
+      will-change:transform;
+    }
+
+    .mini:hover{
+      transform: translateY(-8px) rotate(-2deg) scale(1.01);
+      box-shadow: 0 18px 40px rgba(16,24,40,0.08);
+    }
+
+    .badge{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      display:inline-grid;
+      place-items:center;
+      color:#fff;
+      font-weight:600;
+      font-size:14px;
+      flex:0 0 44px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+    }
+
+    .b1{ background: linear-gradient(135deg, #ffd6e0, #ffb6d1); }
+    .b2{ background: linear-gradient(135deg, #d8f3ff, #bfe9ff); color:#07334a; }
+    .b3{ background: linear-gradient(135deg, #f0ffd9, #e8ffb9); color:#1b3b00; }
+
+    .meta{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.2;
+    }
+
+    .right-panel{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* rotating showcase card */
+    .showcase{
+      width:100%;
+      max-width:420px;
+      height:320px;
+      border-radius:24px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+      box-shadow: 0 18px 50px rgba(16,24,40,0.08);
+      padding:20px;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      justify-content:center;
+      align-items:center;
+      transform-style:preserve-3d;
+      perspective:1200px;
+      transition:transform .6s cubic-bezier(.2,.9,.3,1);
+    }
+
+    .rotator{
+      width:90%;
+      height:80%;
+      border-radius:16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.75), rgba(250,250,255,0.6));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+      transform-origin:center;
+      animation:float-rotate 9s ease-in-out infinite;
+    }
+
+    .rotator .inner{
+      width:84%;
+      height:72%;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.92));
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      color:#0f172a;
+      font-size:20px;
+      transform: translateZ(40px) rotateY(12deg);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+    }
+
+    @keyframes float-rotate{
+      0%{ transform: rotate3d(0,1,0,-6deg) translateY(0px) scale(1); }
+      25%{ transform: rotate3d(1,0,0,6deg) translateY(-6px) scale(1.02); }
+      50%{ transform: rotate3d(0,1,0,10deg) translateY(0px) scale(1); }
+      75%{ transform: rotate3d(1,0,0,-6deg) translateY(6px) scale(0.99); }
+      100%{ transform: rotate3d(0,1,0,-6deg) translateY(0px) scale(1); }
+    }
+
+    .showcase:before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:24px;
+      padding:2px;
+      background: linear-gradient(120deg, rgba(255,255,255,0.6), rgba(200,220,255,0.08));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      pointer-events:none;
+    }
+
+    .time {
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    footer{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:14px;
+      opacity:0.95;
+      z-index:12;
+    }
+
+    .footer-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      transition:color .18s ease;
+    }
+
+    .footer-link:hover{ color:#111827; }
+
+    .github-icon{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      vertical-align:middle;
+      fill: currentColor;
+      transition: transform .25s ease;
+    }
+
+    .footer-link:hover .github-icon{ transform: rotate(-12deg) scale(1.06); }
+
+    /* small credit row inside page bottom-right for tiny screens */
+    @media (max-width:480px){
+      footer{ font-size:13px; gap:8px; padding-bottom:8vmin; }
+      .stage{ padding-bottom:56px; }
+    }
+
+  </style>
+</head>
+<body>
+  <main class="stage" role="main" aria-labelledby="page-title">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+    <div class="blob c" aria-hidden="true"></div>
+    <div class="blob d" aria-hidden="true"></div>
+
+    <div class="container" role="region" aria-label="Main content">
+      <section class="left" aria-labelledby="page-title">
+        <h1 id="page-title">amirabolfazle</h1>
+        <p class="subtitle">A soft pastel demo — interactive, animated, and fully responsive. Subtle rotate and float effects create a gentle motion language that adapts to any screen.</p>
+
+        <div class="card-row" role="list">
+          <div class="mini" role="listitem" aria-label="Theme">
+            <div class="badge b1">P</div>
+            <div>
+              <div style="font-weight:700; color:#0f172a;">Pastel Theme</div>
+              <div class="meta">Gentle palette for calm interfaces</div>
+            </div>
+          </div>
+
+          <div class="mini" role="listitem" aria-label="Animation">
+            <div class="badge b2">A</div>
+            <div>
+              <div style="font-weight:700; color:#07334a;">Rotate Effects</div>
+              <div class="meta">Subtle 3D rotation & float</div>
+            </div>
+          </div>
+
+          <div class="mini" role="listitem" aria-label="Responsive">
+            <div class="badge b3">R</div>
+            <div>
+              <div style="font-weight:700; color:#1b3b00;">Responsive</div>
+              <div class="meta">Scales from phone to desktop</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px; display:flex; gap:12px; flex-wrap:wrap;">
+          <div style="padding:12px 14px; border-radius:12px; background:rgba(255,255,255,0.85); box-shadow: 0 8px 24px rgba(2,6,23,0.04);">
+            <div style="font-size:13px; color:var(--muted)">Creation time</div>
+            <div style="font-weight:700; color:#0f172a; margin-top:2px;">2025-09-29 17:47:34</div>
+          </div>
+
+          <div style="padding:12px 14px; border-radius:12px; background:linear-gradient(90deg,#fff,#fbfdff); box-shadow: 0 6px 18px rgba(2,6,23,0.04); display:flex; align-items:center; gap:10px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2v4" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 18v4" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4.2 6.6l2.8 2" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17 15.4l3 2.1" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div style="font-size:13px; color:var(--muted)">Interactive preview</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-panel" aria-label="Showcase">
+        <div class="showcase" role="img" aria-label="Animated showcase">
+          <div class="rotator" aria-hidden="true">
+            <div class="inner">amirabolfazle</div>
+          </div>
+
+          <div style="position:absolute; left:18px; bottom:16px; font-size:13px; color:var(--muted);" class="time">
+            Created: 2025-09-29 17:47:34
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer role="contentinfo">
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 .5C5.73.5.85 5.37.85 11.65c0 4.8 3.1 8.87 7.4 10.31.54.1.74-.24.74-.52 0-.26-.01-1-.02-1.96-3.01.66-3.64-1.45-3.64-1.45-.49-1.25-1.2-1.58-1.2-1.58-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.64 2.52 1.17 3.13.9.1-.7.38-1.17.69-1.44-2.4-.27-4.93-1.2-4.93-5.36 0-1.18.42-2.14 1.11-2.89-.11-.27-.48-1.36.11-2.83 0 0 .9-.29 2.95 1.11a10.2 10.2 0 0 1 2.69-.36c.91 0 1.83.12 2.69.36 2.04-1.4 2.95-1.11 2.95-1.11.59 1.47.22 2.56.11 2.83.69.75 1.11 1.71 1.11 2.89 0 4.17-2.54 5.09-4.95 5.35.39.34.74 1.02.74 2.06 0 1.49-.01 2.7-.01 3.07 0 .28.2.62.75.52 4.3-1.44 7.39-5.51 7.39-10.31C23.15 5.37 18.27.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+</body>
+</html>
