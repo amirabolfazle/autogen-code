@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1: #f8f4ff;
+    --bg2: #fff9f4;
+    --accent1: #ffd6e0;
+    --accent2: #dff7f0;
+    --accent3: #e7f0ff;
+    --muted: #64707a;
+    --card: rgba(255,255,255,0.75);
+    --glass: rgba(255,255,255,0.55);
+    --shadow: 0 8px 30px rgba(20,20,30,0.08);
+    --radius: 14px;
+    --ease: cubic-bezier(.2,.9,.3,1);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:#102027;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:scroll;
+    padding:40px 20px;
+  }
+
+  .page{
+    max-width:1100px;
+    margin:0 auto;
+    position:relative;
+  }
+
+  /* pastel floating blobs */
+  .blobs{
+    position:fixed;
+    left:50%;
+    top:8%;
+    transform:translateX(-50%);
+    pointer-events:none;
+    z-index:0;
+    filter: blur(28px);
+    opacity:0.95;
+  }
+  .blob{
+    position:absolute;
+    width:260px;height:260px;border-radius:50%;
+    mix-blend-mode:screen;
+    animation: float 12s ease-in-out infinite;
+    opacity:0.95;
+  }
+  .b1{background:radial-gradient(circle at 30% 30%, var(--accent1), transparent 40%); left:-280px; top:-40px; animation-duration:14s;}
+  .b2{background:radial-gradient(circle at 70% 30%, var(--accent2), transparent 40%); left:80px; top:-80px; animation-duration:16s;}
+  .b3{background:radial-gradient(circle at 50% 50%, var(--accent3), transparent 40%); left:360px; top:-20px; animation-duration:18s;}
+  @keyframes float{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-18px) scale(1.02)}
+    100%{transform:translateY(0) scale(1)}
+  }
+
+  header{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:28px;
+  }
+  .logo{
+    width:74px;height:74px;border-radius:16px;
+    background:linear-gradient(135deg,#fff 0%, rgba(255,255,255,0.7) 50%);
+    box-shadow:var(--shadow);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;color:#1b2730;font-size:22px;
+    flex-shrink:0;
+  }
+
+  h1{
+    margin:0;
+    font-size:34px;
+    letter-spacing:-0.6px;
+  }
+  .meta{
+    font-size:13px;color:var(--muted);
+    margin-top:6px;
+  }
+
+  main{
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:22px;
+    align-items:start;
+    z-index:1;
+    position:relative;
+  }
+
+  /* left column cards */
+  .stack{display:flex;flex-direction:column;gap:18px}
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.72));
+    border-radius:var(--radius);
+    padding:20px;
+    box-shadow:var(--shadow);
+    backdrop-filter: blur(8px);
+    border:1px solid rgba(255,255,255,0.6);
+    transform:translateY(18px);
+    opacity:0;
+    transition:transform 700ms var(--ease),opacity 700ms var(--ease);
+  }
+  .card.slide-up{transform:translateY(0); opacity:1}
+
+  .intro{
+    display:flex;gap:18px;align-items:center;
+  }
+  .avatar{
+    width:84px;height:84px;border-radius:14px;background:linear-gradient(135deg,var(--accent3),var(--accent1));
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#102027;font-size:28px;box-shadow:0 6px 20px rgba(16,32,39,0.08);
+  }
+  .about-text{line-height:1.45;color:#0f1b1f}
+  .chip{
+    display:inline-block;padding:6px 10px;background:var(--glass);border-radius:999px;font-size:13px;color:var(--muted);margin-right:8px;border:1px solid rgba(0,0,0,0.03)
+  }
+
+  .skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .skill{background:linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));padding:8px 12px;border-radius:999px;font-weight:600;color:#124;box-shadow:0 6px 14px rgba(18,40,50,0.05);font-size:13px}
+
+  /* right column */
+  .sidebar{position:relative;display:flex;flex-direction:column;gap:18px}
+  .card.small{padding:14px}
+
+  .projects{display:grid;gap:12px}
+  .project{
+    display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
+    border:1px solid rgba(0,0,0,0.03)
+  }
+  .proj-dot{width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent1));display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b2b22}
+
+  .contact{display:flex;flex-direction:column;gap:8px}
+  .contact a{display:inline-flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.75));text-decoration:none;color:#0b2b22;border:1px solid rgba(0,0,0,0.03)}
+
+  footer{
+    margin-top:30px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.5));
+    display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow);z-index:1;border:1px solid rgba(0,0,0,0.03)
+  }
+  .github-link{display:inline-flex;align-items:center;gap:10px;color:#102027;text-decoration:none;font-weight:600}
+  .gh-icon{width:22px;height:22px;display:inline-block;vertical-align:middle;fill:#102027;opacity:0.9}
+
+  /* small screens */
+  @media (max-width:900px){
+    main{grid-template-columns:1fr; padding-bottom:10px}
+    .sidebar{order:2}
+    header{flex-direction:column;align-items:flex-start;gap:10px}
+  }
+
+  /* small animation for header elements */
+  .fade-in{
+    opacity:0; transform:translateY(6px);
+    transition:opacity 700ms var(--ease), transform 700ms var(--ease);
+  }
+  .fade-in.show{opacity:1; transform:translateY(0)}
+  .subtle-glow{box-shadow: 0 6px 30px rgba(255,213,225,0.24)}
+</style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <div class="page">
+    <header>
+      <div class="logo fade-in" id="logo">am</div>
+      <div>
+        <h1 class="fade-in" id="title">amirabolfazle</h1>
+        <div class="meta fade-in" id="creation">Created: 2025-09-29 15:53:23</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="stack">
+        <article class="card intro" data-animate>
+          <div class="avatar">AB</div>
+          <div class="about-text">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="font-weight:700;font-size:16px">Hello — I'm amirabolfazle</div>
+              <div class="chip">Pastel lover</div>
+            </div>
+            <p style="margin:8px 0 0;color:#223a3f">
+              A calm corner of the web with gentle animations and a soft color palette. Scroll down — elements slide up as they arrive.
+            </p>
+            <div class="skills" style="margin-top:12px">
+              <div class="skill">Design</div>
+              <div class="skill">Frontend</div>
+              <div class="skill">Animation</div>
+              <div class="skill">Creative</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-animate>
+          <h3 style="margin:0 0 8px">Featured</h3>
+          <div style="color:var(--muted);line-height:1.55">
+            A tiny showcase of projects and ideas. Each card slides into view with a soft lift to keep the experience lively but relaxed.
+          </div>
+          <div class="projects" style="margin-top:14px">
+            <div class="project">
+              <div class="proj-dot">01</div>
+              <div>
+                <div style="font-weight:700">Autogen Code</div>
+                <div style="font-size:13px;color:var(--muted)">A project template and tooling to generate snippets.</div>
+              </div>
+            </div>
+
+            <div class="project">
+              <div class="proj-dot">02</div>
+              <div>
+                <div style="font-weight:700">Soft UI Kit</div>
+                <div style="font-size:13px;color:var(--muted)">Components and styles in pastel tones.</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-animate>
+          <h3 style="margin:0 0 8px">Notes</h3>
+          <ul style="margin:0;padding-left:18px;color:var(--muted);line-height:1.6">
+            <li>Slide-up effects use a lightweight intersection observer.</li>
+            <li>Composed with soft glass cards and floating pastel blobs.</li>
+            <li>Footer links to the GitHub repository below.</li>
+          </ul>
+        </article>
+      </section>
+
+      <aside class="sidebar">
+        <div class="card small" data-animate>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700">Contact</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:6px">Say hi — or explore projects.</div>
+            </div>
+            <div style="font-size:12px;color:var(--muted)">Available</div>
+          </div>
+          <div class="contact" style="margin-top:12px">
+            <a href="mailto:amirabolfazle@example.com" title="Email">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6.5Z" stroke="#214" stroke-opacity="0.7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 6.5 12 13 3 6.5" stroke="#214" stroke-opacity="0.7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Email
+            </a>
+            <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" title="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" class="gh-icon" aria-hidden="true"><path d="M12 .5C5.73.5.99 5.24.99 11.5c0 4.68 3.01 8.64 7.19 10.04.53.1.72-.23.72-.51 0-.25-.01-.92-.01-1.8-2.92.64-3.54-1.19-3.54-1.19-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.6 2.46 1.14 3.06.87.09-.69.37-1.14.67-1.4-2.33-.27-4.78-1.17-4.78-5.2 0-1.15.41-2.09 1.08-2.83-.11-.27-.47-1.36.1-2.83 0 0 .88-.28 2.88 1.08a9.86 9.86 0 0 1 2.62-.35c.89.01 1.79.12 2.62.35 2-.36 2.88-1.08 2.88-1.08.57 1.47.21 2.56.1 2.83.67.74 1.08 1.68 1.08 2.83 0 4.04-2.46 4.92-4.8 5.18.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.62.73.51 4.18-1.4 7.19-5.36 7.19-10.04C23.01 5.24 18.27.5 12 .5z"/></svg>
+              View on GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="card small" data-animate>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent3));display:flex;align-items:center;justify-content:center;font-weight:700">★</div>
+            <div>
+              <div style="font-weight:700">Highlights</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:6px">Curated experiments and tiny UI gems.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <div class="chip">UI</div><div class="chip">Animation</div><div class="chip">Web</div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5.99 5.24.99 11.5c0 4.68 3.01 8.64 7.19 10.04.53.1.72-.23.72-.51 0-.25-.01-.92-.01-1.8-2.92.64-3.54-1.19-3.54-1.19-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.6 2.46 1.14 3.06.87.09-.69.37-1.14.67-1.4-2.33-.27-4.78-1.17-4.78-5.2 0-1.15.41-2.09 1.08-2.83-.11-.27-.47-1.36.1-2.83 0 0 .88-.28 2.88 1.08a9.86 9.86 0 0 1 2.62-.35c.89.01 1.79.12 2.62.35 2-.36 2.88-1.08 2.88-1.08.57 1.47.21 2.56.1 2.83.67.74 1.08 1.68 1.08 2.83 0 4.04-2.46 4.92-4.8 5.18.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.62.73.51 4.18-1.4 7.19-5.36 7.19-10.04C23.01 5.24 18.27.5 12 .5z"/></svg>
+        Created by amirabolfazle
+      </a>
+      <div style="color:var(--muted);font-size:13px">Made with calm animations • 2025</div>
+    </footer>
+  </div>
+
+<script>
+  // Intersection observer to trigger slide-up/fade-in
+  (function(){
+    const opts = {threshold:0.12};
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('slide-up');
+          e.target.classList.add('show');
+          io.unobserve(e.target);
+        }
+      });
+    }, opts);
+
+    document.querySelectorAll('[data-animate]').forEach(el=>{
+      io.observe(el);
+    });
+
+    // header simple fade-in
+    window.addEventListener('load', ()=>{
+      setTimeout(()=>document.getElementById('logo').classList.add('show'),120);
+      setTimeout(()=>document.getElementById('title').classList.add('show'),200);
+      setTimeout(()=>document.getElementById('creation').classList.add('show'),320);
+    });
+  })();
+</script>
+</body>
+</html>
