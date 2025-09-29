@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#0b3d91;
+      --accent1:#7b2ff7;
+      --accent2:#00d2ff;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.03);
+      --text: #e6eef8;
+      --muted: #bfcfe8;
+      --radius: 16px;
+      --max-w: 1000px;
+      --transition: cubic-bezier(.2,.9,.3,1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(135deg,var(--bg1) 0%, #071430 30%, #021229 60%);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Animated gradient halo */
+    .gradient-halo{
+      position:fixed;
+      inset: -20% -20% auto -20%;
+      height: 140vh;
+      background: radial-gradient(40% 40% at 10% 20%, rgba(123,47,247,0.14), transparent 10%),
+                  radial-gradient(30% 30% at 80% 70%, rgba(0,210,255,0.12), transparent 12%),
+                  linear-gradient(120deg, rgba(123,47,247,0.06), rgba(0,210,255,0.04));
+      filter: blur(40px);
+      pointer-events:none;
+      z-index:0;
+      animation: haloShift 12s var(--transition) infinite alternate;
+      mix-blend-mode:screen;
+    }
+    @keyframes haloShift{
+      0%{transform:translate3d(-3%,0,0) scale(1)}
+      50%{transform:translate3d(3%,-2%,0) scale(1.02)}
+      100%{transform:translate3d(-3%,2%,0) scale(1)}
+    }
+
+    .container{
+      max-width: var(--max-w);
+      margin: 6vh auto;
+      padding: 36px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      display:grid;
+      grid-template-columns: 1fr 390px;
+      gap:28px;
+      align-items:stretch;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius: var(--radius);
+      padding:28px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(8px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.04);
+      overflow:hidden;
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .card{grid-template-columns: 1fr; padding:24px}
+      .right{order:2}
+      .left{order:1}
+    }
+
+    .left{padding:12px 18px}
+    .logo{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      width:max-content;
+      margin-bottom:18px;
+      animation: fadeIn 700ms var(--transition) both;
+    }
+    .brand-mark{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      background: linear-gradient(135deg,var(--accent1), var(--accent2));
+      display:inline-grid;
+      place-items:center;
+      color:white;
+      font-weight:800;
+      font-size:18px;
+      box-shadow: 0 6px 18px rgba(123,47,247,0.18);
+    }
+
+    h1{
+      margin:0 0 10px 0;
+      font-size:40px;
+      line-height:1.02;
+      letter-spacing:-0.02em;
+      animation: fadeInUp 700ms var(--transition) both;
+    }
+    p.lead{
+      margin:0 0 22px 0;
+      color:var(--muted);
+      font-size:15px;
+      animation: fadeInUp 850ms var(--transition) both;
+    }
+
+    .badges{display:flex; gap:10px; margin-bottom:22px; flex-wrap:wrap}
+    .badge{
+      display:inline-flex;
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.02);
+      backdrop-filter: blur(4px);
+      animation: fadeIn 900ms var(--transition) both;
+    }
+
+    .cta-row{display:flex; gap:12px; align-items:center; margin-top:10px}
+    .btn{
+      appearance:none;
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform 220ms var(--transition), box-shadow 220ms var(--transition);
+      color:white;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      box-shadow: 0 10px 30px rgba(7,22,70,0.45);
+      animation: fadeIn 1000ms var(--transition) both;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.ghost{
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow:none;
+    }
+    .meta{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      animation: fadeInUp 1100ms var(--transition) both;
+    }
+
+    /* Right pane with mockup */
+    .right{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+      border-radius:12px;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:stretch;
+      justify-content:center;
+      box-shadow: inset 0 -8px 40px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.02);
+      animation: fadeIn 1100ms var(--transition) both;
+    }
+
+    .card-mock{
+      height:220px;
+      border-radius:10px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      gap:12px;
+      padding:12px;
+      align-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .mock-sidebar{
+      width:64px;
+      height:calc(100% - 24px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:8px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding:10px;
+      justify-content:flex-start;
+      align-items:center;
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.06)}
+    .mock-main{
+      flex:1;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      justify-content:center;
+      padding-right:6px;
+    }
+    .mock-line{
+      height:12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius:6px;
+    }
+    .mock-line.w1{width:90%}
+    .mock-line.w2{width:65%}
+    .mock-line.w3{width:80%}
+    .tag{
+      font-size:12px;
+      color:var(--muted);
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.018);
+      width:max-content;
+      margin-left:auto;
+    }
+
+    footer{
+      margin-top:22px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      gap:12px;
+      flex-wrap:wrap;
+      padding-top:12px;
+      border-top:1px dashed rgba(255,255,255,0.02);
+      animation: fadeIn 1200ms var(--transition) both;
+    }
+
+    .foot-left{display:flex; gap:12px; align-items:center}
+    .git-link{
+      display:inline-grid;
+      place-items:center;
+      width:36px;
+      height:36px;
+      border-radius:10px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--text);
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform 200ms var(--transition);
+    }
+    .git-link:hover{transform:translateY(-3px) scale(1.02)}
+    .created{opacity:0.95}
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {opacity:0; transform:translateY(6px)}
+      to {opacity:1; transform:none}
+    }
+    @keyframes fadeInUp {
+      from {opacity:0; transform:translateY(18px)}
+      to {opacity:1; transform:none}
+    }
+
+    /* subtle floating shapes */
+    .shape{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(24px);
+      opacity:0.12;
+      pointer-events:none;
+    }
+    .shape.s1{width:240px;height:240px;background:linear-gradient(90deg,var(--accent1), rgba(123,47,247,0.2)); top:-40px; left:-40px; transform:rotate(12deg)}
+    .shape.s2{width:180px;height:180px;background:linear-gradient(90deg, rgba(0,210,255,0.18), rgba(123,47,247,0.02)); bottom:-40px; right:-60px}
+  </style>
+</head>
+<body>
+  <div class="gradient-halo" aria-hidden="true"></div>
+  <div class="container">
+    <div class="card" role="region" aria-label="amirabolfazle landing">
+      <div class="left">
+        <div class="logo" aria-hidden="true">
+          <div class="brand-mark">A</div>
+          <div style="font-weight:600;color:var(--text)">amirabolfazle</div>
+        </div>
+
+        <h1>amirabolfazle</h1>
+        <p class="lead">A sleek, modern landing experience with soft gradients and subtle motion. Built to make a strong first impression while staying minimal and fast.</p>
+
+        <div class="badges" aria-hidden="true">
+          <div class="badge">Gradient theme</div>
+          <div class="badge">Fade-in effects</div>
+          <div class="badge">Responsive</div>
+        </div>
+
+        <div class="cta-row" role="group" aria-label="Call to action">
+          <button class="btn" onclick="window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'})">Get started</button>
+          <button class="btn ghost" onclick="alert('Hello from amirabolfazle!')">Preview</button>
+        </div>
+
+        <div class="meta" aria-hidden="false" style="margin-top:18px;">
+          <div>Created: <strong style="color:var(--text); margin-left:6px">2025-09-29 08:08:32</strong></div>
+          <div style="margin-left:auto; color:var(--muted); font-size:13px">Fast • Elegant • Modern</div>
+        </div>
+
+        <footer style="border-top:none; padding-top:18px;">
+          <div class="foot-left">
+            <a class="git-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open repository on GitHub">
+              <!-- GitHub SVG -->
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.75 5.4.75 11.74c0 4.78 3.1 8.84 7.4 10.27.54.1.74-.24.74-.52 0-.26-.01-.94-.01-1.84-3.01.66-3.64-1.45-3.64-1.45-.5-1.3-1.22-1.65-1.22-1.65-.99-.68.08-.67.08-.67 1.1.08 1.68 1.16 1.68 1.16.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.7-1.45-2.4-.27-4.92-1.2-4.92-5.33 0-1.18.42-2.15 1.11-2.91-.11-.27-.48-1.36.11-2.83 0 0 .9-.29 2.95 1.11A10.2 10.2 0 0112 6.7c.91.004 1.83.12 2.69.36 2.05-1.4 2.95-1.11 2.95-1.11.59 1.47.22 2.56.11 2.83.69.76 1.11 1.73 1.11 2.91 0 4.14-2.52 5.06-4.93 5.33.39.34.74 1.03.74 2.07 0 1.49-.01 2.69-.01 3.05 0 .28.2.62.75.52 4.3-1.43 7.4-5.49 7.4-10.27C23.25 5.4 18.35.5 12 .5z" fill="currentColor"/>
+              </svg>
+            </a>
+            <div class="created">Created by amirabolfazle</div>
+          </div>
+          <div style="color:var(--muted); font-size:13px">© <span id="year">2025</span> amirabolfazle</div>
+        </footer>
+      </div>
+
+      <div class="right" aria-hidden="false">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div style="width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2)); box-shadow:0 6px 18px rgba(123,47,247,0.14)"></div>
+            <div style="color:var(--muted); font-size:13px">Live preview</div>
+          </div>
+          <div class="tag">v1.0</div>
+        </div>
+
+        <div class="card-mock" role="img" aria-label="Preview mockup">
+          <div class="mock-sidebar" aria-hidden="true">
+            <div class="dot" style="background:linear-gradient(90deg,var(--accent1),var(--accent2))"></div>
+            <div class="dot" style="opacity:0.8"></div>
+            <div class="dot" style="opacity:0.6"></div>
+          </div>
+          <div class="mock-main">
+            <div class="mock-line w1"></div>
+            <div class="mock-line w2" style="height:10px"></div>
+            <div style="display:flex; gap:8px; align-items:center; justify-content:space-between">
+              <div class="mock-line w3" style="height:10px"></div>
+              <div style="width:10px;height:10px;border-radius:3px;background:linear-gradient(90deg,var(--accent1),var(--accent2))"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:var(--glass); border-radius:10px; padding:12px; border:1px solid rgba(255,255,255,0.02)">
+            <div style="font-size:13px; color:var(--muted)">Performance</div>
+            <div style="font-weight:700; font-size:18px; margin-top:6px">95%</div>
+          </div>
+          <div style="background:var(--glass-2); border-radius:10px; padding:12px; border:1px solid rgba(255,255,255,0.02)">
+            <div style="font-size:13px; color:var(--muted)">Uptime</div>
+            <div style="font-weight:700; font-size:18px; margin-top:6px">99.99%</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top:8px;">
+          <button class="btn" style="flex:1" onclick="window.open('https://github.com/amirabolfazle/autogen-code','_blank')">View code</button>
+          <button class="btn ghost" style="width:92px" onclick="navigator.clipboard?.writeText('amirabolfazle')">Copy</button>
+        </div>
+      </div>
+
+      <div class="shape s1" aria-hidden="true"></div>
+      <div class="shape s2" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script>
+    // small script to keep the year current in footer (but fixed creation time remains visible)
+    (function(){
+      try{
+        document.getElementById('year').textContent = new Date().getFullYear();
+      }catch(e){}
+    })();
+  </script>
+</body>
+</html>
