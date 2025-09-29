@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071028;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.18);
+      --accent: #7c5cff;
+      --accent2:#22d3ee;
+      --muted: rgba(255,255,255,0.75);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(34,211,238,0.08), transparent),
+                  linear-gradient(180deg,var(--bg1), var(--bg2));
+      color: #e8eefc;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+    }
+
+    /* Floating background orbs */
+    .orb{
+      position: absolute;
+      border-radius:50%;
+      filter: blur(80px);
+      opacity:0.22;
+      transform: translateZ(0);
+      pointer-events:none;
+    }
+    .orb.a{width:420px;height:420px;background:linear-gradient(135deg,var(--accent), transparent); left:-80px; top:-60px;}
+    .orb.b{width:320px;height:320px;background:linear-gradient(135deg,var(--accent2), transparent); right:-60px; bottom:-80px; opacity:0.18;}
+
+    /* Main glass card */
+    .wrap{
+      position:relative;
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      align-items:center;
+      z-index:2;
+    }
+    @media (max-width:960px){
+      .wrap{grid-template-columns:1fr; padding:24px}
+    }
+
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border-radius:20px;
+      padding:36px;
+      backdrop-filter: blur(10px) saturate(1.2);
+      -webkit-backdrop-filter: blur(10px) saturate(1.2);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 10px 30px rgba(4,6,15,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+      transition: transform 0.35s cubic-bezier(.2,.9,.3,1), box-shadow 0.35s;
+      transform-origin:center;
+    }
+
+    /* Zoom on hover for entire card area (desktop) */
+    .glass:hover{ transform: scale(1.02); box-shadow: 0 22px 60px rgba(7,9,30,0.7); }
+
+    /* Left content */
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .title{
+      font-size:clamp(30px,5vw,48px);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.02em;
+      color: #fff;
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .title .dot{
+      width:14px;height:14px;border-radius:50%;
+      background: linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow: 0 6px 18px rgba(124,92,255,0.28);
+      transform-origin:center;
+      transition: transform .35s ease;
+    }
+    .glass:hover .title .dot{ transform: scale(1.18) rotate(12deg); }
+
+    .lead{
+      color: rgba(232,238,252,0.88);
+      font-size:16px;
+      line-height:1.6;
+      max-width:60ch;
+    }
+
+    /* CTA & badges */
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:6px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 18px;
+      border-radius:12px;
+      background:linear-gradient(90deg, rgba(124,92,255,0.16), rgba(34,211,238,0.06));
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.06);
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
+      transition: transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s;
+      box-shadow: 0 6px 18px rgba(7,9,30,0.45);
+    }
+    .btn:active{ transform: translateY(2px) }
+    .btn.primary{
+      background: linear-gradient(90deg,var(--accent),var(--accent2));
+      color: #061022;
+      box-shadow: 0 12px 30px rgba(124,92,255,0.18);
+    }
+    .btn.ghost{
+      background: transparent;
+      border:1px solid rgba(255,255,255,0.08);
+      color: rgba(232,238,252,0.95);
+    }
+
+    /* Right panel - profile / preview card */
+    .preview{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .profile{
+      width:100%;
+      max-width:360px;
+      border-radius:16px;
+      padding:20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      transition: transform .45s cubic-bezier(.2,.9,.3,1);
+      transform-origin:center;
+    }
+    .profile:hover{ transform: translateY(-6px) scale(1.01); }
+
+    .avatar{
+      width:84px;height:84px;border-radius:18px;
+      background: linear-gradient(135deg,var(--accent),var(--accent2));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;color:#041122;font-size:22px;
+      box-shadow: 0 8px 26px rgba(124,92,255,0.18);
+      margin-bottom:12px;
+    }
+    .meta{
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .meta h4{margin:0;font-size:18px;font-weight:700;color:#ffffff;}
+    .meta p{margin:0;color:rgba(232,238,252,0.82);font-size:13px}
+
+    .stats{
+      display:flex;gap:10px;margin-top:14px;
+    }
+    .stat{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:10px 12px;border-radius:12px;font-weight:700;font-size:12px;color:#fff;border:1px solid rgba(255,255,255,0.04);
+      display:inline-flex;flex-direction:column;align-items:flex-start;
+    }
+    .muted{color:rgba(232,238,252,0.66);font-weight:500;font-size:12px}
+
+    /* Footer */
+    footer{
+      width:100%;
+      max-width:1100px;
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      z-index:2;
+    }
+    .footer-inner{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:rgba(232,238,252,0.86);
+      font-size:13px;
+    }
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 10px;
+      border-radius:10px;
+      transition: background .18s, transform .18s;
+    }
+    .gh:hover{ background: rgba(255,255,255,0.02); transform: translateY(-3px); }
+
+    .created{
+      color: rgba(232,238,252,0.6);
+      font-size:12px;
+    }
+
+    /* small floating zoom element */
+    .zoom-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:#051022;
+      background: linear-gradient(90deg,var(--accent),var(--accent2));
+      box-shadow: 0 10px 26px rgba(124,92,255,0.14);
+      transform: translateZ(0);
+      transition: transform .28s ease;
+      cursor:default;
+    }
+    .glass:hover .zoom-badge{ transform: scale(1.05) translateY(-2px); }
+
+    /* subtle entrance animation */
+    .glass, .orb{ animation: fadeInUp .8s cubic-bezier(.2,.9,.3,1) both; }
+    @keyframes fadeInUp{
+      from{ opacity:0; transform: translateY(10px) scale(.995) }
+      to{ opacity:1; transform: translateY(0) scale(1) }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb a" aria-hidden="true"></div>
+  <div class="orb b" aria-hidden="true"></div>
+
+  <main style="width:100%;max-width:1200px;">
+    <section class="wrap" role="region" aria-label="amirabolfazle landing">
+      <div class="glass hero" id="glassMain" aria-hidden="false">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div style="display:flex;flex-direction:column;">
+            <div class="title">
+              <span class="dot" aria-hidden="true"></span>
+              amirabolfazle
+            </div>
+            <div style="height:6px"></div>
+            <div class="lead">A modern, glassmorphic landing built with smooth zoom interactions and subtle motion — crafted to showcase personality and presence on the web.</div>
+          </div>
+
+          <div class="zoom-badge" aria-hidden="true">Zoom • Glass</div>
+        </div>
+
+        <div class="actions" style="margin-top:20px;">
+          <a class="btn primary" href="#explore" id="ctaExplore">Explore</a>
+          <a class="btn ghost" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">View Code</a>
+          <div style="flex:1"></div>
+          <div class="created" title="creation time">Created: 2025-09-29 19:06:02</div>
+        </div>
+
+        <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
+          <div style="min-width:220px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:13px;color:rgba(232,238,252,0.7);font-weight:700">Highlights</div>
+            <ul style="margin:0;padding-left:18px;color:rgba(232,238,252,0.88);line-height:1.6;max-width:48ch">
+              <li>Glassmorphism surfaces with depth and blur</li>
+              <li>Hover and load zoom effects for delightful motion</li>
+              <li>Responsive layout and lightweight interactions</li>
+            </ul>
+          </div>
+          <div style="min-width:220px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:13px;color:rgba(232,238,252,0.7);font-weight:700">Use</div>
+            <p style="margin:0;color:rgba(232,238,252,0.86);max-width:48ch">Drop in your content, change colors or link the CTA — this layout is meant to be a polished starting point for portfolios, projects, or personal pages.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="glass preview" aria-label="Profile preview">
+        <div class="profile" id="profileCard">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="avatar" aria-hidden="true">A</div>
+            <div class="meta">
+              <h4>amirabolfazle</h4>
+              <p class="muted">Creative developer & builder</p>
+            </div>
+          </div>
+
+          <div class="stats" style="margin-top:12px;">
+            <div class="stat">
+              <div style="font-size:14px">Projects</div>
+              <div class="muted" style="margin-top:6px;font-weight:700">24</div>
+            </div>
+            <div class="stat">
+              <div style="font-size:14px">Followers</div>
+              <div class="muted" style="margin-top:6px;font-weight:700">1.2k</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="width:100%;display:flex;justify-content:center;">
+          <a class="btn" href="#contact" style="width:100%;max-width:300px;justify-content:center;">Contact</a>
+        </div>
+      </aside>
+    </section>
+
+    <footer aria-label="page footer">
+      <div class="footer-inner">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener" aria-label="amirabolfazle GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#ffffff" fill-opacity="0.95" d="M8 .198C3.58.198.2 3.58.2 8c0 3.174 2.057 5.87 4.907 6.826.36.066.492-.156.492-.346 0-.17-.007-.62-.01-1.217-1.996.434-2.416-.96-2.416-.96-.327-.832-.798-1.054-.798-1.054-.653-.446.05-.436.05-.436.722.05 1.102.742 1.102.742.642 1.1 1.685.783 2.096.599.064-.465.252-.783.459-.963-1.593-.182-3.269-.796-3.269-3.54 0-.782.28-1.421.742-1.922-.075-.183-.322-.915.07-1.905 0 0 .605-.194 1.98.737a6.9 6.9 0 012.2-.296c.746.003 1.499.101 2.2.296 1.375-.931 1.98-.737 1.98-.737.393.99.146 1.722.072 1.905.464.501.742 1.14.742 1.922 0 2.753-1.678 3.356-3.277 3.534.259.224.487.666.487 1.344 0 .97-.009 1.75-.009 1.988 0 .192.132.416.497.345C13.947 13.868 16 11.174 16 8c0-4.42-3.38-7.802-8-7.802z"/>
+          </svg>
+          <span style="font-weight:700">GitHub</span>
+        </a>
+
+        <div class="created">Created by amirabolfazle</div>
+      </div>
+
+      <div style="height:1px;flex:1"></div>
+    </footer>
+  </main>
+
+  <script>
+    // Subtle tilt on mouse move for the main card and profile card
+    (function(){
+      const target = document.getElementById('glassMain');
+      const profile = document.getElementById('profileCard');
+
+      function handleMove(e){
+        const rect = target.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const rx = y * 6; // rotateX
+        const ry = x * -6; // rotateY
+        target.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.01)`;
+        profile.style.transform = `translateY(-6px) perspective(900px) rotateX(${rx/1.6}deg) rotateY(${ry/1.6}deg) scale(1.005)`;
+      }
+      function reset(){
+        target.style.transform = '';
+        profile.style.transform = '';
+      }
+
+      let bound = false;
+      function bind(){
+        if(bound) return;
+        bound=true;
+        target.addEventListener('mousemove', handleMove);
+        target.addEventListener('mouseleave', reset);
+        target.addEventListener('touchstart', ()=>{}, {passive:true});
+      }
+
+      // Only bind on wide screens for performance
+      if(window.innerWidth > 760) bind();
+
+      window.addEventListener('resize', ()=>{
+        if(window.innerWidth > 760) bind();
+      });
+
+      // Smooth initial pop for the dot
+      const dot = document.querySelector('.title .dot');
+      if(dot){
+        dot.animate([{transform:'scale(.6) rotate(0deg)'},{transform:'scale(1) rotate(6deg)'}], {duration:900, easing:'cubic-bezier(.2,.9,.3,1)'});
+      }
+
+      // Small keyboard focus enhancement for CTA
+      const cta = document.getElementById('ctaExplore');
+      cta.addEventListener('focus', ()=> cta.style.boxShadow = '0 14px 40px rgba(124,92,255,0.16)');
+      cta.addEventListener('blur', ()=> cta.style.boxShadow = '');
+    })();
+  </script>
+</body>
+</html>
