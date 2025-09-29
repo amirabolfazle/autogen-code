@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071036;
+      --accent1:#7b61ff;
+      --accent2:#00d4ff;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.03);
+      --text: #e6eef7;
+      --muted: #a9b6c7;
+      --radius: 14px;
+      --ease: cubic-bezier(.2,.9,.3,1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.12), transparent 8%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(0,212,255,0.06), transparent 10%),
+                  linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:48px 24px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      min-height:100vh;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* single-column fallback */
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr; padding-bottom:48px}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.55), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    /* Hero */
+    .hero{
+      padding:36px;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      overflow:visible;
+    }
+    .avatar{
+      flex:0 0 120px;
+      width:120px;
+      height:120px;
+      border-radius:20px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:40px;
+      color:white;
+      box-shadow: 0 10px 30px rgba(123,97,255,0.18);
+      transform:translateY(0);
+    }
+    .meta{
+      flex:1;
+      min-width:0;
+    }
+    .meta h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:-0.6px;
+      line-height:1;
+    }
+    .meta p.lead{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .meta .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      margin-top:14px;
+      font-size:13px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--text);
+    }
+
+    /* Right column */
+    .side{
+      position:sticky;
+      top:36px;
+      height:fit-content;
+    }
+    .timestamp{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      border:1px dashed rgba(255,255,255,0.03);
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* projects grid */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+    @media (max-width:640px){ .grid{grid-template-columns:1fr} }
+
+    .project{
+      padding:16px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.017), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .project h3{margin:0 0 6px 0; font-size:15px}
+    .project p{margin:0; font-size:13px; color:var(--muted)}
+
+    /* sections area */
+    .sections{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .section-title{
+      font-size:15px;
+      letter-spacing:0.6px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    /* buttons */
+    .btn{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:10px;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:white;
+      font-weight:600;
+      font-size:13px;
+      text-decoration:none;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 8px 24px rgba(11,8,40,0.35);
+    }
+
+    /* footer */
+    footer{
+      margin-top:28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .gh{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+      color:var(--muted);
+    }
+    .gh svg{filter:drop-shadow(0 4px 18px rgba(0,0,0,0.45));}
+
+    /* Animated slide-up effect */
+    .reveal{
+      opacity:0;
+      transform: translateY(18px);
+      transition: transform 600ms var(--ease), opacity 520ms var(--ease);
+      will-change:transform,opacity;
+    }
+    .reveal.in-view{
+      opacity:1;
+      transform: translateY(0);
+    }
+    /* stagger helpers */
+    .reveal[data-delay="1"]{transition-delay:80ms}
+    .reveal[data-delay="2"]{transition-delay:160ms}
+    .reveal[data-delay="3"]{transition-delay:240ms}
+    .reveal[data-delay="4"]{transition-delay:320ms}
+    .reveal[data-delay="5"]{transition-delay:400ms}
+    .reveal[data-delay="6"]{transition-delay:480ms}
+
+    /* subtle floating for avatar */
+    @keyframes floaty{
+      0%{ transform:translateY(0) rotate(-1deg)}
+      50%{ transform:translateY(-6px) rotate(0.5deg)}
+      100%{ transform:translateY(0) rotate(-1deg)}
+    }
+    .avatar{ animation: floaty 6.5s var(--ease) infinite }
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      .avatar{width:96px;height:96px;border-radius:14px;font-size:32px}
+      .meta h1{font-size:22px}
+    }
+
+    /* focus ring for links */
+    a:focus{outline:2px solid rgba(255,255,255,0.06); outline-offset:3px; border-radius:8px}
+  </style>
+</head>
+<body>
+  <main class="wrap" aria-labelledby="page-title">
+    <section class="card hero reveal" data-delay="1" id="hero">
+      <div class="avatar" aria-hidden="true">AB</div>
+      <div class="meta">
+        <h1 id="page-title">amirabolfazle</h1>
+        <p class="lead">Designer · Developer · Maker. I craft elegant interfaces and build thoughtful code.</p>
+        <div class="badge" aria-hidden="true">Gradient Themes · Motion · Clean Code</div>
+
+        <div class="sections" style="margin-top:20px">
+          <div class="section reveal" data-delay="2">
+            <div class="section-title">
+              <span>About</span>
+              <span style="color:var(--muted); font-size:13px">Welcome</span>
+            </div>
+            <p style="margin-top:10px; color:var(--muted); font-size:14px">
+              I'm amirabolfazle — curious about interfaces, animations and developer ergonomics. This page is a small animated canvas.
+            </p>
+          </div>
+
+          <div class="section reveal" data-delay="3">
+            <div class="section-title">
+              <span>Contact</span>
+              <span style="color:var(--muted); font-size:13px">say hi</span>
+            </div>
+            <p style="margin-top:10px; color:var(--muted); font-size:14px">Email: hello@amirabolfazle.dev</p>
+            <div style="margin-top:12px">
+              <a class="btn" href="#projects" role="button">View Projects</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="card reveal" data-delay="2" style="margin-bottom:16px">
+        <div class="timestamp" aria-live="polite">
+          <div>
+            <div style="font-weight:600; color:var(--text)">Creation time</div>
+            <div style="font-size:13px; color:var(--muted); margin-top:6px">2025-09-29 16:26:00</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px; color:var(--muted)">UTC</div>
+            <div style="margin-top:6px">
+              <a href="#hero" style="font-size:13px; color:var(--accent2); text-decoration:none">Refresh view</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:16px" id="projects">
+          <div class="project reveal" data-delay="3">
+            <h3>autogen-code</h3>
+            <p>Repo for tooling and automation. Quick utilities and templates.</p>
+          </div>
+          <div class="project reveal" data-delay="4">
+            <h3>ui-playground</h3>
+            <p>Experiments with motion and micro-interactions.</p>
+          </div>
+          <div class="project reveal" data-delay="5">
+            <h3>portfolio</h3>
+            <p>Selected works — design, frontend and open-source.</p>
+          </div>
+          <div class="project reveal" data-delay="6">
+            <h3>notes</h3>
+            <p>Thoughts on design systems, accessibility and tooling.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card reveal" data-delay="4">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+          <div>
+            <div style="font-weight:700; font-size:15px">Quick Links</div>
+            <div style="margin-top:8px; color:var(--muted); font-size:13px">Explore repositories and contact.</div>
+          </div>
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+            GitHub
+          </a>
+        </div>
+
+        <footer style="margin-top:16px">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub: amirabolfazle/autogen-code">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:var(--text)">
+              <path d="M12 0.5C5.37 0.5 0 5.87 0 12.5c0 5.28 3.438 9.745 8.205 11.325.6.112.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.758-1.333-1.758-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.24 1.84 1.24 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.381 1.235-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.984-.399 3.003-.404 1.018.005 2.045.138 3.003.404 2.29-1.552 3.296-1.23 3.296-1.23.654 1.653.243 2.873.12 3.176.77.84 1.233 1.911 1.233 3.221 0 4.61-2.807 5.624-5.48 5.922.43.372.815 1.102.815 2.222 0 1.605-.015 2.897-.015 3.293 0 .32.216.694.825.576C20.565 22.243 24 17.78 24 12.5 24 5.87 18.627.5 12 .5z"/>
+            </svg>
+            <span style="color:var(--muted)">Created by amirabolfazle</span>
+          </a>
+        </footer>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // IntersectionObserver to add .in-view for slide-up effects
+    (function(){
+      const opts = { threshold: 0.08 };
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('in-view');
+            // keep visible; unobserve to avoid retrigger
+            observer.unobserve(e.target);
+          }
+        });
+      }, opts);
+
+      const revealTargets = document.querySelectorAll('.reveal');
+      revealTargets.forEach((el, i)=> observer.observe(el));
+
+      // Optional: smooth scroll for internal links
+      document.addEventListener('click', function(e){
+        const a = e.target.closest('a');
+        if(!a) return;
+        const href = a.getAttribute('href') || '';
+        if(href.startsWith('#')){
+          const id = href.slice(1);
+          const target = document.getElementById(id);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        }
+      });
+
+      // tiny theme shimmer on load
+      window.addEventListener('load', ()=> {
+        document.querySelectorAll('.reveal').forEach((el, idx)=>{
+          // if not yet in-view, animate with slight delay
+          if(!el.classList.contains('in-view')){
+            setTimeout(()=> el.classList.add('in-view'), 120 + idx*80);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
