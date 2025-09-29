@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#040214;
+      --bg-2:#0b0822;
+      --neon-cyan:#00f0ff;
+      --neon-pink:#ff2fd4;
+      --neon-purple:#8a2fff;
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.12);
+      --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink),var(--neon-purple));
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,240,255,0.06), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(255,47,212,0.04), transparent),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#e9f6ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:48px 24px;
+    }
+
+    /* animated background nebula */
+    .sky{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .blob{
+      position:absolute;
+      filter:blur(60px) saturate(140%);
+      mix-blend-mode:screen;
+      opacity:0.75;
+      transform:translate3d(0,0,0);
+      animation:float 12s ease-in-out infinite;
+    }
+    .blob.one{width:520px;height:520px;background:var(--neon-cyan);left:-8%;top:10%;animation-duration:16s}
+    .blob.two{width:420px;height:420px;background:var(--neon-pink);right:-10%;bottom:6%;animation-duration:18s;animation-delay:2s}
+    .blob.three{width:360px;height:360px;background:var(--neon-purple);left:30%;bottom:-8%;animation-duration:20s;animation-delay:4s}
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-40px) scale(1.06)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:2;
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:32px;
+      align-items:center;
+    }
+
+    @media (max-width:940px){
+      .wrap{grid-template-columns:1fr; padding:40px 0}
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:36px;
+      backdrop-filter: blur(8px) saturate(120%);
+      box-shadow: 0 10px 40px rgba(3,2,10,0.6);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding:48px;
+      position:relative;
+    }
+    .title{
+      font-family:"Orbitron", sans-serif;
+      font-weight:700;
+      font-size:48px;
+      letter-spacing:2px;
+      margin:0 0 12px 0;
+      line-height:1;
+      color:transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.06);
+      background:var(--accent);
+      background-clip:text;
+      -webkit-background-clip:text;
+      text-shadow:
+        0 0 8px rgba(0,240,255,0.08),
+        0 0 18px rgba(255,47,212,0.04);
+      filter:drop-shadow(0 4px 18px rgba(138,47,255,0.12));
+      opacity:0;
+      transform:translateY(18px);
+      animation:fadeInUp .9s ease forwards;
+      animation-delay:.2s;
+    }
+
+    .neon-line{
+      height:4px;
+      width:110px;
+      border-radius:8px;
+      margin:12px 0 20px 0;
+      background:var(--accent);
+      box-shadow:0 0 18px rgba(0,240,255,0.18),0 0 36px rgba(255,47,212,0.12);
+      opacity:0;
+      transform:translateY(18px);
+      animation:fadeInUp .9s ease forwards;
+      animation-delay:.35s;
+    }
+
+    .lead{
+      margin:0 0 20px 0;
+      color:rgba(255,255,255,0.86);
+      font-size:16px;
+      line-height:1.6;
+      opacity:0;
+      transform:translateY(18px);
+      animation:fadeInUp .9s ease forwards;
+      animation-delay:.5s;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:20px;
+      opacity:0;
+      transform:translateY(18px);
+      animation:fadeInUp .9s ease forwards;
+      animation-delay:.65s;
+      flex-wrap:wrap;
+    }
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--neon-cyan);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:13px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 18px rgba(0,240,255,0.06);
+    }
+    .cta{
+      display:inline-flex;
+      gap:12px;
+      align-items:center;
+      padding:12px 18px;
+      margin-left:8px;
+      border-radius:12px;
+      background:linear-gradient(90deg, rgba(0,240,255,0.12), rgba(255,47,212,0.08));
+      border:1px solid rgba(255,255,255,0.04);
+      color:#eafcff;
+      text-decoration:none;
+      font-weight:600;
+      letter-spacing:0.4px;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow:0 8px 30px rgba(0,0,0,0.5), 0 0 24px rgba(138,47,255,0.06);
+    }
+    .cta:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,0.6), 0 0 34px rgba(255,47,212,0.14)}
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:stretch;
+      justify-content:center;
+      padding:28px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.04);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      color:rgba(255,255,255,0.9);
+      box-shadow:0 8px 28px rgba(2,2,8,0.6);
+      opacity:0;
+      transform:translateY(18px);
+      animation:fadeInUp .9s ease forwards;
+    }
+
+    .panel.small{padding:12px 14px; font-size:14px}
+    .panel:nth-child(1){animation-delay:.8s}
+    .panel:nth-child(2){animation-delay:.95s}
+    .panel:nth-child(3){animation-delay:1.1s}
+
+    .metric{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .metric .k{
+      font-family:"Orbitron",sans-serif;
+      font-weight:700;
+      font-size:20px;
+      background:var(--accent);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .desc{font-size:13px;color:rgba(255,255,255,0.7)}
+
+    /* fade in keyframes */
+    @keyframes fadeInUp{
+      0%{opacity:0; transform:translateY(18px) scale(.995)}
+      100%{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    /* footer */
+    footer{
+      margin-top:28px;
+      grid-column:1 / -1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:rgba(255,255,255,0.65);
+      font-size:13px;
+      opacity:0;
+      transform:translateY(18px);
+      animation:fadeInUp .9s ease forwards;
+      animation-delay:1.25s;
+      padding-top:18px;
+    }
+    .left-meta{display:flex;gap:12px;align-items:center}
+    .time{
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.04);
+      color:rgba(255,255,255,0.8);
+      font-weight:600;
+      letter-spacing:0.2px;
+    }
+
+    .footer-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+      color:rgba(255,255,255,0.9);
+      padding:8px 12px;
+      border-radius:10px;
+      transition:transform .12s ease, box-shadow .12s ease;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .footer-link:hover{transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+    .github-icon{width:20px;height:20px;filter:drop-shadow(0 4px 14px rgba(0,0,0,0.6))}
+
+    /* subtle scanline overlay */
+    .scan{
+      position:fixed;
+      inset:0;
+      z-index:3;
+      pointer-events:none;
+      background-image:linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size:100% 28px;
+      mix-blend-mode:overlay;
+      opacity:0.6;
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      .title{font-size:34px}
+      .wrap{padding:12px}
+      .hero{padding:28px}
+    }
+  </style>
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="blob three"></div>
+  </div>
+
+  <main class="wrap" role="main" aria-labelledby="site-title">
+    <section class="card hero" aria-labelledby="site-title">
+      <h1 id="site-title" class="title">amirabolfazle</h1>
+      <div class="neon-line" aria-hidden="true"></div>
+      <p class="lead">A luminous digital presence blending neon aesthetics, soft glassmorphism and smooth entrance motions. Welcome to a curated space where style meets clarity.</p>
+
+      <div class="meta">
+        <span class="badge" title="Signature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l3 6 6 .9-4.5 4 1.2 6L12 17l-6 2 1.2-6L2 8.9 8 8 12 2z" fill="url(#g)"/>
+            <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#00f0ff"/><stop offset="1" stop-color="#ff2fd4"/></linearGradient></defs>
+          </svg>
+          signature
+        </span>
+
+        <a class="cta" href="#" role="button" aria-label="Explore more">
+          Explore
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <footer style="margin-top:28px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:18px;">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);font-weight:600;font-size:13px;color:rgba(255,255,255,0.8);display:inline-flex;align-items:center;gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v20M2 12h20" stroke="rgba(255,255,255,0.08)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Creation time
+              <span style="font-family:monospace;background:rgba(0,0,0,0.18);padding:6px 8px;border-radius:6px;margin-left:8px;color:#dffbff;font-size:13px;border:1px solid rgba(255,255,255,0.03)">
+                2025-09-29 17:33:15
+              </span>
+            </span>
+          </div>
+          <div style="color:rgba(255,255,255,0.65);font-size:13px;">A handcrafted neon landing experience.</div>
+        </div>
+      </footer>
+    </section>
+
+    <aside class="card side" aria-labelledby="side-title">
+      <div class="panel small" role="group" aria-label="Highlights">
+        <div class="metric">
+          <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.04)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v20M2 12h20" stroke="url(#g2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#00f0ff"/><stop offset="1" stop-color="#ff2fd4"/></linearGradient></defs></svg>
+          </div>
+          <div>
+            <div class="k">Neon UI</div>
+            <div class="desc">Vibrant gradients & glow</div>
+          </div>
+        </div>
+        <div class="desc" style="opacity:0.9">A bold aesthetic that stands out in dark contexts.</div>
+      </div>
+
+      <div class="panel" role="group" aria-label="Performance">
+        <div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.65);font-weight:600">Smooth Motion</div>
+          <div class="k" style="font-size:18px">Fade-in Effects</div>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65)">Delightful entrance transitions</div>
+      </div>
+
+      <div class="panel" role="group" aria-label="Contact">
+        <div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.65);font-weight:600">Repository</div>
+          <div class="k" style="font-size:18px">Open Source</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+            <svg class="github-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.7 3 8.7 7.2 10.1.5.1.7-.2.7-.5v-1.9c-2.9.6-3.5-1.3-3.5-1.3-.5-1.3-1.3-1.6-1.3-1.6-1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1 .1 1.7-.8 2.1-1.4-.8-.1-1.7-.4-1.7-1.9 0-.4.1-.8.3-1.1-1 .1-2 .5-2 2.2 0 1.2.4 2 1 2.6-.7.1-1.5.3-1.9.3-.4 0-.8-.1-1.4-.3C3.4 18 4.9 18.5 6.6 18.5c5.3 0 8.2-3.7 8.2-7.6 0-4.3-3.5-7.1-7.8-7.1z" fill="currentColor"/>
+            </svg>
+            View
+          </a>
+        </div>
+      </div>
+
+      <footer style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="color:rgba(255,255,255,0.6);font-size:13px">Created by <strong style="color:#fff">amirabolfazle</strong></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.48)">© 2025</div>
+      </footer>
+    </aside>
+  </main>
+
+  <div class="scan" aria-hidden="true"></div>
+</body>
+</html>
