@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f0f1a;
+      --neon-pink: #ff3ca6;
+      --neon-blue: #00e0ff;
+      --neon-green: #39ff14;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent: linear-gradient(90deg,var(--neon-pink),var(--neon-blue),var(--neon-green));
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;background: radial-gradient(1200px 600px at 10% 20%, rgba(0,224,255,0.06), transparent 8%), radial-gradient(900px 500px at 90% 80%, rgba(255,60,166,0.05), transparent 10%), var(--bg1); color:#e6f7ff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden}
+    .stage{min-height:100vh;display:flex;flex-direction:column;align-items:center;jusify-content:center;padding:48px 20px 120px;position:relative;overflow:hidden}
+    /* Neon animated rings */
+    .ring{position:absolute;border-radius:50%;filter:blur(40px);opacity:0.18;mix-blend-mode:screen;animation:orbit 12s linear infinite}
+    .ring.r1{width:700px;height:700px;left:-200px;top:-150px;background:conic-gradient(from 120deg, rgba(0,224,255,0.25), transparent 60%);}
+    .ring.r2{width:500px;height:500px;right:-160px;bottom:-120px;background:conic-gradient(from 320deg, rgba(255,60,166,0.20), transparent 60%);animation-duration:18s}
+    .ring.r3{width:1000px;height:1000px;left:50%;top:30%;transform:translateX(-18%);background:radial-gradient(circle at 30% 40%, rgba(57,255,20,0.08), transparent 10%);animation-duration:24s}
+    @keyframes orbit{to{transform:rotate(360deg)}}
+
+    .container{width:100%;max-width:1100px;padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 10px 40px rgba(0,0,0,0.6);backdrop-filter: blur(8px);border:1px solid rgba(255,255,255,0.04)}
+    .hero{display:flex;gap:24px;align-items:center;padding:28px;border-radius:12px;position:relative;overflow:visible}
+    .avatar{
+      width:140px;height:140px;border-radius:16px;flex:0 0 140px;background:
+      linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display:flex;align-items:center;justify-content:center;position:relative;
+      box-shadow:0 6px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,224,255,0.06) inset;
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .avatar svg{width:84px;height:84px;filter:drop-shadow(0 6px 18px rgba(0,224,255,0.08));}
+    h1{
+      margin:0;font-size:48px;line-height:1;letter-spacing:1px;
+      background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent;
+      text-shadow: 0 0 12px rgba(0,224,255,0.08);
+      animation:glow 3.2s ease-in-out infinite alternate, zoomIn 700ms cubic-bezier(.2,.9,.3,1);
+    }
+    @keyframes glow{
+      from{text-shadow: 0 0 8px rgba(255,60,166,0.08), 0 0 20px rgba(0,224,255,0.06)}
+      to{text-shadow: 0 0 18px rgba(255,60,166,0.18), 0 0 36px rgba(57,255,20,0.12)}
+    }
+    p.lead{margin:8px 0 0;color:rgba(230,247,255,0.85);opacity:0.9}
+    .meta{margin-top:8px;color:rgba(230,247,255,0.65);font-size:13px}
+    .zoom-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:22px}
+    .card{
+      padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 30px rgba(0,0,0,0.6);
+      transform:translateZ(0);transition:transform 360ms cubic-bezier(.2,.9,.3,1), box-shadow 360ms;
+      cursor:pointer;position:relative;overflow:hidden;
+    }
+    .card:hover{transform:translateY(-10px) scale(1.03);box-shadow:0 24px 60px rgba(0,0,0,0.7)}
+    .card h3{margin:0 0 8px 0;color:var(--neon-blue);font-size:18px}
+    .card p{margin:0;color:rgba(230,247,255,0.75);font-size:14px;line-height:1.4}
+    .tags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:6px 8px;border-radius:999px;background:linear-gradient(90deg,rgba(0,224,255,0.06),rgba(255,60,166,0.04));border:1px solid rgba(255,255,255,0.03);color:rgba(230,247,255,0.8)}
+    /* neon outline hover */
+    .card::after{
+      content:"";position:absolute;inset:-2px;border-radius:14px;
+      background:conic-gradient(from 120deg,var(--neon-pink),var(--neon-blue),var(--neon-green));
+      opacity:0;filter:blur(14px);transition:opacity 360ms;
+      pointer-events:none;
+    }
+    .card:hover::after{opacity:0.45}
+
+    /* zoom buttons */
+    .controls{display:flex;gap:12px;margin-left:auto}
+    .btn{
+      padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:rgba(230,247,255,0.9);cursor:pointer;
+      display:inline-flex;align-items:center;gap:8px;font-size:14px;backdrop-filter:blur(6px)
+    }
+    .btn:active{transform:translateY(1px)}
+    .hero-top{display:flex;align-items:center;width:100%;gap:18px}
+
+    /* cursor neon blob */
+    .neon-cursor{
+      position:fixed;top:0;left:0;width:28px;height:28px;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
+      transform:translate(-50%,-50%);z-index:60;transition:width .12s,height .12s,opacity .12s;
+      box-shadow:0 0 18px rgba(0,224,255,0.9), 0 0 40px rgba(255,60,166,0.25);opacity:0.9;background:radial-gradient(circle at 40% 40%, rgba(255,255,255,0.95) 0%, rgba(0,224,255,0.25) 30%, rgba(255,60,166,0.06) 80%);
+    }
+    .neon-cursor.big{width:64px;height:64px;box-shadow:0 0 28px rgba(0,224,255,0.95), 0 0 70px rgba(255,60,166,0.28)}
+    /* footer */
+    footer{position:fixed;left:20px;right:20px;bottom:18px;padding:12px 18px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.35), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;gap:12px;backdrop-filter:blur(8px)}
+    .gh{display:inline-flex;align-items:center;gap:10px;color:rgba(230,247,255,0.95);text-decoration:none;font-size:14px}
+    .gh svg{width:18px;height:18px;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.5))}
+
+    /* responsive */
+    @media (max-width:720px){
+      h1{font-size:34px}
+      .avatar{width:96px;height:96px;flex:0 0 96px}
+      .hero{flex-direction:column;align-items:flex-start}
+      footer{left:12px;right:12px}
+    }
+
+    /* entrance animations */
+    @keyframes zoomIn{from{transform:scale(.96) translateY(6px);opacity:0}to{transform:none;opacity:1}}
+    .fade-up{animation:fadeUp 900ms cubic-bezier(.2,.9,.3,1) both}
+    @keyframes fadeUp{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+    /* subtle floating for cards */
+    .float{animation:floating 5s ease-in-out infinite}
+    @keyframes floating{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+    <div class="ring r3"></div>
+
+    <div class="container fade-up" style="margin-top:28px;">
+      <div class="hero">
+        <div style="display:flex;align-items:flex-start;width:100%">
+          <div class="avatar" title="amirabolfazle">
+            <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="#00e0ff"/>
+                  <stop offset="0.5" stop-color="#ff3ca6"/>
+                  <stop offset="1" stop-color="#39ff14"/>
+                </linearGradient>
+              </defs>
+              <rect x="6" y="6" width="116" height="116" rx="18" fill="url(#g1)" opacity="0.08"/>
+              <g transform="translate(16,18)">
+                <circle cx="48" cy="28" r="20" fill="#0b1220"/>
+                <path d="M6 86c8-22 40-22 42-22s34 0 44 22H6z" fill="#071018"/>
+                <circle cx="48" cy="28" r="20" fill="none" stroke="#00e0ff" stroke-opacity="0.16" stroke-width="2"/>
+              </g>
+            </svg>
+          </div>
+          <div style="margin-left:18px;flex:1">
+            <div class="hero-top" style="align-items:flex-start">
+              <div>
+                <h1>amirabolfazle</h1>
+                <div class="meta">Animated neon portfolio — zoom effects • subtle motion</div>
+                <div class="meta" style="margin-top:8px;font-size:13px">Creation time: 2025-09-29 07:04:46</div>
+              </div>
+              <div class="controls" aria-hidden="true">
+                <button class="btn" id="zoomInBtn" title="Zoom In">Zoom +</button>
+                <button class="btn" id="zoomOutBtn" title="Zoom Out">Zoom −</button>
+              </div>
+            </div>
+            <p class="lead" style="margin-top:14px">I design bright interfaces and playful interactions. Explore projects, hover things to zoom, and enjoy neon motion.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="zoom-cards" style="margin-top:18px">
+        <div class="card float" onclick="openProject('project1')">
+          <h3>Neon Landing UI</h3>
+          <p>A glowing landing page with animated headers, layered neon glows and responsive zoom microinteractions.</p>
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Motion</span></div>
+        </div>
+        <div class="card float" onclick="openProject('project2')">
+          <h3>Interactive Dashboard</h3>
+          <p>Real-time widgets with smooth scale-on-focus effects and a dark neon aesthetic for analytics visualizations.</p>
+          <div class="tags"><span class="tag">JS</span><span class="tag">D3</span><span class="tag">UX</span></div>
+        </div>
+        <div class="card float" onclick="openProject('project3')">
+          <h3>Experimental Auto-Anim</h3>
+          <p>Procedural animations and user-driven parallax with a soft neon palette to keep attention where it matters.</p>
+          <div class="tags"><span class="tag">Canvas</span><span class="tag">WebGL</span><span class="tag">Creative</span></div>
+        </div>
+        <div class="card float" onclick="openProject('project4')">
+          <h3>Microinteraction Kit</h3>
+          <p>Reusable components with built-in zoom and glow states for instant delight in product UI libraries.</p>
+          <div class="tags"><span class="tag">Components</span><span class="tag">Design</span><span class="tag">Accessibility</span></div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2C7.58 2 4 5.58 4 10c0 3.54 2.29 6.54 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38C17.71 16.54 20 13.54 20 10c0-4.42-3.58-8-8-8z" fill="white" opacity="0.95"/>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </footer>
+
+    <div class="neon-cursor" id="cursor" aria-hidden="true"></div>
+  </div>
+
+  <script>
+    // cursor follow + interaction sizing
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    // interactive enlarge on hover for clickable items
+    const hoverTargets = [...document.querySelectorAll('.card, .btn, a.gh')];
+    hoverTargets.forEach(el=>{
+      el.addEventListener('mouseenter', ()=> cursor.classList.add('big'));
+      el.addEventListener('mouseleave', ()=> cursor.classList.remove('big'));
+    });
+
+    // Zoom page scaling
+    let scale = 1;
+    const root = document.documentElement;
+    function applyScale(){
+      root.style.transformOrigin = '50% 0';
+      root.style.transform = 'scale(' + scale + ')';
+    }
+    document.getElementById('zoomInBtn').addEventListener('click', ()=>{
+      scale = Math.min(1.12, +(scale + 0.06).toFixed(2));
+      applyScale();
+    });
+    document.getElementById('zoomOutBtn').addEventListener('click', ()=>{
+      scale = Math.max(0.84, +(scale - 0.06).toFixed(2));
+      applyScale();
+    });
+
+    // Simple project open mock
+    function openProject(id){
+      const name = id.replace(/project/,'Project ');
+      const card = document.querySelector('#'+id) || null;
+      const toast = document.createElement('div');
+      toast.textContent = name + ' — open in repository';
+      toast.style.position='fixed';
+      toast.style.right='20px';
+      toast.style.bottom='90px';
+      toast.style.padding='10px 14px';
+      toast.style.background='linear-gradient(90deg, rgba(0,224,255,0.06), rgba(255,60,166,0.04))';
+      toast.style.border='1px solid rgba(255,255,255,0.04)';
+      toast.style.borderRadius='10px';
+      toast.style.boxShadow='0 12px 40px rgba(0,0,0,0.6)';
+      toast.style.color='white';
+      toast.style.zIndex=9999;
+      document.body.appendChild(toast);
+      setTimeout(()=>toast.remove(),1800);
+    }
+
+    // subtle parallax with mouse
+    document.addEventListener('mousemove', e=>{
+      const rings = document.querySelectorAll('.ring');
+      rings.forEach((r,i)=>{
+        const speed = (i+1)*0.03;
+        const x = (e.clientX - window.innerWidth/2) * speed;
+        const y = (e.clientY - window.innerHeight/2) * speed;
+        r.style.transform = `translate(${x}px, ${y}px) rotate(${(i*40)}deg)`;
+      });
+    });
+
+    // keyboard zoom
+    window.addEventListener('keydown', e=>{
+      if((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '=')) {
+        scale = Math.min(1.12, +(scale + 0.06).toFixed(2)); applyScale();
+        e.preventDefault();
+      } else if((e.ctrlKey || e.metaKey) && e.key === '-') {
+        scale = Math.max(0.84, +(scale - 0.06).toFixed(2)); applyScale();
+        e.preventDefault();
+      }
+    });
+
+    // accessibility: reduce motion respect
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq.matches){
+      document.querySelectorAll('.ring, .float, h1').forEach(el=>{
+        el.style.animation = 'none';
+      });
+      cursor.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
