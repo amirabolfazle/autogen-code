@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1:#0b1020;
+      --bg-2:#071022;
+      --card:#0f1724;
+      --accent:#6ee7b7;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(110,231,183,0.06), transparent),
+                  radial-gradient(900px 400px at 90% 85%, rgba(99,102,241,0.04), transparent),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#dbe7ef;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    /* subtle animated starfield */
+    .stars, .stars::after{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.06) 50%, transparent 51%),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.05) 50%, transparent 51%),
+        radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.04) 50%, transparent 51%),
+        radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.03) 50%, transparent 51%);
+      animation: twinkle 12s linear infinite;
+      z-index:0;
+      opacity:0.8;
+      mix-blend-mode:overlay;
+    }
+    .stars::after{
+      content:"";
+      transform:translateZ(0);
+      animation-duration:20s;
+      opacity:0.6;
+    }
+    @keyframes twinkle{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-20px)}
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      z-index:2;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+    }
+
+    /* left hero */
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:36px;
+      border-radius:16px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    .title-wrap{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:88px;
+      height:88px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      transform-style:preserve-3d;
+      perspective:800px;
+      transition:transform 300ms cubic-bezier(.2,.9,.2,1);
+      box-shadow: 0 6px 24px rgba(13,17,28,0.6);
+    }
+    .logo-inner{
+      width:64px;height:64px;border-radius:10px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(110,231,183,0.14), rgba(99,102,241,0.06));
+      color:var(--accent);
+      font-weight:700;
+      font-size:22px;
+      transform: translateZ(24px) rotateX(0deg) rotateY(0deg);
+      transition:transform 200ms ease-out;
+      box-shadow: 0 6px 18px rgba(12,18,34,0.6);
+    }
+
+    .name{
+      font-size:40px;
+      line-height:1;
+      letter-spacing:-0.02em;
+      color:#e7fbf0;
+      text-shadow: 0 6px 40px rgba(67,128,112,0.06);
+      perspective:900px;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin-top:6px;
+      font-size:14px;
+    }
+
+    .rotating-banner{
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:10px 14px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      transform-origin:center;
+      transition:transform 450ms cubic-bezier(.2,.9,.2,1), box-shadow 280ms;
+      box-shadow: 0 8px 20px rgba(2,6,23,0.5);
+    }
+    .chip:hover{
+      transform: translateY(-6px) rotateZ(-4deg) scale(1.04);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.6);
+      color:var(--accent);
+      border-color: rgba(110,231,183,0.12);
+    }
+
+    /* right rotating showcase */
+    .showcase{
+      display:flex;
+      gap:20px;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+    .card-viewport{
+      width:380px;
+      height:320px;
+      border-radius:18px;
+      position:relative;
+      perspective:1400px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 30px 60px rgba(2,6,23,0.6);
+      overflow:visible;
+    }
+    .card{
+      width:320px;
+      height:240px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(102,126,234,0.06), rgba(110,231,183,0.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--accent);
+      font-weight:700;
+      font-size:26px;
+      transform-style:preserve-3d;
+      transition: transform 400ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
+      will-change:transform;
+      box-shadow: 0 18px 40px rgba(3,8,22,0.7);
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:14px;
+      background:linear-gradient(120deg, rgba(255,255,255,0.015), transparent);
+      mix-blend-mode:overlay;
+      pointer-events:none;
+    }
+
+    .card-pop{
+      transform: translateZ(40px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    /* rotating orbit items */
+    .orbit{
+      position:absolute;
+      inset: -60px -80px auto auto;
+      width:360px; height:360px;
+      pointer-events:none;
+      transform-origin:center;
+      animation: slow-rotate 16s linear infinite;
+      opacity:0.7;
+    }
+    .orbit .dot{
+      position:absolute;
+      width:14px;height:14px;border-radius:50%;
+      background:linear-gradient(90deg,var(--accent),#6366f1);
+      box-shadow:0 8px 20px rgba(99,102,241,0.14);
+      transform-origin:center;
+    }
+    .orbit .d1{top:6%; left:50%;}
+    .orbit .d2{top:28%; left:86%;}
+    .orbit .d3{top:72%; left:86%;}
+    .orbit .d4{top:94%; left:50%;}
+    .orbit .d5{top:72%; left:12%;}
+    .orbit .d6{top:28%; left:12%;}
+    @keyframes slow-rotate{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    /* info list */
+    .info{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .info .block{
+      background:var(--glass);
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      min-width:120px;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.5);
+    }
+
+    /* animated rotating ribbon below */
+    .ribbon{
+      margin-top:28px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+    }
+    .ribbon .loop{
+      display:inline-block;
+      padding:10px 20px;
+      color:var(--muted);
+      font-size:13px;
+      white-space:nowrap;
+      animation: slide 10s linear infinite;
+    }
+    .ribbon .loop:nth-child(2){ animation-delay:5s; }
+    @keyframes slide{
+      0%{transform:translateX(0)}
+      50%{transform:translateX(-100%)}
+      100%{transform:translateX(0)}
+    }
+
+    /* creation time badge */
+    .created-time{
+      position:fixed;
+      top:18px;
+      right:18px;
+      background:var(--glass-2);
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:12px;
+      color:var(--muted);
+      z-index:6;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      bottom:18px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:7;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      color:var(--muted);
+      font-size:13px;
+    }
+    footer a{ color:inherit; text-decoration:none; display:inline-flex; gap:8px; align-items:center; }
+    .gh{
+      width:18px;height:18px; display:inline-grid; place-items:center;
+      filter: drop-shadow(0 6px 12px rgba(2,6,23,0.6));
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .container{grid-template-columns:1fr; padding:0 18px}
+      .card-viewport{width:100%; height:240px}
+      .showcase{order:-1}
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+
+  <div class="created-time" aria-hidden="false">Created: 2025-09-29 03:58:32</div>
+
+  <main class="container" role="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="title-wrap">
+        <div class="logo" id="logo-3d" aria-hidden="true">
+          <div class="logo-inner" id="logo-inner">AM</div>
+        </div>
+        <div>
+          <div class="name" id="hero-title">amirabolfazle</div>
+          <div class="subtitle">Designer · Developer · Builder of clean digital things</div>
+        </div>
+      </div>
+
+      <div class="rotating-banner" aria-hidden="false">
+        <div class="chip">3D Animations</div>
+        <div class="chip">UI / UX</div>
+        <div class="chip">JavaScript</div>
+        <div class="chip">Creative Code</div>
+        <div class="chip">Open Source</div>
+      </div>
+
+      <div class="ribbon" aria-hidden="true">
+        <div class="loop">↻ interactive · rotating · responsive · minimal · dark-mode · smooth</div>
+        <div class="loop">↻ creative experiments · performant · one-file portfolio · animated</div>
+      </div>
+
+      <div class="info" aria-hidden="false">
+        <div class="block">Location: Remote</div>
+        <div class="block">Availability: Open to projects</div>
+        <div class="block">Contact: hello@amirabolfazle.dev</div>
+      </div>
+    </section>
+
+    <aside class="showcase" aria-labelledby="showcase-title">
+      <div style="text-align:center;margin-bottom:8px;color:var(--muted);font-size:13px" id="showcase-title">Interactive Preview</div>
+
+      <div class="card-viewport" id="viewport">
+        <div class="orbit" aria-hidden="true">
+          <div class="dot d1"></div>
+          <div class="dot d2"></div>
+          <div class="dot d3"></div>
+          <div class="dot d4"></div>
+          <div class="dot d5"></div>
+          <div class="dot d6"></div>
+        </div>
+
+        <div class="card card-pop" id="card">ami•rotate()</div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center">
+        <button id="tiltBtn" style="background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);padding:8px 12px;border-radius:10px;cursor:pointer">Toggle Tilt</button>
+        <button id="spinBtn" style="background:linear-gradient(90deg,#6ee7b7, #6366f1);border:0;color:#061018;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600">Spin</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+      <span class="gh" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" role="img" aria-label="GitHub">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.72 5.43.72 11.78c0 4.88 3.16 9.02 7.55 10.48.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.07.67-3.72-1.48-3.72-1.48-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.66.08-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.67 2.55 1.19 3.17.91.1-.71.38-1.2.69-1.48-2.45-.28-5.03-1.22-5.03-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13a10.53 10.53 0 0 1 5.5 0c2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.59 5.15-5.05 5.42.39.33.73.98.73 1.98 0 1.43-.01 2.58-.01 2.93 0 .29.2.64.76.53C19.12 20.8 22.28 16.66 22.28 11.78 22.28 5.43 17.35.5 11 .5h1z" fill="#dbe7ef"/>
+        </svg>
+      </span>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // Interactive tilt and rotate behavior
+    (function(){
+      const logo = document.getElementById('logo-inner');
+      const logoWrap = document.getElementById('logo-3d');
+      const card = document.getElementById('card');
+      const viewport = document.getElementById('viewport');
+      let tiltEnabled = true;
+      let spinning = false;
+      let spinAnim;
+
+      // mouse move 3D tilt
+      function handleMove(e){
+        if(!tiltEnabled) return;
+        const rect = viewport.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dx = (e.clientX - cx);
+        const dy = (e.clientY - cy);
+        const rx = (-dy / rect.height) * 18; // rotateX
+        const ry = (dx / rect.width) * 24;   // rotateY
+
+        card.style.transform = `translateZ(48px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${ry/12}deg)`;
+        logo.style.transform = `translateZ(22px) rotateX(${rx/6}deg) rotateY(${ry/8}deg)`;
+      }
+
+      function resetTransforms(){
+        card.style.transform = `translateZ(40px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
+        logo.style.transform = `translateZ(24px) rotateX(0deg) rotateY(0deg)`;
+      }
+
+      // small idle floating animation
+      let t = 0;
+      function floatLoop(){
+        t += 0.02;
+        if(!tiltEnabled){
+          const fx = Math.sin(t) * 6;
+          const fy = Math.cos(t*1.2) * 6;
+          card.style.transform = `translateZ(40px) rotateX(${fy/8}deg) rotateY(${fx/8}deg) rotateZ(${fx/12}deg)`;
+          logo.style.transform = `translateZ(24px) rotateX(${fy/20}deg) rotateY(${fx/30}deg)`;
+        }
+        requestAnimationFrame(floatLoop);
+      }
+      floatLoop();
+
+      // toggle tilt button
+      document.getElementById('tiltBtn').addEventListener('click', function(){
+        tiltEnabled = !tiltEnabled;
+        this.textContent = tiltEnabled ? 'Toggle Tilt' : 'Tilt Off';
+        if(tiltEnabled) resetTransforms();
+      });
+
+      // global mouse listener on viewport for 3D tilt
+      window.addEventListener('mousemove', handleMove);
+
+      // spin button
+      document.getElementById('spinBtn').addEventListener('click', function(){
+        spinning = !spinning;
+        if(spinning){
+          spinAnim = card.animate([
+            { transform: card.style.transform || 'translateZ(40px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)' },
+            { transform: 'translateZ(40px) rotateX(0deg) rotateY(360deg) rotateZ(360deg)' }
+          ], {duration:2400, iterations:1, easing:'cubic-bezier(.2,.9,.2,1)'});
+          spinAnim.onfinish = ()=> { spinning=false; };
+        } else {
+          if(spinAnim) spinAnim.cancel();
+        }
+      });
+
+      // little hover lift for logo wrap
+      logoWrap.addEventListener('mouseenter', ()=> logoWrap.style.transform = 'rotateX(8deg) rotateY(-8deg) translateZ(12px)');
+      logoWrap.addEventListener('mouseleave', ()=> logoWrap.style.transform = 'none');
+
+      // tiny onboarding effect on load
+      window.addEventListener('load', ()=> {
+        card.animate([
+          { transform: 'translateY(18px) translateZ(0) scale(0.96)', opacity:0 },
+          { transform: 'translateY(0px) translateZ(40px) scale(1)', opacity:1 }
+        ], { duration:900, easing:'cubic-bezier(.2,.9,.2,1)'});
+      });
+
+      // accessibility: keyboard control spin via space when focused on card
+      card.setAttribute('tabindex','0');
+      card.addEventListener('keydown', (e)=> {
+        if(e.code === 'Space') {
+          e.preventDefault();
+          document.getElementById('spinBtn').click();
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>
