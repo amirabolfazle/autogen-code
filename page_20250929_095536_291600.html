@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1: #FFFBFB;
+    --pastel-pink: #ffdbe6;
+    --pastel-mint: #dff7ea;
+    --pastel-lavender: #e9e7ff;
+    --pastel-peach: #fff0e0;
+    --muted: #6b6b7a;
+    --card-shadow: 0 8px 30px rgba(27,31,35,0.06);
+    --glass: rgba(255,255,255,0.6);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--muted);background:var(--bg-1);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+  /* background floating pastel blobs */
+  .bg-blobs{
+    position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
+  }
+  .blob{
+    position:absolute;border-radius:50%;filter:blur(40px);opacity:0.9;
+    transform-origin:50% 50%;
+    mix-blend-mode:screen;
+    will-change:transform,opacity;
+  }
+  .blob.one{width:420px;height:420px;left:-8%;top:-6%;background:linear-gradient(135deg,var(--pastel-mint),var(--pastel-lavender));animation:spin-slow 18s linear infinite alternate;}
+  .blob.two{width:360px;height:360px;right:-6%;top:-10%;background:linear-gradient(135deg,var(--pastel-pink),var(--pastel-peach));animation:spin-slow-reverse 22s linear infinite alternate;}
+  .blob.three{width:260px;height:260px;left:10%;bottom:-8%;background:linear-gradient(135deg,var(--pastel-lavender),var(--pastel-mint));animation:float-slow 16s ease-in-out infinite alternate;}
+
+  @keyframes spin-slow{0%{transform:rotate(0deg) translate3d(0,0,0) scale(1)}100%{transform:rotate(360deg) translate3d(10px,-10px,0) scale(1.05)}}
+  @keyframes spin-slow-reverse{0%{transform:rotate(0deg) translate3d(0,0,0) scale(1)}100%{transform:rotate(-360deg) translate3d(-10px,10px,0) scale(1.05)}}
+  @keyframes float-slow{0%{transform:translateY(0) rotate(0deg)}100%{transform:translateY(-30px) rotate(45deg)}}
+
+  .wrap{max-width:1100px;margin:4vh auto;padding:28px;display:flex;flex-direction:column;gap:28px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .title{
+    display:flex;align-items:baseline;gap:16px;
+  }
+  h1{
+    margin:0;font-size:clamp(28px,4.5vw,44px);letter-spacing:-0.02em;
+    background:linear-gradient(90deg,#6b2b7a,#ea6aa6,#6ba3ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .meta{font-size:0.95rem;color:var(--muted);opacity:0.95}
+  .created{
+    padding:8px 12px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0.55));box-shadow:var(--card-shadow);display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:0.88rem;
+    transform:rotate(-1deg);
+  }
+
+  main{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;
+  }
+
+  .card{
+    background:linear-gradient(180deg,rgba(255,255,255,0.85),var(--glass));
+    border-radius:14px;padding:18px;min-height:150px;box-shadow:var(--card-shadow);backdrop-filter:blur(6px);
+    transition:transform .6s cubic-bezier(.2,.9,.2,1), box-shadow .25s;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;
+    transform-origin:center center;
+  }
+  .card::after{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,transparent 30%, rgba(255,255,255,0.05));mix-blend-mode:overlay;
+  }
+  .card:hover{
+    transform:translateY(-10px) rotate3d(0,0,1,2deg) scale(1.02);
+    box-shadow:0 20px 50px rgba(27,31,35,0.08);
+  }
+  .card .icon{
+    width:54px;height:54px;border-radius:12px;display:inline-grid;place-items:center;font-weight:700;color:white;
+    box-shadow:0 6px 18px rgba(27,31,35,0.06);
+  }
+  .card h3{margin:0;font-size:1.05rem}
+  .card p{margin:0;color:#565662;line-height:1.4;font-size:0.95rem}
+  .card.small{min-height:110px}
+
+  /* rotating accent element inside cards */
+  .rotor{
+    position:absolute;right:-40px;top:-40px;width:120px;height:120px;border-radius:50%;opacity:0.14;filter:blur(10px);
+    background:conic-gradient(from 120deg,var(--pastel-pink),var(--pastel-peach),var(--pastel-mint),var(--pastel-lavender));
+    animation:card-rotate 12s linear infinite;
+    transform-origin:60px 60px;
+  }
+  @keyframes card-rotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+  /* subtle floating badges */
+  .badge-row{display:flex;gap:12px;flex-wrap:wrap}
+  .badge{padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.9),rgba(255,255,255,0.7));box-shadow:var(--card-shadow);font-size:0.9rem;color:var(--muted);display:inline-flex;align-items:center;gap:8px}
+
+  /* footer */
+  footer{
+    margin-top:22px;padding:18px 12px;border-radius:12px;background:transparent;display:flex;align-items:center;justify-content:center;gap:14px;color:var(--muted);font-size:0.95rem;
+  }
+  .gh{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:inherit;padding:8px 12px;border-radius:999px;background:linear-gradient(135deg,var(--pastel-peach),var(--pastel-lavender));box-shadow:var(--card-shadow);transition:transform .25s}
+  .gh:hover{transform:translateY(-6px) rotate(-2deg)}
+  .gh svg{width:20px;height:20px;display:block;fill:#2f2f36}
+
+  /* responsive tweaks */
+  @media (max-width:640px){
+    .wrap{padding:18px}
+    header{gap:10px}
+    .card{padding:14px}
+    .rotor{display:none}
+    .blob{filter:blur(36px)}
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce){
+    .blob,.rotor,.card{animation:none;transition:none}
+  }
+</style>
+</head>
+<body>
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob one" role="presentation"></div>
+    <div class="blob two" role="presentation"></div>
+    <div class="blob three" role="presentation"></div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>amirabolfazle</h1>
+        <div class="meta created" title="Creation time">Created: 2025-09-29 09:54:52</div>
+      </div>
+      <div class="meta">A pastel, animated, fully responsive demo</div>
+    </header>
+
+    <main>
+      <article class="card">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="icon" style="background:linear-gradient(135deg,#FFB3C6,#FFD9E8);">A</div>
+          <div>
+            <h3>Animated Design</h3>
+            <p>Soft moving gradients, floating shapes and gentle rotations create a calm, dynamic layout.</p>
+          </div>
+        </div>
+        <div class="rotor" aria-hidden="true"></div>
+      </article>
+
+      <article class="card small">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="icon" style="background:linear-gradient(135deg,#CFF8E0,#BFD7FF);">R</div>
+          <div>
+            <h3>Responsive</h3>
+            <p>Grid adapts across devices, with cards that rearrange smoothly from desktop to mobile.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="icon" style="background:linear-gradient(135deg,#EAD8FF,#D7FFEC);">P</div>
+          <div>
+            <h3>Pastel Palette</h3>
+            <p>Color choices aim for soft contrast and readability with a friendly, modern feel.</p>
+          </div>
+        </div>
+        <div class="rotor" aria-hidden="true" style="width:90px;height:90px;right:-28px;top:-18px;opacity:0.12"></div>
+      </article>
+
+      <article class="card small">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="icon" style="background:linear-gradient(135deg,#FFE8CC,#FFD1E8);">U</div>
+          <div>
+            <h3>UI Details</h3>
+            <p>Subtle shadows, rounded corners and soft glass layers give a tactile feel to elements.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="icon" style="background:linear-gradient(135deg,#BFE8FF,#EED9FF);">E</div>
+          <div>
+            <h3>Engaging Motion</h3>
+            <p>Hover tilts and slow rotations add personality without overwhelming content.</p>
+          </div>
+        </div>
+        <div class="rotor" aria-hidden="true" style="width:140px;height:140px;right:-56px;top:-46px;opacity:0.08"></div>
+      </article>
+    </main>
+
+    <div class="badge-row" aria-hidden="true">
+      <div class="badge">Minimal</div>
+      <div class="badge">Accessible</div>
+      <div class="badge">Animated</div>
+      <div class="badge">Responsive</div>
+    </div>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.6 7.6 0 018 4.58c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8 8 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
