@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1: #fff7ff;
+    --bg-2: #f7fff4;
+    --accent-1: #ffd6e0;
+    --accent-2: #d6fff1;
+    --accent-3: #e8e0ff;
+    --muted: #6b6b7a;
+    --glass: rgba(255,255,255,0.55);
+    --card-shadow: 0 8px 20px rgba(44,44,63,0.08);
+    --radius: 14px;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Helvetica Neue", monospace;
+    --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  /* Reset-ish */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--ui);
+    color:#222;
+    background: radial-gradient(1200px 600px at 10% 10%, var(--accent-1) 0%, transparent 20%),
+                radial-gradient(1000px 500px at 90% 90%, var(--accent-2) 0%, transparent 22%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    overflow-y:auto;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    min-height:100%;
+  }
+
+  /* subtle slow zoom background via pseudo element */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:-20%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(0,0,0,0.02));
+    transform-origin:center;
+    z-index:0;
+    pointer-events:none;
+    animation: bgZoom 18s linear infinite alternate;
+    border-radius:30px;
+    mix-blend-mode:screen;
+  }
+  @keyframes bgZoom{
+    from{transform:scale(1)}
+    to{transform:scale(1.03) rotate(0.4deg)}
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1100px;
+    margin:36px auto;
+    padding:32px;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:30px;
+  }
+  .logo{
+    width:72px;
+    height:72px;
+    border-radius:16px;
+    background:linear-gradient(135deg,var(--accent-3),var(--accent-1));
+    display:grid;
+    place-items:center;
+    color:#3b3054;
+    font-weight:700;
+    font-family:var(--mono);
+    font-size:20px;
+    box-shadow:var(--card-shadow);
+    transform-origin:center;
+    transition:transform .45s cubic-bezier(.2,.9,.3,1);
+  }
+  .logo:hover{ transform:scale(1.06) rotate(-4deg) }
+
+  h1{
+    margin:0;
+    font-size:28px;
+    letter-spacing:-0.6px;
+    color:#30293c;
+  }
+  .subtitle{
+    margin:4px 0 0 0;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  /* hero */
+  .hero{
+    background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.35));
+    border-radius:var(--radius);
+    padding:22px;
+    display:flex;
+    gap:20px;
+    align-items:center;
+    box-shadow:var(--card-shadow);
+    overflow:hidden;
+  }
+  .hero-left{flex:1; min-width:260px}
+  .hero-right{width:320px; display:flex;justify-content:center;align-items:center;position:relative}
+
+  .tagline{
+    font-size:20px;
+    margin:0 0 8px 0;
+    color:#222133;
+  }
+  .desc{
+    color:var(--muted);
+    margin:0 0 16px 0;
+    line-height:1.45;
+  }
+
+  .meta{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .pill{
+    background:var(--glass);
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:13px;
+    color:#3a3646;
+    box-shadow:0 6px 18px rgba(60,54,76,0.06);
+    backdrop-filter: blur(6px);
+  }
+
+  /* animated avatar card */
+  .avatar-card{
+    width:220px;
+    height:220px;
+    border-radius:20px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+    box-shadow:var(--card-shadow);
+    display:grid;
+    place-items:center;
+    transform-origin:center;
+    transition:transform .5s cubic-bezier(.2,.9,.3,1);
+  }
+  .avatar-card:hover{ transform:scale(1.06) rotate(-3deg) }
+
+  .avatar{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    background: linear-gradient(135deg, #ffd6e0, #d6fff1);
+    display:grid;
+    place-items:center;
+    font-weight:700;
+    font-family:var(--mono);
+    color:#352034;
+    font-size:36px;
+    box-shadow:0 10px 30px rgba(50,40,60,0.08);
+    position:relative;
+    overflow:hidden;
+    animation: floaty 6s ease-in-out infinite;
+  }
+  @keyframes floaty{
+    0%{ transform: translateY(0) }
+    50%{ transform: translateY(-8px) }
+    100%{ transform: translateY(0) }
+  }
+
+  /* projects grid */
+  .grid{
+    display:grid;
+    gap:18px;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    margin-top:20px;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.6));
+    border-radius:14px;
+    padding:16px;
+    box-shadow:var(--card-shadow);
+    transition:transform .36s cubic-bezier(.2,.9,.3,1), box-shadow .36s;
+    transform-origin:center;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+  }
+  .card:hover{
+    transform:translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(40,34,60,0.12);
+  }
+  .card h3{margin:0;font-size:16px;color:#2b2436}
+  .card p{margin:8px 0 0 0;font-size:13px;color:var(--muted)}
+
+  .zoom-badge{
+    position:absolute;
+    right:12px;
+    top:12px;
+    font-size:12px;
+    background:rgba(255,255,255,0.5);
+    padding:6px 8px;
+    border-radius:999px;
+    color:#3a3646;
+    backdrop-filter: blur(6px);
+  }
+
+  /* skills / tags */
+  .skills{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .skill{
+    background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+    border-radius:10px;
+    padding:8px 12px;
+    font-size:13px;
+    color:#3a3646;
+    box-shadow: 0 8px 18px rgba(30,30,45,0.04);
+  }
+
+  /* creation time */
+  .ctime{
+    margin-top:14px;
+    font-family:var(--mono);
+    color:#584b5f;
+    font-size:13px;
+    display:inline-block;
+    background:linear-gradient(90deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35));
+    padding:8px 12px;
+    border-radius:10px;
+    box-shadow:0 6px 16px rgba(40,34,60,0.04);
+  }
+
+  /* footer */
+  footer{
+    margin-top:34px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding-top:18px;
+    border-top:1px dashed rgba(60,54,76,0.06);
+    color:var(--muted);
+    font-size:13px;
+  }
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#3b3054;
+    text-decoration:none;
+    font-weight:600;
+    background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+    padding:8px 12px;
+    border-radius:999px;
+    box-shadow: 0 8px 20px rgba(40,34,60,0.05);
+  }
+  .gh svg{width:18px;height:18px;display:block;filter:drop-shadow(0 2px 6px rgba(40,34,60,0.05))}
+  .created-by{opacity:0.9}
+
+  /* floating decorative shapes */
+  .shape{
+    position:absolute;
+    border-radius:20px;
+    filter: blur(18px);
+    opacity:0.18;
+    pointer-events:none;
+    animation:shapeFloat 8s linear infinite alternate;
+  }
+  .shape.a{width:220px;height:120px;left:-40px;top:40px;background:linear-gradient(135deg,#ffd6e0,#e8e0ff);transform:rotate(-18deg)}
+  .shape.b{width:160px;height:160px;right:-40px;top:20px;background:linear-gradient(45deg,#d6fff1,#ffe8f2);animation-duration:10s}
+  .shape.c{width:120px;height:120px;left:18%;bottom:-30px;background:linear-gradient(90deg,#e8e0ff,#fff1e8);animation-duration:13s}
+  @keyframes shapeFloat{
+    from{transform:translateY(0) rotate(0deg)}
+    to{transform:translateY(-18px) rotate(6deg)}
+  }
+
+  /* micro interactions */
+  .small-info{
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  /* responsive tweaks */
+  @media (max-width:700px){
+    .hero{flex-direction:column; align-items:stretch}
+    .hero-right{width:100%}
+    header{gap:12px}
+    .logo{width:60px;height:60px}
+  }
+
+  /* subtle entrance */
+  .reveal{opacity:0; transform:translateY(10px) scale(.995); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1)}
+  .reveal.show{opacity:1; transform:translateY(0) scale(1)}
+</style>
+</head>
+<body>
+<div class="shape a" aria-hidden="true"></div>
+<div class="shape b" aria-hidden="true"></div>
+<div class="shape c" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header>
+    <div class="logo" aria-hidden="true">am</div>
+    <div>
+      <h1>amirabolfazle</h1>
+      <div class="subtitle">A pastel-themed pocket portfolio with smooth zoomy motion</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero reveal" id="hero">
+      <div class="hero-left">
+        <div class="tagline">Hi — I'm amirabolfazle</div>
+        <p class="desc">I craft clean, playful interfaces and small utilities. This single-file portfolio demonstrates pastel aesthetics, micro animations and responsive zoom effects — all in one lightweight page.</p>
+
+        <div class="meta">
+          <div class="pill">Designer • Developer</div>
+          <div class="pill">Frontend • UI</div>
+          <div class="pill">Creative Code</div>
+        </div>
+
+        <div class="ctime" title="Creation time">Created: 2025-09-29 04:17:54</div>
+
+        <div class="skills" style="margin-top:12px">
+          <div class="skill">HTML</div>
+          <div class="skill">CSS</div>
+          <div class="skill">JavaScript</div>
+          <div class="skill">SVG</div>
+          <div class="skill">Motion</div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="avatar-card" id="avatarCard" role="img" aria-label="Avatar">
+          <div class="avatar">AB</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:20px">
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:12px;">
+        <div>
+          <h2 style="margin:0 0 6px 0;font-size:18px">Selected Projects</h2>
+          <div class="small-info">Tap or hover to preview — cards zoom in for a closer look.</div>
+        </div>
+        <div class="small-info">Portfolio snapshot</div>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <article class="card reveal" tabindex="0" data-title="Autogen Code" id="p1">
+          <div class="zoom-badge">zoom</div>
+          <h3>Autogen Code</h3>
+          <p>Small automation toolkit and code generator with a clean, friendly interface.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" data-title="Pastel Studio" id="p2">
+          <div class="zoom-badge">zoom</div>
+          <h3>Pastel Studio</h3>
+          <p>An experiment in soft palettes and micro-interactions for delightful UI.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" data-title="Mini Widgets" id="p3">
+          <div class="zoom-badge">zoom</div>
+          <h3>Mini Widgets</h3>
+          <p>Reusable widgets that fit in any page: clocks, counters, and tiny charts.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" data-title="Motion Library" id="p4">
+          <div class="zoom-badge">zoom</div>
+          <h3>Motion Library</h3>
+          <p>Collection of subtle animations and easing presets for UI polish.</p>
+        </article>
+      </div>
+    </section>
+
+    <section style="margin-top:22px" class="reveal" id="about">
+      <h2 style="margin:0 0 8px 0;font-size:18px">About</h2>
+      <p class="desc" style="margin-top:0">I like keeping things light and pleasant. This page is built as a single self-contained HTML file — no external assets required. Hover or tap on elements to see zoom effects, and enjoy the pastel serenity.</p>
+    </section>
+  </main>
+
+  <footer>
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#2B2B3A" d="M12 .5C5.73.5.99 5.25.99 11.48c0 4.66 3.02 8.62 7.22 10.02.53.1.72-.23.72-.51 0-.26-.01-1.02-.02-1.99-2.94.64-3.57-1.15-3.57-1.15-.48-1.21-1.17-1.53-1.17-1.53-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.61 2.47 1.15 3.07.88.09-.69.37-1.15.68-1.41-2.35-.27-4.82-1.18-4.82-5.22 0-1.15.41-2.09 1.08-2.83-.11-.27-.47-1.36.1-2.83 0 0 .88-.28 2.88 1.09A9.79 9.79 0 0112 6.77c.89.004 1.79.12 2.63.35 1.99-1.37 2.87-1.09 2.87-1.09.58 1.47.22 2.56.11 2.83.67.74 1.07 1.68 1.07 2.83 0 4.05-2.48 4.94-4.84 5.2.38.33.72.98.72 1.98 0 1.44-.01 2.6-.01 2.96 0 .29.19.62.73.51C20 20.09 23 16.14 23 11.48 23 5.25 18.27.5 12 .5z"/>
+      </svg>
+      <span>Repository</span>
+    </a>
+
+    <div class="created-by">Created by amirabolfazle</div>
+  </footer>
+</div>
+
+<script>
+  // entrance reveals
+  window.addEventListener('load', ()=> {
+    document.querySelectorAll('.reveal').forEach((el,i)=>{
+      setTimeout(()=> el.classList.add('show'), 90*i);
+    });
+  });
+
+  // small interactive previews: clicking a card will pulse and expand content in-place
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      card.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.04)' },
+        { transform: 'scale(1)' }
+      ], { duration: 420, easing: 'cubic-bezier(.2,.9,.3,1)' });
+      const t = card.getAttribute('data-title') || 'Project';
+      // temporary tooltip-like feedback
+      const tip = document.createElement('div');
+      tip.textContent = t + ' • preview';
+      Object.assign(tip.style, {
+        position:'absolute',
+        left:'12px',
+        bottom:'12px',
+        background:'rgba(255,255,255,0.9)',
+        padding:'6px 10px',
+        borderRadius:'8px',
+        fontSize:'12px',
+        color:'#3b3054',
+        boxShadow:'0 8px 18px rgba(30,30,45,0.06)',
+        zIndex:10,
+        transform:'translateY(6px)',
+        opacity:'0'
+      });
+      card.appendChild(tip);
+      requestAnimationFrame(()=> {
+        tip.style.transition='opacity .28s, transform .28s';
+        tip.style.opacity='1';
+        tip.style.transform='translateY(0)';
+      });
+      setTimeout(()=> {
+        tip.style.opacity='0';
+        tip.style.transform='translateY(6px)';
+        setTimeout(()=> tip.remove(), 280);
+      }, 900);
+    });
+
+    // keyboard accessibility: Enter/Space triggers click
+    card.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
+
+  // playful avatar reaction to mouse move
+  const avatarCard = document.getElementById('avatarCard');
+  avatarCard.addEventListener('mousemove', (e)=>{
+    const rect = avatarCard.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    const dx = (e.clientX - cx)/rect.width;
+    const dy = (e.clientY - cy)/rect.height;
+    avatarCard.style.transform = `perspective(700px) rotateX(${(-dy*6)}deg) rotateY(${dx*6}deg) scale(1.03)`;
+  });
+  avatarCard.addEventListener('mouseleave', ()=> {
+    avatarCard.style.transform = '';
+  });
+
+  // prefers-reduced-motion respect
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if(mq.matches){
+    document.querySelectorAll('*').forEach(el=> el.style.animation = 'none');
+  }
+
+  // make footer link keyboard friendly focus
+  document.querySelectorAll('.gh').forEach(a=>{
+    a.addEventListener('focus', ()=> a.style.boxShadow='0 14px 40px rgba(40,34,60,0.12)');
+    a.addEventListener('blur', ()=> a.style.boxShadow='0 8px 20px rgba(40,34,60,0.05)');
+  });
+</script>
+</body>
+</html>
