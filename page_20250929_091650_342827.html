@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#050014;
+      --neon1:#00e6ff;
+      --neon2:#ff00d4;
+      --neon3:#7eff6b;
+      --glass: rgba(255,255,255,0.03);
+      --accent: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(0,230,255,0.06), transparent 10%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(255,0,212,0.04), transparent 12%),
+                  var(--bg1);
+      overflow:hidden;
+      color:#e6f7ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* animated drifting background lines */
+    .bg-animate{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(90deg, rgba(0,230,255,0.06) 0 1px, transparent 1px) 0 0/100% 40px,
+        linear-gradient(0deg, rgba(255,0,212,0.03) 0 1px, transparent 1px) 0 0/40px 100%;
+      mix-blend-mode:screen;
+      animation: drift 10s linear infinite;
+      opacity:0.9;
+      filter: blur(8px);
+    }
+
+    @keyframes drift{
+      from { transform:translate3d(-5%, -3%, 0) rotate(-1deg); }
+      50% { transform:translate3d(5%, 3%, 0) rotate(1deg); }
+      to { transform:translate3d(-5%, -3%, 0) rotate(-1deg); }
+    }
+
+    .center{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:20px;
+      text-align:center;
+      padding:40px 24px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:48px 56px;
+      border-radius:16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.45) inset;
+      backdrop-filter: blur(6px);
+      transform: translateZ(0);
+      transition: transform 0.6s cubic-bezier(.2,.9,.3,1);
+    }
+    .card:hover { transform: scale(1.02) translateZ(0); }
+
+    h1{
+      margin:0;
+      font-size:64px;
+      letter-spacing:0.02em;
+      color:var(--neon1);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 6px rgba(0,230,255,0.7),
+        0 0 20px rgba(0,230,255,0.12),
+        0 0 30px rgba(255,0,212,0.06);
+      animation: pulseNeon 2.6s ease-in-out infinite, zoomIn 0.9s cubic-bezier(.2,.9,.3,1) both;
+      transform-origin:center;
+      cursor:default;
+    }
+
+    @keyframes pulseNeon{
+      0% { text-shadow: 0 0 6px rgba(0,230,255,0.5), 0 0 18px rgba(0,230,255,0.06); transform:scale(1); }
+      50% { text-shadow: 0 0 18px rgba(0,230,255,0.9), 0 0 36px rgba(255,0,212,0.12); transform:scale(1.02); }
+      100% { text-shadow: 0 0 6px rgba(0,230,255,0.5), 0 0 18px rgba(0,230,255,0.06); transform:scale(1); }
+    }
+
+    @keyframes zoomIn{
+      from { transform: scale(.88) translateZ(0); opacity:0; filter: blur(6px); }
+      to { transform: scale(1) translateZ(0); opacity:1; filter: blur(0); }
+    }
+
+    .subtitle{
+      margin:0;
+      color:#bfeeff;
+      opacity:0.9;
+      font-size:16px;
+      letter-spacing:0.06em;
+      margin-top:6px;
+    }
+
+    .meta{
+      margin-top:18px;
+      color:#9bdcff;
+      font-size:13px;
+      background: rgba(0,0,0,0.12);
+      padding:8px 12px;
+      border-radius:999px;
+      display:inline-block;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+      border: 1px solid rgba(0,230,255,0.06);
+    }
+
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      font-size:13px;
+      color:#a8eaff;
+      background: rgba(0,0,0,0.06);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      text-decoration:none;
+    }
+
+    a.icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:28px;
+      height:28px;
+      border-radius:8px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      text-decoration:none;
+      color:inherit;
+      transition: transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5), 0 0 12px rgba(0,230,255,0.06) inset;
+    }
+    a.icon:hover { transform: translateY(-3px) scale(1.06); box-shadow: 0 14px 30px rgba(0,0,0,0.6), 0 0 30px rgba(0,230,255,0.12); }
+
+    /* small screen adjustments */
+    @media (max-width:520px){
+      .card{ padding:32px 22px; border-radius:12px; }
+      h1{ font-size:40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animate" aria-hidden="true"></div>
+
+  <main class="center" role="main">
+    <div class="card" role="region" aria-labelledby="site-title">
+      <h1 id="site-title" title="amirabolfazle">amirabolfazle</h1>
+      <p class="subtitle">neon · minimalist · animated</p>
+      <div class="meta" id="creation">Created on: 2025-09-29 09:16:12</div>
+    </div>
+  </main>
+
+  <footer>
+    <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+      <!-- GitHub mark (SVG) -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.66 3.02 8.61 7.21 10.01.53.1.72-.23.72-.5 0-.25-.01-.91-.01-1.78-2.93.64-3.55-1.2-3.55-1.2-.48-1.21-1.18-1.54-1.18-1.54-.97-.66.07-.65.07-.65 1.07.08 1.64 1.1 1.64 1.1.95 1.63 2.5 1.16 3.11.88.1-.69.37-1.16.67-1.43-2.34-.27-4.8-1.17-4.8-5.2 0-1.15.41-2.09 1.09-2.83-.11-.27-.47-1.36.1-2.84 0 0 .89-.29 2.92 1.08a10.12 10.12 0 012.66-.36c.9.01 1.81.12 2.66.36 2.02-1.37 2.9-1.08 2.9-1.08.57 1.48.21 2.57.11 2.84.68.74 1.09 1.68 1.09 2.83 0 4.04-2.47 4.92-4.82 5.18.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .27.19.61.73.5A11.11 11.11 0 0023.1 11.6C23.1 5.33 18.27.5 12 .5z" fill="currentColor"/>
+      </svg>
+    </a>
+    <div>Created by amirabolfazle</div>
+  </footer>
+
+  <script>
+    // subtle interactive zoom on hover for the title (for touch devices, scale on tap)
+    (function(){
+      var title = document.getElementById('site-title');
+      var startScale = 1;
+      var hoverScale = 1.08;
+      title.addEventListener('mouseenter', function(){ title.style.transition = 'transform .28s cubic-bezier(.2,.9,.3,1)'; title.style.transform = 'scale(' + hoverScale + ')'; });
+      title.addEventListener('mouseleave', function(){ title.style.transform = 'scale(' + startScale + ')'; });
+      title.addEventListener('touchstart', function(){ title.style.transform = 'scale(' + hoverScale + ')'; }, {passive:true});
+      title.addEventListener('touchend', function(){ title.style.transform = 'scale(' + startScale + ')'; }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
