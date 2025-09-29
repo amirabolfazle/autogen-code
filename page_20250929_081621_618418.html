@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#071126;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: #7dd3fc;
+      --accent-2: #c084fc;
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.7);
+      --glass-blur: 12px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 8%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(14,165,233,0.07), transparent 10%),
+                  linear-gradient(120deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:clamp(18px,4vw,48px);
+      overflow:hidden;
+    }
+
+    /* animated gradient background overlay */
+    .bg-animated{
+      position:fixed;inset:0;z-index:0;pointer-events:none;mix-blend-mode:screen;opacity:0.85;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(125,211,252,0.08), rgba(192,132,252,0.08), rgba(125,211,252,0.08));
+      filter:blur(60px);
+      animation: spin 20s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* floating bubbles */
+    .bubble{
+      position:absolute;border-radius:50%;opacity:0.12;
+      filter:blur(8px);
+      animation: floaty var(--t) ease-in-out infinite;
+      z-index:1;
+    }
+    @keyframes floaty{
+      0%{transform:translateY(0) translateX(0) scale(1)}
+      50%{transform:translateY(-24px) translateX(12px) scale(1.05)}
+      100%{transform:translateY(0) translateX(0) scale(1)}
+    }
+
+    .container{
+      position:relative;z-index:2;
+      width:min(980px,calc(100% - 40px));
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:22px;
+      align-items:center;
+    }
+
+    .card{
+      backdrop-filter: blur(var(--glass-blur));
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border: 1px solid var(--glass-border);
+      border-radius:18px;
+      padding:clamp(18px,3.4vw,34px);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      box-shadow: 0 6px 32px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      overflow:hidden;
+    }
+
+    .brand{
+      display:flex;align-items:center;gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .logo{
+      width: clamp(56px,7.6vw,88px);
+      height: clamp(56px,7.6vw,88px);
+      min-width:56px;
+      min-height:56px;
+      border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow: 0 6px 18px rgba(120,85,255,0.18);
+      color: white;
+      font-weight:700;
+      font-size: clamp(20px,4.2vw,28px);
+      transform-origin:center;
+      animation: bounceIn 1200ms cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    @keyframes bounceIn{
+      0%{transform:translateY(-40px) scale(.9);opacity:0}
+      60%{transform:translateY(8px) scale(1.03);opacity:1}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    h1{
+      margin:0;font-size:clamp(20px,4.3vw,40px);line-height:1;letter-spacing:-0.5px;
+      color:var(--text);
+      animation: pop 900ms cubic-bezier(.2,.9,.3,1) both;
+    }
+    @keyframes pop{
+      0%{transform:translateY(12px) scale(.98);opacity:0}
+      100%{transform:translateY(0) scale(1);opacity:1}
+    }
+
+    .meta{
+      color:var(--muted);
+      font-size:clamp(12px,2.4vw,16px);
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    }
+
+    .time{
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+      display:inline-flex;gap:10px;align-items:center;
+      font-weight:600;
+      transition:transform 300ms cubic-bezier(.2,.9,.3,1);
+      transform-origin:center;
+      will-change:transform;
+      cursor:default;
+    }
+
+    .time:active{transform:scale(.98)}
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:linear-gradient(180deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 12px rgba(124,58,237,0.18);
+      animation:bounce 1600ms cubic-bezier(.2,.9,.3,1) infinite;
+    }
+    @keyframes bounce{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+    .content{
+      display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+      justify-content:space-between;
+    }
+
+    .desc{
+      color:var(--muted);
+      font-size:clamp(14px,2.4vw,16px);
+      max-width:64ch;
+      line-height:1.45;
+    }
+
+    .cta{
+      display:flex;gap:10px;align-items:center;
+    }
+
+    .btn{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--text);
+      padding:10px 14px;border-radius:10px;font-weight:600;
+      display:inline-flex;align-items:center;gap:10px;
+      cursor:pointer;transition:transform 300ms cubic-bezier(.2,.9,.3,1),box-shadow 200ms;
+      transform-origin:center;
+      user-select:none;
+    }
+
+    .btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(2,6,23,0.45)}
+    .btn:active{transform:translateY(-2px)}
+
+    /* small animated badge */
+    .badge{
+      padding:6px 10px;border-radius:999px;font-size:13px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#021024;font-weight:700;box-shadow:0 8px 20px rgba(124,58,237,0.18);
+      animation: pulse 1800ms ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1);opacity:1}
+      50%{transform:scale(1.05);opacity:.92}
+      100%{transform:scale(1);opacity:1}
+    }
+
+    /* footer */
+    footer{
+      margin-top:14px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);
+      font-size:13px;padding-top:8px;
+    }
+    .footer-link{
+      display:inline-flex;gap:8px;align-items:center;color:var(--muted);text-decoration:none;border-radius:8px;padding:8px;
+      transition:transform 200ms,ease;cursor:pointer;
+    }
+    .footer-link:hover{transform:translateY(-6px);color:var(--text)}
+    .github-icon{width:18px;height:18px;display:inline-block;flex-shrink:0;filter:drop-shadow(0 3px 10px rgba(2,6,23,0.4));}
+
+    /* responsive adjustments */
+    @media (min-width:720px){
+      .container{grid-template-columns:1fr}
+      .content{gap:28px}
+    }
+    @media (max-width:420px){
+      .card{padding:16px;border-radius:14px}
+      .logo{border-radius:12px}
+      h1{font-size:20px}
+      .desc{font-size:13px}
+    }
+
+    /* tiny helper: bounce on load for decorative shapes */
+    .deco{animation:bubblePop 1400ms cubic-bezier(.2,.9,.3,1) both}
+    @keyframes bubblePop{
+      0%{transform:scale(.6) translateY(18px);opacity:0}
+      60%{transform:scale(1.06) translateY(-4px);opacity:1}
+      100%{transform:scale(1) translateY(0)}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animated" aria-hidden="true"></div>
+
+  <!-- decorative bubbles -->
+  <div class="bubble deco" style="--t:6s;width:240px;height:240px;left:-6%;top:8%;background:radial-gradient(circle at 30% 30%, rgba(125,211,252,0.12), transparent 20%);"></div>
+  <div class="bubble deco" style="--t:8.5s;width:180px;height:180px;right:-4%;bottom:6%;background:radial-gradient(circle at 60% 40%, rgba(192,132,252,0.10), transparent 25%);"></div>
+  <div class="bubble deco" style="--t:10s;width:120px;height:120px;right:8%;top:18%;background:radial-gradient(circle at 50% 50%, rgba(125,211,252,0.08), transparent 30%);"></div>
+
+  <main class="container" role="main">
+    <section class="card" aria-labelledby="title">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">A</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <h1 id="title">amirabolfazle</h1>
+          <div class="meta">
+            <div class="time" title="Creation time">
+              <span class="dot" aria-hidden="true"></span>
+              <time datetime="2025-09-29T08:15:32">Creation time: 2025-09-29 08:15:32</time>
+            </div>
+            <div class="badge" aria-hidden="true">glassmorphism</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content" style="margin-top:6px;">
+        <p class="desc">
+          A fully responsive animated showcase with a glassmorphism theme and bounce effects. Resize the window or view on mobile to see fluid typography, animated accents and subtle motion designed to delight without distraction.
+        </p>
+
+        <div class="cta" aria-hidden="true">
+          <button class="btn" onclick="pulseOnce(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.95" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s8-4.5 8-11.5S15.313 3 12 6.5 4 5.5 4 9.5 12 21 12 21z" stroke="rgba(255,255,255,0.9)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Enjoy
+          </button>
+        </div>
+      </div>
+
+      <footer>
+        <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="github-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.73.5.97 5.24.97 11.47c0 4.63 3.01 8.56 7.19 9.95.53.1.72-.23.72-.51 0-.25-.01-.91-.01-1.78-2.92.64-3.54-1.41-3.54-1.41-.48-1.21-1.17-1.53-1.17-1.53-.96-.66.07-.65.07-.65 1.06.08 1.61 1.09 1.61 1.09.94 1.62 2.47 1.15 3.07.88.09-.68.37-1.15.67-1.41-2.33-.26-4.78-1.17-4.78-5.2 0-1.15.41-2.09 1.08-2.83-.11-.26-.47-1.29.1-2.69 0 0 .88-.28 2.88 1.08a9.92 9.92 0 012.62-.35 9.9 9.9 0 012.62.35c2-.36 2.88-1.08 2.88-1.08.57 1.4.21 2.43.1 2.69.67.74 1.08 1.68 1.08 2.83 0 4.04-2.46 4.93-4.8 5.19.38.33.72.97.72 1.96 0 1.41-.01 2.55-.01 2.9 0 .28.19.62.73.51 4.18-1.39 7.19-5.32 7.19-9.95C23.03 5.24 18.27.5 12 .5z" fill="white"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // small helper: give a one-time pop when "Enjoy" clicked
+    function pulseOnce(btn){
+      btn.style.transition = 'transform 220ms cubic-bezier(.2,.9,.3,1)';
+      btn.style.transform = 'scale(0.96)';
+      setTimeout(()=>{ btn.style.transform = 'scale(1.04)'; }, 120);
+      setTimeout(()=>{ btn.style.transform = 'scale(1)'; }, 300);
+    }
+
+    // subtle parallax for mouse movement (non-intrusive)
+    (function(){
+      const root = document.documentElement;
+      let raf = null;
+      window.addEventListener('mousemove', e=>{
+        if(raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(()=>{
+          const x = (e.clientX/window.innerWidth - 0.5) * 6;
+          const y = (e.clientY/window.innerHeight - 0.5) * 6;
+          root.style.setProperty('--mx', x.toFixed(2));
+          root.style.setProperty('--my', y.toFixed(2));
+          document.querySelector('.card').style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        });
+      });
+      window.addEventListener('mouseleave', ()=> {
+        document.querySelector('.card').style.transform = `translate3d(0, 0, 0)`;
+      });
+    })();
+  </script>
+</body>
+</html>
