@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#071422;
+    --bg2:#0f1b2d;
+    --accent1:#4fd1c5;
+    --accent2:#7c5cff;
+    --glass: rgba(255,255,255,0.06);
+    --muted: rgba(255,255,255,0.7);
+  }
+
+  /* Page background with animated gradient */
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(120deg,var(--bg1),var(--bg2) 40%, #0b1020 100%);
+    overflow:hidden;
+    color:#eef6fb;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* moving gradient overlay */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:-20%;
+    background: conic-gradient(from 160deg at 50% 50%, rgba(124,92,255,0.14), rgba(79,209,197,0.12), rgba(255,255,255,0.04), rgba(124,92,255,0.14));
+    filter:blur(60px) saturate(120%);
+    animation: spinBg 18s linear infinite;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  @keyframes spinBg{
+    from{transform:rotate(0deg) translateZ(0)}
+    to{transform:rotate(360deg) translateZ(0)}
+  }
+
+  /* Floating decorative shapes */
+  .float {
+    position:fixed;
+    border-radius:50%;
+    mix-blend-mode:screen;
+    opacity:0.85;
+    filter:blur(24px);
+    z-index:0;
+  }
+  .float.one{ width:420px;height:420px; left:-10%; top:10%; background: radial-gradient(circle at 30% 30%, rgba(124,92,255,0.32), rgba(124,92,255,0.06)); animation: float1 10s ease-in-out infinite; }
+  .float.two{ width:300px;height:300px; right:-8%; bottom:5%; background: radial-gradient(circle at 70% 70%, rgba(79,209,197,0.3), rgba(79,209,197,0.05)); animation: float2 12s ease-in-out infinite; }
+  .float.three{ width:160px;height:160px; left:20%; bottom:30%; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12), rgba(124,92,255,0.02)); animation: float3 8s ease-in-out infinite; }
+
+  @keyframes float1{ 0%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-30px) rotate(18deg)} 100%{transform:translateY(0) rotate(0deg)} }
+  @keyframes float2{ 0%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(24px) rotate(-12deg)} 100%{transform:translateY(0) rotate(0deg)} }
+  @keyframes float3{ 0%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-16px) rotate(10deg)} 100%{transform:translateY(0) rotate(0deg)} }
+
+  /* Main content card */
+  .center{
+    position:relative;
+    z-index:5;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+    box-sizing:border-box;
+  }
+
+  .card{
+    width:min(920px,94%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    border-radius:20px;
+    padding:36px;
+    display:grid;
+    grid-template-columns: 1fr 320px;
+    gap:28px;
+    backdrop-filter: blur(8px) saturate(120%);
+    box-shadow: 0 10px 40px rgba(4,8,20,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    transform-style:preserve-3d;
+    overflow:hidden;
+  }
+
+  /* Left content */
+  .hero{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    justify-content:center;
+  }
+
+  .title{
+    font-size: clamp(34px, 6vw, 54px);
+    line-height:1;
+    margin:0;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    font-weight:700;
+    display:inline-block;
+    transform-origin:center;
+    animation: slowRotate 8s linear infinite;
+  }
+
+  @keyframes slowRotate{
+    0%{transform:rotate(-2deg) translateZ(0)}
+    50%{transform:rotate(3deg) translateZ(0)}
+    100%{transform:rotate(-2deg) translateZ(0)}
+  }
+
+  .tagline{
+    font-size:16px;
+    color:var(--muted);
+    margin:0;
+    max-width:70ch;
+  }
+
+  .meta{
+    margin-top:10px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  .timebox{
+    padding:10px 14px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    font-family:monospace;
+    color:#dff7f2;
+    font-weight:600;
+    letter-spacing:0.6px;
+    box-shadow: 0 6px 18px rgba(12,18,30,0.45);
+    transform:rotate(-1.5deg);
+    display:inline-block;
+  }
+
+  /* Right panel with rotating badge */
+  .side{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+
+  .badge{
+    width:240px;
+    height:240px;
+    border-radius:18px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.04);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    padding:18px;
+    box-shadow: 0 12px 48px rgba(6,8,20,0.6);
+    transform-style:preserve-3d;
+    animation: tilt 10s ease-in-out infinite;
+  }
+
+  @keyframes tilt{
+    0%{transform: rotate3d(1,0.6,0, -6deg) translateY(0) }
+    50%{transform: rotate3d(1,0.6,0, 8deg) translateY(-8px) }
+    100%{transform: rotate3d(1,0.6,0, -6deg) translateY(0) }
+  }
+
+  .rot-ring{
+    width:190px;height:190px;border-radius:50%;
+    display:grid;place-items:center;
+    background: conic-gradient(from 0deg, rgba(79,209,197,0.08), rgba(124,92,255,0.08));
+    border-radius:999px;
+    transform:rotate(0deg);
+    animation: ringSpin 9s linear infinite;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  @keyframes ringSpin{
+    from{ transform: rotate(0deg) }
+    to{ transform: rotate(360deg) }
+  }
+
+  .avatar{
+    width:110px;height:110px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.04);
+    color: #fff;
+    font-weight:700;
+    font-size:28px;
+    letter-spacing:0.6px;
+    text-transform:uppercase;
+    box-shadow: 0 6px 18px rgba(4,8,20,0.6);
+    transform: translateZ(30px);
+  }
+
+  /* Footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    z-index:8;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    background: rgba(0,0,0,0.18);
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+    color:var(--muted);
+    box-shadow: 0 6px 30px rgba(4,8,20,0.55);
+    font-size:14px;
+  }
+
+  footer a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:inherit;
+    text-decoration:none;
+    opacity:0.95;
+  }
+
+  .gh{
+    width:22px;height:22px;display:inline-block;
+    transition:transform .18s ease, filter .18s ease;
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
+  }
+  .gh:hover{ transform:scale(1.08) rotate(-6deg); filter:brightness(1.02); }
+
+  /* Responsive */
+  @media (max-width:780px){
+    .card{ grid-template-columns:1fr; padding:24px; gap:18px; }
+    .side{ order:-1; }
+    footer{ bottom:12px; padding:8px 10px; font-size:13px; }
+  }
+</style>
+</head>
+<body>
+  <div class="float one" aria-hidden="true"></div>
+  <div class="float two" aria-hidden="true"></div>
+  <div class="float three" aria-hidden="true"></div>
+
+  <div class="center">
+    <section class="card" role="region" aria-label="amirabolfazle personal card">
+      <div class="hero">
+        <h1 class="title">amirabolfazle</h1>
+        <p class="tagline">A sleek personal page with animated gradients and rotating accents — minimal, expressive, alive.</p>
+
+        <div class="meta" aria-hidden="false">
+          <div class="timebox" title="creation time"><strong>Created:</strong>&nbsp;<time datetime="2025-09-29T07:10:10">2025-09-29 07:10:10</time></div>
+        </div>
+      </div>
+
+      <aside class="side" aria-hidden="false">
+        <div class="badge" role="img" aria-label="rotating badge">
+          <div class="rot-ring" aria-hidden="true">
+            <div class="avatar" aria-hidden="false">AM</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+      <svg class="gh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.9 3.17 9.06 7.57 10.52.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.08.67-3.73-1.49-3.73-1.49-.5-1.26-1.22-1.6-1.22-1.6-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.2 3.2.92.1-.72.38-1.2.69-1.48-2.46-.28-5.05-1.23-5.05-5.48 0-1.21.43-2.2 1.13-2.98-.11-.28-.49-1.42.11-2.97 0 0 .92-.3 3.02 1.13.88-.25 1.82-.38 2.76-.38.94 0 1.88.13 2.76.38 2.1-1.43 3.02-1.13 3.02-1.13.6 1.55.22 2.69.11 2.97.7.78 1.13 1.77 1.13 2.98 0 4.26-2.6 5.19-5.08 5.47.39.34.73 1.01.73 2.04 0 1.48-.01 2.67-.01 3.03 0 .29.2.64.76.53 4.4-1.47 7.56-5.63 7.56-10.52C23.25 5.48 18.27.5 12 .5z" fill="currentColor"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
