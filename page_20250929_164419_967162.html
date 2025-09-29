@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#05030a;
+      --bg2:#071129;
+      --neon-cyan:#00fff2;
+      --neon-pink:#ff3bd8;
+      --neon-blue:#6be0ff;
+      --glass: rgba(255,255,255,0.03);
+      --card: rgba(255,255,255,0.025);
+      --accent: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(3,8,23,0.6), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(10,4,20,0.55), transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color: #dff8ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow:hidden;
+    }
+
+    /* animated ambient blobs */
+    .blob{
+      position:absolute;
+      filter: blur(60px) saturate(130%);
+      opacity:0.18;
+      mix-blend-mode:screen;
+      pointer-events:none;
+      animation: float 8s ease-in-out infinite;
+      border-radius:50%;
+    }
+    .blob.one{width:560px;height:560px;left:-10%;top:-15%;background:linear-gradient(45deg,var(--neon-pink),transparent); animation-duration:12s;}
+    .blob.two{width:420px;height:420px;right:-8%;bottom:-12%;background:linear-gradient(45deg,var(--neon-cyan),transparent); animation-duration:10s; animation-delay:1s;}
+    .blob.three{width:300px;height:300px;left:50%;top:50%;transform:translate(-50%,-50%);background:linear-gradient(45deg,var(--neon-blue),transparent); animation-duration:14s; opacity:0.09;}
+
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-18px) scale(1.03)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .wrap{
+      position:relative;
+      width:100%;
+      max-width:1100px;
+      backdrop-filter: blur(6px) saturate(120%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:48px;
+      box-shadow: 0 10px 50px rgba(5,7,15,0.6), inset 0 0 60px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.04);
+      display:flex;
+      gap:32px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      overflow:hidden;
+    }
+
+    .left{
+      flex:1 1 420px;
+      min-width:260px;
+    }
+
+    .title{
+      font-family: 'Orbitron', sans-serif;
+      font-weight:700;
+      font-size: clamp(36px, 6.5vw, 84px);
+      line-height:0.92;
+      letter-spacing:0.6px;
+      color:var(--neon-cyan);
+      text-shadow:
+        0 0 8px rgba(0,255,242,0.18),
+        0 0 18px rgba(0,255,242,0.12),
+        0 0 40px rgba(255,59,216,0.06);
+      display:inline-block;
+      transform-origin:center;
+      animation: neonPulse 3.5s ease-in-out infinite;
+    }
+
+    @keyframes neonPulse{
+      0%{filter:drop-shadow(0 0 6px rgba(0,255,242,0.12))}
+      50%{transform:scale(1.03);filter:drop-shadow(0 0 20px rgba(0,255,242,0.25))}
+      100%{filter:drop-shadow(0 0 6px rgba(0,255,242,0.12))}
+    }
+
+    .subtitle{
+      margin-top:12px;
+      color: #bfeff6;
+      font-weight:600;
+      font-size: clamp(12px, 1.9vw, 16px);
+      opacity:0.9;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.45);
+    }
+
+    .time{
+      margin-top:16px;
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.025);
+      color: var(--neon-pink);
+      font-weight:600;
+      letter-spacing:0.6px;
+      box-shadow: 0 6px 30px rgba(99,0,104,0.06), inset 0 -10px 30px rgba(0,0,0,0.25);
+      text-shadow: 0 0 8px rgba(255,59,216,0.12);
+    }
+
+    .right{
+      flex:0 1 320px;
+      min-width:220px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .card{
+      width:100%;
+      padding:20px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 40px rgba(8,6,20,0.5);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      cursor:pointer;
+      transition: transform 420ms cubic-bezier(.2,.9,.3,1), box-shadow 420ms;
+      transform-origin:center;
+      will-change:transform;
+      color:#c9ffff;
+    }
+
+    .card:hover{
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 18px 60px rgba(0,255,242,0.06), 0 2px 12px rgba(0,0,0,0.6);
+    }
+
+    .card .label{font-weight:600}
+    .card .meta{font-size:13px; color:#cbeeff; opacity:0.85}
+
+    .glow-border{
+      padding:10px 12px;
+      border-radius:10px;
+      background:linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.55), 0 0 18px rgba(99,0,104,0.06);
+    }
+
+    .cta{
+      margin-top:20px;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 18px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--neon-blue);
+      font-weight:700;
+      letter-spacing:0.6px;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition: transform 300ms ease, box-shadow 300ms ease;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.5), inset 0 0 40px rgba(107,224,255,0.02);
+      background-image: var(--accent);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .cta:hover{ transform:scale(1.06); filter:drop-shadow(0 12px 40px rgba(0,255,242,0.09)) }
+
+    footer{
+      margin-top:22px;
+      width:100%;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:center;
+      color: #aeeef6;
+      opacity:0.95;
+      font-size:13px;
+      padding-top:18px;
+      border-top:1px dashed rgba(255,255,255,0.02);
+    }
+
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:inherit;
+      transition:transform 220ms ease;
+    }
+    .github-link:hover{ transform:translateY(-4px) }
+
+    .gh-icon{
+      width:20px;height:20px; display:inline-block;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+      stroke: none;
+      fill: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+    }
+
+    /* responsive tweaks */
+    @media (max-width:780px){
+      .wrap{ padding:28px; gap:18px }
+      .right{flex:1 1 100%}
+      .card{padding:16px}
+      .title{font-size: clamp(28px, 10vw, 56px)}
+    }
+
+    /* respects reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .blob, .title, .card, .cta{ animation:none; transition:none; transform:none }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob one" aria-hidden="true"></div>
+  <div class="blob two" aria-hidden="true"></div>
+  <div class="blob three" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="main-title">
+    <section class="left">
+      <h1 id="main-title" class="title">amirabolfazle</h1>
+      <div class="subtitle">Neon console • Fluid zoom effects • Responsive</div>
+      <div class="time" title="Creation time">Created: 2025-09-29 16:43:22</div>
+
+      <div style="margin-top:22px; display:flex; gap:12px; flex-wrap:wrap;">
+        <button class="cta" aria-label="Explore">Explore</button>
+        <button class="glow-border" style="color:var(--neon-pink); font-weight:600; border-radius:12px; padding:10px 14px;">Light Mode</button>
+      </div>
+
+      <footer style="border-top:none; margin-top:18px;">
+        <!-- footer inside left for compact layout on small screens -->
+      </footer>
+    </section>
+
+    <aside class="right" aria-label="Info panels">
+      <div class="card" role="button" tabindex="0" aria-pressed="false">
+        <div>
+          <div class="label">Animated Zoom</div>
+          <div class="meta">Hover cards to scale and glow</div>
+        </div>
+        <div class="glow-border" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" style="display:block">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#ff3bd8"></stop>
+                <stop offset="1" stop-color="#00fff2"></stop>
+              </linearGradient>
+            </defs>
+            <rect x="2" y="2" width="20" height="20" rx="6" stroke="url(#g1)" stroke-width="1.8" fill="rgba(0,0,0,0.02)"></rect>
+            <path d="M8 12h8M12 8v8" stroke="#fff" stroke-opacity="0.85" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card" role="button" tabindex="0" aria-pressed="false">
+        <div>
+          <div class="label">Responsive</div>
+          <div class="meta">Looks great on phones, tablets & desktop</div>
+        </div>
+        <div class="glow-border" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" style="display:block">
+            <rect x="3" y="4" width="14" height="12" rx="2" stroke="#8ef2ff" stroke-opacity="0.9" stroke-width="1.6" fill="rgba(0,0,0,0.02)"></rect>
+            <rect x="17" y="7" width="4" height="8" rx="1" stroke="#ff7be6" stroke-opacity="0.92" stroke-width="1.6" fill="rgba(0,0,0,0.02)"></rect>
+          </svg>
+        </div>
+      </div>
+    </aside>
+
+    <div style="position:absolute; left:22px; right:22px; bottom:16px; display:flex; align-items:center; justify-content:center;">
+      <footer>
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="gh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg">
+            <path fill="url(#ghGrad)" d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.7 3 8.7 7.2 10.1.5.1.7-.2.7-.5v-1.7c-2.9.6-3.6-1.4-3.6-1.4-.5-1.2-1.3-1.6-1.3-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.9 1.7 2.8 1.1.1-.9.4-1.6.7-1.9-2.3-.3-4.7-1.1-4.7-5 0-1.1.4-2 .9-2.8-.1-.3-.4-1.5.1-3.1 0 0 .8-.3 2.8 1.1.8-.2 1.7-.4 2.5-.4s1.7.1 2.5.4c2-1.4 2.8-1.1 2.8-1.1.5 1.6.2 2.8.1 3.1.6.8.9 1.7.9 2.8 0 3.9-2.4 4.7-4.7 5 .4.4.8 1 .8 2.1v3.1c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10.1C23.1 5.3 18.3.5 12 .5z"/>
+            <defs>
+              <linearGradient id="ghGrad" x1="0" x2="1">
+                <stop offset="0" stop-color="#ff3bd8"/>
+                <stop offset="1" stop-color="#00fff2"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span style="font-weight:600">Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // subtle parallax to enhance neon depth (respects reduced motion)
+    (function(){
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const blobs = document.querySelectorAll('.blob');
+      window.addEventListener('mousemove', (e)=>{
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const dx = (e.clientX - cx) / cx;
+        const dy = (e.clientY - cy) / cy;
+        blobs.forEach((b,i)=>{
+          const depth = (i+1) * 6;
+          b.style.transform = `translate3d(${dx * depth}px, ${dy * depth}px, 0) scale(${1 + i*0.02})`;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
