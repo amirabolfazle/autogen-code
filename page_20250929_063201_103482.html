@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #0b1220;
+      --accent1: #6EE7B7;
+      --accent2: #60A5FA;
+      --accent3: #A78BFA;
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.03);
+      --text: #E6EEF8;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg,var(--bg1) 0%, #071024 30%, #021024 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:scroll;
+      line-height:1.45;
+    }
+
+    /* Subtle animated gradient overlay */
+    .gradient-overlay{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background: radial-gradient(600px 400px at 10% 20%, rgba(96,165,250,0.09), transparent 10%),
+                  radial-gradient(500px 300px at 90% 80%, rgba(167,139,250,0.06), transparent 15%),
+                  linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+      mix-blend-mode: screen;
+      z-index:0;
+      animation: slowShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes slowShift{
+      from{transform:translateY(0) rotate(0deg)}
+      to{transform:translateY(-20px) rotate(3deg)}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width:1100px;
+      margin:48px auto;
+      padding:32px;
+    }
+
+    header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:28px;
+    }
+
+    .brand{
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:14px;
+      background: linear-gradient(135deg,var(--accent2),var(--accent3));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 8px 30px rgba(99,102,241,0.14), inset 0 -6px 18px rgba(255,255,255,0.04);
+      flex-shrink:0;
+      transform:translateZ(0);
+    }
+    .logo svg{filter:drop-shadow(0 6px 18px rgba(99,102,241,0.12))}
+
+    h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.2px;
+      color:var(--text);
+    }
+    .tagline{
+      color:rgba(230,238,248,0.78);
+      font-size:13px;
+      margin-top:6px;
+    }
+
+    .meta{
+      text-align:right;
+      font-size:13px;
+      color:rgba(230,238,248,0.7);
+    }
+    .time{
+      display:inline-block;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;
+      border-radius:10px;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-size:12px;
+      color:rgba(220,235,255,0.95);
+    }
+
+    main{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:20px;
+    }
+
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      padding:26px;
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px);
+      overflow:hidden;
+    }
+    .hero-inner{
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .hero h2{
+      margin:0;
+      font-size:28px;
+      letter-spacing: -0.3px;
+      color:linear-gradient(90deg,var(--accent1),var(--accent2));
+    }
+    .hero p{
+      margin:0;
+      color:rgba(230,238,248,0.86);
+      max-width:66ch;
+    }
+
+    .cta{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:#042027;
+      padding:12px 16px;
+      border-radius:12px;
+      font-weight:600;
+      text-decoration:none;
+      box-shadow: 0 8px 30px rgba(96,165,250,0.14);
+      transform:translateZ(0);
+    }
+
+    /* Cards */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:18px;
+      margin-top:6px;
+    }
+    .card{
+      padding:18px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      box-shadow: 0 8px 24px rgba(2,6,23,0.45);
+      min-height:110px;
+    }
+    .card h3{margin:0 0 8px 0;font-size:16px}
+    .card p{margin:0;color:rgba(230,238,248,0.72);font-size:13px}
+
+    /* Slide-up animation baseline */
+    .slide-up{
+      transform: translateY(28px);
+      opacity: 0;
+      transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 600ms ease;
+      will-change: transform, opacity;
+      will-change: transform;
+    }
+    .in-view{
+      transform: translateY(0);
+      opacity:1;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:34px;
+      padding:18px;
+      border-radius:12px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      color:rgba(230,238,248,0.8);
+      font-size:14px;
+    }
+    .social{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 10px;
+      border-radius:10px;
+      background:var(--card);
+      transition:transform 160ms ease, box-shadow 160ms ease;
+    }
+    .gh:hover{transform:translateY(-4px); box-shadow:0 12px 40px rgba(99,102,241,0.12)}
+    .gh svg{width:20px;height:20px;display:block;fill:currentColor}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .grid{grid-template-columns: repeat(2,1fr)}
+      .hero h2{font-size:22px}
+    }
+    @media (max-width:640px){
+      .wrap{padding:20px;margin:20px}
+      header{align-items:flex-start}
+      .meta{text-align:left;width:100%}
+      .grid{grid-template-columns:1fr}
+      .logo{width:52px;height:52px;border-radius:12px}
+      .hero{padding:18px}
+      footer{flex-direction:column;align-items:flex-start;gap:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-overlay" aria-hidden="true"></div>
+  <div class="wrap">
+    <header>
+      <div class="brand slide-up" data-delay="50">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="6" y="6" width="52" height="52" rx="11" fill="white" opacity="0.06"/>
+            <path d="M20 38c0-6.627 6.373-12 14-12s14 5.373 14 12v6H20v-6z" fill="white" opacity="0.12"/>
+            <path d="M34 20c3.314 0 6 2.686 6 6s-2.686 6-6 6-6-2.686-6-6 2.686-6 6-6z" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="tagline">Responsive animated demo with gradient theme & smooth slide-up effects</div>
+        </div>
+      </div>
+
+      <div class="meta slide-up" data-delay="140">
+        <div class="time" title="Creation time">2025-09-29 06:31:13</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero slide-up" data-delay="220" aria-labelledby="hero-title">
+        <div class="hero-inner">
+          <div>
+            <h2 id="hero-title">Beautifully animated, fully responsive</h2>
+            <p>Small, focused UI pieces that slide up into view as you scroll. A gentle gradient theme, subtle shadows, and a clear layout make content feel alive.</p>
+          </div>
+          <div>
+            <a class="cta" href="#explore" role="button">Explore demos</a>
+          </div>
+        </div>
+
+        <div class="grid" id="explore">
+          <article class="card slide-up" data-delay="320">
+            <h3>Slide-up Reveal</h3>
+            <p>Elements are primed to animate into place when they enter the viewport using a performant intersection observer.</p>
+          </article>
+
+          <article class="card slide-up" data-delay="380">
+            <h3>Responsive Grid</h3>
+            <p>The layout adapts from three columns on large screens to a single column on small devices.</p>
+          </article>
+
+          <article class="card slide-up" data-delay="420">
+            <h3>Gradient Theme</h3>
+            <p>A layered gradient and light overlay create depth while keeping contrast readable.</p>
+          </article>
+
+          <article class="card slide-up" data-delay="460">
+            <h3>Accessible</h3>
+            <p>Semantic tags and clear contrast help ensure content is reachable and understandable.</p>
+          </article>
+
+          <article class="card slide-up" data-delay="500">
+            <h3>Lightweight</h3>
+            <p>No external libraries required — just CSS and a small, modern JS snippet.</p>
+          </article>
+
+          <article class="card slide-up" data-delay="560">
+            <h3>Customizable</h3>
+            <p>Colors, timings, and spacing are easy to tweak via CSS variables at the top of the stylesheet.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="slide-up" data-delay="640">
+      <div>Created by amirabolfazle</div>
+      <div class="social">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.997.108-.775.418-1.305.76-1.605-2.665-.305-5.467-1.335-5.467-5.93 0-1.31.47-2.38 1.236-3.22-.124-.304-.536-1.527.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.98-.399 3-.405 1.02.006 2.043.139 3 .405 2.29-1.552 3.296-1.23 3.296-1.23.655 1.65.243 2.873.12 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.807 5.624-5.48 5.92.43.37.815 1.096.815 2.21 0 1.595-.015 2.877-.015 3.27 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297 24 5.67 18.627.297 12 .297z"/>
+          </svg>
+          <span style="font-size:13px">GitHub</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up intersection observer with stagger based on data-delay
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced) {
+        document.querySelectorAll('.slide-up').forEach(el => el.classList.add('in-view'));
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            const el = entry.target;
+            const delay = parseInt(el.getAttribute('data-delay') || 0, 10);
+            // small randomized jitter for more natural feel
+            const jitter = Math.floor(Math.random()*60);
+            setTimeout(()=> el.classList.add('in-view'), delay + jitter);
+            obs.unobserve(el);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px 0px -10% 0px',
+        threshold: 0.15
+      });
+
+      document.querySelectorAll('.slide-up').forEach(el => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>
