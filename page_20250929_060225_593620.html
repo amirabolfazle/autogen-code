@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#0b0d10;
+    --panel:#0f1114;
+    --muted:#9aa4b2;
+    --accent:#7c5cff;
+    --accent-2:#00d4ff;
+    --glass: rgba(255,255,255,0.04);
+    --glass-2: rgba(255,255,255,0.02);
+    --fade-time: 700ms;
+    --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--font-sans);
+    background:
+      radial-gradient(1200px 600px at 10% 5%, rgba(124,92,255,0.10), transparent 6%),
+      radial-gradient(1000px 500px at 90% 95%, rgba(0,212,255,0.06), transparent 6%),
+      var(--bg);
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:auto;
+    line-height:1.35;
+  }
+
+  /* Layout */
+  .wrap{
+    max-width:1100px;
+    margin:40px auto;
+    padding:32px;
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:900px){
+    .wrap{grid-template-columns:1fr;padding:20px;margin:20px;}
+  }
+
+  /* Card styles */
+  .card{
+    background: linear-gradient(180deg,var(--glass), var(--glass-2));
+    border:1px solid rgba(255,255,255,0.04);
+    border-radius:14px;
+    padding:24px;
+    box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+
+  /* Left column (profile) */
+  .profile{
+    position:relative;
+    overflow:hidden;
+  }
+
+  .avatar{
+    width:120px;
+    height:120px;
+    border-radius:28px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:44px;
+    color:#05101a;
+    margin-bottom:20px;
+    box-shadow: 0 8px 30px rgba(124,92,255,0.18);
+    transform-origin:center;
+  }
+
+  .handle{
+    font-weight:800;
+    font-size:22px;
+    letter-spacing:0.6px;
+    margin-bottom:6px;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:14px;
+  }
+
+  .bio{
+    color:#cfe6ff;
+    font-size:14px;
+    margin-bottom:14px;
+  }
+
+  .meta{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .pill{
+    background:rgba(255,255,255,0.03);
+    padding:8px 12px;
+    border-radius:999px;
+    color:var(--muted);
+    font-size:13px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  /* Right column */
+  .hero{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    margin-bottom:18px;
+  }
+  .title{
+    font-size:34px;
+    font-weight:800;
+    letter-spacing:-0.6px;
+    margin:0;
+  }
+  .tagline{
+    color:var(--muted);
+    margin-top:6px;
+    font-size:14px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+    margin-top:12px;
+  }
+  @media (max-width:900px){
+    .grid{grid-template-columns:1fr}
+    .wrap{grid-template-columns:1fr}
+  }
+
+  .project{
+    padding:16px;
+    border-radius:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .project h4{
+    margin:0 0 8px 0;
+    font-size:16px;
+  }
+  .project p{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .links{
+    margin-top:12px;
+    display:flex;
+    gap:8px;
+  }
+  .btn{
+    background:transparent;
+    color:var(--accent);
+    border:1px solid rgba(124,92,255,0.12);
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+    transition:all 220ms ease;
+  }
+  .btn.secondary{
+    color:var(--muted);
+    border-color: rgba(255,255,255,0.03);
+  }
+  .btn:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(124,92,255,0.12);
+  }
+
+  /* Skills */
+  .skills{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .skill{
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:13px;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  /* Contact card */
+  .contact{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-top:12px;
+  }
+  .mail{
+    background:linear-gradient(90deg,#07202a,#05202b);
+    padding:12px 14px;
+    border-radius:10px;
+    font-weight:600;
+  }
+
+  /* footer */
+  footer{
+    max-width:1100px;
+    margin:28px auto;
+    padding:14px 24px;
+    display:flex;
+    gap:12px;
+    justify-content:space-between;
+    align-items:center;
+    color:var(--muted);
+    font-size:13px;
+  }
+  footer a{
+    color:var(--muted);
+    text-decoration:none;
+    display:flex;
+    gap:8px;
+    align-items:center;
+    transition:color 200ms ease, transform 160ms ease;
+  }
+  footer a:hover{
+    color:var(--accent);
+    transform:translateY(-3px);
+  }
+  .gh-icon{width:20px;height:20px;display:inline-block;fill:currentColor}
+
+  /* Entrance animations */
+  .fade-in {
+    opacity:0;
+    transform: translateY(12px) scale(0.995);
+    animation:fadeInUp var(--fade-time) forwards;
+  }
+  .delay-1 { animation-delay:120ms; }
+  .delay-2 { animation-delay:240ms; }
+  .delay-3 { animation-delay:360ms; }
+  .delay-4 { animation-delay:480ms; }
+  @keyframes fadeInUp {
+    to { opacity:1; transform:none; }
+  }
+
+  /* subtle moving gradient lines as animated accents */
+  .accent-lines{
+    position:absolute;
+    inset: -30% -20% auto auto;
+    width:450px; height:450px;
+    pointer-events:none;
+    filter: blur(28px) saturate(120%);
+    opacity:0.12;
+    transform:translateZ(0);
+    animation:float 9s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%{ transform: translate(0,0) rotate(0deg) scale(1); }
+    50%{ transform: translate(-12px,8px) rotate(18deg) scale(1.06); }
+    100%{ transform: translate(0,0) rotate(0deg) scale(1); }
+  }
+
+  /* micro interactions */
+  .project .meta-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+  .time {
+    color:var(--muted);
+    font-size:12px;
+  }
+
+  /* small screen footer fix */
+  @media (max-width:600px){
+    footer{padding:14px}
+  }
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="card profile fade-in delay-1" aria-label="Profile">
+      <div class="accent-lines" aria-hidden="true">
+        <svg width="100%" height="100%" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="#7c5cff" stop-opacity="0.95"/>
+              <stop offset="1" stop-color="#00d4ff" stop-opacity="0.8"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(120,60)">
+            <path d="M120 0 C220 40 340 10 420 60 C500 110 540 220 420 300 C300 380 160 360 50 320 C-60 280 -30 90 120 0 Z" fill="url(#g1)"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="avatar" title="amirabolfazle avatar">AB</div>
+      <div class="handle">amirabolfazle</div>
+      <div class="sub">Designer · Developer · Experimenter</div>
+      <div class="bio">I build clean, animated web experiences and thoughtful tools. I like small, pleasant interactions and polished UI.</div>
+
+      <div class="meta">
+        <div class="pill">Location: Remote</div>
+        <div class="pill">Open to work</div>
+        <div class="pill">Focus: Frontend</div>
+      </div>
+
+      <div style="margin-top:16px">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Skills</div>
+        <div class="skills">
+          <div class="skill">HTML</div>
+          <div class="skill">CSS</div>
+          <div class="skill">JS</div>
+          <div class="skill">React</div>
+          <div class="skill">Design</div>
+          <div class="skill">Animation</div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;display:flex;gap:10px;">
+        <a class="btn" href="#projects" title="View Projects">Projects</a>
+        <a class="btn secondary" href="#contact" title="Contact">Contact</a>
+      </div>
+    </aside>
+
+    <main>
+      <section class="card fade-in delay-2" aria-label="Introduction">
+        <div class="hero">
+          <div>
+            <h1 class="title">Hi — I'm amirabolfazle</h1>
+            <div class="tagline">Creating animated, high-quality web interfaces and tools.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+          <div class="pill">Freelance & Personal Projects</div>
+          <div class="pill">Available for collaboration</div>
+          <div class="time" aria-hidden="true">Creation time: 2025-09-29 06:01:35</div>
+        </div>
+
+        <div style="margin-top:16px;color:var(--muted);font-size:14px">
+          A small collection of selected projects and experiments. Click any project to explore details or view source.
+        </div>
+      </section>
+
+      <section id="projects" class="card fade-in delay-3" style="margin-top:18px" aria-label="Projects">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3 style="margin:0">Selected Projects</h3>
+          <div style="color:var(--muted);font-size:13px">Highlighted work & demos</div>
+        </div>
+
+        <div class="grid" style="margin-top:14px">
+          <article class="project">
+            <h4>Autogen UI Kit</h4>
+            <p>Component library with animated primitives and token-driven themes. Built for speed and delightful micro-interactions.</p>
+            <div class="meta-row">
+              <div style="color:var(--muted);font-size:13px">JS · CSS · Design</div>
+              <div class="links">
+                <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">Source</a>
+                <button class="btn secondary" onclick="previewAlert()">Preview</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="project">
+            <h4>Motion Playground</h4>
+            <p>Interactive playground experimenting with spring physics, easing curves and SVG morphs. Built for learning and fun.</p>
+            <div class="meta-row">
+              <div style="color:var(--muted);font-size:13px">Animation · SVG · Tools</div>
+              <div class="links">
+                <button class="btn" onclick="previewAlert()">Demo</button>
+                <a class="btn secondary" href="#contact">Hire</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project">
+            <h4>Portfolio in a File</h4>
+            <p>Small, single-file portfolios and micro-sites optimized for quick deployment and low friction updates.</p>
+            <div class="meta-row">
+              <div style="color:var(--muted);font-size:13px">HTML · UX</div>
+              <div class="links">
+                <button class="btn" onclick="previewAlert()">Open</button>
+                <a class="btn secondary" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">Repo</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project">
+            <h4>Design Systems Tools</h4>
+            <p>Utilities for tokens, adaptive components and cross-platform style translation to keep systems consistent.</p>
+            <div class="meta-row">
+              <div style="color:var(--muted);font-size:13px">Design Systems</div>
+              <div class="links">
+                <button class="btn" onclick="previewAlert()">Read</button>
+                <a class="btn secondary" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">Code</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="card fade-in delay-4" style="margin-top:18px" aria-label="Contact">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+          <div>
+            <h3 style="margin:0 0 6px 0">Get in touch</h3>
+            <div style="color:var(--muted);font-size:13px">For collaborations, freelance work or a quick chat.</div>
+          </div>
+          <div class="mail">hello@amirabolfazle.dev</div>
+        </div>
+
+        <div style="margin-top:12px;color:var(--muted);font-size:13px">
+          Prefer GitHub? View the source and open issues on the repository linked in the footer.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer aria-label="Site footer">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg class="gh-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.302 3.438 9.8 8.205 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.775.418-1.305.76-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.382 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 013.003-.403c1.02.005 2.045.138 3.003.403 2.29-1.553 3.296-1.23 3.296-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.804 5.624-5.476 5.92.43.37.814 1.103.814 2.222 0 1.604-.015 2.896-.015 3.293 0 .319.216.694.825.576C20.565 21.796 24 17.298 24 12c0-6.63-5.373-12-12-12z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+
+    <div style="color:var(--muted);font-size:13px">© 2025</div>
+  </footer>
+
+<script>
+  // Small interactive touches and accessibility helpers
+  function previewAlert(){
+    const msg = 'Preview not connected in this single-file demo — open the repo for live demos.';
+    if (window.alert) alert(msg);
+  }
+
+  // Add subtle tilt to avatar on mouse move
+  const avatar = document.querySelector('.avatar');
+  if (avatar) {
+    avatar.addEventListener('mousemove', (e) => {
+      const r = avatar.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width/2)) / r.width;
+      const dy = (e.clientY - (r.top + r.height/2)) / r.height;
+      avatar.style.transform = `perspective(600px) rotateX(${ -dy * 6 }deg) rotateY(${ dx * 8 }deg) scale(1.01)`;
+    });
+    avatar.addEventListener('mouseleave', () => {
+      avatar.style.transform = 'none';
+    });
+  }
+
+  // Respect reduced motion preference
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (mq.matches) {
+    document.documentElement.style.setProperty('--fade-time','0ms');
+    // Remove animations from elements
+    document.querySelectorAll('.accent-lines').forEach(el => el.style.display='none');
+  }
+
+  // Small keyboard shortcut: press "g" to open GitHub repo
+  window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'g' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      window.open('https://github.com/amirabolfazle/autogen-code','_blank','noopener');
+    }
+  });
+</script>
+</body>
+</html>
