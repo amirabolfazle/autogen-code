@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #fff7f3;
+      --bg-2: #f3fff7;
+      --bg-3: #f6f7ff;
+      --accent-1: #ffd6e0;
+      --accent-2: #d6fff0;
+      --accent-3: #e6ecff;
+      --muted: #6b7280;
+      --card: rgba(255,255,255,0.7);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, var(--accent-1), transparent 10%),
+                  radial-gradient(800px 500px at 90% 80%, var(--accent-2), transparent 10%),
+                  linear-gradient(135deg, var(--bg-1), var(--bg-2) 50%, var(--bg-3));
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      position:relative;
+      padding:48px;
+      border-radius:20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.5));
+      box-shadow: 0 10px 30px rgba(15,23,42,0.08);
+      backdrop-filter: blur(8px) saturate(120%);
+      overflow:hidden;
+    }
+
+    /* floating pastel shapes */
+    .shape{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(6px);
+      opacity:0.9;
+      mix-blend-mode:soft-light;
+      transform-origin:center;
+      animation:floatRotate 18s linear infinite;
+    }
+    .shape.s1{width:240px;height:240px;left:-60px;top:-60px;background:linear-gradient(135deg,#ffd6e0,#ffefe8);animation-duration:22s;animation-direction:normal;}
+    .shape.s2{width:180px;height:180px;right:-40px;top:20%;background:linear-gradient(135deg,#d6fff0,#eafff6);animation-duration:26s;animation-direction:reverse;}
+    .shape.s3{width:300px;height:300px;right:-120px;bottom:-120px;background:linear-gradient(135deg,#e6ecff,#f3f8ff);animation-duration:20s;animation-direction:normal;}
+    @keyframes floatRotate{
+      0%{transform:translateY(0) rotate(0deg) scale(1)}
+      25%{transform:translateY(-12px) rotate(45deg) scale(1.03)}
+      50%{transform:translateY(0) rotate(90deg) scale(1)}
+      75%{transform:translateY(12px) rotate(135deg) scale(0.97)}
+      100%{transform:translateY(0) rotate(360deg) scale(1)}
+    }
+
+    .content{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      align-items:center;
+    }
+
+    .hero{
+      padding:28px;
+    }
+    .title{
+      font-size:48px;
+      line-height:1;
+      margin:0 0 12px 0;
+      letter-spacing:-0.02em;
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .logoBadge{
+      width:72px;
+      height:72px;
+      border-radius:18px;
+      display:inline-grid;
+      place-items:center;
+      background:linear-gradient(135deg,#fff,#fff0);
+      box-shadow: 0 6px 18px rgba(15,23,42,0.06), inset 0 -6px 18px rgba(255,255,255,0.5);
+      transform:rotate(-8deg);
+      transition:transform .6s cubic-bezier(.2,.9,.3,1);
+    }
+    .logoBadge:hover{transform:rotate(0deg) scale(1.04)}
+    .logoMark{
+      width:40px;height:40px;border-radius:8px;
+      background: conic-gradient(from 200deg at 50% 50%, #ffd6e0, #d6fff0, #e6ecff, #ffd6e0);
+      transform:rotate(18deg);
+      box-shadow:0 4px 10px rgba(15,23,42,0.06);
+    }
+
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-weight:300;
+      font-size:16px;
+      max-width:46ch;
+    }
+
+    .ctaGroup{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+      transform-origin:center;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-4px)}
+    .btn-primary{
+      background: linear-gradient(90deg,#ffb7c6,#aef0df);
+      color:#082032;
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(15,23,42,0.06);
+      backdrop-filter: blur(6px);
+    }
+
+    /* card on the right with rotated effects */
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.65));
+      border-radius:16px;
+      padding:20px;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.05);
+      position:relative;
+      overflow:hidden;
+      transform:rotate(-3deg);
+      transition:transform .6s cubic-bezier(.2,.9,.3,1);
+    }
+    .panel:hover{transform:rotate(0deg) translateY(-6px)}
+    .panelHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+    .panelHeader h4{margin:0;font-size:18px}
+    .panelPreview{
+      height:220px;
+      border-radius:12px;
+      background:linear-gradient(120deg, rgba(255,255,255,0.6), rgba(246,246,255,0.4));
+      border:1px solid rgba(15,23,42,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0.06em;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .previewLayer{
+      position:absolute;
+      width:160%;
+      height:160%;
+      left:-30%;
+      top:-30%;
+      background:conic-gradient(from 0deg, rgba(255,214,230,0.18), rgba(210,255,240,0.18), rgba(230,236,255,0.18));
+      animation:slowSpin 14s linear infinite;
+      mix-blend-mode:overlay;
+      transform-origin:center;
+    }
+    @keyframes slowSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+    .meta{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .createdTime{
+      margin-top:18px;
+      font-size:13px;
+      color:var(--muted);
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      background:rgba(255,255,255,0.6);
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(15,23,42,0.03);
+      width:max-content;
+    }
+
+    footer{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .githubLink{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:6px 8px;
+      border-radius:8px;
+      transition:background .15s ease, transform .15s ease;
+    }
+    .githubLink svg{width:18px;height:18px;display:block}
+    .githubLink:hover{background:rgba(0,0,0,0.03); transform:translateY(-3px)}
+
+    /* responsive */
+    @media (max-width:920px){
+      .content{grid-template-columns:1fr;gap:20px}
+      .panel{transform:rotate(0deg)}
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" role="main" aria-labelledby="site-title">
+    <div class="shape s1" aria-hidden="true"></div>
+    <div class="shape s2" aria-hidden="true"></div>
+    <div class="shape s3" aria-hidden="true"></div>
+
+    <div class="content">
+      <section class="hero" aria-labelledby="site-title">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="logoBadge" aria-hidden="true">
+            <div class="logoMark"></div>
+          </div>
+          <div>
+            <h1 id="site-title" class="title">amirabolfazle</h1>
+            <p class="subtitle">A calm pastel landing page with subtle rotate effects and soft motion — crafted to present ideas with a gentle, modern touch.</p>
+          </div>
+        </div>
+
+        <div class="ctaGroup" role="group" aria-label="Primary actions">
+          <button class="btn btn-primary" aria-label="Explore">
+            Explore
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="transform:rotate(20deg)">
+              <path d="M5 12h14" stroke="#082032" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13 5l7 7-7 7" stroke="#082032" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <button class="btn btn-ghost" aria-label="Contact">
+            Contact
+          </button>
+
+          <span class="createdTime" title="Creation time">Created: 2025-09-29 09:13:41</span>
+        </div>
+
+        <div class="meta" aria-hidden="true">
+          <span>Soft gradients</span> · <span>Animated rotation</span> · <span>Pastel palette</span>
+        </div>
+
+        <footer style="border:none;padding:0">
+          <a class="githubLink" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 .5C5.65.5.77 5.38.77 11.73c0 4.83 3.14 8.92 7.49 10.36.55.1.75-.24.75-.53 0-.26-.01-1.14-.02-2.07-3.05.66-3.69-1.46-3.69-1.46-.5-1.27-1.23-1.61-1.23-1.61-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.7 2.6 1.21 3.23.93.1-.73.39-1.21.71-1.49-2.43-.28-4.98-1.21-4.98-5.38 0-1.19.42-2.16 1.11-2.92-.11-.28-.48-1.41.11-2.94 0 0 .9-.29 2.95 1.11a10.2 10.2 0 0 1 2.69-.36c.91.01 1.83.12 2.69.36 2.04-1.4 2.94-1.11 2.94-1.11.59 1.53.22 2.66.11 2.94.69.76 1.11 1.73 1.11 2.92 0 4.18-2.56 5.09-5 5.36.4.35.76 1.05.76 2.12 0 1.53-.01 2.76-.01 3.13 0 .29.2.64.76.53 4.34-1.44 7.48-5.53 7.48-10.36C23.23 5.38 18.35.5 12 .5z" fill="#0f172a"/>
+            </svg>
+            Created by amirabolfazle
+          </a>
+        </footer>
+      </section>
+
+      <aside class="panel" aria-labelledby="panel-title">
+        <div class="panelHeader">
+          <h4 id="panel-title">Live Preview</h4>
+          <div style="font-size:13px;color:var(--muted)">Interactive</div>
+        </div>
+
+        <div class="panelPreview" role="img" aria-label="Preview area">
+          <div class="previewLayer" aria-hidden="true"></div>
+          <div style="position:relative;z-index:1;text-align:center">
+            <div style="font-size:28px;font-weight:700;color:#082032">amirabolfazle</div>
+            <div style="margin-top:8px;color:var(--muted);font-size:13px">Pastel · Rotations · Calm UI</div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div>Theme: Pastel</div>
+          <div>Effects: Rotate & float</div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
+          <div style="flex:1">
+            <div style="height:8px;background:linear-gradient(90deg,#ffd6e0,#d6fff0);border-radius:6px"></div>
+          </div>
+          <div style="width:68px;text-align:right;color:var(--muted);font-size:13px">v1.0</div>
+        </div>
+
+        <div style="margin-top:16px;color:var(--muted);font-size:13px">Creation time: <strong style="color:#0f172a">2025-09-29 09:13:41</strong></div>
+
+      </aside>
+    </div>
+
+  </main>
+</body>
+</html>
