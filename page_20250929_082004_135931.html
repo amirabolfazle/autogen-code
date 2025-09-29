@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1:#0f0f12;
+    --bg-2:#0b0b0d;
+    --panel:#0e1116;
+    --accent:#7ee7c7;
+    --accent-2:#6ec8ff;
+    --muted:#9aa4b2;
+    --glass: rgba(255,255,255,0.03);
+    --card:#0b0f14;
+    --neon: 0 0 8px rgba(126,231,199,0.12), 0 0 24px rgba(110,200,255,0.04);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(110,200,255,0.04), transparent),
+                radial-gradient(800px 400px at 90% 80%, rgba(126,231,199,0.03), transparent),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:scroll;
+  }
+
+  .wrap{
+    max-width:1100px;
+    margin:48px auto;
+    padding:40px;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:32px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+
+  .logo{
+    width:64px;
+    height:64px;
+    border-radius:12px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid;
+    place-items:center;
+    color:#021017;
+    font-weight:800;
+    font-size:20px;
+    box-shadow: var(--neon);
+    transform:rotate(-12deg);
+  }
+
+  h1{
+    margin:0;
+    font-size:28px;
+    letter-spacing:0.6px;
+    color:linear-gradient(90deg,var(--accent),var(--accent-2));
+  }
+
+  .meta{
+    text-align:right;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .meta .time{
+    display:block;
+    font-family: monospace;
+    color:#cbeef1;
+    margin-top:6px;
+    font-size:13px;
+  }
+
+  .hero{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border-radius:14px;
+    padding:28px;
+    display:flex;
+    gap:28px;
+    align-items:center;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    border:1px solid rgba(255,255,255,0.02);
+    overflow:hidden;
+  }
+
+  .intro{
+    flex:1;
+    min-width:0;
+  }
+
+  .intro h2{
+    margin:0 0 8px 0;
+    font-size:22px;
+    color:var(--accent);
+  }
+
+  .intro p{
+    margin:0;
+    color:var(--muted);
+    line-height:1.5;
+  }
+
+  .cta{
+    margin-top:18px;
+    display:flex;
+    gap:12px;
+  }
+
+  .btn{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    color:var(--accent-2);
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    backdrop-filter: blur(6px);
+    transition:transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s;
+  }
+
+  .btn.primary{
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#021017;
+    border: none;
+    box-shadow: var(--neon);
+  }
+
+  .visual{
+    width:240px;
+    height:140px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(126,231,199,0.06), rgba(110,200,255,0.04));
+    display:grid;
+    place-items:center;
+    color:var(--accent-2);
+    font-weight:700;
+    font-size:20px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  .sections{
+    margin-top:28px;
+    display:grid;
+    gap:20px;
+  }
+
+  .cards{
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+    gap:18px;
+    margin-top:12px;
+  }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:16px;
+    border:1px solid rgba(255,255,255,0.02);
+    transition:transform .36s cubic-bezier(.2,.9,.3,1), box-shadow .36s;
+    transform-origin:center;
+  }
+
+  .card:hover{
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 50px rgba(2,6,23,0.6);
+  }
+
+  .card h3{
+    margin:0 0 6px 0;
+    font-size:16px;
+  }
+
+  .card p{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.45;
+  }
+
+  .tag{
+    display:inline-block;
+    margin-top:10px;
+    font-size:12px;
+    color:#021017;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    padding:6px 8px;
+    border-radius:8px;
+    font-weight:700;
+  }
+
+  footer{
+    margin-top:48px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding-top:18px;
+    border-top:1px dashed rgba(255,255,255,0.02);
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .footer-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .gh{
+    display:inline-grid;
+    place-items:center;
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.03);
+    transition:transform .18s, box-shadow .18s;
+    color:var(--muted);
+  }
+
+  .gh:hover{
+    transform:translateY(-6px);
+    box-shadow: var(--neon);
+    color:#021017;
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  }
+
+  /* Slide-up reveal */
+  .reveal{
+    opacity:0;
+    transform: translateY(18px);
+    transition: transform .7s cubic-bezier(.2,.9,.3,1), opacity .7s ease;
+    will-change: transform, opacity;
+  }
+
+  .reveal.visible{
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  /* stagger via inline style --delay */
+  .reveal[data-delay]{
+    transition-delay: var(--delay, 0s);
+  }
+
+  /* small devices */
+  @media (max-width:640px){
+    .hero{flex-direction:column; align-items:flex-start}
+    .visual{width:100%;height:120px;border-radius:10px}
+    header{flex-direction:column; align-items:flex-start}
+    .meta{text-align:left}
+    .wrap{padding:20px;margin:20px}
+  }
+
+  /* subtle animated background lines */
+  .bg-lines{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+    opacity:0.06;
+  }
+
+  .bg-lines svg{width:100%;height:100%}
+</style>
+</head>
+<body>
+<div class="bg-lines" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+        <stop offset="0" stop-color="#6ec8ff" stop-opacity="0.14"/>
+        <stop offset="1" stop-color="#7ee7c7" stop-opacity="0.06"/>
+      </linearGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="none"/>
+    <g stroke="url(#g1)" stroke-width="1" stroke-linecap="round">
+      <path d="M0,85 C200,120 400,40 800,80 C1200,120 1600,20 2000,60" fill="none">
+        <animate attributeName="d" dur="20s" repeatCount="indefinite"
+          values="M0,85 C200,120 400,40 800,80 C1200,120 1600,20 2000,60;
+                  M0,60 C250,20 400,120 800,40 C1200, -10 1600,120 2000,30;
+                  M0,85 C200,120 400,40 800,80 C1200,120 1600,20 2000,60"/>
+      </path>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="brand reveal" data-delay="0.02" style="--delay:0.02s">
+      <div class="logo">a</div>
+      <div>
+        <h1>amirabolfazle</h1>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px">Creative developer • UI experiments • lightweight builds</div>
+      </div>
+    </div>
+    <div class="meta reveal" data-delay="0.04" style="--delay:0.04s">
+      <div>Creation time</div>
+      <div class="time">2025-09-29 08:19:04</div>
+    </div>
+  </header>
+
+  <section class="hero reveal" data-delay="0.06" style="--delay:0.06s" aria-label="Introduction">
+    <div class="intro">
+      <h2>Hey — I'm amirabolfazle</h2>
+      <p>Building crisp web experiences with a focus on performance, polish, and playful interactions. I like small bundles, smooth micro-animations, and components that delight.</p>
+      <div class="cta">
+        <button class="btn primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">See Projects</button>
+        <button class="btn" onclick="alert('mailto:amir@example.com')">Get in touch</button>
+      </div>
+    </div>
+    <div class="visual" aria-hidden="true">
+      <svg width="110" height="72" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg" x1="0" x2="1">
+            <stop offset="0" stop-color="#7ee7c7"/>
+            <stop offset="1" stop-color="#6ec8ff"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="106" height="68" rx="10" stroke="url(#lg)" stroke-width="3" opacity="0.95"/>
+        <circle cx="25" cy="36" r="8" fill="#0b1116"/>
+        <rect x="44" y="24" width="52" height="8" rx="4" fill="#0b1116"/>
+        <rect x="44" y="36" width="36" height="8" rx="4" fill="#0b1116"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="sections">
+    <div id="projects" class="reveal" data-delay="0.08" style="--delay:0.08s">
+      <h3 style="margin:0 0 8px 0;color:var(--muted)">Projects</h3>
+      <div class="cards">
+        <article class="card reveal" data-delay="0.10" style="--delay:0.10s">
+          <h3>Autogen Code</h3>
+          <p>A tiny, focused toolkit that scaffolds tailored code snippets and automations. Fast to run, easy to adapt.</p>
+          <div class="tag">JS • CLI</div>
+        </article>
+
+        <article class="card reveal" data-delay="0.12" style="--delay:0.12s">
+          <h3>Neon UI Kit</h3>
+          <p>A set of micro-components with fluid motion and low runtime cost — designed for dark themes and accessibility.</p>
+          <div class="tag">CSS • Components</div>
+        </article>
+
+        <article class="card reveal" data-delay="0.14" style="--delay:0.14s">
+          <h3>Perf Playground</h3>
+          <p>Interactive demos that test rendering speed, bundle size, and animation performance across devices.</p>
+          <div class="tag">Demo • Tools</div>
+        </article>
+      </div>
+    </div>
+
+    <div class="reveal" data-delay="0.16" style="--delay:0.16s">
+      <h3 style="margin-top:20px;color:var(--muted)">About</h3>
+      <p style="margin-top:8px;color:var(--muted)">I enjoy turning ideas into small, beautiful interfaces. When I'm not coding you can find me sketching UI concepts, experimenting with shaders, or simplifying complex interactions.</p>
+    </div>
+
+    <div class="reveal" data-delay="0.18" style="--delay:0.18s">
+      <h3 style="margin-top:20px;color:var(--muted)">Contact</h3>
+      <p style="margin-top:8px;color:var(--muted)">Ping me on GitHub or drop an email — I'm open to collabs, remote gigs, and weird experiments.</p>
+    </div>
+  </div>
+
+  <footer class="reveal" data-delay="0.20" style="--delay:0.20s">
+    <div class="footer-left">
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" title="GitHub">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.73.5.92 5.31.92 11.58c0 4.69 3.04 8.68 7.27 10.08.53.1.72-.23.72-.51 0-.25-.01-.92-.01-1.8-2.95.64-3.58-1.28-3.58-1.28-.48-1.23-1.17-1.56-1.17-1.56-.96-.66.07-.65.07-.65 1.06.08 1.62 1.09 1.62 1.09.94 1.61 2.47 1.14 3.07.87.09-.68.37-1.14.67-1.4-2.36-.27-4.85-1.18-4.85-5.27 0-1.16.41-2.11 1.08-2.86-.11-.27-.47-1.36.1-2.83 0 0 .88-.28 2.88 1.08a9.85 9.85 0 012.62-.35c.89.01 1.79.12 2.62.35 2-.36 2.88-1.08 2.88-1.08.57 1.47.21 2.56.1 2.83.67.75 1.08 1.7 1.08 2.86 0 4.1-2.5 5-4.88 5.27.38.33.72.98.72 1.98 0 1.43-.01 2.58-.01 2.93 0 .28.19.62.73.51 4.22-1.4 7.26-5.39 7.26-10.08C23.08 5.31 18.27.5 12 .5z"/>
+        </svg>
+      </a>
+      <div style="color:var(--muted)">Created by amirabolfazle</div>
+    </div>
+
+    <div style="color:var(--muted);font-size:12px">© <span id="year"></span></div>
+  </footer>
+</div>
+
+<script>
+  // Set current year in footer
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Intersection observer for reveal animations with stagger
+  (function(){
+    const items = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          // optional: unobserve to avoid re-triggering
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.12});
+    items.forEach((el, idx) => {
+      // if data-delay present, use it; else set incremental delay
+      if(!el.dataset.delay){
+        el.style.setProperty('--delay', (idx*0.04)+'s');
+      }
+      io.observe(el);
+    });
+  })();
+
+  // small flourish: keyboard shortcut "g" to open GitHub
+  window.addEventListener('keydown', (e) => {
+    if(e.key.toLowerCase() === 'g'){
+      window.open('https://github.com/amirabolfazle/autogen-code', '_blank', 'noopener');
+    }
+  });
+
+  // tiny responsive handler to add subtle tilt on mouse move for visual
+  (function(){
+    const vis = document.querySelector('.visual');
+    if(!vis) return;
+    let rect;
+    vis.addEventListener('mousemove', (ev)=>{
+      rect = rect || vis.getBoundingClientRect();
+      const x = (ev.clientX - rect.left) / rect.width - 0.5;
+      const y = (ev.clientY - rect.top) / rect.height - 0.5;
+      vis.style.transform = `perspective(600px) rotateX(${(-y*6).toFixed(2)}deg) rotateY(${(x*8).toFixed(2)}deg) translateZ(6px)`;
+    });
+    vis.addEventListener('mouseleave', ()=>{
+      vis.style.transform = '';
+    });
+  })();
+
+  // reduce motion respect
+  (function(){
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq.matches){
+      document.documentElement.style.setProperty('--reduced','1');
+      document.querySelectorAll('.reveal').forEach(el=>{
+        el.style.transition = 'none';
+        el.classList.add('visible');
+      });
+    }
+  })();
+</script>
+</body>
+</html>
