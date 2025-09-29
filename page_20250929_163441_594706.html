@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#050014;
+    --neon-cyan:#00f6ff;
+    --neon-pink:#ff2d9c;
+    --neon-purple:#9a6cff;
+    --glass: rgba(255,255,255,0.04);
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,246,255,0.06), transparent),
+                radial-gradient(1000px 500px at 90% 90%, rgba(255,45,156,0.04), transparent),
+                var(--bg1);
+    color:#e9f8ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* animated subtle moving gradient layer */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:-20%;
+    background: linear-gradient(120deg, rgba(0,246,255,0.06), rgba(154,108,255,0.04) 40%, rgba(255,45,156,0.05));
+    filter: blur(40px) saturate(150%);
+    transform: scale(1.1);
+    animation: floatBg 14s linear infinite;
+    z-index:0;
+    pointer-events:none;
+  }
+  @keyframes floatBg{
+    0%{transform:translate3d(-3%,0,0) scale(1.08) rotate(0deg)}
+    50%{transform:translate3d(3%,-2%,0) scale(1.12) rotate(0.2deg)}
+    100%{transform:translate3d(-3%,0,0) scale(1.08) rotate(0deg)}
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:18px;
+    padding:48px 20px;
+    box-sizing:border-box;
+    text-align:center;
+  }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.06);
+    padding:46px 62px;
+    border-radius:14px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,246,255,0.03);
+    backdrop-filter: blur(6px) saturate(120%);
+    transform-origin:center;
+    transition: transform 380ms cubic-bezier(.2,.9,.2,1), box-shadow 380ms;
+    animation: entryZoom 700ms cubic-bezier(.2,.9,.2,1) both;
+  }
+
+  @keyframes entryZoom{
+    from{transform:scale(.94); opacity:0}
+    to{transform:scale(1); opacity:1}
+  }
+
+  .title{
+    margin:0;
+    font-size: clamp(28px, 6.5vw, 56px);
+    letter-spacing:0.02em;
+    font-weight:700;
+    line-height:1;
+    color: #eaffff;
+    text-shadow:
+      0 0 8px rgba(0,246,255,0.18),
+      0 0 18px rgba(154,108,255,0.07),
+      0 6px 30px rgba(0,0,0,0.6);
+    transform-origin:center;
+    transition: transform 300ms ease;
+    animation: neonPulse 2.2s ease-in-out infinite;
+  }
+
+  @keyframes neonPulse{
+    0%{filter:drop-shadow(0 0 6px rgba(0,246,255,0.12)) drop-shadow(0 0 18px rgba(154,108,255,0.04)); transform:scale(1)}
+    50%{filter:drop-shadow(0 0 14px rgba(0,246,255,0.22)) drop-shadow(0 0 26px rgba(154,108,255,0.08)); transform:scale(1.02)}
+    100%{filter:drop-shadow(0 0 6px rgba(0,246,255,0.12)) drop-shadow(0 0 18px rgba(154,108,255,0.04)); transform:scale(1)}
+  }
+
+  .subtitle{
+    font-size:14px;
+    color:rgba(230,250,255,0.9);
+    opacity:0.86;
+    margin-top:8px;
+    letter-spacing:0.06em;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .time{
+    background:linear-gradient(90deg, rgba(0,246,255,0.08), rgba(255,45,156,0.04));
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.03);
+    font-weight:600;
+    font-size:13px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    transform:translateZ(0);
+    transition: transform 260ms ease, box-shadow 260ms ease;
+  }
+
+  .card:hover{ transform: scale(1.02); box-shadow: 0 18px 60px rgba(0,0,0,0.7); }
+  .card:hover .time{ transform: scale(1.03); box-shadow: 0 12px 36px rgba(0,0,0,0.5); }
+
+  /* Footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    z-index:2;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    padding:8px 12px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+    color:rgba(230,250,255,0.95);
+    font-size:13px;
+  }
+
+  a.github{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--neon-cyan);
+    text-decoration:none;
+    font-weight:600;
+    transition: transform 200ms ease, filter 200ms ease;
+    padding:6px;
+    border-radius:8px;
+  }
+  a.github svg{ width:18px;height:18px; display:block; filter: drop-shadow(0 6px 18px rgba(0,246,255,0.12)); }
+  a.github:hover{ transform: translateY(-3px) scale(1.02); filter:brightness(1.08); }
+
+  /* small responsive tweaks */
+  @media (max-width:520px){
+    .card{ padding:28px 22px; }
+    footer{ bottom:12px; font-size:12px; padding:6px 10px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main" aria-labelledby="site-title">
+      <h1 id="site-title" class="title">amirabolfazle</h1>
+      <div class="subtitle">
+        <div class="time" aria-label="creation time">Created: 2025-09-29 16:33:56</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5C5.73.5.9 5.33.9 11.6c0 4.78 3.09 8.84 7.38 10.27.54.1.74-.23.74-.52 0-.26-.01-1-.02-1.95-3.01.66-3.64-1.45-3.64-1.45-.49-1.25-1.2-1.58-1.2-1.58-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.64 2.52 1.17 3.13.9.1-.7.38-1.17.69-1.44-2.4-.27-4.93-1.2-4.93-5.33 0-1.18.42-2.15 1.1-2.91-.11-.27-.48-1.36.11-2.84 0 0 .9-.29 2.95 1.1a10.2 10.2 0 0 1 2.69-.36c.91 0 1.83.12 2.69.36 2.05-1.39 2.95-1.1 2.95-1.1.59 1.48.22 2.57.11 2.84.69.77 1.1 1.74 1.1 2.91 0 4.14-2.53 5.05-4.94 5.32.39.34.73 1.01.73 2.03 0 1.46-.01 2.63-.01 2.99 0 .29.2.63.75.52 4.29-1.44 7.38-5.5 7.38-10.27C23.1 5.33 18.27.5 12 .5z"
+          fill="url(#g)"/>
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#00F6FF"/>
+            <stop offset="1" stop-color="#FF2D9C"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+</body>
+</html>
