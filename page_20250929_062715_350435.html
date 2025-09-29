@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --accent1: #7b2ff7;
+      --accent2: #ff6fd8;
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.65);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      color: #eef2ff;
+      background: linear-gradient(120deg,var(--bg1) 0%, #071024 30%, #051021 100%);
+      overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    /* animated gradient overlay */
+    .aurora {
+      position:fixed;
+      inset:-20%;
+      background: radial-gradient(40% 30% at 10% 10%, rgba(123,47,247,0.18), transparent 10%),
+                  radial-gradient(30% 20% at 90% 90%, rgba(255,111,216,0.14), transparent 15%);
+      filter:blur(60px) saturate(140%);
+      animation: drift 12s linear infinite;
+      pointer-events:none;
+      z-index:0;
+    }
+    @keyframes drift{
+      0%{transform:translate3d(-3%,0,0) rotate(0deg)}
+      50%{transform:translate3d(3%,2%,0) rotate(2deg)}
+      100%{transform:translate3d(-3%,0,0) rotate(0deg)}
+    }
+
+    .container{
+      position:relative;
+      z-index:2;
+      width:100%;
+      max-width:980px;
+      display:grid;
+      grid-template-columns:360px 1fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    /* profile card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.06);
+      padding:28px;
+      border-radius:16px;
+      backdrop-filter: blur(8px) saturate(120%);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), 0 1px 0 rgba(255,255,255,0.02) inset;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      transform-origin:center;
+      animation: popIn 700ms cubic-bezier(.22,1,.36,1) 200ms both;
+    }
+
+    @keyframes popIn{
+      0%{opacity:0; transform:translateY(18px) scale(.98)}
+      100%{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    .avatar{
+      width:120px;
+      height:120px;
+      border-radius:20px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:40px;
+      color:white;
+      box-shadow: 0 6px 26px rgba(123,47,247,0.22);
+      transform-origin:center;
+      animation: pulse 2200ms ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.04)}
+      100%{transform:scale(1)}
+    }
+
+    .meta{
+      text-align:center;
+    }
+    .meta h2{
+      margin:8px 0 2px;
+      font-size:20px;
+      letter-spacing:0.4px;
+    }
+    .meta p{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.35;
+      max-width:260px;
+    }
+
+    .tags{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .tag{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      box-shadow: 0 4px 18px rgba(5,6,20,0.35);
+    }
+
+    /* main panel */
+    .main{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      padding:28px;
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 20px 50px rgba(2,6,23,0.55);
+      position:relative;
+      overflow:hidden;
+      animation: float 3000ms ease-in-out infinite;
+    }
+
+    @keyframes float{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+    .main header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .title{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .title h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:0.6px;
+      text-transform:lowercase;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      filter:drop-shadow(0 6px 18px rgba(124,50,245,0.18));
+      animation:bounceTitle 1600ms cubic-bezier(.19,1,.22,1) 100ms both;
+    }
+    @keyframes bounceTitle{
+      0%{transform:translateY(-10px) scale(.98); opacity:0}
+      60%{transform:translateY(6px) scale(1.02)}
+      100%{transform:translateY(0); opacity:1}
+    }
+
+    .subtitle{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .cards{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .info{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      transition:transform 300ms cubic-bezier(.22,1,.36,1), box-shadow 300ms;
+      cursor:default;
+    }
+    .info:hover{
+      transform:translateY(-6px);
+      box-shadow:0 18px 40px rgba(3,6,30,0.5);
+    }
+    .iconCircle{
+      width:44px;height:44px;border-radius:10px;
+      display:grid;place-items:center;
+      color:white;font-weight:700;
+      background:linear-gradient(135deg,var(--accent2),var(--accent1));
+      box-shadow: 0 8px 22px rgba(123,47,247,0.18);
+      flex-shrink:0;
+    }
+    .info .label{font-size:12px;color:var(--muted)}
+    .info .value{font-weight:600;font-size:14px}
+
+    .bio{
+      margin-top:18px;
+      font-size:14px;
+      color:rgba(255,255,255,0.88);
+      line-height:1.5;
+    }
+
+    .ctaRow{
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:white;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 10px 30px rgba(123,47,247,0.16);
+      transition:transform 260ms cubic-bezier(.22,1,.36,1);
+    }
+    .btn:active{transform:translateY(2px)}
+    .ghost{
+      padding:10px 12px;
+      border-radius:10px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      cursor:pointer;
+    }
+
+    /* floating decorative shapes */
+    .shape{
+      position:absolute;
+      width:220px;
+      height:220px;
+      border-radius:40% 60% 30% 70% / 60% 30% 70% 40%;
+      filter:blur(30px) saturate(140%);
+      opacity:0.12;
+      z-index:0;
+      transform:translate3d(0,0,0);
+      animation: sway 8s ease-in-out infinite;
+    }
+    .shape.s1{right:-10%;top:-12%; background:linear-gradient(90deg,var(--accent1),var(--accent2)); animation-duration:10s}
+    .shape.s2{left:-6%;bottom:-18%; background:linear-gradient(90deg,#11b6ff,#3be2c6); animation-duration:12s; opacity:0.08}
+
+    @keyframes sway{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-12px) rotate(3deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      grid-column:1/-1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+      opacity:.95;
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      text-decoration:none;
+      color:var(--muted);
+      transition:transform 220ms;
+    }
+    .gh:hover{transform:translateY(-6px); box-shadow:0 14px 40px rgba(2,6,23,0.45)}
+    .gh svg{width:18px;height:18px;display:block;fill:currentColor}
+
+    /* responsive */
+    @media (max-width:880px){
+      .container{grid-template-columns:1fr; max-width:720px}
+      .cards{grid-template-columns:1fr}
+      .avatar{width:100px;height:100px;font-size:34px}
+    }
+  </style>
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+
+  <div class="container" role="main" aria-labelledby="main-title">
+    <div class="card" aria-label="profile card">
+      <div class="avatar" aria-hidden="true">A</div>
+      <div class="meta">
+        <h2 id="main-title">amirabolfazle</h2>
+        <p>maker • tinkerer • exploring code, design & automation. I build clean tools and playful interfaces.</p>
+      </div>
+
+      <div class="tags" aria-hidden="true">
+        <div class="tag">JavaScript</div>
+        <div class="tag">Python</div>
+        <div class="tag">Automation</div>
+        <div class="tag">UI/UX</div>
+      </div>
+
+      <div style="width:100%;display:flex;justify-content:center;margin-top:6px;">
+        <div class="tag" style="font-size:12px;padding:8px 12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+          Created: 2025-09-29 06:26:28
+        </div>
+      </div>
+    </div>
+
+    <section class="main" aria-label="main information panel">
+      <div class="shape s1" aria-hidden="true"></div>
+      <div class="shape s2" aria-hidden="true"></div>
+
+      <header>
+        <div class="title">
+          <h1>amirabolfazle</h1>
+          <div class="subtitle">personal playground & portfolio</div>
+        </div>
+        <div style="text-align:right;color:var(--muted);font-size:12px;">
+          <div style="font-weight:600;color:rgba(255,255,255,0.9)">Hello 👋</div>
+          <div style="margin-top:6px;">Welcome to my animated personal page</div>
+        </div>
+      </header>
+
+      <div class="cards" role="list" aria-label="highlights">
+        <div class="info" role="listitem">
+          <div class="iconCircle">★</div>
+          <div>
+            <div class="label">Focus</div>
+            <div class="value">Automation & tooling</div>
+          </div>
+        </div>
+
+        <div class="info" role="listitem">
+          <div class="iconCircle">⚡</div>
+          <div>
+            <div class="label">Now</div>
+            <div class="value">Exploring generative code</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="bio">I enjoy turning ideas into tidy, playful interfaces and reliable developer tools. This micro-site shows a taste of animated design, subtle motion and a gradient-first aesthetic.</p>
+
+      <div class="ctaRow">
+        <button class="btn" onclick="document.querySelector('footer a').click()">View GitHub</button>
+        <button class="ghost" onclick="alert('Say hi at: github.com/amirabolfazle')">Contact</button>
+      </div>
+
+      <footer>
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub link">
+          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.52-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+  </div>
+
+  <script>
+    // small interactive bounce on focus for accessibility
+    (function(){
+      const btn = document.querySelector('.btn');
+      btn.addEventListener('mouseover', ()=> btn.animate([{transform:'translateY(0)'},{transform:'translateY(-8px)'},{transform:'translateY(0)'}],{duration:520, easing:'cubic-bezier(.22,1,.36,1)'}));
+    })();
+  </script>
+</body>
+</html>
