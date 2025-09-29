@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #071028;
+      --glass: rgba(255,255,255,0.08);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent1: #6ee7b7;
+      --accent2: #60a5fa;
+      --text: #e6eef8;
+      --muted: rgba(230,238,248,0.7);
+      --card-radius: 16px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100%;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(96,165,250,0.08), transparent 8%),
+                  radial-gradient(900px 500px at 85% 90%, rgba(110,231,183,0.06), transparent 12%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:36px;
+      overflow-y:auto;
+    }
+
+    /* animated floating blobs */
+    .blob{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(60px);
+      opacity:0.28;
+      transform:translate3d(0,0,0);
+      pointer-events:none;
+      mix-blend-mode:screen;
+      animation:float 12s ease-in-out infinite;
+    }
+    .blob.a{width:360px;height:360px;left:-80px;top:-40px;background:linear-gradient(135deg,var(--accent2),#9b8cff);}
+    .blob.b{width:260px;height:260px;right:-60px;bottom:-40px;background:linear-gradient(135deg,var(--accent1),#34d399);animation-duration:14s}
+    .blob.c{width:160px;height:160px;left:10%;bottom:10%;background:linear-gradient(135deg,#f472b6,#fb7185);opacity:0.12;animation-duration:18s}
+    @keyframes float{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-20px) rotate(12deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:28px;
+      align-items:start;
+      z-index:2;
+      padding:28px;
+    }
+
+    /* responsive */
+    @media (max-width:900px){
+      .wrap{grid-template-columns:1fr; padding:18px}
+    }
+
+    /* glass card */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border-radius:var(--card-radius);
+      padding:28px;
+      backdrop-filter: blur(10px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      animation:fadeInUp .9s cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    .card.hero{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(28px,4vw,44px);
+      letter-spacing:-0.02em;
+      line-height:1;
+      font-weight:800;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow:0 2px 18px rgba(96,165,250,0.08);
+      opacity:0;
+      animation:fadeIn .9s .15s ease forwards;
+    }
+
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:clamp(14px,2vw,16px);
+      opacity:0;
+      animation:fadeIn .9s .25s ease forwards;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:8px;
+      opacity:0;
+      animation:fadeIn .9s .35s ease forwards;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .stats{
+      margin-top:14px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      opacity:0;
+      animation:fadeIn .9s .45s ease forwards;
+    }
+
+    .stat{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:14px;
+      border-radius:12px;
+      min-width:110px;
+      border:1px solid rgba(255,255,255,0.03);
+      text-align:center;
+    }
+    .stat b{display:block;font-weight:700;font-size:18px;color:var(--text)}
+    .stat span{display:block;color:var(--muted);font-size:13px;margin-top:6px}
+
+    /* side card */
+    .side{
+      position:relative;
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      animation:fadeInUp .9s .6s cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    .preview{
+      flex:1;
+      border-radius:12px;
+      padding:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease;
+      font-size:14px;
+    }
+    .btn:hover{transform:translateY(-4px); box-shadow:0 10px 30px rgba(2,6,23,0.5)}
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:#071028;
+      font-weight:700;
+      border:none;
+      box-shadow: 0 8px 30px rgba(96,165,250,0.12);
+    }
+
+    .time{
+      font-family:monospace;
+      color:var(--muted);
+      font-size:13px;
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:8px;
+      background:rgba(255,255,255,0.01);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    footer.site-footer{
+      margin-top:34px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:14px;
+      width:100%;
+      z-index:3;
+      opacity:0;
+      animation:fadeIn .9s .85s ease forwards;
+    }
+
+    footer a{color:inherit;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+    footer svg{width:18px;height:18px;fill:var(--muted);transition:transform .18s ease, fill .18s ease}
+    footer a:hover svg{transform:translateY(-3px); fill:var(--accent2)}
+    footer .by{font-weight:600;color:var(--muted)}
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(6px)}
+      to{opacity:1; transform:none}
+    }
+    @keyframes fadeInUp{
+      from{opacity:0; transform:translateY(18px) scale(.995)}
+      to{opacity:1; transform:none}
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .blob{animation:none}
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+  <div class="blob c" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="main-title">
+    <section class="card hero" aria-label="amirabolfazle hero card">
+      <div>
+        <h1 id="main-title">amirabolfazle</h1>
+        <p class="lead">A lightweight responsive glassmorphism demo with animated accents and subtle fade-in effects.</p>
+        <div class="meta" role="list">
+          <div class="pill" role="listitem" aria-label="theme">Theme: Glassmorphism</div>
+          <div class="pill" role="listitem" aria-label="effects">Effects: Fade-in & floating blobs</div>
+          <div class="pill" role="listitem" aria-label="created">Created: <span class="time" aria-hidden="true">2025-09-29 18:18:13</span></div>
+        </div>
+      </div>
+
+      <div class="stats" aria-hidden="false">
+        <div class="stat">
+          <b>Responsive</b>
+          <span>Mobile & desktop friendly</span>
+        </div>
+        <div class="stat">
+          <b>Animated</b>
+          <span>CSS keyframes & subtle motion</span>
+        </div>
+        <div class="stat">
+          <b>Accessible</b>
+          <span>Prefers-reduced-motion support</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="card side" aria-label="controls and preview">
+      <div class="preview" aria-hidden="true">Live preview</div>
+      <div class="actions" role="toolbar" aria-label="actions">
+        <button class="btn primary" type="button" aria-pressed="false">
+          Preview
+        </button>
+        <button class="btn" type="button" aria-pressed="false">
+          Duplicate
+        </button>
+        <button class="btn" type="button" aria-pressed="false">
+          Export CSS
+        </button>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div style="color:var(--muted);font-size:13px">Last update</div>
+        <div class="time" aria-hidden="true">2025-09-29 18:18:13</div>
+      </div>
+    </aside>
+
+    <footer class="card site-footer" aria-label="footer">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub repository amirabolfazle autogen-code">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.207 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.467-2.381 1.235-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.233 1.911 1.233 3.221 0 4.61-2.805 5.624-5.476 5.921.43.372.815 1.102.815 2.222 0 1.604-.015 2.896-.015 3.289 0 .32.216.694.825.576C20.565 22.092 24 17.592 24 12.297 24 5.67 18.627.297 12 .297z"/>
+        </svg>
+        <span class="by">Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // small enhancement: show subtle sequential entrance on load (non-critical)
+    (function(){
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const els = document.querySelectorAll('.card, footer.site-footer');
+      els.forEach((el,i)=>{
+        el.style.animationDelay = (i*120) + 'ms';
+      });
+    })();
+  </script>
+</body>
+</html>
