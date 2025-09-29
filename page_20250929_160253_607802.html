@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#06070a;
+      --panel:#0d1116;
+      --muted:#9aa4b2;
+      --accent:#7c5cff;
+      --accent-2:#00d4ff;
+      --glass: rgba(255,255,255,0.03);
+      --card-glow: rgba(124,92,255,0.12);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.06), transparent),
+                 radial-gradient(900px 500px at 90% 90%, rgba(0,212,255,0.03), transparent),
+                 var(--bg);
+      color:#e6eef8;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* subtle animated star / drift */
+    .ambient {
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background-image: 
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,0.03), transparent),
+        radial-gradient(1.4px 1.4px at 80% 30%, rgba(255,255,255,0.02), transparent),
+        radial-gradient(1.8px 1.8px at 30% 70%, rgba(255,255,255,0.025), transparent);
+      animation: drift 20s linear infinite;
+      mix-blend-mode:overlay;
+    }
+    @keyframes drift{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-20px)}
+      100%{transform:translateY(0)}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width:1100px;
+      margin:40px auto;
+      padding:28px;
+      width:calc(100% - 36px);
+      display:flex;
+      gap:28px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+
+    header.hero{
+      flex:1 1 320px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:14px;
+      padding:28px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6), 0 0 0 1px rgba(124,92,255,0.02) inset;
+      backdrop-filter: blur(6px);
+    }
+
+    .title-row{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    h1.name{
+      margin:0;
+      letter-spacing:1px;
+      font-size:clamp(20px,4.6vw,36px);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .slug{
+      font-weight:700;
+      color:linear-gradient(90deg,var(--accent),var(--accent-2));
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 6px 22px rgba(124,92,255,0.08);
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(124,92,255,0.08), rgba(0,212,255,0.02));
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .hero-sub{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:15px;
+      max-width:54ch;
+    }
+
+    .meta{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .meta .time{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+      font-size:13px;
+    }
+
+    /* right column / cards */
+    .cards{
+      flex:1 1 320px;
+      display:grid;
+      gap:18px;
+      grid-template-columns:repeat(2,1fr);
+      width:100%;
+    }
+
+    @media (max-width:820px){
+      .cards{grid-template-columns:repeat(1,1fr)}
+      .wrap{margin:20px auto;padding:20px;}
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 8px 30px rgba(2,6,23,0.55);
+      overflow:hidden;
+    }
+    .card h3{margin:0 0 8px 0;font-size:15px}
+    .card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+
+    /* reveal / slide-up */
+    .reveal{
+      opacity:0;
+      transform:translateY(22px);
+      transition: transform 640ms cubic-bezier(.16,.87,.36,1), opacity 520ms ease;
+      will-change:transform,opacity;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* small animated accent */
+    .glow-dot{
+      width:12px;height:12px;border-radius:50%;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow:0 8px 30px var(--card-glow);
+      flex:0 0 auto;
+    }
+
+    /* footer */
+    footer{
+      margin-top:auto;
+      padding:18px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      border-top:1px solid rgba(255,255,255,0.02);
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    }
+    .footer-inner{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:8px;
+    }
+    .gh svg{width:18px;height:18px;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
+    .gh:hover svg{transform:translateY(-2px) scale(1.04);transition:all 220ms ease}
+
+    /* subtle floating animation for hero name */
+    .float {
+      display:inline-block;
+      animation: floaty 6s ease-in-out infinite;
+    }
+    @keyframes floaty{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+      100%{transform:translateY(0)}
+    }
+
+    /* small layout helpers */
+    .spacer{height:10px}
+    .center{display:flex;align-items:center;justify-content:center}
+    .cta{
+      margin-top:18px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#06101a;
+      font-weight:600;
+      border:none;
+      cursor:pointer;
+      box-shadow:0 8px 30px rgba(124,92,255,0.14);
+      transition:transform 180ms ease;
+    }
+    .cta:active{transform:translateY(1px)}
+    .small-muted{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <a class="skip" href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">Skip to main</a>
+
+  <main id="main" class="wrap" role="main">
+    <header class="hero reveal" aria-label="Hero section">
+      <div class="title-row">
+        <h1 class="name">
+          <span class="float slug">amirabolfazle</span>
+          <span class="badge">dark • responsive</span>
+        </h1>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="glow-dot" aria-hidden="true"></div>
+          <div class="small-muted">Animated UI</div>
+        </div>
+      </div>
+
+      <p class="hero-sub">
+        A compact live-style demo page showcasing a dark theme, fluid responsiveness and slide-up reveal animations. Elements appear smoothly as you scroll — light, fast and focused.
+      </p>
+
+      <div class="meta" aria-hidden="false">
+        <div class="time" title="Creation time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:0.9"><path d="M12 7v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>2025-09-29 16:01:54</span>
+        </div>
+        <div class="small-muted">Local demo • No external assets</div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <button class="cta" onclick="animatePulse()">
+        Try animation
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14" stroke="#06101a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </header>
+
+    <section class="cards" aria-label="Sample cards">
+      <article class="card reveal">
+        <h3>Slide-up reveals</h3>
+        <p>Each card uses an intersection observer to toggle a smooth slide-up and fade animation when it enters the viewport. Works well on mobile and desktop.</p>
+      </article>
+
+      <article class="card reveal">
+        <h3>Dark theme</h3>
+        <p>Colors tuned for contrast and reduced glare. Subtle gradients and glows give depth without heavy brightness.</p>
+      </article>
+
+      <article class="card reveal">
+        <h3>Responsive layout</h3>
+        <p>Fluid grid collapses to a single column on small screens; typography scales using clamps and rem-friendly sizes.</p>
+      </article>
+
+      <article class="card reveal">
+        <h3>Accessible touches</h3>
+        <p>Semantic HTML, sufficient contrast, and reduced motion friendly behaviors are included where appropriate.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <path d="M12 .5C5.73.5.8 5.43.8 11.7c0 4.78 3.09 8.84 7.37 10.27.54.1.74-.23.74-.52 0-.26-.01-1-.02-1.96-3 .65-3.63-1.45-3.63-1.45-.49-1.25-1.2-1.58-1.2-1.58-.98-.67.08-.66.08-.66 1.08.08 1.65 1.12 1.65 1.12.96 1.64 2.52 1.17 3.13.9.1-.7.38-1.17.69-1.44-2.4-.27-4.92-1.2-4.92-5.34 0-1.18.42-2.14 1.11-2.9-.11-.27-.48-1.36.11-2.83 0 0 .9-.29 2.95 1.11A10.4 10.4 0 0112 6.8c.91 0 1.84.12 2.7.36 2.05-1.4 2.95-1.11 2.95-1.11.59 1.47.22 2.56.11 2.83.69.76 1.11 1.72 1.11 2.9 0 4.15-2.52 5.06-4.92 5.33.39.34.74 1.01.74 2.04 0 1.47-.01 2.66-.01 3.02 0 .28.19.62.75.51 4.28-1.44 7.37-5.5 7.37-10.27C23.2 5.43 18.27.5 12 .5z" fill="currentColor"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for slide-up reveal
+    (function(){
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.12
+      });
+
+      document.querySelectorAll('.reveal').forEach(el=>{
+        observer.observe(el);
+      });
+
+      // Seed initial reveal for top elements on load with slight delay
+      window.addEventListener('load', ()=>{
+        document.querySelectorAll('.reveal').forEach((el,i)=>{
+          setTimeout(()=> el.classList.add('visible'), 120 + i * 80);
+        });
+      });
+
+      // small demo function to pulse the ambient and title
+      window.animatePulse = function(){
+        const ambient = document.querySelector('.ambient');
+        ambient.animate([{filter:'blur(0px)'},{filter:'blur(6px)'}],{duration:420, direction:'alternate', iterations:2});
+        const slug = document.querySelector('.slug');
+        slug.animate([{transform:'scale(1)'},{transform:'scale(1.04)'}],{duration:300, direction:'alternate', iterations:2});
+      };
+
+      // respect prefers-reduced-motion
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        document.querySelectorAll('.reveal').forEach(el=>{
+          el.style.transition = 'none';
+        });
+        document.querySelector('.ambient').style.animation = 'none';
+        document.querySelectorAll('.float').forEach(e=>e.style.animation='none');
+      }
+    })();
+  </script>
+</body>
+</html>
