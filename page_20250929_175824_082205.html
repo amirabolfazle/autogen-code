@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#071017;
+    --bg-2:#0f1720;
+    --card:#0f1725;
+    --muted:#9aa7b0;
+    --accent:#7ee7c7;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+    --fade-duration:800ms;
+    --ease: cubic-bezier(.2,.9,.25,1);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(40% 40% at 10% 10%, rgba(126,231,199,0.04), transparent 8%),
+                radial-gradient(30% 30% at 90% 90%, rgba(126,231,199,0.03), transparent 10%),
+                linear-gradient(180deg,var(--bg),var(--bg-2));
+    color:#e6f0ef;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    overflow-y:auto;
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+
+  /* animated subtle shifting background */
+  @keyframes bgMove {
+    0%{background-position:0% 0%,100% 100%,50% 0%}
+    50%{background-position:10% 5%,90% 95%,50% 100%}
+    100%{background-position:0% 0%,100% 100%,50% 0%}
+  }
+  body{animation:bgMove 18s linear infinite}
+
+  .wrap{
+    width:100%;
+    max-width:1000px;
+    margin:24px;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:28px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+  }
+
+  h1{
+    margin:0;
+    font-size:clamp(28px,4vw,44px);
+    letter-spacing: -0.02em;
+    line-height:1;
+    color: #e7fbf2;
+    text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  }
+
+  .tag{
+    background:linear-gradient(90deg, rgba(126,231,199,0.12), rgba(126,231,199,0.04));
+    color:var(--accent);
+    font-weight:600;
+    padding:6px 10px;
+    border-radius:10px;
+    font-size:13px;
+    border:1px solid rgba(126,231,199,0.06);
+    box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+  }
+
+  .meta{
+    text-align:right;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .meta .time{
+    display:block;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  main{
+    display:grid;
+    gap:18px;
+    grid-template-columns: repeat(12, 1fr);
+    align-items:stretch;
+  }
+
+  .card{
+    grid-column: span 12;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border-radius:14px;
+    padding:18px;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    border:1px solid var(--glass-2);
+    overflow:hidden;
+    transform:translateY(20px);
+    opacity:0;
+    transition: transform var(--fade-duration) var(--ease), opacity var(--fade-duration) var(--ease);
+    will-change:transform,opacity;
+  }
+
+  /* responsive columns for larger screens */
+  @media(min-width:720px){
+    .card.wide{grid-column: span 8;}
+    .card.side{grid-column: span 4;}
+  }
+
+  .card.in-view{
+    transform: translateY(0);
+    opacity:1;
+  }
+
+  .card h2{
+    margin:0 0 8px 0;
+    font-size:18px;
+    color:#dff7ee;
+  }
+
+  .card p{
+    margin:0;
+    color:var(--muted);
+    line-height:1.6;
+    font-size:15px;
+  }
+
+  .grid{
+    display:grid;
+    gap:12px;
+  }
+
+  .highlight{
+    display:inline-block;
+    background:linear-gradient(90deg, rgba(126,231,199,0.06), rgba(126,231,199,0.02));
+    color:var(--accent);
+    padding:6px 10px;
+    border-radius:8px;
+    font-weight:600;
+    font-size:13px;
+    border:1px solid rgba(126,231,199,0.04);
+  }
+
+  .links{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    background:transparent;
+    color:var(--accent);
+    border:1px solid rgba(126,231,199,0.08);
+    padding:8px 12px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+    transition:transform 200ms var(--ease), background 200ms var(--ease), box-shadow 200ms var(--ease);
+  }
+
+  .btn:hover{
+    transform:translateY(-4px);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    background: rgba(126,231,199,0.02);
+  }
+
+  /* small code-like block */
+  .code{
+    margin-top:12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-size:13px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    padding:12px;
+    border-radius:10px;
+    color: #bfeee0;
+    border:1px solid rgba(126,231,199,0.03);
+    overflow:auto;
+  }
+
+  footer{
+    margin-top:22px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:flex-end;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .social{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--muted);
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid transparent;
+    transition:background 180ms var(--ease), transform 180ms var(--ease), color 180ms var(--ease);
+  }
+  .gh:hover{
+    background: rgba(255,255,255,0.01);
+    transform:translateY(-3px);
+    color:var(--accent);
+  }
+
+  .gh svg{
+    width:20px;
+    height:20px;
+    fill:currentColor;
+    color:var(--muted);
+    transition: color 180ms var(--ease);
+  }
+
+  .muted{
+    color:var(--muted);
+  }
+
+  /* subtle floating accent */
+  .accent-orb{
+    position:absolute;
+    right:-80px;
+    top:-80px;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(126,231,199,0.12), rgba(126,231,199,0.02) 30%, transparent 60%);
+    filter:blur(30px);
+    pointer-events:none;
+    opacity:0.8;
+    transform:translateZ(0);
+    animation: floaty 10s ease-in-out infinite;
+  }
+  @keyframes floaty{
+    0%{transform: translateY(0) translateX(0) scale(1)}
+    50%{transform: translateY(-10px) translateX(8px) scale(1.02)}
+    100%{transform: translateY(0) translateX(0) scale(1)}
+  }
+
+  /* small responsive tweaks */
+  @media(max-width:480px){
+    header{flex-direction:column; align-items:flex-start}
+    footer{justify-content:flex-start}
+    .accent-orb{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="accent-orb" aria-hidden="true"></div>
+<div class="wrap" role="main">
+  <header>
+    <div class="brand" aria-hidden="false">
+      <h1>amirabolfazle</h1>
+      <span class="tag">Dark Mode • Responsive</span>
+    </div>
+    <div class="meta" aria-hidden="false">
+      <div>Creation time</div>
+      <div class="time">2025-09-29 17:57:26</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card wide slide-up" data-delay="0">
+      <h2>Welcome</h2>
+      <p>Hi — this is a fully responsive, animated page titled "amirabolfazle". Elements slide up into view as you scroll or load the page. The theme is intentionally dark with subtle neon-accent highlights for contrast.</p>
+      <div class="links" aria-hidden="true">
+        <button class="btn" onclick="document.body.scrollIntoView({behavior:'smooth'})">Back to top</button>
+        <button class="btn" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Learn more</button>
+      </div>
+      <pre class="code" aria-hidden="true">&lt;!-- Creation: 2025-09-29 17:57:26 --&gt;</pre>
+    </section>
+
+    <section id="about" class="card side slide-up" data-delay="120">
+      <h2>About</h2>
+      <p>Built with semantic HTML, modern CSS, and a touch of JavaScript for smooth reveal animations. Mobile-first layout ensures readability across devices.</p>
+    </section>
+
+    <section class="card side slide-up" data-delay="220">
+      <h2>Design</h2>
+      <p>Dark backgrounds reduce glare while accent colors highlight interactive elements. Cards feature soft borders and depth via shadowing and glassy borders.</p>
+    </section>
+
+    <section class="card wide slide-up" data-delay="340">
+      <h2>Interactive Details</h2>
+      <p>Reveal animations use IntersectionObserver with staggered delays to create a pleasant slide-up effect. Buttons offer micro-interactions for tactile feedback.</p>
+    </section>
+
+    <footer>
+      <div class="muted">Created by amirabolfazle</div>
+      <div class="social">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.084-.73.084-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.76-1.605-2.665-.305-5.467-1.333-5.467-5.93 0-1.31.468-2.382 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.98-.399 3-.405 1.02.006 2.043.139 3 .405 2.289-1.552 3.295-1.23 3.295-1.23.656 1.653.244 2.873.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.807 5.62-5.479 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+          </svg>
+          <span style="font-weight:600;color:var(--muted);">GitHub</span>
+        </a>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // Slide-up reveal with staggered delays
+  (function(){
+    const items = document.querySelectorAll('.slide-up');
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const el = entry.target;
+          const delay = parseInt(el.dataset.delay || 0, 10);
+          setTimeout(()=> el.classList.add('in-view'), delay);
+          observer.unobserve(el);
+        }
+      });
+    }, {threshold: 0.12});
+
+    items.forEach(item => observer.observe(item));
+
+    // initial entrance on page load for items already in view
+    window.addEventListener('load', ()=> {
+      items.forEach((el, index)=>{
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight * 0.9){
+          const delay = parseInt(el.dataset.delay || (index*80), 10);
+          setTimeout(()=> el.classList.add('in-view'), delay);
+        }
+      });
+    });
+
+    // enable keyboard focus outlines for accessibility
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Tab') document.body.classList.add('show-focus');
+    });
+  })();
+</script>
+</body>
+</html>
