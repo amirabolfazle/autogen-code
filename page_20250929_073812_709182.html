@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f172a;
+    --accent1:#7c3aed;
+    --accent2:#06b6d4;
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.04);
+    --text: #e6eef8;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--text);background:linear-gradient(135deg,var(--bg1) 0%, #071027 30%, #061022 60%);overflow:hidden}
+  /* animated gradient overlay */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background:linear-gradient(120deg, rgba(124,58,237,0.12), rgba(6,182,212,0.08), rgba(16,185,129,0.06));
+    mix-blend-mode:overlay;
+    animation: rotateBG 12s linear infinite;
+    z-index:0;
+    filter: blur(30px);
+  }
+  @keyframes rotateBG{0%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(-8%,6%,0) rotate(180deg)}100%{transform:translate3d(0,0,0) rotate(360deg)}}
+  /* floating blobs */
+  .blob{
+    position:absolute;
+    width:360px;height:360px;border-radius:42%;
+    background: radial-gradient(circle at 30% 20%, rgba(124,58,237,0.28), rgba(6,182,212,0.18) 40%, transparent 70%);
+    filter: blur(32px);
+    opacity:0.9;
+    transform: translate3d(0,0,0);
+    mix-blend-mode:screen;
+    z-index:0;
+    animation: float1 10s ease-in-out infinite;
+  }
+  .blob.b2{width:260px;height:260px;border-radius:38%;left:auto;right:6%;top:10%;background:radial-gradient(circle at 70% 80%, rgba(6,182,212,0.22), rgba(124,58,237,0.12) 40%, transparent 70%);animation: float2 14s ease-in-out infinite;}
+  .blob.b1{left:4%;top:6%}
+  @keyframes float1{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(24px) rotate(12deg)}100%{transform:translateY(0) rotate(0deg)}}
+  @keyframes float2{0%{transform:translateY(-6px) rotate(0deg)}50%{transform:translateY(28px) rotate(-8deg)}100%{transform:translateY(-6px) rotate(0deg)}}
+
+  /* main layout */
+  .wrap{
+    position:relative;z-index:2;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;
+  }
+  .card{
+    width:min(1100px,96%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+    border-radius:18px;padding:28px;
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(8px) saturate(120%);
+    border: 1px solid rgba(255,255,255,0.03);
+    display:flex;gap:20px;align-items:center;
+    transform-origin:center;
+    animation: popIn 700ms cubic-bezier(.2,.9,.2,1);
+  }
+  @keyframes popIn{0%{transform:scale(.96) translateY(8px);opacity:0}100%{transform:none;opacity:1}}
+  .left{
+    flex:1;min-width:240px;padding:6px 12px;
+  }
+  .right{
+    flex:2;display:flex;flex-direction:column;gap:12px;
+  }
+  h1{
+    margin:0;font-size: clamp(28px,4.2vw,48px);letter-spacing:-0.02em;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .subtitle{color:rgba(230,238,248,0.75);margin-top:6px;font-size:14px}
+  .tagline{
+    margin-top:14px;color:rgba(230,238,248,0.8);font-size:13px;line-height:1.4;
+    max-width:40ch;
+  }
+
+  /* projects grid */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+  .project{
+    position:relative;padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+    border:1px solid rgba(255,255,255,0.03);box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+    transform-origin:center;transition: transform 380ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms;
+    cursor:pointer;overflow:hidden;
+  }
+  .project:hover{transform:translateY(-8px) scale(1.03);box-shadow: 0 18px 40px rgba(2,6,23,0.6)}
+  .project h3{margin:0;font-size:14px;letter-spacing:-0.01em}
+  .project p{margin:6px 0 0 0;color:rgba(230,238,248,0.65);font-size:12px}
+  .project .badge{position:absolute;top:10px;right:10px;padding:6px 8px;border-radius:999px;background:linear-gradient(90deg,var(--accent2),var(--accent1));font-size:11px;color:#061022;font-weight:600;box-shadow:0 6px 18px rgba(6,182,212,0.06)}
+
+  /* zoom hero preview */
+  .preview{
+    height:220px;border-radius:12px;overflow:hidden;background:linear-gradient(160deg, rgba(124,58,237,0.12), rgba(6,182,212,0.08));
+    display:flex;align-items:center;justify-content:center;position:relative;margin-top:6px;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .preview .screen{
+    width:80%;height:78%;border-radius:8px;background:linear-gradient(180deg,#07152a 0%, #0b1a33 100%);
+    display:flex;align-items:center;justify-content:center;color:rgba(200,230,255,0.9);font-weight:600;font-size:18px;
+    transform:scale(0.94);
+    transition: transform 420ms cubic-bezier(.2,.9,.2,1);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .preview:hover .screen{transform:scale(1.03) rotate(-0.6deg)}
+  .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .pill{padding:6px 10px;border-radius:999px;background:var(--glass);font-size:12px;color:rgba(230,238,248,0.85);border:1px solid rgba(255,255,255,0.02)}
+
+  /* top-right creation time */
+  .ctime{position:absolute;right:36px;top:26px;font-size:13px;color:rgba(230,238,248,0.6);z-index:3;background:var(--glass-2);padding:8px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.02)}
+
+  /* footer */
+  footer{
+    position:fixed;left:0;right:0;bottom:18px;display:flex;justify-content:center;z-index:3;padding:10px;
+  }
+  .footer-inner{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 30px rgba(2,6,23,0.5)}
+  .gh-link{display:inline-flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-size:13px}
+  .gh-icon{width:20px;height:20px;display:inline-block;filter:drop-shadow(0 6px 12px rgba(2,6,23,0.6))}
+  .creator{font-weight:600;color:rgba(230,238,248,0.9)}
+
+  /* responsive */
+  @media (max-width:920px){
+    .card{flex-direction:column;}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .preview{height:180px}
+  }
+  @media (max-width:640px){
+    .grid{grid-template-columns:repeat(1,1fr)}
+    .left{order:2}
+    .right{order:1}
+    .ctime{right:12px;top:12px;font-size:12px}
+  }
+
+  /* subtle focus */
+  a:focus{outline:2px solid rgba(124,58,237,0.28);outline-offset:4px;border-radius:8px}
+</style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+
+  <div class="ctime">Created: 2025-09-29 07:37:13</div>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="main-title">
+      <div class="left">
+        <h1 id="main-title">amirabolfazle</h1>
+        <div class="subtitle">interactive portfolio • web experiments • design systems</div>
+        <p class="tagline">I like to prototype clean, animated experiences that feel alive. This single-file portfolio showcases a feel for motion, gradients and micro-interactions — designed to inspire curiosity and iteration.</p>
+
+        <div class="meta-row" style="margin-top:18px">
+          <div class="pill">Visual Design</div>
+          <div class="pill">Frontend</div>
+          <div class="pill">Motion</div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="preview" aria-hidden="true" title="Live preview">
+          <div class="screen" id="screen">Hover to zoom ✦ Drag mouse for parallax</div>
+        </div>
+
+        <div class="grid" aria-hidden="false">
+          <div class="project" tabindex="0" role="button" aria-pressed="false" onclick="openSample('Aurora UI')">
+            <div class="badge">2024</div>
+            <h3>Aurora UI</h3>
+            <p>Gradient-driven component library with motion tokens and theme tools.</p>
+          </div>
+
+          <div class="project" tabindex="0" role="button" aria-pressed="false" onclick="openSample('Neon Analytics')">
+            <div class="badge">2023</div>
+            <h3>Neon Analytics</h3>
+            <p>Animated dashboards & delightful loading states for complex data.</p>
+          </div>
+
+          <div class="project" tabindex="0" role="button" aria-pressed="false" onclick="openSample('Autogen Studio')">
+            <div class="badge">2025</div>
+            <h3>Autogen Studio</h3>
+            <p>Tools for generating and composing UI code — experimental & open.</p>
+          </div>
+
+          <div class="project" tabindex="0" role="button" aria-pressed="false" onclick="openSample('Micro-interactions')">
+            <h3>Micro-interactions</h3>
+            <p>Small motion systems that give interfaces personality.</p>
+          </div>
+
+          <div class="project" tabindex="0" role="button" aria-pressed="false" onclick="openSample('Motion Toolkit')">
+            <h3>Motion Toolkit</h3>
+            <p>Reusable easing curves and choreographed animations.</p>
+          </div>
+
+          <div class="project" tabindex="0" role="button" aria-pressed="false" onclick="openSample('Design Systems')">
+            <h3>Design Systems</h3>
+            <p>Scalable tokens, theming and developer-friendly docs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner" role="contentinfo">
+      <a class="gh-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.58 2 12.17c0 4.5 2.87 8.33 6.84 9.68.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.17-1.11-1.48-1.11-1.48-.91-.64.07-.63.07-.63 1.01.07 1.55 1.06 1.55 1.06.9 1.57 2.36 1.12 2.94.86.09-.68.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.25-.45-1.27.1-2.64 0 0 .83-.27 2.72 1.04a9.32 9.32 0 0 1 2.48-.34c.84 0 1.68.11 2.48.34 1.88-1.31 2.71-1.04 2.71-1.04.55 1.37.2 2.39.1 2.64.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.69.94.69 1.9 0 1.37-.01 2.48-.01 2.82 0 .26.18.58.69.48A10.19 10.19 0 0 0 22 12.17C22 6.58 17.52 2 12 2z" fill="url(#g1)"/>
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#06b6d4"/>
+              <stop offset="1" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="creator">Created by amirabolfazle</span>
+      </a>
+    </div>
+  </footer>
+
+<script>
+  // subtle parallax on mouse move for preview
+  (function(){
+    const screen = document.getElementById('screen');
+    const preview = document.querySelector('.preview');
+    let rect = preview.getBoundingClientRect();
+
+    function handleMove(e){
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+      const cx = rect.width/2, cy = rect.height/2;
+      const dx = (x - cx) / cx;
+      const dy = (y - cy) / cy;
+      const rotateX = (-dy * 6).toFixed(2);
+      const rotateY = (dx * 8).toFixed(2);
+      screen.style.transform = `scale(1.03) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    }
+
+    function reset(){
+      screen.style.transform = '';
+    }
+
+    preview.addEventListener('mousemove', handleMove);
+    preview.addEventListener('touchmove', handleMove, {passive:true});
+    preview.addEventListener('mouseleave', reset);
+    preview.addEventListener('touchend', reset);
+
+    // keyboard interaction for project tiles
+    document.querySelectorAll('.project').forEach(el=>{
+      el.addEventListener('keydown', (ev)=>{
+        if(ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          el.click();
+        }
+      });
+    });
+
+    // sample open function (non-invasive)
+    window.openSample = function(name){
+      // tiny ephemeral zoom feedback
+      const old = screen.innerText;
+      screen.innerText = name;
+      screen.style.transition = 'transform 240ms cubic-bezier(.2,.9,.2,1), background 220ms';
+      screen.style.background = 'linear-gradient(180deg,#07243f, #072034)';
+      setTimeout(()=>{ screen.style.background=''; screen.innerText = old; }, 950);
+    };
+
+    // keep rect updated on resize
+    window.addEventListener('resize', ()=>{ rect = preview.getBoundingClientRect(); });
+  })();
+
+  // small motion for blob OPACITY pulsing (adds life)
+  (function(){
+    const bs = document.querySelectorAll('.blob');
+    bs.forEach((b,i)=> b.animate(
+      [{opacity:0.7},{opacity:0.95},{opacity:0.75}],
+      {duration: 6000 + i*1400, iterations: Infinity, direction:'alternate', easing:'ease-in-out'}
+    ));
+  })();
+</script>
+</body>
+</html>
