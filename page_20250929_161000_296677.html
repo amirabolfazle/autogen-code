@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1:#FFF5F7;
+      --bg-2:#F7FFFC;
+      --accent-1:#CDE7FF;
+      --accent-2:#FDE7FF;
+      --accent-3:#EAFDD7;
+      --text-1:#22333B;
+      --muted:#49606B;
+      --glass: rgba(255,255,255,0.6);
+      --card: rgba(255,255,255,0.75);
+      --shadow: 0 8px 30px rgba(34,51,59,0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(135deg,var(--bg-1),var(--bg-2));
+      color:var(--text-1);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow:auto;
+    }
+
+    /* floating pastel blobs */
+    .blobs{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+    .blob{
+      position:absolute;
+      width:420px;
+      height:420px;
+      filter: blur(30px);
+      opacity:.55;
+      transform-origin:center;
+      mix-blend-mode: screen;
+      border-radius: 40%;
+      animation: float 10s ease-in-out infinite alternate;
+    }
+    .blob.a{ background: radial-gradient(circle at 30% 30%, var(--accent-1), transparent 40%); top:-80px; left:-120px; animation-duration:12s;}
+    .blob.b{ background: radial-gradient(circle at 60% 60%, var(--accent-2), transparent 40%); bottom:-100px; right:-160px; animation-duration:14s;}
+    .blob.c{ background: radial-gradient(circle at 20% 70%, var(--accent-3), transparent 40%); top:120px; right:40px; width:320px; height:320px; animation-duration:11s; opacity:.45;}
+
+    @keyframes float{
+      0%{transform:translateY(0) rotate(0deg) scale(1)}
+      100%{transform:translateY(-30px) rotate(8deg) scale(1.05)}
+    }
+
+    /* container */
+    .wrap{
+      max-width:1100px;
+      width:100%;
+      z-index:2;
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* left column card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), var(--card));
+      border-radius:20px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.6);
+      transition:transform 0.45s cubic-bezier(.2,.9,.2,1), box-shadow .45s;
+      transform-origin:center;
+      will-change:transform;
+      overflow:hidden;
+    }
+    .card:hover{ transform:scale(1.03); box-shadow: 0 18px 50px rgba(34,51,59,0.12); }
+
+    .avatar{
+      width:110px;
+      height:110px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#fff,#F0F8FF);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:36px;
+      color:var(--text-1);
+      box-shadow: 0 6px 18px rgba(34,51,59,0.06);
+      border:1px solid rgba(34,51,59,0.04);
+      margin-bottom:14px;
+    }
+
+    h1{
+      margin:0;
+      font-size:28px;
+      line-height:1;
+      letter-spacing:0.2px;
+    }
+    .handle{ color:var(--muted); font-size:13px; margin-top:6px; }
+
+    .bio{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .tags{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .tag{
+      background:linear-gradient(90deg, rgba(255,255,255,0.9), rgba(250,250,255,0.7));
+      border-radius:12px;
+      padding:8px 12px;
+      font-size:13px;
+      color:var(--text-1);
+      box-shadow:0 6px 14px rgba(34,51,59,0.04);
+      transform-origin:center;
+      transition:transform .25s;
+    }
+    .tag:hover{ transform:translateY(-4px) scale(1.02); }
+
+    /* right column - projects */
+    .projects{
+      display:grid;
+      gap:18px;
+    }
+
+    .project{
+      background:linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));
+      border-radius:16px;
+      padding:18px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.6);
+      transition: transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .45s;
+    }
+    .project:hover{ transform:translateY(-6px) scale(1.01); box-shadow:0 20px 40px rgba(34,51,59,0.08); }
+
+    .thumb{
+      width:86px;
+      height:66px;
+      border-radius:12px;
+      background:linear-gradient(135deg,#FFFFFF,#F3FAFF);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--text-1);
+      font-size:20px;
+      border:1px solid rgba(34,51,59,0.04);
+      flex-shrink:0;
+      transform-origin:center;
+      animation: zoomPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes zoomPulse{
+      0%{ transform:scale(1) }
+      50%{ transform:scale(1.06) }
+      100%{ transform:scale(1) }
+    }
+
+    .pmeta h3{ margin:0; font-size:16px; }
+    .pmeta p{ margin:6px 0 0 0; color:var(--muted); font-size:13px; }
+
+    .cta-row{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      background:linear-gradient(90deg,#fff,#F8FDFF);
+      border-radius:12px;
+      padding:10px 14px;
+      font-size:14px;
+      border:1px solid rgba(34,51,59,0.06);
+      box-shadow:0 8px 20px rgba(34,51,59,0.06);
+      cursor:pointer;
+      transition:transform .3s;
+    }
+    .btn:hover{ transform:translateY(-4px); }
+
+    /* creation time chip */
+    .meta-top{
+      position:absolute;
+      right:34px;
+      top:28px;
+      font-size:12px;
+      color:var(--muted);
+      background:rgba(255,255,255,0.7);
+      padding:8px 12px;
+      border-radius:999px;
+      box-shadow:0 6px 18px rgba(34,51,59,0.05);
+      border:1px solid rgba(255,255,255,0.6);
+      z-index:3;
+      backdrop-filter: blur(6px);
+    }
+
+    /* footer */
+    footer{
+      margin-top:28px;
+      grid-column: 1 / -1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+      opacity:.95;
+    }
+    .github{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      transition:transform .25s, background .25s;
+      background: rgba(255,255,255,0.7);
+      border:1px solid rgba(255,255,255,0.6);
+      box-shadow:0 6px 18px rgba(34,51,59,0.04);
+      backdrop-filter: blur(6px);
+    }
+    .github:hover{ transform:translateY(-4px); }
+
+    .gh-icon{ width:18px; height:18px; display:inline-block; fill:var(--text-1); opacity:.88; }
+
+    /* responsive */
+    @media (max-width:980px){
+      .wrap{ grid-template-columns: 1fr; padding-bottom:80px;}
+      .meta-top{ right:18px; top:18px; left:18px; text-align:center; }
+      footer{ position:relative; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <div class="meta-top">Created on: 2025-09-29 16:09:05</div>
+
+  <main class="wrap" role="main" aria-labelledby="title">
+    <section class="card" aria-labelledby="profile-name">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div class="avatar" aria-hidden="true">AM</div>
+        <div>
+          <h1 id="profile-name">amirabolfazle</h1>
+          <div class="handle">@amirabolfazle</div>
+        </div>
+      </div>
+
+      <p class="bio">Creative coder & product tinkerer. I build playful interfaces, small tools, and polished prototypes with a pastel sensibility and motion-forward instincts. I love micro-interactions, smooth zooms, and thoughtful details.</p>
+
+      <div class="tags" aria-hidden="true">
+        <div class="tag">UX & Motion</div>
+        <div class="tag">Frontend</div>
+        <div class="tag">Micro-tools</div>
+        <div class="tag">Design Systems</div>
+      </div>
+
+      <div class="cta-row" role="region" aria-label="quick actions">
+        <button class="btn" onclick="alert('Open portfolio — demo only')">View Work</button>
+        <button class="btn" onclick="alert('Contact — demo only')">Contact</button>
+      </div>
+
+      <div style="margin-top:18px; font-size:13px; color:var(--muted);">Fun fact: This single-file portfolio includes animated pastel blobs and subtle zoom effects — all CSS.</div>
+    </section>
+
+    <section class="projects" aria-label="projects">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <h2 style="margin:0;font-size:18px">Selected Projects</h2>
+          <div style="font-size:13px;color:var(--muted);margin-top:6px;">A small, animated selection</div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);">Total: 3</div>
+      </div>
+
+      <article class="project" tabindex="0">
+        <div class="thumb" aria-hidden="true">UI</div>
+        <div class="pmeta">
+          <h3>Pastel UI Kit</h3>
+          <p>Component library with smooth motion tokens and pastel palettes. Lightweight and customizable.</p>
+        </div>
+      </article>
+
+      <article class="project" tabindex="0">
+        <div class="thumb" aria-hidden="true">TOOL</div>
+        <div class="pmeta">
+          <h3>Zoomify</h3>
+          <p>Small JS-free pattern for elegant zoom-based highlights and progressive focus states.</p>
+        </div>
+      </article>
+
+      <article class="project" tabindex="0">
+        <div class="thumb" aria-hidden="true">EXP</div>
+        <div class="pmeta">
+          <h3>Micro Experiments</h3>
+          <p>Collection of tiny interactions — hover reveals, soft parallax, and animated transitions.</p>
+        </div>
+      </article>
+
+      <footer>
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg class="gh-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.2 1.87.86 2.33.66.07-.52.28-.86.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // Small interactive flourish: keyboard focus zoom
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'z' || (e.ctrlKey && e.key === '=')){
+        document.body.animate([{transform:'scale(1)'},{transform:'scale(1.03)'}],{duration:300,fill:'forwards'}).onfinish = ()=>{};
+      }
+    });
+
+    // Accessibility: focus visible ring
+    document.addEventListener('focusin', (e)=>{
+      if(e.target.closest('.project')){
+        e.target.closest('.project').style.boxShadow = '0 20px 40px rgba(34,51,59,0.1)';
+      }
+    });
+    document.addEventListener('focusout', (e)=>{
+      if(e.target.closest('.project')){
+        e.target.closest('.project').style.boxShadow = '';
+      }
+    });
+  </script>
+</body>
+</html>
