@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1720;
+      --muted:#9aa8b2;
+      --accent:#6ee7b7;
+      --accent-2:#7dd3fc;
+      --glass: rgba(255,255,255,0.04);
+      --glow: 0 6px 30px rgba(110,231,183,0.06), inset 0 1px 0 rgba(255,255,255,0.02);
+      --radius:16px;
+      --ease:cubic-bezier(.2,.9,.3,1);
+    }
+
+    /* Base reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(125,211,252,0.04), transparent 6%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(110,231,183,0.03), transparent 8%),
+                  var(--bg);
+      color: #e6eef3;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      overflow:hidden;
+    }
+
+    /* Animated floating blobs background */
+    .blobs{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      filter:blur(36px) saturate(120%);
+      mix-blend-mode:screen;
+    }
+    .blob{
+      position:absolute;
+      width:520px;
+      height:520px;
+      border-radius:50%;
+      opacity:0.08;
+      transform:translate3d(0,0,0);
+      animation: float 18s var(--ease) infinite;
+    }
+    .blob.a{ background: linear-gradient(45deg,var(--accent), rgba(125,211,252,0.6)); left:-10%; top:-5%; animation-duration:20s; }
+    .blob.b{ background: linear-gradient(120deg, rgba(125,211,252,0.85), rgba(59,130,246,0.6)); right:-8%; bottom:-10%; animation-duration:22s; animation-delay:2s; }
+    .blob.c{ background: linear-gradient(60deg, rgba(110,231,183,0.9), rgba(16,185,129,0.5)); left:20%; bottom:-15%; width:420px; height:420px; animation-duration:26s; animation-delay:4s; }
+
+    @keyframes float{
+      0%{transform:translateY(0) scale(1) rotate(0deg)}
+      25%{transform:translateY(-18vh) scale(1.06) rotate(8deg)}
+      50%{transform:translateY(0) scale(1) rotate(0deg)}
+      75%{transform:translateY(12vh) scale(.98) rotate(-6deg)}
+      100%{transform:translateY(0) scale(1) rotate(0deg)}
+    }
+
+    /* Main card */
+    .wrap{
+      position:relative;
+      z-index:2;
+      width:100%;
+      max-width:980px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:28px;
+      padding:28px;
+    }
+
+    .card{
+      width:100%;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--glow);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px) saturate(120%);
+      transform-origin:center;
+      animation: popIn .9s var(--ease) both;
+    }
+
+    @keyframes popIn{
+      0%{opacity:0; transform:scale(.96) translateY(6px)}
+      60%{opacity:1; transform:scale(1.02) translateY(-6px)}
+      100%{transform:scale(1) translateY(0)}
+    }
+
+    .left{
+      flex:1 1 420px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-width:0;
+    }
+
+    .title{
+      font-size:clamp(28px,4.8vw,48px);
+      letter-spacing:-0.02em;
+      margin:0;
+      line-height:1.02;
+      font-weight:700;
+      color:linear-gradient(90deg,var(--accent),var(--accent-2));
+      background: linear-gradient(90deg, #d1fae5 0%, #a7f3d0 30%, #7dd3fc 70%, #60a5fa 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 6px 30px rgba(45,55,72,0.25);
+      transform-origin:center;
+      transition: transform .45s var(--ease), text-shadow .45s var(--ease);
+    }
+
+    .title:hover{ transform:scale(1.03) translateY(-2px); text-shadow:0 10px 40px rgba(110,231,183,0.12); }
+
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:clamp(12px,2.2vw,14px);
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:6px;
+      flex-wrap:wrap;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      font-size:13px;
+      color:var(--muted);
+      box-shadow: 0 4px 20px rgba(2,6,23,0.6);
+    }
+
+    .right{
+      width:220px;
+      min-width:160px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .avatar{
+      width:140px;
+      height:140px;
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(125,211,252,0.06), rgba(110,231,183,0.05));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+      transform-origin:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .avatar:hover{ transform:scale(1.06) rotate(-2deg); box-shadow: 0 26px 60px rgba(110,231,183,0.08); }
+
+    .avatar svg{ width:78%; height:78%; opacity:0.95; filter: drop-shadow(0 6px 20px rgba(0,0,0,0.6)); }
+
+    /* footer */
+    footer{
+      position:fixed;
+      z-index:3;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:22px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:8px 14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:13px;
+      box-shadow:0 8px 30px rgba(2,6,23,0.5);
+      backdrop-filter: blur(6px);
+      transition: transform .25s var(--ease);
+    }
+    footer a{ color:inherit; text-decoration:none; display:inline-flex; gap:8px; align-items:center; }
+    footer a:hover{ transform:translateY(-3px); color:var(--accent-2); }
+
+    .gh{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+      transition: transform .22s var(--ease);
+    }
+    footer a:hover .gh{ transform:scale(1.06) translateY(-1px); }
+
+    /* small screen layout */
+    @media (max-width:760px){
+      .card{ flex-direction:column; padding:20px; align-items:stretch; gap:18px; }
+      .right{ width:100%; display:flex; justify-content:flex-end; }
+      .avatar{ margin-left:auto; }
+    }
+
+    /* subtle floating lines */
+    .lines{
+      position:absolute;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      opacity:0.06;
+    }
+    .line{
+      position:absolute;
+      width:1.4px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius:2px;
+      animation: slide 14s linear infinite;
+    }
+    .line:nth-child(1){ left:8%; height:60%; top:10%; animation-delay:0s; }
+    .line:nth-child(2){ left:22%; height:40%; top:30%; animation-delay:2s; }
+    .line:nth-child(3){ left:48%; height:70%; top:6%; animation-delay:4s; }
+    .line:nth-child(4){ left:76%; height:50%; top:20%; animation-delay:1s; }
+    .line:nth-child(5){ left:90%; height:60%; top:14%; animation-delay:3s; }
+    @keyframes slide{
+      0%{ transform:translateY(-6%); opacity:0.02 }
+      50%{ transform:translateY(6%); opacity:0.06 }
+      100%{ transform:translateY(-6%); opacity:0.02 }
+    }
+
+    /* micro interactions */
+    .card:active{ transform:scale(.997) }
+    .small{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="blobs" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <div class="lines" aria-hidden="true">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="main-title">
+      <div class="left">
+        <h1 id="main-title" class="title">amirabolfazle</h1>
+        <p class="subtitle">Dark mode responsive animated page • zoom effects • ambient motion</p>
+
+        <div class="meta" role="status" aria-live="polite">
+          <span class="badge">Theme: Dark</span>
+          <span class="badge">Responsive: Yes</span>
+          <span class="badge" title="Creation timestamp">Created: 2025-09-29 09:52:51</span>
+        </div>
+
+        <p class="small" style="margin-top:12px; max-width:66ch; color:var(--muted);">
+          This page showcases a minimal, animated, and responsive dark-themed layout. Hover the title or avatar to experience subtle zoom and motion effects. The creation timestamp is shown above.
+        </p>
+      </div>
+
+      <div class="right" aria-hidden="false">
+        <div class="avatar" role="img" aria-label="amirabolfazle logo">
+          <!-- stylized monogram -->
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#7dd3fc"/>
+                <stop offset="1" stop-color="#6ee7b7"/>
+              </linearGradient>
+              <filter id="f1" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.45"/>
+              </filter>
+            </defs>
+            <rect x="6" y="6" width="108" height="108" rx="16" fill="url(#g1)" opacity="0.07"/>
+            <g transform="translate(18,18)">
+              <path d="M18 6c5.5 0 10 4.5 10 10s-4.5 10-10 10-10-4.5-10-10S12.5 6 18 6z" fill="#0f1720" opacity="0.9"/>
+              <path d="M42 26c0 13.5-11 24.5-24.5 24.5S-7 39.5-7 26 4 1.5 17.5 1.5 42 12.5 42 26z" transform="translate(24,4) scale(.7)" fill="url(#g1)" filter="url(#f1)"/>
+              <text x="8" y="54" fill="#e6eef3" font-family="Inter, Arial" font-size="28" font-weight="700" letter-spacing="-1">A</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg class="gh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.28 3.437 9.75 8.205 11.33.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.07-3.338.73-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.836 2.81 1.305 3.495.998.108-.776.418-1.305.76-1.605-2.665-.303-5.467-1.335-5.467-5.935 0-1.312.47-2.385 1.235-3.225-.124-.303-.535-1.523.117-3.176 0 0 1.007-.322 3.3 1.23a11.5 11.5 0 013.005-.404c1.02.005 2.047.137 3.005.403 2.29-1.555 3.295-1.23 3.295-1.23.655 1.654.245 2.874.12 3.176.77.84 1.235 1.913 1.235 3.225 0 4.61-2.807 5.628-5.48 5.925.43.37.81 1.1.81 2.22 0 1.603-.015 2.896-.015 3.29 0 .32.215.696.825.578C20.565 22.245 24 17.78 24 12.5 24 5.87 18.627.5 12 .5z" fill="currentColor"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // Subtle interactive parallax/zoom: moves title and avatar slightly based on pointer
+    (function(){
+      const wrap = document.querySelector('.wrap');
+      const title = document.querySelector('.title');
+      const avatar = document.querySelector('.avatar');
+      const maxMove = 12;
+      let width = window.innerWidth, height = window.innerHeight;
+
+      function onMove(e){
+        const x = (e.clientX - width/2) / (width/2);
+        const y = (e.clientY - height/2) / (height/2);
+        title.style.transform = `translate3d(${x*maxMove*0.4}px, ${y*maxMove*0.35}px, 0) scale(${1 + Math.abs(x+y)*0.01})`;
+        avatar.style.transform = `translate3d(${x*maxMove*0.55}px, ${y*maxMove*0.45}px, 0) rotate(${x*3}deg) scale(${1 + Math.abs(x)*0.02})`;
+      }
+
+      function reset(){
+        title.style.transform = '';
+        avatar.style.transform = '';
+      }
+
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseleave', reset);
+      window.addEventListener('resize', ()=>{ width = window.innerWidth; height = window.innerHeight; });
+    })();
+  </script>
+</body>
+</html>
