@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --accent-1: rgba(255,255,255,0.08);
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --glass-strong: rgba(255,255,255,0.10);
+      --muted: rgba(255,255,255,0.65);
+      --accent-glow: rgba(106, 90, 255, 0.18);
+      --glass-radius: 16px;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(72,61,255,0.12), transparent 10%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(0,200,255,0.06), transparent 12%),
+                  linear-gradient(180deg, #071021 0%, #081226 50%, #02030b 100%);
+      color: white;
+      overflow:hidden;
+    }
+
+    /* animated background blobs */
+    .bg-blob{
+      position:fixed;
+      filter: blur(60px);
+      opacity:0.7;
+      mix-blend-mode: screen;
+      will-change: transform;
+      pointer-events:none;
+    }
+    .blob-a{
+      width:520px;
+      height:520px;
+      left:-10%;
+      top:-15%;
+      background: linear-gradient(135deg, rgba(106,90,255,0.28), rgba(0,200,255,0.18));
+      border-radius: 50%;
+      animation: blob-rotate 28s linear infinite;
+    }
+    .blob-b{
+      width:420px;
+      height:420px;
+      right:-8%;
+      bottom:-12%;
+      background: linear-gradient(135deg, rgba(255,90,120,0.12), rgba(255,200,80,0.10));
+      border-radius: 50%;
+      animation: blob-rotate-rev 36s linear infinite;
+    }
+
+    @keyframes blob-rotate{
+      0%{ transform: rotate(0) translate(0,0) scale(1); }
+      50%{ transform: rotate(180deg) translate(30px,-20px) scale(1.05); }
+      100%{ transform: rotate(360deg) translate(0,0) scale(1); }
+    }
+    @keyframes blob-rotate-rev{
+      0%{ transform: rotate(0) translate(0,0) scale(1); }
+      50%{ transform: rotate(-180deg) translate(-40px,30px) scale(0.98); }
+      100%{ transform: rotate(-360deg) translate(0,0) scale(1); }
+    }
+
+    .stage{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 32px;
+      gap:24px;
+      position:relative;
+      z-index:2;
+    }
+
+    /* main glass card */
+    .card{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--glass-radius);
+      padding:36px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6), 0 1px 0 rgba(255,255,255,0.02) inset;
+      border: 1px solid transparent;
+      position:relative;
+      overflow:visible;
+      transition: transform 400ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
+      backdrop-filter: blur(10px) saturate(1.05);
+    }
+
+    /* subtle glass border highlight */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      padding:1px;
+      background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+      -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events:none;
+    }
+
+    .left{
+      padding:8px 12px;
+    }
+    .title{
+      font-weight:700;
+      font-size:48px;
+      line-height:1;
+      letter-spacing:-0.02em;
+      margin:0 0 12px 0;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      transform-origin:center;
+    }
+    .title .logo-dot{
+      width:52px;
+      height:52px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(106,90,255,0.28), rgba(0,200,255,0.16));
+      box-shadow: 0 6px 30px rgba(106,90,255,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:white;
+      font-size:20px;
+      flex:0 0 52px;
+      transform: translateZ(40px);
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:16px;
+      margin-bottom:18px;
+      max-width:56ch;
+    }
+
+    .meta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:6px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);
+      font-size:14px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+    }
+
+    .right{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px;
+      position:relative;
+    }
+
+    .showcase{
+      width:100%;
+      max-width:420px;
+      height:320px;
+      border-radius:12px;
+      position:relative;
+      overflow:hidden;
+      transform-style:preserve-3d;
+      transition: transform 150ms ease-out;
+      will-change: transform;
+      cursor:grab;
+      border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 12px 40px rgba(2,6,23,0.6), inset 0 -6px 20px rgba(0,0,0,0.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      backdrop-filter: blur(8px) saturate(1.02);
+    }
+
+    .terminal{
+      width:100%;
+      height:100%;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(2,6,23,0.65), rgba(2,6,23,0.55));
+      padding:18px;
+      color:#cfeeff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.02);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .term-header{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .term-dot{ width:12px; height:12px; border-radius:50%; background:#ff5f56; box-shadow: 0 2px 6px rgba(255,95,86,0.12); }
+    .term-dot:nth-child(2){ background:#ffbd2e; }
+    .term-dot:nth-child(3){ background:#27c93f; }
+
+    .term-body{
+      font-size:13px;
+      line-height:1.45;
+      color: #bfe7ff;
+      opacity:0.95;
+    }
+
+    .cta-row{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(106,90,255,0.18), rgba(0,200,255,0.12));
+      border:1px solid rgba(255,255,255,0.06);
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+      text-decoration:none;
+      transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms;
+      box-shadow: 0 8px 20px rgba(106,90,255,0.06);
+    }
+    .btn.secondary{
+      background: transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      font-weight:600;
+      padding:10px 14px;
+      backdrop-filter: blur(6px);
+    }
+    .btn:hover{ transform: translateY(-4px) scale(1.01); }
+    .btn.secondary:hover{ transform: translateY(-3px); }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:22px;
+      z-index:4;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: rgba(255,255,255,0.02);
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+      color:var(--muted);
+      font-size:13px;
+      box-shadow: 0 6px 26px rgba(2,6,23,0.5);
+      text-decoration:none;
+    }
+
+    .footer-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .github-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      fill:currentColor;
+      color:var(--muted);
+      opacity:0.95;
+    }
+
+    /* small screens */
+    @media (max-width:900px){
+      .card{ grid-template-columns: 1fr; padding:20px; gap:18px; }
+      .title{ font-size:40px; }
+      .showcase{ height:260px; max-width:100%; }
+      footer{ left:16px; transform:none; bottom:16px; }
+    }
+
+    /* gentle hover tilt shadow */
+    .card.is-tilt{ box-shadow: 0 20px 60px rgba(2,6,23,0.75), 0 1px 0 rgba(255,255,255,0.02) inset; }
+
+    /* subtle floating on load */
+    .card{ transform: translateY(8px); animation: floatIn 800ms cubic-bezier(.2,.9,.2,1) 1; }
+    @keyframes floatIn{ from{ opacity:0; transform: translateY(18px) scale(.995); } to{ opacity:1; transform: translateY(0) scale(1); } }
+
+    /* timestamp style */
+    .created-time{
+      font-size:13px;
+      color:rgba(255,255,255,0.62);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.03);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blob blob-a" aria-hidden="true"></div>
+  <div class="bg-blob blob-b" aria-hidden="true"></div>
+
+  <main class="stage" role="main">
+    <section class="card" id="card">
+      <div class="left">
+        <div class="title">
+          <div class="logo-dot" aria-hidden="true">A</div>
+          <div>
+            <div style="font-size:20px;color:var(--muted);font-weight:600;margin-bottom:6px;">Portfolio · Landing</div>
+            <div style="font-size:36px">amirabolfazle</div>
+          </div>
+        </div>
+
+        <p class="subtitle">A modern glassmorphism landing experience with subtle motion and 3D tilt. Crafted to showcase projects, code and personality — all wrapped in luminous layers and soft rotations.</p>
+
+        <div class="meta-row" aria-hidden="false">
+          <div class="chip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.95"><path d="M12 2v4" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Animate & rotate
+          </div>
+
+          <div class="chip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.95"><path d="M12 7v6l4 2" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Smooth glass UI
+          </div>
+
+          <div class="created-time" title="Creation time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.85"><path d="M12 7v6l4 2" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Created: 2025-09-29 16:52:28
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn" href="#showcase" role="button">Explore showcase</a>
+          <a class="btn secondary" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View repo</a>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="showcase" id="showcase" aria-hidden="false">
+          <div class="terminal" id="terminal">
+            <div class="term-header" aria-hidden="true">
+              <span class="term-dot"></span>
+              <span class="term-dot"></span>
+              <span class="term-dot"></span>
+            </div>
+
+            <div class="term-body" id="term-body" aria-live="polite">
+              <div style="opacity:0.9;color:#9be8ff;margin-bottom:6px;">$ git clone https://github.com/amirabolfazle/autogen-code</div>
+              <div style="opacity:0.78;margin-bottom:6px;">Cloning into 'autogen-code'...</div>
+              <div style="opacity:0.78;margin-bottom:6px;">remote: Counting objects: 142, done.</div>
+              <div style="opacity:0.78;margin-bottom:6px;">remote: Compressing objects: 100% (24/24), done.</div>
+              <div style="opacity:0.78;margin-bottom:6px;">Receiving objects: 100% (142/142), 24.12 KiB | 1.20 MiB/s, done.</div>
+              <div style="opacity:0.9;color:#c9f6ff;margin-top:10px;">$ cd autogen-code && npm start</div>
+              <div style="opacity:0.8;margin-top:8px;color:#bfe7ff;">Launching dev server…</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" title="GitHub — amirabolfazle">
+      <svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 008 10.95c.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.26.71-3.95-1.57-3.95-1.57-.54-1.39-1.32-1.76-1.32-1.76-1.08-.74.08-.73.08-.73 1.19.08 1.81 1.22 1.81 1.22 1.06 1.81 2.78 1.29 3.45.99.11-.78.42-1.29.76-1.59-2.6-.3-5.34-1.3-5.34-5.78 0-1.28.46-2.33 1.22-3.15-.12-.3-.53-1.51.12-3.15 0 0 .99-.32 3.24 1.2a11.2 11.2 0 015.9 0c2.25-1.52 3.24-1.2 3.24-1.2.65 1.64.24 2.85.12 3.15.76.82 1.22 1.87 1.22 3.15 0 4.49-2.75 5.48-5.37 5.77.43.38.81 1.13.81 2.28 0 1.64-.02 2.96-.02 3.36 0 .32.22.7.83.58A11.5 11.5 0 0023.5 12C23.5 5.65 18.35.5 12 .5z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // 3D tilt interaction for the showcase card
+    (function(){
+      const card = document.getElementById('card');
+      const showcase = document.getElementById('showcase');
+      let rect = showcase.getBoundingClientRect();
+      function updateRect(){ rect = showcase.getBoundingClientRect(); }
+
+      showcase.addEventListener('mousemove', (e)=>{
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const px = (x / rect.width) - 0.5;
+        const py = (y / rect.height) - 0.5;
+        const rotateY = px * 14; // degrees
+        const rotateX = -py * 10;
+        showcase.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(6px)`;
+        card.classList.add('is-tilt');
+      });
+
+      showcase.addEventListener('mouseleave', ()=>{
+        showcase.style.transform = 'none';
+        card.classList.remove('is-tilt');
+      });
+
+      // gentle auto-scroll effect for terminal lines
+      const termBody = document.getElementById('term-body');
+      let autoTimer = null;
+      function autoScroll(){
+        const first = termBody.children[0];
+        termBody.appendChild(first.cloneNode(true));
+        first.style.opacity = '0';
+        setTimeout(()=> first.remove(), 600);
+      }
+      autoTimer = setInterval(autoScroll, 3600);
+
+      // update rect on resize
+      window.addEventListener('resize', updateRect);
+      // recalc after fonts load or layout stabilization
+      setTimeout(updateRect, 500);
+    })();
+  </script>
+</body>
+</html>
