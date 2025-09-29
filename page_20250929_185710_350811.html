@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-a: #0f172a;
+      --bg-b: #071332;
+      --accent1: #7c3aed;
+      --accent2: #06b6d4;
+      --accent3: #f97316;
+      --muted: rgba(255,255,255,0.75);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(120deg, var(--bg-a) 0%, var(--bg-b) 100%);
+      overflow:hidden;
+      color:var(--muted);
+    }
+
+    /* animated vibrant gradient overlay */
+    .bg-animate{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      background: conic-gradient(from 120deg at 30% 20%, rgba(124,58,237,0.18), rgba(6,182,212,0.14), rgba(249,115,22,0.12), rgba(124,58,237,0.18));
+      mix-blend-mode:screen;
+      animation: spin 18s linear infinite;
+      filter: blur(60px) saturate(110%);
+      opacity:0.95;
+    }
+
+    @keyframes spin{
+      from{transform:rotate(0deg) scale(1.05)}
+      to{transform:rotate(360deg) scale(1.05)}
+    }
+
+    .stage{
+      position:relative;
+      z-index:1;
+      width:min(92vw,900px);
+      padding:48px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      text-align:center;
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    h1{
+      font-size:clamp(36px,8vw,96px);
+      line-height:0.9;
+      letter-spacing:-0.02em;
+      margin:0;
+      font-weight:700;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color:transparent;
+      text-shadow: 0 6px 24px rgba(7,19,50,0.45);
+      transform-origin:center;
+      animation: pulse 6s ease-in-out infinite;
+      transition: transform 350ms cubic-bezier(.2,.9,.2,1), text-shadow 250ms;
+      cursor:default;
+    }
+
+    @keyframes pulse{
+      0%{transform:scale(1) translateZ(0)}
+      50%{transform:scale(1.03) translateZ(0)}
+      100%{transform:scale(1) translateZ(0)}
+    }
+
+    h1:hover{
+      transform: scale(1.12);
+      text-shadow: 0 20px 60px rgba(7,19,50,0.55);
+    }
+
+    .meta{
+      font-size:14px;
+      color:rgba(255,255,255,0.75);
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 6px 18px rgba(7,19,50,0.35);
+    }
+
+    .card{
+      margin-top:12px;
+      padding:18px 24px;
+      border-radius:14px;
+      display:flex;
+      gap:16px;
+      align-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 10px 40px rgba(7,19,50,0.45);
+    }
+
+    .zoom-box{
+      width:84px;
+      height:84px;
+      border-radius:12px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display:grid;
+      place-items:center;
+      transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 420ms;
+      transform-origin:center;
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    .zoom-box:hover{
+      transform:scale(1.18);
+      box-shadow: 0 18px 60px rgba(6,20,60,0.6);
+    }
+
+    .icon-dot{
+      width:48px;height:48px;border-radius:10px;
+      background:linear-gradient(180deg,var(--accent2),var(--accent1));
+      box-shadow: 0 8px 30px rgba(124,58,237,0.25), inset 0 -6px 18px rgba(0,0,0,0.12);
+      display:grid;place-items:center;color:white;font-weight:700;
+      transform: translateZ(0);
+      font-family: ui-rounded, system-ui, "Segoe UI", Roboto, Arial;
+    }
+
+    .desc{
+      text-align:left;
+      color:rgba(255,255,255,0.92);
+      font-size:14px;
+      line-height:1.35;
+    }
+
+    footer{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:18px;
+      display:flex;
+      justify-content:center;
+      z-index:2;
+    }
+
+    .footer-inner{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: rgba(3,7,18,0.45);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 30px rgba(7,19,50,0.45);
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .github-link svg{width:18px;height:18px;display:block;flex-shrink:0;filter:drop-shadow(0 6px 12px rgba(2,6,23,0.5));}
+
+    .github-link:hover{color:white;transform:translateY(-2px);transition:transform 220ms ease}
+    @media (prefers-reduced-motion:reduce){
+      .bg-animate, h1, .zoom-box{animation:none;transition:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animate" aria-hidden="true"></div>
+
+  <main class="stage" role="main">
+    <h1>amirabolfazle</h1>
+
+    <div class="meta">Created: 2025-09-29 18:56:31</div>
+
+    <div class="card" aria-hidden="false">
+      <div class="zoom-box" title="zoom">
+        <div class="icon-dot">A</div>
+      </div>
+      <div class="desc">
+        Minimal animated landing — gradient theme with gentle zoom effects. Lightweight, focused, and pleasant to look at.
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner" role="contentinfo">
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.9 3.17 9.06 7.57 10.52.55.1.75-.24.75-.53 0-.26-.01-1-.02-1.95-3.08.67-3.73-1.49-3.73-1.49-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.46-.28-5.05-1.23-5.05-5.47 0-1.21.43-2.2 1.13-2.98-.11-.28-.49-1.41.11-2.95 0 0 .92-.3 3.02 1.14a10.4 10.4 0 0 1 2.75-.37c.93 0 1.87.13 2.75.37 2.09-1.45 3.01-1.14 3.01-1.14.6 1.54.22 2.67.11 2.95.7.78 1.13 1.77 1.13 2.98 0 4.25-2.59 5.19-5.06 5.47.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.64.76.53 4.39-1.46 7.56-5.62 7.56-10.52C23.25 5.48 18.27.5 12 .5z"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </div>
+  </footer>
+</body>
+</html>
