@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #FFD8E0;
+      --bg-2: #D7F4FF;
+      --bg-3: #E8F7D6;
+      --bg-4: #FDEBD9;
+      --accent: rgba(255,255,255,0.6);
+      --text: #303038;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      display:grid;
+      place-items:center;
+      background: #f8fafc;
+      overflow:hidden;
+    }
+
+    /* animated pastel rotating background */
+    .bg{
+      position:fixed;
+      inset:-30vmax;
+      z-index:-2;
+      background:
+        conic-gradient(from 90deg at 50% 50%, var(--bg-1), var(--bg-2), var(--bg-3), var(--bg-4), var(--bg-1));
+      filter: blur(48px) saturate(120%);
+      transform: rotate(0deg) scale(1.2);
+      animation: spin-bg 60s linear infinite;
+      opacity:0.95;
+    }
+    @keyframes spin-bg{
+      to{transform: rotate(360deg) scale(1.2)}
+    }
+
+    /* soft overlay to mellow colors */
+    .bg::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background: radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.18), transparent 10%),
+                  radial-gradient(ellipse at 90% 80%, rgba(255,255,255,0.12), transparent 12%);
+      mix-blend-mode:soft-light;
+    }
+
+    /* content card */
+    .card{
+      width:min(86vw,740px);
+      padding:40px;
+      border-radius:20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      box-shadow: 0 8px 30px rgba(25,25,40,0.08);
+      backdrop-filter: blur(8px) saturate(120%);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      transform: translateZ(0);
+    }
+
+    h1{
+      margin:0;
+      font-weight:700;
+      letter-spacing:0.02em;
+      font-size: clamp(28px, 5vw, 44px);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    /* gentle rotating title accent */
+    .title-accent{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background: linear-gradient(135deg, #FFB3C6, #BEE7FF);
+      box-shadow: 0 6px 18px rgba(150,120,180,0.12), inset 0 -4px 8px rgba(255,255,255,0.14);
+      animation: wobble 6s ease-in-out infinite;
+      transform-origin:center;
+    }
+    @keyframes wobble{
+      0%{transform: rotate(-12deg) scale(0.98)}
+      50%{transform: rotate(12deg) scale(1.06)}
+      100%{transform: rotate(-12deg) scale(0.98)}
+    }
+
+    p.time{
+      margin:0;
+      padding:10px 16px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.48));
+      color: #484850;
+      font-weight:600;
+      letter-spacing:0.02em;
+      box-shadow: 0 6px 22px rgba(40,40,50,0.04);
+      transform: translateZ(0);
+    }
+
+    /* rotating pastel ring */
+    .ring{
+      margin-top:18px;
+      width:86px;
+      height:86px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      position:relative;
+      background: conic-gradient(from 0deg, rgba(255,179,198,0.9), rgba(190,231,255,0.9), rgba(232,247,214,0.9), rgba(253,235,217,0.9));
+      filter: blur(6px) contrast(105%);
+      animation: spin-slow 14s linear infinite;
+      opacity:0.95;
+    }
+    .ring::before{
+      content:'';
+      position:absolute;
+      inset:8px;
+      border-radius:50%;
+      background: rgba(255,255,255,0.7);
+      box-shadow: inset 0 6px 18px rgba(0,0,0,0.02);
+    }
+    @keyframes spin-slow{
+      to{transform: rotate(360deg)}
+    }
+
+    footer{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      font-size:14px;
+      color: #45454f;
+      opacity:0.95;
+    }
+
+    a.github{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:6px 10px;
+      border-radius:10px;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    a.github:hover{ transform: translateY(-4px); box-shadow: 0 10px 30px rgba(40,40,60,0.08); }
+
+    /* svg icon */
+    .gh-icon{width:18px;height:18px;display:block;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.06));}
+
+    /* reduced motion respects */
+    @media (prefers-reduced-motion: reduce){
+      .bg{animation:none}
+      .title-accent, .ring{animation:none}
+    }
+
+    /* responsive niceties */
+    @media (max-width:420px){
+      .card{padding:28px}
+      .ring{width:72px;height:72px}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="card" role="main" aria-labelledby="site-title">
+    <h1 id="site-title">
+      <span class="title-accent" aria-hidden="true"></span>
+      amirabolfazle
+    </h1>
+
+    <p class="time" title="Creation time">2025-09-29 09:19:43</p>
+
+    <div class="ring" aria-hidden="true"></div>
+
+    <footer>
+      <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.97 3.22 9.18 7.69 10.66.56.1.76-.24.76-.53 0-.26-.01-.95-.02-1.86-3.13.68-3.79-1.51-3.79-1.51-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1.01 1.72 2.65 1.22 3.3.93.1-.73.39-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.4.11-2.92 0 0 .95-.3 3.12 1.16.9-.25 1.86-.38 2.82-.38.96 0 1.92.13 2.82.38 2.17-1.47 3.12-1.16 3.12-1.16.61 1.52.23 2.64.11 2.92.72.79 1.16 1.79 1.16 3.02 0 4.32-2.64 5.28-5.15 5.55.4.34.76 1.02.76 2.06 0 1.49-.01 2.69-.01 3.06 0 .29.2.64.77.53C19.03 20.92 22.25 16.71 22.25 11.75 22.25 5.48 17.27.5 12 .5z" fill="#24292f"/>
+        </svg>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </main>
+</body>
+</html>
