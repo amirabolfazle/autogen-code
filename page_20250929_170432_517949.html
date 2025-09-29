@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f12;
+      --card:#0f1417;
+      --muted:#9aa5ad;
+      --accent:#6ee7b7;
+      --accent-2:#7dd3fc;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1000px 400px at 10% 10%, rgba(125,211,252,0.06), transparent 10%),
+        radial-gradient(800px 300px at 90% 90%, rgba(110,231,183,0.04), transparent 10%),
+        var(--bg);
+      color:#e6eef1;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      margin:36px auto;
+      padding:28px;
+      display:flex;
+      gap:28px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+
+    header{
+      flex:1 1 380px;
+      background:linear-gradient(180deg, var(--glass), transparent);
+      border:1px solid rgba(255,255,255,0.03);
+      padding:28px;
+      border-radius:14px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:72px;
+      height:72px;
+      border-radius:16px;
+      display:inline-grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#042225;
+      font-weight:700;
+      font-size:20px;
+      transform-origin:center;
+      animation:bounce-slow 2500ms cubic-bezier(.28,.84,.42,1) infinite;
+      box-shadow: 0 8px 30px rgba(109,213,188,0.12);
+    }
+
+    h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:0.4px;
+      line-height:1.05;
+      text-wrap:balance;
+      animation:bounce-slow 2500ms cubic-bezier(.28,.84,.42,1) infinite;
+    }
+
+    p.lead{
+      color:var(--muted);
+      margin-top:12px;
+      margin-bottom:18px;
+      max-width:38ch;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .badge{
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .time{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Noto Mono", monospace;
+      font-size:13px;
+      color:var(--muted);
+      opacity:0.95;
+      padding:8px 12px;
+      border-radius:10px;
+      background:var(--glass-2);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    aside{
+      width:360px;
+      max-width:40%;
+      min-width:240px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.018), transparent);
+      padding:18px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.03);
+      position:relative;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .card{
+      padding:12px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      transform-origin:center;
+      transition:transform 240ms cubic-bezier(.2,.9,.3,1), box-shadow 240ms;
+      animation:float 6s ease-in-out infinite;
+      box-shadow: 0 6px 18px rgba(3,6,8,0.6);
+    }
+
+    .card:nth-child(1){ animation-delay: 0s; }
+    .card:nth-child(2){ animation-delay: 0.2s; }
+    .card:nth-child(3){ animation-delay: 0.4s; }
+    .card:nth-child(4){ animation-delay: 0.6s; }
+
+    .card:hover{
+      transform:translateY(-8px) scale(1.02);
+      box-shadow: 0 18px 40px rgba(2,6,8,0.7);
+    }
+
+    .card h3{ margin:0; font-size:14px; color:#e9fbf5; }
+    .card p{ margin:0; color:var(--muted); font-size:13px; }
+
+    .cta{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .btn{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#042225;
+      padding:10px 14px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 10px 24px rgba(110,231,183,0.08);
+      transform-origin:center;
+      transition:transform 260ms cubic-bezier(.2,.9,.3,1), box-shadow 200ms;
+    }
+    .btn:hover{ transform:translateY(-6px) scale(1.03); box-shadow: 0 20px 36px rgba(110,231,183,0.12); }
+
+    /* animated background orbs */
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(36px);
+      opacity:0.12;
+      pointer-events:none;
+    }
+    .orb.o1{ width:260px; height:260px; background:linear-gradient(90deg,#6ee7b7,transparent); top:-60px; right:-60px; animation:orb-move 12s ease-in-out infinite; }
+    .orb.o2{ width:160px; height:160px; background:linear-gradient(90deg,#7dd3fc,transparent); bottom:-40px; left:-40px; animation:orb-move 14s ease-in-out infinite reverse; }
+
+    footer{
+      width:100%;
+      padding:18px 28px;
+      margin-top:auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:14px;
+      border-top:1px solid rgba(255,255,255,0.02);
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,0.2));
+    }
+
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .gh a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:36px;height:36px;
+      border-radius:10px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.03);
+      color:inherit;
+      text-decoration:none;
+      transition:transform 200ms, background 200ms;
+    }
+    .gh a:hover{ transform:translateY(-6px); background: rgba(255,255,255,0.02); }
+
+    /* small responsive tweaks */
+    @media (max-width:880px){
+      .wrap{ flex-direction:column; gap:18px; margin:20px; padding:18px; }
+      aside{ width:100%; max-width:none; min-width:0; order:2; }
+      header{ order:1; }
+      .cards{ grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:520px){
+      .cards{ grid-template-columns:1fr 1fr; gap:10px; }
+      .logo{ width:56px; height:56px; font-size:18px; border-radius:12px; }
+      h1{ font-size:22px; }
+    }
+
+    /* animations */
+    @keyframes bounce-slow{
+      0%{ transform:translateY(0); }
+      50%{ transform:translateY(-8px); }
+      100%{ transform:translateY(0); }
+    }
+    @keyframes float{
+      0%{ transform:translateY(0); }
+      50%{ transform:translateY(-6px); }
+      100%{ transform:translateY(0); }
+    }
+    @keyframes orb-move{
+      0%{ transform:translateY(0) translateX(0) scale(1); }
+      50%{ transform:translateY(-18px) translateX(12px) scale(1.05); }
+      100%{ transform:translateY(0) translateX(0) scale(1); }
+    }
+
+    /* reduced motion respect */
+    @media (prefers-reduced-motion:reduce){
+      .logo, h1, .card, .orb, .btn{ animation:none; transition:none; transform:none !important; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <header aria-labelledby="title">
+      <div class="title">
+        <div class="logo" aria-hidden="true">am</div>
+        <div>
+          <h1 id="title">amirabolfazle</h1>
+          <p class="lead">A minimal responsive dark-mode animated demo. Play with the cards, hover for bounce effects and enjoy the subtle motion.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap;">
+        <div class="meta">
+          <div class="badge" title="theme">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.95"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="rgba(255,255,255,0.75)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Dark mode
+          </div>
+          <div class="time" aria-label="Creation time">Creation time: 2025-09-29 17:03:32</div>
+        </div>
+      </div>
+
+      <div style="margin-top:22px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+        <div class="cta">
+          <button class="btn" onclick="pulseDemo()">Bounce</button>
+          <div style="color:var(--muted);font-size:13px;">Try the Bounce button for a burst animation</div>
+        </div>
+      </div>
+
+      <div class="orb o1" aria-hidden="true"></div>
+      <div class="orb o2" aria-hidden="true"></div>
+    </header>
+
+    <aside aria-label="interactive-cards">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-weight:700;color:#e8fef0;">Quick Actions</div>
+        <div style="color:var(--muted);font-size:13px;">Hover cards to bounce</div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Animate</h3>
+          <p>Subtle floating animation with bounce-on-hover for lively UI feedback.</p>
+        </div>
+        <div class="card">
+          <h3>Responsive</h3>
+          <p>Layout adapts from wide desktop to narrow mobile with smooth spacing.</p>
+        </div>
+        <div class="card">
+          <h3>Dark Theme</h3>
+          <p>Low-contrast palette tuned for comfort in low-light environments.</p>
+        </div>
+        <div class="card">
+          <h3>Accessible</h3>
+          <p>Respects reduced-motion preferences and uses semantic layout.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <div class="gh" role="contentinfo">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+          <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.11.78-.25.78-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.74 2.68 1.24 3.33.95.1-.74.4-1.24.73-1.53-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.17a11.05 11.05 0 012.9-.39c.98.01 1.97.13 2.9.39 2.2-1.48 3.17-1.17 3.17-1.17.63 1.59.24 2.77.12 3.06.73.8 1.18 1.82 1.18 3.07 0 4.4-2.7 5.36-5.28 5.64.41.36.77 1.07.77 2.16 0 1.56-.01 2.82-.01 3.21 0 .31.2.68.79.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z" fill="#e6eef1"/>
+        </svg>
+      </a>
+      <div style="color:var(--muted);">Created by amirabolfazle</div>
+    </div>
+  </footer>
+
+  <script>
+    // small interactive flourish: pulse demo triggers bounce on all cards and logo
+    function pulseDemo(){
+      document.querySelectorAll('.card, .logo, h1').forEach(el=>{
+        el.animate([
+          { transform: 'translateY(0) scale(1)' },
+          { transform: 'translateY(-18px) scale(1.04)' },
+          { transform: 'translateY(0) scale(1)' }
+        ], {
+          duration: 650,
+          easing: 'cubic-bezier(.2,.9,.3,1)'
+        });
+      });
+    }
+
+    // subtle parallax on mouse move for orbs (disabled on touch devices)
+    if(!('ontouchstart' in window)){
+      document.addEventListener('mousemove', function(e){
+        const x = (e.clientX / window.innerWidth - 0.5) * 8;
+        const y = (e.clientY / window.innerHeight - 0.5) * 8;
+        document.querySelectorAll('.orb.o1').forEach(o=>{
+          o.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        document.querySelectorAll('.orb.o2').forEach(o=>{
+          o.style.transform = `translate(${-x}px, ${-y}px)`;
+        });
+      }, {passive:true});
+    }
+
+    // small accessibility: announce creation time when focusing header
+    document.querySelector('header').setAttribute('tabindex','-1');
+  </script>
+</body>
+</html>
