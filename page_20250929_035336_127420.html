@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f12;
+      --card:#0f1720;
+      --muted:#9aa6b2;
+      --accent1:#6ee7b7;
+      --accent2:#7c5cff;
+      --glass: rgba(255,255,255,0.04);
+      --glow: 0 6px 30px rgba(124,92,255,0.08);
+      --radius:14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Helvetica Neue", monospace;
+      --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--ui);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.08), transparent 6%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(110,231,183,0.06), transparent 6%),
+                  var(--bg);
+      color:#e6eef3;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      line-height:1.45;
+      padding:40px 24px;
+    }
+
+    .container{
+      max-width:980px;
+      margin:0 auto;
+      display:grid;
+      gap:28px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:18px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: var(--glow);
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .logo{
+      width:72px;
+      height:72px;
+      display:grid;
+      place-items:center;
+      border-radius:12px;
+      background: linear-gradient(135deg,var(--accent2),var(--accent1));
+      color:#061016;
+      font-weight:700;
+      font-family:var(--mono);
+      font-size:18px;
+      transform:translateZ(0);
+      box-shadow: 0 6px 28px rgba(124,92,255,0.12);
+    }
+
+    .hdr-text{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.6px;
+    }
+
+    .when{
+      font-size:12px;
+      color:var(--muted);
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+      padding:6px 10px;
+      border-radius:999px;
+      display:inline-block;
+    }
+
+    .intro{
+      padding:22px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin-top:4px;
+    }
+
+    .avatar{
+      width:84px;
+      height:84px;
+      border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      font-family:var(--mono);
+      color:var(--accent1);
+      border:1px solid rgba(255,255,255,0.03);
+      flex:0 0 84px;
+    }
+
+    .bio{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    nav{
+      display:flex;
+      gap:10px;
+      margin-left:auto;
+      align-items:center;
+    }
+
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--glass);
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    main{
+      display:grid;
+      gap:20px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    @media (max-width:780px){
+      .grid{grid-template-columns:1fr}
+      header{flex-direction:column; align-items:flex-start}
+      nav{margin-left:0}
+    }
+
+    .card{
+      padding:18px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.02);
+      transform:translateY(24px);
+      opacity:0;
+      transition:transform 700ms cubic-bezier(.2,.9,.25,1), opacity 600ms ease;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      will-change:transform,opacity;
+      overflow:hidden;
+    }
+
+    .card.in-view{
+      transform:translateY(0);
+      opacity:1;
+    }
+
+    .card h3{margin:0 0 8px 0; font-size:16px}
+    .card p{margin:0; color:var(--muted); font-size:14px}
+
+    .tags{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
+    .tag{font-size:12px; padding:6px 8px; border-radius:999px; background:rgba(255,255,255,0.02); color:var(--muted); border:1px solid rgba(255,255,255,0.02)}
+
+    .hero-banner{
+      padding:28px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(124,92,255,0.10), rgba(110,231,183,0.04));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
+    .hero-left{flex:1}
+    .hero-right{width:180px; display:flex; justify-content:center}
+
+    .cta{
+      margin-top:18px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .btn{
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:#061016;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(124,92,255,0.12);
+      transition:transform 180ms ease;
+    }
+    .btn:active{transform:translateY(2px)}
+
+    .mini{
+      padding:8px 12px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      border-radius:10px;
+      font-size:13px;
+    }
+
+    .preview-card{
+      width:160px;
+      height:100px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    footer{
+      margin-top:6px;
+      padding:14px;
+      border-radius:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.02);
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    }
+
+    .social{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    a.icon{
+      display:inline-grid;
+      place-items:center;
+      width:40px;
+      height:40px;
+      border-radius:9px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      text-decoration:none;
+      transition:background 180ms ease, transform 160ms ease;
+    }
+
+    a.icon:hover{
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:#041018;
+      transform:translateY(-4px) scale(1.02);
+    }
+
+    .created{
+      opacity:0.9;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    /* small floating shapes */
+    .float{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(28px);
+      opacity:0.06;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+
+    .f1{width:220px;height:220px;background:linear-gradient(90deg,var(--accent2),var(--accent1)); left:-60px; top:-60px}
+    .f2{width:160px;height:160px;background:linear-gradient(90deg,rgba(110,231,183,0.9),rgba(124,92,255,0.6)); right:-40px; bottom:-40px}
+
+    /* subtle micro interactions for cards */
+    .card:hover{transform:translateY(-6px) scale(1.01); transition:transform 260ms cubic-bezier(.2,.9,.25,1); box-shadow: 0 16px 48px rgba(2,6,23,0.7)}
+    .preview-card:hover{transform:translateY(-6px) scale(1.02); transition:transform 220ms ease}
+
+    /* simple fade-in for header */
+    header, .intro, .hero-banner, footer{opacity:0; transform:translateY(12px); transition:opacity 700ms ease, transform 700ms cubic-bezier(.2,.9,.25,1)}
+    header.in-view, .intro.in-view, .hero-banner.in-view, footer.in-view{opacity:1; transform:none}
+
+    /* tiny keyboard focus outline */
+    a:focus, button:focus {outline:2px dashed rgba(255,255,255,0.06); outline-offset:4px}
+
+    /* small helper */
+    .muted{color:var(--muted)}
+    .mono{font-family:var(--mono); font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="float f1" aria-hidden="true"></div>
+    <div class="float f2" aria-hidden="true"></div>
+
+    <header id="topHeader" class="reveal">
+      <div class="logo mono">AM</div>
+      <div class="hdr-text">
+        <h1>amirabolfazle</h1>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="when mono">2025-09-29 03:52:47</div>
+          <div class="pill">Dark • Animated</div>
+        </div>
+      </div>
+
+      <nav aria-label="primary">
+        <div class="pill">Portfolio</div>
+        <div class="pill">About</div>
+        <div class="pill">Contact</div>
+      </nav>
+    </header>
+
+    <section class="intro reveal" id="intro">
+      <div class="avatar">AB</div>
+      <div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="font-weight:700">Hi — I’m amirabolfazle.</div>
+          <div class="muted">Designer • Developer • Maker</div>
+        </div>
+        <p class="bio muted" style="max-width:68ch; margin-top:10px">
+          I craft clean, animated web experiences—small but thoughtful interfaces with smooth motion and clear intent. This single-file portfolio glides in with slide-up reveals and a calm dark theme.
+        </p>
+
+        <div class="cta">
+          <button class="btn mono" onclick="document.querySelector('#works').scrollIntoView({behavior:'smooth'})">View Work</button>
+          <button class="mini mono" onclick="copyEmail()">Copy Email</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero-banner reveal" id="hero">
+      <div class="hero-left">
+        <h2 style="margin:0 0 8px 0">Select Projects</h2>
+        <p class="muted" style="margin:0">A few highlights showing motion, micro-interaction and simple UI systems — each entry slides up as you scroll.</p>
+      </div>
+      <div class="hero-right">
+        <div class="preview-card">Live Preview</div>
+      </div>
+    </section>
+
+    <main>
+      <div id="works" class="grid">
+        <article class="card reveal">
+          <h3>Autogen Code</h3>
+          <p class="muted">A tool that scaffolds code snippets and automations with lightweight UI and context-aware prompts.</p>
+          <div class="tags" aria-hidden="true">
+            <span class="tag">JS</span>
+            <span class="tag">UI</span>
+            <span class="tag">Automation</span>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <h3>Motion Library</h3>
+          <p class="muted">Reusable micro-interactions and utilities for smooth slide-up, fade and hover effects in dark themes.</p>
+          <div class="tags" aria-hidden="true">
+            <span class="tag">CSS</span>
+            <span class="tag">Animation</span>
+            <span class="tag">UX</span>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <h3>Minimal Dashboard</h3>
+          <p class="muted">A compact analytics dashboard focused on clarity — adaptive cards, subtle gradients and fast load times.</p>
+          <div class="tags" aria-hidden="true">
+            <span class="tag">React</span>
+            <span class="tag">Design</span>
+            <span class="tag">Data</span>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <h3>Interactive CV</h3>
+          <p class="muted">An animated, single-page CV with keyboard shortcuts, active state highlights and print-ready layout.</p>
+          <div class="tags" aria-hidden="true">
+            <span class="tag">Accessibility</span>
+            <span class="tag">Print</span>
+            <span class="tag">Portfolio</span>
+          </div>
+        </article>
+      </div>
+
+      <section style="margin-top:8px;">
+        <div class="card reveal" style="display:flex;align-items:center;gap:14px;">
+          <div style="flex:1">
+            <h3 style="margin-bottom:6px">About this page</h3>
+            <p class="muted">Built as a single file: HTML, CSS and JS. Slide-up effects are driven by Intersection Observer and CSS transforms for smooth, performant reveals.</p>
+          </div>
+          <div style="min-width:120px;text-align:center">
+            <div class="mono muted" style="font-size:12px">Created on</div>
+            <div class="mono" style="font-weight:700">2025-09-29 03:52:47</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer id="siteFooter" class="reveal">
+      <div class="created">
+        <span style="display:inline-flex;gap:10px;align-items:center">
+          <a class="icon" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub link">
+            <!-- GitHub icon (inline SVG) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 0.5C5.73 0.5 0.75 5.48 0.75 11.75c0 4.95 3.2 9.15 7.63 10.64.56.1.77-.24.77-.54 0-.27-.01-1.17-.02-2.12-3.1.67-3.75-1.5-3.75-1.5-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.66.08-.66 1.09.08 1.67 1.12 1.67 1.12.98 1.68 2.57 1.2 3.2.92.1-.72.38-1.2.69-1.48-2.48-.28-5.09-1.24-5.09-5.5 0-1.21.43-2.2 1.13-2.98-.11-.28-.49-1.4.11-2.92 0 0 .92-.29 3.02 1.13.88-.24 1.82-.36 2.75-.36.93 0 1.87.12 2.75.36 2.1-1.42 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.78 1.13 1.77 1.13 2.98 0 4.27-2.62 5.22-5.11 5.5.39.33.73.98.73 1.98 0 1.43-.01 2.58-.01 2.93 0 .3.21.65.78.54 4.43-1.49 7.63-5.69 7.63-10.64C23.25 5.48 18.27 0.5 12 0.5z" fill="currentColor"/>
+            </svg>
+          </a>
+          <span>Created by amirabolfazle</span>
+        </span>
+      </div>
+
+      <div class="muted" style="display:flex;gap:12px;align-items:center">
+        <div class="mono">GMT</div>
+        <div class="mono">2025-09-29 03:52:47</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up reveal using IntersectionObserver
+    (function(){
+      const opts = {threshold: 0.12};
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); }
+        });
+      }, opts);
+
+      document.querySelectorAll('.reveal').forEach(el=>{
+        io.observe(el);
+      });
+
+      // Reveal cards with small stagger
+      const cards = document.querySelectorAll('.card.reveal');
+      cards.forEach((c,i)=>{
+        // add a slight stagger by delaying observation
+        setTimeout(()=>{ io.observe(c); }, i*120);
+      });
+
+      // helper: copy email
+      window.copyEmail = function(){
+        const email = 'amir@abolfazle.dev';
+        if(navigator.clipboard){
+          navigator.clipboard.writeText(email).then(()=>{ alert('Email copied: ' + email); });
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = email; document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); alert('Email copied: ' + email); } catch(e){ prompt('Copy email', email); }
+          ta.remove();
+        }
+      };
+
+      // reduce motion respect
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(mq.matches){
+        document.querySelectorAll('.card, header, .intro, .hero-banner, footer').forEach(el=>{
+          el.style.transition = 'none';
+          el.classList.add('in-view');
+        });
+      }
+
+      // small parallax for floats
+      window.addEventListener('mousemove', (e)=>{
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        document.querySelectorAll('.float').forEach((f,i)=>{
+          const ix = (i%2===0 ? 1 : -1);
+          f.style.transform = `translate3d(${x*ix}px, ${y*ix}px, 0)`;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
