@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#071023;
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.04);
+    --accent1: #7ee7f7;
+    --accent2: #7b61ff;
+    --card-border: rgba(255,255,255,0.12);
+    --muted: rgba(255,255,255,0.65);
+    --glass-border-gradient: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.12), transparent 8%),
+                radial-gradient(1000px 500px at 90% 90%, rgba(126,231,247,0.06), transparent 6%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#eaf8ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y:auto;
+  }
+
+  /* floating shapes */
+  .orb{
+    position:fixed;
+    border-radius:50%;
+    filter: blur(40px);
+    opacity:0.18;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    animation: floaty 8s ease-in-out infinite alternate;
+  }
+  .orb.o1{ width:380px; height:380px; left:-80px; top:20%; background:linear-gradient(135deg,var(--accent1), rgba(123,97,255,0.3)); animation-delay:0s; }
+  .orb.o2{ width:240px; height:240px; right:-50px; bottom:10%; background:linear-gradient(135deg, rgba(123,97,255,0.22), rgba(126,231,247,0.18)); animation-delay:2s; }
+  @keyframes floaty{
+    to { transform: translateY(-40px) rotate(8deg) scale(1.05); }
+  }
+
+  .wrap{
+    max-width:980px;
+    margin:6vh auto;
+    padding:32px;
+    position:relative;
+  }
+
+  .glass{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:16px;
+    border:1px solid var(--card-border);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+  }
+
+  header.site{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:22px;
+    margin-bottom:24px;
+  }
+
+  .brand{
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+
+  .logo{
+    width:62px;
+    height:62px;
+    border-radius:14px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.06);
+    display:inline-grid;
+    place-items:center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    position:relative;
+    overflow:hidden;
+  }
+
+  .logo:before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg, rgba(126,231,247,0.18), rgba(123,97,255,0.14));
+    transform:skewX(-12deg) translateX(-30%);
+    opacity:0.9;
+  }
+
+  h1{
+    margin:0;
+    font-size:20px;
+    letter-spacing:0.6px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+
+  .name{
+    font-weight:700;
+    font-size:22px;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow: 0 6px 30px rgba(123,97,255,0.06);
+  }
+
+  .meta{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  nav.top-nav{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  nav.top-nav a{
+    text-decoration:none;
+    color:var(--muted);
+    padding:8px 12px;
+    border-radius:10px;
+    font-size:13px;
+    transition:all .25s ease;
+  }
+
+  nav.top-nav a:hover{
+    color:white;
+    background:linear-gradient(90deg, rgba(126,231,247,0.06), rgba(123,97,255,0.04));
+    transform:translateY(-3px);
+  }
+
+  .hero{
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:20px;
+    align-items:stretch;
+  }
+
+  .panel{
+    padding:22px;
+    min-height:180px;
+  }
+
+  .intro{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    justify-content:center;
+  }
+
+  .intro p{
+    margin:0;
+    color:rgba(234,248,255,0.9);
+    line-height:1.5;
+  }
+
+  .cta{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+  }
+
+  .btn{
+    padding:10px 14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.06);
+    background:linear-gradient(90deg, rgba(126,231,247,0.06), rgba(123,97,255,0.04));
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    font-size:14px;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{ transform:translateY(-4px); box-shadow:0 10px 30px rgba(123,97,255,0.12); }
+
+  .side-card{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:flex-start;
+    justify-content:center;
+  }
+
+  .time{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-size:13px;
+    color:var(--muted);
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  .cards{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:16px;
+    margin-top:18px;
+  }
+
+  .card{
+    padding:18px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    transition:transform .35s cubic-bezier(.2,.9,.25,1), box-shadow .35s;
+    transform-origin:center;
+    overflow:hidden;
+  }
+
+  .card h3{ margin:0 0 8px 0; font-size:15px; color:white; }
+  .card p{ margin:0; font-size:13px; color:var(--muted); line-height:1.45; }
+
+  .card:hover{ transform:translateY(-8px) scale(1.01); box-shadow:0 14px 40px rgba(2,6,23,0.6); }
+
+  /* slide-up effect */
+  .slide-up{
+    opacity:0;
+    transform:translateY(32px);
+    transition: transform .9s cubic-bezier(.2,.9,.25,1), opacity .9s ease;
+    will-change:transform,opacity;
+  }
+  .slide-up.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* project list full width */
+  .projects{
+    margin-top:26px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .project-item{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  }
+
+  .proj-thumb{
+    width:72px;
+    height:52px;
+    border-radius:8px;
+    background:linear-gradient(135deg,var(--accent2),var(--accent1));
+    flex:0 0 72px;
+    display:grid;
+    place-items:center;
+    font-weight:700;
+    color:#02121a;
+    box-shadow: 0 8px 25px rgba(123,97,255,0.08);
+  }
+
+  .proj-body h4{ margin:0; font-size:14px; color:white; }
+  .proj-body p{ margin:4px 0 0 0; font-size:13px; color:var(--muted); }
+
+  footer.site-footer{
+    margin-top:28px;
+    padding:18px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .github-link{
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    text-decoration:none;
+    color:var(--muted);
+    font-size:13px;
+    border-radius:10px;
+    padding:8px 10px;
+    transition:all .18s ease;
+    background:linear-gradient(90deg, rgba(126,231,247,0.02), rgba(123,97,255,0.02));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .github-link:hover{ color:white; transform:translateY(-4px); box-shadow:0 12px 30px rgba(123,97,255,0.08); }
+
+  .gh-icon{ width:20px; height:20px; display:inline-block; opacity:0.95; }
+
+  .small-muted{ font-size:13px; color:var(--muted); }
+
+  /* responsive */
+  @media (max-width:920px){
+    .hero{ grid-template-columns:1fr; }
+    .cards{ grid-template-columns: repeat(2,1fr); }
+    .wrap{ margin:6vh 18px; }
+  }
+  @media (max-width:560px){
+    .cards{ grid-template-columns: 1fr; }
+    .logo{ width:54px; height:54px; }
+    header.site{ padding:16px; }
+    .wrap{ padding:18px; }
+  }
+</style>
+</head>
+<body>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+
+  <main class="wrap">
+    <section class="glass site slide-up" style="overflow:visible;">
+      <header class="site">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">
+            <!-- simple monogram -->
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:relative; z-index:2;">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="#7EE7F7"/>
+                  <stop offset="1" stop-color="#7B61FF"/>
+                </linearGradient>
+              </defs>
+              <rect width="44" height="44" rx="10" fill="url(#g1)"/>
+              <g transform="translate(8,8)">
+                <path d="M4 18C6 13 12 7 20 4c3.5-1.4 6.7-1 10 0 0 0-10 4-14 10-3.6 6-6 12-12 13 2-3 2-8 0-9z" fill="#02121a" opacity="0.08"/>
+                <text x="3" y="22" font-family="Arial" font-size="14" font-weight="700" fill="#02121a">A</text>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <h1><span class="name">amirabolfazle</span></h1>
+            <div class="meta">Creative Portfolio • Glassmorphism • Interactive</div>
+          </div>
+        </div>
+
+        <nav class="top-nav" aria-label="Main navigation">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <div class="hero">
+        <div class="panel intro slide-up">
+          <h2 style="margin:0 0 8px 0; font-size:20px; color: white;">Hi, I'm amirabolfazle</h2>
+          <p>Designing clean interfaces and building delightful experiences. I blend visual polish with thoughtful code to make things that feel alive.</p>
+
+          <div class="cta">
+            <button class="btn" onclick="scrollToId('projects')">See projects</button>
+            <button class="btn" onclick="scrollToId('contact')">Get in touch</button>
+          </div>
+
+          <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
+            <div class="time" title="creation time">Created: 2025-09-29 06:37:15</div>
+            <div class="small-muted" style="font-size:12px;">Single-file animated portfolio</div>
+          </div>
+        </div>
+
+        <aside class="panel side-card slide-up">
+          <div style="width:100%;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div style="display:flex; flex-direction:column;">
+                <div style="font-size:13px; color:var(--muted);">Location</div>
+                <div style="font-weight:700; color:white;">Remote / Worldwide</div>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                <div style="font-size:13px; color:var(--muted);">Role</div>
+                <div style="font-weight:700; color:white;">Product & Frontend</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="width:100%; margin-top:12px;">
+            <div style="font-size:13px; color:var(--muted); margin-bottom:8px;">Skills</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="btn" style="padding:6px 10px; font-size:12px; background:transparent; border:1px solid rgba(255,255,255,0.04);">HTML</span>
+              <span class="btn" style="padding:6px 10px; font-size:12px; background:transparent;">CSS</span>
+              <span class="btn" style="padding:6px 10px; font-size:12px; background:transparent;">JavaScript</span>
+              <span class="btn" style="padding:6px 10px; font-size:12px; background:transparent;">UI Design</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section id="projects" class="slide-up" style="padding:22px;">
+        <h3 style="margin:0 0 12px 0; color:white;">Featured</h3>
+        <div class="cards">
+          <article class="card slide-up">
+            <h3>Autogen Code</h3>
+            <p>A toolkit that automates code-generation workflows with safe, auditable pipelines and developer-friendly UX.</p>
+          </article>
+          <article class="card slide-up">
+            <h3>Glass UI Kit</h3>
+            <p>A component set exploring glassmorphism, animated tokens and accessible contrast for modern interfaces.</p>
+          </article>
+          <article class="card slide-up">
+            <h3>Studio Dashboard</h3>
+            <p>Real-time analytics and collaborative widgets designed for teams to move faster and stay aligned.</p>
+          </article>
+        </div>
+
+        <div class="projects">
+          <div class="project-item slide-up">
+            <div class="proj-thumb">AC</div>
+            <div class="proj-body">
+              <h4>Autogen Code · CLI + Web</h4>
+              <p>End-to-end automation for scaffolding and generating production-ready modules.</p>
+            </div>
+          </div>
+
+          <div class="project-item slide-up">
+            <div class="proj-thumb">GU</div>
+            <div class="proj-body">
+              <h4>Glass UI Kit · Design System</h4>
+              <p>Polished tokens, animations and docs for teams shipping delightful UI quickly.</p>
+            </div>
+          </div>
+
+          <div class="project-item slide-up">
+            <div class="proj-thumb">DS</div>
+            <div class="proj-body">
+              <h4>Studio Dashboard · Analytics</h4>
+              <p>Interactive dashboards with live updates, modular widgets and fine-grained permissions.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="slide-up" style="padding:22px;">
+        <h3 style="margin:0 0 10px 0; color:white;">About</h3>
+        <p style="margin:0; color:var(--muted);">I combine visual design and frontend engineering to build interfaces that are both beautiful and useful. I enjoy crafting micro-interactions, polishing typography and optimizing developer experience.</p>
+      </section>
+
+      <section id="contact" class="slide-up" style="padding:22px;">
+        <h3 style="margin:0 0 10px 0; color:white;">Contact</h3>
+        <p style="margin:0 0 12px 0; color:var(--muted);">Open to collaboration, freelance work and interesting problems. Reach out and let's build something.</p>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a href="mailto:hello@amirabolfazle.example" class="btn" style="text-decoration:none;">Email</a>
+          <a href="https://github.com/amirabolfazle" target="_blank" class="btn" style="text-decoration:none;">GitHub</a>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <div class="small-muted">Created by amirabolfazle</div>
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg class="gh-icon" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.63 7.63 0 018 4.58c.68.003 1.36.092 1.99.27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span style="font-weight:600;">Repository</span>
+        </a>
+      </footer>
+    </section>
+  </main>
+
+<script>
+  // Add slide-up reveal using IntersectionObserver
+  (function(){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('show');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold: 0.12});
+
+    document.querySelectorAll('.slide-up').forEach(el=> io.observe(el));
+
+    // small helper for nav buttons
+    window.scrollToId = function(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+    };
+  })();
+</script>
+</body>
+</html>
