@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#071226;
+    --glass-bg: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --accent: #7bdff6;
+    --accent2: #8b5cf6;
+    --text: rgba(255,255,255,0.95);
+    --muted: rgba(255,255,255,0.75);
+  }
+
+  /* Reset & base */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:var(--text);
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(139,92,246,0.12), transparent),
+                radial-gradient(900px 500px at 90% 90%, rgba(123,223,246,0.08), transparent),
+                linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+  }
+
+  /* floating decorative blobs */
+  .blob{
+    position:fixed;
+    border-radius:50%;
+    filter: blur(42px);
+    opacity:0.7;
+    transform: translate3d(0,0,0);
+    mix-blend-mode:screen;
+    z-index:0;
+    animation: floaty 12s ease-in-out infinite;
+  }
+  .blob.a{width:420px;height:420px;left:-120px;top:-80px;background:linear-gradient(135deg,var(--accent),transparent);}
+  .blob.b{width:340px;height:340px;right:-100px;bottom:-120px;background:linear-gradient(135deg,var(--accent2),transparent);animation-duration:18s}
+  @keyframes floaty{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-24px) scale(1.02)}
+    100%{transform:translateY(0) scale(1)}
+  }
+
+  /* main container */
+  .stage{
+    position:relative;
+    width:100%;
+    max-width:1100px;
+    z-index:1;
+    display:flex;
+    gap:28px;
+    align-items:stretch;
+  }
+
+  /* glass panel */
+  .panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border-radius:18px;
+    padding:28px;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  }
+
+  /* left column */
+  .left{
+    flex:0 1 360px;
+    min-width:260px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    animation: popIn 700ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  .avatar{
+    width:100%;
+    padding:18px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    border-radius:14px;
+    cursor:default;
+  }
+
+  .avatar .circle{
+    flex:0 0 74px;
+    height:74px;
+    border-radius:16px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.06);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:var(--text);
+    font-size:26px;
+    box-shadow: 0 6px 18px rgba(11,17,30,0.45);
+    transform-origin:center;
+    animation: bounceIn 900ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  .meta{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .meta h1{
+    margin:0;
+    font-size:20px;
+    letter-spacing:0.6px;
+  }
+  .meta p{margin:0;color:var(--muted);font-size:13px}
+
+  /* stats / cards */
+  .cards{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+    animation: bounceSlow 1600ms cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .card h3{margin:6px 0 0 0;font-size:18px}
+  .card p{margin:0;color:var(--muted);font-size:13px}
+
+  /* right / main content */
+  .right{
+    flex:1 1 auto;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    min-width:260px;
+    animation: popIn 900ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  .hero{
+    padding:22px;
+    border-radius:14px;
+    display:flex;
+    gap:20px;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .hero .text{
+    flex:1;
+    min-width:0;
+  }
+  .title{
+    margin:0;
+    font-size: clamp(18px, 3.2vw, 28px);
+    letter-spacing:0.4px;
+  }
+  .lead{
+    margin:8px 0 0 0;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .btn{
+    padding:10px 14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    color:var(--text);
+    cursor:pointer;
+    font-weight:600;
+    transition:transform 180ms ease, box-shadow 180ms ease;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+  .btn:active{transform:translateY(2px)}
+  .btn:hover{transform:translateY(-6px); box-shadow: 0 10px 30px rgba(11,17,30,0.45)}
+
+  /* list / features */
+  .features{
+    display:grid;
+    gap:12px;
+  }
+  .feature{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    transition:transform 300ms cubic-bezier(.2,.8,.2,1);
+  }
+  .feature:hover{transform:translateY(-6px)}
+  .icon{
+    min-width:44px;
+    height:44px;
+    border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:#04202a;
+    box-shadow: 0 8px 22px rgba(123,223,246,0.08);
+  }
+  .feature .ftext h4{margin:0;font-size:15px}
+  .feature .ftext p{margin:6px 0 0 0;color:var(--muted);font-size:13px}
+
+  /* footer */
+  footer{
+    margin-top:14px;
+    padding-top:10px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+    font-size:13px;
+  }
+  footer a{
+    color:var(--muted);
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    text-decoration:none;
+    transition:transform 200ms ease;
+  }
+  footer a:hover{transform:translateY(-4px)}
+  .gh{
+    width:20px;height:20px;display:inline-block;
+    filter:drop-shadow(0 4px 10px rgba(2,6,23,0.5));
+  }
+
+  /* small screens */
+  @media (max-width:880px){
+    .stage{flex-direction:column;padding:0}
+    .left{order:2}
+    .right{order:1}
+    body{padding:20px}
+  }
+
+  /* animations */
+  @keyframes popIn{
+    0%{opacity:0;transform:translateY(14px) scale(.995)}
+    100%{opacity:1;transform:none}
+  }
+
+  @keyframes bounceIn{
+    0%{transform:translateY(-40px) scale(.98);opacity:0}
+    60%{transform:translateY(8px) scale(1.02);opacity:1}
+    100%{transform:none}
+  }
+
+  @keyframes bounceSlow{
+    0%{transform:translateY(0)}
+    30%{transform:translateY(-10px)}
+    50%{transform:translateY(0)}
+    80%{transform:translateY(-6px)}
+    100%{transform:translateY(0)}
+  }
+
+  /* subtle heading entrance */
+  .heading-anim{
+    display:inline-block;
+    transform-origin:center;
+    animation: headingPop 650ms cubic-bezier(.2,.9,.2,1);
+  }
+  @keyframes headingPop{
+    0%{transform:scale(.9) translateY(6px);opacity:0}
+    100%{transform:none;opacity:1}
+  }
+
+  /* bounce on hover for featured buttons */
+  .btn-bounce:hover{animation: bounceSlow 900ms ease both}
+</style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="main-title">
+    <section class="panel left" aria-label="profile panel">
+      <div class="avatar" title="amirabolfazle">
+        <div class="circle" aria-hidden="true">A</div>
+        <div class="meta">
+          <h1 id="main-title">amirabolfazle</h1>
+          <p>Creative coder • UI experiments • glassmorphism lover</p>
+        </div>
+      </div>
+
+      <div class="cards" aria-hidden="false">
+        <div class="card" style="animation-delay:80ms">
+          <p style="font-size:12px;color:var(--muted)">Projects</p>
+          <h3>18</h3>
+        </div>
+        <div class="card" style="animation-delay:160ms">
+          <p style="font-size:12px;color:var(--muted)">Followers</p>
+          <h3>4.2k</h3>
+        </div>
+        <div class="card" style="animation-delay:240ms">
+          <p style="font-size:12px;color:var(--muted)">Stars</p>
+          <h3>1.1k</h3>
+        </div>
+        <div class="card" style="animation-delay:320ms">
+          <p style="font-size:12px;color:var(--muted)">Coffee</p>
+          <h3>Needed</h3>
+        </div>
+      </div>
+
+      <div style="margin-top:6px;">
+        <div class="card" style="padding:14px;">
+          <p style="margin:0;font-size:13px;color:var(--muted)">Created on</p>
+          <h3 style="margin:8px 0 0 0;font-size:14px">2025-09-29 03:44:59</h3>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel right" aria-label="main content">
+      <div class="hero">
+        <div class="text">
+          <h2 class="title heading-anim">A tiny playground of glass & motion</h2>
+          <p class="lead">Interactive, responsive and playful UI elements with bounce effects and soft glassmorphism. Resize the window — elements adapt and keep their rhythm.</p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-bounce" aria-pressed="false" onclick="pulse(this)">
+            Live demo
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.9">
+              <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="btn" onclick="shuffleBounce(this)">Shuffle</button>
+        </div>
+      </div>
+
+      <div class="features" role="list">
+        <div class="feature" role="listitem">
+          <div class="icon">G</div>
+          <div class="ftext">
+            <h4>Glassmorphism</h4>
+            <p>Layered translucency, blur and soft borders create elegant depth without heaviness.</p>
+          </div>
+        </div>
+
+        <div class="feature" role="listitem">
+          <div class="icon">B</div>
+          <div class="ftext">
+            <h4>Bouncy Motion</h4>
+            <p>Playful keyframe animations add life — appearing on load and reacting to hover interactions.</p>
+          </div>
+        </div>
+
+        <div class="feature" role="listitem">
+          <div class="icon">R</div>
+          <div class="ftext">
+            <h4>Responsive</h4>
+            <p>Layouts shift from columns to stacked panels smoothly for any screen size.</p>
+          </div>
+        </div>
+
+        <div class="feature" role="listitem">
+          <div class="icon">S</div>
+          <div class="ftext">
+            <h4>Accessible</h4>
+            <p>High contrast text, semantic structure and keyboard-friendly buttons.</p>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg class="gh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.73.5.94 5.29.94 11.56c0 4.62 3 8.55 7.16 9.94.52.1.71-.23.71-.51 0-.25-.01-.92-.01-1.8-2.91.63-3.53-1.25-3.53-1.25-.48-1.22-1.17-1.55-1.17-1.55-.96-.66.07-.65.07-.65 1.06.07 1.62 1.09 1.62 1.09.94 1.61 2.47 1.15 3.07.88.09-.69.37-1.15.67-1.41-2.32-.26-4.76-1.16-4.76-5.17 0-1.14.39-2.07 1.03-2.8-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.07A9.54 9.54 0 0112 6.8c.85.004 1.71.116 2.51.34 1.9-1.34 2.74-1.07 2.74-1.07.55 1.38.2 2.4.1 2.65.64.73 1.03 1.66 1.03 2.8 0 4.02-2.45 4.9-4.78 5.16.38.33.72.99.72 1.99 0 1.44-.01 2.6-.01 2.95 0 .28.19.61.72.51A10.06 10.06 0 0023.06 11.56C23.06 5.29 18.27.5 12 .5z" fill="currentColor"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </footer>
+    </section>
+  </main>
+
+<script>
+  // small interactive helpers to enhance the bounce feeling
+  function pulse(el){
+    el.animate([
+      { transform: 'scale(1)' },
+      { transform: 'scale(1.06)' },
+      { transform: 'scale(1)' }
+    ], { duration: 420, easing: 'cubic-bezier(.2,.9,.2,1)' });
+  }
+
+  function shuffleBounce(el){
+    const cards = document.querySelectorAll('.card, .feature');
+    cards.forEach((c, i) => {
+      const delay = i * 50;
+      setTimeout(() => {
+        c.animate([
+          { transform: 'translateY(0)' },
+          { transform: 'translateY(-16px)' },
+          { transform: 'translateY(0)' }
+        ], { duration: 600, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+      }, delay);
+    });
+  }
+
+  // gentle entrance for features on scroll (for long pages)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.style.animation = 'bounceSlow 1100ms cubic-bezier(.34,1.56,.64,1) both';
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15});
+
+  document.querySelectorAll('.feature').forEach(n => io.observe(n));
+
+  // keyboard accessibility: Enter/Space for buttons
+  document.addEventListener('keydown', (e) => {
+    if((e.key === 'Enter' || e.key === ' ') && document.activeElement && document.activeElement.classList.contains('btn')){
+      e.preventDefault();
+      document.activeElement.click();
+    }
+  });
+</script>
+</body>
+</html>
