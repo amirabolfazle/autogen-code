@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1:#06070b;
+      --bg-2:#0f1724;
+      --accent:#7dd3fc;
+      --muted:#98a8c7;
+      --glass: rgba(255,255,255,0.03);
+      --neon: #66e0ff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(102,224,255,0.03), transparent),
+                  linear-gradient(135deg,var(--bg-1),var(--bg-2));
+      color:#e6eef8;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      padding:32px;
+    }
+
+    .stage{
+      width:min(880px,92vw);
+      max-width:920px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:22px;
+      position:relative;
+    }
+
+    /* Rotating decorative rings */
+    .orbit{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+    }
+    .ring{
+      --size:280px;
+      width:var(--size);
+      height:var(--size);
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 0 60px rgba(102,224,255,0.03), inset 0 0 20px rgba(255,255,255,0.01);
+      transform-style:preserve-3d;
+      animation:spin 14s linear infinite;
+    }
+    .ring::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:0;
+      transform:translateX(-50%);
+      width:6px;height:6px;border-radius:50%;
+      background:linear-gradient(90deg,var(--neon),#9ae6ff);
+      box-shadow:0 0 8px var(--neon);
+    }
+    .ring.alt{
+      --size:420px;
+      border:1px dashed rgba(157,200,255,0.04);
+      animation:spin-rev 22s linear infinite;
+      filter:blur(0.2px);
+      transform-origin:center;
+    }
+
+    @keyframes spin{
+      from{transform:rotateZ(0deg) rotateX(8deg)}
+      to{transform:rotateZ(360deg) rotateX(8deg)}
+    }
+    @keyframes spin-rev{
+      from{transform:rotateZ(0deg) rotateY(6deg)}
+      to{transform:rotateZ(-360deg) rotateY(6deg)}
+    }
+
+    /* Title card */
+    .card{
+      position:relative;
+      min-width:clamp(280px,52vw,680px);
+      padding:34px 40px;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), 0 1px 0 rgba(255,255,255,0.02) inset;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+      transform-style:preserve-3d;
+      animation:float 6s ease-in-out infinite;
+    }
+
+    @keyframes float{
+      0%{transform:translateY(0px)}
+      50%{transform:translateY(-8px)}
+      100%{transform:translateY(0px)}
+    }
+
+    h1{
+      margin:0;
+      font-weight:700;
+      letter-spacing:0.6px;
+      font-size: clamp(28px,6vw,54px);
+      color:linear-gradient(#fff,#ddd);
+      text-shadow:
+        0 2px 10px rgba(102,224,255,0.06),
+        0 8px 40px rgba(2,8,23,0.6);
+      position:relative;
+      display:inline-block;
+      padding:6px 12px;
+      transform-style:preserve-3d;
+      animation:rotateY 8s linear infinite;
+    }
+
+    @keyframes rotateY{
+      0%{transform:rotateY(0deg)}
+      50%{transform:rotateY(180deg)}
+      100%{transform:rotateY(360deg)}
+    }
+
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      letter-spacing:0.4px;
+    }
+
+    /* creation time */
+    .meta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      padding-top:8px;
+    }
+
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:linear-gradient(180deg,var(--neon),#6ee7b7);
+      box-shadow:0 0 8px rgba(102,224,255,0.12);
+      animation:blink 3s infinite;
+    }
+    @keyframes blink{
+      0%,50%,100%{opacity:1}
+      25%{opacity:0.35}
+      75%{opacity:0.6}
+    }
+
+    /* small rotating cubes */
+    .satellites{
+      position:absolute;
+      inset:auto;
+      pointer-events:none;
+      width:100%;
+      height:100%;
+      top:10%;
+      left:0;
+    }
+    .satellites .s{
+      position:absolute;
+      width:8px;height:8px;border-radius:2px;
+      background:linear-gradient(90deg,#bde8ff,#7dd3fc);
+      box-shadow:0 0 6px rgba(125,211,252,0.18);
+      opacity:0.9;
+      animation:orbit 9s linear infinite;
+    }
+    .s.i1{left:8%;top:20%; animation-duration:20s}
+    .s.i2{left:88%;top:26%; animation-duration:14s}
+    .s.i3{left:72%;top:78%; animation-duration:18s}
+    .s.i4{left:18%;top:78%; animation-duration:13s}
+    @keyframes orbit{
+      from{transform:translateY(0) rotate(0deg)}
+      to{transform:translateY(0) rotate(360deg)}
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      bottom:18px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      background:transparent;
+      padding:8px 12px;
+      border-radius:10px;
+      z-index:40;
+    }
+    .gh{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      transition:color .18s ease, transform .12s ease;
+      padding:6px 8px;
+      border-radius:8px;
+    }
+    .gh:hover{ color:var(--accent); transform:translateY(-3px) }
+    .gh svg{display:block; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.6));}
+    .gh span{color:var(--muted); font-weight:600}
+    .gh .lab{font-weight:600; color:var(--muted)}
+    .gh:hover .lab{color:var(--accent)}
+  </style>
+</head>
+<body>
+  <div class="stage" role="main" aria-labelledby="title">
+    <div class="orbit" aria-hidden="true">
+      <div class="ring alt" aria-hidden="true"></div>
+      <div class="ring" aria-hidden="true" style="position:absolute"></div>
+    </div>
+
+    <div class="card" role="region" aria-label="amirabolfazle card">
+      <h1 id="title">amirabolfazle</h1>
+      <p class="subtitle">minimal animated dark site • rotating effects</p>
+
+      <div class="meta" aria-label="creation time">
+        <div class="dot" aria-hidden="true"></div>
+        <div class="time">Creation time: 2025-09-29 17:33:58</div>
+      </div>
+    </div>
+
+    <div class="satellites" aria-hidden="true">
+      <div class="s i1"></div>
+      <div class="s i2"></div>
+      <div class="s i3"></div>
+      <div class="s i4"></div>
+    </div>
+  </div>
+
+  <footer>
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository by amirabolfazle">
+      <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#9fb4ff" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.66 7.66 0 0 1 2.01-.27c.68 0 1.36.09 2.01.27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.001 8.001 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      <span class="lab">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
