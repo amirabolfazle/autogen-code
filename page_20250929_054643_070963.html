@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="description" content="amirabolfazle — creative experiments, code and design." />
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1620;
+      --accent:#7c5cff;
+      --accent-2:#00e5a8;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.04);
+      --glow: 0 8px 30px rgba(124,92,255,0.18);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 500px at 10% 10%, rgba(124,92,255,0.08), transparent),
+                  radial-gradient(800px 400px at 90% 80%, rgba(0,229,168,0.05), transparent),
+                  var(--bg);
+      color:#e8eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+    }
+
+    /* Floating orbs backdrop */
+    .backdrop{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:visible;
+    }
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(36px) saturate(120%);
+      opacity:0.18;
+      transform:translateZ(0);
+      mix-blend-mode:screen;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb.one{width:420px;height:420px;background:linear-gradient(135deg,var(--accent),rgba(124,92,255,0.6));left:-8%;top:10%; animation-duration:10s}
+    .orb.two{width:320px;height:320px;background:linear-gradient(135deg,var(--accent-2),rgba(0,229,168,0.6));right:-6%;bottom:6%; animation-duration:12s}
+    .orb.three{width:160px;height:160px;background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(124,92,255,0.08));left:30%;top:60%; opacity:0.06; animation-duration:9s}
+    @keyframes float{
+      0%{transform: translateY(0) translateX(0) scale(1)}
+      50%{transform: translateY(-28px) translateX(8px) scale(1.02)}
+      100%{transform: translateY(0) translateX(0) scale(1)}
+    }
+
+    /* Card */
+    .card{
+      width:100%;
+      max-width:1100px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:48px;
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:28px;
+      box-shadow: var(--glow);
+      border:1px solid rgba(255,255,255,0.04);
+      position:relative;
+      overflow:visible;
+    }
+
+    /* Left content */
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      justify-content:center;
+      padding-right:12px;
+    }
+    .eyebrow{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+    }
+    .eyebrow .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:linear-gradient(180deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 18px rgba(124,92,255,0.22);
+      animation: bounceDot 2.4s cubic-bezier(.2,.9,.3,1) infinite;
+    }
+    @keyframes bounceDot{
+      0%{transform: translateY(0)}
+      50%{transform: translateY(-6px)}
+      100%{transform: translateY(0)}
+    }
+
+    h1{
+      margin:0;
+      font-size:54px;
+      line-height:1;
+      letter-spacing:-0.02em;
+      background: linear-gradient(90deg, #fff, rgba(255,255,255,0.6));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      display:inline-block;
+      animation: popIn 900ms cubic-bezier(.2,.9,.3,1) both;
+    }
+    @keyframes popIn{
+      0%{transform: translateY(18px) scale(.98); opacity:0}
+      60%{opacity:1}
+      100%{transform: translateY(0) scale(1); opacity:1}
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:16px;
+      max-width:58ch;
+      line-height:1.6;
+    }
+
+    /* Right column: card with animated mockup */
+    .mockup{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:visible;
+    }
+    .device{
+      width:100%;
+      max-width:320px;
+      height:220px;
+      background:linear-gradient(180deg, rgba(12,15,20,1), rgba(24,30,40,1));
+      border-radius:10px;
+      box-shadow: 0 12px 40px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.02);
+      position:relative;
+      overflow:hidden;
+      transform-origin:center;
+      animation: floatCard 6s ease-in-out infinite;
+    }
+    @keyframes floatCard{
+      0%{transform: translateY(0) rotate(-0.8deg)}
+      50%{transform: translateY(-12px) rotate(0.6deg)}
+      100%{transform: translateY(0) rotate(-0.8deg)}
+    }
+    .device .screen{
+      padding:18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      color: #bfeee0;
+      font-size:13px;
+      line-height:1.5;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .line{
+      height:10px;
+      border-radius:8px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.04), rgba(124,92,255,0.06));
+      opacity:0.9;
+    }
+    .line.small{width:36%}
+    .line.medium{width:62%}
+    .line.large{width:88%}
+
+    /* CTA */
+    .controls{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      margin-top:6px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 18px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#071017;
+      font-weight:700;
+      letter-spacing:0.02em;
+      text-decoration:none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 6px 22px rgba(124,92,255,0.12);
+      border:none;
+      cursor:pointer;
+      transform-origin:center;
+      animation: bounceBtn 1.8s cubic-bezier(.2,.9,.3,1) infinite;
+    }
+    @keyframes bounceBtn{
+      0%{transform: translateY(0)}
+      50%{transform: translateY(-8px)}
+      100%{transform: translateY(0)}
+    }
+    .ghost{
+      padding:10px 14px;
+      border-radius:10px;
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      text-decoration:none;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      width:100%;
+      grid-column:1/-1;
+      padding-top:8px;
+      margin-left:0;
+    }
+    .left-meta{display:flex;gap:10px;align-items:center}
+    .time{
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.02);
+      font-weight:600;
+      color:#d8e9e0;
+      font-size:13px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+    }
+    .github-link svg{width:20px;height:20px;fill:currentColor;opacity:0.95}
+
+    /* small screens */
+    @media (max-width:920px){
+      .card{grid-template-columns:1fr; padding:28px}
+      .mockup{order:-1;margin-bottom:6px}
+      h1{font-size:40px}
+      .device{max-width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+  </div>
+
+  <main class="card" role="main" aria-labelledby="title">
+    <section class="hero">
+      <div class="eyebrow" aria-hidden="false">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Digital Atelier</span>
+      </div>
+
+      <h1 id="title">amirabolfazle</h1>
+
+      <p class="subtitle">Design-led code experiments, creative tooling and tiny production-ready things. This space showcases playful UI, thoughtful micro-interactions and technical craftsmanship — built in the spirit of curiosity.</p>
+
+      <div class="controls" role="group" aria-label="Primary actions">
+        <a class="btn" href="#" role="button" aria-pressed="false">Explore Work</a>
+        <a class="ghost" href="#" role="button">View Case Studies</a>
+      </div>
+
+      <footer>
+        <div class="left-meta">
+          <div class="time" title="Creation time">
+            <!-- small pulse dot -->
+            <svg width="10" height="10" viewBox="0 0 10 10" style="flex-shrink:0">
+              <circle cx="5" cy="5" r="5" fill="url(#g)"></circle>
+              <defs>
+                <linearGradient id="g" x1="0" x2="1">
+                  <stop offset="0" stop-color="#7c5cff"/>
+                  <stop offset="1" stop-color="#00e5a8"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            2025-09-29 05:45:54
+          </div>
+        </div>
+
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub repository">
+          <svg viewBox="0 0 24 24" aria-hidden="true" role="img">
+            <path d="M12 .296a12 12 0 00-3.797 23.4c.6.112.82-.26.82-.579 0-.287-.01-1.049-.015-2.057-3.338.726-4.042-1.612-4.042-1.612-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.76-1.605-2.665-.303-5.467-1.334-5.467-5.933 0-1.311.468-2.381 1.235-3.222-.124-.303-.536-1.523.117-3.175 0 0 1.008-.323 3.3 1.23a11.49 11.49 0 013.003-.404 11.5 11.5 0 013.003.404c2.29-1.553 3.296-1.23 3.296-1.23.656 1.652.244 2.872.12 3.175.77.841 1.234 1.911 1.234 3.222 0 4.61-2.807 5.625-5.48 5.922.43.372.813 1.103.813 2.225 0 1.606-.015 2.902-.015 3.296 0 .32.218.697.825.579A12 12 0 0012 .296z"/>
+          </svg>
+          Created by amirabolfazle
+        </a>
+      </footer>
+    </section>
+
+    <aside class="mockup" aria-hidden="false">
+      <div class="device" role="img" aria-label="Animated preview">
+        <div class="screen" aria-hidden="true">
+          <div style="display:flex;gap:8px;align-items:center">
+            <div style="width:10px;height:10px;background:#ff6b6b;border-radius:50%;box-shadow:0 6px 18px rgba(255,107,107,0.12)"></div>
+            <div style="width:10px;height:10px;background:#ffd166;border-radius:50%;box-shadow:0 6px 18px rgba(255,209,102,0.06)"></div>
+            <div style="width:10px;height:10px;background:#34c759;border-radius:50%;box-shadow:0 6px 18px rgba(52,199,89,0.06)"></div>
+          </div>
+
+          <div style="margin-top:8px">
+            <div class="line large"></div>
+            <div class="line medium" style="margin-top:10px"></div>
+            <div class="line small" style="margin-top:8px"></div>
+          </div>
+
+          <div style="margin-top:auto;display:flex;align-items:center;gap:10px;justify-content:space-between">
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="width:38px;height:38px;border-radius:8px;background:linear-gradient(90deg,#7c5cff,#00e5a8);box-shadow:0 8px 24px rgba(0,0,0,0.5)"></div>
+              <div style="font-size:12px;color:rgba(191,238,224,0.9)">amirabolfazle / demo • interactive</div>
+            </div>
+            <div style="font-size:12px;color:rgba(191,238,224,0.6);font-weight:700;background:rgba(255,255,255,0.02);padding:6px 12px;border-radius:999px">Live</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // Small JS to add subtle mouse parallax to orbs for liveliness
+    (function(){
+      const orbs = document.querySelectorAll('.orb');
+      let clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+      window.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth - 0.5;
+        const y = e.clientY / window.innerHeight - 0.5;
+        orbs.forEach((orb, i) => {
+          const depth = (i+1) * 12;
+          const tx = clamp(x * depth, -40, 40);
+          const ty = clamp(y * depth, -40, 40);
+          orb.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+        });
+      }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
