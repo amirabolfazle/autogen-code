@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --g1: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 35%, #A78BFA 70%, #F472B6 100%);
+      --glass: rgba(255,255,255,0.06);
+      --accent: #7c3aed;
+      --muted: rgba(255,255,255,0.65);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(124,58,237,0.12), transparent),
+                  radial-gradient(1000px 500px at 90% 80%, rgba(59,130,246,0.08), transparent),
+                  var(--bg1);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    .container{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      gap:28px;
+      position:relative;
+    }
+
+    /* Rotating decorative orbs */
+    .orbs{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .orb{
+      position:absolute;
+      width:260px;
+      height:260px;
+      background: var(--g1);
+      filter:blur(36px) saturate(120%);
+      opacity:0.18;
+      transform-origin:center;
+      border-radius:50%;
+      mix-blend-mode:screen;
+      animation:slow-rotate 18s linear infinite;
+    }
+    .orb.orb-1{left:-80px; top:8vh; transform:translateZ(0) rotate(0deg) scale(1.1);}
+    .orb.orb-2{right:-100px; bottom:5vh; transform:translateZ(0) rotate(150deg) scale(0.9); animation-duration:24s}
+    .orb.orb-3{left:50%; top:-120px; transform:translateX(-50%) rotate(60deg); width:420px; height:420px; opacity:0.12; animation-duration:30s}
+
+    @keyframes slow-rotate{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+    /* Hero card */
+    .hero{
+      width:100%;
+      max-width:1100px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:18px;
+      padding:36px;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      box-shadow:0 8px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(8px) saturate(120%);
+      position:relative;
+      overflow:visible;
+    }
+
+    .left{
+      flex:1;
+      min-width:0;
+    }
+
+    .badge{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      background:linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      padding:8px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+      width:max-content;
+      margin-bottom:18px;
+    }
+
+    .title{
+      font-size: clamp(34px, 6.5vw, 52px);
+      line-height:1.02;
+      margin:0 0 12px 0;
+      letter-spacing:-0.02em;
+      display:inline-block;
+      background:var(--g1);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      transform-origin:center;
+      animation:tilt 6s cubic-bezier(.2,.9,.3,.98) infinite;
+      text-wrap:balance;
+    }
+
+    @keyframes tilt{
+      0%{transform:rotate(-3deg) translateZ(0)}
+      50%{transform:rotate(3deg) translateZ(0)}
+      100%{transform:rotate(-3deg) translateZ(0)}
+    }
+
+    .subtitle{
+      color:var(--muted);
+      margin:0 0 18px 0;
+      max-width:56ch;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:8px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 18px;
+      border-radius:12px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      color:var(--bg1);
+      background:linear-gradient(90deg,#fff 0%, #e9f0ff 100%);
+      transform:translateZ(0);
+      transition:transform .22s ease, box-shadow .22s ease;
+      box-shadow: 0 6px 22px rgba(99,102,241,0.18);
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow:none;
+    }
+    .btn:hover{transform:translateY(-4px)}
+    .btn.secondary:hover{transform:translateY(-2px) scale(1.01)}
+
+    /* Right panel card with rotating 3D element */
+    .right{
+      width:360px;
+      max-width:38%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    .device{
+      width:100%;
+      height:220px;
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.04);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      box-shadow:0 10px 40px rgba(2,6,23,0.55);
+      overflow:hidden;
+      transform-style:preserve-3d;
+      perspective:900px;
+    }
+
+    .rotator{
+      width:82%;
+      height:72%;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      transform-origin:center;
+      animation:spin 10s linear infinite;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .rotator .logo{
+      width:120px;
+      height:120px;
+      border-radius:28px;
+      background:var(--g1);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#051029;
+      font-weight:800;
+      font-size:22px;
+      transform:translateZ(60px) rotateX(18deg);
+      box-shadow:0 10px 30px rgba(59,130,246,0.12), 0 3px 10px rgba(0,0,0,0.35);
+      transition:transform .24s ease;
+    }
+
+    @keyframes spin{
+      from{transform:rotateY(0deg) rotateX(-6deg)}
+      to{transform:rotateY(360deg) rotateX(-6deg)}
+    }
+
+    .rotator:hover .logo{
+      transform:translateZ(80px) rotateX(6deg) scale(1.04);
+    }
+
+    /* creation time */
+    .meta{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .time {
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      font-weight:600;
+      font-size:13px;
+    }
+
+    /* Footer */
+    footer{
+      width:100%;
+      max-width:1100px;
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 18px;
+      border-radius:12px;
+      color:var(--muted);
+      font-size:14px;
+      background:transparent;
+      transition:transform .18s ease;
+    }
+    .footer-left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px;
+      border-radius:10px;
+      transition:background .18s ease, transform .18s ease;
+    }
+    .github-link:hover{background:rgba(255,255,255,0.02); transform:translateY(-4px)}
+    .github-svg{width:20px;height:20px;fill:currentColor}
+
+    /* small responsiveness */
+    @media (max-width:880px){
+      .hero{flex-direction:column; align-items:stretch}
+      .right{max-width:100%; width:100%}
+      .device{height:180px}
+      footer{flex-direction:column; align-items:flex-start}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="heading">
+    <div class="orbs" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <section class="hero" aria-labelledby="heading">
+      <div class="left">
+        <div class="badge" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:0.95">
+            <circle cx="12" cy="12" r="10" fill="#fff" opacity="0.08"></circle>
+            <path d="M7 12l3 3 7-8" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          Crafted with creative gradients
+        </div>
+
+        <h1 id="heading" class="title">amirabolfazle</h1>
+
+        <p class="subtitle">A vivid landing experience with animated gradients, 3D rotation effects and subtle glass styling — built to catch attention and hold it. Hover the panel to feel the motion, and enjoy the gentle rotations that bring the page to life.</p>
+
+        <div class="actions" role="group" aria-label="Primary actions">
+          <button class="btn" onclick="openCall()">Explore</button>
+          <button class="btn secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</button>
+        </div>
+
+        <div class="meta" aria-hidden="false">
+          <span class="time" title="Creation time">2025-09-29 16:58:47</span>
+        </div>
+      </div>
+
+      <aside class="right" aria-hidden="false">
+        <div class="device" role="img" aria-label="Rotating visual preview">
+          <div class="rotator" aria-hidden="true">
+            <div class="logo" aria-hidden="true">am</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      <div class="footer-left">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">
+          <svg class="github-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.86 3.16 8.98 7.55 10.44.55.1.75-.24.75-.53 0-.26-.01-1.14-.02-2.06-3.07.67-3.72-1.48-3.72-1.48-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.66.08-.66 1.1.08 1.69 1.13 1.69 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.45-.28-5.02-1.22-5.02-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.12a10.5 10.5 0 012.75-.37c.93 0 1.87.12 2.75.37 2.1-1.42 3.02-1.12 3.02-1.12.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.22-2.58 5.15-5.04 5.42.39.34.73 1.02.73 2.06 0 1.49-.01 2.69-.01 3.05 0 .29.2.64.76.53C19.09 20.73 22.25 16.61 22.25 11.75 22.25 5.48 17.27.5 11 .5z"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </div>
+
+      <div id="contact" style="color:var(--muted); font-size:13px;">
+        Reach out: <span style="font-family:ui-monospace,monospace; font-weight:600; color:rgba(255,255,255,0.85)">hello@amirabolfazle.dev</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // subtle interactive flourish for the Explore button
+    function openCall(){
+      const rot = document.querySelector('.rotator');
+      if(!rot) return;
+      rot.animate([
+        { transform: 'rotateY(0deg) rotateX(-6deg) scale(1)' },
+        { transform: 'rotateY(40deg) rotateX(-2deg) scale(1.04)' },
+        { transform: 'rotateY(-40deg) rotateX(2deg) scale(1.02)' },
+        { transform: 'rotateY(0deg) rotateX(-6deg) scale(1)' }
+      ], { duration: 900, easing: 'cubic-bezier(.2,.9,.3,.98)' });
+      // flash the logo color briefly
+      const logo = document.querySelector('.logo');
+      if(logo){
+        logo.animate([{filter:'brightness(1)'},{filter:'brightness(1.5)'},{filter:'brightness(1)'}], {duration:700});
+      }
+    }
+
+    // small parallax on mouse move to emphasize rotation
+    (function(){
+      const hero = document.querySelector('.hero');
+      const rotator = document.querySelector('.rotator');
+      if(!hero || !rotator) return;
+      hero.addEventListener('mousemove', e=>{
+        const r = hero.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        const tiltX = py * -8;
+        const tiltY = px * 14;
+        rotator.style.transform = `rotateY(${tiltY}deg) rotateX(${tiltX}deg)`;
+      });
+      hero.addEventListener('mouseleave', ()=>{
+        rotator.style.transform = '';
+      });
+    })();
+  </script>
+</body>
+</html>
