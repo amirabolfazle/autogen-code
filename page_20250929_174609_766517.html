@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #FFF4D6;
+      --bg2: #EAD1FF;
+      --bg3: #D1F2FF;
+      --bg4: #CFFFD6;
+      --accent: #A67CFF;
+      --muted: #6b6b6b;
+      --glass: rgba(255,255,255,0.6);
+      --card-shadow: 0 8px 24px rgba(18,18,24,0.06);
+      --radius: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--bg2), transparent 10%),
+                  radial-gradient(1000px 500px at 90% 90%, var(--bg3), transparent 10%),
+                  linear-gradient(180deg, var(--bg1), var(--bg4));
+      -webkit-font-smoothing:antialiased;
+      color:#202020;
+      overflow-x:hidden;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      min-height:100vh;
+      padding:48px 20px;
+    }
+
+    /* floating pastel blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(36px);
+      opacity:0.65;
+      transform:translate3d(0,0,0);
+      animation: float 12s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .blob.b1{width:380px;height:380px;left:-80px;top:-60px;background:linear-gradient(45deg,var(--bg2),var(--bg1)); animation-duration:14s;}
+    .blob.b2{width:260px;height:260px;right:-40px;top:40px;background:linear-gradient(45deg,var(--bg3),var(--bg4)); animation-duration:11s; animation-delay:2s;}
+    .blob.b3{width:200px;height:200px;left:10%;bottom:-60px;background:linear-gradient(45deg,var(--bg4),var(--bg2)); animation-duration:13s; animation-delay:4s;}
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-24px) scale(1.05)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+      z-index:2;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+
+    .logo{
+      width:72px;
+      height:72px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--bg3),var(--bg2));
+      display:grid;
+      place-items:center;
+      box-shadow: var(--card-shadow);
+      transform-origin:center;
+      animation: logoPop .9s cubic-bezier(.2,.9,.3,1) both;
+    }
+    @keyframes logoPop{
+      from{transform:scale(0.86); opacity:0}
+      to{transform:scale(1); opacity:1}
+    }
+
+    .logo svg{width:40px;height:40px; opacity:0.95; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.06));}
+
+    h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:0.2px;
+      line-height:1;
+      color:#1b1b1b;
+    }
+    .subtitle{
+      font-size:14px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .meta{
+      min-width:200px;
+      text-align:right;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .time{
+      display:inline-block;
+      background:rgba(255,255,255,0.5);
+      padding:8px 12px;
+      border-radius:999px;
+      box-shadow: 0 6px 18px rgba(20,20,30,0.06);
+      font-weight:600;
+      color:#2b2b2b;
+      font-size:13px;
+      backdrop-filter: blur(6px);
+      transform-origin:center;
+      animation: timePop 1.1s cubic-bezier(.2,.9,.3,1) both;
+    }
+    @keyframes timePop{
+      from{transform:translateY(6px) scale(.98); opacity:0}
+      to{transform:translateY(0) scale(1); opacity:1}
+    }
+
+    main{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+    }
+    @media (max-width:1000px){ main{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:640px){ main{grid-template-columns:1fr} }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:var(--card-shadow);
+      transition:transform .45s cubic-bezier(.2,.9,.3,1), box-shadow .35s;
+      transform-origin:center;
+      backdrop-filter: blur(6px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.6);
+      position:relative;
+      overflow:hidden;
+      min-height:120px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      animation: cardIn .8s cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    .card:hover{
+      transform:translateY(-10px) scale(1.03);
+      box-shadow:0 18px 46px rgba(18,18,24,0.09);
+    }
+
+    .card .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:12px;
+      font-size:12px;
+      font-weight:700;
+      color:#fff;
+      background:linear-gradient(90deg,var(--accent),#7bdff6);
+      box-shadow:0 6px 18px rgba(102,51,255,0.12);
+    }
+
+    .card h3{margin:8px 0 4px 0; font-size:18px}
+    .card p{margin:0; color:var(--muted); font-size:14px}
+
+    .cards-grid{
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    @media (max-width:640px){ .cards-grid{grid-template-columns:1fr} }
+
+    .big{
+      grid-column:span 2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:32px;
+    }
+    @media (max-width:640px){ .big{grid-column:span 1} }
+
+    footer{
+      margin-top:28px;
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:14px;
+      z-index:2;
+    }
+    .footer-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+      color:inherit;
+      padding:8px 12px;
+      border-radius:999px;
+      transition:transform .25s ease, background .25s ease;
+    }
+    .footer-link:hover{ transform:translateY(-4px) scale(1.02); background:rgba(255,255,255,0.6); }
+
+    .gh-icon{
+      width:20px;height:20px;display:inline-block;
+      transition:transform .25s;
+    }
+    .footer-link:hover .gh-icon{ transform:scale(1.08) translateY(-1px) }
+
+    /* subtle pulsing highlight */
+    .pulse{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      border-radius:inherit;
+      background:linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+      mix-blend-mode:overlay;
+      opacity:.9;
+      animation: pulse 5s linear infinite;
+    }
+    @keyframes pulse{
+      0%{opacity:.85}
+      50%{opacity:.6}
+      100%{opacity:.85}
+    }
+
+    @keyframes cardIn{
+      from{transform:translateY(12px) scale(.99); opacity:0}
+      to{transform:translateY(0) scale(1); opacity:1}
+    }
+
+    /* small utilities */
+    .muted{color:var(--muted)}
+    .center{display:flex;align-items:center;gap:12px}
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+  <div class="blob b3" aria-hidden="true"></div>
+
+  <div class="container" role="main">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="white" opacity="0.06"/>
+            <g transform="translate(3 3)" fill="none" stroke="#6B6B6B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 2C4.8 2 3 3.8 3 6v1.5C3 9.4 4.6 11 6.5 11H7"/>
+              <path d="M9 11v2M5 11v2M3 8c0-1.4 1.1-2.5 2.5-2.5"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <div class="subtitle">pastel responsive page with soft zoom animations</div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="time" title="Creation time">2025-09-29 17:45:20</div>
+        <div class="muted" style="margin-top:8px;font-size:12px">Creation timestamp</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card big" aria-labelledby="showcase-title">
+        <div class="pulse" aria-hidden="true"></div>
+        <div>
+          <div class="badge">Welcome</div>
+          <h3 id="showcase-title" style="margin-top:12px">amirabolfazle</h3>
+          <p style="margin-top:8px;max-width:760px;margin-left:auto;margin-right:auto" class="muted">A calm pastel interface demonstrating responsive layout and gentle zoom effects. Resize the window or tap the cards to see subtle animations and interactions designed with soft colors and motion.</p>
+        </div>
+      </section>
+
+      <div class="card">
+        <div>
+          <div class="badge">Design</div>
+          <h3>Pastel Palette</h3>
+          <p class="muted">Soft gradients and blurred shapes to create a relaxed visual environment. Cards lift and scale on interaction for a touch-friendly feel.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <div class="badge">Motion</div>
+          <h3>Zoom & Float</h3>
+          <p class="muted">Entry zoom animations and floating background blobs add depth. Hover or tap to trigger interactive zoom on cards and controls.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <div class="badge">Layout</div>
+          <h3>Responsive Grid</h3>
+          <p class="muted">A grid that collapses elegantly across breakpoints to keep content readable on every device.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <div class="badge">Footer</div>
+          <h3>Link & Credit</h3>
+          <p class="muted">Footer contains a GitHub link and credit text. Icon is inline SVG for reliable rendering without external assets.</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <span class="gh-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 .5C5.6.5.7 5.4.7 11.8c0 4.8 3.1 8.9 7.3 10.3.5.1.7-.2.7-.5v-1.9c-3 .7-3.6-1.4-3.6-1.4-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.6-.8 1.9-1.3-2.4-.3-4.9-1.2-4.9-5.5 0-1.2.4-2.1 1-2.9-.1-.3-.4-1.4.1-2.9 0 0 .8-.3 2.9 1.1a9.7 9.7 0 012.6-.4c.9 0 1.7.1 2.6.4 2.1-1.4 2.9-1.1 2.9-1.1.5 1.5.2 2.6.1 2.9.6.8 1 1.7 1 2.9 0 4.3-2.5 5.1-4.9 5.4.8.7 1.6 2.1 1.6 4.2v2.6c0 .3.2.6.7.5 4.2-1.4 7.3-5.5 7.3-10.3C23.3 5.4 18.4.5 12 .5z" fill="#1b1b1b"/>
+          </svg>
+        </span>
+        <span>Created by amirabolfazle</span>
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Slight interactive zoom on tap for touch devices
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      let touchTimer = null;
+      cards.forEach(card=>{
+        card.addEventListener('touchstart',()=>{
+          card.style.transition = 'transform .22s ease';
+          card.style.transform = 'translateY(-8px) scale(1.02)';
+          clearTimeout(touchTimer);
+        }, {passive:true});
+        card.addEventListener('touchend',()=>{
+          touchTimer = setTimeout(()=>{ card.style.transform = ''; card.style.transition = ''; }, 180);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
