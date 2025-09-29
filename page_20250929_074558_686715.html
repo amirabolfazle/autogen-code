@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>amirabolfazle</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root{
+      --bg1:#f8f0ff;
+      --bg2:#fffaf0;
+      --accent:#cdebf9;
+      --muted:#7a7a7a;
+      --card:#ffffffcc;
+      --glass: rgba(255,255,255,0.6);
+      --radius:16px;
+      --fade-duration:900ms;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+      color:#1a1a1a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow-y:auto;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.65));
+      border-radius:24px;
+      padding:36px;
+      box-shadow: 0 10px 30px rgba(23,23,23,0.06);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    /* decorative blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(30px);
+      opacity:0.9;
+      transform: translate3d(0,0,0);
+      pointer-events:none;
+    }
+    .blob.a{ width:360px;height:360px;background:linear-gradient(135deg,#ffd1dc, #ffd8a6); left:-120px; top:-80px;}
+    .blob.b{ width:260px;height:260px;background:linear-gradient(135deg,#cdebf9,#e8f8e9); right:-80px; bottom:-80px;}
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+      opacity:0;
+      transform:translateY(10px);
+      animation:fadeIn var(--fade-duration) ease forwards;
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background:linear-gradient(135deg,#fff,#f4f9ff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 18px rgba(20,20,20,0.06);
+      font-weight:700;
+      color:#6b6b6b;
+      font-size:20px;
+    }
+    .title{
+      font-size:20px;
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+    .meta{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    main{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:stretch;
+      opacity:0;
+      transform:translateY(14px);
+      animation:fadeIn calc(var(--fade-duration) + 150ms) ease forwards;
+    }
+
+    .hero{
+      padding:18px 12px;
+    }
+    h1{
+      margin:6px 0 12px 0;
+      font-size:44px;
+      line-height:1.02;
+      color:#122;
+    }
+    p.lead{
+      margin:0 0 20px 0;
+      color:#475569;
+      font-size:16px;
+      max-width:58ch;
+    }
+    .cta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      background:linear-gradient(90deg,#9bd3ff,#ffd1dc);
+      border:none;
+      padding:12px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      color:#123;
+      box-shadow: 0 8px 20px rgba(130,150,180,0.12);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .btn:hover{ transform:translateY(-3px); box-shadow:0 14px 32px rgba(100,120,150,0.12); }
+
+    .info-card{
+      background:var(--card);
+      border-radius:14px;
+      padding:18px;
+      box-shadow: 0 8px 28px rgba(18,30,46,0.06);
+    }
+    .card-title{
+      font-weight:700;
+      margin:0 0 8px 0;
+      font-size:16px;
+    }
+    .card-list{
+      display:grid;
+      gap:10px;
+      margin-top:6px;
+    }
+    .feature{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:8px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    }
+    .feature .dot{
+      width:44px;height:44px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-weight:700;
+      box-shadow: 0 6px 18px rgba(18,30,46,0.06);
+      flex-shrink:0;
+    }
+    .dot.a{ background:linear-gradient(135deg,#9bd3ff,#6bd3c1); }
+    .dot.b{ background:linear-gradient(135deg,#ffd1dc,#ffd39b); }
+    .dot.c{ background:linear-gradient(135deg,#f2d9ff,#cdebf9); }
+
+    footer{
+      margin-top:22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      opacity:0;
+      transform:translateY(10px);
+      animation:fadeIn calc(var(--fade-duration) + 300ms) ease forwards;
+    }
+    .time{
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .gh{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:#1a1a1a;
+      font-weight:600;
+    }
+    .gh svg{display:block}
+    .credit{font-size:14px;color:#333}
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(12px) scale(.997)}
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    /* responsive */
+    @media (max-width:900px){
+      main{ grid-template-columns: 1fr; }
+      .title{ font-size:18px }
+      h1{ font-size:34px }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="site-title">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">A</div>
+        <div>
+          <div id="site-title" class="title">amirabolfazle</div>
+          <div class="meta">A pastel landing crafted with subtle motion</div>
+        </div>
+      </div>
+      <div class="meta">Welcome — explore below</div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-heading">
+        <h1 id="hero-heading">Hello. I'm amirabolfazle.</h1>
+        <p class="lead">Clean pastel visuals, gentle fade-in motion, and a simple, modern layout designed to feel calm and inviting. This page demonstrates a refined aesthetic with subtle micro-interactions.</p>
+
+        <div class="cta-row">
+          <button class="btn" aria-label="Primary action">Get in touch</button>
+          <button class="btn" style="background:linear-gradient(90deg,#fce7f0,#e8f8ff);" aria-label="Secondary action">View projects</button>
+        </div>
+
+        <div style="margin-top:20px;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <div class="info-card" style="min-width:220px;flex:1;">
+              <div class="card-title">Highlights</div>
+              <div class="card-list">
+                <div class="feature"><div class="dot a">UI</div><div><strong>Pastel UI</strong><div style="color:var(--muted);font-size:13px">Soft gradients and rounded components</div></div></div>
+                <div class="feature"><div class="dot b">FX</div><div><strong>Fade-in effects</strong><div style="color:var(--muted);font-size:13px">Staggered motion for pleasant rhythm</div></div></div>
+                <div class="feature"><div class="dot c">TIM</div><div><strong>Timestamped</strong><div style="color:var(--muted);font-size:13px">Page creation time included below</div></div></div>
+              </div>
+            </div>
+
+            <div class="info-card" style="min-width:220px;flex:1;">
+              <div class="card-title">About</div>
+              <div style="color:var(--muted);font-size:14px;line-height:1.45">
+                A minimal landing template suitable for portfolios, introductions, and lightweight presentations. Easily customizable and responsive.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="info-card" aria-label="Snapshot">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-weight:800;font-size:18px">Snapshot</div>
+              <div style="color:var(--muted);font-size:13px">Quick info and status</div>
+            </div>
+            <div style="text-align:right;color:var(--muted);font-size:13px">Live • Pastel</div>
+          </div>
+
+          <div style="display:grid;gap:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="color:var(--muted);font-size:13px">Created</div>
+              <div style="font-weight:700" title="creation time">
+                <time datetime="2025-09-29T07:45:12">2025-09-29 07:45:12</time>
+              </div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="color:var(--muted);font-size:13px">Theme</div>
+              <div style="font-weight:700">Pastel</div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="color:var(--muted);font-size:13px">Animations</div>
+              <div style="font-weight:700">Fade-in</div>
+            </div>
+          </div>
+
+          <div style="margin-top:8px;">
+            <button class="btn" style="width:100%;">Explore more</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="time" aria-hidden="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.85" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 7v6l4 2" stroke="#6b6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="9" stroke="#6b6b6b" stroke-width="1.2"/>
+        </svg>
+        <div style="display:flex;flex-direction:column;">
+          <span style="font-size:13px;color:var(--muted)">Creation time</span>
+          <time datetime="2025-09-29T07:45:12" style="font-weight:700">2025-09-29 07:45:12</time>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.11.78-.25.78-.55 0-.27-.01-1.15-.02-2.09-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.56-.29-5.26-1.28-5.26-5.71 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.06 11.06 0 012.9-.39c.98.01 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.62 1.58.23 2.75.11 3.04.73.81 1.18 1.84 1.18 3.1 0 4.44-2.71 5.41-5.29 5.7.41.36.78 1.08.78 2.18 0 1.58-.01 2.86-.01 3.25 0 .3.21.66.79.55C20.71 21.39 24 17.08 24 12c0-6.35-5.15-11.5-11.99-11.5z" fill="#111"/>
+          </svg>
+          <span class="credit">Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
