@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f2027;
+    --bg2:#203a43;
+    --bg3:#2c5364;
+    --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    --accent1: #7b2ff7;
+    --accent2: #2af598;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --muted: rgba(255,255,255,0.7);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(123,47,247,0.12), transparent 6%),
+                radial-gradient(1000px 400px at 90% 80%, rgba(42,245,152,0.08), transparent 8%),
+                linear-gradient(180deg, var(--bg1), var(--bg2) 50%, var(--bg3));
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  /* Animated moving gradient overlay */
+  .bg-anim{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background: linear-gradient(120deg, rgba(123,47,247,0.06), rgba(42,245,152,0.04), rgba(66,165,245,0.03));
+    mix-blend-mode:screen;
+    animation: floatBG 12s ease-in-out infinite;
+    z-index:0;
+  }
+  @keyframes floatBG{
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-18px) rotate(2deg);}
+    100%{transform:translateY(0) rotate(0deg);}
+  }
+
+  .container{
+    position:relative;
+    z-index:1;
+    width:min(860px,92vw);
+    max-width:860px;
+    padding:40px;
+    border-radius:18px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(8px) saturate(120%);
+    transform-origin:center;
+    animation: pop 900ms cubic-bezier(.2,.9,.2,1) both;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:center;
+    text-align:center;
+  }
+
+  @keyframes pop{
+    0%{opacity:0; transform:scale(.96) translateY(8px);}
+    60%{opacity:1; transform:scale(1.02) translateY(-6px);}
+    100%{opacity:1; transform:scale(1) translateY(0);}
+  }
+
+  h1{
+    margin:0;
+    font-weight:700;
+    letter-spacing:0.6px;
+    font-size: clamp(28px, 4.2vw, 44px);
+    background: linear-gradient(90deg,var(--accent1), var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .subtitle{
+    margin:0;
+    color:var(--muted);
+    font-size:14px;
+    opacity:0.95;
+  }
+
+  .card{
+    width:100%;
+    margin-top:6px;
+    padding:22px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 420ms;
+    transform-origin:center;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.35);
+  }
+
+  .card:hover{
+    transform:scale(1.02);
+    box-shadow: 0 18px 40px rgba(2,6,23,0.55);
+  }
+
+  .info{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    align-items:flex-start;
+  }
+
+  .label{
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .time{
+    font-weight:600;
+    font-size:14px;
+    letter-spacing:0.4px;
+    color:#fff;
+  }
+
+  .zoom-preview{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:72px;
+    height:72px;
+    border-radius:8px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    overflow:hidden;
+    transform:scale(1);
+    transition:transform 420ms cubic-bezier(.2,.9,.2,1);
+  }
+
+  .card:hover .zoom-preview{ transform:scale(1.12) rotate(-3deg); }
+
+  .shape{
+    width:54px;
+    height:54px;
+    border-radius:10px;
+    background: conic-gradient(from 180deg, var(--accent1), #5eead4, #60a5fa, var(--accent1));
+    animation: spin 8s linear infinite;
+    box-shadow: 0 6px 18px rgba(123,47,247,0.18), inset 0 2px 8px rgba(255,255,255,0.06);
+  }
+
+  @keyframes spin{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+  }
+
+  footer{
+    margin-top:12px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    color:var(--muted);
+    font-size:13px;
+    padding-top:6px;
+    border-top:1px dashed rgba(255,255,255,0.02);
+  }
+
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    text-decoration:none;
+    transition:color 180ms ease, transform 180ms ease;
+  }
+  .gh:hover{ color:#fff; transform:translateY(-2px); }
+
+  .gh svg{ width:18px; height:18px; fill:currentColor; opacity:0.95; }
+
+  @media (max-width:520px){
+    .card{ flex-direction:column; align-items:center; text-align:center; }
+    .info{ align-items:center; }
+    footer{ flex-direction:column; align-items:center; gap:8px; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg-anim" aria-hidden="true"></div>
+  <main class="container" role="main" aria-labelledby="site-title">
+    <h1 id="site-title">amirabolfazle</h1>
+    <p class="subtitle">Minimal animated page · gradient theme · zoom effects</p>
+
+    <section class="card" aria-label="Creation timestamp">
+      <div class="info">
+        <div class="label">Created</div>
+        <div class="time">2025-09-29 17:53:08</div>
+      </div>
+
+      <div class="zoom-preview" aria-hidden="true">
+        <div class="shape"></div>
+      </div>
+    </section>
+
+    <footer>
+      <div style="font-size:13px; color:var(--muted);">Created by amirabolfazle</div>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" title="amirabolfazle on GitHub" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.42-1.305.763-1.605-2.665-.305-5.467-1.335-5.467-5.932 0-1.31.468-2.382 1.235-3.22-.123-.303-.535-1.525.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.018.005 2.044.138 3.003.404 2.29-1.552 3.296-1.23 3.296-1.23.654 1.651.243 2.873.12 3.176.77.838 1.233 1.91 1.233 3.22 0 4.61-2.807 5.624-5.479 5.922.431.372.815 1.103.815 2.222 0 1.605-.015 2.898-.015 3.293 0 .322.216.696.825.578C20.565 21.796 24 17.298 24 12 24 5.373 18.627 0 12 0z"/>
+        </svg>
+        <span style="font-size:13px;">GitHub</span>
+      </a>
+    </footer>
+  </main>
+</body>
+</html>
