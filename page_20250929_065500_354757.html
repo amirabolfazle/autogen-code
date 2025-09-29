@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: linear-gradient(135deg,#0f172a 0%, #001219 50%, #071029 100%);
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent: rgba(141, 198, 255, 0.18);
+      --glass-border: rgba(255,255,255,0.12);
+      --glass-strong: rgba(255,255,255,0.08);
+      --text: #e6f0ff;
+      --muted: rgba(230,240,255,0.65);
+      --accent-2: #8dd0ff;
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(600px 400px at 10% 20%, rgba(14,165,233,0.06), transparent 8%),
+                  radial-gradient(500px 350px at 90% 80%, rgba(99,102,241,0.04), transparent 8%),
+                  var(--bg1);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto;
+      line-height:1.45;
+    }
+
+    /* container */
+    .wrap{
+      max-width:1100px;
+      margin:40px auto;
+      padding:36px;
+    }
+
+    /* floating glass card hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      margin-bottom:36px;
+    }
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:16px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      box-shadow: var(--shadow);
+      padding:28px;
+    }
+
+    .hero-left h1{
+      margin:0 0 10px 0;
+      font-size:44px;
+      letter-spacing:-0.6px;
+      line-height:1.02;
+      font-weight:800;
+      color:linear-gradient(90deg,#fff,#d6eefc);
+      text-shadow: 0 6px 30px rgba(0,0,0,0.45);
+    }
+    .name{
+      display:inline-block;
+      background: linear-gradient(90deg,#e8f8ff 0%, #cbe9ff 55%, rgba(255,255,255,0.2) 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      font-weight:800;
+      font-size:48px;
+    }
+    .hero p{
+      margin:12px 0 20px 0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:56ch;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--text);
+      transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+    }
+    .btn-primary{
+      background: linear-gradient(90deg, rgba(141,198,255,0.14), rgba(128,166,255,0.08));
+      border: 1px solid rgba(141,198,255,0.18);
+      color: #eaf6ff;
+    }
+    .btn:hover{transform:translateY(-6px)}
+    .meta{
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-left:6px;
+    }
+
+    /* right panel: quick info card */
+    .side-card{
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:center;
+      min-height:220px;
+      position:relative;
+      overflow:hidden;
+    }
+    .stat{
+      display:flex;
+      justify-content:space-between;
+      width:100%;
+      gap:12px;
+      align-items:center;
+    }
+    .stat .label{color:var(--muted);font-size:13px}
+    .stat .value{font-weight:700;font-size:18px;color:var(--text)}
+
+    .chip{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:13px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--muted);
+    }
+
+    /* features grid */
+    .features{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:22px;
+      margin-top:24px;
+    }
+    .feature{
+      padding:20px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 28px rgba(2,6,23,0.45);
+      transform: translateY(18px);
+      opacity:0;
+      transition:transform .6s cubic-bezier(.2,.9,.2,1),opacity .6s ease;
+    }
+    .feature.show{
+      transform: translateY(0);
+      opacity:1;
+    }
+    .feature h3{margin:0 0 8px 0;font-size:16px}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
+
+    /* decorative glass circles */
+    .glow{
+      position:absolute;
+      border-radius:999px;
+      filter: blur(40px);
+      opacity:0.9;
+      pointer-events:none;
+    }
+    .g1{width:180px;height:180px;right:-60px;top:-60px;background:linear-gradient(90deg,rgba(141,198,255,0.18),rgba(128,166,255,0.08))}
+    .g2{width:120px;height:120px;left:-40px;bottom:-40px;background:linear-gradient(90deg,rgba(99,102,241,0.12),rgba(141,198,255,0.06))}
+
+    /* footer */
+    footer{
+      margin-top:36px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:18px 22px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+    }
+    .footer-left{display:flex;align-items:center;gap:12px}
+    .gh{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform .18s ease, background .18s ease;
+    }
+    .gh:hover{transform:translateY(-4px); color:#dff6ff}
+    .gh svg{fill:var(--muted);transition:fill .18s ease}
+    .gh:hover svg{fill: #dff6ff}
+
+    /* small screens */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr; padding-bottom:8px}
+      .side-card{order:2}
+      .hero-left{order:1}
+      .wrap{padding:18px 16px;margin:20px auto}
+      .name{font-size:36px}
+      .hero-left h1{font-size:32px}
+    }
+
+    /* subtle animated background shapes */
+    .float-shape{
+      position:fixed;
+      right:6%;
+      top:12%;
+      width:160px;
+      height:160px;
+      border-radius:20%;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(141,198,255,0.05));
+      filter: blur(36px);
+      opacity:0.7;
+      transform: translateY(0);
+      animation: float 8s ease-in-out infinite;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-18px)}100%{transform:translateY(0)}}
+
+    /* small helper */
+    .muted-sm{font-size:13px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="float-shape" aria-hidden="true"></div>
+  <main class="wrap" id="main">
+    <section class="hero">
+      <div class="glass hero-left" style="position:relative;overflow:hidden;">
+        <div class="glow g2" aria-hidden="true"></div>
+        <h1><span class="name">amirabolfazle</span></h1>
+        <p>Elegant glassmorphism landing page combining soft translucency, subtle motion and modern typography. Smooth slide-up reveals highlight features and a clear connection to the project's repository.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary" onclick="scrollToFeatures()">Explore features</button>
+          <button class="btn" onclick="downloadVCard()">Contact</button>
+          <div class="meta">
+            <span class="chip">Created: 2025-09-29 06:54:01</span>
+            <span class="muted-sm">Live demo</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="glass side-card" aria-label="Quick info">
+        <div class="glow g1" aria-hidden="true"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+          <div>
+            <div class="chip">Glassmorphism</div>
+            <div style="height:6px"></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8dd0ff 0%, #7ea9ff 100%);box-shadow: 0 8px 20px rgba(15,23,42,0.6);display:flex;align-items:center;justify-content:center;font-weight:800;">A</div>
+              <div>
+                <div class="label muted-sm" style="color:var(--muted)">Author</div>
+                <div class="value" style="font-size:15px">amirabolfazle</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+        <div class="stat">
+          <div>
+            <div class="label">Theme</div>
+            <div class="value">Glass & Neon</div>
+          </div>
+          <div style="text-align:right">
+            <div class="label">Status</div>
+            <div class="value">Prototype</div>
+          </div>
+        </div>
+
+        <div style="height:8px"></div>
+        <div class="stat">
+          <div>
+            <div class="label">Creation time</div>
+            <div class="value">2025-09-29 06:54:01</div>
+          </div>
+          <div style="text-align:right">
+            <div class="label">Repository</div>
+            <a href="https://github.com/amirabolfazle/autogen-code" class="chip" target="_blank" rel="noopener noreferrer" style="text-decoration:none">GitHub</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="features">
+      <div style="display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:10px;">
+        <div>
+          <h2 style="margin:0;font-size:20px">Highlights</h2>
+          <div class="muted-sm" style="margin-top:6px">Interactive panels that slide up as you scroll</div>
+        </div>
+        <div class="muted-sm">Scroll to reveal</div>
+      </div>
+
+      <div class="features" id="featuresGrid">
+        <article class="feature" data-delay="0">
+          <h3>Glassmorphism UI</h3>
+          <p>Soft translucent panes with backdrop blur, subtle borders and layered shine for a premium look.</p>
+        </article>
+
+        <article class="feature" data-delay="80">
+          <h3>Slide-up Motion</h3>
+          <p>Elements animate into place using a natural easing curve to draw attention without overwhelming.</p>
+        </article>
+
+        <article class="feature" data-delay="160">
+          <h3>Responsive</h3>
+          <p>Layouts adapt from wide desktops to compact mobile screens while preserving visual hierarchy.</p>
+        </article>
+
+        <article class="feature" data-delay="240">
+          <h3>Accessible</h3>
+          <p>Clear contrast, readable type and semantic markup to keep content navigable for everyone.</p>
+        </article>
+
+        <article class="feature" data-delay="320">
+          <h3>Lightweight</h3>
+          <p>Pure CSS and a tiny bit of JavaScript for intersection-based reveal — minimal runtime cost.</p>
+        </article>
+
+        <article class="feature" data-delay="400">
+          <h3>GitHub Link</h3>
+          <p>Direct link to the repository is included in the footer for quick access and collaboration.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-left">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub: amirabolfazle/autogen-code">
+          <svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path fill-rule="evenodd"
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                  0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                  -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64
+                  -.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012
+                  -.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82
+                  2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
+                  8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+          </svg>
+          <span style="font-weight:600;color:var(--text)">GitHub</span>
+        </a>
+        <div style="display:flex;flex-direction:column">
+          <span style="font-weight:600;color:var(--text)">Created by amirabolfazle</span>
+          <span class="muted-sm">2025 · Prototype</span>
+        </div>
+      </div>
+
+      <div class="muted-sm">Built with glassmorphism · Created: 2025-09-29 06:54:01</div>
+    </footer>
+  </main>
+
+  <script>
+    // Slide-up reveal using IntersectionObserver
+    (function(){
+      const items = document.querySelectorAll('.feature');
+      const options = {root: null, rootMargin: '0px', threshold: 0.12};
+      const obs = new IntersectionObserver((entries, o)=> {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            const el = entry.target;
+            const delay = parseInt(el.dataset.delay || 0);
+            setTimeout(()=> el.classList.add('show'), delay);
+            o.unobserve(el);
+          }
+        });
+      }, options);
+      items.forEach(i=> obs.observe(i));
+
+      // small helpers
+      window.scrollToFeatures = function(){
+        const node = document.getElementById('features');
+        if(node) node.scrollIntoView({behavior:'smooth',block:'start'});
+      };
+
+      window.downloadVCard = function(){
+        const vcard = [
+          "BEGIN:VCARD",
+          "VERSION:3.0",
+          "FN:amirabolfazle",
+          "ORG:amirabolfazle",
+          "TITLE:Creator",
+          "URL:https://github.com/amirabolfazle/autogen-code",
+          "END:VCARD"
+        ].join("\\n");
+        const blob = new Blob([vcard], {type: 'text/vcard'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'amirabolfazle.vcf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      };
+
+      // subtle entrance for hero sections
+      document.addEventListener('DOMContentLoaded', ()=>{
+        document.querySelectorAll('.glass.hero-left, .side-card').forEach((el,i)=>{
+          el.style.transform = 'translateY(12px)';
+          el.style.opacity = '0';
+          setTimeout(()=> {
+            el.style.transition = 'transform .7s cubic-bezier(.2,.9,.2,1), opacity .7s ease';
+            el.style.transform = 'translateY(0)';
+            el.style.opacity = '1';
+          }, 100 + i*120);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
