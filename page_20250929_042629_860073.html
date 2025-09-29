@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --accent1:#7b2ff7;
+      --accent2:#2bd4ff;
+      --card-bg: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.65);
+      --glass-border: rgba(255,255,255,0.06);
+      --radius:16px;
+      --max-w:1100px;
+      --fw-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Animated gradient background */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:var(--fw-sans);
+      color: #fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(120deg, var(--bg1) 0%, #071022 20%, #071029 40%, #041423 60%);
+      overflow-y:auto;
+    }
+    .gradient-animated {
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background: linear-gradient(45deg, #0f172a 0%, #151026 20%, #3a0ba8 40%, #0fb3d6 60%, #021124 100%);
+      background-size: 300% 300%;
+      animation: gradientShift 12s linear infinite;
+      filter: blur(40px) saturate(120%);
+      opacity:0.95;
+      transform: translateZ(0);
+    }
+    @keyframes gradientShift{
+      0% {background-position:0% 50%;}
+      50% {background-position:100% 50%;}
+      100% {background-position:0% 50%;}
+    }
+
+    /* Layout */
+    .wrap{
+      max-width: var(--max-w);
+      margin:48px auto;
+      padding:40px;
+      box-sizing:border-box;
+    }
+    header.site-hero{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--radius);
+      padding:26px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .avatar{
+      width:120px;
+      height:120px;
+      border-radius:20px;
+      flex: 0 0 120px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      box-shadow: 0 6px 24px rgba(11,12,30,0.6);
+    }
+    .avatar .glyph{
+      width:88%;
+      height:88%;
+      border-radius:14px;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:34px;
+      color:white;
+      letter-spacing:1px;
+    }
+
+    .hero-body{
+      flex:1;
+      min-width:0;
+    }
+    h1{
+      margin:0;
+      font-size:32px;
+      letter-spacing:0.6px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .tagline{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .meta-row{
+      margin-top:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* Cards and sections */
+    .grid{
+      margin-top:28px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+    }
+    @media (max-width:900px){ .grid{ grid-template-columns: repeat(2,1fr); } }
+    @media (max-width:600px){ .grid{ grid-template-columns: 1fr; } .wrap{ padding:22px; } }
+
+    .card{
+      background: var(--card-bg);
+      border-radius:12px;
+      padding:18px;
+      border:1px solid var(--glass-border);
+      box-shadow: 0 6px 22px rgba(2,6,23,0.55);
+      min-height:120px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      transform: translateY(22px);
+      opacity:0;
+      transition: transform 600ms cubic-bezier(.2,.9,.3,1), opacity 500ms ease;
+    }
+    .card.in-view{
+      transform: translateY(0);
+      opacity:1;
+    }
+    .card h3{
+      margin:0 0 8px 0;
+      font-size:16px;
+    }
+    .card p{ margin:0; color:var(--muted); font-size:14px; line-height:1.4; }
+
+    /* Animated accent bar */
+    .accent-bar{
+      height:6px;
+      border-radius:6px;
+      background: linear-gradient(90deg, rgba(123,47,247,0.9), rgba(43,212,255,0.9));
+      box-shadow: 0 6px 20px rgba(59,11,168,0.18);
+      margin-top:16px;
+      transform-origin:left center;
+      transform: scaleX(0);
+      transition: transform 900ms cubic-bezier(.2,.9,.3,1);
+    }
+    .accent-bar.in-view{ transform: scaleX(1); }
+
+    /* Floating decorative shapes */
+    .float-shape{
+      position:absolute;
+      border-radius:14px;
+      opacity:0.08;
+      filter: blur(40px);
+      transform: rotate(12deg);
+    }
+    .float-a{
+      width:420px;
+      height:360px;
+      right:-120px;
+      top:-80px;
+      background: linear-gradient(135deg, #7b2ff7, #2bd4ff);
+    }
+    .float-b{
+      width:200px;
+      height:180px;
+      left:-80px;
+      bottom:-60px;
+      background: linear-gradient(135deg, #041124, #0f172a);
+    }
+
+    /* Footer */
+    footer.site-foot{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background: transparent;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      transition: background 220ms ease, transform 180ms ease;
+      border:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    }
+    .github-link:hover{
+      transform: translateY(-4px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    }
+    .gh-icon{
+      width:18px;
+      height:18px;
+      display:inline-block;
+      color:inherit;
+      fill:currentColor;
+      opacity:0.95;
+    }
+
+    /* Slide-up for hero */
+    .slide-up{
+      transform: translateY(18px);
+      opacity:0;
+      transition: transform 700ms cubic-bezier(.2,.9,.3,1), opacity 600ms ease;
+    }
+    .slide-up.in-view{
+      transform: translateY(0);
+      opacity:1;
+    }
+
+    /* little animations for project items */
+    .pill{
+      display:inline-block;
+      background: rgba(255,255,255,0.03);
+      padding:6px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:12px;
+      margin-right:8px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    small.creation{
+      display:inline-block;
+      padding:8px 10px;
+      background:rgba(255,255,255,0.02);
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* subtle hover for cards */
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 14px 48px rgba(5,8,25,0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-animated" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <header class="site-hero">
+      <div class="avatar slide-up" data-delay="80">
+        <div class="glyph">A</div>
+      </div>
+
+      <div class="hero-body">
+        <h1 class="slide-up" data-delay="160">amirabolfazle
+          <span style="font-size:12px;color:rgba(255,255,255,0.75);font-weight:600;background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:6px 10px;border-radius:10px;margin-left:8px;box-shadow: 0 6px 24px rgba(59,11,168,0.12);">Personal Page</span>
+        </h1>
+
+        <div class="tagline slide-up" data-delay="240">Designer & Developer — crafting modern interfaces with motion and intention.</div>
+
+        <div class="meta-row">
+          <small class="creation slide-up" data-delay="300">Created: 2025-09-29 04:25:37</small>
+          <div class="pill slide-up" data-delay="360">UI / UX</div>
+          <div class="pill slide-up" data-delay="420">Frontend</div>
+          <div class="pill slide-up" data-delay="480">Open Source</div>
+        </div>
+
+        <div class="accent-bar" aria-hidden="true"></div>
+      </div>
+
+      <div class="float-shape float-a" aria-hidden="true"></div>
+      <div class="float-shape float-b" aria-hidden="true"></div>
+    </header>
+
+    <section style="margin-top:26px;">
+      <div class="grid">
+        <article class="card slide-up" data-delay="120">
+          <div>
+            <h3>About</h3>
+            <p>Curious builder. I blend simple motion with clean code to make delightful experiences. I enjoy experimenting with gradients, micro-interactions and accessible UI.</p>
+          </div>
+        </article>
+
+        <article class="card slide-up" data-delay="220">
+          <div>
+            <h3>Featured Project</h3>
+            <p>autogen-code — intelligent scaffolding tools and reusable UI components. Focused on speed, clarity and delightful DX.</p>
+          </div>
+        </article>
+
+        <article class="card slide-up" data-delay="320">
+          <div>
+            <h3>Contact</h3>
+            <p>Ping me on GitHub for collabs or explore my repos. Open to interesting problems and thoughtful interfaces.</p>
+          </div>
+        </article>
+
+        <article class="card slide-up" data-delay="420">
+          <div>
+            <h3>Skills</h3>
+            <p>HTML • CSS • JavaScript • Animation • Accessibility • Design Systems</p>
+          </div>
+        </article>
+
+        <article class="card slide-up" data-delay="520">
+          <div>
+            <h3>Thoughts</h3>
+            <p>I like small experiments that reveal new interaction patterns. Motion should inform, not distract.</p>
+          </div>
+        </article>
+
+        <article class="card slide-up" data-delay="620">
+          <div>
+            <h3>Note</h3>
+            <p>This page is a living snapshot. The creation timestamp above marks this exact version.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="site-foot">
+      <div style="color:var(--muted);">Created by amirabolfazle</div>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+        <svg class="gh-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.608-4.042-1.608-.546-1.384-1.333-1.753-1.333-1.753-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.76-1.605-2.665-.303-5.467-1.333-5.467-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.536-1.523.116-3.176 0 0 1.008-.323 3.3 1.23a11.52 11.52 0 0 1 3.003-.404c1.018.005 2.045.138 3.003.404 2.29-1.553 3.296-1.23 3.296-1.23.653 1.653.242 2.873.12 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.807 5.624-5.48 5.92.43.372.823 1.102.823 2.222 0 1.605-.014 2.896-.014 3.292 0 .32.216.694.825.576C20.565 21.796 24 17.298 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        <span style="font-weight:600;color:inherit;">View on GitHub</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    // Intersection observer for slide-up and cards
+    (function(){
+      const opts = { root: null, rootMargin: '0px', threshold: 0.08 };
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+            // optionally unobserve to keep performance
+            observer.unobserve(entry.target);
+          }
+        });
+      }, opts);
+
+      // gather all elements with slide-up and card classes
+      const items = document.querySelectorAll('.slide-up, .card, .accent-bar');
+      items.forEach((el, i) => {
+        // allow staggering by delay attribute
+        const delay = parseInt(el.dataset.delay||0, 10);
+        if(delay){
+          el.style.transitionDelay = (delay/1000) + 's';
+        }
+        observer.observe(el);
+      });
+
+      // Small entrance for avatar glyph for immediate polish
+      window.addEventListener('load', ()=>{
+        // fallback: if intersection observer hasn't triggered for some items (above fold), force them visible
+        document.querySelectorAll('.slide-up').forEach(el=>{
+          // if not yet visible after short time, add in-view
+          setTimeout(()=>{
+            if(!el.classList.contains('in-view')){
+              el.classList.add('in-view');
+            }
+          }, 900);
+        });
+        // accent-bar grow after a beat
+        setTimeout(()=> {
+          document.querySelectorAll('.accent-bar').forEach(b => b.classList.add('in-view'));
+        }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>
