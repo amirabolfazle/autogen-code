@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #0f0f2f;
+      --accent1: #7b2ff7;
+      --accent2: #2bd4ff;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.03);
+      --text: #e6eef8;
+      --muted: rgba(230,238,248,0.7);
+      --radius: 14px;
+      --shadow: 0 6px 20px rgba(11,14,28,0.55);
+      --container-max: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      color:var(--text);
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+    }
+
+    /* Animated gradient layer */
+    .gradient {
+      position:fixed;
+      inset:0;
+      background:linear-gradient(120deg, rgba(123,47,247,0.18), rgba(43,212,255,0.12) 40%, rgba(123,47,247,0.08));
+      filter:blur(40px) saturate(120%);
+      z-index:0;
+      pointer-events:none;
+      animation: drift 14s linear infinite;
+      mix-blend-mode:screen;
+    }
+    @keyframes drift{
+      0% {transform:translate3d(-10%,0,0) rotate(0);}
+      50% {transform:translate3d(10%,5%,0) rotate(3deg);}
+      100% {transform:translate3d(-10%,0,0) rotate(0);}
+    }
+
+    /* Floating decorative blobs */
+    .blob{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(30px);
+      opacity:0.55;
+      z-index:0;
+      pointer-events:none;
+      mix-blend-mode:overlay;
+    }
+    .blob.a{width:360px;height:360px;left:-10%;top:10%;background:radial-gradient(circle at 30% 30%, rgba(123,47,247,0.35), transparent 40%);}
+    .blob.b{width:420px;height:420px;right:-8%;bottom:-6%;background:radial-gradient(circle at 70% 70%, rgba(43,212,255,0.22), transparent 40%);}
+
+    /* Main frame */
+    .wrap{
+      position:relative;
+      z-index:2;
+      width:100%;
+      max-width:var(--container-max);
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+    }
+
+    header.card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px) saturate(120%);
+      display:flex;
+      align-items:center;
+      gap:18px;
+      overflow:hidden;
+      min-height:110px;
+    }
+
+    .logo {
+      width:84px;
+      height:84px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 30px rgba(43,212,255,0.08), inset 0 -12px 30px rgba(0,0,0,0.12);
+      flex:0 0 84px;
+      transform-origin:center;
+      animation: pop 700ms cubic-bezier(.2,.9,.3,1) both;
+    }
+    @keyframes pop{
+      from{transform:scale(.86) translateY(6px);opacity:0}
+      to{transform:scale(1) translateY(0);opacity:1}
+    }
+
+    .logo svg{width:46px;height:46px;fill:#fff;opacity:0.96;filter:drop-shadow(0 4px 16px rgba(43,212,255,0.12))}
+
+    .meta{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      overflow:hidden;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(20px,3.6vw,34px);
+      letter-spacing:0.2px;
+      line-height:1;
+      color:var(--text);
+      opacity:0;
+      transform:translateY(6px);
+      animation: fadeInUp 600ms cubic-bezier(.2,.9,.3,1) 120ms both;
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:clamp(13px,2.2vw,15px);
+      opacity:0;
+      transform:translateY(6px);
+      animation: fadeInUp 600ms cubic-bezier(.2,.9,.3,1) 260ms both;
+    }
+
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    /* Grid of cards */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+    @media (max-width:1000px){ .grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:640px){ .grid{grid-template-columns:1fr} }
+
+    .panel{
+      background:linear-gradient(180deg,var(--glass),var(--glass-2));
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 6px 20px rgba(2,6,23,0.45);
+      min-height:110px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      transform:translateY(10px);
+      opacity:0;
+      animation: fadeInUp 700ms cubic-bezier(.2,.9,.3,1) both;
+    }
+    .panel:nth-child(1){ animation-delay:360ms }
+    .panel:nth-child(2){ animation-delay:520ms }
+    .panel:nth-child(3){ animation-delay:680ms }
+    .panel h3{margin:0;font-size:16px}
+    .panel p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+
+    /* Footer */
+    footer{
+      margin-top:6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 18px;
+      border-radius:12px;
+      background:transparent;
+      color:var(--muted);
+      font-size:13px;
+      align-self:stretch;
+      opacity:0;
+      transform:translateY(8px);
+      animation: fadeInUp 700ms cubic-bezier(.2,.9,.3,1) 820ms both;
+    }
+    .footer-left{display:flex;align-items:center;gap:10px}
+    a.github{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px;
+      border-radius:8px;
+      transition:background .18s, transform .12s;
+    }
+    a.github:hover{
+      background:rgba(255,255,255,0.02);
+      transform:translateY(-4px);
+      color:var(--text);
+    }
+    .gh-icon{
+      width:20px;height:20px;display:inline-block;flex:0 0 20px;
+      filter:drop-shadow(0 4px 10px rgba(11,14,28,0.6));
+    }
+    .created{color:var(--muted)}
+
+    /* small utility */
+    .muted{color:var(--muted);font-size:13px}
+    .stack{display:flex;flex-wrap:wrap;gap:8px}
+    .pill{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+    /* reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .gradient,.blob,.logo,.panel,header.card,footer{animation:none;transition:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient" aria-hidden="true"></div>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+
+  <div class="wrap" role="main">
+    <header class="card" aria-labelledby="site-title">
+      <div class="logo" aria-hidden="true">
+        <!-- abstract "a" monogram -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#fff" stop-opacity="0.95"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0.7"/>
+            </linearGradient>
+          </defs>
+          <rect rx="12" width="64" height="64" fill="url(#g)" opacity="0.06"></rect>
+          <path d="M16 44c0-9.94 8.06-18 18-18 5.18 0 9.85 2.17 13.16 5.66L43 36c-2.15-2.13-5.02-3.4-8-3.4-6.08 0-11 4.92-11 11h-8z" fill="#fff" opacity="0.92"></path>
+          <path d="M20 22c0-1.1.9-2 2-2h20c1.1 0 2 .9 2 2v4H20v-4z" fill="#fff" opacity="0.96"/>
+        </svg>
+      </div>
+
+      <div class="meta">
+        <h1 id="site-title">amirabolfazle</h1>
+        <p class="lead">Created on: <strong style="color:var(--text);font-weight:600">2025-09-29 18:07:02</strong></p>
+      </div>
+    </header>
+
+    <section class="grid" aria-label="Highlights">
+      <article class="panel" aria-labelledby="p1">
+        <h3 id="p1">Responsive design</h3>
+        <p>Fully responsive layout that adapts smoothly from phones to wide desktops. Try resizing the window — elements reflow with subtle animations.</p>
+        <div class="stack" aria-hidden="true"><span class="pill">Flexbox</span><span class="pill">Grid</span><span class="pill">Media queries</span></div>
+      </article>
+
+      <article class="panel" aria-labelledby="p2">
+        <h3 id="p2">Gradient theme</h3>
+        <p>Animated gradient and soft blurred shapes create a modern, layered look while keeping contrast readable and colors pleasant.</p>
+        <div class="stack" aria-hidden="true"><span class="pill">Animated gradient</span><span class="pill">Blobs</span></div>
+      </article>
+
+      <article class="panel" aria-labelledby="p3">
+        <h3 id="p3">Fade-in effects</h3>
+        <p>Elements animate in with gentle fade-and-slide animations. Motion respects user preferences when reduced motion is enabled.</p>
+        <div class="stack" aria-hidden="true"><span class="pill">Staggered</span><span class="pill">Accessible</span></div>
+      </article>
+    </section>
+
+    <footer>
+      <div class="footer-left">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="View repository on GitHub">
+          <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+            <path d="M12 .5C5.73.5.75 5.48.75 11.74c0 4.86 3.17 8.98 7.57 10.44.55.1.75-.24.75-.53 0-.26-.01-1.12-.02-2.03-3.08.67-3.73-1.48-3.73-1.48-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.17.9.1-.7.38-1.18.69-1.45-2.46-.28-5.05-1.23-5.05-5.47 0-1.21.43-2.2 1.13-2.98-.11-.28-.49-1.42.11-2.96 0 0 .92-.29 3.02 1.13a10.4 10.4 0 0 1 2.75-.37c.93.01 1.87.13 2.75.37 2.1-1.42 3.02-1.13 3.02-1.13.6 1.54.22 2.68.11 2.96.7.78 1.13 1.77 1.13 2.98 0 4.24-2.6 5.19-5.08 5.46.39.33.74.98.74 1.98 0 1.44-.01 2.6-.01 2.95 0 .29.2.64.76.53 4.4-1.47 7.56-5.58 7.56-10.44C23.25 5.48 18.27.5 12 .5z"/>
+          </svg>
+          <span class="muted">Repository</span>
+        </a>
+        <div class="created">Created by amirabolfazle</div>
+      </div>
+
+      <div class="muted" aria-hidden="true">Version snapshot • 2025</div>
+    </footer>
+  </div>
+
+  <script>
+    // Small enhancement: accessible focus outline on keyboard navigation
+    (function(){
+      function handleFirstTab(e){
+        if(e.key === 'Tab'){
+          document.documentElement.classList.add('user-is-tabbing');
+          window.removeEventListener('keydown', handleFirstTab);
+        }
+      }
+      window.addEventListener('keydown', handleFirstTab);
+    })();
+  </script>
+</body>
+</html>
