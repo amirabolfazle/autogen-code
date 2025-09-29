@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#071017;
+    --bg2:#0f1720;
+    --accent:#6ee7b7;
+    --muted:#9aa6b2;
+    --glass: rgba(255,255,255,0.03);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    background: linear-gradient(120deg,var(--bg1),var(--bg2));
+    color:#e6eef3;
+    display:grid;
+    place-items:center;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* animated shifting gradient */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:-20%;
+    background:
+      radial-gradient(600px 600px at 10% 10%, rgba(110,231,183,0.06), transparent 12%),
+      radial-gradient(500px 500px at 90% 90%, rgba(100,116,255,0.06), transparent 16%);
+    z-index:0;
+    animation: drift 12s linear infinite alternate;
+    pointer-events:none;
+    filter: blur(30px) saturate(120%);
+  }
+  @keyframes drift{
+    from{transform:translate3d(0,0,0) rotate(0deg)}
+    to{transform:translate3d(-6%,4%,0) rotate(6deg)}
+  }
+
+  .stage{
+    position:relative;
+    z-index:1;
+    width:min(920px,92vw);
+    padding:48px;
+    display:grid;
+    gap:18px;
+    align-items:center;
+    justify-items:center;
+    transform-origin:center;
+    animation: entrance 650ms cubic-bezier(.2,.9,.25,1);
+  }
+  @keyframes entrance{
+    from{opacity:0;transform:translateY(10px) scale(.98)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
+
+  .brand{
+    font-weight:700;
+    letter-spacing:0.06em;
+    font-size: clamp(20px,6vw,44px);
+    margin:0;
+    background:linear-gradient(90deg,var(--accent),#7dd3fc 70%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-transform:lowercase;
+    transform-origin:center;
+    will-change:transform;
+    transition:transform 300ms ease;
+  }
+
+  .card{
+    width:100%;
+    max-width:720px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    padding:22px;
+    border-radius:12px;
+    backdrop-filter: blur(8px) saturate(120%);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    transition:transform 420ms cubic-bezier(.2,.9,.25,1), box-shadow 420ms;
+  }
+
+  .card:hover{
+    transform:scale(1.02);
+    box-shadow: 0 18px 50px rgba(2,6,23,0.75);
+  }
+
+  .meta{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .meta .time{
+    color:var(--muted);
+    font-size:14px;
+  }
+  .meta .note{
+    color:#dffcf0;
+    font-size:13px;
+    opacity:0.9;
+  }
+
+  .zoom{
+    display:inline-grid;
+    place-items:center;
+    width:56px;
+    height:56px;
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    transition:transform 350ms cubic-bezier(.2,.9,.25,1);
+    transform-origin:center;
+    will-change:transform;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  /* subtle pulsing zoom loop */
+  .zoom svg{display:block}
+  .zoom-anim{
+    animation: pulse 2200ms ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.06)}
+    100%{transform:scale(1)}
+  }
+
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:16px;
+    z-index:2;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    color:var(--muted);
+    font-size:13px;
+    background:var(--glass);
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.02);
+    backdrop-filter:blur(6px) saturate(110%);
+    box-shadow:0 6px 22px rgba(2,6,23,0.5);
+  }
+  footer a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--muted);
+    text-decoration:none;
+  }
+  footer a:hover svg{transform:scale(1.08) translateY(-1px)}
+  footer svg{transition:transform 220ms ease}
+
+  /* small screens adjustments */
+  @media (max-width:520px){
+    .stage{padding:20px}
+    .card{flex-direction:column;align-items:flex-start}
+    .zoom{width:48px;height:48px}
+    footer{font-size:12px;padding:6px 10px}
+  }
+</style>
+</head>
+<body>
+  <main class="stage" aria-labelledby="brand">
+    <h1 id="brand" class="brand">amirabolfazle</h1>
+
+    <section class="card" aria-label="site information">
+      <div class="meta">
+        <div class="note">Minimal animated page — dark mode</div>
+        <div class="time">Created: 2025-09-29 17:13:27</div>
+      </div>
+
+      <div class="zoom zoom-anim" title="zoom">
+        <!-- subtle plus-style emblem -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9be7c7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 21l-4.35-4.35"></path>
+          <circle cx="11" cy="11" r="5.2"></circle>
+          <path d="M11 8.3v5.4M8.3 11h5.4"></path>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub — amirabolfazle">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:#cbd5e1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.75 5.4.75 11.76c0 4.86 3.15 8.98 7.52 10.44.55.1.75-.24.75-.53 0-.26-.01-1-.02-1.95-3.06.66-3.71-1.48-3.71-1.48-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.18.9.1-.7.38-1.18.69-1.45-2.44-.28-5-1.22-5-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.93 0 0 .9-.29 2.95 1.12a10.2 10.2 0 012.69-.36c.91 0 1.83.12 2.69.36 2.05-1.41 2.95-1.12 2.95-1.12.6 1.53.22 2.65.11 2.93.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.15-5.01 5.42.39.34.74 1.02.74 2.05 0 1.48-.01 2.67-.01 3.03 0 .29.2.64.76.53 4.37-1.46 7.52-5.58 7.52-10.44C23.25 5.4 18.35.5 12 .5z"/>
+      </svg>
+    </a>
+    <div style="color:var(--muted);">Created by amirabolfazle</div>
+  </footer>
+</body>
+</html>
