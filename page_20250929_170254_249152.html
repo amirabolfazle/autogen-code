@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#05040a;
+      --neon1:#00f5ff;
+      --neon2:#ff2d95;
+      --neon3:#7cff6f;
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.12);
+      --accent: linear-gradient(45deg,var(--neon1),var(--neon2) 60%,var(--neon3));
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      background:
+        radial-gradient(600px 300px at 10% 20%, rgba(0,245,255,0.06), transparent 8%),
+        radial-gradient(500px 200px at 90% 80%, rgba(255,45,149,0.04), transparent 8%),
+        var(--bg);
+      color:#e8f6ff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:28px;
+      overflow:hidden;
+    }
+
+    /* rotating neon rings */
+    .rings{
+      position:absolute;
+      inset: -10%;
+      pointer-events:none;
+      display:block;
+      filter: blur(18px) saturate(150%);
+      mix-blend-mode:screen;
+    }
+    .ring{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform-origin:center;
+      border-radius:50%;
+      border:1px solid transparent;
+      box-shadow:0 0 40px 6px rgba(0,0,0,0.05) inset;
+      opacity:.85;
+    }
+    .ring.one{
+      width:950px;height:950px;
+      margin-left:-475px;margin-top:-475px;
+      background:conic-gradient(from 120deg,var(--neon1),transparent 15%,rgba(0,0,0,0));
+      animation:spin 28s linear infinite;
+      mix-blend-mode:screen;
+    }
+    .ring.two{
+      width:650px;height:650px;
+      margin-left:-325px;margin-top:-325px;
+      background:conic-gradient(from 40deg, rgba(255,45,149,0.9), rgba(124,255,111,0.05) 40%, transparent 60%);
+      animation:spin-rev 18s linear infinite;
+      filter:blur(10px);
+    }
+    .ring.three{
+      width:420px;height:420px;
+      margin-left:-210px;margin-top:-210px;
+      background:radial-gradient(circle at 30% 30%, rgba(0,245,255,0.18), transparent 30%),
+                 radial-gradient(circle at 70% 70%, rgba(255,45,149,0.12), transparent 25%);
+      animation:spin 12s linear infinite;
+      opacity:0.9;
+      mix-blend-mode:screen;
+    }
+
+    @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+    @keyframes spin-rev{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+
+    /* main card */
+    .card{
+      position:relative;
+      z-index:2;
+      backdrop-filter: blur(6px) saturate(140%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:42px 56px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.7), 0 0 40px rgba(0,0,0,0.25), 0 0 24px rgba(0,0,0,0.3) inset;
+      border: 1px solid rgba(255,255,255,0.04);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      transform-style:preserve-3d;
+      perspective:800px;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(28px,6vw,64px);
+      letter-spacing:0.08em;
+      text-transform:lowercase;
+      color:transparent;
+      background:var(--accent);
+      -webkit-background-clip:text;
+      background-clip:text;
+      filter:drop-shadow(0 6px 18px rgba(0,245,255,0.06));
+      position:relative;
+      padding:6px 12px;
+      line-height:1;
+      transform-origin:center;
+      animation:tilt 6s ease-in-out infinite;
+    }
+
+    @keyframes tilt{
+      0%{transform:rotateX(6deg) rotateY(-8deg) rotateZ(0deg)}
+      50%{transform:rotateX(-6deg) rotateY(8deg) rotateZ(1deg)}
+      100%{transform:rotateX(6deg) rotateY(-8deg) rotateZ(0deg)}
+    }
+
+    /* neon stroke/glow duplicate */
+    h1::after{
+      content:"amirabolfazle";
+      position:absolute;
+      left:0;right:0;top:0;bottom:0;
+      color:transparent;
+      -webkit-text-stroke:1px rgba(0,0,0,0.15);
+      text-shadow:
+        0 0 8px rgba(0,245,255,0.18),
+        0 0 20px rgba(255,45,149,0.08),
+        0 6px 30px rgba(0,0,0,0.6);
+      mix-blend-mode:hard-light;
+      pointer-events:none;
+    }
+
+    .meta{
+      font-size:13px;
+      color:var(--muted);
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+      letter-spacing:0.04em;
+    }
+
+    /* rotating neon cube accent */
+    .accent{
+      width:88px;height:88px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      transform-style:preserve-3d;
+      animation:rotate-3d 7s infinite linear;
+    }
+    .cube{
+      width:48px;height:48px;
+      border-radius:8px;
+      background:var(--accent);
+      box-shadow: 0 0 18px rgba(0,245,255,0.16), 0 0 30px rgba(255,45,149,0.06);
+      transform-style:preserve-3d;
+      animation:inner-rotate 3.4s infinite linear;
+    }
+
+    @keyframes rotate-3d{
+      0%{transform:rotateX(6deg) rotateY(0deg) rotateZ(0deg)}
+      100%{transform:rotateX(366deg) rotateY(360deg) rotateZ(360deg)}
+    }
+    @keyframes inner-rotate{
+      0%{transform:rotateX(0deg) rotateY(0deg)}
+      100%{transform:rotateX(360deg) rotateY(360deg)}
+    }
+
+    footer{
+      position:fixed;
+      z-index:3;
+      bottom:18px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:rgba(255,255,255,0.02);
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 8px 30px rgba(2,6,23,0.55);
+      font-size:13px;
+      color:var(--muted);
+      backdrop-filter: blur(6px);
+    }
+
+    a.repo{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--neon1);
+      text-decoration:none;
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+    a.repo svg{
+      width:18px;height:18px;display:block;
+      filter:drop-shadow(0 6px 12px rgba(0,245,255,0.06));
+      transition:transform .18s ease, filter .18s ease;
+    }
+    a.repo:hover svg{ transform:translateY(-3px) scale(1.06); filter:drop-shadow(0 12px 28px rgba(0,245,255,0.18)); }
+    a.repo:focus{outline:2px dashed rgba(0,245,255,0.12); outline-offset:6px}
+    .created{
+      color:var(--muted);
+      font-weight:500;
+    }
+
+    /* responsive */
+    @media (max-width:520px){
+      .card{padding:28px 20px;border-radius:14px}
+      .accent{display:none}
+      footer{font-size:12px;padding:6px 10px}
+    }
+  </style>
+</head>
+<body>
+  <div class="rings" aria-hidden="true">
+    <div class="ring one"></div>
+    <div class="ring two"></div>
+    <div class="ring three"></div>
+  </div>
+
+  <div class="card" role="main" aria-labelledby="title">
+    <div class="accent" aria-hidden="true">
+      <div class="cube" aria-hidden="true"></div>
+    </div>
+
+    <h1 id="title">amirabolfazle</h1>
+
+    <div class="meta" aria-label="creation time">Creation time: 2025-09-29 17:02:01</div>
+  </div>
+
+  <footer>
+    <a class="repo" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.6 3 8.5 7.1 9.9.5.1.7-.2.7-.5v-1.9c-2.9.6-3.5-1.2-3.5-1.2-.5-1.1-1.3-1.4-1.3-1.4-1-.7.1-.7.1-.7 1.1.1 1.6 1.2 1.6 1.2 1 .1 1.6-.8 1.8-1.3.3-.7.9-1.3 1.6-1.6-2.3-.3-4.7-1.2-4.7-5.2 0-1.2.4-2.2 1.2-3-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.3 1.2.9-.3 1.9-.5 2.9-.5s1.9.2 2.9.5c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 3 .1 3.3.8.8 1.2 1.8 1.2 3 0 4-2.4 4.9-4.7 5.2.9.8 1.6 2.1 1.6 4.2v2.6c0 .3.2.6.7.5 4.1-1.4 7.1-5.3 7.1-9.9C23.1 5.3 18.3.5 12 .5z" fill="url(#g)"/>
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#00f5ff"/>
+            <stop offset="0.6" stop-color="#ff2d95"/>
+            <stop offset="1" stop-color="#7cff6f"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      GitHub
+    </a>
+    <div class="created">Created by amirabolfazle</div>
+  </footer>
+</body>
+</html>
