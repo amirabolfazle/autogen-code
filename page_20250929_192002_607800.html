@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#071029;
+    --glass-bg: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --accent: rgba(122, 95, 255, 0.9);
+    --accent-2: rgba(0, 230, 255, 0.85);
+    --text: #eaf2ff;
+    --muted: rgba(234,242,255,0.65);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(122,95,255,0.12), transparent 8%),
+                radial-gradient(900px 400px at 90% 90%, rgba(0,230,255,0.08), transparent 12%),
+                linear-gradient(180deg,var(--bg1), var(--bg2));
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  /* animated rotating backdrop */
+  .orbit-bg{
+    position:fixed;
+    inset:-20%;
+    z-index:0;
+    filter:blur(36px) saturate(140%);
+    pointer-events:none;
+    opacity:0.95;
+    animation:bgRotate 32s linear infinite;
+    background:
+      conic-gradient(from 30deg at 50% 50%, rgba(122,95,255,0.13), rgba(0,230,255,0.09), rgba(122,95,255,0.13));
+    transform:translateZ(0);
+  }
+  @keyframes bgRotate{
+    from{transform:rotate(0deg) scale(1)}
+    to{transform:rotate(360deg) scale(1)}
+  }
+
+  /* floating translucent shapes */
+  .blob{
+    position:absolute;
+    border-radius:48%;
+    mix-blend-mode:screen;
+    filter:blur(18px);
+    opacity:0.85;
+    transform-origin:center;
+  }
+  .blob.a{width:520px;height:520px;left:-8%;top:-6%;background:linear-gradient(135deg,var(--accent), transparent);}
+  .blob.b{width:420px;height:420px;right:-6%;bottom:-10%;background:linear-gradient(45deg,var(--accent-2), transparent);animation:floatB 9s ease-in-out infinite;}
+  .blob.c{width:260px;height:260px;left:20%;bottom:18%;background:linear-gradient(120deg, rgba(255,255,255,0.06), rgba(122,95,255,0.06));animation:floatC 11s ease-in-out infinite;}
+  @keyframes floatB{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-28px) rotate(20deg)}100%{transform:translateY(0) rotate(0deg)}}
+  @keyframes floatC{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(18px) rotate(-14deg)}100%{transform:translateY(0) rotate(0deg)}}
+
+  /* main glass card */
+  .card-wrap{
+    position:relative;
+    z-index:2;
+    width:min(920px, 94vw);
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:28px;
+    align-items:stretch;
+    padding:40px;
+  }
+
+  .glass{
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border: 1px solid var(--glass-border);
+    border-radius:18px;
+    box-shadow: 0 8px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    padding:28px;
+  }
+
+  .profile{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    min-height:300px;
+  }
+
+  .name-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+
+  .avatar{
+    width:86px;
+    height:86px;
+    border-radius:18px;
+    background:linear-gradient(135deg,var(--accent), var(--accent-2));
+    box-shadow: 0 8px 30px rgba(12,8,40,0.5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-weight:700;
+    font-size:28px;
+    transform-origin:center;
+    animation:avatarSpin 10s linear infinite;
+  }
+  @keyframes avatarSpin{
+    0%{transform: rotate(0deg)}
+    50%{transform: rotate(12deg)}
+    100%{transform: rotate(0deg)}
+  }
+
+  h1{
+    margin:0;
+    font-size:28px;
+    letter-spacing:0.6px;
+  }
+  p.lead{
+    margin:0;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .bio{
+    padding:18px;
+    margin-top:6px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.02);
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+  }
+
+  /* right panel with rotating ring */
+  .side{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:stretch;
+    justify-content:center;
+  }
+
+  .rotator{
+    width:100%;
+    height:100%;
+    min-height:160px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+
+  .ring{
+    width:220px;height:220px;border-radius:50%;
+    background: conic-gradient(from 0deg, rgba(122,95,255,0.18), rgba(0,230,255,0.12), rgba(122,95,255,0.18));
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    animation:ringSpin 22s linear infinite;
+    box-shadow: 0 12px 40px rgba(12,8,40,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .inner{
+    width:120px;height:120px;border-radius:50%;
+    background:var(--glass-bg);
+    border:1px solid rgba(255,255,255,0.06);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--text);
+    font-weight:700;
+    transform:translateZ(20px);
+    backdrop-filter: blur(6px);
+  }
+  @keyframes ringSpin{
+    from{transform:rotate(0deg) translateZ(0)}
+    to{transform:rotate(360deg) translateZ(0)}
+  }
+
+  .stats{
+    display:flex;
+    gap:12px;
+    justify-content:space-between;
+    margin-top:6px;
+  }
+  .stat{
+    flex:1;
+    padding:10px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    border:1px solid rgba(255,255,255,0.02);
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .stat b{display:block;color:var(--text); font-size:16px; margin-bottom:6px}
+
+  /* subtle 3D tilt and rotate on hover */
+  .card-wrap:hover .glass{transform: translateY(-6px); transition:transform 480ms cubic-bezier(.2,.9,.3,1)}
+  .glass{transition:transform 360ms ease, box-shadow 360ms ease}
+
+  /* footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    z-index:6;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:8px 14px;
+    border-radius:999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+  }
+  footer a{display:inline-flex;align-items:center;color:var(--muted);text-decoration:none;gap:8px}
+  .gh{
+    width:18px;height:18px;display:inline-block;fill:var(--muted);
+    transition:transform 220ms ease, fill 220ms ease;
+  }
+  footer a:hover .gh{transform:translateY(-3px) rotate(-6deg);fill:var(--text)}
+
+  /* small responsive */
+  @media (max-width:880px){
+    .card-wrap{grid-template-columns:1fr; padding:22px}
+    .side{order:2}
+    .profile{order:1}
+  }
+
+  /* small decorative rotated text */
+  .stamp{
+    position:absolute;
+    top:18px;
+    right:18px;
+    font-size:11px;
+    color:var(--muted);
+    transform: rotate(-14deg);
+    border-radius:8px;
+    padding:8px 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.018), transparent);
+    border:1px solid rgba(255,255,255,0.02);
+    backdrop-filter:blur(6px);
+  }
+
+  /* large decorative rotating squares */
+  .spin-square{
+    position:absolute;
+    width:120px;height:120px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.03);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(122,95,255,0.02));
+    top:10vh; left:6vw;
+    transform-origin:center;
+    animation:spinSquare 14s linear infinite;
+    opacity:0.7;
+    filter:blur(6px);
+  }
+  .spin-square.two{bottom:12vh; right:8vw; top:auto; left:auto; animation-duration:18s; transform-origin:center; opacity:0.6}
+
+  @keyframes spinSquare{
+    0%{transform: rotate(0deg) translateY(0)}
+    50%{transform: rotate(180deg) translateY(-18px)}
+    100%{transform: rotate(360deg) translateY(0)}
+  }
+
+</style>
+</head>
+<body>
+  <div class="orbit-bg" aria-hidden="true"></div>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+  <div class="blob c" aria-hidden="true"></div>
+  <div class="spin-square" aria-hidden="true"></div>
+  <div class="spin-square two" aria-hidden="true"></div>
+
+  <main class="card-wrap" role="main" aria-labelledby="page-title">
+    <div class="glass profile" role="region" aria-label="Profile">
+      <div class="name-row">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div>
+          <h1 id="page-title">amirabolfazle</h1>
+          <p class="lead">Creative tinkerer • Web & UI experiments • Minimalist aesthetics</p>
+        </div>
+      </div>
+
+      <div class="bio">
+        Hi — I'm amirabolfazle. I build playful interfaces, explore visual effects and craft tiny tools that make work feel lighter.
+        This page showcases a glassmorphism design with animated rotate effects, subtle motion and refined contrast.
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;margin-top:auto;">
+        <div style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);font-size:13px;color:var(--muted)">
+          Creation time
+          <div style="font-weight:700;color:var(--text);margin-top:6px;font-size:13px">2025-09-29 19:19:07</div>
+        </div>
+
+        <div style="padding:10px 12px;border-radius:10px;background:linear-gradient(90deg, rgba(122,95,255,0.06), rgba(0,230,255,0.03));border:1px solid rgba(255,255,255,0.02);font-size:13px;color:var(--muted)">
+          Status
+          <div style="font-weight:700;color:var(--accent);margin-top:6px;font-size:13px">Active • Experimenting</div>
+        </div>
+      </div>
+
+    </div>
+
+    <aside class="glass side" role="complementary" aria-label="Interactive area">
+      <div class="rotator" aria-hidden="false">
+        <div class="ring" role="img" aria-label="Rotating ring decoration">
+          <div class="inner">A</div>
+        </div>
+      </div>
+
+      <div class="stats" aria-hidden="false">
+        <div class="stat"><b>42</b> Projects</div>
+        <div class="stat"><b>8K</b> Visits</div>
+        <div class="stat"><b>120</b> Stars</div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="gh" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 0.297C5.372 0.297 0 5.67 0 12.297c0 5.297 3.438 9.797 8.205 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.725-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.086 1.84 1.238 1.84 1.238 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.76-1.606-2.665-.305-5.467-1.333-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.125-.304-.535-1.528.115-3.184 0 0 1.005-.322 3.295 1.23a11.49 11.49 0 0 1 3.003-.404c1.02.005 2.045.138 3.003.404 2.29-1.552 3.295-1.23 3.295-1.23.65 1.656.24 2.88.115 3.184.77.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.62-5.48 5.92.43.37.815 1.096.815 2.215 0 1.6-.015 2.887-.015 3.28 0 .32.215.695.825.577C20.565 22.09 24 17.59 24 12.297 24 5.67 18.627.297 12 .297z"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // small interactive tilt based on pointer for subtle depth
+    (function(){
+      const wrap = document.querySelector('.card-wrap');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(!wrap || prefersReduced) return;
+      const onMove = (e) => {
+        const rect = wrap.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const x = (e.clientX - cx) / rect.width;
+        const y = (e.clientY - cy) / rect.height;
+        const rx = (y * 8).toFixed(2);
+        const ry = (x * -8).toFixed(2);
+        wrap.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+      };
+      const onLeave = () => wrap.style.transform = '';
+      window.addEventListener('pointermove', onMove);
+      wrap.addEventListener('pointerleave', onLeave);
+      wrap.addEventListener('pointerdown', () => wrap.style.transform += ' scale(0.995)');
+      wrap.addEventListener('pointerup', () => wrap.style.transform = '');
+    })();
+  </script>
+</body>
+</html>
