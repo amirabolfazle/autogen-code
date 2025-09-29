@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#080810;
+      --bg2:#050014;
+      --neon-cyan:#00FFF7;
+      --neon-pink:#FF3EC7;
+      --neon-purple:#9B5CFF;
+      --glass: rgba(255,255,255,0.03);
+      --accent: linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+      --card-bg: rgba(255,255,255,0.02);
+      --shadow: 0 10px 30px rgba(0,0,0,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: radial-gradient(1200px circle at 10% 10%, rgba(0,255,247,0.06), transparent 6%),
+                  radial-gradient(1000px circle at 90% 90%, rgba(255,62,199,0.04), transparent 6%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#e8f7ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:48px 24px;
+      gap:36px;
+    }
+
+    .hero{
+      width:100%;
+      max-width:980px;
+      text-align:center;
+      padding:48px;
+      border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.04);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: conic-gradient(from 140deg at 50% 50%, rgba(0,255,247,0.06), transparent 20%, rgba(255,62,199,0.04));
+      filter: blur(30px);
+      opacity:0.9;
+      pointer-events:none;
+    }
+
+    h1{
+      margin:0 0 8px 0;
+      font-size: clamp(32px, 6vw, 64px);
+      letter-spacing:1px;
+      color:transparent;
+      background-image: var(--accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow:
+        0 0 8px rgba(0,255,247,0.12),
+        0 0 30px rgba(255,62,199,0.06),
+        0 2px 20px rgba(0,0,0,0.6);
+      position:relative;
+    }
+
+    .neon-outline{
+      display:inline-block;
+      padding:6px 14px;
+      border-radius:999px;
+      box-shadow:
+        0 0 18px rgba(0,255,247,0.12),
+        0 0 36px rgba(255,62,199,0.06),
+        0 8px 30px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+    }
+
+    p.lead{
+      margin:8px 0 20px 0;
+      color:rgba(232,247,255,0.9);
+      font-size:1.05rem;
+      opacity:0.95;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:8px;
+    }
+
+    .time-badge{
+      padding:8px 12px;
+      border-radius:12px;
+      background:linear-gradient(90deg, rgba(0,255,247,0.06), rgba(255,62,199,0.03));
+      color:var(--neon-cyan);
+      font-weight:600;
+      font-size:0.95rem;
+      border:1px solid rgba(0,255,247,0.07);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      text-shadow: 0 0 12px rgba(0,255,247,0.12);
+    }
+
+    .cta{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      padding:12px 18px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      color:#05010a;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+      box-shadow: 0 6px 26px rgba(0,0,0,0.6), 0 0 28px rgba(0,255,247,0.08);
+      transition:transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s;
+    }
+    .btn:active{ transform:translateY(2px) scale(.996); }
+    .btn.ghost{
+      background:transparent;
+      color:var(--neon-cyan);
+      border:1px solid rgba(0,255,247,0.12);
+      box-shadow: none;
+      text-shadow:0 0 10px rgba(0,255,247,0.06);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:34px;
+    }
+
+    @media (max-width:880px){
+      .grid{ grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:580px){
+      .grid{ grid-template-columns:1fr; }
+      .hero{ padding:28px; }
+    }
+
+    .card{
+      padding:18px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.012));
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+      transform-origin:center;
+      overflow:hidden;
+      transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s;
+    }
+
+    .card:hover{
+      transform: translateY(-8px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.65);
+    }
+
+    .card h3{
+      margin:0 0 8px;
+      color:var(--neon-pink);
+      text-shadow: 0 0 10px rgba(255,62,199,0.12);
+    }
+    .card p{ margin:0; color:rgba(232,247,255,0.85); font-size:0.95rem; }
+
+    /* Slide-up animation */
+    .animate{
+      opacity:0;
+      transform:translateY(28px) scale(.995);
+      transition: transform .7s cubic-bezier(.2,.9,.2,1), opacity .7s;
+      will-change:transform,opacity;
+    }
+    .animate.in-view{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    /* decorative neon lines */
+    .neon-line{
+      height:2px;
+      width:120%;
+      margin:28px -10% 0 -10%;
+      background:linear-gradient(90deg, rgba(0,255,247,0.08), rgba(255,62,199,0.06));
+      filter: blur(6px);
+      opacity:0.9;
+    }
+
+    /* footer */
+    footer{
+      margin-top:28px;
+      width:100%;
+      max-width:980px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 18px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--neon-cyan);
+      text-decoration:none;
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+
+    .github-link svg{ filter: drop-shadow(0 6px 20px rgba(0,0,0,0.6)); }
+
+    .credit{
+      color:rgba(232,247,255,0.8);
+      font-weight:600;
+    }
+
+    /* subtle floating dots */
+    .floaters{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+    .floater{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(20px);
+      opacity:0.08;
+      transform:translate3d(0,0,0);
+    }
+    .floater.a{ width:260px;height:260px;background:var(--neon-cyan);left:-80px;top:-60px; }
+    .floater.b{ width:180px;height:180px;background:var(--neon-pink);right:-50px;bottom:-40px; }
+    .floater.c{ width:120px;height:120px;background:var(--neon-purple);left:20%;bottom:10%; }
+
+    small.note{
+      display:block;
+      margin-top:8px;
+      color:rgba(232,247,255,0.6);
+      font-size:0.85rem;
+      opacity:0.95;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero animate" id="hero">
+      <div class="floaters" aria-hidden="true">
+        <div class="floater a"></div>
+        <div class="floater b"></div>
+        <div class="floater c"></div>
+      </div>
+
+      <h1 class="neon-outline">amirabolfazle</h1>
+      <p class="lead">Neon showcase &mdash; sleek landing layout with smooth slide-up reveals and luminous accents.</p>
+
+      <div class="meta">
+        <div class="time-badge">Creation time: 2025-09-29 03:54:44</div>
+      </div>
+
+      <div class="cta">
+        <button class="btn" onclick="scrollToSection()">Explore</button>
+        <a class="btn ghost" href="#projects">View Projects</a>
+      </div>
+
+      <div class="neon-line"></div>
+
+      <div class="grid" id="projects" style="margin-top:28px;">
+        <div class="card animate">
+          <h3>Vibrant Branding</h3>
+          <p>High-contrast neon palettes and motion-first UI patterns to make your presence pop.</p>
+        </div>
+        <div class="card animate">
+          <h3>Interactive Components</h3>
+          <p>Smooth slide-up entries, micro-interactions and tactile feedback for delighted users.</p>
+        </div>
+        <div class="card animate">
+          <h3>Performance Focused</h3>
+          <p>Lightweight, accessible, and responsive — polished visuals without the overhead.</p>
+        </div>
+        <div class="card animate">
+          <h3>Design Tokens</h3>
+          <p>Reusable neon tokens, shadows, and gradients to maintain a consistent glow across screens.</p>
+        </div>
+        <div class="card animate">
+          <h3>Motion Library</h3>
+          <p>Scroll-triggered reveals built with IntersectionObserver for smooth, battery-friendly animations.</p>
+        </div>
+        <div class="card animate">
+          <h3>Ready to Ship</h3>
+          <p>Templates and snippets to accelerate development and keep things neon-clean.</p>
+        </div>
+      </div>
+
+      <small class="note">Designed with neon aesthetics and subtle physics-inspired motion.</small>
+    </div>
+
+    <footer>
+      <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.37.5 0 5.88 0 12.5c0 5.28 3.438 9.75 8.205 11.325.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.833 2.81 1.304 3.495.997.108-.775.42-1.304.762-1.604-2.665-.304-5.466-1.335-5.466-5.933 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 013.003-.404c1.02.004 2.047.138 3.003.404 2.29-1.552 3.296-1.23 3.296-1.23.654 1.653.243 2.874.12 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.625-5.476 5.922.432.372.816 1.103.816 2.222 0 1.604-.015 2.897-.015 3.293 0 .32.216.694.825.576C20.565 22.246 24 17.78 24 12.5 24 5.88 18.63.5 12 .5z" fill="#00FFF7"/>
+        </svg>
+        <span>autogen-code</span>
+      </a>
+      <div class="credit">Created by amirabolfazle</div>
+    </footer>
+  </div>
+
+  <script>
+    // Scroll to projects
+    function scrollToSection(){
+      const el = document.getElementById('projects');
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    // IntersectionObserver for slide-up effects
+    (function(){
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+          }
+        });
+      }, {threshold: 0.12});
+
+      document.querySelectorAll('.animate').forEach(el=>{
+        observer.observe(el);
+      });
+
+      // Slight stagger for grid items
+      const cards = document.querySelectorAll('.grid .card');
+      cards.forEach((c,i)=> {
+        c.style.transitionDelay = (i*80)+'ms';
+      });
+
+      // Floating subtle parallax on mouse move
+      const wrap = document.querySelector('.wrap');
+      const floaters = document.querySelectorAll('.floater');
+      window.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 12;
+        const y = (e.clientY / window.innerHeight - 0.5) * 12;
+        floaters.forEach((f, idx) => {
+          const factor = (idx+1) * 4;
+          f.style.transform = `translate3d(${x*factor}px, ${y*factor}px, 0)`;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
