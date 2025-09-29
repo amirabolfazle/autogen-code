@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#FFF1F8;
+      --bg2:#F0FFF8;
+      --accent1:#FAD6FF;
+      --accent2:#D6FFF1;
+      --accent3:#FFF6D6;
+      --muted:#6B6B6B;
+      --card:#ffffffcc;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 8px 30px rgba(27,31,41,0.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--accent1), transparent 10%),
+                  radial-gradient(1000px 500px at 90% 90%, var(--accent2), transparent 10%),
+                  linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:#213;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow:hidden;
+    }
+
+    /* floating decorative blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(12px);
+      opacity:0.75;
+      mix-blend-mode:screen;
+      animation:float 8s ease-in-out infinite;
+      transform-origin:center;
+      z-index:0;
+    }
+    .blob.b1{width:240px;height:240px;left:5%;top:10%;background:linear-gradient(120deg,#FFD6F0,#F6FFD6); animation-duration:10s;}
+    .blob.b2{width:320px;height:320px;right:3%;bottom:5%;background:linear-gradient(120deg,#D6FFF6,#FCE8D6); animation-duration:12s;}
+    .blob.b3{width:180px;height:180px;left:60%;top:0%;background:linear-gradient(120deg,#EAD6FF,#D6F7FF); animation-duration:9s;}
+
+    @keyframes float{
+      0%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-18px) scale(1.03)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .wrap{
+      position:relative;
+      width:100%;
+      max-width:980px;
+      z-index:1;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:20px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.6);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:16px;
+      transform-origin:center;
+      animation:bounceIn 750ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    @keyframes bounceIn{
+      0%{opacity:0; transform:translateY(40px) scale(.96)}
+      60%{opacity:1; transform:translateY(-10px) scale(1.02)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .avatar{
+      width:144px;
+      height:144px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#ffffff,rgba(255,255,255,0.2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 12px 30px rgba(32,40,50,0.08), inset 0 -6px 18px rgba(255,255,255,0.6);
+      position:relative;
+      border: 1px solid rgba(255,255,255,0.7);
+      animation:pop 900ms cubic-bezier(.2,.85,.25,1);
+    }
+    @keyframes pop{
+      0%{transform:scale(.8)}
+      60%{transform:scale(1.06)}
+      100%{transform:scale(1)}
+    }
+    .avatar svg{width:86px;height:86px;filter:drop-shadow(0 6px 18px rgba(33,33,33,0.06));}
+
+    .handle{
+      font-weight:700;
+      font-size:24px;
+      letter-spacing:0.6px;
+      color:#222;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .sub{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:-4px;
+    }
+
+    .info{
+      text-align:center;
+      padding:8px 6px 18px 6px;
+      font-size:14px;
+      color:#334;
+      line-height:1.45;
+      max-width:300px;
+    }
+
+    /* right column */
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.6));
+      border-radius:20px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.6);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-height:240px;
+      animation:bounceIn 850ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    .panel h2{
+      margin:0;
+      font-size:20px;
+      letter-spacing:0.4px;
+    }
+    .panel p{margin:0;color:#344; font-size:15px}
+    .time{
+      margin-top:12px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(250,250,250,0.5));
+      padding:12px 14px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      font-weight:600;
+      color:#2b2b2b;
+      box-shadow: 0 6px 18px rgba(32,40,50,0.04);
+      transform-origin:left center;
+      animation:bounceLabel 1s cubic-bezier(.2,.85,.25,1) 200ms both;
+    }
+    @keyframes bounceLabel{
+      0%{transform:translateX(-30px) scale(.98); opacity:0}
+      60%{transform:translateX(8px) scale(1.02); opacity:1}
+      100%{transform:translateX(0) scale(1)}
+    }
+
+    .tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .tag{
+      background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:#3b3b3b;
+      box-shadow: 0 6px 18px rgba(32,40,50,0.04);
+      transition:transform 220ms cubic-bezier(.2,.9,.2,1);
+    }
+    .tag:hover{transform:translateY(-6px) scale(1.02)}
+
+    .cta{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      background:linear-gradient(90deg,#FFF1FF,#E8FFFA);
+      padding:10px 14px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      color:#222;
+      box-shadow: 0 8px 22px rgba(32,40,50,0.06);
+      transition:transform 220ms cubic-bezier(.2,.9,.2,1);
+    }
+    .btn:active{transform:translateY(2px)}
+    .ghost{
+      background:transparent;
+      border:1px solid rgba(0,0,0,0.06);
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6));
+      padding:10px 14px;
+      border-radius:999px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      box-shadow: 0 12px 34px rgba(22,30,40,0.06);
+      z-index:5;
+      border:1px solid rgba(255,255,255,0.6);
+      font-size:14px;
+      color:#303030;
+    }
+    footer a{display:flex;align-items:center;color:inherit;text-decoration:none;gap:8px}
+    .gh{
+      width:20px;height:20px;display:inline-block;
+      transition:transform 220ms ease;
+    }
+    footer a:hover .gh{transform:translateY(-4px) scale(1.06)}
+    footer .by{font-weight:600;color:#212121}
+
+    /* responsive */
+    @media (max-width:880px){
+      .wrap{grid-template-columns:1fr;max-width:720px}
+      .card{order:2}
+      .panel{order:1}
+      footer{left:12px;transform:none;bottom:12px}
+    }
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+  <div class="blob b3" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="page-title">
+    <section class="card" aria-describedby="intro">
+      <div class="avatar" aria-hidden="false" title="amirabolfazle">
+        <!-- stylized initial circle -->
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#FFD6F0"/>
+              <stop offset="1" stop-color="#D6F7FF"/>
+            </linearGradient>
+            <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.06"/>
+            </filter>
+          </defs>
+          <circle cx="60" cy="60" r="56" fill="url(#g1)" filter="url(#s)"/>
+          <text x="50%" y="56%" text-anchor="middle" font-family="Poppins, sans-serif" font-size="48" fill="#2b2b2b" font-weight="700" dy=".35em">A</text>
+        </svg>
+      </div>
+
+      <div class="handle" id="page-title">amirabolfazle</div>
+      <div class="sub">pastel vibes • animated micro-portfolio</div>
+      <p class="info" id="intro">A light, playful personal page using soft pastel tones and smooth bounce animations. Tweak, extend, or clone — enjoy the pleasant motion.</p>
+      <div style="display:flex;gap:10px;margin-top:6px;">
+        <button class="btn">Say hi</button>
+        <button class="btn ghost" aria-label="View projects">Projects</button>
+      </div>
+    </section>
+
+    <aside class="panel" aria-labelledby="panel-title">
+      <h2 id="panel-title">Welcome</h2>
+      <p>Here you'll find a compact personal hub with animated touches and a friendly pastel palette. Elements gently bounce in and float to bring the page to life.</p>
+
+      <div class="time" role="status" aria-live="polite">
+        Creation time:
+        <span style="background:transparent;font-weight:700;color:#0d0d0d;padding:0;margin:0;">2025-09-29 19:16:56</span>
+      </div>
+
+      <div class="tags" aria-hidden="false">
+        <div class="tag">HTML</div>
+        <div class="tag">CSS Animation</div>
+        <div class="tag">Pastel Palette</div>
+        <div class="tag">Micro-portfolio</div>
+      </div>
+
+      <div style="flex:1"></div>
+
+      <div style="display:flex;justify-content:flex-end;">
+        <small style="color:#586;opacity:0.9">Have fun customizing.</small>
+      </div>
+    </aside>
+  </main>
+
+  <footer role="contentinfo">
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository: amirabolfazle/autogen-code">
+      <svg class="gh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5a11.5 11.5 0 00-3.633 22.415c.575.106.786-.25.786-.556 0-.274-.01-1.002-.015-1.965-3.195.695-3.87-1.54-3.87-1.54-.523-1.333-1.277-1.687-1.277-1.687-1.044-.714.08-.7.08-.7 1.156.082 1.765 1.187 1.765 1.187 1.026 1.758 2.693 1.25 3.35.956.105-.744.402-1.25.731-1.538-2.55-.29-5.236-1.275-5.236-5.676 0-1.254.448-2.277 1.183-3.081-.119-.29-.512-1.456.113-3.036 0 0 .966-.31 3.166 1.178A11.02 11.02 0 0112 5.847c.98.004 1.967.133 2.888.39 2.196-1.49 3.16-1.178 3.16-1.178.626 1.58.233 2.746.114 3.036.737.804 1.182 1.827 1.182 3.081 0 4.412-2.693 5.383-5.256 5.667.414.358.783 1.067.783 2.152 0 1.553-.014 2.807-.014 3.188 0 .307.208.67.792.556A11.5 11.5 0 0012 .5z" fill="#111827"/>
+      </svg>
+      <span class="by">Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
