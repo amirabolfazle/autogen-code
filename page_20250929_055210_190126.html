@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071029;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.12);
+      --accent: rgba(141, 192, 255, 0.9);
+      --accent-2: rgba(197, 138, 255, 0.9);
+      --muted: rgba(255,255,255,0.7);
+      --card-w: 320px;
+    }
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body,#root{height:100%}
+    body{
+      min-height:100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(141,192,255,0.06), transparent 8%),
+                  radial-gradient(900px 400px at 90% 90%, rgba(197,138,255,0.06), transparent 8%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color: #e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* floating soft blobs in background */
+    .bg-blob{
+      position: absolute;
+      filter: blur(60px) saturate(140%);
+      opacity: 0.25;
+      mix-blend-mode: screen;
+      border-radius: 50%;
+      animation: float 12s ease-in-out infinite;
+    }
+    .blob-a{width:520px;height:520px;background:linear-gradient(135deg,var(--accent),transparent 40%);left:-120px;top:-60px;animation-duration:14s}
+    .blob-b{width:420px;height:420px;background:linear-gradient(45deg,var(--accent-2),transparent 40%);right:-100px;bottom:-80px;animation-duration:18s;opacity:0.2}
+    @keyframes float{
+      0%{transform: translateY(0) scale(1)}
+      50%{transform: translateY(-40px) scale(1.03)}
+      100%{transform: translateY(0) scale(1)}
+    }
+
+    /* Main layout */
+    .stage{
+      position:relative;
+      width:min(1100px,94vw);
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      z-index:2;
+      align-items:center;
+    }
+
+    /* Glass card */
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      color:var(--muted);
+    }
+
+    /* Left big card */
+    .hero{
+      padding:36px;
+      min-height:360px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:18px;
+      position:relative;
+      overflow:visible;
+    }
+    .name-row{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .avatar{
+      width:84px;height:84px;border-radius:16px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow: 0 6px 20px rgba(141,192,255,0.12), inset 0 -6px 18px rgba(255,255,255,0.08);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:22px;color:#052038;
+      transform-origin:center;
+      animation: bounceIn 900ms cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes bounceIn{
+      0%{transform: translateY(-40px) scale(.9);opacity:0}
+      60%{transform: translateY(8px) scale(1.02);opacity:1}
+      100%{transform: translateY(0) scale(1)}
+    }
+    .title{
+      font-size: clamp(20px, 3.6vw, 36px);
+      font-weight:700;
+      letter-spacing: -0.6px;
+      color: #e7f5ff;
+      text-transform: none;
+      animation: namePop 700ms cubic-bezier(.2,.8,.2,1) both;
+    }
+    @keyframes namePop{0%{transform:translateY(10px);opacity:0}100%{transform:translateY(0);opacity:1}}
+
+    .tagline{color:rgba(230,240,255,0.84);font-size:14px}
+    .meta-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .chip{
+      padding:8px 12px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.04);
+      font-size:13px;color:var(--muted);display:inline-flex;gap:10px;align-items:center;
+      transform-origin:center;
+      animation: microBounce 1s cubic-bezier(.34,-0.04,.54,1) both;
+    }
+    @keyframes microBounce{
+      0%{transform:translateY(8px);opacity:0}
+      60%{transform:translateY(-6px)}
+      100%{transform:translateY(0);opacity:1}
+    }
+
+    /* Right column: floating tiles */
+    .side{
+      display:flex;flex-direction:column;gap:18px;align-items:center;
+    }
+    .tile{
+      width: var(--card-w);
+      padding:18px;border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.45);
+      display:flex;flex-direction:column;gap:10px;
+      animation: floatBounce 1500ms cubic-bezier(.36,.07,.19,1) both;
+    }
+    .tile:nth-child(2){animation-delay:120ms}
+    .tile:nth-child(3){animation-delay:240ms}
+    .tile h4{font-size:15px;color:#eaf7ff;margin-bottom:4px}
+    .tile p{font-size:13px;color:rgba(230,240,255,0.78);line-height:1.3}
+
+    @keyframes floatBounce{
+      0%{transform: translateY(18px);opacity:0}
+      60%{transform: translateY(-8px)}
+      100%{transform: translateY(0);opacity:1}
+    }
+
+    /* Projects grid */
+    .projects{
+      margin-top:8px;
+      display:grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+    .project{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:10px;border-radius:10px;
+      display:flex;align-items:center;gap:10px;
+      transition: transform 320ms cubic-bezier(.2,.9,.3,1), box-shadow 320ms;
+    }
+    .project:hover{transform: translateY(-8px);box-shadow:0 14px 36px rgba(2,6,23,0.6)}
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 4px 10px rgba(141,192,255,0.12)}
+
+    /* CTA row */
+    .cta-row{display:flex;gap:12px;align-items:center;margin-top:8px}
+    .btn{
+      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--muted);font-weight:600;font-size:14px;cursor:pointer;
+      transition: transform 220ms, box-shadow 220ms;
+      display:inline-flex;gap:8px;align-items:center;
+    }
+    .btn:hover{transform: translateY(-6px);box-shadow:0 12px 30px rgba(2,6,23,0.45)}
+
+    /* animated bouncing decorative elements */
+    .bouncer{
+      position:absolute;right:20px;top:-36px;width:96px;height:96px;border-radius:18px;
+      background:linear-gradient(150deg,var(--accent),var(--accent-2));
+      opacity:0.14;filter: blur(12px);
+      animation: bigBounce 2.6s cubic-bezier(.2,.9,.2,1) infinite;
+    }
+    @keyframes bigBounce{
+      0%{transform: translateY(0) rotate(-6deg)}
+      40%{transform: translateY(-28px) rotate(6deg)}
+      60%{transform: translateY(-12px) rotate(-3deg)}
+      100%{transform: translateY(0) rotate(0)}
+    }
+
+    /* footer */
+    footer{
+      position:fixed;left:50%;transform:translateX(-50%);bottom:18px;
+      z-index:4;display:flex;align-items:center;gap:10px;background:transparent;color:rgba(235,245,255,0.9);
+      font-size:13px;padding:6px 10px;border-radius:999px;
+      backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);
+    }
+    .gh{
+      display:inline-flex;align-items:center;gap:8px;padding:8px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);text-decoration:none;color:inherit;
+      transition: transform 160ms;
+    }
+    .gh:hover{transform:translateY(-6px)}
+
+    /* small screens */
+    @media (max-width:980px){
+      .stage{grid-template-columns:1fr; padding:20px}
+      .side{order:2}
+      footer{left:10px;transform:none;bottom:12px}
+    }
+
+    /* subtle focus states */
+    a:focus,button:focus{outline:2px dashed rgba(141,192,255,0.18);outline-offset:3px}
+  </style>
+</head>
+<body>
+  <div class="bg-blob blob-a" aria-hidden="true"></div>
+  <div class="bg-blob blob-b" aria-hidden="true"></div>
+
+  <main class="stage" id="root" role="main" aria-label="amirabolfazle portfolio">
+    <section class="glass hero" aria-labelledby="hero-title">
+      <div>
+        <div class="name-row">
+          <div class="avatar" aria-hidden="true">A</div>
+          <div>
+            <h1 id="hero-title" class="title">amirabolfazle</h1>
+            <div class="tagline">Creative maker • Code enthusiast • Builder of neat things</div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px" class="meta-row" aria-hidden="true">
+          <span class="chip">JavaScript • Web • UI</span>
+          <span class="chip">Animation • Design</span>
+          <span class="chip">One-file portfolio</span>
+        </div>
+
+        <div style="margin-top:18px;font-size:13px;color:rgba(230,240,255,0.78)">
+          <strong>Creation time:</strong>
+          <span id="creation-time" style="margin-left:8px;color:var(--muted)">2025-09-29 05:51:18</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="projects" aria-label="projects">
+          <div class="project" title="Project: Autogen">
+            <div class="dot" aria-hidden="true"></div>
+            <div>
+              <div style="font-weight:700;color:#eaf7ff">Autogen Code</div>
+              <div style="font-size:12px;color:rgba(230,240,255,0.78)">Smart code scaffolding & helpers</div>
+            </div>
+          </div>
+          <div class="project" title="Project: UI Kit">
+            <div class="dot" style="background:var(--accent-2)" aria-hidden="true"></div>
+            <div>
+              <div style="font-weight:700;color:#f1e6ff">Glass UI Kit</div>
+              <div style="font-size:12px;color:rgba(230,240,255,0.78)">Reusable glassmorphism components</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <button class="btn" onclick="navAction('projects')" aria-label="Explore projects">Explore projects</button>
+          <button class="btn" onclick="navAction('contact')" aria-label="Contact me">Contact</button>
+        </div>
+      </div>
+
+      <div class="bouncer" aria-hidden="true"></div>
+    </section>
+
+    <aside class="side" aria-labelledby="side-title">
+      <div class="glass tile" aria-labelledby="side-title">
+        <h4 id="side-title">About</h4>
+        <p>I'm amirabolfazle — I craft interactive web experiences with a soft spot for motion, tiny delightful details, and clean single-file demos.</p>
+      </div>
+
+      <div class="glass tile" aria-labelledby="tools-title">
+        <h4 id="tools-title">Toolbox</h4>
+        <p>Vanilla JS • CSS animations • Web APIs • SVG • Design systems</p>
+      </div>
+
+      <div class="glass tile" aria-labelledby="note-title">
+        <h4 id="note-title">Note</h4>
+        <p>Everything here is designed to feel light, playful and subtly dynamic — glassmorphism with bounce.</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer role="contentinfo">
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.026 2c-5.477 0-9.94 4.463-9.94 9.94 0 4.397 2.853 8.126 6.815 9.446.5.09.683-.217.683-.482 0-.237-.009-.866-.014-1.7-2.775.603-3.36-1.336-3.36-1.336-.453-1.154-1.106-1.461-1.106-1.461-.904-.618.069-.606.069-.606 1 .07 1.527 1.026 1.527 1.026.89 1.523 2.337 1.084 2.905.829.09-.644.347-1.084.63-1.333-2.216-.252-4.545-1.108-4.545-4.933 0-1.088.388-1.98 1.025-2.676-.103-.253-.445-1.27.097-2.647 0 0 .837-.269 2.745 1.021a9.56 9.56 0 0 1 2.5-.336 9.56 9.56 0 0 1 2.5.336c1.908-1.29 2.744-1.021 2.744-1.021.543 1.377.201 2.394.099 2.647.638.696 1.024 1.588 1.024 2.676 0 3.835-2.332 4.678-4.553 4.925.357.308.675.915.675 1.845 0 1.333-.012 2.407-.012 2.737 0 .268.181.577.688.48 3.957-1.321 6.808-5.048 6.808-9.444C21.966 6.463 17.503 2 12.026 2z" fill="currentColor"/>
+      </svg>
+      <span style="font-weight:600">Created by amirabolfazle</span>
+    </a>
+  </footer>
+
+  <script>
+    // small interactions: simple nav action demo with bounce feedback
+    function navAction(to){
+      const btn = document.querySelector('.btn[onclick*="'+to+'"]');
+      if(btn){
+        btn.animate([{transform:'translateY(0)'},{transform:'translateY(-10px)'},{transform:'translateY(0)'}],{duration:480,easing:'cubic-bezier(.2,.8,.2,1)'});
+      }
+      // quick toast
+      const t = document.createElement('div');
+      t.textContent = to === 'projects' ? 'Jumping to projects (demo)…' : 'Opening contact (demo)…';
+      Object.assign(t.style,{
+        position:'fixed',left:'50%',transform:'translateX(-50%)',bottom:'18%',background:'rgba(0,0,0,0.5)',
+        color:'#eaf7ff',padding:'10px 16px',borderRadius:'999px',zIndex:9999,backdropFilter:'blur(6px)'
+      });
+      document.body.appendChild(t);
+      setTimeout(()=>t.style.opacity='0',1200);
+      setTimeout(()=>t.remove(),1800);
+    }
+
+    // small accessible announcement of creation time on load
+    window.addEventListener('load',()=>{
+      const ct = document.getElementById('creation-time');
+      ct.setAttribute('aria-live','polite');
+    });
+  </script>
+</body>
+</html>
