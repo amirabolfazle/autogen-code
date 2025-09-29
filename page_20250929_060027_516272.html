@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1: #0f1724;
+    --bg-2: #071026;
+    --accent: #7c5cff;
+    --muted: #9aa4b2;
+    --card: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:#e6eef8;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 6%),
+                radial-gradient(800px 400px at 90% 90%, rgba(0,200,255,0.04), transparent 8%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    overflow-y:auto;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+    animation: bgShift 18s linear infinite;
+    perspective:1200px;
+  }
+
+  @keyframes bgShift{
+    0%{background-position:10% 10%,90% 90%}
+    50%{background-position:20% 30%,80% 70%}
+    100%{background-position:10% 10%,90% 90%}
+  }
+
+  .stage{
+    width:min(1100px,100%);
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap:28px;
+    align-items:start;
+  }
+
+  header.card{
+    padding:28px;
+    border-radius:16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 6px 30px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(8px) saturate(120%);
+    transform-style:preserve-3d;
+    transform: translateZ(0);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  .brand{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    margin-bottom:18px;
+  }
+
+  .logo{
+    width:64px;height:64px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background: linear-gradient(135deg,var(--accent), #00c2ff);
+    color:white;font-weight:700;
+    font-size:20px;
+    box-shadow: 0 6px 20px rgba(124,92,255,0.18);
+    transform-origin:center;
+    animation: logoSpin 9s linear infinite;
+  }
+
+  @keyframes logoSpin{
+    0%{transform: rotate(0deg) translateZ(40px) rotateY(0deg)}
+    50%{transform: rotate(180deg) translateZ(40px) rotateY(20deg)}
+    100%{transform: rotate(360deg) translateZ(40px) rotateY(0deg)}
+  }
+
+  h1{
+    font-size:20px;margin:0;
+    letter-spacing:0.6px;
+  }
+  .sub{color:var(--muted);font-size:13px;margin-top:6px}
+
+  .meta{
+    margin-top:18px;
+    font-size:13px;color:var(--muted);
+    display:flex;flex-direction:column;gap:8px;
+  }
+
+  .time{
+    display:flex;align-items:center;gap:10px;
+    padding:10px;border-radius:10px;background:var(--glass);
+    width:max-content;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.01);
+  }
+
+  .skills{
+    margin-top:18px;
+    display:flex;flex-wrap:wrap;gap:8px;
+  }
+
+  .chip{
+    padding:8px 12px;border-radius:999px;font-size:13px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    color: #dfe8ff;
+    transform: translateZ(20px);
+  }
+
+  main{
+    padding:28px;
+    border-radius:16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 6px 30px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.03);
+    transform-style:preserve-3d;
+  }
+
+  .headline{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+
+  .title{
+    font-size:22px;font-weight:700;
+    display:flex;flex-direction:column;
+  }
+  .title small{color:var(--muted);font-weight:500;font-size:13px;margin-top:6px}
+
+  .projects{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap:16px;
+    transform-style:preserve-3d;
+  }
+
+  .cardProject{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+    display:flex;flex-direction:column;gap:10px;
+    transition: transform 0.8s cubic-bezier(.2,.9,.3,1), box-shadow 0.3s;
+    transform-origin:center;
+    transform: rotateY(8deg) translateZ(0);
+    box-shadow: 0 8px 26px rgba(2,6,23,0.35);
+    overflow:hidden;
+  }
+
+  .cardProject:hover{
+    transform: rotateY(0deg) translateZ(40px) scale(1.02) ;
+    box-shadow: 0 20px 60px rgba(2,6,23,0.6);
+  }
+
+  .projTitle{font-weight:600}
+  .projDesc{color:var(--muted);font-size:13px}
+
+  .rot{
+    height:8px;width:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),#00c2ff);
+    transform-origin:left center;
+    animation: pulseRot 3s linear infinite;
+    opacity:0.9;
+  }
+  @keyframes pulseRot{
+    0%{transform: scaleX(0.6) rotate(0deg)}
+    50%{transform: scaleX(1) rotate(180deg)}
+    100%{transform: scaleX(0.6) rotate(360deg)}
+  }
+
+  .bigCanvas{
+    margin-top:20px;
+    height:220px;border-radius:12px;background:linear-gradient(135deg, rgba(124,92,255,0.06), rgba(0,194,255,0.03));
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  .orbit{
+    position:absolute;width:560px;height:560px;left:50%;top:50%;transform:translate(-50%,-50%) rotate(0deg);
+    border-radius:50%;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 40px 120px rgba(3,8,20,0.6);
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.02), transparent 10%);
+    animation: orbitSpin 28s linear infinite;
+    opacity:0.25;
+    pointer-events:none;
+  }
+  @keyframes orbitSpin{
+    to{transform: translate(-50%,-50%) rotate(360deg)}
+  }
+
+  .sat{
+    position:absolute;width:96px;height:96px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#dfe8ff;
+    border:1px solid rgba(255,255,255,0.03);
+    left:calc(50% - 48px); top:10%; transform-origin: center 120px;
+    transform: rotateZ(0deg) translateZ(60px);
+    animation: satSpin 12s linear infinite;
+  }
+
+  @keyframes satSpin{
+    0%{transform: rotateZ(0deg) translateY(0) translateZ(60px)}
+    25%{transform: rotateZ(90deg) translateY(-6px) translateZ(60px)}
+    50%{transform: rotateZ(180deg) translateY(0) translateZ(60px)}
+    75%{transform: rotateZ(270deg) translateY(6px) translateZ(60px)}
+    100%{transform: rotateZ(360deg) translateY(0) translateZ(60px)}
+  }
+
+  footer{
+    margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    color:var(--muted);font-size:13px;
+  }
+
+  .foot-left{display:flex;align-items:center;gap:12px}
+  .gh{
+    display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;
+    background:var(--glass-2);border:1px solid rgba(255,255,255,0.03);
+    color:inherit;text-decoration:none;font-weight:600;
+    transition: transform .25s;
+  }
+  .gh:hover{transform:translateY(-3px) scale(1.01)}
+
+  .gh svg{display:block;width:18px;height:18px;fill:currentColor}
+
+  /* Responsive */
+  @media (max-width:920px){
+    .stage{grid-template-columns:1fr;gap:18px}
+    .brand{margin-bottom:10px}
+    .logo{width:56px;height:56px}
+    .bigCanvas{height:180px}
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+  <div class="stage" role="main" aria-labelledby="portfolioTitle">
+    <header class="card" aria-hidden="false">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">AB</div>
+        <div>
+          <h1 id="portfolioTitle">amirabolfazle</h1>
+          <div class="sub">Creative coder • Interactive micro-portfolio</div>
+        </div>
+      </div>
+
+      <div class="meta" aria-label="meta information">
+        <div class="time" title="Creation time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:.9">
+            <path d="M12 7v6l4 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+          </svg>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-weight:600">Created</span>
+            <span style="font-size:12px;color:var(--muted)">2025-09-29 05:59:29</span>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;color:var(--muted)">Quick info</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div class="chip">JS / WebGL</div>
+            <div class="chip">HTML / CSS</div>
+            <div class="chip">Interactive UI</div>
+            <div class="chip">Animations</div>
+          </div>
+        </div>
+      </div>
+
+      <footer style="margin-top:18px;display:flex;justify-content:space-between;align-items:center">
+        <div style="color:var(--muted);font-size:13px">Based in the browser</div>
+        <div style="display:flex;gap:8px">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.9 5.34.9 11.6c0 4.8 3.1 8.9 7.4 10.3.54.1.73-.23.73-.5 0-.25-.01-1.07-.02-1.95-3 .65-3.63-1.45-3.63-1.45-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.66.07-.66 1.08.08 1.65 1.1 1.65 1.1.96 1.65 2.51 1.17 3.12.9.1-.7.38-1.17.7-1.44-2.39-.27-4.9-1.2-4.9-5.32 0-1.17.42-2.12 1.1-2.87-.11-.27-.48-1.36.1-2.84 0 0 .9-.29 2.95 1.1a10.1 10.1 0 0 1 2.68-.36c.91 0 1.83.12 2.68.36 2.05-1.39 2.95-1.1 2.95-1.1.58 1.48.21 2.57.1 2.84.69.75 1.1 1.7 1.1 2.87 0 4.13-2.52 5.05-4.92 5.32.39.33.73.98.73 1.98 0 1.43-.01 2.58-.01 2.93 0 .27.19.6.74.5 4.34-1.4 7.43-5.5 7.43-10.3C23.1 5.34 18.27.5 12 .5z"/>
+            </svg>
+            Repo
+          </a>
+        </div>
+      </footer>
+    </header>
+
+    <main>
+      <div class="headline">
+        <div class="title">
+          Portfolio
+          <small>Selected explorations in motion & interaction</small>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-hidden="true" style="padding:8px 12px">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.9 5.34.9 11.6c0 4.8 3.1 8.9 7.4 10.3.54.1.73-.23.73-.5 0-.25-.01-1.07-.02-1.95-3 .65-3.63-1.45-3.63-1.45-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.66.07-.66 1.08.08 1.65 1.1 1.65 1.1.96 1.65 2.51 1.17 3.12.9.1-.7.38-1.17.7-1.44-2.39-.27-4.9-1.2-4.9-5.32 0-1.17.42-2.12 1.1-2.87-.11-.27-.48-1.36.1-2.84 0 0 .9-.29 2.95 1.1a10.1 10.1 0 0 1 2.68-.36c.91 0 1.83.12 2.68.36 2.05-1.39 2.95-1.1 2.95-1.1.58 1.48.21 2.57.1 2.84.69.75 1.1 1.7 1.1 2.87 0 4.13-2.52 5.05-4.92 5.32.39.33.73.98.73 1.98 0 1.43-.01 2.58-.01 2.93 0 .27.19.6.74.5 4.34-1.4 7.43-5.5 7.43-10.3C23.1 5.34 18.27.5 12 .5z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="projects" aria-live="polite">
+        <div class="cardProject" style="transform: rotateY(6deg) translateZ(0);">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="projTitle">Orbit Canvas</div>
+            <div style="font-size:12px;color:var(--muted)">2025</div>
+          </div>
+          <div class="projDesc">A WebGL-free interactive orbiting visual built with CSS transforms and hero gradients.</div>
+          <div class="rot" style="animation-duration:2.8s"></div>
+        </div>
+
+        <div class="cardProject" style="transform: rotateY(4deg) translateZ(0);">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="projTitle">Micro Animations</div>
+            <div style="font-size:12px;color:var(--muted)">Demo</div>
+          </div>
+          <div class="projDesc">Tiny motion pieces that add character: buttons, icons and playful load states.</div>
+          <div class="rot" style="animation-duration:3.2s"></div>
+        </div>
+
+        <div class="cardProject" style="transform: rotateY(10deg) translateZ(0);">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="projTitle">Interactive CV</div>
+            <div style="font-size:12px;color:var(--muted)">Live</div>
+          </div>
+          <div class="projDesc">A responsive single-file experience that fits in one page — perfect for sharing.</div>
+          <div class="rot" style="animation-duration:2.4s"></div>
+        </div>
+
+        <div class="cardProject" style="transform: rotateY(-6deg) translateZ(0);">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="projTitle">UI Experiments</div>
+            <div style="font-size:12px;color:var(--muted)">Sketches</div>
+          </div>
+          <div class="projDesc">Explorations on layering, glassmorphism, and tactile micro-interactions.</div>
+          <div class="rot" style="animation-duration:3.6s"></div>
+        </div>
+      </div>
+
+      <div class="bigCanvas" aria-hidden="false" role="img" aria-label="Animated orbit illustration">
+        <div class="orbit"></div>
+        <div class="sat">amirabolfazle</div>
+        <svg width="360" height="160" viewBox="0 0 360 160" fill="none" style="position:relative;z-index:2">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0" stop-color="#7c5cff" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#00c2ff" stop-opacity="0.7"/>
+            </linearGradient>
+          </defs>
+          <g opacity="0.95">
+            <path d="M10 120 C80 20, 280 20, 350 120" stroke="url(#g1)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+            <circle cx="36" cy="116" r="6" fill="#7c5cff" />
+            <circle cx="324" cy="116" r="6" fill="#00c2ff" />
+          </g>
+        </svg>
+      </div>
+
+      <footer>
+        <div class="foot-left">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.9 5.34.9 11.6c0 4.8 3.1 8.9 7.4 10.3.54.1.73-.23.73-.5 0-.25-.01-1.07-.02-1.95-3 .65-3.63-1.45-3.63-1.45-.49-1.24-1.2-1.57-1.2-1.57-.98-.67.07-.66.07-.66 1.08.08 1.65 1.1 1.65 1.1.96 1.65 2.51 1.17 3.12.9.1-.7.38-1.17.7-1.44-2.39-.27-4.9-1.2-4.9-5.32 0-1.17.42-2.12 1.1-2.87-.11-.27-.48-1.36.1-2.84 0 0 .9-.29 2.95 1.1a10.1 10.1 0 0 1 2.68-.36c.91 0 1.83.12 2.68.36 2.05-1.39 2.95-1.1 2.95-1.1.58 1.48.21 2.57.1 2.84.69.75 1.1 1.7 1.1 2.87 0 4.13-2.52 5.05-4.92 5.32.39.33.73.98.73 1.98 0 1.43-.01 2.58-.01 2.93 0 .27.19.6.74.5 4.34-1.4 7.43-5.5 7.43-10.3C23.1 5.34 18.27.5 12 .5z"/>
+            </svg>
+            <span>Created by amirabolfazle</span>
+          </a>
+        </div>
+        <div style="color:var(--muted);font-size:12px">2025 • Single-file portfolio</div>
+      </footer>
+    </main>
+  </div>
+
+<script>
+  // Tiny interaction: tilt stage on mouse move for playful depth
+  (function(){
+    const stage = document.querySelector('.stage');
+    const maxTilt = 8; // degrees
+    let rect = stage.getBoundingClientRect();
+    function onMove(e){
+      const x = (e.clientX || (e.touches && e.touches[0].clientX) || rect.left) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY) || rect.top) - rect.top;
+      const px = (x / rect.width) - 0.5;
+      const py = (y / rect.height) - 0.5;
+      const rx = (-py * maxTilt).toFixed(2);
+      const ry = (px * maxTilt).toFixed(2);
+      stage.style.transform = `translateZ(0) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    }
+    function onLeave(){ stage.style.transform = 'translateZ(0)'; }
+    function refresh(){ rect = stage.getBoundingClientRect(); }
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, {passive:true});
+    window.addEventListener('mouseleave', onLeave);
+    window.addEventListener('resize', refresh);
+  })();
+</script>
+</body>
+</html>
