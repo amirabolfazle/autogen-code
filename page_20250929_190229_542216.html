@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f1724;
+    --bg2:#0b1220;
+    --glass: rgba(255,255,255,0.08);
+    --glass-2: rgba(255,255,255,0.06);
+    --accent: rgba(130,90,255,0.9);
+    --text: #e6eef8;
+    --muted: rgba(230,238,248,0.7);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(130,90,255,0.12), transparent 8%),
+                radial-gradient(900px 500px at 90% 90%, rgba(0,200,255,0.06), transparent 8%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* moving subtle gradient */
+  @keyframes drift {
+    0%{transform:translateY(0) translateX(0) rotate(0deg);}
+    50%{transform:translateY(-8px) translateX(6px) rotate(1deg);}
+    100%{transform:translateY(0) translateX(0) rotate(0deg);}
+  }
+
+  .scene{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 20px;
+    box-sizing:border-box;
+  }
+
+  /* floating blobs */
+  .blob{
+    position:absolute;
+    width:360px;
+    height:360px;
+    filter: blur(40px) saturate(120%);
+    opacity:0.18;
+    border-radius:50%;
+    mix-blend-mode:screen;
+    animation:drift 8s ease-in-out infinite;
+  }
+
+  .blob.a{ left:-8%; top:-6%; background: linear-gradient(135deg, rgba(130,90,255,0.9), rgba(58,123,213,0.6)); transform:scale(0.9); }
+  .blob.b{ right:-10%; bottom:-10%; width:420px; height:420px; background: linear-gradient(135deg, rgba(0,200,255,0.35), rgba(255,120,180,0.18)); animation-duration:10s; opacity:0.12; }
+  .blob.c{ left:50%; top:14%; width:200px; height:200px; background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(130,90,255,0.08)); transform:translateX(-40%); animation-duration:12s; opacity:0.08; }
+
+  /* glass card */
+  .card{
+    position:relative;
+    width:min(720px,94vw);
+    padding:36px;
+    border-radius:16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    border: 1px solid rgba(255,255,255,0.06);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:center;
+    text-align:center;
+    overflow:visible;
+  }
+
+  .title{
+    font-size:clamp(28px,5vw,44px);
+    letter-spacing:0.6px;
+    margin:0;
+    font-weight:700;
+    color:var(--text);
+    display:flex;
+    gap:12px;
+    align-items:center;
+    transform-origin:center;
+    animation:pop 900ms cubic-bezier(.2,.9,.3,1) both;
+  }
+
+  @keyframes pop{
+    0%{transform:scale(.88) translateY(-6px); opacity:0;}
+    60%{transform:scale(1.02) translateY(2px); opacity:1;}
+    100%{transform:scale(1) translateY(0);}
+  }
+
+  /* subtle continuous bounce for accent dot */
+  @keyframes bounce {
+    0%{transform:translateY(0);}
+    25%{transform:translateY(-6px);}
+    50%{transform:translateY(0);}
+    75%{transform:translateY(-3px);}
+    100%{transform:translateY(0);}
+  }
+
+  .dot{
+    width:12px;
+    height:12px;
+    background:var(--accent);
+    border-radius:50%;
+    box-shadow:0 6px 20px rgba(130,90,255,0.28);
+    animation:bounce 2.2s infinite ease-in-out;
+  }
+
+  .subtitle{
+    color:var(--muted);
+    margin:0;
+    font-size:14px;
+  }
+
+  .meta{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:13px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:10px 14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.03);
+    display:inline-block;
+  }
+
+  /* small animated elements */
+  .pulse{
+    margin-top:14px;
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    display:inline-grid;
+    place-items:center;
+    background:linear-gradient(180deg, rgba(130,90,255,0.14), rgba(130,90,255,0.06));
+    box-shadow:0 6px 20px rgba(130,90,255,0.08);
+    animation:glow 2.4s infinite;
+    border:1px solid rgba(130,90,255,0.12);
+  }
+
+  @keyframes glow{
+    0%{transform:translateY(0) scale(1); box-shadow:0 6px 24px rgba(130,90,255,0.06);}
+    50%{transform:translateY(-6px) scale(1.02); box-shadow:0 18px 40px rgba(130,90,255,0.14);}
+    100%{transform:translateY(0) scale(1); box-shadow:0 6px 24px rgba(130,90,255,0.06);}
+  }
+
+  /* footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    color:var(--muted);
+    font-size:13px;
+    background: rgba(255,255,255,0.02);
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  footer a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+    text-decoration:none;
+    width:28px;
+    height:28px;
+    border-radius:8px;
+    transition:transform .18s ease, background .2s ease;
+  }
+
+  footer a:hover{ transform:translateY(-4px) scale(1.02); background:rgba(255,255,255,0.02); }
+
+  /* github svg styling */
+  .gh{
+    width:18px;
+    height:18px;
+    fill:var(--muted);
+    transition:fill .18s ease;
+  }
+
+  footer a:hover .gh{ fill:var(--accent); filter:drop-shadow(0 6px 18px rgba(130,90,255,0.14)); }
+
+  /* responsive */
+  @media (max-width:420px){
+    .card{ padding:20px; border-radius:12px; }
+    footer{ font-size:12px; padding:6px 10px; bottom:12px; }
+  }
+</style>
+</head>
+<body>
+  <div class="scene">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+    <div class="blob c" aria-hidden="true"></div>
+
+    <main class="card" role="main" aria-labelledby="site-title">
+      <h1 id="site-title" class="title">
+        <span>amirabolfazle</span>
+        <span class="dot" aria-hidden="true"></span>
+      </h1>
+
+      <p class="subtitle">Minimal glassmorphism page with subtle motion.</p>
+
+      <div class="meta" aria-live="polite">Creation time: 2025-09-29 19:01:37</div>
+
+      <div class="pulse" aria-hidden="true" title="animated">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2v6l4 2-4 2v6" stroke="rgba(255,255,255,0.9)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="gh" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.66.5 12.02c0 5.09 3.29 9.41 7.86 10.94.58.11.79-.25.79-.55 0-.27-.01-1-.02-1.96-3.2.7-3.88-1.54-3.88-1.54-.53-1.36-1.3-1.72-1.3-1.72-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.75-1.56-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.19 1.18a11.07 11.07 0 0 1 2.91-.39c.99 0 1.98.13 2.91.39 2.22-1.5 3.19-1.18 3.19-1.18.64 1.59.24 2.76.12 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.4-5.25 5.69.42.36.8 1.08.8 2.18 0 1.57-.02 2.84-.02 3.23 0 .3.21.66.8.55 4.57-1.53 7.86-5.85 7.86-10.94C23.5 5.66 18.35.5 12 .5z"/>
+      </svg>
+    </a>
+    <div>Created by amirabolfazle</div>
+  </footer>
+</body>
+</html>
