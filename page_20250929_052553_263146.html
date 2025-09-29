@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --accent1: #7c3aed;
+      --accent2: #06b6d4;
+      --accent3: #fb7185;
+      --glass: rgba(255,255,255,0.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(124,58,237,0.12), transparent 8%),
+                  radial-gradient(1000px 700px at 90% 90%, rgba(6,182,212,0.10), transparent 6%),
+                  linear-gradient(135deg, var(--bg1) 0%, #041426 100%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+    }
+
+    /* animated shifting gradient overlay */
+    .gradient-anim{
+      position:fixed;
+      inset:-20%;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(124,58,237,0.12), rgba(6,182,212,0.10), rgba(251,113,133,0.10), rgba(124,58,237,0.12));
+      mix-blend-mode:screen;
+      filter: blur(60px) saturate(120%);
+      animation: spin 18s linear infinite;
+      pointer-events:none;
+      opacity:0.95;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .container{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      width:min(980px,96%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:18px;
+      padding:36px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px) saturate(120%);
+      position:relative;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    /* rotating floating shapes */
+    .orb{
+      position:absolute;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,0.18), transparent 20%),
+                  radial-gradient(circle at 70% 70%, rgba(6,182,212,0.12), transparent 20%);
+      filter:blur(30px) contrast(1.02);
+      transform-origin:center;
+      animation: slow-rotate 20s linear infinite;
+      z-index:0;
+      pointer-events:none;
+    }
+    .orb.two{ width:320px; height:320px; right:-100px; top:-120px; animation-duration:28s; }
+    .orb.one{ left:-120px; bottom:-100px; animation-direction:reverse; }
+
+    @keyframes slow-rotate{ from{transform:rotate(0deg)} to{transform:rotate(360deg)}}
+
+    .main{
+      position:relative;
+      z-index:2;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .profile{
+      flex:0 0 220px;
+      height:220px;
+      border-radius:20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.5);
+      transition:transform 0.6s cubic-bezier(.2,.9,.2,1);
+      transform-style:preserve-3d;
+      perspective:800px;
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .profile:hover{ transform:translateY(-6px) rotateY(-10deg) rotateX(6deg) scale(1.02); }
+
+    .avatar{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background: conic-gradient(from 180deg, var(--accent1), var(--accent2), var(--accent3), var(--accent1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:48px;
+      box-shadow: 0 6px 18px rgba(12,20,40,0.6);
+      transform:translateZ(40px);
+      border:6px solid rgba(255,255,255,0.03);
+    }
+
+    .info{
+      flex:1 1 420px;
+      min-width:260px;
+    }
+
+    .title{
+      font-size:48px;
+      line-height:1;
+      margin:0 0 8px 0;
+      letter-spacing:-0.02em;
+      display:inline-block;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      transform-style:preserve-3d;
+      animation: name-twist 6s ease-in-out infinite;
+    }
+
+    @keyframes name-twist{
+      0%{transform:rotateX(0) rotateY(0)}
+      25%{transform:rotateY(10deg) rotateX(2deg)}
+      50%{transform:rotateY(0) rotateX(0)}
+      75%{transform:rotateY(-10deg) rotateX(-2deg)}
+      100%{transform:rotateX(0) rotateY(0)}
+    }
+
+    .subtitle{
+      margin:0 0 18px 0;
+      color:rgba(230,238,248,0.78);
+      font-size:15px;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .chip{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:rgba(230,238,248,0.9);
+      font-size:13px;
+      box-shadow: 0 6px 18px rgba(4,10,30,0.45);
+      transform-origin:center;
+      animation: float 6s ease-in-out infinite;
+    }
+    .chip:nth-child(2){ animation-delay:0.8s }
+    .chip:nth-child(3){ animation-delay:1.6s }
+
+    @keyframes float{
+      0%{transform:translateY(0) rotate(-1deg)}
+      50%{transform:translateY(-6px) rotate(2deg)}
+      100%{transform:translateY(0) rotate(-1deg)}
+    }
+
+    .time{
+      margin-top:18px;
+      font-size:13px;
+      color:rgba(230,238,248,0.68);
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* rotating cards on the right */
+    .stack{
+      width:220px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:flex-end;
+    }
+    .mini{
+      width:160px;
+      height:60px;
+      border-radius:12px;
+      background:linear-gradient(135deg, rgba(124,58,237,0.16), rgba(6,182,212,0.08));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:600;
+      box-shadow: 0 8px 20px rgba(2,6,23,0.45);
+      transform-origin:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .mini.one{ transform:rotate(-6deg) translateX(12px); animation: wobble 5s ease-in-out infinite; }
+    .mini.two{ transform:rotate(3deg) translateX(0); animation: wobble 5s ease-in-out infinite; animation-delay:0.2s;}
+    .mini.three{ transform:rotate(-2deg) translateX(6px); animation: wobble 5s ease-in-out infinite; animation-delay:0.4s;}
+
+    @keyframes wobble{
+      0%{transform:rotate(-6deg) translateX(12px)}
+      50%{transform:rotate(3deg) translateX(-6px)}
+      100%{transform:rotate(-6deg) translateX(12px)}
+    }
+
+    footer{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:18px;
+      display:flex;
+      justify-content:center;
+      z-index:3;
+      pointer-events:none;
+    }
+    .footer-inner{
+      pointer-events:auto;
+      display:inline-flex;
+      gap:12px;
+      align-items:center;
+      background: rgba(2,6,23,0.6);
+      padding:10px 14px;
+      border-radius:999px;
+      color:rgba(230,238,248,0.9);
+      font-size:13px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+      backdrop-filter: blur(6px);
+    }
+    .footer-inner a{ color:inherit; text-decoration:none; display:inline-flex; gap:8px; align-items:center; }
+    .gh-icon{ width:18px; height:18px; display:inline-block; transform:translateY(1px); }
+
+    @media (max-width:720px){
+      .main{flex-direction:column; align-items:center}
+      .stack{width:100%; flex-direction:row; justify-content:center}
+      .profile{order:0}
+      .time{margin-top:12px}
+      .title{font-size:36px}
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-anim" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="card" role="main" aria-labelledby="main-title">
+      <div class="orb one" aria-hidden="true" style="left:-120px; bottom:-100px"></div>
+      <div class="orb two" aria-hidden="true" style="right:-100px; top:-130px"></div>
+
+      <div class="main">
+        <div class="profile" aria-hidden="false">
+          <div class="avatar" aria-hidden="true">A</div>
+        </div>
+
+        <div class="info">
+          <h1 id="main-title" class="title">amirabolfazle</h1>
+          <p class="subtitle">A graceful, animated personal page with gradient theme and subtle rotation effects.</p>
+
+          <div class="meta" aria-hidden="true">
+            <div class="chip">Designer</div>
+            <div class="chip">Developer</div>
+            <div class="chip">Creator</div>
+          </div>
+
+          <div class="time" aria-label="Creation time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:.9" xmlns="http://www.w3.org/2000/svg"><path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M21 12A9 9 0 1 1 3 12A9 9 0 0 1 21 12Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <time datetime="2025-09-29T05:25:08">2025-09-29 05:25:08</time>
+          </div>
+        </div>
+
+        <div class="stack" aria-hidden="true">
+          <div class="mini one">projects</div>
+          <div class="mini two">blog</div>
+          <div class="mini three">contact</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner" role="contentinfo">
+      <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.648.5.5 5.648.5 12c0 5.086 3.292 9.396 7.864 10.918.576.106.786-.25.786-.556 0-.275-.01-1.006-.015-1.976-3.2.696-3.876-1.542-3.876-1.542-.523-1.328-1.277-1.682-1.277-1.682-1.044-.713.08-.698.08-.698 1.154.081 1.761 1.186 1.761 1.186 1.026 1.758 2.693 1.251 3.35.957.104-.744.402-1.252.731-1.54-2.553-.29-5.238-1.277-5.238-5.683 0-1.255.45-2.279 1.186-3.082-.119-.29-.514-1.457.112-3.037 0 0 .967-.31 3.17 1.18a10.99 10.99 0 0 1 2.888-.388c.98.005 1.968.132 2.888.388 2.202-1.49 3.168-1.18 3.168-1.18.628 1.58.233 2.747.114 3.037.739.803 1.185 1.827 1.185 3.082 0 4.417-2.69 5.389-5.253 5.672.413.354.782 1.052.782 2.122 0 1.532-.014 2.769-.014 3.148 0 .309.208.668.792.556C20.708 21.392 24 17.082 24 12 24 5.648 18.352.5 12 .5z" fill="currentColor"/>
+        </svg>
+      </a>
+      <div>Created by amirabolfazle</div>
+    </div>
+  </footer>
+</body>
+</html>
