@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --card:#0f1720;
+    --muted:#9aa5b1;
+    --accent:#7ce7ff;
+    --accent-2:#9b8cff;
+    --glow: rgba(124,231,255,0.12);
+    --glass: rgba(255,255,255,0.03);
+  }
+
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:linear-gradient(180deg,#05070a 0%, #07101a 60%);color:#e6eef3;}
+  .stage{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+    perspective:1200px;
+  }
+
+  /* animated nebulous background */
+  .nebula{
+    position:absolute;
+    inset:-20%;
+    background:
+      radial-gradient(600px 400px at 10% 20%, rgba(155,140,255,0.06), transparent 8%),
+      radial-gradient(500px 300px at 90% 80%, rgba(124,231,255,0.04), transparent 6%),
+      linear-gradient(120deg, rgba(255,255,255,0.01), transparent 30%);
+    filter:blur(60px) saturate(120%);
+    transform-origin:center;
+    animation:nebZoom 12s ease-in-out infinite alternate;
+    z-index:0;
+  }
+  @keyframes nebZoom{
+    from{transform:scale(1) rotate(0deg);}
+    to{transform:scale(1.06) rotate(2deg);}
+  }
+
+  /* floating grid */
+  .grid{
+    position:absolute;
+    inset:0;
+    background-image:linear-gradient(transparent 95%, rgba(255,255,255,0.02) 95%), linear-gradient(90deg, transparent 95%, rgba(255,255,255,0.02) 95%);
+    background-size: 80px 80px, 80px 80px;
+    mix-blend-mode:overlay;
+    opacity:0.6;
+    transform-origin:center;
+    animation:floatGrid 18s linear infinite;
+    z-index:0;
+  }
+  @keyframes floatGrid{ from{transform:translateY(0)} to{transform:translateY(-40px)} }
+
+  .card{
+    position:relative;
+    z-index:2;
+    width:min(980px,92%);
+    max-width:1100px;
+    display:flex;
+    gap:28px;
+    align-items:stretch;
+    padding:34px;
+    border-radius:18px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6), 0 2px 8px rgba(124,231,255,0.03);
+    backdrop-filter: blur(8px) saturate(120%);
+    transform-style:preserve-3d;
+    transition:transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s;
+    border:1px solid rgba(255,255,255,0.03);
+    overflow:hidden;
+  }
+
+  /* left panel (portrait/info) */
+  .left{
+    flex:0 0 320px;
+    min-width:220px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    align-items:center;
+    padding:18px;
+    border-radius:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  .avatar{
+    width:156px;
+    height:156px;
+    border-radius:18px;
+    background:
+      linear-gradient(135deg, rgba(124,231,255,0.06), rgba(155,140,255,0.06)),
+      linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:var(--accent);
+    font-size:42px;
+    letter-spacing:1px;
+    box-shadow: 0 8px 30px rgba(11,15,20,0.6), 0 1px 0 rgba(255,255,255,0.02);
+    border:1px solid rgba(124,231,255,0.08);
+    transform-origin:center;
+    transition:transform .35s cubic-bezier(.2,.9,.2,1);
+  }
+
+  .name{
+    font-size:28px;
+    font-weight:700;
+    color:#eaf6ff;
+    letter-spacing:0.4px;
+    text-align:center;
+  }
+  .title{
+    color:var(--muted);
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:1.6px;
+    font-weight:700;
+  }
+
+  .meta{
+    width:100%;
+    display:flex;
+    gap:8px;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 12px;
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    font-size:13px;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  /* right panel (content) */
+  .right{
+    flex:1;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .headline{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .headline h1{
+    margin:0;
+    font-weight:800;
+    font-size:34px;
+    color:linear-gradient(90deg,var(--accent),var(--accent-2));
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    letter-spacing:-0.6px;
+  }
+  .badge{
+    padding:6px 10px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(124,231,255,0.06), rgba(155,140,255,0.04));
+    color:var(--accent);
+    font-weight:700;
+    font-size:12px;
+    border:1px solid rgba(124,231,255,0.06);
+    box-shadow:0 4px 18px rgba(124,231,255,0.03);
+  }
+
+  .bio{
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.6;
+    margin-top:6px;
+  }
+
+  .cards{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:12px;
+    margin-top:12px;
+  }
+  .tile{
+    padding:12px;
+    border-radius:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border:1px solid rgba(255,255,255,0.02);
+    color:var(--muted);
+    font-size:13px;
+    text-align:center;
+    transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+  }
+  .tile strong{display:block;color:#eaf6ff;font-size:15px;margin-bottom:6px;}
+
+  /* animated zoom spotlight on hover/focus */
+  .card:hover{ transform:translateY(-8px) scale(1.01); box-shadow: 0 28px 60px rgba(3,8,15,0.75); }
+  .card:active{ transform:translateY(-2px) scale(1.005); }
+
+  .tile:hover{ transform:translateY(-6px) scale(1.03); box-shadow: 0 10px 30px rgba(2,6,23,0.55); }
+  .avatar:hover{ transform: translateZ(40px) rotateX(6deg) scale(1.03); box-shadow:0 18px 60px rgba(11,15,20,0.7); }
+
+  /* fancy animated ribbon */
+  .ribbon{
+    position:absolute;
+    right:-160px;
+    top:-60px;
+    width:420px;
+    height:420px;
+    transform:rotate(30deg);
+    background: conic-gradient(from 120deg at 50% 50%, rgba(155,140,255,0.06), rgba(124,231,255,0.06), transparent 60%);
+    filter:blur(36px);
+    pointer-events:none;
+    animation:ribbonSpin 18s linear infinite;
+    z-index:0;
+  }
+  @keyframes ribbonSpin{ from{transform:rotate(30deg) translateX(0)} to{transform:rotate(390deg) translateX(-10px)} }
+
+  /* footer */
+  footer{
+    position:fixed;
+    left:20px;
+    right:20px;
+    bottom:18px;
+    z-index:6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+  }
+  .footer-wrap{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 14px;
+    border-radius:999px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border:1px solid rgba(255,255,255,0.02);
+    color:var(--muted);
+    font-size:13px;
+    box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+    backdrop-filter: blur(6px);
+  }
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#eaf6ff;
+    text-decoration:none;
+    font-weight:600;
+  }
+  .gh svg{ width:18px;height:18px; display:block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6)); }
+
+  /* responsive */
+  @media (max-width:880px){
+    .card{flex-direction:column; padding:22px;}
+    .left{flex-direction:row; gap:12px; align-items:center; padding:12px; width:100%;}
+    .cards{grid-template-columns:repeat(2,1fr);}
+    .right{padding:6px;}
+    .headline h1{font-size:28px;}
+    .avatar{width:96px;height:96px;font-size:28px;}
+  }
+  @media (max-width:520px){
+    .cards{grid-template-columns:repeat(1,1fr);}
+    .left{padding:10px}
+    .footer-wrap{font-size:12px;padding:8px 10px;}
+  }
+
+  /* small tasteful animations for text */
+  .flicker{ animation:flicker 3.6s linear infinite; }
+  @keyframes flicker{
+    0%,100%{opacity:1; filter:blur(0);}
+    50%{opacity:.92; filter:blur(.2px);}
+  }
+
+  /* subtle mouse parallax */
+  .parallax{
+    transform-style:preserve-3d;
+    transition:transform .12s ease-out;
+  }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <div class="nebula" aria-hidden="true"></div>
+    <div class="ribbon" aria-hidden="true"></div>
+    <div class="grid" aria-hidden="true"></div>
+
+    <main class="card parallax" role="main" aria-labelledby="title">
+      <aside class="left" aria-label="profile">
+        <div class="avatar" aria-hidden="true">AB</div>
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+          <div class="name">amirabolfazle</div>
+          <div class="title">Personal Page</div>
+          <div class="meta" style="margin-top:10px;">
+            <div style="display:flex;flex-direction:column;align-items:flex-start;">
+              <small style="color:var(--muted);font-size:11px">Status</small>
+              <strong style="color:#bff7ff">Exploring · Creating</strong>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;">
+              <small style="color:var(--muted);font-size:11px">Created</small>
+              <strong style="color:#dfeefe;font-size:13px">2025-09-29 07:06:50</strong>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="right" aria-label="content">
+        <div class="headline">
+          <h1 id="title" class="flicker">amirabolfazle</h1>
+          <div class="badge">Dark Mode · Live Zoom</div>
+        </div>
+
+        <p class="bio">
+          A small, animated corner of the web for experiments, notes and projects. Subtle motion and layered depth bring content to life while keeping focus on what matters — the ideas. Move your mouse to feel the parallax and hover to zoom details.
+        </p>
+
+        <div class="cards" role="list" aria-label="quick info">
+          <div class="tile" role="listitem">
+            <strong>Projects</strong>
+            Auto-generated tools, creative code and small utilities.
+          </div>
+          <div class="tile" role="listitem">
+            <strong>Playground</strong>
+            Interactive demos, experiments in UI and motion.
+          </div>
+          <div class="tile" role="listitem">
+            <strong>Notes</strong>
+            Short thoughts, links and references.
+          </div>
+          <div class="tile" role="listitem">
+            <strong>Design</strong>
+            Minimal aesthetics, dark palettes, neon accents.
+          </div>
+          <div class="tile" role="listitem">
+            <strong>Contact</strong>
+            Reach out via GitHub for collaboration.
+          </div>
+          <div class="tile" role="listitem">
+            <strong>Flow</strong>
+            Timeless curiosity and gradual refinement.
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-wrap" role="contentinfo">
+        <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="amirabolfazle GitHub">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .297a12 12 0 00-3.794 23.391c.6.111.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.756-1.334-1.756-1.09-.744.083-.729.083-.729 1.205.09 1.84 1.238 1.84 1.238 1.07 1.835 2.809 1.305 3.495.998.108-.775.42-1.305.762-1.606-2.665-.305-5.467-1.332-5.467-5.93 0-1.31.468-2.381 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 016.004 0c2.293-1.552 3.3-1.23 3.3-1.23.654 1.653.242 2.873.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.807 5.62-5.479 5.921.431.37.815 1.102.815 2.222v3.293c0 .32.217.694.825.576A12 12 0 0012 .297z" fill="#dfeefe"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+<script>
+  // Parallax and interactive zoom based on pointer
+  (function(){
+    const stage = document.getElementById('stage');
+    const card = document.querySelector('.card');
+    let rect = card.getBoundingClientRect();
+
+    function onMove(e){
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - (rect.left + rect.width/2);
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - (rect.top + rect.height/2);
+      const rx = (-y / rect.height) * 12; // rotateX
+      const ry = ( x / rect.width) * 12;  // rotateY
+      const tz = 1 + Math.min(0.04, Math.hypot(x,y) / (rect.width*4));
+      card.style.transform = `translateY(-8px) scale(${tz}) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    }
+
+    function onLeave(){
+      card.style.transform = '';
+    }
+
+    function updateRect(){ rect = card.getBoundingClientRect(); }
+
+    window.addEventListener('resize', updateRect);
+    stage.addEventListener('mousemove', onMove);
+    stage.addEventListener('touchmove', onMove, {passive:true});
+    stage.addEventListener('mouseleave', onLeave);
+    stage.addEventListener('touchend', onLeave);
+
+    // subtle entrance animation
+    requestAnimationFrame(()=> {
+      card.style.transition = 'transform .9s cubic-bezier(.15,.9,.2,1), box-shadow .5s';
+      card.style.transform = 'translateY(-6px) scale(1.007) rotateX(0deg) rotateY(0deg)';
+      setTimeout(()=> card.style.transform = '', 700);
+    });
+  })();
+</script>
+</body>
+</html>
