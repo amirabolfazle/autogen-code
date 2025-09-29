@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg:#050307;
+    --card:#07101a;
+    --neon-cyan:#00f0ff;
+    --neon-pink:#ff3ecb;
+    --neon-purple:#9b5cff;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+    --text: #e6f7ff;
+    --muted: #9fb5c8;
+    --accent: #7ef0c7;
+  }
+
+  /* Reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 20%, rgba(60,8,88,0.18), transparent),
+                radial-gradient(900px 400px at 90% 80%, rgba(0,200,255,0.06), transparent),
+                var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* Container */
+  .wrap{
+    width:100%;
+    max-width:1100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius:18px;
+    padding:28px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 60px rgba(120,0,255,0.035);
+    backdrop-filter: blur(8px) saturate(120%);
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* Neon header */
+  header{
+    display:flex;
+    gap:18px;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  .logo{
+    width:86px;height:86px;border-radius:14px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.04);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow: 0 6px 30px rgba(120,0,255,0.08), 0 0 18px rgba(0,240,255,0.04);
+    position:relative;
+    overflow:hidden;
+  }
+  .logo:before{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(120deg, rgba(0,240,255,0.06), rgba(255,62,203,0.04));
+    mix-blend-mode:overlay;
+  }
+  .logo svg{width:56px;height:56px; filter:drop-shadow(0 6px 18px rgba(0,240,255,0.12));}
+
+  .title-block{flex:1;min-width:0}
+  h1{
+    font-size:28px;letter-spacing:0.6px;
+    margin-bottom:6px;
+    display:inline-block;
+    color:var(--neon-cyan);
+    text-shadow:
+      0 0 6px rgba(0,240,255,0.18),
+      0 0 18px rgba(155,92,255,0.06),
+      0 0 38px rgba(255,62,203,0.03);
+    transform-origin:center left;
+    animation: neon-flicker 3.2s ease-in-out infinite;
+  }
+  p.subtitle{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:2px;
+  }
+
+  /* hero */
+  .hero{
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+    margin-top:12px;
+  }
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:18px;
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+  }
+  .intro{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .badge{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    background:linear-gradient(90deg, rgba(0,240,255,0.06), rgba(255,62,203,0.04));
+    padding:6px 10px;border-radius:999px;
+    border:1px solid rgba(255,255,255,0.02);
+    color:var(--accent);
+    font-weight:600;
+    width:max-content;
+    box-shadow: 0 8px 28px rgba(120,0,255,0.03);
+    font-size:13px;
+  }
+
+  .about-text{
+    font-size:15px;color:var(--muted);line-height:1.5;
+  }
+
+  .meta{
+    display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;
+  }
+  .chip{
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    padding:8px 12px;border-radius:10px;font-size:13px;color:var(--neon-pink);
+    border:1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 6px 18px rgba(255,62,203,0.02), 0 0 12px rgba(255,62,203,0.02);
+  }
+
+  /* right column */
+  .side{
+    width:320px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .time{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-size:13px;color:var(--muted);
+    background:linear-gradient(90deg, rgba(155,92,255,0.02), rgba(0,240,255,0.02));
+    padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);
+    text-align:center;
+  }
+
+  /* Projects */
+  .projects{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:18px;
+  }
+  .proj{
+    padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    overflow:hidden;position:relative;
+  }
+  .proj h3{font-size:15px;color:var(--neon-purple); margin-bottom:8px}
+  .proj p{font-size:13px;color:var(--muted);line-height:1.4;margin-bottom:10px}
+  .proj a{
+    display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:8px;
+    background:linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));
+    color:#051018;font-weight:700;font-size:13px;text-decoration:none;
+    box-shadow: 0 8px 28px rgba(0,240,255,0.06);
+  }
+
+  /* contact */
+  .contact{
+    margin-top:18px;display:flex;gap:12px;align-items:center;justify-content:space-between;
+    padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(120,0,255,0.04), rgba(0,240,255,0.03));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .contact .left{display:flex;flex-direction:column}
+  .contact .left strong{color:var(--text);font-size:14px}
+  .contact .left span{font-size:13px;color:var(--muted)}
+  .contact a.cta{
+    background:transparent;color:var(--neon-cyan);border:1px solid rgba(0,240,255,0.12);padding:8px 12px;border-radius:10px;
+    text-decoration:none;font-weight:700;box-shadow: 0 6px 18px rgba(0,240,255,0.04);
+  }
+
+  /* footer */
+  footer{
+    margin-top:18px;display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px dashed rgba(255,255,255,0.02);
+  }
+  .credit{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+  .github-link{
+    display:inline-flex;gap:8px;align-items:center;color:var(--neon-cyan);text-decoration:none;
+    padding:8px;border-radius:10px;border:1px solid rgba(0,240,255,0.06);
+    background:linear-gradient(180deg, rgba(0,240,255,0.02), transparent);
+    box-shadow: 0 10px 30px rgba(0,240,255,0.04);
+  }
+  .github-link svg{width:18px;height:18px;fill:currentColor;filter:drop-shadow(0 6px 12px rgba(0,240,255,0.06))}
+
+  /* subtle animated background lines */
+  .wrap:after{
+    content:"";
+    position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mix-blend-mode: overlay;
+    opacity:0.8;
+  }
+
+  /* reveal/slide-up */
+  .reveal{opacity:0; transform:translateY(20px); transition: all 650ms cubic-bezier(.2,.9,.3,1);will-change:transform,opacity}
+  .reveal.active{opacity:1; transform:translateY(0);}
+
+  /* neon flicker */
+  @keyframes neon-flicker{
+    0%{text-shadow: 0 0 6px rgba(0,240,255,0.18)}
+    5%{text-shadow:0 0 14px rgba(0,240,255,0.22)}
+    10%{text-shadow:0 0 6px rgba(0,240,255,0.18)}
+    25%{text-shadow:0 0 30px rgba(155,92,255,0.12)}
+    50%{text-shadow:0 0 6px rgba(255,62,203,0.12)}
+    75%{text-shadow:0 0 18px rgba(0,240,255,0.16)}
+    100%{text-shadow:0 0 6px rgba(0,240,255,0.18)}
+  }
+
+  /* responsive */
+  @media (max-width:900px){
+    .hero{flex-direction:column}
+    .side{width:100%}
+    .projects{grid-template-columns:1fr}
+    .wrap{padding:20px}
+  }
+
+</style>
+</head>
+<body>
+  <main class="wrap" id="page">
+    <header>
+      <div class="logo reveal" data-delay="60">
+        <!-- Custom neon monogram -->
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#00f0ff"/>
+              <stop offset="1" stop-color="#ff3ecb"/>
+            </linearGradient>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <g filter="url(#glow)">
+            <rect x="12" y="12" width="176" height="176" rx="24" fill="url(#g1)" opacity="0.06"/>
+            <path d="M60 140 L60 60 L110 60 Q140 60 140 92 Q140 124 110 124 L85 124" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="150" cy="50" r="6" fill="#fff" opacity="0.9"/>
+          </g>
+        </svg>
+      </div>
+      <div class="title-block">
+        <h1 class="reveal" data-delay="120">amirabolfazle</h1>
+        <p class="subtitle reveal" data-delay="180">Neon portfolio — creative code, design experiments, and tiny obsessions</p>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="card intro reveal" data-delay="240">
+        <div class="badge">Full-Stack • Creative Coder</div>
+        <div class="about-text" style="margin-top:8px;">
+          Hi — I'm amirabolfazle. I build playful interfaces, experiment with light and motion, and ship small tools that feel delightful. This single-file portfolio glows, slides up, and remembers when it was created.
+        </div>
+        <div class="meta" style="margin-top:12px;">
+          <div class="chip">JS &middot; WebGL &middot; CSS</div>
+          <div class="chip">UI Animations</div>
+          <div class="chip">Design Systems</div>
+        </div>
+
+        <div class="projects" style="margin-top:14px;">
+          <div class="proj reveal" data-delay="300">
+            <h3>Autogen Code</h3>
+            <p>Tools and automation that help me generate consistent projects and prototypes quickly.</p>
+            <a href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noreferrer">View on GitHub</a>
+          </div>
+          <div class="proj reveal" data-delay="360">
+            <h3>Neon Labs</h3>
+            <p>Small experiments exploring glow, blur, and physics-based motion in the browser.</p>
+            <a href="#" onclick="return false;">Explore demo</a>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="card time reveal" data-delay="420">
+          Creation time
+          <div style="margin-top:6px;font-weight:700;color:var(--text);font-size:13px;">
+            2025-09-29 16:15:52
+          </div>
+        </div>
+
+        <div class="card reveal" data-delay="480" style="display:flex;flex-direction:column;gap:8px;">
+          <strong style="color:var(--neon-pink);font-size:14px;">Skillset</strong>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+            <span class="chip" style="font-size:12px">HTML</span>
+            <span class="chip" style="font-size:12px">CSS</span>
+            <span class="chip" style="font-size:12px">JavaScript</span>
+            <span class="chip" style="font-size:12px">Three.js</span>
+            <span class="chip" style="font-size:12px">Node</span>
+          </div>
+        </div>
+
+        <div class="card reveal" data-delay="540">
+          <strong style="display:block;color:var(--text);margin-bottom:6px">Get in touch</strong>
+          <span style="color:var(--muted);font-size:13px">Email: <a href="mailto:amir@example.com" style="color:var(--neon-cyan);text-decoration:none">amir@example.com</a></span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="contact reveal" data-delay="600">
+      <div class="left">
+        <strong>Open to work & collaborations</strong>
+        <span>Available for freelance projects and small teams</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a class="cta" href="mailto:amir@example.com">Contact</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="credit reveal" data-delay="660">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 .5C5.73.5.75 5.48.75 11.74c0 4.95 3.2 9.14 7.64 10.62.56.1.77-.24.77-.54 0-.27-.01-1-.02-1.95-3.11.68-3.77-1.5-3.77-1.5-.51-1.3-1.24-1.65-1.24-1.65-1.01-.69.08-.68.08-.68 1.12.08 1.7 1.15 1.7 1.15 1 . /* fallback */"></path>
+            <path d="M12 2.5c-5.15 0-9.34 4.19-9.34 9.34 0 4.12 2.67 7.62 6.37 8.85.47.09.64-.2.64-.45 0-.22-.01-.81-.01-1.59-2.59.56-3.14-1.1-3.14-1.1-.42-1.06-1.02-1.34-1.02-1.34-.83-.57.06-.56.06-.56.92.06 1.4.95 1.4.95.82 1.4 2.16 1 2.69.77.08-.6.32-1 .58-1.22-2.07-.23-4.24-1.04-4.24-4.63 0-1.02.36-1.86.95-2.52-.1-.23-.41-1.16.09-2.42 0 0 .78-.25 2.55.95.74-.21 1.53-.31 2.32-.31.79 0 1.58.1 2.32.31 1.77-1.2 2.55-.95 2.55-.95.5 1.26.19 2.19.09 2.42.59.66.95 1.5.95 2.52 0 3.6-2.17 4.4-4.24 4.63.33.28.62.83.62 1.68 0 1.21-.01 2.19-.01 2.49 0 .25.17.55.65.45 3.7-1.23 6.37-4.73 6.37-8.85C21.34 6.69 17.15 2.5 12 2.5z"/>
+          </svg>
+          autogen-code
+        </a>
+      </div>
+
+      <div class="reveal" data-delay="720" style="color:var(--muted);font-size:13px">
+        Created by amirabolfazle
+      </div>
+    </footer>
+  </main>
+
+<script>
+  // Slide-up reveal using IntersectionObserver with staggered delays
+  (function(){
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const el = entry.target;
+          const delay = parseInt(el.getAttribute('data-delay')||0,10);
+          setTimeout(()=> el.classList.add('active'), Math.max(0, delay));
+          observer.unobserve(el);
+        }
+      });
+    }, {threshold: 0.06});
+
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    // subtle floating background motion
+    const wrap = document.getElementById('page');
+    let mx = 0, my = 0;
+    window.addEventListener('mousemove', (e)=>{
+      const rect = wrap.getBoundingClientRect();
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      mx = (e.clientX - cx) / rect.width;
+      my = (e.clientY - cy) / rect.height;
+      wrap.style.transform = `translate3d(${mx*8}px,${my*6}px,0)`;
+    });
+
+    // tiny float animation for projects call-to-action
+    const ctas = document.querySelectorAll('.proj a');
+    ctas.forEach((a, i)=>{
+      a.animate([
+        { transform: 'translateY(0)'},
+        { transform: 'translateY(-6px)'},
+        { transform: 'translateY(0)'}
+      ], {duration: 2500 + i*200, iterations: Infinity, easing: 'cubic-bezier(.2,.9,.3,1)'});
+    });
+
+    // Accessibility: focus outlines for keyboard users
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Tab') document.body.classList.add('show-focus');
+    });
+  })();
+</script>
+</body>
+</html>
