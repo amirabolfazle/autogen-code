@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: #0f1724;
+      --bg2: #071024;
+      --accent: #7c5cff;
+      --accent2: #00d4ff;
+      --glass: rgba(255,255,255,0.06);
+      --glass-strong: rgba(255,255,255,0.09);
+      --text: rgba(255,255,255,0.95);
+      --muted: rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 400px at 10% 10%, rgba(124,92,255,0.12), transparent 8%),
+                  radial-gradient(600px 300px at 90% 90%, rgba(0,212,255,0.06), transparent 10%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:48px 24px;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .stage{
+      width:100%;
+      max-width:1100px;
+      margin:0 auto;
+      position:relative;
+    }
+
+    /* decorative floating orbs */
+    .orb{
+      position:absolute;
+      filter:blur(60px) saturate(120%);
+      opacity:0.45;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .orb.o1{width:420px;height:420px;left:-80px;top:-80px;background:radial-gradient(circle at 30% 30%, #7c5cff66, transparent 40%);}
+    .orb.o2{width:320px;height:320px;right:-60px;bottom:-60px;background:radial-gradient(circle at 60% 60%, #00d4ff55, transparent 40%);}
+
+    /* Glass container */
+    .glass-wrap{
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.06);
+      padding:36px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      overflow:hidden;
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .glass-wrap{grid-template-columns:1fr; padding:28px;}
+    }
+
+    /* Hero content */
+    .hero{
+      padding:12px 6px;
+    }
+    h1{
+      margin:0 0 14px 0;
+      font-size: clamp(28px, 4.5vw, 44px);
+      line-height:1.02;
+      letter-spacing:-0.02em;
+      color:var(--text);
+    }
+    p.lead{
+      margin:0 0 22px 0;
+      color:var(--muted);
+      font-size:16px;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 16px;
+      border-radius:10px;
+      background: linear-gradient(90deg, rgba(124,92,255,0.16), rgba(0,212,255,0.06));
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.06);
+      cursor:pointer;
+      text-decoration:none;
+      font-weight:600;
+      font-size:15px;
+      transition:transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 6px 18px rgba(12,18,40,0.45);
+    }
+    .btn:hover{transform:translateY(-4px); box-shadow: 0 12px 30px rgba(12,18,40,0.55);}
+
+    .meta{
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    /* right panel card */
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.45);
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .panel h3{margin:0 0 8px 0; font-size:18px}
+    .panel p{margin:0; color:var(--muted); font-size:14px;}
+
+    /* features grid */
+    .features{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+    @media (max-width:860px){ .features{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:560px){ .features{grid-template-columns:1fr;} }
+
+    .feature{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.035);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .badge{
+      min-width:44px;
+      height:44px;
+      border-radius:10px;
+      background:linear-gradient(135deg, rgba(124,92,255,0.14), rgba(0,212,255,0.12));
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--text);
+      box-shadow: 0 6px 18px rgba(12,18,40,0.28);
+      flex-shrink:0;
+    }
+    .feat-text{font-size:14px; color:var(--muted);}
+
+    /* footer */
+    footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      padding-top:12px;
+      border-top:1px dashed rgba(255,255,255,0.03);
+    }
+    .github-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      text-decoration:none;
+      padding:6px 8px;
+      border-radius:8px;
+      transition:background .12s ease, color .12s ease, transform .12s ease;
+    }
+    .github-link svg{width:18px;height:18px; display:block; fill:var(--muted);}
+    .github-link:hover{transform:translateY(-3px); color:var(--text);}
+    .github-link:hover svg{fill:var(--text);}
+
+    .created-time{font-variant-numeric: tabular-nums; color:var(--muted);}
+
+    /* Slide up effects */
+    .slide-up{opacity:0; transform:translateY(18px); transition:opacity .6s cubic-bezier(.2,.9,.2,1), transform .6s cubic-bezier(.2,.9,.2,1); will-change:transform,opacity;}
+    .slide-up.in-view{opacity:1; transform:none;}
+    /* small staggering helper via data-delay attribute */
+    .slide-up[data-delay]{
+      transition-delay: calc(var(--delay, 0s));
+    }
+
+    /* micro animations */
+    .logo{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      font-weight:700;
+      font-size:15px;
+      color:var(--text);
+    }
+    .logo-mark{
+      width:36px;height:36px;border-radius:9px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      display:inline-flex;align-items:center;justify-content:center;
+      box-shadow: 0 8px 24px rgba(124,92,255,0.14);
+      color:white;font-weight:700;font-size:14px;
+    }
+
+    /* subtle tilt effect on panel image */
+    .mock{
+      width:100%;
+      height:150px;
+      border-radius:10px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:13px;
+      transform:rotate(-2deg);
+      box-shadow: 0 30px 60px rgba(2,6,23,0.45);
+    }
+
+    small.muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="orb o1" aria-hidden="true"></div>
+    <div class="orb o2" aria-hidden="true"></div>
+
+    <main class="glass-wrap" role="main" aria-labelledby="site-title">
+      <section class="hero">
+        <div class="logo slide-up" data-delay="0s" style="--delay:0s">
+          <span class="logo-mark" aria-hidden="true">ab</span>
+          <div>
+            <div style="font-weight:700">amirabolfazle</div>
+            <small class="muted">a minimal glassmorphic landing</small>
+          </div>
+        </div>
+
+        <h1 id="site-title" class="slide-up" data-delay="0.06s" style="--delay:0.06s">Stunning glassmorphism landing — amirabolfazle</h1>
+
+        <p class="lead slide-up" data-delay="0.12s" style="--delay:0.12s">
+          A clean, modern showcase built with soft translucency, vivid accents and smooth slide-up reveals. Designed to feel light, yet memorable.
+        </p>
+
+        <div class="cta-row slide-up" data-delay="0.20s" style="--delay:0.20s">
+          <a class="btn" href="#" role="button" aria-label="Get started">Get started</a>
+          <a class="btn" href="#" role="button" aria-label="View docs">View docs</a>
+          <span class="meta" aria-hidden="true">Created: <span class="created-time">2025-09-29 16:05:43</span></span>
+        </div>
+
+        <div class="features" aria-hidden="false">
+          <div class="feature slide-up" data-delay="0.28s" style="--delay:0.28s">
+            <div class="badge">01</div>
+            <div class="feat-text"><strong>Glassmorphism</strong> — Soft frosted surfaces with subtle depth and blur.</div>
+          </div>
+
+          <div class="feature slide-up" data-delay="0.36s" style="--delay:0.36s">
+            <div class="badge">02</div>
+            <div class="feat-text"><strong>Smooth motion</strong> — Gentle slide-up reveals that guide attention.</div>
+          </div>
+
+          <div class="feature slide-up" data-delay="0.44s" style="--delay:0.44s">
+            <div class="badge">03</div>
+            <div class="feat-text"><strong>Responsive</strong> — Layout adapts to screens with graceful stacking.</div>
+          </div>
+
+          <div class="feature slide-up" data-delay="0.52s" style="--delay:0.52s">
+            <div class="badge">04</div>
+            <div class="feat-text"><strong>Accessible</strong> — High contrast accents and readable type.</div>
+          </div>
+
+          <div class="feature slide-up" data-delay="0.60s" style="--delay:0.60s">
+            <div class="badge">05</div>
+            <div class="feat-text"><strong>Lightweight</strong> — No heavy assets, just pure CSS and simple JS.</div>
+          </div>
+
+          <div class="feature slide-up" data-delay="0.68s" style="--delay:0.68s">
+            <div class="badge">06</div>
+            <div class="feat-text"><strong>Customizable</strong> — Easy to tweak colors, blur and spacing.</div>
+          </div>
+        </div>
+
+        <footer class="slide-up" data-delay="0.76s" style="--delay:0.76s">
+          <div class="created-time">Creation time: 2025-09-29 16:05:43</div>
+        </footer>
+      </section>
+
+      <aside class="panel slide-up" data-delay="0.18s" style="--delay:0.18s">
+        <h3>Live preview</h3>
+        <p style="margin-bottom:12px">An example mock of the interface — tilt, depth and translucency combine to create a premium feel.</p>
+        <div class="mock" aria-hidden="true">UI mockup placeholder</div>
+
+        <div style="margin-top:14px; display:flex; gap:10px; align-items:center; justify-content:space-between;">
+          <small class="muted">Ready to ship</small>
+          <div style="display:flex; gap:8px;">
+            <a class="btn" href="#" style="padding:8px 12px; font-size:13px">Get template</a>
+            <a class="btn" href="#" style="padding:8px 12px; font-size:13px">Customize</a>
+          </div>
+        </div>
+
+        <footer style="margin-top:14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+          <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+              <path d="M12 0.297C5.373 0.297 0 5.67 0 12.297c0 5.302 3.438 9.8 8.205 11.387.6.111.82-.261.82-.579 0-.285-.011-1.04-.017-2.04-3.338.726-4.042-1.613-4.042-1.613-.546-1.389-1.333-1.759-1.333-1.759-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.494.997.108-.775.418-1.305.762-1.605-2.665-.303-5.467-1.333-5.467-5.93 0-1.31.468-2.381 1.235-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.323 3.301 1.23.958-.266 1.984-.399 3.005-.404 1.02.005 2.047.138 3.006.404 2.29-1.553 3.296-1.23 3.296-1.23.653 1.653.243 2.873.12 3.176.77.84 1.233 1.911 1.233 3.221 0 4.61-2.807 5.624-5.479 5.921.43.372.814 1.102.814 2.222 0 1.604-.015 2.896-.015 3.289 0 .319.216.694.825.576C20.565 22.092 24 17.597 24 12.297 24 5.67 18.627.297 12 .297z"/>
+            </svg>
+            <span>View on GitHub</span>
+          </a>
+
+          <div style="color:var(--muted); font-size:13px">Created by amirabolfazle</div>
+        </footer>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    // Intersection Observer to reveal slide-up elements with stagger support
+    (function(){
+      const els = Array.from(document.querySelectorAll('.slide-up'));
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const el = entry.target;
+            // apply delay from data-delay attribute if provided
+            const d = el.getAttribute('data-delay');
+            if(d){
+              el.style.setProperty('--delay', d);
+            }
+            el.classList.add('in-view');
+            observer.unobserve(el);
+          }
+        });
+      }, {threshold: 0.08});
+
+      els.forEach((el, i)=>{
+        // small fallback: if IntersectionObserver not supported, reveal progressively
+        if ('IntersectionObserver' in window) {
+          observer.observe(el);
+        } else {
+          setTimeout(()=>el.classList.add('in-view'), (i+1)*120);
+        }
+      });
+
+      // initial pre-reveal small set for immediate feel
+      window.addEventListener('load', ()=>{
+        document.querySelectorAll('.slide-up').forEach((el, idx)=>{
+          // if already in-view skipped by observer, ignore
+          if(!el.classList.contains('in-view')){
+            const d = el.getAttribute('data-delay') || (idx*0.04 + 's');
+            el.style.setProperty('--delay', d);
+            setTimeout(()=>el.classList.add('in-view'), parseFloat(d)*1000 + 50);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
