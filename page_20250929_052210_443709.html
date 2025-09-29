@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1: rgba(10,20,30,1);
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.14);
+      --accent: #6ee7b7;
+      --accent2: #7dd3fc;
+      --glass-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      --soft-white: rgba(255,255,255,0.92);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(109,40,217,0.12), transparent 8%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(14,165,233,0.08), transparent 10%),
+                  linear-gradient(135deg,#071423 0%, #041726 50%, #03121a 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--soft-white);
+      overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* animated decorative blobs */
+    .blob{
+      position:fixed;
+      width:360px;
+      height:360px;
+      border-radius:50%;
+      filter:blur(60px) saturate(140%);
+      opacity:0.6;
+      mix-blend-mode:screen;
+      animation:spin 18s linear infinite;
+      transform-origin:center;
+      pointer-events:none;
+    }
+    .blob.a{left:-120px;top:-80px;background:linear-gradient(135deg,var(--accent), rgba(125,211,252,0.6)); animation-duration:26s}
+    .blob.b{right:-140px;bottom:-100px;background:linear-gradient(135deg, rgba(59,130,246,0.9), rgba(99,102,241,0.65)); animation-duration:34s; animation-direction:reverse}
+    .blob.c{left:50%;top:10%;transform:translateX(-50%);width:520px;height:520px;opacity:0.12;background:conic-gradient(from 90deg,var(--accent2), rgba(124,58,237,0.08), var(--accent) 70%); filter:blur(120px); animation-duration:48s}
+
+    @keyframes spin{from{transform:rotate(0deg)} to{transform:rotate(360deg)}}
+
+    /* main glass card */
+    .card-wrap{
+      position:relative;
+      z-index:10;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:clamp(280px,50vw,720px);
+      padding:2.25rem;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      transform-style:preserve-3d;
+      transition:transform 400ms cubic-bezier(.2,.9,.25,1),box-shadow 200ms;
+      animation:gentlerotate 12s linear infinite;
+    }
+
+    @keyframes gentlerotate{
+      0%{transform:perspective(800px) rotateZ(0deg) translateZ(0)}
+      25%{transform:perspective(800px) rotateZ(0.6deg) translateZ(4px)}
+      50%{transform:perspective(800px) rotateZ(0deg) translateZ(0)}
+      75%{transform:perspective(800px) rotateZ(-0.6deg) translateZ(4px)}
+      100%{transform:perspective(800px) rotateZ(0deg) translateZ(0)}
+    }
+
+    .card-wrap:hover{
+      transform:translateY(-6px) scale(1.01) perspective(900px) rotateZ(-0.2deg);
+      box-shadow:0 18px 50px rgba(2,6,23,0.75);
+    }
+
+    .content{
+      text-align:center;
+      backface-visibility: hidden;
+    }
+
+    h1{
+      font-size:clamp(1.4rem,3.6vw,2.4rem);
+      letter-spacing:0.06em;
+      margin-bottom:0.35rem;
+      color:var(--soft-white);
+      text-shadow:0 1px 0 rgba(255,255,255,0.03);
+      transform-origin:center;
+      display:inline-block;
+      padding:0 8px;
+      animation:tilt 8s ease-in-out infinite;
+    }
+
+    @keyframes tilt{
+      0%{transform:rotateZ(0deg)}
+      25%{transform:rotateZ(0.8deg)}
+      50%{transform:rotateZ(0deg)}
+      75%{transform:rotateZ(-0.6deg)}
+      100%{transform:rotateZ(0deg)}
+    }
+
+    p.time{
+      margin-top:0.25rem;
+      font-size:0.95rem;
+      color:rgba(255,255,255,0.78);
+      opacity:0.95;
+      font-feature-settings:"tnum";
+      letter-spacing:0.02em;
+    }
+
+    /* subtle ring spinner around title */
+    .ring{
+      position:absolute;
+      inset: -26px;
+      display:block;
+      pointer-events:none;
+      border-radius:22px;
+      background: conic-gradient(from 90deg, rgba(125,211,252,0.12), rgba(110,231,183,0.08), rgba(125,211,252,0.12));
+      filter:blur(16px);
+      z-index:3;
+      animation:ringspin 9s linear infinite;
+      opacity:0.9;
+    }
+
+    @keyframes ringspin{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(6px) saturate(110%);
+      -webkit-backdrop-filter: blur(6px) saturate(110%);
+      font-size:0.88rem;
+      color:rgba(255,255,255,0.9);
+      box-shadow:0 6px 20px rgba(2,6,23,0.45);
+    }
+
+    a.repo{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:inherit;
+      text-decoration:none;
+      font-weight:600;
+    }
+    .gh{
+      width:18px;height:18px;display:inline-block;flex:0 0 18px;
+      opacity:0.95;transition:transform 220ms;
+    }
+    a.repo:hover .gh{transform:translateY(-2px) scale(1.05)}
+
+    /* responsive tweaks */
+    @media (max-width:420px){
+      .card-wrap{padding:1.5rem;border-radius:14px}
+      footer{font-size:0.82rem;padding:7px 10px}
+      .blob{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="blob a" aria-hidden="true"></div>
+  <div class="blob b" aria-hidden="true"></div>
+  <div class="blob c" aria-hidden="true"></div>
+
+  <main class="card-wrap" role="main" aria-labelledby="title">
+    <span class="ring" aria-hidden="true"></span>
+    <div class="content">
+      <h1 id="title">amirabolfazle</h1>
+      <p class="time">Creation time: 2025-09-29 05:21:31</p>
+    </div>
+  </main>
+
+  <footer>
+    <a class="repo" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener">
+      <svg class="gh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.75 5.4.75 11.76c0 4.85 3.14 8.95 7.5 10.4.55.1.75-.24.75-.53 0-.26-.01-1.13-.01-2.05-3.05.66-3.69-.73-3.69-.73-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.66.08-.66 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.2 3.2.92.1-.72.38-1.2.69-1.48-2.44-.28-5-1.22-5-5.44 0-1.2.43-2.18 1.12-2.95-.11-.28-.49-1.4.11-2.92 0 0 .91-.3 2.98 1.12a10.34 10.34 0 0 1 2.72-.37c.92 0 1.85.12 2.72.37 2.06-1.42 2.97-1.12 2.97-1.12.6 1.52.22 2.64.11 2.92.7.77 1.12 1.75 1.12 2.95 0 4.23-2.57 5.15-5.02 5.42.39.34.74 1.01.74 2.04 0 1.48-.01 2.67-.01 3.03 0 .3.2.64.76.53 4.36-1.45 7.5-5.55 7.5-10.4C23.25 5.4 18.35.5 12 .5z" fill="currentColor"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+</body>
+</html>
