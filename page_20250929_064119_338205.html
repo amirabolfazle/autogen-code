@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1: #f8f6ff;
+    --bg-2: #fffaf6;
+    --accent-1: #cde7f0;
+    --accent-2: #f6d9f0;
+    --accent-3: #e8f8e8;
+    --card-bg: rgba(255,255,255,0.75);
+    --glass-border: rgba(255,255,255,0.6);
+    --muted: #7a7a86;
+    --text: #24303f;
+    --radius: 16px;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:var(--text);
+    background: linear-gradient(135deg,var(--bg-1) 0%, var(--bg-2) 100%);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* animated gradient overlay */
+  .bg-anim{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background: linear-gradient(120deg, rgba(201,230,240,0.6), rgba(246,217,240,0.55) 40%, rgba(232,248,232,0.55) 75%);
+    animation: shift 12s ease-in-out infinite alternate;
+    filter: saturate(1.02);
+  }
+
+  @keyframes shift{
+    0%{transform:translateY(0) rotate(0deg); background-position:0% 50%;}
+    100%{transform:translateY(-6%) rotate(3deg); background-position:100% 50%;}
+  }
+
+  /* floating soft shapes */
+  .shape{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(22px);
+    opacity:0.9;
+    mix-blend-mode:screen;
+    pointer-events:none;
+    z-index:-1;
+  }
+  .shape.s1{width:280px;height:280px;background:linear-gradient(180deg,#cfeef8,#e2f1fb);left:-6%;top:10%;animation:float1 14s ease-in-out infinite;}
+  .shape.s2{width:220px;height:220px;background:linear-gradient(180deg,#f7d9f6,#fff0fb);right:-5%;top:20%;animation:float2 18s ease-in-out infinite;}
+  .shape.s3{width:180px;height:180px;background:linear-gradient(180deg,#e6f8e6,#f0fff0);left:10%;bottom:-6%;animation:float3 16s ease-in-out infinite;}
+
+  @keyframes float1{0%{transform:translateY(0) rotate(0);}50%{transform:translateY(-18px) rotate(6deg);}100%{transform:translateY(0) rotate(0);}}
+  @keyframes float2{0%{transform:translateY(0) rotate(0);}50%{transform:translateY(22px) rotate(-6deg);}100%{transform:translateY(0) rotate(0);}}
+  @keyframes float3{0%{transform:translateY(0) rotate(0);}50%{transform:translateY(-14px) rotate(4deg);}100%{transform:translateY(0) rotate(0);}}
+
+  /* layout */
+  .wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 24px;
+    box-sizing:border-box;
+  }
+  .card{
+    width:100%;
+    max-width:980px;
+    border-radius:var(--radius);
+    background:var(--card-bg);
+    box-shadow: 0 10px 30px rgba(36,48,63,0.08);
+    padding:32px;
+    backdrop-filter: blur(8px) saturate(1.05);
+    border: 1px solid var(--glass-border);
+    display:flex;
+    gap:24px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    animation:fadeUp 900ms cubic-bezier(.2,.9,.3,1) both;
+  }
+
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(10px) scale(0.995);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+
+  .content{
+    flex:1 1 420px;
+    min-width:260px;
+  }
+
+  h1{
+    margin:0 0 8px 0;
+    font-size:clamp(28px,4.6vw,44px);
+    letter-spacing:-0.02em;
+    color:var(--text);
+    line-height:1;
+  }
+  p.lead{
+    margin:0 0 14px 0;
+    color:var(--muted);
+    font-size:clamp(14px,1.8vw,18px);
+  }
+
+  .meta{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:999px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,0.5);
+    font-weight:600;
+    color:var(--text);
+  }
+
+  .visual{
+    width:260px;
+    height:160px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+    flex:0 0 260px;
+    min-width:200px;
+  }
+
+  .visual .ring{
+    width:120px;height:120px;border-radius:50%;
+    border:8px solid rgba(255,255,255,0.6);
+    box-shadow: 0 6px 22px rgba(36,48,63,0.06);
+    background:conic-gradient(from 120deg, #fff0ff33, #f0f8ff33, #f0fff033);
+    animation:spin 9s linear infinite;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform-origin:center;
+  }
+  .visual .dot{
+    width:18px;height:18px;border-radius:50%;
+    background:linear-gradient(180deg,#ffd9ff,#ffecf8);
+    box-shadow:0 4px 10px rgba(36,48,63,0.08);
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* footer */
+  footer{
+    margin-top:20px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    justify-content:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:18px 8px 8px;
+  }
+  .footer-inner{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  a.gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--text);
+    text-decoration:none;
+    padding:6px 8px;
+    border-radius:8px;
+    transition:all 220ms ease;
+    background:transparent;
+  }
+  a.gh:hover{
+    transform:translateY(-3px);
+    box-shadow: 0 6px 20px rgba(36,48,63,0.08);
+    background:rgba(255,255,255,0.6);
+  }
+  svg.icon{
+    width:18px;height:18px;display:block;
+    fill:var(--text);
+    opacity:0.95;
+  }
+
+  /* responsive tweaks */
+  @media (max-width:720px){
+    .card{padding:20px; gap:16px;}
+    .visual{order:2; width:100%; height:120px; flex-basis:100%;}
+    .content{order:1;}
+    footer{padding-bottom:22px;}
+  }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion:reduce){
+    .bg-anim, .shape, .visual .ring, .card{animation:none;}
+  }
+</style>
+</head>
+<body>
+  <div class="bg-anim" aria-hidden="true"></div>
+  <div class="shape s1" aria-hidden="true"></div>
+  <div class="shape s2" aria-hidden="true"></div>
+  <div class="shape s3" aria-hidden="true"></div>
+
+  <main class="wrap" role="main">
+    <section class="card" aria-labelledby="page-title">
+      <div class="content">
+        <h1 id="page-title">amirabolfazle</h1>
+        <p class="lead">A soft pastel landing — responsive and animated with gentle fade-in effects.</p>
+
+        <div class="meta" aria-hidden="false">
+          <span class="badge" title="Creation time">Created: 2025-09-29 06:40:38</span>
+          <span style="font-size:13px;color:var(--muted)">Pastel theme · Fade-in animations</span>
+        </div>
+      </div>
+
+      <div class="visual" aria-hidden="true">
+        <div class="ring" role="img" aria-label="decorative animated ring">
+          <div class="dot"></div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="footer-inner" role="contentinfo">
+          <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository by amirabolfazle">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 .5C5.73.5.75 5.48.75 11.78c0 4.88 3.16 9.02 7.54 10.48.55.1.75-.24.75-.53 0-.26-.01-1-.02-1.97-3.07.67-3.72-1.34-3.72-1.34-.5-1.28-1.22-1.62-1.22-1.62-.99-.68.08-.67.08-.67 1.1.08 1.68 1.14 1.68 1.14.98 1.67 2.57 1.19 3.2.91.1-.71.38-1.19.69-1.46-2.45-.28-5.03-1.22-5.03-5.44 0-1.2.43-2.17 1.14-2.93-.12-.28-.5-1.4.11-2.92 0 0 .93-.3 3.05 1.12a10.6 10.6 0 0 1 2.78-.38c.94.01 1.89.13 2.78.38 2.12-1.42 3.05-1.12 3.05-1.12.61 1.52.23 2.64.11 2.92.71.76 1.14 1.73 1.14 2.93 0 4.22-2.59 5.16-5.05 5.43.39.34.73 1.01.73 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.2.64.76.53 4.37-1.46 7.52-5.6 7.52-10.48C23.25 5.48 18.27.5 12 .5z"/>
+            </svg>
+            <span style="font-size:13px;">Created by amirabolfazle</span>
+          </a>
+        </div>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>
