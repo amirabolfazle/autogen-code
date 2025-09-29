@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1: #FFF8FB;
+    --bg2: #F6FFF8;
+    --bg3: #FFFDF6;
+    --accent1: #F7A8B8; /* pastel pink */
+    --accent2: #A7E9D1; /* pastel mint */
+    --accent3: #FFDFA3; /* pastel peach */
+    --muted: #6B6B6B;
+    --glass: rgba(255,255,255,0.6);
+    --glass-2: rgba(255,255,255,0.45);
+    --shadow: rgba(79, 84, 92, 0.08);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, var(--bg1), transparent 15%),
+                radial-gradient(1000px 700px at 90% 90%, var(--bg2), transparent 15%),
+                linear-gradient(180deg, var(--bg3), #FBFBFF 60%);
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  .scene{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6vh 4vw;
+    perspective:1200px;
+  }
+
+  /* Floating pastel blobs */
+  .blob{
+    position:absolute;
+    filter:blur(30px) saturate(120%);
+    opacity:.9;
+    mix-blend-mode:screen;
+    border-radius:50%;
+    transform-origin:center;
+  }
+  .blob.one{
+    width:380px;
+    height:380px;
+    left:-8%;
+    top:5%;
+    background: radial-gradient(circle at 30% 30%, var(--accent1), transparent 45%), linear-gradient(135deg, rgba(247,168,184,0.85), rgba(255,214,163,0.65));
+    animation: drift1 18s linear infinite;
+  }
+  .blob.two{
+    width:420px;
+    height:420px;
+    right:-6%;
+    bottom:-4%;
+    background: radial-gradient(circle at 70% 60%, var(--accent2), transparent 40%), linear-gradient(135deg, rgba(167,233,209,0.86), rgba(247,168,184,0.45));
+    animation: drift2 22s linear infinite;
+  }
+  .blob.three{
+    width:240px;
+    height:240px;
+    left:55%;
+    top:-6%;
+    background: radial-gradient(circle at 20% 80%, var(--accent3), transparent 40%), linear-gradient(45deg, rgba(255,223,163,0.9), rgba(167,233,209,0.5));
+    animation: drift3 20s linear infinite;
+  }
+
+  @keyframes drift1{
+    0%{ transform: translateY(0) rotate(0deg) scale(1);}
+    50%{ transform: translateY(-30px) rotate(60deg) scale(1.05);}
+    100%{ transform: translateY(0) rotate(120deg) scale(1);}
+  }
+  @keyframes drift2{
+    0%{ transform: translateY(0) rotate(0deg) scale(1);}
+    50%{ transform: translateY(40px) rotate(-40deg) scale(.98);}
+    100%{ transform: translateY(0) rotate(-80deg) scale(1);}
+  }
+  @keyframes drift3{
+    0%{ transform: translateX(0) rotate(0deg) scale(1);}
+    50%{ transform: translateX(-24px) rotate(45deg) scale(1.08);}
+    100%{ transform: translateX(0) rotate(90deg) scale(1);}
+  }
+
+  /* Main card */
+  .card{
+    position:relative;
+    width:min(920px, 94%);
+    max-width:1100px;
+    background: linear-gradient(180deg, var(--glass), var(--glass-2));
+    border-radius:22px;
+    box-shadow: 0 8px 32px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.6);
+    padding:28px;
+    display:grid;
+    grid-template-columns: 340px 1fr;
+    gap:28px;
+    transform-style:preserve-3d;
+    animation: slow-rotate 20s ease-in-out infinite;
+    backdrop-filter: blur(8px) saturate(115%);
+    border:1px solid rgba(255,255,255,0.5);
+  }
+
+  @keyframes slow-rotate{
+    0%{ transform: rotateY(-6deg) rotateX(2deg);}
+    50%{ transform: rotateY(6deg) rotateX(-2deg);}
+    100%{ transform: rotateY(-6deg) rotateX(2deg);}
+  }
+
+  .profile{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    padding:18px;
+  }
+
+  .avatar{
+    width:160px;
+    height:160px;
+    border-radius:28px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.2)), radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 30%), linear-gradient(135deg, var(--accent2), var(--accent1));
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:48px;
+    color:#fff;
+    font-weight:700;
+    transform: translateZ(40px) rotate(-6deg);
+    transition: transform .6s cubic-bezier(.2,.9,.3,1);
+  }
+
+  .avatar:hover{
+    transform: translateZ(60px) rotate(6deg) scale(1.03);
+  }
+
+  .name{
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:0.4px;
+    color:#222;
+    transform: translateZ(30px);
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    transform: translateZ(20px);
+  }
+
+  .meta{
+    width:100%;
+    background:linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.15));
+    border-radius:14px;
+    padding:12px;
+    display:flex;
+    gap:10px;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+
+  .meta .time{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .meta .time strong{
+    color:#333;
+    font-weight:600;
+    font-size:14px;
+  }
+
+  .content{
+    padding:14px 6px 6px 6px;
+    transform: translateZ(10px);
+  }
+
+  .intro{
+    font-size:15px;
+    line-height:1.5;
+    color:#2c2c2c;
+    margin-bottom:18px;
+  }
+
+  .cards{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .mini{
+    flex:1 1 180px;
+    min-width:160px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.45));
+    border-radius:12px;
+    padding:12px;
+    box-shadow: 0 6px 18px rgba(50,50,60,0.05);
+    transform-origin:center;
+    transition: transform .6s cubic-bezier(.2,.9,.3,1);
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .mini:hover{ transform: translateY(-6px) rotate(-2deg) scale(1.02); }
+
+  .mini .dot{
+    width:44px;
+    height:44px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:700;
+    filter:drop-shadow(0 6px 18px rgba(0,0,0,0.06));
+  }
+
+  .mini h4{
+    margin:0;
+    font-size:15px;
+    color:#222;
+  }
+  .mini p{
+    margin:0;
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .rotating-plate{
+    margin-top:18px;
+    height:120px;
+    border-radius:14px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35));
+    border:1px solid rgba(255,255,255,0.6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:visible;
+  }
+
+  .ring{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    border:6px solid rgba(255,255,255,0.6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:conic-gradient(from 120deg, rgba(247,168,184,0.9), rgba(167,233,209,0.85), rgba(255,223,163,0.9));
+    animation: spin 8s linear infinite;
+    box-shadow:0 8px 24px rgba(0,0,0,0.06);
+    transform-style:preserve-3d;
+  }
+  .ring::after{
+    content:'';
+    width:34px;
+    height:34px;
+    background:rgba(255,255,255,0.8);
+    border-radius:50%;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
+  }
+
+  @keyframes spin{
+    0%{ transform: rotate(0deg) translateZ(40px); }
+    100%{ transform: rotate(360deg) translateZ(40px); }
+  }
+
+  /* Footer */
+  footer{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:18px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+    padding:8px 12px;
+    border-radius:999px;
+    box-shadow: 0 6px 16px rgba(40,40,50,0.06);
+    border:1px solid rgba(255,255,255,0.6);
+    z-index:40;
+  }
+
+  .gh{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#222;
+    text-decoration:none;
+    font-size:14px;
+  }
+  .gh .icon{
+    width:20px;
+    height:20px;
+    display:inline-block;
+    transition: transform .25s ease;
+    color:#222;
+  }
+  .gh:hover .icon{ transform: rotate(-20deg) scale(1.05); }
+  .gh span{ color:var(--muted); font-size:13px; }
+
+  /* Responsive */
+  @media (max-width:880px){
+    .card{ grid-template-columns: 1fr; padding:18px; }
+    .profile{ flex-direction:row; align-items:center; gap:12px; padding:8px 4px; }
+    .avatar{ width:96px; height:96px; border-radius:18px; font-size:28px; }
+    .meta{ flex-direction:column; align-items:flex-start; gap:8px; }
+    .rotating-plate{ height:92px; }
+  }
+</style>
+</head>
+<body>
+  <div class="scene" aria-labelledby="pageTitle">
+    <div class="blob one" aria-hidden="true"></div>
+    <div class="blob two" aria-hidden="true"></div>
+    <div class="blob three" aria-hidden="true"></div>
+
+    <main class="card" role="main" aria-label="amirabolfazle personal page">
+      <aside class="profile" aria-label="profile section">
+        <div class="avatar" aria-hidden="true">A</div>
+        <div style="flex:1;min-width:0;">
+          <div class="name" id="pageTitle">amirabolfazle</div>
+          <div class="subtitle">designer · tinkerer · maker</div>
+
+          <div style="height:12px"></div>
+
+          <div class="meta" role="status" aria-live="polite">
+            <div style="display:flex;flex-direction:column;">
+              <div style="font-size:12px;color:var(--muted)">Created</div>
+              <div class="time"><strong>2025-09-29 09:27:46</strong><span style="font-size:12px;color:var(--muted)">UTC</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;">
+              <div style="font-size:12px;color:var(--muted)">Location</div>
+              <div style="font-weight:600;color:#222">Global</div>
+            </div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="#" style="text-decoration:none;">
+              <div style="padding:8px 12px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.45));box-shadow:0 6px 16px rgba(0,0,0,0.05);font-weight:600;font-size:13px;color:#222;">Contact</div>
+            </a>
+            <a href="#" style="text-decoration:none;">
+              <div style="padding:8px 12px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.45));box-shadow:0 6px 16px rgba(0,0,0,0.05);font-weight:600;font-size:13px;color:#222;">Projects</div>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <section class="content" aria-label="content">
+        <p class="intro">A small corner of the internet with soft colors and gentle motion. This page showcases a pastel theme with rotating and floating effects—simple, calm, and playful.</p>
+
+        <div class="cards" role="list">
+          <div class="mini" role="listitem">
+            <div class="dot" style="background:linear-gradient(135deg, var(--accent1), var(--accent3));">UI</div>
+            <div>
+              <h4>Interfaces</h4>
+              <p>Designing warm, human-friendly UI components.</p>
+            </div>
+          </div>
+
+          <div class="mini" role="listitem">
+            <div class="dot" style="background:linear-gradient(135deg, var(--accent2), var(--accent1));">Code</div>
+            <div>
+              <h4>Autogen</h4>
+              <p>Experimenting with automation and creative tooling.</p>
+            </div>
+          </div>
+
+          <div class="mini" role="listitem">
+            <div class="dot" style="background:linear-gradient(135deg, var(--accent3), var(--accent2));">Play</div>
+            <div>
+              <h4>Tinkering</h4>
+              <p>Projects, prototypes, and ideas in motion.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rotating-plate" aria-hidden="true">
+          <div class="ring" title="rotating effect" aria-hidden="true"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer role="contentinfo">
+    <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 .5C5.73.5.92 5.31.92 11.58c0 4.68 3.03 8.65 7.24 10.05.53.1.72-.23.72-.51 0-.25-.01-.92-.01-1.8-2.95.64-3.57-1.27-3.57-1.27-.48-1.23-1.17-1.56-1.17-1.56-.96-.65.07-.64.07-.64 1.06.07 1.62 1.09 1.62 1.09.94 1.6 2.47 1.14 3.07.87.09-.68.37-1.14.67-1.4-2.36-.27-4.84-1.18-4.84-5.27 0-1.16.42-2.11 1.11-2.86-.11-.27-.48-1.36.11-2.84 0 0 .9-.29 2.95 1.09a10.2 10.2 0 012.69-.36c.91.01 1.83.12 2.69.36 2.06-1.38 2.95-1.09 2.95-1.09.59 1.48.22 2.57.11 2.84.69.75 1.11 1.7 1.11 2.86 0 4.1-2.49 5-4.86 5.26.38.33.72.97.72 1.96 0 1.41-.01 2.55-.01 2.9 0 .28.19.62.73.51 4.21-1.4 7.24-5.37 7.24-10.05C23.08 5.31 18.27.5 12 .5z" fill="#222"/>
+      </svg>
+      <span>Created by amirabolfazle</span>
+    </a>
+  </footer>
+</body>
+</html>
