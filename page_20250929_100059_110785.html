@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg-1: #f9f7ff; /* pastel lilac */
+    --bg-2: #fffaf0; /* pastel cream */
+    --accent-1: #a8d5e2; /* pastel teal */
+    --accent-2: #ffd3e2; /* pastel pink */
+    --muted: #6b6b6b;
+    --card: rgba(255,255,255,0.75);
+    --glass: rgba(255,255,255,0.55);
+    --radius: 16px;
+    --shadow: 0 8px 30px rgba(41, 50, 60, 0.08);
+    --fade-duration: 900ms;
+  }
+
+  /* Basic reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, var(--accent-1) 0%, transparent 20%),
+                radial-gradient(900px 500px at 90% 90%, var(--accent-2) 0%, transparent 18%),
+                linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px;
+    color:#1f2b35;
+    overflow-y:auto;
+  }
+
+  /* Floating decor */
+  .orb{
+    position:fixed;
+    border-radius:50%;
+    mix-blend-mode:soft-light;
+    filter:blur(30px);
+    opacity:.18;
+    animation: float 8s ease-in-out infinite;
+    z-index:0;
+  }
+  .orb.a{width:260px;height:260px;left:6%;top:10%;background:linear-gradient(135deg,#ffd3e2,#fef8f3);animation-duration:12s}
+  .orb.b{width:420px;height:420px;right:6%;bottom:4%;background:linear-gradient(135deg,#a8d5e2,#f4fbff);animation-duration:14s}
+  @keyframes float{
+    0%{transform:translateY(0) translateX(0) rotate(0deg)}
+    50%{transform:translateY(-18px) translateX(8px) rotate(6deg)}
+    100%{transform:translateY(0) translateX(0) rotate(0deg)}
+  }
+
+  .stage{
+    width:100%;
+    max-width:980px;
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    gap:28px;
+    align-items:flex-start;
+  }
+
+  /* Card */
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.65));
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:32px;
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    border:1px solid rgba(255,255,255,0.6);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    min-height:260px;
+  }
+
+  /* Sidebar style */
+  .sidebar{
+    background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:26px;
+    min-height:260px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    justify-content:space-between;
+  }
+
+  .name{
+    font-size:40px;
+    font-weight:700;
+    letter-spacing:-0.02em;
+    color:#132028;
+    line-height:1;
+  }
+
+  .subtitle{
+    font-size:14px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  .meta-row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+
+  .chip{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    padding:8px 12px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.6);
+    font-size:13px;
+    color:#24383f;
+    box-shadow:0 6px 18px rgba(20,30,35,0.05);
+    border:1px solid rgba(0,0,0,0.03);
+  }
+
+  .about{
+    font-size:15px;
+    line-height:1.6;
+    color:#24383f;
+  }
+
+  .cta-row{
+    display:flex;
+    gap:12px;
+    margin-top:8px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    padding:10px 14px;
+    border-radius:12px;
+    background:linear-gradient(90deg,#ffffff,rgba(255,255,255,0.85));
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow:0 6px 18px rgba(20,30,35,0.05);
+    color:#0f3b41;
+    font-weight:600;
+    text-decoration:none;
+    font-size:14px;
+    transition:transform .14s ease, box-shadow .14s ease;
+  }
+  .btn:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(20,30,35,0.08)}
+
+  .profile{
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .avatar{
+    width:88px;height:88px;border-radius:20px;background:linear-gradient(135deg,#fff,#f6f9ff);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:#176b75;
+    box-shadow:0 10px 26px rgba(20,30,35,0.06);border:1px solid rgba(0,0,0,0.04)
+  }
+
+  .stats{
+    display:flex;
+    gap:12px;
+    margin-top:6px;
+  }
+  .stat{
+    background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+    padding:8px 12px;border-radius:12px;font-size:13px;color:#27464a;border:1px solid rgba(0,0,0,0.03)
+  }
+
+  /* Right column content */
+  .panel{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .panel .p-card{
+    padding:20px;border-radius:14px;background:var(--card);border:1px solid rgba(255,255,255,0.6);
+    box-shadow:0 10px 32px rgba(20,30,35,0.04);
+  }
+  .panel h4{margin-bottom:8px;color:#123238}
+  .list{display:flex;flex-direction:column;gap:10px}
+  .list-item{
+    display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0.55));
+    border:1px solid rgba(0,0,0,0.03);
+  }
+  .dot{width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,var(--accent-1),var(--accent-2))}
+
+  /* footer */
+  footer{
+    margin-top:22px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    color:var(--muted);
+    opacity:.95;
+  }
+  .footer-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none}
+  .github-icon{width:18px;height:18px;display:inline-block;vertical-align:middle;filter:grayscale(.12) contrast(.95);opacity:.95}
+
+  /* Fade-in animations (staggered) */
+  .item{opacity:0;transform:translateY(12px) scale(.996);transition:opacity var(--fade-duration) cubic-bezier(.2,.8,.2,1), transform var(--fade-duration) cubic-bezier(.2,.8,.2,1)}
+  body.loaded .item{opacity:1;transform:translateY(0) scale(1)}
+  .item.delay-1{transition-delay:120ms}
+  .item.delay-2{transition-delay:240ms}
+  .item.delay-3{transition-delay:360ms}
+  .item.delay-4{transition-delay:480ms}
+  .item.delay-5{transition-delay:600ms}
+  .item.delay-6{transition-delay:720ms}
+
+  /* small screens */
+  @media (max-width:900px){
+    .stage{grid-template-columns:1fr;align-items:stretch}
+    .sidebar{order:2}
+    .card{order:1}
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .orb{animation:none;filter:none}
+    .item{transition:none;opacity:1;transform:none}
+    .btn{transition:none}
+  }
+</style>
+</head>
+<body>
+  <div class="orb a" aria-hidden="true"></div>
+  <div class="orb b" aria-hidden="true"></div>
+
+  <main class="stage" role="main" aria-labelledby="page-title">
+    <section class="card item delay-1" aria-labelledby="name-block">
+      <div class="profile">
+        <div class="avatar" aria-hidden="true">AM</div>
+        <div>
+          <div id="name-block" class="name">amirabolfazle</div>
+          <div class="subtitle">Designer • Builder • Curious mind</div>
+          <div class="meta-row">
+            <div class="chip">Pastel enthusiast</div>
+            <div class="chip">Minimal & animated</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about item delay-2">
+        Hi — this is a lightweight personal canvas showcasing a calm pastel theme and soft motion.
+        I like clean visuals, subtle interactions and thoughtful details. Explore links, projects and notes.
+      </div>
+
+      <div class="stats item delay-3" aria-hidden="true">
+        <div class="stat">Writes occasionally</div>
+        <div class="stat">Builds things</div>
+        <div class="stat">Learns daily</div>
+      </div>
+
+      <div class="cta-row item delay-4" role="navigation" aria-label="quick links">
+        <a class="btn" href="#projects">Projects</a>
+        <a class="btn" href="#contact">Contact</a>
+      </div>
+
+      <div style="margin-top:14px;font-size:13px;color:var(--muted)" class="item delay-5">
+        Created on: <time datetime="2025-09-29T10:00:06">2025-09-29 10:00:06</time>
+      </div>
+    </section>
+
+    <aside class="sidebar item delay-2" aria-labelledby="side-title">
+      <div>
+        <h3 id="side-title" style="margin-bottom:8px;color:#123238">Highlights</h3>
+        <div class="panel">
+          <div class="p-card">
+            <h4>Recent</h4>
+            <div class="list">
+              <div class="list-item"><span class="dot" style="background:linear-gradient(135deg,#ffd3e2,#fff1f6)"></span><div style="font-size:14px;color:#23393b">Autogen experiments</div></div>
+              <div class="list-item"><span class="dot" style="background:linear-gradient(135deg,#d1eef6,#f2fff7)"></span><div style="font-size:14px;color:#23393b">Design system tweaks</div></div>
+              <div class="list-item"><span class="dot" style="background:linear-gradient(135deg,#fff0f8,#fffaf0)"></span><div style="font-size:14px;color:#23393b">Small utilities</div></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="display:flex;flex-direction:column;gap:10px">
+            <h4>About</h4>
+            <div style="font-size:13.5px;color:#234a4f">A tidy corner of the web where ideas meet gentle motion and pastel palettes.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+        <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View code</a>
+        <div style="font-size:12px;color:var(--muted)">Keep it small. Keep it soft.</div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="item delay-6" role="contentinfo">
+    <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#111827" d="M12 .5C5.73.5.75 5.48.75 11.77c0 4.92 3.19 9.09 7.62 10.56.56.1.77-.24.77-.53 0-.26-.01-1.14-.02-2.07-3.1.67-3.76-1.49-3.76-1.49-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 .17 1.56-.75 1.56-.75.99-1.68 2.6-1.2 3.24-.92.1-.72.39-1.2.7-1.48-2.47-.28-5.06-1.24-5.06-5.51 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.4.11-2.93 0 0 .94-.3 3.08 1.15a10.6 10.6 0 012.8-.38c.95.01 1.91.13 2.8.38 2.14-1.45 3.07-1.15 3.07-1.15.62 1.53.24 2.65.12 2.93.72.78 1.16 1.78 1.16 3 0 4.28-2.6 5.23-5.08 5.5.4.35.76 1.03.76 2.08 0 1.5-.01 2.71-.01 3.08 0 .29.2.63.78.52 4.42-1.48 7.6-5.64 7.6-10.55C23.25 5.48 18.27.5 12 .5z"/>
+      </svg>
+      Created by amirabolfazle
+    </a>
+  </footer>
+
+<script>
+  // Add loaded class after window load to trigger staggered transitions
+  window.addEventListener('load',function(){document.body.classList.add('loaded')});
+</script>
+</body>
+</html>
