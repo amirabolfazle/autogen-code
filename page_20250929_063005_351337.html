@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#06070a;
+      --panel:#0d1116;
+      --muted:#94a3b8;
+      --accent:#7c5cff;
+      --glow: rgba(124,92,255,0.18);
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      --maxw:1100px;
+    }
+
+    html,body{height:100%;background:linear-gradient(180deg,var(--bg),#0a0b0f 60%);color:#e6eef8;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+    *{box-sizing:border-box}
+
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:60px 24px;}
+    .card{
+      width:100%;
+      max-width:var(--maxw);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:48px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6), 0 2px 6px rgba(0,0,0,0.6);
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* decorative glow */
+    .card::before{
+      content:"";
+      position:absolute;
+      right:-120px;
+      top:-80px;
+      width:420px;height:420px;
+      background:radial-gradient(circle at 30% 30%, var(--glow), transparent 40%);
+      filter:blur(36px);
+      mix-blend-mode:screen;
+      opacity:0.95;
+      pointer-events:none;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:22px;
+    }
+    .logo{
+      width:64px;height:64px;border-radius:12px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),#00c4ff);
+      box-shadow:0 6px 20px rgba(124,92,255,0.18), inset 0 -6px 20px rgba(255,255,255,0.02);
+      font-weight:700;color:white;font-size:20px;
+      flex:0 0 64px;
+    }
+    h1{font-size:32px;margin:0;letter-spacing:-0.02em}
+    .subtitle{color:var(--muted);margin-top:6px;font-size:14px}
+
+    .meta{
+      margin-left:auto;color:var(--muted);font-size:13px;background:var(--glass);padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:28px;
+      margin-top:28px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .lead{font-size:16px;color:#dce9ff;line-height:1.5;margin:0 0 16px 0}
+    .cta{
+      display:inline-flex;align-items:center;gap:12px;padding:12px 18px;border-radius:12px;background:linear-gradient(90deg,var(--accent),#00c4ff);color:#06101b;font-weight:600;border:none;cursor:pointer;box-shadow:0 8px 30px rgba(124,92,255,0.14);
+      text-decoration:none;
+    }
+    .cta svg{width:18px;height:18px;opacity:0.98}
+
+    /* small info blocks */
+    .info-list{display:flex;flex-direction:column;gap:12px}
+    .info{
+      display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));border:1px solid rgba(255,255,255,0.02)
+    }
+    .info .dot{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,0.02);font-weight:600;color:var(--accent);flex:0 0 44px}
+
+    /* slide-up animation */
+    .slide-up{opacity:0;transform:translateY(28px);transition:transform 700ms cubic-bezier(.2,.9,.2,1),opacity 700ms cubic-bezier(.2,.9,.2,1);}
+    .slide-up.in-view{opacity:1;transform:translateY(0);}
+
+    /* right column */
+    .card-right{display:flex;flex-direction:column;gap:14px}
+    .small-card{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.012), transparent);border:1px solid rgba(255,255,255,0.02)}
+    .stat{font-size:22px;font-weight:700}
+    .stat-sub{color:var(--muted);font-size:13px;margin-top:6px}
+
+    footer.site-footer{
+      margin-top:26px;display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid rgba(255,255,255,0.02);
+      color:var(--muted);font-size:13px;
+    }
+    .github{
+      display:inline-flex;align-items:center;gap:10px;color:var(--muted);text-decoration:none;border-radius:10px;padding:6px 10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.01)}
+    .github:hover{color:white;box-shadow:0 6px 26px rgba(0,0,0,0.6);transform:translateY(-2px)}
+
+    /* responsive */
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr; }
+      .meta{display:none}
+      .card{padding:28px}
+      header{gap:12px}
+      .logo{width:56px;height:56px;font-size:18px}
+    }
+
+    /* small accent underline */
+    .underline{display:inline-block;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),#00c4ff);width:90px;margin-top:10px;opacity:0.95}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card" role="main">
+      <header>
+        <div class="logo slide-up" data-delay="60">am</div>
+        <div>
+          <h1 class="slide-up" data-delay="120">amirabolfazle</h1>
+          <div class="subtitle slide-up" data-delay="180">Sleek landing • dark mode • subtle motion</div>
+          <div class="underline slide-up" data-delay="240" aria-hidden="true"></div>
+        </div>
+        <div class="meta slide-up" data-delay="300" title="Creation time">
+          Created: 2025-09-29 06:29:22
+        </div>
+      </header>
+
+      <div class="grid">
+        <section class="panel slide-up" data-delay="360" aria-labelledby="intro-title">
+          <h2 id="intro-title" style="margin:0 0 12px 0">Welcome</h2>
+          <p class="lead">This is a focused, dark-themed landing page named "amirabolfazle". Smooth slide-up effects appear as you scroll. The creation timestamp above shows when this page was generated.</p>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px">
+            <a class="cta slide-up" data-delay="420" href="#" onclick="event.preventDefault()">
+              Get Started
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M5 12h14" stroke="#06101b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 5l7 7-7 7" stroke="#06101b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+
+            <button class="cta" style="background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)" onclick="document.querySelector('.card').scrollIntoView({behavior:'smooth'})">Explore</button>
+          </div>
+
+          <div style="margin-top:22px" class="info-list">
+            <div class="info slide-up" data-delay="480">
+              <div class="dot">01</div>
+              <div>
+                <div style="font-weight:700">Dark-first design</div>
+                <div style="color:var(--muted);font-size:13px">Optimized contrast, subtle glows and glass layers.</div>
+              </div>
+            </div>
+
+            <div class="info slide-up" data-delay="540">
+              <div class="dot">02</div>
+              <div>
+                <div style="font-weight:700">Slide-up motion</div>
+                <div style="color:var(--muted);font-size:13px">Elements animate into view using a performant observer.</div>
+              </div>
+            </div>
+
+            <div class="info slide-up" data-delay="600">
+              <div class="dot">03</div>
+              <div>
+                <div style="font-weight:700">Timestamped</div>
+                <div style="color:var(--muted);font-size:13px">Creation time included for provenance and demos.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="card-right">
+          <div class="small-card slide-up" data-delay="660">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <div>
+                <div class="stat">Neon Accent</div>
+                <div class="stat-sub">A calm, modern highlight color</div>
+              </div>
+              <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#00c4ff);display:grid;place-items:center;color:#021018;font-weight:700">★</div>
+            </div>
+          </div>
+
+          <div class="small-card slide-up" data-delay="720">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <div>
+                <div class="stat">Motion</div>
+                <div class="stat-sub">Slide-up on view using IntersectionObserver</div>
+              </div>
+              <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#0ea5a4, #7c5cff);display:grid;place-items:center;color:#021018;font-weight:700">↟</div>
+            </div>
+          </div>
+
+          <div class="small-card slide-up" data-delay="780" style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="font-weight:700">Info</div>
+              <div style="color:var(--muted);font-size:13px">Status: Live</div>
+            </div>
+            <div style="color:var(--muted);font-size:13px">This preview is static HTML — adapt it to your stack and add interactivity as needed.</div>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="site-footer slide-up" data-delay="840">
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="opacity:0.14">
+            <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.04)" stroke-width="1.2"></circle>
+          </svg>
+          <div style="color:var(--muted)">Built with care • Dark mode prototype</div>
+        </div>
+
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex:0 0 18px">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5a11.5 11.5 0 00-3.64 22.43c.58.11.79-.25.79-.56v-2.03c-3.22.7-3.9-1.55-3.9-1.55-.53-1.35-1.3-1.71-1.3-1.71-1.06-.72.08-.71.08-.71 1.18.08 1.8 1.21 1.8 1.21 1.04 1.78 2.73 1.27 3.4.97.11-.76.41-1.27.75-1.56-2.57-.29-5.27-1.29-5.27-5.74 0-1.27.46-2.31 1.21-3.12-.12-.3-.53-1.53.12-3.19 0 0 .99-.32 3.24 1.2a11.2 11.2 0 015.9 0c2.25-1.52 3.24-1.2 3.24-1.2.65 1.66.24 2.89.12 3.19.75.81 1.21 1.85 1.21 3.12 0 4.46-2.71 5.45-5.29 5.73.42.36.8 1.08.8 2.18v3.22c0 .31.21.68.8.56A11.5 11.5 0 0012 .5z"/>
+          </svg>
+          Created by amirabolfazle
+        </a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Slide-up reveal with stagger based on data-delay (ms)
+    (function(){
+      const els = Array.from(document.querySelectorAll('.slide-up'));
+      els.forEach(el => {
+        const delay = parseInt(el.dataset.delay || '0', 10);
+        el.style.transitionDelay = (delay/1000) + 's';
+      });
+
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+          }
+        });
+      }, {threshold:0.12});
+
+      els.forEach(el => io.observe(el));
+
+      // small subtle entrance on load for top-most elements
+      window.addEventListener('load', ()=> {
+        const topGroup = els.filter(e => e.getBoundingClientRect().top < window.innerHeight * 0.6);
+        topGroup.forEach(el => el.classList.add('in-view'));
+      });
+    })();
+  </script>
+</body>
+</html>
