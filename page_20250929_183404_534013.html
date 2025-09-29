@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg1:#FFF7FB;
+      --bg2:#F6FFFA;
+      --accent1:#C6B1FF; /* lavender */
+      --accent2:#BFF5E1; /* mint */
+      --accent3:#FFD8B5; /* peach */
+      --text:#2B2B2B;
+      --muted:#6B6B6B;
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: radial-gradient(600px 600px at 10% 10%, var(--accent1)10%, transparent 20%),
+                  radial-gradient(500px 500px at 90% 90%, var(--accent2)10%, transparent 18%),
+                  linear-gradient(135deg,var(--bg1),var(--bg2));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:48px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+    }
+
+    .container{
+      width:100%;
+      max-width:1100px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.5));
+      border-radius:20px;
+      padding:40px;
+      box-shadow: 0 12px 40px rgba(20,20,40,0.08);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+
+    /* floating pastel blobs */
+    .blob{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(36px);
+      opacity:0.45;
+      animation: float 8s ease-in-out infinite;
+      transform-origin:center;
+      pointer-events:none;
+    }
+    .blob.b1{width:260px;height:260px;background:linear-gradient(135deg,#F4D5FF,#D9EAFF);left:-80px;top:-60px;animation-duration:9s;}
+    .blob.b2{width:200px;height:200px;background:linear-gradient(135deg,#CFFFE6,#FFDCC6);right:-60px;bottom:-40px;animation-duration:11s;}
+    .blob.b3{width:140px;height:140px;background:linear-gradient(135deg,#FFF0F8,#E7F6FF);left:20%;bottom:10%;animation-duration:10s;}
+
+    @keyframes float{
+      0%{transform: translateY(0) translateX(0) scale(1)}
+      50%{transform: translateY(-18px) translateX(8px) scale(1.02)}
+      100%{transform: translateY(0) translateX(0) scale(1)}
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:32px;
+      align-items:start;
+    }
+
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr; padding-bottom:12px}
+    }
+
+    .hero{
+      padding:28px;
+    }
+
+    h1{
+      margin:0 0 8px 0;
+      font-size:48px;
+      letter-spacing:-0.02em;
+      color:var(--text);
+    }
+    .sub{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.5;
+    }
+
+    .meta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      align-items:center;
+    }
+    .pill{
+      background:linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      box-shadow:0 6px 18px rgba(20,20,40,0.04);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .cta{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .btn{
+      background:linear-gradient(180deg,var(--accent1),#B99CFF);
+      color:#fff;
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 8px 24px rgba(185,156,255,0.18);
+      transform-origin:center;
+      animation: bounce 2.2s infinite;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+    }
+
+    .btn.secondary{
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(30,30,30,0.06);
+      box-shadow:none;
+      animation:none;
+    }
+
+    .tiny{
+      display:inline-block;
+      width:10px;height:10px;border-radius:50%;
+      background:linear-gradient(90deg,var(--accent3),var(--accent2));
+      box-shadow:0 6px 18px rgba(200,200,255,0.08), inset 0 -2px 6px rgba(0,0,0,0.02);
+    }
+
+    @keyframes bounce{
+      0%{transform: translateY(0)}
+      30%{transform: translateY(-8px)}
+      50%{transform: translateY(0)}
+      70%{transform: translateY(-4px)}
+      100%{transform: translateY(0)}
+    }
+
+    /* right column cards */
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6));
+      border-radius:14px;
+      padding:18px;
+      box-shadow: 0 6px 20px rgba(20,20,40,0.04);
+      border:1px solid rgba(255,255,255,0.6);
+    }
+
+    .profile{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .avatar{
+      width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#FFF0F8,#E7F6FF);
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--text);
+      box-shadow: 0 6px 24px rgba(180,150,255,0.08);
+      font-size:20px;
+    }
+
+    .stat-grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+    .stat{
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      padding:10px;border-radius:10px;text-align:center;font-weight:600;
+      color:var(--muted); font-size:13px;
+      box-shadow: inset 0 -1px 0 rgba(255,255,255,0.6);
+    }
+    .stat strong{display:block;font-size:15px;color:var(--text);margin-bottom:6px}
+
+    .cards{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      flex-direction:column;
+    }
+    .mini{
+      background:linear-gradient(135deg,#FFFFFF,#FBFAFF);
+      padding:12px;border-radius:12px;display:flex;gap:12px;align-items:center;
+      border:1px solid rgba(220,220,255,0.6);
+    }
+    .mini .icon{
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,var(--accent2),var(--accent3));
+      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+      box-shadow:0 8px 18px rgba(120,150,255,0.06);
+    }
+
+    /* footer */
+    .footer{
+      margin-top:26px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .github{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      color:var(--muted);
+      padding:6px 8px;border-radius:8px;
+      transition:all .16s ease;
+    }
+    .github:hover{transform:translateY(-4px); color:var(--text)}
+    .github svg{width:20px;height:20px;fill:var(--muted)}
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      h1{font-size:34px}
+      .container{padding:24px}
+      .grid{gap:18px}
+      .panel{order:2}
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="amirabolfazle landing">
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+    <div class="blob b3" aria-hidden="true"></div>
+
+    <div class="grid">
+      <div class="hero">
+        <h1>amirabolfazle</h1>
+        <p class="sub">A gentle pastel landing page with playful bounce — curated to be clean, modern and joyful. Explore projects, ideas and creative experiments.</p>
+
+        <div class="meta" aria-hidden="false">
+          <div class="pill"><span class="tiny" aria-hidden="true"></span> Pastel theme</div>
+          <div class="pill">Bounce effects</div>
+          <div class="pill">Creation: 2025-09-29 18:33:12</div>
+        </div>
+
+        <div class="cta">
+          <a class="btn" href="#explore" title="Explore">Explore projects
+            <svg width="16" height="16" viewBox="0 0 24 24" style="opacity:0.95" aria-hidden="true">
+              <path fill="#ffffff" d="M13.5 5.5L20 12l-6.5 6.5L12 17.5l3.5-3.5L12 10.5z"></path>
+            </svg>
+          </a>
+          <a class="btn secondary" href="#contact" title="Contact">Contact</a>
+        </div>
+
+        <div id="explore" style="margin-top:26px;">
+          <div class="cards">
+            <div class="mini" role="article">
+              <div class="icon">UI</div>
+              <div>
+                <div style="font-weight:700;color:var(--text)">Design Playground</div>
+                <div style="font-size:13px;color:var(--muted)">Experiments in soft color systems and micro-interactions.</div>
+              </div>
+            </div>
+
+            <div class="mini" role="article">
+              <div class="icon">Code</div>
+              <div>
+                <div style="font-weight:700;color:var(--text)">Interactive Components</div>
+                <div style="font-size:13px;color:var(--muted)">Reusable, accessible blocks with subtle motion.</div>
+              </div>
+            </div>
+
+            <div class="mini" role="article">
+              <div class="icon">Notes</div>
+              <div>
+                <div style="font-weight:700;color:var(--text)">Sketches & Ideas</div>
+                <div style="font-size:13px;color:var(--muted)">Thoughts on systems, aesthetic decisions, and process.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="panel" aria-label="Profile and stats">
+        <div class="profile">
+          <div class="avatar" aria-hidden="true">A</div>
+          <div>
+            <div style="font-weight:700;color:var(--text);font-size:16px">amirabolfazle</div>
+            <div style="color:var(--muted);font-size:13px">designer • builder • tinkerer</div>
+          </div>
+        </div>
+
+        <div class="stat-grid" role="list" aria-label="Quick stats">
+          <div class="stat" role="listitem"><strong>12</strong> Projects</div>
+          <div class="stat" role="listitem"><strong>84</strong> Commits</div>
+          <div class="stat" role="listitem"><strong>3</strong> Labs</div>
+        </div>
+
+        <div style="margin-top:16px;font-size:13px;color:var(--muted)">
+          Highlight: a small collection of interactive components blending color, motion and clarity.
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:10px">
+          <a class="btn secondary" href="#repo" title="Open repo">View repo</a>
+          <a class="btn" href="#demo" style="background:linear-gradient(180deg,var(--accent2),#9FFFD6);box-shadow:0 8px 20px rgba(80,230,180,0.12)">Live demo</a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer" role="contentinfo">
+      <div style="display:flex;flex-direction:column">
+        <div style="font-weight:600;color:var(--text)">Stay curious</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:6px">Soft colors. Subtle motion. Clear intentions.</div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px">
+        <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="am i r a b o l f a z l e GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 .5C5.7.5.9 5.3.9 11.6c0 4.7 3 8.7 7.2 10.1.5.1.7-.2.7-.5v-1.8c-2.9.6-3.6-1.3-3.6-1.3-.5-1.3-1.3-1.6-1.3-1.6-1-.7.1-.7.1-.7 1.1.1 1.6 1.1 1.6 1.1 1 .1 1.6-.8 1.9-1.3.1-.8.4-1.3.8-1.6-2.3-.3-4.7-1.2-4.7-5.3 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.5.1-3.1 0 0 .9-.3 3 .1.9-.2 1.9-.3 2.9-.3 1 0 1.9.1 2.9.3 2.1-.4 3-.1 3-.1.6 1.6.2 2.8.1 3.1.7.8 1.1 1.8 1.1 3 0 4.1-2.4 5-4.7 5.3.4.4.7 1 .7 2v3c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10.1C23.1 5.3 18.3.5 12 .5z"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
