@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#0f1720;
+      --muted:#9fb0c8;
+      --accent:#6ee7b7;
+      --glass: rgba(255,255,255,0.03);
+      --gap:18px;
+      --duration:560ms;
+      --ease:cubic-bezier(.2,.9,.2,1);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(110,231,183,0.04), transparent 6%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(99,102,241,0.03), transparent 6%),
+                  var(--bg);
+      color: #e6f0f8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+    }
+
+    .wrap{
+      width:min(820px,95%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:14px;
+      padding:34px;
+      box-shadow: 0 10px 30px rgba(3,6,12,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px) saturate(120%);
+      overflow:hidden;
+    }
+
+    /* Slide-up animation */
+    @keyframes slideUp {
+      from { transform: translateY(18px); opacity: 0; filter: blur(6px); }
+      to   { transform: translateY(0);     opacity: 1; filter: blur(0); }
+    }
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      animation-name: slideUp;
+      animation-duration: var(--duration);
+      animation-timing-function: var(--ease);
+      animation-fill-mode: forwards;
+    }
+    /* staggered delays */
+    .reveal[data-order="1"]{ animation-delay: 80ms; }
+    .reveal[data-order="2"]{ animation-delay: 180ms; }
+    .reveal[data-order="3"]{ animation-delay: 300ms; }
+    .reveal[data-order="4"]{ animation-delay: 420ms; }
+
+    header{
+      display:flex;
+      align-items:flex-start;
+      gap:16px;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(110,231,183,0.14), rgba(99,102,241,0.12));
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      color:var(--accent);
+      font-size:20px;
+      flex:0 0 64px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(11,15,20,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:0.2px;
+      color:#e9f7ef;
+    }
+    p.lead{
+      margin:8px 0 0 0;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .meta{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .chip{
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-weight:500;
+      font-size:13px;
+    }
+    .created{
+      margin-top:26px;
+      color:var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+      padding:14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+      display:inline-block;
+    }
+
+    footer{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .footer-left{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .github-link{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,0.02);
+      background:transparent;
+      transition: transform 160ms var(--ease), background 160ms var(--ease), color 160ms var(--ease);
+    }
+    .github-link:hover{
+      transform: translateY(-4px);
+      background: linear-gradient(90deg, rgba(110,231,183,0.04), rgba(99,102,241,0.02));
+      color:var(--accent);
+    }
+    .gh-icon{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      fill:currentColor;
+      color:var(--muted);
+      transition: color 160ms var(--ease);
+    }
+    .github-link:hover .gh-icon{ color:var(--accent); }
+
+    /* small decorative line */
+    .accent-line{
+      height:4px;
+      width:80px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(110,231,183,0.9), rgba(99,102,241,0.9));
+      margin-top:18px;
+      opacity:0.12;
+    }
+
+    /* Respect prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce){
+      .reveal{ animation: none; opacity:1; transform:none; filter:none; }
+      .github-link:hover{ transform:none; }
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      header{gap:12px}
+      .logo{width:56px;height:56px;font-size:18px}
+      h1{font-size:22px}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap" role="main" aria-labelledby="title">
+    <header>
+      <div class="logo reveal" data-order="1" aria-hidden="true">a</div>
+      <div style="flex:1">
+        <h1 id="title" class="reveal" data-order="2">amirabolfazle</h1>
+        <p class="lead reveal" data-order="3">Minimal dark-mode landing — subtle motion, slide-up entrance.</p>
+      </div>
+    </header>
+
+    <div class="accent-line reveal" data-order="4" aria-hidden="true"></div>
+
+    <div style="margin-top:20px;">
+      <div class="chip reveal" data-order="1" aria-hidden="true">Animated • Dark mode</div>
+      <div style="height:10px"></div>
+      <div class="created reveal" data-order="2">Creation time: 2025-09-29 18:10:26</div>
+    </div>
+
+    <footer class="reveal" data-order="3">
+      <div class="footer-left">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg class="gh-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 .297a12 12 0 00-3.79 23.394c.6.11.82-.26.82-.577v-2.036c-3.338.726-4.042-1.61-4.042-1.61-.546-1.388-1.333-1.758-1.333-1.758-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.305 3.494.997.108-.775.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.47-2.38 1.235-3.22-.124-.303-.536-1.526.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 016.003 0c2.29-1.552 3.296-1.23 3.296-1.23.655 1.65.243 2.873.12 3.176.768.84 1.233 1.91 1.233 3.22 0 4.61-2.805 5.62-5.478 5.92.43.372.81 1.102.81 2.222v3.293c0 .32.216.694.825.576A12.005 12.005 0 0012 .297z"/>
+          </svg>
+          <span style="white-space:nowrap">autogen-code</span>
+        </a>
+        <div style="margin-left:8px;color:var(--muted);font-weight:500">Created by amirabolfazle</div>
+      </div>
+
+      <div style="color:var(--muted);font-size:12px">© 2025</div>
+    </footer>
+  </main>
+</body>
+</html>
