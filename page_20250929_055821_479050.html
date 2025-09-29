@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #0f172a;
+      --bg-2: #081126;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.08);
+      --accent: #7c5cff;
+      --muted: rgba(255,255,255,0.65);
+      --card-border: rgba(255,255,255,0.12);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 8%),
+                  radial-gradient(600px 500px at 90% 90%, rgba(0,200,255,0.06), transparent 6%),
+                  linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:48px;
+      overflow:hidden;
+    }
+
+    /* decorative floating orbs */
+    .orb{
+      position:absolute;
+      width:380px;
+      height:380px;
+      border-radius:50%;
+      filter:blur(60px);
+      opacity:.12;
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .orb.one{background:linear-gradient(135deg, #7c5cff, transparent); left:-120px; top:-120px;}
+    .orb.two{background:linear-gradient(45deg, #00e6ff, transparent); right:-140px; bottom:-120px;}
+
+    /* layout */
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      align-items:center;
+      z-index:2;
+      animation:fadeInUp 900ms cubic-bezier(.2,.9,.3,1) both;
+    }
+
+    /* card glass */
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:16px;
+      padding:32px;
+      border:1px solid var(--card-border);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    /* hero */
+    .hero{
+      padding:48px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+      min-height:320px;
+      justify-content:center;
+      position:relative;
+      overflow:visible;
+    }
+    .logo{
+      display:inline-flex;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0.6px;
+      font-size:13px;
+      opacity:0.95;
+      animation:fadeIn 1100ms ease both;
+    }
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:10px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display:inline-grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 6px 18px rgba(124,92,255,0.12);
+      font-weight:800;
+      color:var(--accent);
+    }
+
+    h1{
+      margin:0;
+      font-size:48px;
+      line-height:1;
+      letter-spacing:-0.02em;
+      animation:fadeInUp 1000ms cubic-bezier(.2,.9,.3,1) 120ms both;
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:60ch;
+      animation:fadeInUp 1000ms cubic-bezier(.2,.9,.3,1) 220ms both;
+    }
+
+    .buttons{
+      margin-top:12px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      animation:fadeInUp 1000ms cubic-bezier(.2,.9,.3,1) 320ms both;
+    }
+    .btn{
+      padding:12px 18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      transition:transform .16s ease, box-shadow .16s ease;
+    }
+    .btn:hover{transform:translateY(-3px); box-shadow: 0 10px 30px rgba(124,92,255,0.16)}
+    .btn.primary{
+      background: linear-gradient(90deg, var(--accent), #00e6ff 120%);
+      color: #061126;
+      border: none;
+      box-shadow: 0 8px 30px rgba(124,92,255,0.2);
+    }
+
+    /* right panel */
+    .side{
+      padding:28px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      min-height:300px;
+      justify-content:center;
+      align-items:stretch;
+      animation:fadeInUp 1000ms cubic-bezier(.2,.9,.3,1) 160ms both;
+    }
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .stat{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,0.04);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .stat .num{font-weight:700; font-size:18px; color:#fff}
+    .small{font-size:13px; color:var(--muted)}
+
+    .creation{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    footer{
+      margin-top:28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      border-top:1px solid rgba(255,255,255,0.02);
+      padding-top:18px;
+    }
+    .footer-link{
+      color:var(--muted);
+      text-decoration:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-size:14px;
+    }
+    .gh-icon{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      vertical-align:middle;
+      filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+      transition:transform .16s ease;
+    }
+    .footer-link:hover .gh-icon{transform:translateY(-3px)}
+
+    /* subtle cards list */
+    .cards{
+      display:grid;
+      gap:12px;
+      margin-top:6px;
+    }
+    .card-mini{
+      background: linear-gradient(180deg, rgba(255,255,255,0.016), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* animations */
+    @keyframes fadeInUp{
+      from{opacity:0; transform:translateY(14px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+    @keyframes fadeIn{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr; padding:0}
+      .side{order:2}
+      .hero{order:1}
+    }
+  </style>
+</head>
+<body>
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" aria-labelledby="page-title">
+    <section class="glass hero" aria-label="hero section">
+      <div class="logo" aria-hidden="false">
+        <div class="brand-mark">A</div>
+        <div>amirabolfazle</div>
+      </div>
+
+      <h1 id="page-title">amirabolfazle</h1>
+
+      <p class="lead">
+        A clean, modern landing experience with glassmorphism aesthetics and gentle fade-in interactions — crafted for clarity and presence.
+      </p>
+
+      <div class="buttons">
+        <a class="btn primary" href="#" aria-label="Get started">Get started</a>
+        <a class="btn" href="#" aria-label="Learn more">Learn more</a>
+      </div>
+
+      <div class="creation" aria-live="polite">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="opacity:.9" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 8v5l3 3" stroke="white" stroke-opacity="0.9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="white" stroke-opacity="0.06" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>Creation time: <strong style="margin-left:6px;">2025-09-29 05:57:48</strong></div>
+      </div>
+    </section>
+
+    <aside class="glass side" aria-label="info panel">
+      <div class="meta" role="status">
+        <div>
+          <div class="small">Status</div>
+          <div style="font-weight:700; color:#d4d7ff">Live</div>
+        </div>
+        <div>
+          <div class="small">Visitors</div>
+          <div class="small" style="color:var(--muted)">1,302 online</div>
+        </div>
+      </div>
+
+      <div class="cards" role="list">
+        <div class="card-mini" role="listitem">
+          <div>
+            <div style="font-weight:700; color:#fff">Design</div>
+            <div class="small">Glassmorphism, Soft UI</div>
+          </div>
+          <div class="small">UI</div>
+        </div>
+
+        <div class="card-mini" role="listitem">
+          <div>
+            <div style="font-weight:700; color:#fff">Interactions</div>
+            <div class="small">Fade-in, Micro-animations</div>
+          </div>
+          <div class="small">Motion</div>
+        </div>
+
+        <div class="card-mini" role="listitem">
+          <div>
+            <div style="font-weight:700; color:#fff">Performance</div>
+            <div class="small">Optimized for smooth render</div>
+          </div>
+          <div class="small">Fast</div>
+        </div>
+      </div>
+
+      <footer>
+        <a class="footer-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+          <svg class="gh-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="false">
+            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.55-3.88-1.55-.53-1.34-1.29-1.7-1.29-1.7-1.06-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.04 1.77 2.72 1.26 3.39.97.11-.75.41-1.26.75-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.44.11-3 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.56.24 2.71.12 3 .73.81 1.17 1.84 1.17 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.8 1.07.8 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.67.8.56C20.71 21.38 24 17.08 24 12c0-6.35-5.15-11.5-12-11.5z" fill="white"/>
+          </svg>
+          <span>Created by amirabolfazle</span>
+        </a>
+        <div class="small" aria-hidden="true">Made with glassmorphism</div>
+      </footer>
+    </aside>
+  </main>
+
+  <script>
+    // Slight entrance staggering for linkable accessibility
+    document.addEventListener('DOMContentLoaded', function(){
+      const els = document.querySelectorAll('.wrap .glass *');
+      els.forEach((el, i) => {
+        const delay = (i * 35);
+        el.style.animationDelay = (parseFloat(getComputedStyle(el).animationDelay || 0) + delay) + 'ms';
+      });
+    });
+  </script>
+</body>
+</html>
