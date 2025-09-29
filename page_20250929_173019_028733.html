@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>amirabolfazle</title>
+<style>
+  :root{
+    --bg1:#0f172a;
+    --g1:#7c3aed;
+    --g2:#06b6d4;
+    --g3:#f97316;
+    --glass: rgba(255,255,255,0.06);
+    --accent: rgba(255,255,255,0.08);
+    --text: #e6eef8;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;color:var(--text);background:var(--bg1);-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+  /* animated gradient background */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background:linear-gradient(120deg,var(--g1),var(--g2),var(--g3));
+    filter:blur(40px) saturate(140%);
+    opacity:0.18;
+    z-index:0;
+    animation: shift 12s linear infinite;
+    transform-origin:center;
+  }
+  @keyframes shift{
+    0%{transform:rotate(0deg) scale(1)}
+    50%{transform:rotate(180deg) scale(1.05)}
+    100%{transform:rotate(360deg) scale(1)}
+  }
+
+  .wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;}
+  header{display:flex;align-items:center;gap:18px;margin-bottom:22px;flex-wrap:wrap;}
+  .logo{
+    width:96px;height:96px;border-radius:24px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(255,255,255,0.06),transparent);
+    box-shadow:0 8px 30px rgba(2,6,23,0.6), inset 0 -8px 20px rgba(0,0,0,0.25);
+    border:1px solid rgba(255,255,255,0.04);
+    transform-style:preserve-3d;
+    animation: spin 10s linear infinite;
+  }
+  @keyframes spin{
+    from{transform:rotateY(0) rotate(0)}
+    to{transform:rotateY(360deg) rotate(360deg)}
+  }
+  .logo svg{width:64px;height:64px;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
+
+  h1{font-size:clamp(26px,4.2vw,44px);margin:0;letter-spacing:0.6px;}
+  .subtitle{opacity:0.85;font-size:14px;margin-top:6px;color:rgba(230,238,248,0.85)}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+    width:min(1100px,94vw);
+    margin-top:18px;
+  }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    padding:20px;
+    border-radius:14px;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    transform-style:preserve-3d;
+    transition: transform 450ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms;
+    perspective:1200px;
+    min-height:160px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .card::after{
+    content:"";
+    position:absolute; inset:auto -30% -40% -30%;
+    background: radial-gradient(600px 200px at 20% 10%, rgba(124,58,237,0.12), transparent 10%),
+                radial-gradient(500px 180px at 80% 90%, rgba(6,182,212,0.08), transparent 10%);
+    transform:rotate(-15deg);
+    z-index:0;
+    pointer-events:none;
+  }
+  .card > *{position:relative; z-index:1;}
+  .card:hover{
+    transform:translateY(-10px) rotateX(8deg) rotateY(-6deg) scale(1.02);
+    box-shadow: 0 28px 60px rgba(2,6,23,0.75);
+  }
+  .card-title{display:flex;align-items:center;gap:12px;font-weight:600;font-size:16px}
+  .badge{padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));font-size:12px}
+  .desc{font-size:13px;opacity:0.9;margin-top:8px;line-height:1.45}
+  .meta{display:flex;gap:10px;align-items:center;margin-top:14px;font-size:13px;opacity:0.9}
+
+  /* rotating accent stripes */
+  .spin-stripe{
+    position:absolute;inset:auto -50% -50% -50%;height:300px;background:linear-gradient(90deg,rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 40%);transform:rotate(20deg);
+    animation: stripe 16s linear infinite;
+    z-index:0;
+    pointer-events:none;
+  }
+  @keyframes stripe{
+    from{transform:translateX(0) rotate(20deg)}
+    50%{transform:translateX(-18%) rotate(20deg)}
+    to{transform:translateX(0) rotate(20deg)}
+  }
+
+  /* hero area */
+  .hero{
+    width:min(1100px,94vw);
+    display:flex;
+    gap:22px;
+    align-items:flex-start;
+    justify-content:space-between;
+    margin-top:8px;
+    flex-wrap:wrap;
+  }
+  .intro{
+    flex:1 1 380px;
+    min-width:260px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:22px;border-radius:14px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 30px rgba(2,6,23,0.6);
+    position:relative;overflow:hidden;
+  }
+  .name-line{display:flex;align-items:center;gap:12px}
+  .name{font-weight:700;font-size:20px;letter-spacing:0.8px}
+  .rotator{color:var(--g1);font-weight:700;display:inline-block;padding:6px 10px;border-radius:8px;background:linear-gradient(90deg, rgba(124,58,237,0.12), rgba(6,182,212,0.08));transform-origin:center;animation:swivel 6s ease-in-out infinite;}
+  @keyframes swivel{
+    0%{transform:rotate(-6deg) translateY(0)}
+    50%{transform:rotate(6deg) translateY(-3px)}
+    100%{transform:rotate(-6deg) translateY(0)}
+  }
+  .ts{margin-top:14px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Roboto Mono,monospace;font-size:13px;background:rgba(0,0,0,0.15);padding:8px 10px;border-radius:8px;display:inline-block}
+  .actions{display:flex;gap:10px;margin-top:16px}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--g1),var(--g2));color:white;font-weight:600;border:none;cursor:pointer;box-shadow:0 8px 24px rgba(2,6,23,0.45);
+    transform:translateZ(0);transition:transform 220ms ease, box-shadow 220ms ease;
+    text-decoration:none;
+  }
+  .btn:active{transform:translateY(2px)}
+  .projects{flex:1 1 320px;min-width:260px;display:flex;flex-direction:column;gap:12px}
+
+  footer{margin-top:36px;display:flex;align-items:center;gap:12px;color:rgba(230,238,248,0.9);font-size:14px}
+  .gh{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:inherit;padding:8px 10px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.03)}
+  .gh svg{width:20px;height:20px;display:block;flex-shrink:0;filter:drop-shadow(0 4px 14px rgba(0,0,0,0.6));}
+
+  /* small screens */
+  @media (max-width:720px){
+    .hero{flex-direction:column}
+    .logo{width:80px;height:80px}
+  }
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <!-- geometric monogram A -->
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <defs>
+            <linearGradient id="lg" x1="0" x2="1">
+              <stop offset="0" stop-color="#7c3aed" />
+              <stop offset="1" stop-color="#06b6d4" />
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="92" height="92" rx="16" fill="url(#lg)" opacity="0.18"/>
+          <g transform="translate(12,12)">
+            <path d="M25 60 L45 12 L65 60 Z" fill="url(#lg)" stroke="rgba(255,255,255,0.12)" stroke-width="1.4"/>
+            <rect x="42" y="38" width="12" height="6" rx="2" fill="rgba(255,255,255,0.14)"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h1>amirabolfazle</h1>
+        <div class="subtitle">Animated gradient portfolio • creative code & UI experiments</div>
+      </div>
+    </header>
+
+    <div class="hero">
+      <section class="intro">
+        <div class="name-line">
+          <div class="name">Hello — I'm <span class="rotator">amirabolfazle</span></div>
+          <div class="badge">Designer • Builder</div>
+        </div>
+        <div class="ts" title="creation-time">Created: 2025-09-29 17:29:25</div>
+        <p class="desc">I craft interactive visuals, micro-animations and clean interfaces. This single-file portfolio shows off gradient motion, subtle 3D tilt and rotating accents — compact and embeddable.</p>
+        <div class="actions">
+          <a class="btn" href="#projects" role="button">View Projects</a>
+          <a class="btn" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">Source</a>
+        </div>
+        <div class="spin-stripe" aria-hidden="true"></div>
+      </section>
+
+      <aside class="projects" id="projects">
+        <div class="card" style="--i:0;">
+          <div>
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="url(#g1)" stroke-width="2" stroke-linecap="round"/><defs><linearGradient id="g1" x1="0" x2="1"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg>
+              Interactive Canvas
+              <span style="margin-left:auto" class="badge">WebGL</span>
+            </div>
+            <div class="desc">A responsive shader playground with rotating scene elements and live controls. Hover to tilt and explore layered depth.</div>
+          </div>
+          <div class="meta">
+            <span>JS • GLSL</span>
+            <span style="margin-left:auto">Live demo</span>
+          </div>
+        </div>
+
+        <div class="card" style="--i:1;">
+          <div>
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="url(#g2)" stroke-width="2" stroke-linecap="round"/><defs><linearGradient id="g2" x1="0" x2="1"><stop stop-color="#06b6d4"/><stop offset="1" stop-color="#f97316"/></linearGradient></defs></svg>
+              Micro UI Kit
+              <span style="margin-left:auto" class="badge">Components</span>
+            </div>
+            <div class="desc">A tiny design system with animated toggles, rotating cards and gradient tokens. Built to be copied and pasted.</div>
+          </div>
+          <div class="meta">
+            <span>CSS • JS</span>
+            <span style="margin-left:auto">Download</span>
+          </div>
+        </div>
+
+        <div class="card" style="--i:2;">
+          <div>
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20" stroke="url(#g3)" stroke-width="2" stroke-linecap="round"/><defs><linearGradient id="g3" x1="0" x2="1"><stop stop-color="#f97316"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs></svg>
+              Autogen Toolkit
+              <span style="margin-left:auto" class="badge">AI • Tools</span>
+            </div>
+            <div class="desc">Utilities for automating repetitive code tasks and generating creative layouts. Playful, practical and easy to extend.</div>
+          </div>
+          <div class="meta">
+            <span>Python • Node</span>
+            <span style="margin-left:auto">Repo</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <a class="gh" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 .5C5.65.5.5 5.66.5 12.02c0 5.09 3.29 9.4 7.86 10.93.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.18.08 1.8 1.21 1.8 1.21 1.04 1.78 2.73 1.26 3.4.97.11-.75.41-1.26.75-1.55-2.55-.29-5.24-1.28-5.24-5.71 0-1.26.45-2.29 1.19-3.09-.12-.3-.52-1.51.11-3.16 0 0 .97-.31 3.18 1.18a11.07 11.07 0 012.9-.39c.98.01 1.97.13 2.9.39 2.21-1.49 3.18-1.18 3.18-1.18.63 1.65.23 2.86.11 3.16.74.8 1.19 1.83 1.19 3.09 0 4.44-2.7 5.42-5.27 5.71.42.36.8 1.08.8 2.18 0 1.58-.01 2.85-.01 3.23 0 .31.21.68.8.56A10.54 10.54 0 0023.5 12.02C23.5 5.66 18.35.5 12 .5z"/>
+        </svg>
+        Created by amirabolfazle
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // small flourish: slightly offset card rotations based on pointer
+    (function(){
+      const cards = document.querySelectorAll('.card');
+      let px=0, py=0;
+      function apply(e){
+        const r = e.touches ? e.touches[0] : e;
+        px = (r.clientX / window.innerWidth - 0.5) * 30;
+        py = (r.clientY / window.innerHeight - 0.5) * -20;
+        cards.forEach((c,i)=>{
+          const depth = (i - (cards.length-1)/2) * 6;
+          c.style.transform = `translateY(${(-10 + depth)}px) rotateX(${py - depth/3}deg) rotateY(${px/ (1 + i*0.6)}deg) scale(1.01)`;
+        });
+      }
+      function reset(){
+        cards.forEach((c,i)=> c.style.transform = '');
+      }
+      window.addEventListener('pointermove', apply);
+      window.addEventListener('pointerleave', reset);
+      window.addEventListener('touchmove', apply, {passive:true});
+      window.addEventListener('touchend', reset);
+    })();
+  </script>
+</body>
+</html>
