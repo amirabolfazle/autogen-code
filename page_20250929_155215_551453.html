@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <style>
+    :root{
+      --bg-1: #FFEFF7; /* pastel pink */
+      --bg-2: #E8FFF2; /* pastel mint */
+      --bg-3: #F3F0FF; /* pastel lavender */
+      --accent: #FFB5E8;
+      --muted: #6b6b6b;
+      --card: rgba(255,255,255,0.7);
+      --glass: rgba(255,255,255,0.55);
+      --shadow: 0 8px 30px rgba(17,24,39,0.08);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: radial-gradient(1200px 600px at 10% 20%, var(--bg-2), transparent 15%),
+                  radial-gradient(1000px 500px at 90% 80%, var(--bg-1), transparent 18%),
+                  linear-gradient(135deg, var(--bg-3), #FFFFFF 60%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 24px;
+      box-sizing:border-box;
+    }
+
+    .container{
+      width:100%;
+      max-width:1040px;
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:32px;
+      align-items:center;
+      animation: floatZoom 10s ease-in-out infinite;
+    }
+
+    @keyframes floatZoom{
+      0%{ transform: translateY(0) scale(1); }
+      50%{ transform: translateY(-8px) scale(1.01); }
+      100%{ transform: translateY(0) scale(1); }
+    }
+
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      border-radius:20px;
+      padding:48px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.6);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero h1{
+      margin:0 0 12px 0;
+      font-size: clamp(28px, 6vw, 54px);
+      line-height:1;
+      letter-spacing:-0.02em;
+      color: #2b2b2b;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .title-badge{
+      background: linear-gradient(90deg, #FFD6E8, #DDEBFF);
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:14px;
+      color:#3b3b3b;
+      box-shadow: 0 4px 14px rgba(180,140,200,0.08);
+      transform-origin:center;
+      transition: transform .25s ease;
+    }
+    .title-badge:hover{ transform: scale(1.05); }
+
+    .hero p.lead{
+      margin:12px 0 22px 0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:58ch;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 6px 18px rgba(90,70,120,0.08);
+      transition: transform .18s ease, box-shadow .18s ease;
+      transform-origin:center;
+    }
+
+    .btn-primary{
+      background: linear-gradient(90deg, #FFB3D4, #CFE8FF);
+      color:#2b2b2b;
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px solid rgba(43,43,43,0.06);
+      color:var(--muted);
+    }
+
+    .btn:hover{ transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 30px rgba(90,70,120,0.12); }
+
+    .stats{
+      display:flex;
+      gap:18px;
+      margin-top:22px;
+      align-items:center;
+      color:#555;
+      font-size:14px;
+    }
+
+    .stat{
+      background: var(--glass);
+      padding:10px 14px;
+      border-radius:12px;
+      box-shadow: 0 6px 18px rgba(100,120,160,0.04);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      transition: transform .2s ease;
+    }
+    .stat:hover{ transform: translateY(-6px); }
+
+    .stat strong{ font-size:16px; color:#2b2b2b; }
+
+    /* right card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.65));
+      padding:24px;
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,0.6);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    .preview{
+      height:220px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.05));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(30,30,30,0.9);
+      font-weight:700;
+      font-size:18px;
+      position:relative;
+      overflow:hidden;
+      transition: transform .45s cubic-bezier(.2,.9,.3,1);
+    }
+    .preview:hover{ transform: scale(1.03); }
+
+    .preview .zoom-surface{
+      width:140%;
+      height:140%;
+      position:absolute;
+      top:-20%;
+      left:-10%;
+      background: conic-gradient(from 120deg at 50% 50%, rgba(255,181,232,0.12), rgba(207,232,255,0.12), rgba(243,240,255,0.12));
+      filter: blur(28px);
+      transform-origin:center;
+      animation: slowSpin 22s linear infinite;
+      opacity:0.95;
+    }
+    @keyframes slowSpin{
+      from{ transform: rotate(0deg); }
+      to{ transform: rotate(360deg); }
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      width:100%;
+    }
+
+    .meta small{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .creation-time{
+      font-weight:600;
+      color:#444;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background: rgba(255,255,255,0.45);
+      padding:8px 12px;
+      border-radius:999px;
+    }
+
+    /* decorative floating circles */
+    .float{
+      position:absolute;
+      border-radius:50%;
+      filter: blur(14px);
+      opacity:0.85;
+      mix-blend-mode: screen;
+      transition: transform .4s ease;
+    }
+    .f1{ width:220px;height:220px; left:-60px; top:-40px; background: linear-gradient(90deg,#FFDCE6,#DDEBFF); }
+    .f2{ width:140px;height:140px; right:-40px; bottom:20px; background: linear-gradient(90deg,#DFFFEA,#FFEFD6); }
+    .f3{ width:80px;height:80px; left:40%; top:-30px; background: linear-gradient(90deg,#EDE6FF,#FFEAF0); opacity:0.6; }
+
+    /* footer */
+    footer{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background: rgba(255,255,255,0.6);
+      padding:8px 14px;
+      border-radius:999px;
+      box-shadow: 0 8px 24px rgba(20,20,40,0.06);
+      backdrop-filter: blur(6px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.65);
+      font-size:14px;
+      color:#3b3b3b;
+    }
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      color:inherit;
+      padding-right:6px;
+    }
+    .github-icon{
+      width:20px;
+      height:20px;
+      display:inline-block;
+      transition: transform .15s ease;
+    }
+    .github-link:hover .github-icon{ transform: scale(1.08); }
+
+    @media (max-width:920px){
+      .container{ grid-template-columns: 1fr; gap:20px; padding-bottom:120px; }
+      footer{ left:16px; transform:none; bottom:16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="main-title">
+    <div class="hero" aria-hidden="false">
+      <div class="float f1" aria-hidden="true"></div>
+      <div class="float f3" aria-hidden="true"></div>
+
+      <h1 id="main-title">
+        <span class="title-badge">amirabolfazle</span>
+      </h1>
+
+      <p class="lead">A calm, pastel-styled landing experience with soft zooming motion and gentle depth. Smooth interactions, subtle shimmer and a friendly design language to welcome visitors.</p>
+
+      <div class="cta-row">
+        <button class="btn btn-primary" aria-label="Get started">Get started</button>
+        <button class="btn btn-ghost" aria-label="Explore examples">Explore examples</button>
+      </div>
+
+      <div class="stats" role="group" aria-label="Highlights">
+        <div class="stat" title="Gentle animations">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2v20" stroke="#8A7FA6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 6h16" stroke="#8A7FA6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6 18h12" stroke="#8A7FA6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div>
+            <div style="font-size:13px;color:#666">Motion</div>
+            <strong>Soft Zoom</strong>
+          </div>
+        </div>
+
+        <div class="stat" title="Pastel palette">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" stroke="#8A7FA6" stroke-width="1.6"/>
+            <path d="M12 20v-4" stroke="#8A7FA6" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <div style="font-size:13px;color:#666">Style</div>
+            <strong>Pastel</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card" aria-label="Preview and creation info">
+      <div class="preview" role="img" aria-label="Live preview">
+        <div class="zoom-surface" aria-hidden="true"></div>
+        <div style="position:relative;z-index:2;pointer-events:none;">
+          <div style="font-size:14px;color:#444;margin-bottom:8px;">Landing Preview</div>
+          <div style="font-size:12px;color:#6b6b6b;">Pastel • Zoom effects • Calm</div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <small>Focus area: Design • Motion • UI</small>
+        <div class="creation-time" title="Creation timestamp">
+          Creation time: 2025-09-29 15:51:18
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:auto;">
+        <button class="btn btn-ghost" aria-label="Download">Download</button>
+        <button class="btn btn-primary" aria-label="Contact">Contact</button>
+      </div>
+    </aside>
+  </div>
+
+  <footer role="contentinfo">
+    <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C7.58 2 4 5.58 4 10c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82a7.6 7.6 0 012.0-.27c.68 0 1.36.09 2.0.27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38C17.71 16.53 20 13.54 20 10c0-4.42-3.58-8-8-8z" fill="#2B2B2B"/>
+      </svg>
+    </a>
+    <div>Created by amirabolfazle</div>
+  </footer>
+</body>
+</html>
