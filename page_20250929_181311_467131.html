@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#FFF7FB;
+      --bg2:#F3FFF9;
+      --accent1:#FFD6E0;
+      --accent2:#DFF7FF;
+      --accent3:#F7F2FF;
+      --muted:#8b8792;
+      --glass: rgba(255,255,255,0.55);
+      --glass-strong: rgba(255,255,255,0.7);
+      --shadow: 0 8px 30px rgba(32,32,56,0.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, var(--accent1) 0%, transparent 20%),
+                  radial-gradient(1000px 500px at 90% 90%, var(--accent2) 0%, transparent 18%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#222;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      overflow:hidden;
+    }
+
+    /* floating shapes */
+    .shape{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(18px);
+      opacity:0.85;
+      transform-origin:center;
+      transition: transform 0.6s cubic-bezier(.2,.9,.2,1);
+      will-change:transform;
+    }
+    .shape.s1{width:360px;height:360px;background:linear-gradient(135deg,#FFDCE6,#FFD6E0);left:-120px;top:-80px;}
+    .shape.s2{width:300px;height:300px;background:linear-gradient(135deg,#DFF7FF,#CFF6FF);right:-110px;bottom:-70px;}
+    .shape.s3{width:180px;height:180px;background:linear-gradient(135deg,#F7F2FF,#EDE6FF);left:20%;bottom:10%;opacity:0.9;filter:blur(14px)}
+    .container{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:36px;
+      align-items:center;
+      z-index:2;
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .container{grid-template-columns:1fr; padding:20px;}
+      .shape.s1{display:none}
+      .shape.s2{display:none}
+    }
+
+    /* hero card */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+      border-radius:20px;
+      padding:40px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.6);
+      transform: translateZ(0);
+      transition: transform 0.5s cubic-bezier(.2,.9,.2,1), box-shadow 0.3s;
+      will-change: transform;
+      animation: zoomIn 900ms ease-out both;
+    }
+
+    .card:hover{transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px rgba(32,32,56,0.12);}
+
+    @keyframes zoomIn {
+      0%{transform: scale(.985) translateY(8px)}
+      100%{transform: scale(1) translateY(0)}
+    }
+
+    .title{
+      font-size:48px;
+      line-height:1;
+      margin:0 0 10px 0;
+      color:#2b2a34;
+      letter-spacing:-0.6px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .title .dot{
+      width:14px;height:14px;border-radius:4px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      box-shadow: 0 6px 18px rgba(255,165,178,0.16);
+      transform-origin:center;
+      animation: pulse 2200ms infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.18)}
+      100%{transform:scale(1)}
+    }
+
+    .subtitle{
+      margin:6px 0 22px 0;
+      color:var(--muted);
+      font-weight:400;
+    }
+
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      background:linear-gradient(90deg,#7EE0D8,#D6D3FF);
+      border:none;
+      color:#26232a;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 8px 22px rgba(126,224,216,0.16);
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s;
+    }
+    .btn.secondary{
+      background:transparent;
+      border:1px solid rgba(36,36,36,0.06);
+      color:var(--muted);
+      box-shadow:none;
+    }
+    .btn:active{transform:scale(.98)}
+    .meta{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    /* right column preview */
+    .preview{
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.5));
+      border-radius:18px;
+      padding:22px;
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,0.6);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      justify-content:center;
+      align-items:center;
+      transform-origin:center;
+      animation: floatZoom 6s ease-in-out infinite;
+    }
+
+    @keyframes floatZoom {
+      0%{transform: translateY(0) scale(1)}
+      50%{transform: translateY(-8px) scale(1.02)}
+      100%{transform: translateY(0) scale(1)}
+    }
+
+    .mock{
+      width:100%;
+      max-width:320px;
+      background:linear-gradient(180deg,#FFFFFF, #FBFBFF);
+      border-radius:14px;
+      padding:16px;
+      box-shadow: 0 12px 30px rgba(18,18,50,0.06);
+      transition: transform .28s cubic-bezier(.2,.9,.2,1);
+    }
+    .mock:hover{transform:scale(1.03)}
+    .mock .top{height:10px;display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    .dot-mini{width:10px;height:10px;border-radius:50%}
+    .dm1{background:#FFB6C1}
+    .dm2{background:#FFD1B3}
+    .dm3{background:#CFF6FF}
+    .mock .content{height:160px;border-radius:10px;background:linear-gradient(180deg,#FFF7FB,#F7FCFF);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600}
+
+    /* footer */
+    footer{
+      margin-top:28px;
+      grid-column: 1 / -1;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .github{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:inherit;
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:10px;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .github:hover{transform:translateY(-4px); background:rgba(255,255,255,0.42)}
+    .gh-icon{width:20px;height:20px;display:inline-block;flex-shrink:0}
+    .created{opacity:0.95}
+
+    /* small screen footer stacking */
+    @media (max-width:520px){
+      footer{flex-direction:column;align-items:flex-start;gap:8px}
+    }
+
+    /* subtle hover interactions for shapes */
+    .container:hover ~ .shape.s1{transform: scale(1.03) translateY(-6px)}
+    .container:hover ~ .shape.s2{transform: scale(1.02) translateY(6px)}
+    .container:hover ~ .shape.s3{transform: scale(1.04) translateY(-4px)}
+  </style>
+</head>
+<body>
+  <div class="shape s1" aria-hidden="true"></div>
+  <div class="shape s2" aria-hidden="true"></div>
+  <div class="shape s3" aria-hidden="true"></div>
+
+  <main class="container" role="main">
+    <section class="card" aria-labelledby="page-title">
+      <h1 id="page-title" class="title">
+        <span class="dot" aria-hidden="true"></span>
+        amirabolfazle
+      </h1>
+      <p class="subtitle">Pastel-crafted, subtly animated landing experience with gentle zoom interactions — clean, calm and modern.</p>
+
+      <div class="cta-row">
+        <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in touch</button>
+        <a class="btn secondary" href="#preview" title="Explore preview">View preview</a>
+      </div>
+
+      <div class="meta" aria-hidden="false">
+        <div>Creation time: <strong style="margin-left:8px;color:#494656">2025-09-29 18:12:18</strong></div>
+        <div style="margin-left:auto;font-size:13px;color:var(--muted)">Soft pastel theme • Zoom effects</div>
+      </div>
+
+      <footer style="border-top:1px dashed rgba(36,36,36,0.04); padding-top:18px; margin-top:18px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-weight:600;color:#3a3843">Hi — I'm amirabolfazle.</div>
+          <div style="color:var(--muted);font-size:13px;max-width:54ch">A simple landing page mockup that emphasizes calm colors, motion and a clean presentation layer — built for quick demos and portfolio highlights.</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="github" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+            <svg class="gh-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M8 0.8C3.6 0.8 0.4 4 0.4 8.4c0 3.2 2.1 5.9 5 6.8.4.1.5-.2.5-.4v-1.5c-2 .4-2.5-.9-2.5-.9-.3-.9-.8-1.2-.8-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.2 1.9.9 2.4.7.1-.6.3-1 .5-1.3-1.6-.2-3.3-.8-3.3-3.5 0-.8.3-1.4.8-1.9-.1-.2-.4-1 .1-2 0 0 .6-.2 2 .8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.4-1 2-.8 2-.8.5 1.1.2 1.9.1 2 .5.5.8 1.1.8 1.9 0 2.7-1.7 3.2-3.3 3.5.4.3.8.9.8 1.9v2.8c0 .2.1.5.5.4 2.9-.9 5-3.6 5-6.8C15.6 4 12.4 0.8 8 0.8z" fill="#5E5871"/>
+            </svg>
+            <span style="font-weight:600;color:#5E5871">Repository</span>
+          </a>
+        </div>
+      </footer>
+    </section>
+
+    <aside id="preview" class="preview" aria-labelledby="preview-title">
+      <div style="text-align:center">
+        <div id="preview-title" style="font-weight:700;color:#2f2e39;margin-bottom:6px">Live preview</div>
+        <div style="color:var(--muted);font-size:13px;margin-bottom:12px">Hover and watch the subtle zooms</div>
+      </div>
+
+      <div class="mock" role="img" aria-label="UI mock preview">
+        <div class="top">
+          <div class="dot-mini dm1"></div>
+          <div class="dot-mini dm2"></div>
+          <div class="dot-mini dm3"></div>
+        </div>
+        <div class="content">Smooth pastel UI mock</div>
+      </div>
+
+      <div style="display:flex;gap:10px">
+        <button class="btn" onclick="document.querySelector('.mock').classList.toggle('zoom')">Toggle Zoom</button>
+        <a class="btn secondary" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer">View Code</a>
+      </div>
+
+      <div id="contact" style="margin-top:10px;color:var(--muted);font-size:13px">Want customizations? Reach out via the GitHub repo link.</div>
+
+      <footer style="width:100%;margin-top:6px;display:flex;justify-content:center;align-items:center;gap:10px;color:var(--muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .5C5.73.5.94 5.29.94 11.58c0 4.63 3 8.56 7.17 9.95.52.1.71-.23.71-.5 0-.26-.01-.95-.01-1.86-2.91.64-3.52-1.4-3.52-1.4-.48-1.22-1.17-1.54-1.17-1.54-.96-.66.07-.65.07-.65 1.06.08 1.62 1.08 1.62 1.08.94 1.61 2.46 1.15 3.06.88.09-.68.37-1.15.67-1.42-2.33-.26-4.78-1.17-4.78-5.25 0-1.16.42-2.1 1.11-2.84-.11-.27-.48-1.36.11-2.83 0 0 .9-.29 2.95 1.08a10.2 10.2 0 012.68-.36c.91.01 1.83.12 2.68.36 2.05-1.37 2.95-1.08 2.95-1.08.59 1.47.22 2.56.11 2.83.69.74 1.11 1.68 1.11 2.84 0 4.09-2.46 4.99-4.8 5.25.38.33.72.99.72 2.01 0 1.45-.01 2.62-.01 2.98 0 .28.19.61.72.5 4.17-1.39 7.17-5.32 7.17-9.95C23.06 5.29 18.27.5 12 .5z" fill="#8b8792"/>
+        </svg>
+        <div class="created">Created by amirabolfazle</div>
+      </footer>
+    </aside>
+  </main>
+
+  <script>
+    // tiny interaction: toggle zoom effect class and animate shapes slightly on pointer move
+    (function(){
+      const mock = document.querySelector('.mock');
+      const shapes = document.querySelectorAll('.shape');
+      document.querySelector('.btn[onclick*="Toggle Zoom"]').addEventListener('click', () => {
+        mock.style.transform = mock.style.transform ? '' : 'scale(1.06)';
+        mock.style.transition = 'transform .36s cubic-bezier(.2,.9,.2,1)';
+      });
+
+      // parallax micro-movement for shapes
+      window.addEventListener('pointermove', (e)=>{
+        const cx = window.innerWidth/2;
+        const cy = window.innerHeight/2;
+        const dx = (e.clientX - cx)/cx;
+        const dy = (e.clientY - cy)/cy;
+        shapes[0].style.transform = `translate(${dx*-8}px, ${dy*-6}px) scale(1.02)`;
+        shapes[1].style.transform = `translate(${dx*8}px, ${dy*6}px) scale(1.01)`;
+        shapes[2].style.transform = `translate(${dx*3}px, ${dy*-3}px) scale(1.03)`;
+      }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
