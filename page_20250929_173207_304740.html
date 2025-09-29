@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>amirabolfazle</title>
+  <meta name="theme-color" content="#0f1724"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #071029;
+      --bg2: #071e2a;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --accent: rgba(108,99,255,0.95);
+      --accent-2: rgba(0,210,255,0.9);
+      --text: #e6eef8;
+      --muted: #9fb3c8;
+      --glass-border: rgba(255,255,255,0.08);
+      --card-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(120deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* floating blobs */
+    .blob{
+      position:fixed;
+      filter: blur(40px) saturate(120%);
+      opacity:0.35;
+      pointer-events:none;
+      z-index:0;
+      mix-blend-mode:screen;
+      animation: float 18s ease-in-out infinite;
+    }
+    .blob.b1{width:480px;height:480px;border-radius:50%;left:-8%;top:-10%;background:linear-gradient(135deg,var(--accent),var(--accent-2)); animation-duration:22s;}
+    .blob.b2{width:360px;height:360px;border-radius:50%;right:-6%;bottom:-12%;background:linear-gradient(135deg,#00d2ff33,#6c63ff33); animation-duration:26s;opacity:0.25}
+    @keyframes float{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-28px) rotate(8deg)}100%{transform:translateY(0) rotate(0deg)}}
+
+    /* page container */
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width:1100px;
+      margin:40px auto;
+      padding:36px;
+    }
+
+    /* header glass card */
+    header.header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:22px;
+      border-radius:16px;
+      background: linear-gradient(180deg,var(--glass),var(--glass-2));
+      border:1px solid var(--glass-border);
+      backdrop-filter: blur(10px) saturate(120%);
+      box-shadow: var(--card-shadow);
+      gap:20px;
+    }
+    .brand{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .logo{
+      width:64px;height:64px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      color:white;font-weight:800;font-size:22px;letter-spacing:0.6px;
+      box-shadow:0 6px 18px rgba(108,99,255,0.18), inset 0 -6px 20px rgba(0,0,0,0.12);
+    }
+    h1{margin:0;font-size:20px;letter-spacing:0.6px}
+    p.lead{margin:0;color:var(--muted);font-weight:500;font-size:13px}
+
+    .meta{
+      text-align:right;
+      font-size:13px;color:var(--muted)
+    }
+    .meta .time{display:block;color:var(--text);font-weight:600}
+
+    /* main content layout */
+    main{
+      margin-top:26px;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:24px;
+      align-items:start;
+    }
+    @media (max-width:980px){
+      main{grid-template-columns:1fr; padding-bottom:40px}
+    }
+
+    /* left column cards */
+    .panel{
+      border-radius:14px;
+      background:linear-gradient(180deg,var(--glass),rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      padding:20px;
+      backdrop-filter: blur(10px) saturate(120%);
+      box-shadow: var(--card-shadow);
+    }
+    .intro{
+      display:flex;gap:18px;align-items:flex-start;
+    }
+    .avatar{
+      min-width:88px;height:88px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent-2),#3c7ce0);
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:28px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.35);
+    }
+    .intro h2{margin:0 0 6px 0;font-size:18px}
+    .intro p{margin:0;color:var(--muted)}
+
+    /* projects grid */
+    .projects{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+    @media (max-width:600px){ .projects{grid-template-columns:1fr} }
+    .card{
+      padding:14px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      transition:transform 300ms cubic-bezier(.2,.8,.2,1), box-shadow 300ms;
+      cursor:pointer;
+    }
+    .card:hover{transform:translateY(-6px); box-shadow: 0 12px 40px rgba(2,6,23,0.6)}
+    .card h3{margin:0;font-size:15px}
+    .card p{margin:8px 0 0 0;color:var(--muted);font-size:13px}
+
+    /* right column */
+    aside.side {
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .stats{
+      display:flex;gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .stat{
+      flex:1;
+      padding:12px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      text-align:center;
+    }
+    .stat strong{display:block;font-size:18px}
+    .contact{
+      padding:14px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .btn{
+      display:inline-flex;gap:10px;align-items:center;padding:10px 14px;border-radius:10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;font-weight:700;text-decoration:none;border:none;cursor:pointer;
+      box-shadow:0 8px 24px rgba(108,99,255,0.16);
+    }
+
+    /* footer */
+    footer{
+      margin-top:28px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:14px;
+    }
+    .footer-left{display:flex;gap:10px;align-items:center}
+    .github-link{display:inline-flex;gap:8px;align-items:center;color:var(--muted);text-decoration:none}
+    .github-link svg{width:20px;height:20px;fill:var(--text)}
+    .created{color:var(--muted);font-weight:600}
+
+    /* slide-up animation */
+    .slide{
+      opacity:0;
+      transform: translateY(24px);
+      transition: transform 700ms cubic-bezier(.18,.8,.25,1), opacity 700ms;
+      will-change:transform,opacity;
+    }
+    .in-view{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* small helpers */
+    .small{font-size:13px;color:var(--muted)}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .tag{background:rgba(255,255,255,0.02);padding:6px 8px;border-radius:8px;font-size:12px;border:1px solid rgba(255,255,255,0.03);color:var(--muted)}
+
+    /* subtle focus outline */
+    a:focus,a.button:focus{outline:2px solid rgba(255,255,255,0.06);outline-offset:3px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="header slide" role="banner">
+      <div class="brand">
+        <div class="logo">am</div>
+        <div>
+          <h1>amirabolfazle</h1>
+          <p class="lead">Digital crafts, experiments & code — glassmorphism portfolio</p>
+        </div>
+      </div>
+      <div class="meta">
+        <span class="small">Creation time</span>
+        <span class="time">2025-09-29 17:31:10</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel slide" aria-labelledby="intro-heading">
+        <div class="intro">
+          <div class="avatar">AB</div>
+          <div>
+            <h2 id="intro-heading">Hi, I'm amirabolfazle</h2>
+            <p class="small">I build clean interfaces, playful interactions and reliable code. This single-file portfolio shows off a glassmorphic look with animated slide-up effects.</p>
+
+            <div class="tags" style="margin-top:12px">
+              <span class="tag">UI/UX</span>
+              <span class="tag">Frontend</span>
+              <span class="tag">Animations</span>
+              <span class="tag">Web Apps</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="projects" style="margin-top:18px">
+          <article class="card slide" style="--d:0">
+            <h3>Autogen Code Playground</h3>
+            <p>Prototype environment for generating utility code and templates. Live previews and export options.</p>
+          </article>
+
+          <article class="card slide" style="--d:1">
+            <h3>Neon Notes</h3>
+            <p>Minimal note-taking app with encrypted local storage and smooth animations.</p>
+          </article>
+
+          <article class="card slide" style="--d:2">
+            <h3>Glass UI Kit</h3>
+            <p>Reusable glassmorphic UI components with accessibility in mind.</p>
+          </article>
+
+          <article class="card slide" style="--d:3">
+            <h3>Micro Animations</h3>
+            <p>Collection of small, performant interactions for delightful user experiences.</p>
+          </article>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div class="panel stats slide">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:12px">
+              <div class="stat">
+                <strong>8+</strong>
+                <span class="small">Projects</span>
+              </div>
+              <div class="stat">
+                <strong>4</strong>
+                <span class="small">Templates</span>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px">
+              <div class="stat">
+                <strong>JS / CSS</strong>
+                <span class="small">Primary</span>
+              </div>
+              <div class="stat">
+                <strong>Single-file</strong>
+                <span class="small">Approach</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel contact slide">
+          <h3 style="margin:0 0 8px 0">Get in touch</h3>
+          <p class="small" style="margin:0 0 12px 0">Open to collaborations, freelance work, or chatting about small UX experiments.</p>
+          <a class="btn" href="mailto:amirabolfazle@example.com" aria-label="Email amirabolfazle">Say hello</a>
+        </div>
+      </aside>
+    </main>
+
+    <footer role="contentinfo" class="slide">
+      <div class="footer-left">
+        <a class="github-link" href="https://github.com/amirabolfazle/autogen-code" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.725-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.084-.729.084-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.775.418-1.305.762-1.606-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.29-1.552 3.296-1.23 3.296-1.23.655 1.653.243 2.874.12 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.807 5.625-5.48 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .321.216.694.825.576C20.565 22.092 24 17.592 24 12.297 24 5.67 18.627.297 12 .297z"/>
+          </svg>
+          <span class="small">github.com/amirabolfazle/autogen-code</span>
+        </a>
+      </div>
+
+      <div class="created">Created by amirabolfazle</div>
+    </footer>
+  </div>
+
+  <script>
+    // Slide-up reveal with intersection observer and stagger
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      if (prefersReduced) {
+        slides.forEach(s => s.classList.add('in-view'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            // stagger based on position among siblings
+            const parent = el.parentElement;
+            let index = 0;
+            if (parent) {
+              const list = Array.from(parent.querySelectorAll('.slide'));
+              index = list.indexOf(el);
+            }
+            const delay = (index > -1 ? index * 80 : 0);
+            setTimeout(()=> el.classList.add('in-view'), delay);
+            obs.unobserve(el);
+          }
+        });
+      }, {threshold: 0.08});
+
+      slides.forEach(s => observer.observe(s));
+
+      // tiny interactive flair for avatar
+      const avatar = document.querySelector('.avatar');
+      let mouseX = 0, mouseY = 0;
+      if (avatar) {
+        avatar.addEventListener('mousemove', (e)=>{
+          const r = avatar.getBoundingClientRect();
+          const dx = (e.clientX - (r.left + r.width/2)) / r.width;
+          const dy = (e.clientY - (r.top + r.height/2)) / r.height;
+          avatar.style.transform = `translate3d(${dx*6}px, ${dy*6}px, 0) rotate(${dx*6}deg)`;
+        });
+        avatar.addEventListener('mouseleave', ()=> avatar.style.transform = '');
+      }
+    })();
+  </script>
+</body>
+</html>
